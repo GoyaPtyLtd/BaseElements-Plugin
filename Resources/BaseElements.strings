@@ -1,0 +1,33 @@
+"1" = "GyBE1nnYnnn";
+
+"102" = "BE_Version";
+"103" = "BE_VersionAutoUpdate";
+
+"104" = "BE_ClipboardFormats";
+"105" = "BE_ClipboardText ( format )";
+"106" = "BE_SetClipboardText ( text; format )";
+
+"107" = "BE_CreateFolder ( path )";
+"108" = "BE_DeleteFile ( path )";
+"109" = "BE_FileExists ( path )";
+"110" = "BE_ReadTextFromFile ( path )";
+"111" = "BE_WriteTextToFile ( path; text )";
+
+"112" = "BE_SelectFile ( prompt )";
+"113" = "BE_SelectFolder ( prompt )";
+
+"114" = "BE_DisplayDialog ( title; message; defaultButton {; cancelButton; alternateButton } )";
+
+"115" = "BE_ApplyXSLT ( xmlPath; xslt; outputPath )";
+
+"116" = "BE_ExtractScriptVariables ( calculation )";
+
+"117" = "BE_StripInvalidUTF16CharactersFromXMLFile ( path )";
+
+"128" = "BaseElements";
+"129" = "This plug-in provides additional functionality for BaseElements 3 from Goya";
+
+
+"1001" = "BE_OKButton";
+"1002" = "BE_CancelButton";
+"1003" = "BE_AlternateButton";
