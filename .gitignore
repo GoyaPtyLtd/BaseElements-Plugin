@@ -1,0 +1,15 @@
+# Ignore anything in the Build, Headers & Libraries directories other than README files
+
+Build/*
+
+Headers/*
+!Headers/README
+
+Libraries/*
+!Libraries/README
+
+# Ignore generated VC2010 files
+
+Projects/BaseElements.sdf
+Projects/BaseElements.suo
+Projects/BaseElements.vcxproj.user
