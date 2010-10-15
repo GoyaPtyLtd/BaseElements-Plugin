@@ -231,18 +231,33 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 	try {
 		
 		StringAutoPtr path = ParameterAsUTF8String ( data_vect, 0 );
-		boost::filesystem::ofstream output_file ( *path );
-		StringAutoPtr to_write = ParameterAsUTF8String ( data_vect, 1 );
-		output_file << *to_write;
-		output_file.close();
 		
-		boost::filesystem::path filesystem_path = *path;
-		boost::uintmax_t length = file_size ( filesystem_path ); // throws if the filesystem_path does not exist
-
-		SetNumericResult ( error_result == kNoError && length != 0, results );
+		// should the text be appended to the file or replace any existing contents
 		
-	} catch ( filesystem_error e ) {
-		error_result = e.code().value();
+		ios_base::openmode mode = ios_base::trunc;
+		if ( data_vect.Size() == 3 ) {
+			bool append = data_vect.AtAsBoolean ( 2 );
+			if ( append ) {
+				mode = ios_base::app;
+			}
+		}
+		
+		StringAutoPtr text_to_write = ParameterAsUTF8String ( data_vect, 1 );
+		
+		try {
+			
+			boost::filesystem::path filesystem_path ( *path );
+			boost::filesystem::ofstream output_file ( filesystem_path, ios_base::out | mode );
+			
+			output_file << *text_to_write;
+			output_file.close();
+			
+		} catch ( filesystem_error e ) {
+			error_result = e.code().value();
+		}
+		
+		SetNumericResult ( error_result, results );
+		
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
 	} catch ( exception e ) {
