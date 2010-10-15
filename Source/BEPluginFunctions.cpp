@@ -36,6 +36,7 @@
 
 #include "FMWrapper/FMXFixPt.h"
 #include "FMWrapper/FMXData.h"
+#include "FMWrapper/FMXCalcEngine.h"
 
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"
@@ -123,15 +124,20 @@ FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* en
 FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results )
 {
 	errcode error_result = kNoError;	
+	errcode filesystem_result = kNoError;
 	
 	try {
 
 		StringAutoPtr path = ParameterAsUTF8String ( data_vect, 0 );
-		create_directory ( *path );
-		SetNumericResult ( error_result == kNoError, results );
-	
-	} catch ( filesystem_error e ) {
-		error_result = kFileSystemError;
+		
+		try {
+			create_directory ( *path );
+		} catch ( filesystem_error e ) {
+			filesystem_result = e.code().value();
+		}
+		
+		SetNumericResult ( filesystem_result, results );
+				
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
 	} catch ( exception e ) {
@@ -146,15 +152,20 @@ FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* enviro
 FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
 {
 	errcode error_result = kNoError;
+	errcode filesystem_result = kNoError;
 	
 	try {
 		
 		StringAutoPtr path = ParameterAsUTF8String ( data_vect, 0 );
-		remove_all ( *path ); // if path is a directory then path and all it's contents are deleted
-		SetNumericResult ( error_result == kNoError, results );
 		
-	} catch ( filesystem_error e ) {
-		error_result = kFileSystemError;
+		try {
+			remove_all ( *path ); // if path is a directory then path and all it's contents are deleted
+		} catch ( filesystem_error e ) {
+			filesystem_result = e.code().value();
+		}
+		
+		SetNumericResult ( filesystem_result, results );
+		
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
 	} catch ( exception e ) {
@@ -169,6 +180,7 @@ FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environm
 FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
 {
 	errcode error_result = kNoError;
+	errcode filesystem_result = kNoError;
 	
 	try {
 		
@@ -177,7 +189,7 @@ FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environm
 		SetNumericResult ( file_exists, results );
 		
 	} catch ( filesystem_error e ) {
-		error_result = kFileSystemError;
+		error_result = e.code().value();
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
 	} catch ( exception e ) {
@@ -200,7 +212,7 @@ FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* en
 		SetUTF8Result ( contents, results );
 
 	} catch ( filesystem_error e ) {
-		error_result = kFileSystemError;
+		error_result = e.code().value();
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
 	} catch ( exception e ) {
@@ -230,7 +242,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 		SetNumericResult ( error_result == kNoError && length != 0, results );
 		
 	} catch ( filesystem_error e ) {
-		error_result = kFileSystemError;
+		error_result = e.code().value();
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
 	} catch ( exception e ) {
@@ -323,7 +335,7 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 		SetNumericResult ( error_result == kNoError, results );
 		
 	} catch ( filesystem_error e ) {
-		error_result = kFileSystemError;
+		error_result = e.code().value();
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
 	} catch ( exception e ) {
@@ -333,6 +345,74 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 	return error_result;
 	
 } // BE_StripInvalidUTF16CharactersFromXMLFile
+
+
+FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+{
+	errcode error_result = kNoError;
+	errcode filesystem_result = kNoError;
+	
+	try {
+		
+		StringAutoPtr from = ParameterAsUTF8String ( data_vect, 0 );
+		StringAutoPtr to = ParameterAsUTF8String ( data_vect, 1 );
+		
+		try {
+			
+			boost::filesystem::path from_path = *from;
+			boost::filesystem::path to_path = *to;
+			
+			rename ( from_path, to_path );			
+		}
+		catch ( filesystem_error e ) {
+			filesystem_result = e.code().value();
+		}
+		
+		SetNumericResult ( filesystem_result, results );
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}
+	
+	return error_result;
+	
+} // BE_MoveFile
+
+
+FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+{
+	errcode error_result = kNoError;
+	errcode filesystem_result = kNoError;
+	
+	try {
+		
+		StringAutoPtr from = ParameterAsUTF8String ( data_vect, 0 );
+		StringAutoPtr to = ParameterAsUTF8String ( data_vect, 1 );
+		
+		try {
+			
+			boost::filesystem::path from_path = *from;
+			boost::filesystem::path to_path = *to;
+		
+			copy_file ( from_path, to_path );
+			
+		} catch ( filesystem_error e ) {
+			filesystem_result = e.code().value();
+		}
+		
+		SetNumericResult ( filesystem_result, results );
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}
+	
+	return error_result;
+	
+} // BE_CopyFile
 
 
 #pragma mark -
@@ -552,4 +632,5 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 	return error_result;
 	
 } // BE_ExtractScriptVariables
+
 

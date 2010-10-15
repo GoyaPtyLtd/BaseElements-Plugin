@@ -18,37 +18,6 @@
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};
-	4D335E1B11FD773A00AAB3E7 /* FMXBinaryData.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXBinaryData.h;
-		path = /Users/mark/Documents/Development/BaseElements/Headers/FMWrapper/FMXBinaryData.h;
-		sourceTree = "<absolute>";
-	};
-	4D335E1D11FD773A00AAB3E7 /* FMXData.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXData.h;
-		path = /Users/mark/Documents/Development/BaseElements/Headers/FMWrapper/FMXData.h;
-		sourceTree = "<absolute>";
-	};
-	4D335E1F11FD773A00AAB3E7 /* FMXTypes.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXTypes.h;
-		path = /Users/mark/Documents/Development/BaseElements/Headers/FMWrapper/FMXTypes.h;
-		sourceTree = "<absolute>";
-	};
-	4D335E4E11FD791A00AAB3E7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D335E1B11FD773A00AAB3E7 /* FMXBinaryData.h */;
-		name = "FMXBinaryData.h: 220";
-		rLen = 96;
-		rLoc = 10687;
-		rType = 0;
-		vrLen = 2310;
-		vrLoc = 9290;
-	};
 	4D36519C12122299008062C4 /* BEPluginFunctions.cpp:324 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
@@ -175,12 +144,66 @@
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};
-	4D3B451411F6D06F00DA60EF /* FMXCalcEngine.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXCalcEngine.h;
-		path = /Users/mark/Documents/Development/BaseElements/Headers/FMWrapper/FMXCalcEngine.h;
-		sourceTree = "<absolute>";
+	4D40642F12680A20003EB4E0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */;
+		name = "BEPlugin.cpp: 36";
+		rLen = 0;
+		rLoc = 1641;
+		rType = 0;
+		vrLen = 1920;
+		vrLoc = 0;
+	};
+	4D40643012680A20003EB4E0 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 4D7FCA5E11E9308B0047A453 /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Resources/Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	4D40643112680A20003EB4E0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */;
+		name = "BEFileMakerPlugin.h: 12";
+		rLen = 0;
+		rLoc = 232;
+		rType = 0;
+		vrLen = 978;
+		vrLoc = 0;
+	};
+	4D40643212680A20003EB4E0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */;
+		name = "BEPluginGlobalDefines.h: 24";
+		rLen = 0;
+		rLoc = 534;
+		rType = 0;
+		vrLen = 1023;
+		vrLoc = 0;
+	};
+	4D40643312680A20003EB4E0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */;
+		name = "BEFileMakerPlugin.cpp: 12";
+		rLen = 0;
+		rLoc = 234;
+		rType = 0;
+		vrLen = 1155;
+		vrLoc = 0;
+	};
+	4D40643412680A20003EB4E0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */;
+		name = "BEFileMakerPlugin.cpp: 12";
+		rLen = 0;
+		rLoc = 234;
+		rType = 0;
+		vrLen = 1155;
+		vrLoc = 0;
 	};
 	4D40ECFB1188FE01005CA59D /* Source Control */ = {
 		isa = PBXSourceControlManager;
@@ -272,13 +295,6 @@
 		path = "/Applications/FileMaker Pro 11 Advanced/FileMaker Pro Advanced.app";
 		sourceTree = "<absolute>";
 	};
-	4D488EC611F1245B009678BC /* FMXText.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXText.h;
-		path = /Users/mark/Documents/Development/BaseElements/Headers/FMWrapper/FMXText.h;
-		sourceTree = "<absolute>";
-	};
 	4D5B3ECB120FB69900ABD1A7 /* BEPluginUtilities.cpp:123 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
@@ -314,16 +330,6 @@
 		modificationTime = 308187966.890478;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
-	};
-	4D6FF69E1256ED8500FF097E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D488EC611F1245B009678BC /* FMXText.h */;
-		name = "FMXText.h: 214";
-		rLen = 70;
-		rLoc = 11048;
-		rType = 0;
-		vrLen = 1317;
-		vrLoc = 12118;
 	};
 	4D7FCA5C11E9308B0047A453 /* BaseElements.strings */ = {
 		uiCtxt = {
@@ -374,16 +380,6 @@
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};
-	4D83C49B1212604F00769CEF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DD7810711FFD08900CFC8B4 /* FMXExtern.h */;
-		name = "FMXExtern.h: 76";
-		rLen = 34;
-		rLoc = 2582;
-		rType = 0;
-		vrLen = 1181;
-		vrLoc = 1805;
-	};
 	4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {707, 5005}}";
@@ -418,9 +414,9 @@
 	};
 	4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {707, 1807}}";
+			sepNavIntBoundsRect = "{{0, 0}, {707, 1872}}";
 			sepNavSelRange = "{1641, 0}";
-			sepNavVisRange = "{0, 1942}";
+			sepNavVisRange = "{0, 1920}";
 			sepNavWindowFrame = "{{38, 103}, {1044, 1049}}";
 		};
 	};
@@ -442,21 +438,11 @@
 	};
 	4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {707, 1131}}";
+			sepNavIntBoundsRect = "{{0, 0}, {707, 1170}}";
 			sepNavSelRange = "{534, 0}";
-			sepNavVisRange = "{0, 1049}";
+			sepNavVisRange = "{0, 1023}";
 			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
 		};
-	};
-	4DA4E0171242E25B00FE5796 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DDFF43E1201653C00D145EA /* FMXText.h */;
-		name = "FMXText.h: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 2529;
-		vrLoc = 3441;
 	};
 	4DAFE64A125EC51700D2ABAF /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -488,16 +474,6 @@
 		vrLen = 811;
 		vrLoc = 0;
 	};
-	4DAFE64D125EC51700D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */;
-		name = "BEPluginGlobalDefines.h: 24";
-		rLen = 0;
-		rLoc = 534;
-		rType = 0;
-		vrLen = 1049;
-		vrLoc = 0;
-	};
 	4DAFE64E125EC51700D2ABAF /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
@@ -526,26 +502,6 @@
 		rLoc = 231;
 		rType = 0;
 		vrLen = 1187;
-		vrLoc = 0;
-	};
-	4DAFE652125EC51700D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */;
-		name = "BEFileMakerPlugin.h: 12";
-		rLen = 0;
-		rLoc = 232;
-		rType = 0;
-		vrLen = 978;
-		vrLoc = 0;
-	};
-	4DAFE653125EC51700D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */;
-		name = "BEFileMakerPlugin.cpp: 12";
-		rLen = 0;
-		rLoc = 234;
-		rType = 0;
-		vrLen = 1235;
 		vrLoc = 0;
 	};
 	4DAFE654125EC51700D2ABAF /* PBXTextBookmark */ = {
@@ -587,53 +543,6 @@
 		rType = 0;
 		vrLen = 1176;
 		vrLoc = 0;
-	};
-	4DAFE661125EC55600D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */;
-		name = "BEPlugin.cpp: 36";
-		rLen = 0;
-		rLoc = 1641;
-		rType = 0;
-		vrLen = 1942;
-		vrLoc = 0;
-	};
-	4DAFE662125EC55600D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */;
-		name = "BEPlugin.cpp: 36";
-		rLen = 0;
-		rLoc = 1641;
-		rType = 0;
-		vrLen = 1942;
-		vrLoc = 0;
-	};
-	4DC4EA4C12001B6B0065F3DB /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DC4EA4D12001B6B0065F3DB /* FMXFixPt.h */;
-		name = "FMXFixPt.h: 80";
-		rLen = 57;
-		rLoc = 3200;
-		rType = 0;
-		vrLen = 1939;
-		vrLoc = 823;
-	};
-	4DC4EA4D12001B6B0065F3DB /* FMXFixPt.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXFixPt.h;
-		path = /Users/mark/Documents/Development/BaseElements/Headers/FMWrapper/FMXFixPt.h;
-		sourceTree = "<absolute>";
-	};
-	4DC4EA5E12001D900065F3DB /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D335E1F11FD773A00AAB3E7 /* FMXTypes.h */;
-		name = "FMXTypes.h: 160";
-		rLen = 59;
-		rLoc = 5530;
-		rType = 0;
-		vrLen = 1696;
-		vrLoc = 2413;
 	};
 	4DCFE72411892BB700639895 /* FileMaker Pro 10 Advanced */ = {
 		isa = PBXExecutable;
@@ -690,84 +599,9 @@
 		path = "/Applications/FileMaker Pro 10 Advanced/FileMaker Pro Advanced.app";
 		sourceTree = "<absolute>";
 	};
-	4DCFE7321189373700639895 /* ToDo */ = {
-		isa = PBXFileReference;
-		fileEncoding = 4;
-		lastKnownFileType = text;
-		name = ToDo;
-		path = /Users/mark/Documents/Development/BaseElements/Project/ToDo;
-		sourceTree = "<absolute>";
-	};
-	4DCFE7331189374500639895 /* Version History */ = {
-		isa = PBXFileReference;
-		fileEncoding = 4;
-		lastKnownFileType = text;
-		name = "Version History";
-		path = "/Users/mark/Documents/Development/BaseElements/Project/Version History";
-		sourceTree = "<absolute>";
-	};
-	4DCFE7341189375100639895 /* Notes */ = {
-		isa = PBXFileReference;
-		fileEncoding = 4;
-		lastKnownFileType = text;
-		name = Notes;
-		path = /Users/mark/Documents/Development/BaseElements/Project/Notes;
-		sourceTree = "<absolute>";
-	};
-	4DD42A3111F6E31C0079E66A /* FMXClient.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXClient.h;
-		path = /Users/mark/Documents/Development/BaseElements/Libraries/FMWrapper.framework/Headers/FMXClient.h;
-		sourceTree = "<absolute>";
-	};
-	4DD42A3611F6E31C0079E66A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DD42A3711F6E31C0079E66A /* FMXExtern.h */;
-		name = "FMXExtern.h: 198";
-		rLen = 0;
-		rLoc = 6636;
-		rType = 0;
-		vrLen = 1794;
-		vrLoc = 6432;
-	};
-	4DD42A3711F6E31C0079E66A /* FMXExtern.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXExtern.h;
-		path = /Users/mark/Documents/Development/BaseElements/Libraries/FMWrapper.framework/Headers/FMXExtern.h;
-		sourceTree = "<absolute>";
-	};
-	4DD42A3811F6E31C0079E66A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DD42A3911F6E31C0079E66A /* FMXTypes.h */;
-		name = "FMXTypes.h: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 1548;
-		vrLoc = 2087;
-	};
-	4DD42A3911F6E31C0079E66A /* FMXTypes.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXTypes.h;
-		path = /Users/mark/Documents/Development/BaseElements/Libraries/FMWrapper.framework/Headers/FMXTypes.h;
-		sourceTree = "<absolute>";
-	};
-	4DD780C811FFCC4200CFC8B4 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D3B451411F6D06F00DA60EF /* FMXCalcEngine.h */;
-		name = "FMXCalcEngine.h: 139";
-		rLen = 131;
-		rLoc = 6256;
-		rType = 0;
-		vrLen = 3617;
-		vrLoc = 4828;
-	};
 	4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1167, 683}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1167, 670}}";
 			sepNavSelRange = "{232, 0}";
 			sepNavVisRange = "{0, 978}";
 			sepNavWindowFrame = "{{61, 82}, {1044, 1049}}";
@@ -775,38 +609,11 @@
 	};
 	4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1223, 1079}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1195, 1157}}";
 			sepNavSelRange = "{234, 0}";
-			sepNavVisRange = "{0, 1235}";
+			sepNavVisRange = "{0, 1155}";
 			sepNavWindowFrame = "{{38, 103}, {1044, 1049}}";
 		};
-	};
-	4DD7810711FFD08900CFC8B4 /* FMXExtern.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXExtern.h;
-		path = /Users/mark/Documents/Development/BaseElements/Headers/FMWrapper/FMXExtern.h;
-		sourceTree = "<absolute>";
-	};
-	4DD781A711FFE37400CFC8B4 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D335E1D11FD773A00AAB3E7 /* FMXData.h */;
-		name = "FMXData.h: 244";
-		rLen = 119;
-		rLoc = 10264;
-		rType = 0;
-		vrLen = 2742;
-		vrLoc = 1522;
-	};
-	4DD781CA11FFE52E00CFC8B4 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DD42A3111F6E31C0079E66A /* FMXClient.h */;
-		name = "FMXClient.h: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 1597;
-		vrLoc = 481;
 	};
 	4DD7831E120005AE00CFC8B4 /* BEXSLT.h */ = {
 		uiCtxt = {
@@ -824,43 +631,6 @@
 			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
 		};
 	};
-	4DDFF43E1201653C00D145EA /* FMXText.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = FMXText.h;
-		path = /Users/mark/Documents/Development/BaseElements/Libraries/FMWrapper.framework/Headers/FMXText.h;
-		sourceTree = "<absolute>";
-	};
-	4DE119581256A4EE00A9AE1C /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DCFE7331189374500639895 /* Version History */;
-		name = "Version History: 1";
-		rLen = 0;
-		rLoc = 14;
-		rType = 0;
-		vrLen = 555;
-		vrLoc = 0;
-	};
-	4DE119591256A4EE00A9AE1C /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DCFE7341189375100639895 /* Notes */;
-		name = "Notes: 11";
-		rLen = 88;
-		rLoc = 284;
-		rType = 0;
-		vrLen = 636;
-		vrLoc = 0;
-	};
-	4DE1195A1256A4EE00A9AE1C /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DCFE7321189373700639895 /* ToDo */;
-		name = "ToDo: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 0;
-		vrLoc = 0;
-	};
 	4DE1195B1256A4EE00A9AE1C /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */;
@@ -871,19 +641,8 @@
 		vrLen = 927;
 		vrLoc = 0;
 	};
-	4DE1195C1256A4EE00A9AE1C /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 4D7FCA5E11E9308B0047A453 /* Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-		);
-		name = /Users/mark/Documents/Development/BaseElements/Resources/Info.plist;
-		rLen = 0;
-		rLoc = 2147483647;
-	};
 	C7DEDEEB07E10BF3002283F3 /* Project object */ = {
-		activeBuildConfigurationName = Release;
+		activeBuildConfigurationName = Debug;
 		activeExecutable = 4D4847A2119AA62600EAF31A /* FileMaker Pro 11 Advanced */;
 		activeTarget = C7DEDEF307E10BF3002283F3 /* BaseElements */;
 		addToTargets = (
@@ -1030,41 +789,27 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 308195983;
-			PBXWorkspaceStateSaveDate = 308195983;
+			PBXPerProjectTemplateStateSaveDate = 308808170;
+			PBXWorkspaceStateSaveDate = 308808170;
 		};
 		perUserProjectItems = {
-			4D335E4E11FD791A00AAB3E7 /* PBXTextBookmark */ = 4D335E4E11FD791A00AAB3E7 /* PBXTextBookmark */;
-			4D6FF69E1256ED8500FF097E /* PBXTextBookmark */ = 4D6FF69E1256ED8500FF097E /* PBXTextBookmark */;
-			4D83C49B1212604F00769CEF /* PBXTextBookmark */ = 4D83C49B1212604F00769CEF /* PBXTextBookmark */;
-			4DA4E0171242E25B00FE5796 /* PBXTextBookmark */ = 4DA4E0171242E25B00FE5796 /* PBXTextBookmark */;
+			4D40642F12680A20003EB4E0 /* PBXTextBookmark */ = 4D40642F12680A20003EB4E0 /* PBXTextBookmark */;
+			4D40643012680A20003EB4E0 /* PlistBookmark */ = 4D40643012680A20003EB4E0 /* PlistBookmark */;
+			4D40643112680A20003EB4E0 /* PBXTextBookmark */ = 4D40643112680A20003EB4E0 /* PBXTextBookmark */;
+			4D40643212680A20003EB4E0 /* PBXTextBookmark */ = 4D40643212680A20003EB4E0 /* PBXTextBookmark */;
+			4D40643312680A20003EB4E0 /* PBXTextBookmark */ = 4D40643312680A20003EB4E0 /* PBXTextBookmark */;
+			4D40643412680A20003EB4E0 /* PBXTextBookmark */ = 4D40643412680A20003EB4E0 /* PBXTextBookmark */;
 			4DAFE64A125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64A125EC51700D2ABAF /* PBXTextBookmark */;
 			4DAFE64B125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64B125EC51700D2ABAF /* PBXTextBookmark */;
 			4DAFE64C125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64C125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE64D125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64D125EC51700D2ABAF /* PBXTextBookmark */;
 			4DAFE64E125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64E125EC51700D2ABAF /* PBXTextBookmark */;
 			4DAFE64F125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64F125EC51700D2ABAF /* PBXTextBookmark */;
 			4DAFE650125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE650125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE652125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE652125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE653125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE653125EC51700D2ABAF /* PBXTextBookmark */;
 			4DAFE654125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE654125EC51700D2ABAF /* PBXTextBookmark */;
 			4DAFE655125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE655125EC51700D2ABAF /* PBXTextBookmark */;
 			4DAFE656125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE656125EC51700D2ABAF /* PBXTextBookmark */;
 			4DAFE660125EC55600D2ABAF /* PBXTextBookmark */ = 4DAFE660125EC55600D2ABAF /* PBXTextBookmark */;
-			4DAFE661125EC55600D2ABAF /* PBXTextBookmark */ = 4DAFE661125EC55600D2ABAF /* PBXTextBookmark */;
-			4DAFE662125EC55600D2ABAF /* PBXTextBookmark */ = 4DAFE662125EC55600D2ABAF /* PBXTextBookmark */;
-			4DC4EA4C12001B6B0065F3DB /* PBXTextBookmark */ = 4DC4EA4C12001B6B0065F3DB /* PBXTextBookmark */;
-			4DC4EA5E12001D900065F3DB /* PBXTextBookmark */ = 4DC4EA5E12001D900065F3DB /* PBXTextBookmark */;
-			4DD42A3611F6E31C0079E66A /* PBXTextBookmark */ = 4DD42A3611F6E31C0079E66A /* PBXTextBookmark */;
-			4DD42A3811F6E31C0079E66A /* PBXTextBookmark */ = 4DD42A3811F6E31C0079E66A /* PBXTextBookmark */;
-			4DD780C811FFCC4200CFC8B4 /* PBXTextBookmark */ = 4DD780C811FFCC4200CFC8B4 /* PBXTextBookmark */;
-			4DD781A711FFE37400CFC8B4 /* PBXTextBookmark */ = 4DD781A711FFE37400CFC8B4 /* PBXTextBookmark */;
-			4DD781CA11FFE52E00CFC8B4 /* PBXTextBookmark */ = 4DD781CA11FFE52E00CFC8B4 /* PBXTextBookmark */;
-			4DE119581256A4EE00A9AE1C /* PBXTextBookmark */ = 4DE119581256A4EE00A9AE1C /* PBXTextBookmark */;
-			4DE119591256A4EE00A9AE1C /* PBXTextBookmark */ = 4DE119591256A4EE00A9AE1C /* PBXTextBookmark */;
-			4DE1195A1256A4EE00A9AE1C /* PBXTextBookmark */ = 4DE1195A1256A4EE00A9AE1C /* PBXTextBookmark */;
 			4DE1195B1256A4EE00A9AE1C /* PBXTextBookmark */ = 4DE1195B1256A4EE00A9AE1C /* PBXTextBookmark */;
-			4DE1195C1256A4EE00A9AE1C /* PlistBookmark */ = 4DE1195C1256A4EE00A9AE1C /* PlistBookmark */;
 		};
 		sourceControlManager = 4D40ECFB1188FE01005CA59D /* Source Control */;
 		userBuildSettings = {

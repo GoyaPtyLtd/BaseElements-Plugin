@@ -42,6 +42,9 @@ FMX_PROC(errcode) BE_ReadTextFromFile ( short funcId, const ExprEnv& environment
 FMX_PROC(errcode) BE_WriteTextToFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 
+FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
+FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
+
 
 FMX_PROC(errcode) BE_SelectFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_SelectFolder ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );

@@ -35,8 +35,8 @@
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING "1.0.0"
-#define	AUTO_UPDATE_VERSION "00010000"
+#define	VERSION_NUMBER_STRING "1.0.1"
+#define	AUTO_UPDATE_VERSION "00010001"
 
 
 enum { 
@@ -60,7 +60,9 @@ enum functions {
 	kBE_DisplayDialog = 114,
 	kBE_ApplyXSLT = 115,
 	kBE_ExtractScriptVariables = 116,
-	kBE_StripInvalidUTF16CharactersFromXMLFile = 117
+	kBE_StripInvalidUTF16CharactersFromXMLFile = 117,
+	kBE_MoveFile = 118,
+	kBE_CopyFile = 119
 };
 
 
