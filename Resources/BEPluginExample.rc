@@ -101,6 +101,7 @@ BEGIN
     117                     "BE_StripInvalidUTF16CharactersFromXMLFile ( path )"
 	118						"BE_MoveFile ( from; to )"
 	119						"BE_CopyFile ( from; to )"
+	120						"BE_ExecuteShellCommand ( command )"
 END
 
 STRINGTABLE

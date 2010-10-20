@@ -27,6 +27,8 @@
 "118" = "BE_MoveFile ( from; to )";
 "119" = "BE_CopyFile ( from; to )";
 
+"120" = "BE_ExecuteShellCommand ( command )";
+
 "128" = "BaseElements";
 "129" = "This plug-in provides additional functionality for BaseElements 3 from Goya";
 

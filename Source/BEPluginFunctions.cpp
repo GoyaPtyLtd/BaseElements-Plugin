@@ -26,11 +26,17 @@
 
 	#define PATH_MAX MAX_PATH
 
+	#define POPEN _popen
+	#define PCLOSE _pclose
+
 #endif
 
 #if defined(FMX_MAC_TARGET)
 
 	#include "BEMacFunctions.h"
+
+	#define POPEN popen
+	#define PCLOSE pclose
 
 #endif
 
@@ -647,5 +653,45 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 	return error_result;
 	
 } // BE_ExtractScriptVariables
+
+
+
+FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+{
+	errcode error_result = kNoError;
+	
+	try {
+		
+		StringAutoPtr command = ParameterAsUTF8String ( data_vect, 0 );
+				
+		FILE * command_result = POPEN ( command->c_str(), "r" );
+		
+		if ( command_result != NULL ) {
+
+			StringAutoPtr response ( new string ( ) );
+			char reply[PATH_MAX];
+
+			while ( fgets ( reply, PATH_MAX, command_result ) != NULL ) {
+				response->append ( reply );
+			}		
+			
+			error_result = PCLOSE ( command_result );
+			
+			SetUTF8Result ( response, results );
+
+		} else {
+			error_result = errno;
+		}
+		
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}
+	
+	return error_result;
+	
+} // BE_ExecuteShellCommand
 
 

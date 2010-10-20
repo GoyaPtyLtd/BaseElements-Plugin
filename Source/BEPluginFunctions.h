@@ -56,5 +56,7 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short funcId, const ExprEnv& envir
 
 FMX_PROC(errcode) BE_ButtonConstants ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 
+FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
+
 
 #endif // BEPLUGINFUNCTIONS_H

@@ -62,7 +62,8 @@ enum functions {
 	kBE_ExtractScriptVariables = 116,
 	kBE_StripInvalidUTF16CharactersFromXMLFile = 117,
 	kBE_MoveFile = 118,
-	kBE_CopyFile = 119
+	kBE_CopyFile = 119,
+	kBE_ExecuteShellCommand = 120
 };
 
 
