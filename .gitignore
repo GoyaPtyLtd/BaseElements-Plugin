@@ -10,6 +10,6 @@ Libraries/*
 
 # Ignore generated VC2010 files
 
-Projects/BaseElements.sdf
-Projects/BaseElements.suo
-Projects/BaseElements.vcxproj.user
+Project/BaseElements.sdf
+Project/BaseElements.suo
+Project/BaseElements.vcxproj.user
