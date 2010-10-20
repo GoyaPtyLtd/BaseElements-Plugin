@@ -186,7 +186,7 @@ FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environm
 FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
 {
 	errcode error_result = kNoError;
-	errcode filesystem_result = kNoError;
+//	errcode filesystem_result = kNoError;
 	
 	try {
 		
@@ -530,7 +530,7 @@ FMX_PROC(errcode) BE_ButtonConstants ( short funcId, const ExprEnv& /* environme
 
 
 #pragma mark -
-#pragma mark XSLT
+#pragma mark Other / Ungrouped
 #pragma mark -
 
 FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
@@ -555,10 +555,6 @@ FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environme
 	
 } // BE_ApplyXSLT
 
-
-#pragma mark -
-#pragma mark FileMaker Calculations
-#pragma mark -
 
 /*
  BE_ExtractScriptVariables implements are somewhat imperfect heuristic for finding
