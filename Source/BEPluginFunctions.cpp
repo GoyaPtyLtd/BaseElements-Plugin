@@ -254,12 +254,16 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 			
 			boost::filesystem::path filesystem_path ( *path );
 			boost::filesystem::ofstream output_file ( filesystem_path, ios_base::out | mode );
+
+			output_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );			
 			
 			output_file << *text_to_write;
 			output_file.close();
-			
+
 		} catch ( filesystem_error e ) {
 			error_result = e.code().value();
+		} catch ( exception e ) {
+			error_result = errno; // unable to write to the file
 		}
 		
 		SetNumericResult ( error_result, results );
