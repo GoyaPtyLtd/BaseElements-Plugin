@@ -1,208 +1,95 @@
 // !$*UTF8*$!
 {
-	4D03C21A12113DC400A8A37C /* BEPluginFunctions.cpp:328 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		functionName = "BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 328;
-		location = BaseElements;
-		modificationTime = 308187966.890498;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
-	4D36519C12122299008062C4 /* BEPluginFunctions.cpp:324 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		functionName = "BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 324;
-		location = BaseElements;
-		modificationTime = 308187966.890518;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
-	4D36519E1212229B008062C4 /* BEPluginFunctions.cpp:326 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		functionName = "BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 326;
-		location = BaseElements;
-		modificationTime = 308187966.890536;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
-	4D3651C01212295F008062C4 /* BEPluginFunctions.cpp:310 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		functionName = "BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 310;
-		location = BaseElements;
-		modificationTime = 308187966.890554;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
-	4D372BFA1208DD7100725F83 /* BEPluginFunctions.cpp:524 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		functionName = "BE_ExtractScriptVariables ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 524;
-		location = BaseElements;
-		modificationTime = 308187966.890357;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
-	4D372C031208DF0900725F83 /* BEPluginFunctions.cpp:526 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		functionName = "BE_ExtractScriptVariables ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 526;
-		location = BaseElements;
-		modificationTime = 308187966.890397;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
-	4D372C071208DF2F00725F83 /* BEPluginFunctions.cpp:528 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		functionName = "BE_ExtractScriptVariables ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 528;
-		location = BaseElements;
-		modificationTime = 308187966.890418;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
-	4D372C0A1208DF8800725F83 /* BEPluginFunctions.cpp:547 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		functionName = "BE_ExtractScriptVariables ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 547;
-		location = BaseElements;
-		modificationTime = 308187966.8904389;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
-	4D40642F12680A20003EB4E0 /* PBXTextBookmark */ = {
+	4D07B5A412711485000AB755 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */;
-		name = "BEPlugin.cpp: 36";
-		rLen = 0;
-		rLoc = 1641;
+		fRef = 4D8824E611E93F6000F94475 /* BEPluginUtilities.h */;
+		name = "BEPluginUtilities.h: 3";
+		rLen = 207;
+		rLoc = 24;
 		rType = 0;
-		vrLen = 1920;
+		vrLen = 1494;
 		vrLoc = 0;
 	};
-	4D40643012680A20003EB4E0 /* PlistBookmark */ = {
+	4D07B5A612711485000AB755 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */;
+		name = "BEMacFunctions.h: 12";
+		rLen = 0;
+		rLoc = 229;
+		rType = 0;
+		vrLen = 811;
+		vrLoc = 0;
+	};
+	4D07B5A712711485000AB755 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */;
+		name = "BEMacFunctions.mm: 83";
+		rLen = 0;
+		rLoc = 2169;
+		rType = 0;
+		vrLen = 1203;
+		vrLoc = 2968;
+	};
+	4D0CC745128BDA3100778887 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D67B72F128BC7B90071A5FD /* FMXCalcEngine.h */;
+		name = "FMXCalcEngine.h: 116";
+		rLen = 143;
+		rLoc = 4442;
+		rType = 0;
+		vrLen = 2614;
+		vrLoc = 3513;
+	};
+	4D0CC746128BDA3100778887 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */;
+		name = "BEWStringVector.cpp: 17";
+		rLen = 0;
+		rLoc = 302;
+		rType = 0;
+		vrLen = 648;
+		vrLoc = 232;
+	};
+	4D0CC747128BDA3100778887 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D4153A6120140AF00770E14 /* BEWStringVector.h */;
+		name = "BEWStringVector.h: 1";
+		rLen = 817;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 785;
+		vrLoc = 0;
+	};
+	4D0CC748128BDA3100778887 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D4153A6120140AF00770E14 /* BEWStringVector.h */;
+		name = "BEWStringVector.h: 1";
+		rLen = 817;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 785;
+		vrLoc = 0;
+	};
+	4D3BAA7F1283B5C3003E672B /* PlistBookmark */ = {
 		isa = PlistBookmark;
 		fRef = 4D7FCA5E11E9308B0047A453 /* Info.plist */;
 		fallbackIsa = PBXBookmark;
 		isK = 0;
 		kPath = (
+			CFBundleIdentifier,
 		);
 		name = "/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Resources/Info.plist";
 		rLen = 0;
-		rLoc = 9223372036854775807;
+		rLoc = 9223372036854775808;
 	};
-	4D40643112680A20003EB4E0 /* PBXTextBookmark */ = {
+	4D3BAAA11283B94F003E672B /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = 4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */;
-		name = "BEFileMakerPlugin.h: 12";
-		rLen = 0;
-		rLoc = 232;
-		rType = 0;
-		vrLen = 978;
-		vrLoc = 0;
-	};
-	4D40643212680A20003EB4E0 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */;
-		name = "BEPluginGlobalDefines.h: 24";
-		rLen = 0;
-		rLoc = 534;
-		rType = 0;
-		vrLen = 1023;
-		vrLoc = 0;
-	};
-	4D40643312680A20003EB4E0 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */;
-		name = "BEFileMakerPlugin.cpp: 12";
+		fRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */;
+		name = "BEPluginUtilities.cpp: 12";
 		rLen = 0;
 		rLoc = 234;
 		rType = 0;
-		vrLen = 1155;
-		vrLoc = 0;
-	};
-	4D40643412680A20003EB4E0 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */;
-		name = "BEFileMakerPlugin.cpp: 12";
-		rLen = 0;
-		rLoc = 234;
-		rType = 0;
-		vrLen = 1155;
+		vrLen = 732;
 		vrLoc = 0;
 	};
 	4D40ECFB1188FE01005CA59D /* Source Control */ = {
@@ -221,17 +108,17 @@
 	};
 	4D4153A5120140AF00770E14 /* BEWStringVector.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {707, 683}}";
-			sepNavSelRange = "{232, 0}";
-			sepNavVisRange = "{0, 880}";
+			sepNavIntBoundsRect = "{{0, 0}, {707, 663}}";
+			sepNavSelRange = "{302, 0}";
+			sepNavVisRange = "{232, 648}";
 			sepNavWindowFrame = "{{84, 61}, {1044, 1049}}";
 		};
 	};
 	4D4153A6120140AF00770E14 /* BEWStringVector.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {707, 683}}";
-			sepNavSelRange = "{230, 0}";
-			sepNavVisRange = "{0, 817}";
+			sepNavIntBoundsRect = "{{0, 0}, {707, 572}}";
+			sepNavSelRange = "{0, 817}";
+			sepNavVisRange = "{0, 785}";
 			sepNavWindowFrame = "{{15, 124}, {1198, 1049}}";
 		};
 	};
@@ -295,216 +182,27 @@
 		path = "/Applications/FileMaker Pro 11 Advanced/FileMaker Pro Advanced.app";
 		sourceTree = "<absolute>";
 	};
-	4D5B3ECB120FB69900ABD1A7 /* BEPluginUtilities.cpp:123 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */;
-		functionName = "ParameterAsUTF8String ( const fmx::DataVect& dataVect, unsigned long which )";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 123;
-		location = BaseElements;
-		modificationTime = 308187966.890457;
-		originalNumberOfMultipleMatches = 1;
-		state = 2;
-	};
-	4D5B3ECD120FB69B00ABD1A7 /* BEPluginUtilities.cpp:116 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */;
-		functionName = "ParameterAsUTF8String ( const fmx::DataVect& dataVect, unsigned long which )";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 116;
-		location = BaseElements;
-		modificationTime = 308187966.890478;
-		originalNumberOfMultipleMatches = 1;
-		state = 2;
-	};
-	4D7FCA5C11E9308B0047A453 /* BaseElements.strings */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {707, 452}}";
-			sepNavSelRange = "{729, 0}";
-			sepNavVisRange = "{0, 927}";
-			sepNavWindowFrame = "{{15, 124}, {1198, 1049}}";
-		};
-	};
-	4D7FCA5E11E9308B0047A453 /* Info.plist */ = {
-		uiCtxt = {
-			sepNavWindowFrame = "{{15, 124}, {1198, 1049}}";
-		};
-	};
-	4D83C457121259A600769CEF /* BEPluginFunctions.cpp:284 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		functionName = "BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 284;
-		location = BaseElements;
-		modificationTime = 308187966.8905761;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
-	4D83C46712125A8300769CEF /* BEPluginFunctions.cpp:275 */ = {
-		isa = PBXFileBreakpoint;
-		actions = (
-		);
-		breakpointStyle = 0;
-		continueAfterActions = 0;
-		countType = 0;
-		delayBeforeContinue = 0;
-		fileReference = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		functionName = "BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results)";
-		hitCount = 0;
-		ignoreCount = 0;
-		lineNumber = 275;
-		location = BaseElements;
-		modificationTime = 308187966.890594;
-		originalNumberOfMultipleMatches = 1;
-		state = 1;
-	};
-	4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {707, 5005}}";
-			sepNavSelRange = "{234, 0}";
-			sepNavVisRange = "{0, 959}";
-			sepNavWindowFrame = "{{15, 124}, {1198, 1049}}";
-		};
-	};
-	4D8824E611E93F6000F94475 /* BEPluginUtilities.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {789, 689}}";
-			sepNavSelRange = "{24, 207}";
-			sepNavVisRange = "{0, 1533}";
-			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
-		};
-	};
-	4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1069, 683}}";
-			sepNavSelRange = "{229, 0}";
-			sepNavVisRange = "{0, 811}";
-			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
-		};
-	};
-	4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {733, 2249}}";
-			sepNavSelRange = "{231, 0}";
-			sepNavVisRange = "{0, 1187}";
-			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
-		};
-	};
-	4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {707, 1872}}";
-			sepNavSelRange = "{1641, 0}";
-			sepNavVisRange = "{0, 1920}";
-			sepNavWindowFrame = "{{38, 103}, {1044, 1049}}";
-		};
-	};
-	4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1111, 7345}}";
-			sepNavSelRange = "{25, 0}";
-			sepNavVisRange = "{0, 850}";
-			sepNavWindowFrame = "{{38, 103}, {1198, 1049}}";
-		};
-	};
-	4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1041, 741}}";
-			sepNavSelRange = "{231, 0}";
-			sepNavVisRange = "{0, 2606}";
-			sepNavWindowFrame = "{{15, 124}, {1198, 1049}}";
-		};
-	};
-	4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {707, 1170}}";
-			sepNavSelRange = "{534, 0}";
-			sepNavVisRange = "{0, 1023}";
-			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
-		};
-	};
-	4DAFE64A125EC51700D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D8824E611E93F6000F94475 /* BEPluginUtilities.h */;
-		name = "BEPluginUtilities.h: 3";
-		rLen = 207;
-		rLoc = 24;
-		rType = 0;
-		vrLen = 1533;
-		vrLoc = 0;
-	};
-	4DAFE64B125EC51700D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */;
-		name = "BEPluginUtilities.cpp: 12";
-		rLen = 0;
-		rLoc = 234;
-		rType = 0;
-		vrLen = 959;
-		vrLoc = 0;
-	};
-	4DAFE64C125EC51700D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */;
-		name = "BEMacFunctions.h: 12";
-		rLen = 0;
-		rLoc = 229;
-		rType = 0;
-		vrLen = 811;
-		vrLoc = 0;
-	};
-	4DAFE64E125EC51700D2ABAF /* PBXTextBookmark */ = {
+	4D49113A128BC0670057F952 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */;
-		name = "BEPluginFunctions.cpp: 2";
+		name = "BEPluginFunctions.cpp: 491";
 		rLen = 0;
-		rLoc = 25;
+		rLoc = 12236;
 		rType = 0;
-		vrLen = 850;
-		vrLoc = 0;
+		vrLen = 797;
+		vrLoc = 11847;
 	};
-	4DAFE64F125EC51700D2ABAF /* PBXTextBookmark */ = {
+	4D49113B128BC0670057F952 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */;
-		name = "BEPluginFunctions.h: 11";
+		name = "BEPluginFunctions.h: 47";
 		rLen = 0;
-		rLoc = 231;
+		rLoc = 2282;
 		rType = 0;
-		vrLen = 2606;
-		vrLoc = 0;
+		vrLen = 2905;
+		vrLoc = 396;
 	};
-	4DAFE650125EC51700D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */;
-		name = "BEMacFunctions.mm: 12";
-		rLen = 0;
-		rLoc = 231;
-		rType = 0;
-		vrLen = 1187;
-		vrLoc = 0;
-	};
-	4DAFE654125EC51700D2ABAF /* PBXTextBookmark */ = {
+	4D49113C128BC0670057F952 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 4DD7831E120005AE00CFC8B4 /* BEXSLT.h */;
 		name = "BEXSLT.h: 12";
@@ -514,35 +212,161 @@
 		vrLen = 436;
 		vrLoc = 0;
 	};
-	4DAFE655125EC51700D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D4153A6120140AF00770E14 /* BEWStringVector.h */;
-		name = "BEWStringVector.h: 12";
-		rLen = 0;
-		rLoc = 230;
-		rType = 0;
-		vrLen = 817;
-		vrLoc = 0;
-	};
-	4DAFE656125EC51700D2ABAF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */;
-		name = "BEWStringVector.cpp: 12";
-		rLen = 0;
-		rLoc = 232;
-		rType = 0;
-		vrLen = 880;
-		vrLoc = 0;
-	};
-	4DAFE660125EC55600D2ABAF /* PBXTextBookmark */ = {
+	4D49113D128BC0670057F952 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */;
 		name = "BEXSLT.cpp: 146";
 		rLen = 0;
 		rLoc = 3323;
 		rType = 0;
-		vrLen = 1176;
+		vrLen = 1149;
+		vrLoc = 880;
+	};
+	4D49113E128BC0670057F952 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */;
+		name = "BEPlugin.cpp: 88";
+		rLen = 0;
+		rLoc = 3503;
+		rType = 0;
+		vrLen = 1870;
+		vrLoc = 2782;
+	};
+	4D49113F128BC0670057F952 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */;
+		name = "BEPluginGlobalDefines.h: 67";
+		rLen = 0;
+		rLoc = 1430;
+		rType = 0;
+		vrLen = 788;
+		vrLoc = 993;
+	};
+	4D491141128BC0670057F952 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D491142128BC0670057F952 /* FMXClient.h */;
+		name = "FMXClient.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 527;
+		vrLoc = 1551;
+	};
+	4D491142128BC0670057F952 /* FMXClient.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = FMXClient.h;
+		path = "/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/FMWrapper.framework/Headers/FMXClient.h";
+		sourceTree = "<absolute>";
+	};
+	4D67B72D128BC7B90071A5FD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */;
+		name = "BaseElements.strings: 32";
+		rLen = 0;
+		rLoc = 891;
+		rType = 0;
+		vrLen = 1101;
 		vrLoc = 0;
+	};
+	4D67B72F128BC7B90071A5FD /* FMXCalcEngine.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = FMXCalcEngine.h;
+		path = "/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/FMWrapper.framework/Headers/FMXCalcEngine.h";
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1006, 5252}}";
+			sepNavSelRange = "{4442, 143}";
+			sepNavVisRange = "{3513, 2614}";
+		};
+	};
+	4D7FCA5C11E9308B0047A453 /* BaseElements.strings */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {707, 546}}";
+			sepNavSelRange = "{891, 0}";
+			sepNavVisRange = "{0, 1101}";
+			sepNavWindowFrame = "{{15, 124}, {1198, 1049}}";
+		};
+	};
+	4D7FCA5E11E9308B0047A453 /* Info.plist */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{407, 0}, {1198, 1028}}";
+		};
+	};
+	4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {707, 5018}}";
+			sepNavSelRange = "{234, 0}";
+			sepNavVisRange = "{0, 732}";
+			sepNavWindowFrame = "{{15, 0}, {1198, 1028}}";
+		};
+	};
+	4D8824E611E93F6000F94475 /* BEPluginUtilities.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {789, 689}}";
+			sepNavSelRange = "{24, 207}";
+			sepNavVisRange = "{0, 1494}";
+			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
+		};
+	};
+	4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1069, 614}}";
+			sepNavSelRange = "{229, 0}";
+			sepNavVisRange = "{0, 811}";
+			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
+		};
+	};
+	4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1062, 2132}}";
+			sepNavSelRange = "{2169, 0}";
+			sepNavVisRange = "{2968, 1203}";
+			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
+		};
+	};
+	4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {901, 1768}}";
+			sepNavSelRange = "{3503, 0}";
+			sepNavVisRange = "{2782, 1870}";
+			sepNavWindowFrame = "{{38, 103}, {1044, 1049}}";
+		};
+	};
+	4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {964, 9971}}";
+			sepNavSelRange = "{12236, 0}";
+			sepNavVisRange = "{11847, 797}";
+			sepNavWindowFrame = "{{38, 103}, {1198, 1049}}";
+		};
+	};
+	4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1041, 832}}";
+			sepNavSelRange = "{2282, 0}";
+			sepNavVisRange = "{396, 2905}";
+			sepNavWindowFrame = "{{15, 124}, {1198, 1049}}";
+		};
+	};
+	4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {707, 1222}}";
+			sepNavSelRange = "{1430, 0}";
+			sepNavVisRange = "{993, 788}";
+			sepNavWindowFrame = "{{15, 0}, {1044, 1028}}";
+		};
+	};
+	4DBEC172126812E60022B599 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */;
+		name = "BEFileMakerPlugin.cpp: 12";
+		rLen = 0;
+		rLoc = 234;
+		rType = 0;
+		vrLen = 1602;
+		vrLoc = 521;
 	};
 	4DCFE72411892BB700639895 /* FileMaker Pro 10 Advanced */ = {
 		isa = PBXExecutable;
@@ -601,7 +425,7 @@
 	};
 	4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1167, 670}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1167, 655}}";
 			sepNavSelRange = "{232, 0}";
 			sepNavVisRange = "{0, 978}";
 			sepNavWindowFrame = "{{61, 82}, {1044, 1049}}";
@@ -609,15 +433,15 @@
 	};
 	4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1195, 1157}}";
-			sepNavSelRange = "{234, 0}";
-			sepNavVisRange = "{0, 1155}";
+			sepNavIntBoundsRect = "{{0, 0}, {1223, 1079}}";
+			sepNavSelRange = "{1000, 0}";
+			sepNavVisRange = "{521, 913}";
 			sepNavWindowFrame = "{{38, 103}, {1044, 1049}}";
 		};
 	};
 	4DD7831E120005AE00CFC8B4 /* BEXSLT.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {707, 683}}";
+			sepNavIntBoundsRect = "{{0, 0}, {707, 543}}";
 			sepNavSelRange = "{221, 0}";
 			sepNavVisRange = "{0, 436}";
 			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
@@ -625,20 +449,20 @@
 	};
 	4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {707, 3120}}";
+			sepNavIntBoundsRect = "{{0, 0}, {733, 3055}}";
 			sepNavSelRange = "{3323, 0}";
-			sepNavVisRange = "{0, 1176}";
+			sepNavVisRange = "{880, 1149}";
 			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
 		};
 	};
-	4DE1195B1256A4EE00A9AE1C /* PBXTextBookmark */ = {
+	4DEB78CA126D21DD00AAE682 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */;
-		name = "BaseElements.strings: 25";
+		fRef = 4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */;
+		name = "BEFileMakerPlugin.h: 12";
 		rLen = 0;
-		rLoc = 729;
+		rLoc = 232;
 		rType = 0;
-		vrLen = 927;
+		vrLen = 978;
 		vrLoc = 0;
 	};
 	C7DEDEEB07E10BF3002283F3 /* Project object */ = {
@@ -649,18 +473,6 @@
 			C7DEDEF307E10BF3002283F3 /* BaseElements */,
 		);
 		breakpoints = (
-			4D372BFA1208DD7100725F83 /* BEPluginFunctions.cpp:524 */,
-			4D372C031208DF0900725F83 /* BEPluginFunctions.cpp:526 */,
-			4D372C071208DF2F00725F83 /* BEPluginFunctions.cpp:528 */,
-			4D372C0A1208DF8800725F83 /* BEPluginFunctions.cpp:547 */,
-			4D5B3ECB120FB69900ABD1A7 /* BEPluginUtilities.cpp:123 */,
-			4D5B3ECD120FB69B00ABD1A7 /* BEPluginUtilities.cpp:116 */,
-			4D03C21A12113DC400A8A37C /* BEPluginFunctions.cpp:328 */,
-			4D36519C12122299008062C4 /* BEPluginFunctions.cpp:324 */,
-			4D36519E1212229B008062C4 /* BEPluginFunctions.cpp:326 */,
-			4D3651C01212295F008062C4 /* BEPluginFunctions.cpp:310 */,
-			4D83C457121259A600769CEF /* BEPluginFunctions.cpp:284 */,
-			4D83C46712125A8300769CEF /* BEPluginFunctions.cpp:275 */,
 		);
 		codeSenseManager = 4D40ECFC1188FE01005CA59D /* Code sense */;
 		executables = (
@@ -789,27 +601,29 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 308808170;
-			PBXWorkspaceStateSaveDate = 308808170;
+			PBXPerProjectTemplateStateSaveDate = 311155216;
+			PBXWorkspaceStateSaveDate = 311155216;
 		};
 		perUserProjectItems = {
-			4D40642F12680A20003EB4E0 /* PBXTextBookmark */ = 4D40642F12680A20003EB4E0 /* PBXTextBookmark */;
-			4D40643012680A20003EB4E0 /* PlistBookmark */ = 4D40643012680A20003EB4E0 /* PlistBookmark */;
-			4D40643112680A20003EB4E0 /* PBXTextBookmark */ = 4D40643112680A20003EB4E0 /* PBXTextBookmark */;
-			4D40643212680A20003EB4E0 /* PBXTextBookmark */ = 4D40643212680A20003EB4E0 /* PBXTextBookmark */;
-			4D40643312680A20003EB4E0 /* PBXTextBookmark */ = 4D40643312680A20003EB4E0 /* PBXTextBookmark */;
-			4D40643412680A20003EB4E0 /* PBXTextBookmark */ = 4D40643412680A20003EB4E0 /* PBXTextBookmark */;
-			4DAFE64A125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64A125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE64B125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64B125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE64C125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64C125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE64E125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64E125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE64F125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE64F125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE650125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE650125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE654125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE654125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE655125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE655125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE656125EC51700D2ABAF /* PBXTextBookmark */ = 4DAFE656125EC51700D2ABAF /* PBXTextBookmark */;
-			4DAFE660125EC55600D2ABAF /* PBXTextBookmark */ = 4DAFE660125EC55600D2ABAF /* PBXTextBookmark */;
-			4DE1195B1256A4EE00A9AE1C /* PBXTextBookmark */ = 4DE1195B1256A4EE00A9AE1C /* PBXTextBookmark */;
+			4D07B5A412711485000AB755 /* PBXTextBookmark */ = 4D07B5A412711485000AB755 /* PBXTextBookmark */;
+			4D07B5A612711485000AB755 /* PBXTextBookmark */ = 4D07B5A612711485000AB755 /* PBXTextBookmark */;
+			4D07B5A712711485000AB755 /* PBXTextBookmark */ = 4D07B5A712711485000AB755 /* PBXTextBookmark */;
+			4D0CC745128BDA3100778887 /* PBXTextBookmark */ = 4D0CC745128BDA3100778887 /* PBXTextBookmark */;
+			4D0CC746128BDA3100778887 /* PBXTextBookmark */ = 4D0CC746128BDA3100778887 /* PBXTextBookmark */;
+			4D0CC747128BDA3100778887 /* PBXTextBookmark */ = 4D0CC747128BDA3100778887 /* PBXTextBookmark */;
+			4D0CC748128BDA3100778887 /* PBXTextBookmark */ = 4D0CC748128BDA3100778887 /* PBXTextBookmark */;
+			4D3BAA7F1283B5C3003E672B /* PlistBookmark */ = 4D3BAA7F1283B5C3003E672B /* PlistBookmark */;
+			4D3BAAA11283B94F003E672B /* PBXTextBookmark */ = 4D3BAAA11283B94F003E672B /* PBXTextBookmark */;
+			4D49113A128BC0670057F952 /* PBXTextBookmark */ = 4D49113A128BC0670057F952 /* PBXTextBookmark */;
+			4D49113B128BC0670057F952 /* PBXTextBookmark */ = 4D49113B128BC0670057F952 /* PBXTextBookmark */;
+			4D49113C128BC0670057F952 /* PBXTextBookmark */ = 4D49113C128BC0670057F952 /* PBXTextBookmark */;
+			4D49113D128BC0670057F952 /* PBXTextBookmark */ = 4D49113D128BC0670057F952 /* PBXTextBookmark */;
+			4D49113E128BC0670057F952 /* PBXTextBookmark */ = 4D49113E128BC0670057F952 /* PBXTextBookmark */;
+			4D49113F128BC0670057F952 /* PBXTextBookmark */ = 4D49113F128BC0670057F952 /* PBXTextBookmark */;
+			4D491141128BC0670057F952 /* PBXTextBookmark */ = 4D491141128BC0670057F952 /* PBXTextBookmark */;
+			4D67B72D128BC7B90071A5FD /* PBXTextBookmark */ = 4D67B72D128BC7B90071A5FD /* PBXTextBookmark */;
+			4DBEC172126812E60022B599 /* PBXTextBookmark */ = 4DBEC172126812E60022B599 /* PBXTextBookmark */;
+			4DEB78CA126D21DD00AAE682 /* PBXTextBookmark */ = 4DEB78CA126D21DD00AAE682 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 4D40ECFB1188FE01005CA59D /* Source Control */;
 		userBuildSettings = {
