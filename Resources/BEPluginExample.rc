@@ -102,6 +102,7 @@ BEGIN
 	118						"BE_MoveFile ( from; to )"
 	119						"BE_CopyFile ( from; to )"
 	120						"BE_ExecuteShellCommand ( command )"
+	121						"BE_ListFilesInFolder ( path )"
 END
 
 STRINGTABLE

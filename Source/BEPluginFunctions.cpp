@@ -440,6 +440,58 @@ FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environmen
 } // BE_CopyFile
 
 
+
+FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+{
+	errcode error_result = kNoError;
+	
+	try {
+		
+		StringAutoPtr directory = ParameterAsUTF8String ( data_vect, 0 );
+		TextAutoPtr list_of_files;
+		TextAutoPtr end_of_line;
+		end_of_line->Assign ( "\r" );
+		
+		boost::filesystem::path directory_path = *directory;
+			
+		if ( exists ( directory_path ) ) {
+				
+			directory_iterator end_itr; // default construction yields past-the-end
+			directory_iterator itr ( directory_path );
+				
+			while ( itr != end_itr ) {
+					
+				if ( ! is_directory ( itr->status() ) ) {
+					TextAutoPtr file_name;
+					file_name->Assign ( itr->leaf().c_str() );
+					list_of_files->AppendText ( *file_name );
+
+					++itr;
+
+					if ( itr != end_itr ) {
+						list_of_files->AppendText ( *end_of_line );
+					}
+				}
+
+			}
+
+		}
+
+		fmx::LocaleAutoPtr default_locale;
+		results.SetAsText ( *list_of_files, *default_locale );
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}
+	
+	return error_result;
+	
+} // BE_ListFilesInFolder
+
+
+
 #pragma mark -
 #pragma mark Dialogs
 #pragma mark -

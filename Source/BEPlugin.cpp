@@ -85,6 +85,7 @@ static FMX_Long LoadPlugin ( void )
 
 	g_be_plugin->RegisterFunction ( kBE_MoveFile, BE_MoveFile, 2 );
 	g_be_plugin->RegisterFunction ( kBE_CopyFile, BE_CopyFile, 2 );
+	g_be_plugin->RegisterFunction ( kBE_ListFilesInFolder, BE_ListFilesInFolder, 1 );
 
 	g_be_plugin->RegisterFunction ( kBE_SelectFile, BE_SelectFile, false, 1 );
 	g_be_plugin->RegisterFunction ( kBE_SelectFolder, BE_SelectFolder, false, 1 );
