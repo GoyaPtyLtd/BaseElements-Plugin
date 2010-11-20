@@ -100,6 +100,10 @@ static FMX_Long LoadPlugin ( void )
 	g_be_plugin->RegisterFunction ( kBE_AlternateButton + kXMpl_ButtonOffset, BE_ButtonConstants );
 	
 	g_be_plugin->RegisterFunction ( kBE_ExecuteShellCommand, BE_ExecuteShellCommand, 1 );
+	
+	g_be_plugin->RegisterFunction ( kBE_FileMaker_Tables, BE_FileMaker_TablesOrFields );
+	g_be_plugin->RegisterFunction ( kBE_FileMaker_Fields, BE_FileMaker_TablesOrFields );
+
 
 	return kCurrentExtnVersion;	// enable the plug-in
 	

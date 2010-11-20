@@ -747,3 +747,59 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 } // BE_ExecuteShellCommand
 
 
+/*
+ a wrapper for the FileMaker SQL calls FileMaker_Tables and FileMaker_Fields
+ 
+ under FileMaker 11 the functions return
+ 
+ FileMaker_Tables - returns a list of TOs with associated information
+	table occurance name
+	table occurance id
+	table name
+	file name
+	schema modification count 
+
+ FileMaker_Fields - returns a list of fields...
+	table occurance name
+	name
+	type
+	id
+	class
+	repitions
+	modification count 
+
+ Note: 
+	For FileMaker versions 8.5~10 a subset of this information is returned. 
+	The functions do not exist in versions 7 & 8 and an error is returned.
+ 
+ */
+
+FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& reply )
+{	
+	fmx::errcode error_result = kNoError;
+	
+	fmx::TextAutoPtr expression;
+
+	try {
+
+		if ( funcId == kBE_FileMaker_Tables ) {
+			expression->Assign ( "SELECT * FROM FileMaker_Tables" );
+		} else {
+			expression->Assign ( "SELECT * FROM FileMaker_Fields" );
+		}
+		
+		// the original api best suits the purpose
+		error_result = environment.ExecuteSQL ( *expression, reply, '\t', '\n' );
+		
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}	
+	
+	return error_result;
+	
+} // BE_FileMaker_TablesOrFields
+
+

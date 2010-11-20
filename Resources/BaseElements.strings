@@ -31,6 +31,9 @@
 
 "121" = "BE_ListFilesInFolder ( path )";
 
+"122" = "BE_FileMaker_Tables";
+"123" = "BE_FileMaker_Fields";
+
 
 "128" = "BaseElements";
 "129" = "This plug-in provides additional functionality for BaseElements 3 from Goya";
