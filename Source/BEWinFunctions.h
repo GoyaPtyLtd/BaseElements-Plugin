@@ -29,5 +29,6 @@ StringAutoPtr SelectFolder ( StringAutoPtr prompt );
 
 int DisplayDialog ( StringAutoPtr title, StringAutoPtr message, StringAutoPtr button1, StringAutoPtr button2, StringAutoPtr button3 );
 
+bool OpenURL ( StringAutoPtr url );
 
 #endif // BEWINFUNCTIONS_H

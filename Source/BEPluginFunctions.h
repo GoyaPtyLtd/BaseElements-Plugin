@@ -59,6 +59,7 @@ FMX_PROC(errcode) BE_ButtonConstants ( short funcId, const ExprEnv& environment,
 
 FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
 FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short function_id, const ExprEnv& environment, const DataVect& parameters, Data& reply );
+FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& reply );
 
 
 #endif // BEPLUGINFUNCTIONS_H

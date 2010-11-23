@@ -104,6 +104,7 @@ static FMX_Long LoadPlugin ( void )
 	g_be_plugin->RegisterFunction ( kBE_FileMaker_Tables, BE_FileMaker_TablesOrFields );
 	g_be_plugin->RegisterFunction ( kBE_FileMaker_Fields, BE_FileMaker_TablesOrFields );
 
+	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, false, 1);
 
 	return kCurrentExtnVersion;	// enable the plug-in
 	

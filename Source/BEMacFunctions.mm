@@ -161,3 +161,14 @@ int DisplayDialog ( StringAutoPtr title, StringAutoPtr message, StringAutoPtr ok
 } // DisplayDialog
 
 
+#pragma mark -
+#pragma mark Other
+#pragma mark -
+
+
+bool OpenURL ( StringAutoPtr url )
+{
+	return [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: NSStringFromStringAutoPtr ( url )]];
+}
+
+

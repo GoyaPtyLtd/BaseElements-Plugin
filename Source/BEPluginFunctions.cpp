@@ -803,3 +803,30 @@ FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& env
 } // BE_FileMaker_TablesOrFields
 
 
+// open the supplied url in the user's default browser
+
+FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& reply )
+{	
+	fmx::errcode error_result = kNoError;
+	
+	fmx::TextAutoPtr expression;
+	
+	try {
+		
+		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
+		bool succeeded = OpenURL ( url );
+
+		SetNumericResult ( succeeded, reply );
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}	
+	
+	return error_result;
+	
+} // BE_OpenURL
+
+
+

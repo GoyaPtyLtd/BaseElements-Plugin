@@ -274,3 +274,15 @@ LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam )
 	return result;
 
 } // CBTProc
+
+
+
+bool OpenURL ( StringAutoPtr url )
+{
+	HINSTANCE result = ShellExecute ( NULL, "open", url->c_str(), NULL, NULL, SW_SHOWNORMAL );
+
+	// see http://msdn.microsoft.com/en-us/library/bb762153(VS.85).aspx
+
+	return ( result > (HINSTANCE)32 );
+}
+

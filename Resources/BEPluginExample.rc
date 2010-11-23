@@ -105,6 +105,7 @@ BEGIN
 	121						"BE_ListFilesInFolder ( path )"
 	122						"BE_FileMaker_Tables"
 	123						"BE_FileMaker_Fields"
+	124						"BE_OpenURL ( url )"
 END
 
 STRINGTABLE

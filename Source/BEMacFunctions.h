@@ -31,4 +31,7 @@ StringAutoPtr SelectFolder ( StringAutoPtr prompt );
 int DisplayDialog ( StringAutoPtr title, StringAutoPtr message, StringAutoPtr ok_button, StringAutoPtr cancel_button, StringAutoPtr alternate_button );
 
 
+bool OpenURL ( StringAutoPtr url );
+
+
 #endif // BEMACFUNCTIONS_H
