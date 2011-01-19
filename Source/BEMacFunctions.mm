@@ -10,10 +10,10 @@
  */
 
 
+#import <Cocoa/Cocoa.h>
+
 #import "BEMacFunctions.h"
 #import "BEPluginGlobalDefines.h"
-
-#import <Cocoa/Cocoa.h>
 
 NSString * NSStringFromStringAutoPtr ( StringAutoPtr text );
 StringAutoPtr SelectFileOrFolder ( StringAutoPtr prompt, bool choose_file = YES );

@@ -48,10 +48,12 @@
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.fmx</TargetExt>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">\\VBOXSVR\BaseElementsPlugin\Libraries;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Headers\iconv;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\libxslt\libxslt;C:\Users\Mark\Documents\boost_1_43_0\boost_1_43_0;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Headers;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\libxslt;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\Support;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Resources;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\libxslt\libxslt;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\Support;$(SourcePath)</SourcePath>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Build\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Build\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -68,10 +70,10 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeaderOutputFile>.\Build/BaseElements.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Build/</AssemblerListingLocation>
-      <ObjectFileName>.\Build/</ObjectFileName>
-      <ProgramDataBaseFileName>.\Build/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\Build\BaseElements.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\Build\</AssemblerListingLocation>
+      <ObjectFileName>..\Build\</ObjectFileName>
+      <ProgramDataBaseFileName>..\Build\</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
@@ -83,12 +85,12 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcharset.lib;nafxcw.lib;libcmt.lib;zlib.lib;libiconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(Configuration)\BaseElements.fmx</OutputFile>
+      <AdditionalDependencies>FMWrapper.lib;libcharset.lib;nafxcw.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\Build\$(Configuration)\BaseElements.fmx</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>.\Build/BaseElements.lib</ImportLibrary>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;nafxcw.lib;uafxcw.lib</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>..\Build\BaseElements.lib</ImportLibrary>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib;nafxcw.lib;uafxcw.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -122,7 +124,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcharset.lib;nafxcwd.lib;libcmtd.lib;zlib.lib;libiconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;nafxcwd.lib;libcmtd.lib;zlibstat.lib;libcharset.lib;iconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>

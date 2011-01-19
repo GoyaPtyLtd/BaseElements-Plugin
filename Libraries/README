@@ -14,17 +14,17 @@ Boost Notes
 
 For debug builds use:
 
-libboost_filesystem-vc100-mt-sgd-1_43.lib
-libboost_system-vc100-mt-sgd-1_43.lib
+libboost_filesystem-vc100-mt-sgd-1_45.lib
+libboost_system-vc100-mt-sgd-1_45.lib
 
-rather than the libraries given below. Depending on which version of boost is used the version numbers for the libraries, 1_43 in this case, will be different.
+rather than the libraries given below. Depending on which version of boost is used the version numbers for the libraries, 1_45 in this case, will be different.
 
 FMWrapper.lib
-libboost_filesystem-vc100-mt-s-1_43.lib
-libboost_system-vc100-mt-s-1_43.lib
-libiconv.lib
+libboost_filesystem-vc100-mt-s-1_45.lib
+libboost_system-vc100-mt-s-1_45.lib
+iconv.lib
 libcharset.lib
-zlib.lib
+zlibstat.lib
 libxml2_a.lib
 libxslt_a.lib
 libexslt_a.lib

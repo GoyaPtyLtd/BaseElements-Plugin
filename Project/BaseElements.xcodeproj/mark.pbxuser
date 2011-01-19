@@ -84,17 +84,6 @@
 		vrLen = 1009;
 		vrLoc = 147;
 	};
-	4D09D2CC129A453400FDAA46 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 4D7FCA5E11E9308B0047A453 /* Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-		);
-		name = "/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Resources/Info.plist";
-		rLen = 0;
-		rLoc = 9223372036854775808;
-	};
 	4D0CC745128BDA3100778887 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 4D67B72F128BC7B90071A5FD /* FMXCalcEngine.h */;
@@ -115,16 +104,15 @@
 		vrLen = 648;
 		vrLoc = 232;
 	};
-	4D1CAA06129A461C008278FF /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 4D7FCA5E11E9308B0047A453 /* Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-		);
-		name = "/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Resources/Info.plist";
+	4D2D224612E6604D00FB3BC0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */;
+		name = "BEMacFunctions.mm: 18";
 		rLen = 0;
-		rLoc = 9223372036854775807;
+		rLoc = 319;
+		rType = 0;
+		vrLen = 764;
+		vrLoc = 0;
 	};
 	4D3BAAA11283B94F003E672B /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -165,6 +153,27 @@
 			sepNavVisRange = "{0, 785}";
 			sepNavWindowFrame = "{{15, 124}, {1198, 1049}}";
 		};
+	};
+	4D47989A129F2C69002E8D6B /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 4D7FCA5E11E9308B0047A453 /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Resources/Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775808;
+	};
+	4D47989E129F2C69002E8D6B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */;
+		name = "BEMacFunctions.mm: 18";
+		rLen = 0;
+		rLoc = 319;
+		rType = 0;
+		vrLen = 765;
+		vrLoc = 0;
 	};
 	4D4847A2119AA62600EAF31A /* FileMaker Pro 11 Advanced */ = {
 		isa = PBXExecutable;
@@ -309,16 +318,6 @@
 		vrLen = 849;
 		vrLoc = 0;
 	};
-	4D916EFC129A40A5004C7B63 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */;
-		name = "BEMacFunctions.mm: 169";
-		rLen = 146;
-		rLoc = 4222;
-		rType = 0;
-		vrLen = 717;
-		vrLoc = 3653;
-	};
 	4D916EFE129A40A5004C7B63 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */;
@@ -349,9 +348,9 @@
 	};
 	4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1062, 2353}}";
-			sepNavSelRange = "{4222, 146}";
-			sepNavVisRange = "{3653, 717}";
+			sepNavIntBoundsRect = "{{0, 0}, {733, 2353}}";
+			sepNavSelRange = "{319, 0}";
+			sepNavVisRange = "{0, 764}";
 			sepNavWindowFrame = "{{15, 124}, {1044, 1049}}";
 		};
 	};
@@ -495,7 +494,7 @@
 		vrLoc = 0;
 	};
 	C7DEDEEB07E10BF3002283F3 /* Project object */ = {
-		activeBuildConfigurationName = Debug;
+		activeBuildConfigurationName = Release;
 		activeExecutable = 4D4847A2119AA62600EAF31A /* FileMaker Pro 11 Advanced */;
 		activeTarget = C7DEDEF307E10BF3002283F3 /* BaseElements */;
 		addToTargets = (
@@ -630,8 +629,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 312100336;
-			PBXWorkspaceStateSaveDate = 312100336;
+			PBXPerProjectTemplateStateSaveDate = 317087663;
+			PBXWorkspaceStateSaveDate = 317087663;
 		};
 		perUserProjectItems = {
 			4D051B871295F44F009330C1 /* PBXTextBookmark */ = 4D051B871295F44F009330C1 /* PBXTextBookmark */;
@@ -641,16 +640,16 @@
 			4D09D2C9129A453400FDAA46 /* PBXTextBookmark */ = 4D09D2C9129A453400FDAA46 /* PBXTextBookmark */;
 			4D09D2CA129A453400FDAA46 /* PBXTextBookmark */ = 4D09D2CA129A453400FDAA46 /* PBXTextBookmark */;
 			4D09D2CB129A453400FDAA46 /* PBXTextBookmark */ = 4D09D2CB129A453400FDAA46 /* PBXTextBookmark */;
-			4D09D2CC129A453400FDAA46 /* PlistBookmark */ = 4D09D2CC129A453400FDAA46 /* PlistBookmark */;
 			4D0CC745128BDA3100778887 /* PBXTextBookmark */ = 4D0CC745128BDA3100778887 /* PBXTextBookmark */;
 			4D0CC746128BDA3100778887 /* PBXTextBookmark */ = 4D0CC746128BDA3100778887 /* PBXTextBookmark */;
-			4D1CAA06129A461C008278FF /* PlistBookmark */ = 4D1CAA06129A461C008278FF /* PlistBookmark */;
+			4D2D224612E6604D00FB3BC0 /* PBXTextBookmark */ = 4D2D224612E6604D00FB3BC0 /* PBXTextBookmark */;
 			4D3BAAA11283B94F003E672B /* PBXTextBookmark */ = 4D3BAAA11283B94F003E672B /* PBXTextBookmark */;
+			4D47989A129F2C69002E8D6B /* PlistBookmark */ = 4D47989A129F2C69002E8D6B /* PlistBookmark */;
+			4D47989E129F2C69002E8D6B /* PBXTextBookmark */ = 4D47989E129F2C69002E8D6B /* PBXTextBookmark */;
 			4D49113C128BC0670057F952 /* PBXTextBookmark */ = 4D49113C128BC0670057F952 /* PBXTextBookmark */;
 			4D49113D128BC0670057F952 /* PBXTextBookmark */ = 4D49113D128BC0670057F952 /* PBXTextBookmark */;
 			4D491141128BC0670057F952 /* PBXTextBookmark */ = 4D491141128BC0670057F952 /* PBXTextBookmark */;
 			4D916EFB129A40A5004C7B63 /* PBXTextBookmark */ = 4D916EFB129A40A5004C7B63 /* PBXTextBookmark */;
-			4D916EFC129A40A5004C7B63 /* PBXTextBookmark */ = 4D916EFC129A40A5004C7B63 /* PBXTextBookmark */;
 			4D916EFE129A40A5004C7B63 /* PBXTextBookmark */ = 4D916EFE129A40A5004C7B63 /* PBXTextBookmark */;
 			4D916EFF129A40A5004C7B63 /* PBXTextBookmark */ = 4D916EFF129A40A5004C7B63 /* PBXTextBookmark */;
 			4DBEC172126812E60022B599 /* PBXTextBookmark */ = 4DBEC172126812E60022B599 /* PBXTextBookmark */;

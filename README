@@ -1,16 +1,19 @@
+=======================================================================
 Building
+=======================================================================
 
-Create directories
+The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
-	Headers
-	Libraries
-	
-along side Projects, Resources and Sources (if they do not exist).
+Notes:
+- these instructions apply to version 1.1 of the BaseElements Plugin
+- the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
+- building the libraries can take awhile... boost in particular takes times to build
 
-
+=======================================================================
 Mac OS X
+=======================================================================
 
-The plug-in was built using Xcode 3.2.3 on Mac OS X 10.6.4.
+Version 1.1 of the plug-in was built using Xcode 3.2.3 on Mac OS X 10.6.6.
 
 Download the Mac version of the FileMaker External Plug-In API from
 
@@ -21,19 +24,35 @@ and place the FMWrapper.framework in the Libraries directory.
 On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built are the Boost FileSystem and System libraries. Boost is available from
 
 	http://www.boost.org/
-	
+
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_43_0
+	cd boost_1_45_0
 	./bootstrap.sh
 	./bjam architecture=combined
 	
-The boost headers must be placed in the Headers directory and the libboost_filesystem.a and libboost_system.a libraries placed in the Libraries directory.
+See
+
+	more/getting_started/index.html
+	
+for for further information on compiling the Boost libraries.
+
+The boost headers must be placed in the Headers directory and the 
+
+	bin.v2/libs/filesystem/build/darwin-4.2.1/release/architecture-combined/link-static/threading-multi/libboost_filesystem.a
+
+and
+
+	bin.v2/libs/system/build/darwin-4.2.1/release/architecture-combined/link-static/threading-multi/libboost_system.a
+
+libraries placed in the Libraries directory.
 
 
+=======================================================================
 Windows
+=======================================================================
 
-The plug-in was built using Visual Studio 2010 Professional on Windows 7.
+The plug-in was built using Visual Studio 2010 Professional on Windows 7 Ultimate.
 
 Download the Windows version of the FileMaker External Plug-In API from
 
@@ -41,42 +60,267 @@ Download the Windows version of the FileMaker External Plug-In API from
 	
 rename the Headers directory FMWrapper and place it in the Headers directory. FMWrapper.lib should be placed the Libraries directory.
 
-The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries (/MTd & /MT) using libcmt.lib and nafxcw.lib for release and libcrtd.lib and nafxcwd.lib for debug builds. 
+The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries (/MTd & /MT) using libcmt.lib and nafxcw.lib for release and libcrtd.lib and nafxcwd.lib for debug builds.
+
+Note: source code for some of the libraries is supplied as gzipped tar archives; there are a number of applications that can unpack these archives, for example, Stuffit Expander
+
+	http://www.stuffit.com/win-expander.html
 
 
+=======================================================================
 Boost
+=======================================================================
 
-the Boost FileSystem and System libraries are required.
+The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 	
-The boost headers must be placed in the Headers directory and the libboost_filesystem-vc100-mt-s-1_43.lib and libboost_system-vc100-mt-s-1_43.lib libraries placed in the Libraries directory (libboost_filesystem-vc100-mt-sgd-1_43.lib and libboost_system-vc100-mt-sgd-1_43.lib for debug builds).
+See
 
-
-libiconv & libcharset
-
-	http://www.gnu.org/software/libiconv/
+	more/getting_started/index.html
 	
-place libiconv.lib and libcharset.lib in the libraries directory and iconv.h in a directory iconv inside the Headers directory.
+for instructions on compiling the Boost libraries. In general
+
+	cd boost_1_45_0
+	bootstrap.bat
+	bjam link=static runtime-link=static
+
+should do the trick.	
+	
+The boost headers must be placed in the Headers directory and the libraries copied from
+
+	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_45.lib
+
+and
+
+	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_45.lib
+
+into the Libraries directory. For debug builds also copy 
+	
+	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_45.lib
+	
+and 
+
+	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_45.lib
 
 
+=======================================================================
 zlib
+=======================================================================
+
+Building zlib is straightforward. Download the zlib source from
 
 	http://www.zlib.net/
 
-place zlib.h in the Headers directory and zlib.lib in the Libraries directory.
+and extract the folder zlib-1.2.5 to the desktop.
+
+Open the solution file "contrib/vstudio/vc10/zlibvc.sln" and from the "Build Menu" select "Configuration Manager" and, once in the Configuration Manager, select "ReleaseWithoutAsm" as the "Active solution configuration". Build the library and move
+
+	contrib/vstudio/vc10/x86/ZlibStatReleaseWithoutAsm/zlibstat.lib
+
+in the Libraries directory and zlib.h in the Headers directory.
 
 
+=======================================================================
+libiconv & libcharset
+=======================================================================
+
+Download the source from
+
+	http://www.gnu.org/software/libiconv/
+
+libiconv does not have any support for building using Visual Studio (and if you can get usable binaries following the supplied instructions you're doing better than I). 
+
+Place the VS solution and project files from the Project\Extras\libiconv directory into the libiconv-1.13.1 directory then open the solution file
+
+	iconv.sln
+
+Rename
+	
+	libcharset\include\libcharset.h.in
+	libcharset\include\localcharset.h.in
+	include\iconv.h.in
+	lib\config.h.in
+
+so that the ".in" suffix is removed.
+
+Open the iconv.sln file and then edit
+
+	include\iconv.h
+
+replacing the line
+
+	extern @DLL_VARIABLE@ int _libiconv_version; /* Likewise */
+
+with
+
+	#if 1 && BUILDING_LIBICONV
+	#define LIBICONV_DLL_EXPORTED __attribute__((__visibility__("default")))
+	#else
+	#define LIBICONV_DLL_EXPORTED
+	#endif
+	extern LIBICONV_DLL_EXPORTED  int _libiconv_version; /* Likewise */
+
+and the line
+
+	extern size_t iconv (iconv_t cd, @ICONV_CONST@ char* * inbuf, size_t *inbytesleft, char* * outbuf, size_t *outbytesleft);
+	
+with
+
+	extern LIBICONV_DLL_EXPORTED size_t iconv (iconv_t cd,  char* * inbuf, size_t *inbytesleft, char* * outbuf, size_t *outbytesleft);
+
+Replace the two lines
+
+	#if @USE_MBSTATE_T@
+	#if @BROKEN_WCHAR_H@
+	
+with
+
+	#if 1
+	#if 0
+	
+the line
+
+	#if @USE_MBSTATE_T@
+	
+with
+
+	#if 1
+
+and, finally, replace
+
+	#if @HAVE_WCHAR_T@
+
+with
+
+	#if 1
+
+
+Build the release configuration.
+
+Place the libraries
+
+	Release\libcharset.lib
+	
+and
+	
+	Release\iconv.lib
+	
+into the libraries directory and copy the file include\iconv.h into a directory, iconv, inside the Headers directory.
+
+
+=======================================================================
 libxml2
+=======================================================================
+
+Download the source from
 
 	http://xmlsoft.org/downloads.html
 
-place the headers in a directory, libxml, in the Headers directory and libxml2_a.lib in the Libraries directory.
+and expand it into a directory on the Desktop.
 
+Note: the full path of the directory should not contain any spaces.
 
+Open a Command Prompt and set up the Visual Studio command line environment
+
+	c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat
+
+then move to the win32 directory in the archive
+
+	cd Desktop\libxml2-2.7.8\win32
+
+Edit the file
+
+	Makefile.msvc
+
+by changing the line
+
+	LIBS = $(LIBS) iconv.lib
+
+to read
+
+	LIBS = $(LIBS) iconv.lib libcharset.lib
+
+and commenting out the lines
+
+	+!if "$(WITH_ICU)" == "1"
+	+LIBS = $(LIBS) icu.lib
+	+!endif
+
+and
+
+	DFLAGS = $(LDFLAGS) /OPT:NOWIN98
+
+Run the commands (changing the include= & lib= paths as appropriate)
+
+	cscript configure.js static=yes debug=no cruntime=-MT include="\\VBOXSVR\BaseElements-Plugin\Headers\iconv" lib="\\VBOXSVR\BaseElements-Plugin\Libraries"
+	nmake -f Makefile.msvc MFLAGS=-MT libxmla
+
+to configure and build the source.
+
+Finally, place the headers directory
+
+	libxml2-2.7.8\include\libxml
+
+in the Headers directory and copy the library itself
+
+	bin.msvc\libxml2_a.lib
+	
+into the Libraries directory.
+
+=======================================================================
 libxslt & libexslt
+=======================================================================
+
+Download the source from
 
 	http://xmlsoft.org/XSLT/downloads.html
-	
-place the headers for each of libxsl and libexslt in directories named libxsl and libexslt inside the Headers directory and libxslt_a.lib and libexslt_a.lib in the Libraries directory.
 
+and expand it into a directory on the Desktop.
+
+Note: the full path of the directory should not contain any spaces.
+
+Open a terminal window and set up the Visual Studio command line environment
+
+	c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat
+
+then move to the win32 directory in the archive
+
+	cd Desktop\libxslt-1.1.26\win32
+
+Edit the file
+
+	Makefile.msvc
+
+by commenting out the line
+
+	DFLAGS = $(LDFLAGS) /OPT:NOWIN98
+
+and also change
+
+	libxml2.lib
+	
+to
+	
+	libxml2_a.lib
+	
+throughout.
+
+Run the commands (changing the include= & lib= paths as appropriate)
+
+	cscript configure.js static=yes debug=no cruntime=-MT include="\\VBOXSVR\BaseElements-Plugin\Headers;\\VBOXSVR\BaseElements-Plugin\Headers\iconv" lib="\\VBOXSVR\BaseElements-Plugin\Libraries"
+	nmake -f Makefile.msvc MFLAGS=-MT libxslta libexslta
+
+to configure and build the source.
+
+Finally, place the headers from the directories
+
+	libxslt-1.1.26\include\libxslt & libxslt-1.1.26\include\libexslt
+
+into directories, libxslt & libexslt, in the Headers directory and copy the libraries
+
+	bin.msvc\libxslt_a.lib & bin.msvc\libexslt_a.lib
+	
+into the Libraries directory.
+
+=======================================================================
