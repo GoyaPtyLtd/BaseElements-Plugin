@@ -2,7 +2,7 @@
  BEWinFunctions.cpp
  BaseElements Plug-in
 	
- Copyright 2010 Goya. All rights reserved.
+ Copyright 2010-2011 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -24,15 +24,15 @@ LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam );
 
 HHOOK g_window_hook;
 
-string g_button1_name;
-string g_button2_name;
-string g_button3_name;
+wstring g_button1_name;
+wstring g_button2_name;
+wstring g_button3_name;
 
 // clipbaord functions
 
-StringAutoPtr ClipboardFormats ( void )
+WStringAutoPtr ClipboardFormats ( void )
 {
-	std::string format_list = "";
+	wstring format_list = L"";
 
 	if ( OpenClipboard ( NULL ) ) {
 		
@@ -43,18 +43,14 @@ StringAutoPtr ClipboardFormats ( void )
 			
 			next_format = EnumClipboardFormats ( next_format );
 
-			int max_count = 4096;
-			HGLOBAL memory_handle = GlobalAlloc ( GMEM_SHARE | GMEM_MOVEABLE, max_count );
-			LPTSTR format_name = (LPTSTR)GlobalLock ( memory_handle );
+			const int max_count = 4096;
+			wchar_t format_name[max_count];
 			int name_length = GetClipboardFormatName ( next_format, format_name, max_count );
 			
 			if ( name_length > 0 ) {
 				format_list += format_name;
-				format_list += "\r";
+				format_list += L"\r";
 			}
-			
-			GlobalUnlock ( memory_handle );
-			GlobalFree ( memory_handle );
 			
 		}
 
@@ -62,50 +58,50 @@ StringAutoPtr ClipboardFormats ( void )
 
 	}
 
-	return StringAutoPtr ( new string ( format_list ) );
+	return WStringAutoPtr ( new wstring ( format_list ) );
 	
 } // ClipboardFormats
 
 
-StringAutoPtr ClipboardData ( StringAutoPtr atype )
+StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 {
-	char * clipboard_data = "";
-
-	UINT format_wanted = RegisterClipboardFormat ( atype->c_str() );
+	char * clipboard_data;
 
 	if ( OpenClipboard ( NULL ) ) {
 		
+		UINT format_wanted = RegisterClipboardFormat ( atype->c_str() );
+
 		if ( IsClipboardFormatAvailable ( format_wanted ) ) {
 			
 			HGLOBAL memory_handle = GetClipboardData ( format_wanted );
 			unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( memory_handle );
 			UINT clipboard_size = GlobalSize ( memory_handle );
 
-			/*
-			 the first 4 bytes on the clipboard is the size of the data on the clipboard
-			 skip over the first 4 bytes and return the remaining data
-			 */
-
-			clipboard_data = (char *)malloc ( clipboard_size );
-			memcpy ( clipboard_data, clipboard_contents + 4, clipboard_size - 4 );
-			clipboard_data[ clipboard_size - 4 ] = '\0';
+			clipboard_data = new char [ clipboard_size + 1 ]();
+			memcpy ( clipboard_data, clipboard_contents, clipboard_size );
 
 			GlobalUnlock ( memory_handle );
+
 		}
 		
 		CloseClipboard();
 	
+	} 
+	
+	if ( !clipboard_data ) {
+		clipboard_data = "";
 	}
 
 	StringAutoPtr reply ( new string ( clipboard_data ) );
-	if ( clipboard_data ) free ( clipboard_data );
+
+	delete[] clipboard_data;
 
 	return reply;
 
 } // ClipboardData
 
 
-bool SetClipboardData ( StringAutoPtr data, StringAutoPtr atype )
+bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 {
 	bool ok = FALSE;
 	
@@ -113,30 +109,23 @@ bool SetClipboardData ( StringAutoPtr data, StringAutoPtr atype )
 		
 		EmptyClipboard();
 
-		/* 
-		 the first 4 bytes on the clipboard is the size of the data on the clipboard
-		 prefix the data to place on the clipboard with the size of the data
-		 */
-
 		UINT32 data_size = data->size();
-		UINT32 clipboard_size = data_size + 4;
+		UINT32 clipboard_size = data_size;
 		HGLOBAL memory_handle = GlobalAlloc ( GMEM_SHARE | GMEM_MOVEABLE, clipboard_size );
 
 		unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( memory_handle );
-
-		memcpy ( clipboard_contents, &data_size, 4 );
-		memcpy ( clipboard_contents + 4, data->c_str(), clipboard_size );
+		memcpy ( clipboard_contents, data->c_str(), clipboard_size );
 
 		GlobalUnlock ( memory_handle );
 
-		// put the data on clipboard ... the clipboard now owns memory_handle
 		UINT format = RegisterClipboardFormat ( atype->c_str() );
 		
-		if ( SetClipboardData ( format, memory_handle ) ) {
+		if ( SetClipboardData ( format, clipboard_contents ) ) {
 			ok = TRUE;
 		}
 
 		CloseClipboard();
+
 	}
 
 	return ok;
@@ -146,27 +135,28 @@ bool SetClipboardData ( StringAutoPtr data, StringAutoPtr atype )
 
 // file dialogs
 
-StringAutoPtr SelectFile ( StringAutoPtr prompt )
+WStringAutoPtr SelectFile ( WStringAutoPtr prompt )
 {
 	CWnd * parent_window = CWnd::FromHandle ( GetActiveWindow() );
-	CFileDialog file_dialog ( TRUE, NULL, NULL, OFN_HIDEREADONLY, "All Files (*.*)|*.*||", parent_window, 0 );
+	CString filter =  "All Files (*.*)|*.*||";
+	CFileDialog file_dialog ( TRUE, NULL, NULL, OFN_HIDEREADONLY, filter, parent_window, 0 );
 	file_dialog.m_ofn.lpstrTitle = prompt->c_str();
 
 	// if the user hasn't cancelled the dialog get the path to the file
 
-	char path[MAX_PATH] = "";
+	wchar_t path[MAX_PATH] = L"";
 	
 	if ( file_dialog.DoModal() == IDOK ) {
 		CString file_path = file_dialog.GetPathName();
-		strcpy_s ( path, (LPCTSTR)file_path );
+		wcscpy_s ( path, (LPCTSTR)file_path );
 	}
 
-	return StringAutoPtr ( new string ( path ) );
+	return WStringAutoPtr ( new wstring ( path ) );
 
 }	//	SelectFile
 
 
-StringAutoPtr SelectFolder ( StringAutoPtr prompt )
+WStringAutoPtr SelectFolder ( WStringAutoPtr prompt )
 {
 	BROWSEINFO browse_info = { 0 };
 	browse_info.hwndOwner = GetActiveWindow();
@@ -177,20 +167,20 @@ StringAutoPtr SelectFolder ( StringAutoPtr prompt )
 	
 	// if the user hasn't cancelled the dialog get the path to the folder
 
-    TCHAR path[MAX_PATH] = "";
+    wchar_t path[MAX_PATH] = L"";
 
 	if ( item_list != 0 ) {
 		SHGetPathFromIDList ( item_list, path );
 	}
 
-	return StringAutoPtr ( new string ( path ) );
+	return WStringAutoPtr ( new wstring ( path ) );
 
 }	//	SelectFolder
 
 
 // (customized) alert dialogs
 
-int DisplayDialog ( StringAutoPtr title, StringAutoPtr message, StringAutoPtr button1, StringAutoPtr button2, StringAutoPtr button3 )
+int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr button1, WStringAutoPtr button2, WStringAutoPtr button3 )
 {
 	// set the names to be used for each button
 	g_button1_name.swap ( *button1 );
@@ -200,9 +190,9 @@ int DisplayDialog ( StringAutoPtr title, StringAutoPtr message, StringAutoPtr bu
 	// the type of dialog displayed varies depends on the nunmber of buttons required
 	UINT type = MB_OK;
 
-	if ( g_button2_name != "" ) {
+	if ( g_button2_name != L"" ) {
 		type = MB_OKCANCEL;
-		if ( g_button3_name != "" ) {
+		if ( g_button3_name != L"" ) {
 			type = MB_YESNOCANCEL;
 		}
 	}
@@ -215,7 +205,7 @@ int DisplayDialog ( StringAutoPtr title, StringAutoPtr message, StringAutoPtr bu
 	 choice on OS X
 	 */
 
-	int button_clicked = MessageBox ( GetActiveWindow(), (char *)message->c_str(), (char *)title->c_str(), type );
+	int button_clicked = MessageBox ( GetActiveWindow(), message->c_str(), title->c_str(), type );
 
 	unsigned long response = 0;
 
@@ -277,9 +267,10 @@ LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam )
 
 
 
-bool OpenURL ( StringAutoPtr url )
+bool OpenURL ( WStringAutoPtr url )
 {
-	HINSTANCE result = ShellExecute ( NULL, "open", url->c_str(), NULL, NULL, SW_SHOWNORMAL );
+
+	HINSTANCE result = ShellExecute ( NULL, (LPCWSTR)L"open", url->c_str(), NULL, NULL, SW_SHOWNORMAL );
 
 	// see http://msdn.microsoft.com/en-us/library/bb762153(VS.85).aspx
 

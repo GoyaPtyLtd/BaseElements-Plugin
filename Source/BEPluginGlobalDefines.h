@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
  
- Copyright 2010 Goya. All rights reserved.
+ Copyright 2010-2011 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -35,8 +35,8 @@
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING "1.0.6"
-#define	AUTO_UPDATE_VERSION "00010006"
+#define	VERSION_NUMBER_STRING L"1.0.7"
+#define	AUTO_UPDATE_VERSION L"00010007"
 
 
 enum { 

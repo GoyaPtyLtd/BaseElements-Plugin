@@ -2,7 +2,7 @@
  BEMacFunctions.h
  BaseElements Plug-In
  
- Copyright 2010 Goya. All rights reserved.
+ Copyright 2010-2011 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -21,17 +21,17 @@
 using namespace std;
 
 
-StringAutoPtr ClipboardFormats ( void );
-StringAutoPtr ClipboardData ( StringAutoPtr atype );
-bool SetClipboardData ( StringAutoPtr data, StringAutoPtr atype );
+WStringAutoPtr ClipboardFormats ( void );
+StringAutoPtr ClipboardData ( WStringAutoPtr atype );
+bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype );
 
-StringAutoPtr SelectFile ( StringAutoPtr prompt );
-StringAutoPtr SelectFolder ( StringAutoPtr prompt );
+WStringAutoPtr SelectFile ( WStringAutoPtr prompt );
+WStringAutoPtr SelectFolder ( WStringAutoPtr prompt );
 
-int DisplayDialog ( StringAutoPtr title, StringAutoPtr message, StringAutoPtr ok_button, StringAutoPtr cancel_button, StringAutoPtr alternate_button );
+int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr ok_button, WStringAutoPtr cancel_button, WStringAutoPtr alternate_button );
 
 
-bool OpenURL ( StringAutoPtr url );
+bool OpenURL ( WStringAutoPtr url );
 
 
 #endif // BEMACFUNCTIONS_H

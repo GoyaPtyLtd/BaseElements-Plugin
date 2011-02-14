@@ -17,13 +17,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <UseOfAtl>false</UseOfAtl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -85,7 +85,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcharset.lib;nafxcw.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcharset.lib;uafxcw.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\Build\$(Configuration)\BaseElements.fmx</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -117,6 +117,9 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <DisableSpecificWarnings>4068;4005</DisableSpecificWarnings>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -124,7 +127,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;nafxcwd.lib;libcmtd.lib;zlibstat.lib;libcharset.lib;iconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;uafxcwd.lib;libcmtd.lib;zlibstat.lib;libcharset.lib;iconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -133,55 +136,45 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;nafxcwd.lib;msvcrt.lib;libcmt.lib;uafxcwd.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>MFC100d.lib;libcmtd.lib;msvcrtd.lib;nafxcwd.lib;msvcrt.lib;libcmt.lib;uafxcwd.lib</IgnoreSpecificDefaultLibraries>
       <AssemblyLinkResource>
       </AssemblyLinkResource>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
       <Profile>true</Profile>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\BEFileMakerPlugin.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEPlugin.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEPluginFunctions.cpp">
-      <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_MBCS</UndefinePreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </UndefinePreprocessorDefinitions>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level3</WarningLevel>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_MBCS</UndefinePreprocessorDefinitions>
+      <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEPluginUtilities.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEWinFunctions.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEWStringVector.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEXSLT.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>

@@ -2,7 +2,7 @@
  BEPluginUtilities.h
  BaseElements Plug-In
 	
- Copyright 2010 Goya. All rights reserved.
+ Copyright 2010-2011 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -26,15 +26,16 @@ typedef auto_ptr<string> StringAutoPtr;
 typedef auto_ptr<wstring> WStringAutoPtr;
 
 
-errcode TextConstantFunction ( StringAutoPtr text, Data& results );
-errcode TextConstantFunction ( string text, Data& results );
+errcode TextConstantFunction ( wstring text, Data& results );
+errcode TextConstantFunction ( WStringAutoPtr text, Data& results );
 
 void SetNumericResult ( long number, Data& results );
 void SetUTF8Result ( StringAutoPtr text, Data& results );
+void SetWideResult ( WStringAutoPtr text, fmx::Data& results );
 
 StringAutoPtr ParameterAsUTF8String ( const DataVect& data_vect, unsigned long which );
-WStringAutoPtr ParameterAsUnicodeString ( const DataVect& data_vect, unsigned long which );
-StringAutoPtr ReadFileAsUTF8 ( StringAutoPtr path );
+WStringAutoPtr ParameterAsWideString ( const DataVect& data_vect, unsigned long which );
+StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path );
 StringAutoPtr ConvertToUTF8 ( char * in, size_t length );
 
 

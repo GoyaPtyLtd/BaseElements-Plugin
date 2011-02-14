@@ -2,7 +2,7 @@
  BEWinFunctions.h
  BaseElements Plug-in
 
- Copyright 2010 Goya. All rights reserved.
+ Copyright 2010-2011 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -20,15 +20,15 @@
 
 using namespace std;
 
-StringAutoPtr ClipboardFormats ( void );
-StringAutoPtr ClipboardData ( StringAutoPtr atype );
-bool SetClipboardData ( StringAutoPtr data, StringAutoPtr atype );
+WStringAutoPtr ClipboardFormats ( void );
+StringAutoPtr ClipboardData ( WStringAutoPtr atype );
+bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype );
 
-StringAutoPtr SelectFile ( StringAutoPtr prompt );
-StringAutoPtr SelectFolder ( StringAutoPtr prompt );
+WStringAutoPtr SelectFile ( WStringAutoPtr prompt );
+WStringAutoPtr SelectFolder ( WStringAutoPtr prompt );
 
-int DisplayDialog ( StringAutoPtr title, StringAutoPtr message, StringAutoPtr button1, StringAutoPtr button2, StringAutoPtr button3 );
+int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr button1, WStringAutoPtr button2, WStringAutoPtr button3 );
 
-bool OpenURL ( StringAutoPtr url );
+bool OpenURL ( WStringAutoPtr url );
 
 #endif // BEWINFUNCTIONS_H

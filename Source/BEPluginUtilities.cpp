@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
  
- Copyright 2010 Goya. All rights reserved.
+ Copyright 2010-2011 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -50,17 +50,17 @@ using namespace boost::filesystem;
 
 // convenience functions that handle most of the work needed to return text from a function
 
-fmx::errcode TextConstantFunction ( string text, fmx::Data& results )
+fmx::errcode TextConstantFunction ( wstring text, fmx::Data& results )
 {
 	
-	StringAutoPtr text_constant ( new string ( text ) );
+	WStringAutoPtr text_constant ( new wstring ( text ) );
 	
 	return TextConstantFunction ( text_constant, results );	
 		
 } // TextConstantFunction
 
 
-fmx::errcode TextConstantFunction ( StringAutoPtr text, fmx::Data& results )
+fmx::errcode TextConstantFunction ( WStringAutoPtr text, fmx::Data& results )
 {
 	
 	fmx::errcode error_result = kNoError;
@@ -68,7 +68,7 @@ fmx::errcode TextConstantFunction ( StringAutoPtr text, fmx::Data& results )
 	try {
 		
 		fmx::TextAutoPtr result_text;
-		result_text->Assign ( text->c_str() );
+		result_text->AssignWide ( text->c_str() );
 		
 		fmx::LocaleAutoPtr default_locale;
 		results.SetAsText ( *result_text, *default_locale );
@@ -103,6 +103,15 @@ void SetUTF8Result ( StringAutoPtr text, fmx::Data& results )
 }
 
 
+void SetWideResult ( WStringAutoPtr text, fmx::Data& results )
+{
+	fmx::TextAutoPtr result_text;
+	result_text->AssignWide ( text->c_str() );			
+	fmx::LocaleAutoPtr default_locale;
+	results.SetAsText ( *result_text, *default_locale );
+}
+
+
 StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& data_vect, unsigned long which )
 {	
 	
@@ -129,7 +138,7 @@ StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& data_vect, unsigned l
 
 
 
-WStringAutoPtr ParameterAsUnicodeString ( const fmx::DataVect& data_vect, unsigned long which )
+WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& data_vect, unsigned long which )
 {	
 	
 	WStringAutoPtr result ( new wstring );
@@ -178,10 +187,10 @@ WStringAutoPtr ParameterAsUnicodeString ( const fmx::DataVect& data_vect, unsign
 #pragma mark Files
 #pragma mark -
 
-StringAutoPtr ReadFileAsUTF8 ( StringAutoPtr path )
+StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path )
 {
 	
-	boost::filesystem::path filesystem_path = *path;
+	boost::filesystem::basic_path<wstring, boost::filesystem::wpath_traits> filesystem_path = *path;
 	size_t length = (size_t)file_size ( filesystem_path ); // boost::uintmax_t
 
 	boost::filesystem::ifstream inFile ( filesystem_path, ios_base::in | ios_base::binary | ios_base::ate );
