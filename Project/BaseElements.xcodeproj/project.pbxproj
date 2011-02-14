@@ -18,6 +18,7 @@
 		4DD780D911FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */; };
 		4DD7824B11FFF57400CFC8B4 /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4DD78320120005AE00CFC8B4 /* BEXSLT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */; };
+		4DF22B821304D15300737D1E /* BENSString.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4DF22B811304D15300737D1E /* BENSString.mm */; };
 		C7DEDF1707E10BF4002283F3 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF1607E10BF4002283F3 /* CoreServices.framework */; };
 		C7DEDF1907E10BF4002283F3 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF1807E10BF4002283F3 /* Carbon.framework */; };
 		C7DEDF3807E10CBC002283F3 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */; };
@@ -43,6 +44,8 @@
 		4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileMakerPlugin.cpp; path = ../Source/BEFileMakerPlugin.cpp; sourceTree = "<group>"; };
 		4DD7831E120005AE00CFC8B4 /* BEXSLT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXSLT.h; path = ../Source/BEXSLT.h; sourceTree = "<group>"; };
 		4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXSLT.cpp; path = ../Source/BEXSLT.cpp; sourceTree = "<group>"; };
+		4DF22B801304D15300737D1E /* BENSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BENSString.h; sourceTree = "<group>"; };
+		4DF22B811304D15300737D1E /* BENSString.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BENSString.mm; sourceTree = "<group>"; };
 		C77AF38407E11A7C00897241 /* BaseElements.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaseElements.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7DEDF1607E10BF4002283F3 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		C7DEDF1807E10BF4002283F3 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
@@ -103,6 +106,8 @@
 				4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */,
 				4D4153A6120140AF00770E14 /* BEWStringVector.h */,
 				4D4153A5120140AF00770E14 /* BEWStringVector.cpp */,
+				4DF22B801304D15300737D1E /* BENSString.h */,
+				4DF22B811304D15300737D1E /* BENSString.mm */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -191,6 +196,7 @@
 				4DD780D911FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp in Sources */,
 				4DD78320120005AE00CFC8B4 /* BEXSLT.cpp in Sources */,
 				4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */,
+				4DF22B821304D15300737D1E /* BENSString.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
