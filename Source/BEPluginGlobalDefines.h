@@ -35,8 +35,8 @@
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"1.0.7"
-#define	AUTO_UPDATE_VERSION L"00010007"
+#define	VERSION_NUMBER_STRING L"1.1.0"
+#define	AUTO_UPDATE_VERSION L"00010100"
 
 
 enum { 
