@@ -92,6 +92,10 @@ static FMX_Long LoadPlugin ( void )
 	g_be_plugin->RegisterFunction ( kBE_DisplayDialog, BE_DisplayDialog, false, 3, 5 );
 	
 	g_be_plugin->RegisterFunction ( kBE_ApplyXSLT, BE_ApplyXSLT, 3 );
+	
+	g_be_plugin->RegisterFunction ( kBE_ApplyXSLTInMemory, BE_ApplyXSLTInMemory, 2 );
+	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, false, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_XPathAll, BE_XPathAll, false, 2, 3 );
 
 	g_be_plugin->RegisterFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1 );
 	

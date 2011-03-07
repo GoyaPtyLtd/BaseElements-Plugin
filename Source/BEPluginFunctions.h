@@ -53,6 +53,10 @@ FMX_PROC(errcode) BE_DisplayDialog ( short funcId, const ExprEnv& environment, c
 
 FMX_PROC(errcode) BE_ApplyXSLT ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 
+FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
+FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
+FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
+
 FMX_PROC(errcode) BE_ExtractScriptVariables ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 
 FMX_PROC(errcode) BE_ButtonConstants ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );

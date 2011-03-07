@@ -106,6 +106,9 @@ BEGIN
 	122						"BE_FileMaker_Tables"
 	123						"BE_FileMaker_Fields"
 	124						"BE_OpenURL ( url )"
+	200						"BE_ApplyXSLTInMemory ( xml; xslt )"
+	201						"BE_XPath ( xml; xpath {; namespaceList } )"
+	202						"BE_XPathAll ( xml; xpath {; namespaceList } )"
 END
 
 STRINGTABLE

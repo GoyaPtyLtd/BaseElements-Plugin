@@ -35,8 +35,8 @@
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"1.1.0"
-#define	AUTO_UPDATE_VERSION L"00010100"
+#define	VERSION_NUMBER_STRING L"1.1.50"
+#define	AUTO_UPDATE_VERSION L"00010150"
 
 
 enum { 
@@ -67,7 +67,10 @@ enum functions {
 	kBE_ListFilesInFolder = 121,
 	kBE_FileMaker_Tables = 122,
 	kBE_FileMaker_Fields = 123,
-	kBE_OpenURL = 124
+	kBE_OpenURL = 124,
+	kBE_ApplyXSLTInMemory = 200,
+	kBE_XPath = 201,
+	kBE_XPathAll = 202
 };
 
 

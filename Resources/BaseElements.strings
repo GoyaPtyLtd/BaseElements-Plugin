@@ -40,6 +40,10 @@
 "128" = "BaseElements";
 "129" = "This plug-in provides additional functionality for BaseElements 3 from Goya";
 
+"200" = "BE_ApplyXSLTInMemory ( xml; xslt )";
+"201" = "BE_XPath ( xml; xpath {; namespaceList } )";
+"202" = "BE_XPathAll ( xml; xpath {; namespaceList } )";
+
 
 "1001" = "BE_OKButton";
 "1002" = "BE_CancelButton";

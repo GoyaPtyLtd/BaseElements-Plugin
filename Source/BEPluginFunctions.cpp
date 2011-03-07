@@ -587,7 +587,7 @@ FMX_PROC(errcode) BE_ButtonConstants ( short funcId, const ExprEnv& /* environme
 
 
 #pragma mark -
-#pragma mark Other / Ungrouped
+#pragma mark XSLT
 #pragma mark -
 
 FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
@@ -611,6 +611,86 @@ FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environme
 	return error_result;
 	
 } // BE_ApplyXSLT
+
+
+FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+{
+	errcode error_result = kNoError;
+	
+	try {
+		
+		StringAutoPtr xml = ParameterAsUTF8String ( data_vect, 0 );
+		StringAutoPtr xslt = ParameterAsUTF8String ( data_vect, 1 );
+		
+		results.SetAsText( *ApplyXSLTInMemory ( xml, xslt ), data_vect.At(0).GetLocale() );
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}
+	
+	return error_result;
+	
+} // BE_ApplyXSLTInMemory
+
+
+FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results )
+{
+	errcode error_result = kNoError;
+	
+	try {
+		int numParams = data_vect.Size();
+		StringAutoPtr xml = ParameterAsUTF8String ( data_vect, 0 );
+		StringAutoPtr xpath = ParameterAsUTF8String ( data_vect, 1 );
+		StringAutoPtr nsList(new string);
+		if (numParams > 2)
+			nsList = ParameterAsUTF8String ( data_vect, 2 );
+		
+		results.SetAsText( *ApplyXPath ( xml, xpath, nsList ), data_vect.At(0).GetLocale() );
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}
+	
+	return error_result;
+	
+} // BE_XPath
+
+
+FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results )
+{
+	errcode error_result = kNoError;
+	TextAutoPtr txt;
+	
+	try {
+		int numParams = data_vect.Size();
+		StringAutoPtr xml = ParameterAsUTF8String ( data_vect, 0 );
+		StringAutoPtr xpath = ParameterAsUTF8String ( data_vect, 1 );
+		StringAutoPtr nsList( new string);
+		if (numParams > 2)
+			nsList = ParameterAsUTF8String ( data_vect, 2 );
+		
+		
+		results.SetAsText(*ApplyXPathAll (xml, xpath, nsList), data_vect.At(0).GetLocale() );
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}
+	
+	return error_result;
+	
+} // BE_XPathAll
+
+
+
+#pragma mark -
+#pragma mark Other / Ungrouped
+#pragma mark -
 
 
 /*
