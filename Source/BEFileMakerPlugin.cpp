@@ -58,7 +58,7 @@ errcode BEFileMakerPlugin::RegisterFunction ( short function_id, ExtPluginType f
 	Do_GetString ( function_id, name, true );
 	Do_GetString ( function_id, prototype, false );
 	
-	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
+//	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
 	
 	error_result = ExprEnv::RegisterExternalFunction ( *id, function_id, *name, *prototype, (short)minimum_parameters, (short)max_params, function_flags, function_pointer );
 	
