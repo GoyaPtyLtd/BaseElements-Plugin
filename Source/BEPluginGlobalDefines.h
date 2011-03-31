@@ -32,11 +32,22 @@
 #endif
 
 
+#include "FMWrapper/FMXExtern.h"
+
+extern fmx::errcode g_last_error;
+
+
+
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"1.1.50"
-#define	AUTO_UPDATE_VERSION L"00010150"
+#define	VERSION_NUMBER_STRING L"1.1.52"
+#define	AUTO_UPDATE_VERSION L"00010152"
+//#define VERSION_STRING	L(PLUGIN_NAME "1.2a2")
+#define VERSION_STRING "1.2a2"
+
+//#define USER_AGENT_STRING L"libcurl-agent-"PLUGIN_NAME"/"VERSION_STRING
+#define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
 
 
 enum { 
@@ -68,6 +79,10 @@ enum functions {
 	kBE_FileMaker_Tables = 122,
 	kBE_FileMaker_Fields = 123,
 	kBE_OpenURL = 124,
+	kBE_ExecuteScript = 150,
+	kBE_FileMakerSQL = 151,
+	kBE_GetURL = 152,
+	kBE_GetLastError = 153,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202

@@ -72,6 +72,8 @@ static FMX_Long LoadPlugin ( void )
 	g_be_plugin->RegisterFunction ( kBE_Version, BE_Version );
 	g_be_plugin->RegisterFunction ( kBE_VersionAutoUpdate, BE_VersionAutoUpdate );
 
+	g_be_plugin->RegisterFunction ( kBE_GetLastError, BE_GetLastError );
+
 	g_be_plugin->RegisterFunction ( kBE_ClipboardFormats, BE_ClipboardFormats, false );
 	g_be_plugin->RegisterFunction ( kBE_ClipboardData, BE_ClipboardData, false, 1 );
 	g_be_plugin->RegisterFunction ( kBE_SetClipboardData, BE_SetClipboardData, false, 2 );
@@ -108,7 +110,11 @@ static FMX_Long LoadPlugin ( void )
 	g_be_plugin->RegisterFunction ( kBE_FileMaker_Tables, BE_FileMaker_TablesOrFields );
 	g_be_plugin->RegisterFunction ( kBE_FileMaker_Fields, BE_FileMaker_TablesOrFields );
 
-	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, false, 1);
+	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, false, 1 );
+
+	g_be_plugin->RegisterFunction ( kBE_ExecuteScript, BE_ExecuteScript, true, 1, 3 );
+	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, true, 1, 3 );
+	g_be_plugin->RegisterFunction ( kBE_GetURL, BE_GetURL, true, 1, 3 );
 
 	return kCurrentExtnVersion;	// enable the plug-in
 	

@@ -74,7 +74,8 @@ END
 
 STRINGTABLE
 BEGIN
-    1                       "GyBE1nnYnnn"
+	1                       "GyBE1nnYnnn"
+	131                     "GyBE1nnYnnn"
 END
 
 STRINGTABLE
@@ -106,6 +107,10 @@ BEGIN
 	122						"BE_FileMaker_Tables"
 	123						"BE_FileMaker_Fields"
 	124						"BE_OpenURL ( url )"
+	150						"BE_ExecuteScript ( scriptName {; fileName; parameter } )"
+	151						"BE_FileMakerSQL ( sqlStatement {; columnSeparator; rowSeparator } )"
+	152						"BE_GetURL ( url {; username ; password } )"
+	153						"BE_GetLastError"
 	200						"BE_ApplyXSLTInMemory ( xml; xslt )"
 	201						"BE_XPath ( xml; xpath {; namespaceList } )"
 	202						"BE_XPathAll ( xml; xpath {; namespaceList } )"

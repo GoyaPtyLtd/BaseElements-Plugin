@@ -14,6 +14,7 @@
 #include "BEPluginFunctions.h"
 #include "BEXSLT.h"
 #include "BEWStringVector.h"
+#include "BECurl.h"
 
 
 #if defined(FMX_WIN_TARGET)
@@ -55,6 +56,13 @@ using namespace boost::filesystem;
 
 
 #pragma mark -
+#pragma mark Globals
+#pragma mark -
+
+errcode g_last_error;
+
+
+#pragma mark -
 #pragma mark Version
 #pragma mark -
 
@@ -68,6 +76,31 @@ FMX_PROC(errcode) BE_VersionAutoUpdate ( short /* funcId */, const ExprEnv& /* e
 {
 	return TextConstantFunction ( AUTO_UPDATE_VERSION, results );		
 }
+
+
+#pragma mark -
+#pragma mark Errors
+#pragma mark -
+
+
+/*
+ BE_GetURL is the only function that populates g_last_error, calling it after any other function 
+ will give an undefined result.
+ 
+ g_last_error is cleared after calling this function... the caller should store it if necessary
+ */
+
+FMX_PROC(errcode) BE_GetLastError ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results)
+{
+	errcode error_result = kNoError;
+	
+	SetNumericResult ( g_last_error, results );
+	g_last_error = kNoError;
+
+	return error_result;
+	
+}
+
 
 
 #pragma mark -
@@ -909,5 +942,124 @@ FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const D
 	
 } // BE_OpenURL
 
+
+
+FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& dataVect, fmx::Data& reply)
+{
+	fmx::errcode error_result = 0;
+	
+	try {
+		
+		fmx::TextAutoPtr script_name;
+		script_name->SetText ( dataVect.AtAsText ( 0 ) );
+
+		
+		// use the current file when a file name is not provided
+		
+		fmx::TextAutoPtr file_name;
+		fmx::DataAutoPtr parameter;
+
+		fmx::ulong number_of_paramters = dataVect.Size();
+		
+		if ( number_of_paramters >= 2 ) {
+			file_name->SetText ( dataVect.AtAsText ( 1 ) );
+		} else {
+			fmx::TextAutoPtr command;
+			command->Assign ( "Get ( FileName )" );
+
+			fmx::DataAutoPtr name;
+			environment.Evaluate ( *command, *name );
+			file_name->SetText ( name->GetAsText() );
+		}
+
+		// get the parameter, if present
+		
+		if ( number_of_paramters == 3 ) {
+			fmx::LocaleAutoPtr default_locale;
+			parameter->SetAsText ( dataVect.AtAsText ( 2 ), *default_locale );
+		}
+		
+		error_result = FMX_StartScript ( &(*file_name), &(*script_name), kFMXT_Pause, &(*parameter) );
+		
+		SetNumericResult ( error_result, reply );
+
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}	
+	
+	return error_result;
+	
+} // BE_ExecuteScript
+
+
+
+FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& dataVect, fmx::Data& results )
+{	
+	fmx::errcode error_result = kNoError;
+	
+	fmx::TextAutoPtr expression;
+	
+	try {
+		
+		expression->SetText ( dataVect.AtAsText ( 0 ) );
+
+		// use tab and return when the separators are not provided
+		
+		fmx::ushort columnSeparator = '\t';
+		
+		fmx::ulong number_of_paramters = dataVect.Size();
+		
+		if ( number_of_paramters >= 2 ) {
+			dataVect.AtAsText(1).GetUnicode ( &columnSeparator, 0, 1 );
+		}
+		
+		fmx::ushort rowSeparator = '\r';
+
+		if ( number_of_paramters == 3 ) {
+			dataVect.AtAsText(2).GetUnicode ( &rowSeparator, 0, 1 );
+		}
+		
+		
+		// the original api best suits the purpose
+		error_result = environment.ExecuteSQL ( *expression, results, columnSeparator, rowSeparator );
+		
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}	
+	
+	return error_result;
+	
+} // BE_FileMakerSQL
+
+
+
+FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results )
+{	
+	g_last_error = kNoError;
+		
+	try {
+		
+		StringAutoPtr url = ParameterAsUTF8String ( dataVect, 0 );
+		StringAutoPtr username = ParameterAsUTF8String ( dataVect, 1 );
+		StringAutoPtr password = ParameterAsUTF8String ( dataVect, 2 );
+			
+		StringAutoPtr data = GetURL ( url, username, password );
+		SetUTF8Result ( data, results );
+
+		
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_GetURL
 
 

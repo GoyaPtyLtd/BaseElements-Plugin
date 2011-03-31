@@ -31,6 +31,8 @@ using namespace fmx;
 FMX_PROC(errcode) BE_Version ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_VersionAutoUpdate ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 
+FMX_PROC(errcode) BE_GetLastError ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results);
+
 FMX_PROC(errcode) BE_ClipboardFormats ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_ClipboardData ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_SetClipboardData ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
@@ -64,6 +66,10 @@ FMX_PROC(errcode) BE_ButtonConstants ( short funcId, const ExprEnv& environment,
 FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
 FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short function_id, const ExprEnv& environment, const DataVect& parameters, Data& reply );
 FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& reply );
+
+FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& dataVect, fmx::Data& reply );
+FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& dataVect, fmx::Data& results );
+FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results );
 
 
 #endif // BEPLUGINFUNCTIONS_H
