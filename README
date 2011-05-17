@@ -7,7 +7,6 @@ The following notes describe the process for building the the plugin and the thi
 Notes:
 - these instructions apply to version 1.1 of the BaseElements Plugin
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
-- building the libraries can take awhile... boost in particular takes times to build
 
 =======================================================================
 Mac OS X
@@ -21,7 +20,13 @@ Download the Mac version of the FileMaker External Plug-In API from
 	
 and place the FMWrapper.framework in the Libraries directory.
 
-On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built are the Boost FileSystem and System libraries. Boost is available from
+On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built are OpenSSL and the Boost FileSystem, System and Thread libraries. 
+
+=======================================================================
+Boost
+=======================================================================
+
+Boost is available from
 
 	http://www.boost.org/
 
@@ -29,7 +34,7 @@ The plug-in is a universal binary and the boost libraries should be built accord
 
 	cd boost_1_45_0
 	./bootstrap.sh
-	./bjam architecture=combined
+	./bjam architecture=combined link=static runtime-link=static --with-thread --with-filesystem
 	
 See
 
@@ -39,14 +44,17 @@ for for further information on compiling the Boost libraries.
 
 The boost headers must be placed in the Headers directory and the 
 
-	bin.v2/libs/filesystem/build/darwin-4.2.1/release/architecture-combined/link-static/threading-multi/libboost_filesystem.a
-
-and
-
+	bin.v2/libs/filesystem/build/darwin-4.2.1/release/architecture-combined/link-static/runtime-link-static/threading-multi/libboost_filesystem.a
+	bin.v2/libs/thread/build/darwin-4.2.1/release/architecture-combined/link-static/threading-multi/libboost_thread.a
 	bin.v2/libs/system/build/darwin-4.2.1/release/architecture-combined/link-static/threading-multi/libboost_system.a
 
 libraries placed in the Libraries directory.
 
+=======================================================================
+OpenSSL
+=======================================================================
+
+To follow... for the moment copy OpenSSL.framework from inside the FileMaker 11 application package into the Libraries folder.
 
 =======================================================================
 Windows
@@ -83,24 +91,22 @@ for instructions on compiling the Boost libraries. In general
 
 	cd boost_1_45_0
 	bootstrap.bat
-	bjam link=static runtime-link=static
+	bjam link=static runtime-link=static --with-thread --with-filesystem --with-date_time
 
 should do the trick.	
 	
 The boost headers must be placed in the Headers directory and the libraries copied from
 
+	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_45.lib
 	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_45.lib
-
-and
-
+	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_45.lib
 	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_45.lib
 
 into the Libraries directory. For debug builds also copy 
 	
+	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_45.lib
 	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_45.lib
-	
-and 
-
+	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_45.lib
 	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_45.lib
 
 
@@ -355,5 +361,31 @@ into the Libraries directory and copy
 	
 to the Headers directory.
 
+=======================================================================
+OpenSSL
+=======================================================================
+
+Building OpenSSL requires that perl is installed. The ActiveState perl (Community Edition) is a good
+place to start if you do not already have perl installed
+
+	http://www.activestate.com/activeperl
+
+
+Download the latest openssl source from
+
+	http://www.openssl.org/source/
+	
+(openssl-1.0.0d.tar.gz at the time of writing).
+
+Unpack the archive onto the desktop and, using the command prompt
+
+	cd c:\Users\Mark\Desktop\openssl-1.0.0d
+	perl Configure VC-WIN32 enable-static-engine no-asm
+	ms\do_nt
+	c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat
+	nmake -f ms\nt.mak
+
+
+	Copy libeay32.lib and ssleay32.lib to Libraries and copy includes/openssl to Headers.
 
 =======================================================================

@@ -41,17 +41,16 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"1.1.52"
-#define	AUTO_UPDATE_VERSION L"00010152"
-//#define VERSION_STRING	L(PLUGIN_NAME "1.2a2")
-#define VERSION_STRING "1.2a2"
+#define	VERSION_NUMBER_STRING L"1.1.53"
+#define	AUTO_UPDATE_VERSION L"00010153"
+#define VERSION_STRING "1.2a3"
 
-//#define USER_AGENT_STRING L"libcurl-agent-"PLUGIN_NAME"/"VERSION_STRING
+//#define VERSION_NAME_STRING	PLUGIN_NAME " (" VERSION_STRING ")"
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
 
 
 enum { 
-	kXMpl_OptionsStringID = 1
+	kBE_OptionsStringID = 1
 };
 
 
@@ -83,6 +82,7 @@ enum functions {
 	kBE_FileMakerSQL = 151,
 	kBE_GetURL = 152,
 	kBE_GetLastError = 153,
+	kBE_MessageDigest = 154,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202
@@ -106,8 +106,16 @@ enum errors {
 
 
 enum {
-	kXMpl_ButtonOffset = 1000,
-	kXMpl_GetStringMaxBufferSize = 4096
+	kBE_NumericConstantOffset = 1000,
+	kBE_ButtonOffset = 1000,
+	kBE_MessageDigestTypeOffset = 2000,
+	kBE_GetStringMaxBufferSize = 4096
+};
+
+
+enum message_digest_type {
+	kBE_MessageDigestTypeMD5 = 1,
+	kBE_MessageDigestTypeSHA256 = 2
 };
 
 

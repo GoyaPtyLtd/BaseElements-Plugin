@@ -85,7 +85,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcharset.lib;uafxcw.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcharset.lib;uafxcw.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\Build\$(Configuration)\BaseElements.fmx</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -127,7 +127,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;uafxcwd.lib;libcmtd.lib;zlibstat.lib;libcharset.lib;iconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;uafxcwd.lib;libcmtd.lib;zlibstat.lib;libcharset.lib;iconv.lib;libxml2_a.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -152,6 +152,7 @@
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Source\BEMessageDigest.cpp" />
     <ClCompile Include="..\Source\BEPlugin.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
@@ -184,6 +185,7 @@
     <ClInclude Include="..\Resources\Resource.h" />
     <ClInclude Include="..\Source\BECurl.h" />
     <ClInclude Include="..\Source\BEFileMakerPlugin.h" />
+    <ClInclude Include="..\Source\BEMessageDigest.h" />
     <ClInclude Include="..\Source\BEPluginFunctions.h" />
     <ClInclude Include="..\Source\BEPluginGlobalDefines.h" />
     <ClInclude Include="..\Source\BEPluginUtilities.h" />

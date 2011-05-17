@@ -27,7 +27,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 STRINGTABLE
 BEGIN
     128                     "BaseElements"
-    129                     "This plug-in provides additional functionality for BaseElements 3 from Goya"
+    129                     "Version: 1.2a3\n\nThis plug-in provides additional functionality for BaseElements 3 from Goya"
 END
 
 #endif    // English (United States) resources
@@ -74,8 +74,12 @@ END
 
 STRINGTABLE
 BEGIN
-	1                       "GyBE1nnYnnn"
-	131                     "GyBE1nnYnnn"
+    1                       "GyBE1nnYnnn"
+END
+
+STRINGTABLE
+BEGIN
+    131                     "GyBE1nnYnnn"
 END
 
 STRINGTABLE
@@ -100,20 +104,29 @@ BEGIN
     115                     "BE_ApplyXSLT ( xmlPath; xslt; outputPath )"
     116                     "BE_ExtractScriptVariables ( calculation )"
     117                     "BE_StripInvalidUTF16CharactersFromXMLFile ( path )"
-	118						"BE_MoveFile ( from; to )"
-	119						"BE_CopyFile ( from; to )"
-	120						"BE_ExecuteShellCommand ( command )"
-	121						"BE_ListFilesInFolder ( path )"
-	122						"BE_FileMaker_Tables"
-	123						"BE_FileMaker_Fields"
-	124						"BE_OpenURL ( url )"
-	150						"BE_ExecuteScript ( scriptName {; fileName; parameter } )"
-	151						"BE_FileMakerSQL ( sqlStatement {; columnSeparator; rowSeparator } )"
-	152						"BE_GetURL ( url {; username ; password } )"
-	153						"BE_GetLastError"
-	200						"BE_ApplyXSLTInMemory ( xml; xslt )"
-	201						"BE_XPath ( xml; xpath {; namespaceList } )"
-	202						"BE_XPathAll ( xml; xpath {; namespaceList } )"
+    118                     "BE_MoveFile ( from; to )"
+    119                     "BE_CopyFile ( from; to )"
+    120                     "BE_ExecuteShellCommand ( command {; waitForResponse } )"
+    121                     "BE_ListFilesInFolder ( path )"
+    122                     "BE_FileMaker_Tables"
+    123                     "BE_FileMaker_Fields"
+    124                     "BE_OpenURL ( url )"
+END
+
+STRINGTABLE
+BEGIN
+    150                     "BE_ExecuteScript ( scriptName {; fileName; parameter } )"
+    151                     "BE_FileMakerSQL ( sqlStatement {; columnSeparator; rowSeparator } )"
+    152                     "BE_GetURL ( url {; username ; password } )"
+    153                     "BE_GetLastError"
+    154                     "BE_MessageDigest ( text {; type } )"
+END
+
+STRINGTABLE
+BEGIN
+    200                     "BE_ApplyXSLTInMemory ( xml; xslt )"
+    201                     "BE_XPath ( xml; xpath {; namespaceList } )"
+    202                     "BE_XPathAll ( xml; xpath {; namespaceList } )"
 END
 
 STRINGTABLE
@@ -121,6 +134,12 @@ BEGIN
     1001                    "BE_OKButton"
     1002                    "BE_CancelButton"
     1003                    "BE_AlternateButton"
+END
+
+STRINGTABLE
+BEGIN
+    2001                    "BE_MessageDigestTypeMD5"
+    2002                    "BE_MessageDigestTypeSHA256"
 END
 
 #endif    // English (Australia) resources
