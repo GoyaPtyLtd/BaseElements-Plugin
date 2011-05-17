@@ -112,6 +112,28 @@ void SetWideResult ( WStringAutoPtr text, fmx::Data& results )
 }
 
 
+bool ParameterAsBoolean ( const fmx::DataVect& data_vect, const unsigned long which, const bool default_value )
+{
+	try {
+		return data_vect.AtAsBoolean ( which );
+	} catch ( exception e ) {
+		return default_value;
+	}
+
+}
+	
+	
+long ParameterAsLong ( const fmx::DataVect& data_vect, const unsigned long which, const unsigned long default_value )
+{
+	try {
+		return data_vect.AtAsNumber ( which ).AsLong();
+	} catch ( exception e ) {
+		return default_value;
+	}
+	
+}
+
+
 StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& data_vect, unsigned long which )
 {	
 	
@@ -265,53 +287,49 @@ StringAutoPtr ConvertToUTF8 ( char * in, size_t length )
 #pragma mark -
 
 /*
- The following functions are minor modifications of ones included in the Example plug-in
+ The following functions are modifications of ones included in the Example plug-in
  shipped by FileMaker Inc. with the External Plug-In API on the CDs for 
  FileMaker Developer/Pro Advance versions 7 through 10 and are used by permission.
  */
 
 void Do_GetString(unsigned long whichString, FMX_ULong /* winLangID */, FMX_Long resultsize, FMX_Unichar* string)
 {
-	bool		processedSpecialStringID = false;
 	
-	switch (whichString)
+	switch ( whichString )
 	{
 		case kFMXT_OptionsStr:
 		{
 #if defined(FMX_WIN_TARGET)
-			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), kXMpl_OptionsStringID, (LPWSTR)string, resultsize);
-			processedSpecialStringID = true;
+			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), kBE_OptionsStringID, (LPWSTR)string, resultsize);
 #endif
 			
 #if defined(FMX_MAC_TARGET)
-			Sub_OSXLoadString(kXMpl_OptionsStringID, string, resultsize);
-			processedSpecialStringID = true;
+			Sub_OSXLoadString(kBE_OptionsStringID, string, resultsize);
 #endif
-		}
+
+//			processedSpecialStringID = true;
 			break;
-			
+		}
+		default:
+#if defined(FMX_WIN_TARGET)
+			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)whichString, (LPWSTR)string, resultsize);
+#endif
+				
+#if defined(FMX_MAC_TARGET)
+			Sub_OSXLoadString(whichString, string, resultsize);
+#endif
+	
 	} // switch (whichString)
 	
-	
-	if( !processedSpecialStringID ) {
-#if defined(FMX_WIN_TARGET)
-		LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)whichString, (LPWSTR)string, resultsize);
-#endif
-		
-#if defined(FMX_MAC_TARGET)
-		Sub_OSXLoadString(whichString, string, resultsize);
-#endif
-		
-	} // !processedSpecialStringID
 	
 } // Do_GetString (FMX_Unichar* version)
 
 
 void Do_GetString(unsigned long whichStringID, fmx::TextAutoPtr& intoHere, bool stripFunctionParams)
 {
-	FMX_Unichar			tempBuffer[kXMpl_GetStringMaxBufferSize];
+	FMX_Unichar			tempBuffer[kBE_GetStringMaxBufferSize];
 	
-	Do_GetString ( whichStringID, 0, kXMpl_GetStringMaxBufferSize, tempBuffer );
+	Do_GetString ( whichStringID, 0, kBE_GetStringMaxBufferSize, tempBuffer );
 	intoHere->AssignUnicode(tempBuffer);
 	
 	if(stripFunctionParams) {
