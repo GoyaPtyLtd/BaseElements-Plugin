@@ -15,6 +15,7 @@
 #include "BEXSLT.h"
 #include "BEWStringVector.h"
 #include "BECurl.h"
+#include "BEMessageDigest.h"
 
 
 #if defined(FMX_WIN_TARGET)
@@ -47,6 +48,7 @@
 
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"
+#include "boost/thread.hpp"
 
 #include <iostream>
 
@@ -84,7 +86,7 @@ FMX_PROC(errcode) BE_VersionAutoUpdate ( short /* funcId */, const ExprEnv& /* e
 
 
 /*
- BE_GetURL is the only function that populates g_last_error, calling it after any other function 
+ BE_GetURL & BE_ExecuteShellCommand are the only functions that populates g_last_error, calling it after any other function 
  will give an undefined result.
  
  g_last_error is cleared after calling this function... the caller should store it if necessary
@@ -598,27 +600,6 @@ FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* envir
 } // BE_DisplayDialog
 
 
-// invoked for multiple plug-in functions... funcId is used to determine which one
-
-FMX_PROC(errcode) BE_ButtonConstants ( short funcId, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results)
-{
-	errcode error_result = kNoError;
-	
-	try {
-		
-		SetNumericResult ( funcId - kXMpl_ButtonOffset, results );
-		
-	} catch ( bad_alloc e ) {
-		error_result = kLowMemoryError;
-	} catch ( exception e ) {
-		error_result = kErrorUnknown;
-	}
-	
-	return error_result;
-	
-} // BE_ButtonConstants
-
-
 #pragma mark -
 #pragma mark XSLT
 #pragma mark -
@@ -726,6 +707,36 @@ FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environmen
 #pragma mark -
 
 
+/* 
+ 
+ invoked for multiple plug-in functions... funcId is used to determine which one
+ 
+ constants should be defined in BEPluginGlobalDefines.h
+ 
+ each set of constants should have it's own range [ 1000 then 2000 then 3000 etc. ]
+ with an offset of x000
+ 
+*/
+
+FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results)
+{
+	g_last_error = kNoError;
+	
+	try {
+		
+		SetNumericResult ( funcId % kBE_NumericConstantOffset, results );
+		
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_NumericConstants
+
+
 /*
  BE_ExtractScriptVariables implements are somewhat imperfect heuristic for finding
  script variables within chunks of filemaker calculation
@@ -824,39 +835,51 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 
 FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
 {
-	errcode error_result = kNoError;
+	g_last_error = kNoError;
 	
 	try {
 		
 		StringAutoPtr command = ParameterAsUTF8String ( data_vect, 0 );
+		bool waitForResponse = ParameterAsBoolean ( data_vect, 1 );
+		
+		if ( waitForResponse ) {
 				
-		FILE * command_result = POPEN ( command->c_str(), "r" );
+			FILE * command_result = POPEN ( command->c_str(), "r" );
 		
-		if ( command_result ) {
+			if ( command_result ) {
 
-			StringAutoPtr response ( new string ( ) );
-			char reply[PATH_MAX];
+				StringAutoPtr response ( new string ( ) );
+				char reply[PATH_MAX];
 
-			while ( fgets ( reply, PATH_MAX, command_result ) != NULL ) {
-				response->append ( reply );
-			}		
+				while ( fgets ( reply, PATH_MAX, command_result ) != NULL ) {
+					response->append ( reply );
+				}		
 			
-			error_result = PCLOSE ( command_result );
-			
-			SetUTF8Result ( response, results );
+				g_last_error = PCLOSE ( command_result );
 
+				SetUTF8Result ( response, results );
+				
+			} else {
+				g_last_error = errno;
+			}
 		} else {
-			error_result = errno;
+//			boost::thread workerThread ( worker, *command );
+			boost::thread workerThread ( system, command->c_str() );
 		}
-		
+
+		// both PCLOSE and execl set the error to -1 when setting errno
+		if ( g_last_error == -1 ) {
+			g_last_error = errno;
+		}
+				
 		
 	} catch ( bad_alloc e ) {
-		error_result = kLowMemoryError;
+		g_last_error = kLowMemoryError;
 	} catch ( exception e ) {
-		error_result = kErrorUnknown;
+		g_last_error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return g_last_error;
 	
 } // BE_ExecuteShellCommand
 
@@ -1061,5 +1084,37 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const fmx::ExprEnv& /* environ
 	return g_last_error;
 	
 } // BE_GetURL
+
+
+
+FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{	
+	g_last_error = kNoError;
+		
+	try {
+		
+		StringAutoPtr message = ParameterAsUTF8String ( parameters, 0 );
+		unsigned long type = ParameterAsLong( parameters, 1, kBE_MessageDigestTypeSHA256 );
+
+		StringAutoPtr digest;
+
+		if ( type == kBE_MessageDigestTypeMD5 ) {
+			digest = MD5 ( message );
+		} else { // the default is SHA256
+			digest = SHA256 ( message );
+		}
+		
+		SetUTF8Result ( digest, results );
+		
+		
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}	
+	
+	return g_last_error;
+	
+} // BE_FileMaker_TablesOrFields
 
 

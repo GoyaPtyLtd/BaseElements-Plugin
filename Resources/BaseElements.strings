@@ -28,7 +28,7 @@
 "118" = "BE_MoveFile ( from; to )";
 "119" = "BE_CopyFile ( from; to )";
 
-"120" = "BE_ExecuteShellCommand ( command )";
+"120" = "BE_ExecuteShellCommand ( command {; waitForResponse } )";
 
 "121" = "BE_ListFilesInFolder ( path )";
 
@@ -39,13 +39,15 @@
 
 
 "128" = "BaseElements";
-"129" = "This plug-in provides additional functionality for BaseElements 3 from Goya";
+"129" = "Version: 1.2a3\n\nThis plug-in provides additional functionality for BaseElements 3 from Goya";
 
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName; parameter } )";
 "151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator; rowSeparator } )";
 "152" = "BE_GetURL ( url {; username ; password } )";
 "153" = "BE_GetLastError";
+
+"154" = "BE_MessageDigest ( text {; type } )";
 
 
 "200" = "BE_ApplyXSLTInMemory ( xml; xslt )";
@@ -56,3 +58,7 @@
 "1001" = "BE_OKButton";
 "1002" = "BE_CancelButton";
 "1003" = "BE_AlternateButton";
+
+"2001" = "BE_MessageDigestTypeMD5";
+"2002" = "BE_MessageDigestTypeSHA256";
+

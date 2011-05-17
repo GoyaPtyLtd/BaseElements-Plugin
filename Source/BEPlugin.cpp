@@ -101,11 +101,11 @@ static FMX_Long LoadPlugin ( void )
 
 	g_be_plugin->RegisterFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1 );
 	
-	g_be_plugin->RegisterFunction ( kBE_OKButton + kXMpl_ButtonOffset, BE_ButtonConstants );
-	g_be_plugin->RegisterFunction ( kBE_CancelButton + kXMpl_ButtonOffset, BE_ButtonConstants );
-	g_be_plugin->RegisterFunction ( kBE_AlternateButton + kXMpl_ButtonOffset, BE_ButtonConstants );
+	g_be_plugin->RegisterFunction ( kBE_OKButton + kBE_ButtonOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_CancelButton + kBE_ButtonOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_AlternateButton + kBE_ButtonOffset, BE_NumericConstants );
 	
-	g_be_plugin->RegisterFunction ( kBE_ExecuteShellCommand, BE_ExecuteShellCommand, 1 );
+	g_be_plugin->RegisterFunction ( kBE_ExecuteShellCommand, BE_ExecuteShellCommand, false, 1, 2 );
 	
 	g_be_plugin->RegisterFunction ( kBE_FileMaker_Tables, BE_FileMaker_TablesOrFields );
 	g_be_plugin->RegisterFunction ( kBE_FileMaker_Fields, BE_FileMaker_TablesOrFields );
@@ -115,6 +115,10 @@ static FMX_Long LoadPlugin ( void )
 	g_be_plugin->RegisterFunction ( kBE_ExecuteScript, BE_ExecuteScript, true, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, true, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_GetURL, BE_GetURL, true, 1, 3 );
+
+	g_be_plugin->RegisterFunction ( kBE_MessageDigest, BE_MessageDigest, true, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestTypeMD5 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestTypeSHA256 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
 
 	return kCurrentExtnVersion;	// enable the plug-in
 	
