@@ -29,10 +29,12 @@ Boost
 Boost is available from
 
 	http://www.boost.org/
+	
+Note: v1.2 of the plug-in requires Boost 1.46.1 (or later).
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_45_0
+	cd boost_1_46_1
 	./bootstrap.sh
 	./bjam architecture=combined link=static runtime-link=static --with-thread --with-filesystem
 	
@@ -83,13 +85,15 @@ The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 	
+Note: v1.2 of the plug-in requires Boost 1.46.1 (or later).
+
 See
 
 	more/getting_started/index.html
 	
 for instructions on compiling the Boost libraries. In general
 
-	cd boost_1_45_0
+	cd boost_1_46_1
 	bootstrap.bat
 	bjam link=static runtime-link=static --with-thread --with-filesystem --with-date_time
 
@@ -97,17 +101,17 @@ should do the trick.
 	
 The boost headers must be placed in the Headers directory and the libraries copied from
 
-	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_45.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_45.lib
-	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_45.lib
-	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_45.lib
+	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_46_1.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_46_1.lib
+	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_46_1.lib
+	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_46_1.lib
 
 into the Libraries directory. For debug builds also copy 
 	
-	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_45.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_45.lib
-	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_45.lib
-	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_45.lib
+	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_46_1.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_46_1.lib
+	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_46_1.lib
+	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_46_1.lib
 
 
 =======================================================================
