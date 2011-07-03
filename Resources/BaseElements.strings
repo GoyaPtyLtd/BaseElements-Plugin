@@ -39,15 +39,17 @@
 
 
 "128" = "BaseElements";
-"129" = "Version: 1.2a3\n\nThis plug-in provides additional functionality for BaseElements 3 from Goya";
+"129" = "Version: 1.2b1\n\nThis plug-in provides additional functionality for BaseElements 3 from Goya";
 
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName; parameter } )";
 "151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator; rowSeparator } )";
-"152" = "BE_GetURL ( url {; username ; password } )";
+"152" = "BE_GetURL ( url {; filename ; username ; password } )";
 "153" = "BE_GetLastError";
 
 "154" = "BE_MessageDigest ( text {; type } )";
+
+"156" = "BE_SaveURLToFIle ( url; path {; username ; password } )";
 
 
 "200" = "BE_ApplyXSLTInMemory ( xml; xslt )";

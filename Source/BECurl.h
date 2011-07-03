@@ -16,8 +16,10 @@
 
 #include "BEPluginUtilities.h"
 
+#include <vector>
 
-StringAutoPtr GetURL ( const StringAutoPtr url, const StringAutoPtr username, const StringAutoPtr password );
+
+vector<char> GetURL ( const StringAutoPtr url, const StringAutoPtr filename, const StringAutoPtr username, const StringAutoPtr password );
 
 
 #endif // BEXBECURL_HSLT_H

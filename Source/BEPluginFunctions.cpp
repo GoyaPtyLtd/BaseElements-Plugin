@@ -1094,12 +1094,32 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const fmx::ExprEnv& /* environ
 	try {
 		
 		StringAutoPtr url = ParameterAsUTF8String ( dataVect, 0 );
+		StringAutoPtr filename ( new string ( "" ) );
 		StringAutoPtr username = ParameterAsUTF8String ( dataVect, 1 );
 		StringAutoPtr password = ParameterAsUTF8String ( dataVect, 2 );
-			
-		StringAutoPtr data = GetURL ( url, username, password );
-		SetUTF8Result ( data, results );
+		
+		vector<char> data = GetURL ( url, filename, username, password );
 
+		// if a file name is supplied then send back a file
+
+		if ( dataVect.Size() > 1 ) {
+
+			TextAutoPtr name;
+			name->SetText ( dataVect.AtAsText(1) );
+
+			BinaryDataAutoPtr resultBinary; 
+			QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
+			resultBinary->AddFNAMData ( *name ); 
+			resultBinary->Add ( *data_type, (unsigned long) data.size(), (void *)&data[0] ); 
+			results.SetBinaryData ( *resultBinary, true ); 
+
+		} else { // otherwise try sending back text
+			
+			data.push_back ( '\0' );
+			StringAutoPtr data_string ( new string ( &data[0] ) );
+			SetUTF8Result ( data_string, results );
+
+		}		
 		
 	} catch ( bad_alloc e ) {
 		g_last_error = kLowMemoryError;

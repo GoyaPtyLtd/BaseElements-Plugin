@@ -117,9 +117,10 @@ STRINGTABLE
 BEGIN
     150                     "BE_ExecuteScript ( scriptName {; fileName; parameter } )"
     151                     "BE_FileMakerSQL ( sqlStatement {; columnSeparator; rowSeparator } )"
-    152                     "BE_GetURL ( url {; username ; password } )"
+    152                     "BE_GetURL ( url {; filename ; username ; password } )"
     153                     "BE_GetLastError"
     154                     "BE_MessageDigest ( text {; type } )"
+	156						"BE_SaveURLToFIle ( url; path {; username ; password } )"
 END
 
 STRINGTABLE
