@@ -1122,6 +1122,31 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const fmx::ExprEnv& /* environ
 
 
 
+FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results )
+{	
+	g_last_error = kNoError;
+	
+	try {
+		
+		StringAutoPtr url = ParameterAsUTF8String ( dataVect, 0 );
+		StringAutoPtr filename = ParameterAsUTF8String ( dataVect, 1 );
+		StringAutoPtr username = ParameterAsUTF8String ( dataVect, 2 );
+		StringAutoPtr password = ParameterAsUTF8String ( dataVect, 3 );
+		
+		vector<char> data = GetURL ( url, filename, username, password );
+				
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_SaveURLToFile
+
+
+
 FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
 	g_last_error = kNoError;
