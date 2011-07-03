@@ -212,7 +212,7 @@ WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& data_vect, unsigned 
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path )
 {
 	
-	boost::filesystem::basic_path<wstring, boost::filesystem::wpath_traits> filesystem_path = *path;
+	boost::filesystem::path filesystem_path = *path;
 	size_t length = (size_t)file_size ( filesystem_path ); // boost::uintmax_t
 
 	boost::filesystem::ifstream inFile ( filesystem_path, ios_base::in | ios_base::binary | ios_base::ate );

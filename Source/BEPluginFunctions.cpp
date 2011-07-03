@@ -170,11 +170,11 @@ FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* enviro
 	try {
 
 		WStringAutoPtr folder = ParameterAsWideString ( data_vect, 0 );
-		basic_path<wstring, wpath_traits> directory_path = *folder;
+		path directory_path = *folder;
 		
 		try {
 			create_directory ( directory_path );
-		} catch ( basic_filesystem_error<wpath> e ) {
+		} catch ( filesystem_error e ) {
 			filesystem_result = e.code().value();
 		}
 		
@@ -199,11 +199,11 @@ FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environm
 	try {
 		
 		WStringAutoPtr file = ParameterAsWideString ( data_vect, 0 );
-		basic_path<wstring, wpath_traits> path = *file;
+		path path = *file;
 		
 		try {
 			remove_all ( path ); // if path is a directory then path and all it's contents are deleted
-		} catch ( basic_filesystem_error<wpath> e ) {
+		} catch ( filesystem_error e ) {
 			filesystem_result = e.code().value();
 		}
 		
@@ -227,12 +227,12 @@ FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environm
 	try {
 		
 		WStringAutoPtr file = ParameterAsWideString ( data_vect, 0 );
-		basic_path<wstring, wpath_traits> path = *file;
+		path path = *file;
 
 		bool file_exists = exists ( path );
 		SetNumericResult ( file_exists, results );
 		
-	} catch ( basic_filesystem_error<wpath> e ) {
+	} catch ( filesystem_error e ) {
 		error_result = e.code().value();
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
@@ -255,7 +255,7 @@ FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* en
 		StringAutoPtr contents = ReadFileAsUTF8 ( file );
 		SetUTF8Result ( contents, results );
 
-	} catch ( basic_filesystem_error<wpath> e ) {
+	} catch ( filesystem_error e ) {
 		error_result = e.code().value();
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
@@ -275,7 +275,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 	try {
 		
 		WStringAutoPtr file = ParameterAsWideString ( data_vect, 0 );
-		basic_path<wstring, wpath_traits> path = *file;
+		path path = *file;
 		
 		// should the text be appended to the file or replace any existing contents
 		
@@ -291,7 +291,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 		
 		try {
 			
-			basic_path<wstring, wpath_traits> filesystem_path ( path );
+			boost::filesystem::path filesystem_path ( path );
 			boost::filesystem::ofstream output_file ( filesystem_path, ios_base::out | mode );
 
 			output_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );			
@@ -299,7 +299,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 			output_file << *text_to_write;
 			output_file.close();
 
-		} catch ( basic_filesystem_error<wpath> e ) {
+		} catch ( filesystem_error e ) {
 			error_result = e.code().value();
 		} catch ( exception e ) {
 			error_result = errno; // unable to write to the file
@@ -331,10 +331,10 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 	try {
 		
 		WStringAutoPtr file = ParameterAsWideString ( data_vect, 0 );
-		basic_path<wstring, wpath_traits> source = *file;
+		path source = *file;
 
-		wstring output_path = *file + L".be3.tmp";
-		basic_path<wstring, wpath_traits> destination = output_path;
+		wstring output_path = *file + TEMPORARY_FILE_SUFFIX;
+		path destination = output_path;
 		boost::uintmax_t length = file_size ( source ); // throws if the source does not exist
 		
 		boost::filesystem::ifstream input_file ( source, ios_base::in | ios_base::binary | ios_base::ate );
@@ -399,7 +399,7 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 
 		SetNumericResult ( error_result == kNoError, results );
 		
-	} catch ( basic_filesystem_error<wpath> e ) {
+	} catch ( filesystem_error e ) {
 		error_result = e.code().value();
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
@@ -424,11 +424,11 @@ FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environmen
 
 		try {
 			
-			basic_path<wstring, wpath_traits> from_path = *from;
-			basic_path<wstring, wpath_traits> to_path = *to;
+			path from_path = *from;
+			path to_path = *to;
 			
 			rename ( from_path, to_path );			
-		} catch ( basic_filesystem_error<wpath> e ) {
+		} catch ( filesystem_error e ) {
 			filesystem_result = e.code().value();
 		}
 		
@@ -457,24 +457,35 @@ FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environmen
 		
 		try {
 			
-			basic_path<wstring, wpath_traits> from_path = *from;
-			basic_path<wstring, wpath_traits> to_path = *to;
+			path from_path = *from;
+			path to_path = *to;
 			
-			copy_file ( from_path, to_path );
+//			if ( is_directory( from_path ) ) {
+//				copy_directory ( from_path, to_path );
+//			} else {
+//				copy_file ( from_path, to_path );
+//			}
 			
-		} catch ( basic_filesystem_error<wpath> e ) {
+//			copy ( from_path, to_path, true, true );
+//			copy ( from_path, to_path );
+			
+			//	recursive_directory_iterator
+			
+			recursive_directory_copy ( from_path, to_path );
+			
+		} catch ( filesystem_error e ) {
 			filesystem_result = e.code().value();
 		}
 		
 		SetNumericResult ( filesystem_result, results );
 		
 	} catch ( bad_alloc e ) {
-		error_result = kLowMemoryError;
+		g_last_error = kLowMemoryError;
 	} catch ( exception e ) {
-		error_result = kErrorUnknown;
+		g_last_error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return g_last_error;
 	
 } // BE_CopyFile
 
@@ -491,38 +502,53 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 		end_of_line->Assign ( "\r" );
 
 		WStringAutoPtr directory = ParameterAsWideString ( data_vect, 0 );
-		basic_path<wstring, wpath_traits> directory_path = *directory;
-		
-		if ( exists ( directory_path ) ) {
+
+		try {
+
+			path directory_path = *directory;
+			
+			if ( exists ( directory_path ) ) {
 				
-			basic_directory_iterator<wpath> end_itr; // default construction yields past-the-end
-			basic_directory_iterator<wpath> itr ( directory_path );
+				directory_iterator end_itr; // default construction yields past-the-end
+				directory_iterator itr ( directory_path );
+
+				long want = ParameterAsLong ( data_vect, 1, kBE_FileType_File );
 				
-			while ( itr != end_itr ) {
+				while ( itr != end_itr ) {
 					
-				if ( ! is_directory ( itr->status() ) ) {
-					TextAutoPtr file_name;
-					file_name->AssignWide ( itr->leaf().c_str() );
-					list_of_files->AppendText ( *file_name );
-					list_of_files->AppendText ( *end_of_line );
+					bool is_folder = is_directory ( itr->status() );
+				
+					if ( 
+							(!is_folder && (want == kBE_FileType_File)) ||
+							(is_folder && (want == kBE_FileType_Folder)) ||
+							(want == kBE_FileType_ALL)
+						) {
+						TextAutoPtr file_name;
+						file_name->AssignWide ( itr->path().filename().wstring().c_str() );
+						list_of_files->AppendText ( *file_name );
+						list_of_files->AppendText ( *end_of_line );
+					}
+					
+					++itr;
+					
 				}
-				
-				++itr;
-				
+
 			}
 
+		} catch ( filesystem_error e ) {
+			g_last_error = e.code().value();
 		}
 
 		fmx::LocaleAutoPtr default_locale;
 		results.SetAsText ( *list_of_files, *default_locale );
 		
 	} catch ( bad_alloc e ) {
-		error_result = kLowMemoryError;
+		g_last_error = kLowMemoryError;
 	} catch ( exception e ) {
-		error_result = kErrorUnknown;
+		g_last_error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return g_last_error;
 	
 } // BE_ListFilesInFolder
 
