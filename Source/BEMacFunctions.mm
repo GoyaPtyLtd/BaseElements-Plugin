@@ -84,39 +84,40 @@ WStringAutoPtr ClipboardFormats ( void )
 		[formats appendString: type];
 		[formats appendString: @"\r"];
 	}
-
+	
 	[types release];
-
-	return [formats WStringAutoPtrFromNSString];
-
+	
+	//	return [formats WStringAutoPtrFromNSString];
+	return WStringAutoPtrFromNSString ( (NSString*)formats );
+	
 } // ClipboardFormats
 
 
 StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 {
-	NSString * pasteboard_type = [NSString NSStringFromWStringAutoPtr: atype ];
+	NSString * pasteboard_type = NSStringFromWStringAutoPtr ( atype );
 	NSData * pasteboard_data = [[[NSPasteboard generalPasteboard] dataForType: pasteboard_type] copy];				
 	NSString * clipboard_data = [[NSString alloc] initWithData: pasteboard_data encoding: NSUTF8StringEncoding];
-
-//	[pasteboard_data release];
+	
+	//	[pasteboard_data release];
 	
 	return StringAutoPtr ( new string ( [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding] ) );	
-
+	
 } // ClipboardData
 
 
 bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 {
-	NSString * data_to_copy = [NSString NSStringFromStringAutoPtr: data ];
-	NSString * data_type = [NSString NSStringFromWStringAutoPtr: atype ];
+	NSString * data_to_copy = NSStringFromStringAutoPtr ( data );
+	NSString * data_type = NSStringFromWStringAutoPtr ( atype );
 	NSArray * new_types = [NSArray arrayWithObject: data_type];
-
+	
 	[[NSPasteboard generalPasteboard] declareTypes: new_types owner: nil];
-
-//	[new_types release];
-
+	
+	//	[new_types release];
+	
 	return [[NSPasteboard generalPasteboard] setString: data_to_copy forType: data_type];
-
+	
 } // Set_ClipboardData
 
 
@@ -128,29 +129,29 @@ WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, bool choose_file )
 {
 	
 	NSOpenPanel* file_dialog = [NSOpenPanel openPanel];
-
-	NSString * prompt_string = [NSString NSStringFromWStringAutoPtr: prompt ];
+	
+	NSString * prompt_string = NSStringFromWStringAutoPtr ( prompt );
 	[file_dialog setTitle: prompt_string ];
 	[file_dialog setCanChooseFiles: choose_file];
 	[file_dialog setCanChooseDirectories: !choose_file];
 	
 	NSString * file_path;
-
+	
 	if ( [file_dialog runModalForDirectory:nil file:nil] == NSOKButton ) {
-
+		
 		NSArray* files = [file_dialog filenames]; // full paths, not just names
 		file_path = [files objectAtIndex: 0];
-//		[files release];
-	
+		//		[files release];
+		
 	} else {
-	
+		
 		file_path = @""; // the user cancelled
-	
+		
 	}
 	
-//	[prompt_string release];
-
-	return [file_path WStringAutoPtrFromNSString];
+	//	[prompt_string release];
+	
+	return WStringAutoPtrFromNSString ( file_path );
 	
 } // SelectFileOrFolder
 
@@ -170,27 +171,27 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt )
 int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr ok_button, WStringAutoPtr cancel_button, WStringAutoPtr alternate_button )
 {
 	int button_pressed = 0;
-
-	NSString * title_string = [NSString NSStringFromWStringAutoPtr: title ];
-	NSString * ok_button_string = [NSString NSStringFromWStringAutoPtr: ok_button ];
-	NSString * cancel_button_string = [NSString NSStringFromWStringAutoPtr: cancel_button ];
-	NSString * alternate_button_string = [NSString NSStringFromWStringAutoPtr: alternate_button ];
-	NSString * message_string = [NSString NSStringFromWStringAutoPtr: message ];
-
+	
+	NSString * title_string = NSStringFromWStringAutoPtr ( title );
+	NSString * ok_button_string = NSStringFromWStringAutoPtr ( ok_button );
+	NSString * cancel_button_string = NSStringFromWStringAutoPtr ( cancel_button );
+	NSString * alternate_button_string = NSStringFromWStringAutoPtr ( alternate_button );
+	NSString * message_string = NSStringFromWStringAutoPtr ( message );
+	
 	int response = NSRunAlertPanel (  ( title_string ),
 									@"%@", 
-									 ( ok_button_string ), 
-									 ( cancel_button_string ), 
-									 ( alternate_button_string ), 
-									 ( message_string )
+									( ok_button_string ), 
+									( cancel_button_string ), 
+									( alternate_button_string ), 
+									( message_string )
 									);
 	
-//	[title_string release];
-//	[ok_button_string release];
-//	[cancel_button_string release];
-//	[alternate_button_string release];
-//	[message_string release];
-
+	//	[title_string release];
+	//	[ok_button_string release];
+	//	[cancel_button_string release];
+	//	[alternate_button_string release];
+	//	[message_string release];
+	
 	/*
 	 translate the response so that the plug-in returns the same value for the same action
 	 on both OS X and Windows
@@ -227,7 +228,7 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 
 bool OpenURL ( WStringAutoPtr url )
 {	
-	return [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: [NSString NSStringFromWStringAutoPtr: url] ]];
+	return [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: NSStringFromWStringAutoPtr ( url ) ]];
 }
 
 
