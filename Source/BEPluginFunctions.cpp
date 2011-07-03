@@ -447,7 +447,7 @@ FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environmen
 
 FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
 {
-	errcode error_result = kNoError;
+	g_last_error = kNoError;
 	errcode filesystem_result = kNoError;
 	
 	try {
@@ -459,17 +459,6 @@ FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environmen
 			
 			path from_path = *from;
 			path to_path = *to;
-			
-//			if ( is_directory( from_path ) ) {
-//				copy_directory ( from_path, to_path );
-//			} else {
-//				copy_file ( from_path, to_path );
-//			}
-			
-//			copy ( from_path, to_path, true, true );
-//			copy ( from_path, to_path );
-			
-			//	recursive_directory_iterator
 			
 			recursive_directory_copy ( from_path, to_path );
 			
