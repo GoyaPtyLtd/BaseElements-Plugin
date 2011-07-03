@@ -252,7 +252,7 @@ StringAutoPtr ConvertToUTF8 ( char * in, size_t length )
 	vector<string> codesets;
 	codesets.push_back ( "UTF-8" );
 	codesets.push_back ( "UTF-16" );
-
+	
 	int error_result = -1;
 	
 	/*

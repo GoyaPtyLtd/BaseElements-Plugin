@@ -152,6 +152,7 @@
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Source\BEFileSystem.cpp" />
     <ClCompile Include="..\Source\BEMessageDigest.cpp" />
     <ClCompile Include="..\Source\BEPlugin.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -185,6 +186,7 @@
     <ClInclude Include="..\Resources\Resource.h" />
     <ClInclude Include="..\Source\BECurl.h" />
     <ClInclude Include="..\Source\BEFileMakerPlugin.h" />
+    <ClInclude Include="..\Source\BEFileSystem.h" />
     <ClInclude Include="..\Source\BEMessageDigest.h" />
     <ClInclude Include="..\Source\BEPluginFunctions.h" />
     <ClInclude Include="..\Source\BEPluginGlobalDefines.h" />

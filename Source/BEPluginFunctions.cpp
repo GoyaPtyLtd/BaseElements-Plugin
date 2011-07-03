@@ -16,6 +16,7 @@
 #include "BEWStringVector.h"
 #include "BECurl.h"
 #include "BEMessageDigest.h"
+#include "BEFileSystem.h"
 
 
 #if defined(FMX_WIN_TARGET)
@@ -44,6 +45,7 @@
 
 #include "FMWrapper/FMXFixPt.h"
 #include "FMWrapper/FMXData.h"
+#include "FMWrapper/FMXBinaryData.h"
 #include "FMWrapper/FMXCalcEngine.h"
 
 #include "boost/filesystem.hpp"
@@ -161,6 +163,10 @@ FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* en
 #pragma mark -
 #pragma mark Files & Folders
 #pragma mark -
+
+
+#pragma NOTE (consider refatoring some of the detail from the file functions into BEFileSystem)
+
 
 FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results )
 {
@@ -482,7 +488,7 @@ FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environmen
 
 FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
 {
-	errcode error_result = kNoError;
+	g_last_error = kNoError;
 	
 	try {
 		
@@ -878,7 +884,6 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 				g_last_error = errno;
 			}
 		} else {
-//			boost::thread workerThread ( worker, *command );
 			boost::thread workerThread ( system, command->c_str() );
 		}
 
@@ -1154,11 +1159,11 @@ FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment
 	try {
 		
 		StringAutoPtr message = ParameterAsUTF8String ( parameters, 0 );
-		unsigned long type = ParameterAsLong( parameters, 1, kBE_MessageDigestTypeSHA256 );
+		unsigned long type = ParameterAsLong( parameters, 1, kBE_MessageDigestType_SHA256 );
 
 		StringAutoPtr digest;
 
-		if ( type == kBE_MessageDigestTypeMD5 ) {
+		if ( type == kBE_MessageDigestType_MD5 ) {
 			digest = MD5 ( message );
 		} else { // the default is SHA256
 			digest = SHA256 ( message );

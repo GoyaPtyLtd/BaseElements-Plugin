@@ -9,11 +9,10 @@
 /* Begin PBXBuildFile section */
 		4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
 		4D37E0B51339CF080084730B /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
-		4D37E0B61339CF080084730B /* BENSString.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B41339CF080084730B /* BENSString.mm */; };
 		4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */; };
-		4D59E1C613779B96002454D2 /* OpenSSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D59E1C513779B96002454D2 /* OpenSSL.framework */; };
-		4D59E1D313779BE5002454D2 /* OpenSSL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4D59E1C513779B96002454D2 /* OpenSSL.framework */; };
 		4D6552A9119A929A00FD2D1D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6552A8119A929A00FD2D1D /* Cocoa.framework */; };
+		4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
+		4D77EA8713B2A1D2006C31FA /* OpenSSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D77EA8613B2A1D2006C31FA /* OpenSSL.framework */; };
 		4D8824E711E93F6000F94475 /* BEPluginUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */; };
 		4D8BA595134579BD003A90B5 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8BA594134579BD003A90B5 /* libboost_thread.a */; };
 		4D99B2EB135E5BAA00BCB3C0 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D99B2EA135E5BAA00BCB3C0 /* libcurl.dylib */; };
@@ -37,7 +36,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4D59E1D313779BE5002454D2 /* OpenSSL.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,12 +55,12 @@
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B21339CF080084730B /* BECurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECurl.h; path = ../Source/BECurl.h; sourceTree = SOURCE_ROOT; };
-		4D37E0B31339CF080084730B /* BENSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BENSString.h; path = ../Source/BENSString.h; sourceTree = SOURCE_ROOT; };
-		4D37E0B41339CF080084730B /* BENSString.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BENSString.mm; path = ../Source/BENSString.mm; sourceTree = SOURCE_ROOT; };
 		4D4153A5120140AF00770E14 /* BEWStringVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEWStringVector.cpp; path = ../Source/BEWStringVector.cpp; sourceTree = SOURCE_ROOT; };
 		4D4153A6120140AF00770E14 /* BEWStringVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEWStringVector.h; path = ../Source/BEWStringVector.h; sourceTree = SOURCE_ROOT; };
-		4D59E1C513779B96002454D2 /* OpenSSL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenSSL.framework; sourceTree = "<group>"; };
 		4D6552A8119A929A00FD2D1D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileSystem.cpp; path = ../Source/BEFileSystem.cpp; sourceTree = SOURCE_ROOT; };
+		4D70428713BAE5CA00DE4484 /* BEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileSystem.h; path = ../Source/BEFileSystem.h; sourceTree = SOURCE_ROOT; };
+		4D77EA8613B2A1D2006C31FA /* OpenSSL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenSSL.framework; path = ../Libraries/OpenSSL.framework; sourceTree = SOURCE_ROOT; };
 		4D7FCA5C11E9308B0047A453 /* BaseElements.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = BaseElements.strings; path = ../Resources/BaseElements.strings; sourceTree = SOURCE_ROOT; };
 		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginUtilities.cpp; path = ../Source/BEPluginUtilities.cpp; sourceTree = SOURCE_ROOT; };
@@ -100,7 +98,7 @@
 				4D6552A9119A929A00FD2D1D /* Cocoa.framework in Frameworks */,
 				4D8BA595134579BD003A90B5 /* libboost_thread.a in Frameworks */,
 				4D99B2EB135E5BAA00BCB3C0 /* libcurl.dylib in Frameworks */,
-				4D59E1C613779B96002454D2 /* OpenSSL.framework in Frameworks */,
+				4D77EA8713B2A1D2006C31FA /* OpenSSL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,10 +131,10 @@
 			children = (
 				4D37E0B21339CF080084730B /* BECurl.h */,
 				4D37E0B11339CF080084730B /* BECurl.cpp */,
-				4D37E0B31339CF080084730B /* BENSString.h */,
-				4D37E0B41339CF080084730B /* BENSString.mm */,
 				4D8824E611E93F6000F94475 /* BEPluginUtilities.h */,
 				4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */,
+				4D70428713BAE5CA00DE4484 /* BEFileSystem.h */,
+				4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */,
 				4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */,
 				4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */,
 				4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */,
@@ -172,7 +170,7 @@
 				C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */,
 				4D6552A8119A929A00FD2D1D /* Cocoa.framework */,
 				4D99B2EA135E5BAA00BCB3C0 /* libcurl.dylib */,
-				4D59E1C513779B96002454D2 /* OpenSSL.framework */,
+				4D77EA8613B2A1D2006C31FA /* OpenSSL.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -244,8 +242,8 @@
 				4DD78320120005AE00CFC8B4 /* BEXSLT.cpp in Sources */,
 				4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */,
 				4D37E0B51339CF080084730B /* BECurl.cpp in Sources */,
-				4D37E0B61339CF080084730B /* BENSString.mm in Sources */,
 				4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */,
+				4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -41,12 +41,15 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"1.1.53"
-#define	AUTO_UPDATE_VERSION L"00010153"
-#define VERSION_STRING "1.2a3"
+#define	VERSION_NUMBER_STRING L"1.1.54"
+#define	AUTO_UPDATE_VERSION L"00010154"
+#define VERSION_STRING "1.2b1"
 
 //#define VERSION_NAME_STRING	PLUGIN_NAME " (" VERSION_STRING ")"
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
+
+
+#define	TEMPORARY_FILE_SUFFIX L".be3.tmp"
 
 
 enum { 
@@ -83,6 +86,7 @@ enum functions {
 	kBE_GetURL = 152,
 	kBE_GetLastError = 153,
 	kBE_MessageDigest = 154,
+	kBE_SaveURLToFile = 156,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202
@@ -109,13 +113,21 @@ enum {
 	kBE_NumericConstantOffset = 1000,
 	kBE_ButtonOffset = 1000,
 	kBE_MessageDigestTypeOffset = 2000,
+	kBE_FileTypeOffset = 3000,
 	kBE_GetStringMaxBufferSize = 4096
 };
 
 
 enum message_digest_type {
-	kBE_MessageDigestTypeMD5 = 1,
-	kBE_MessageDigestTypeSHA256 = 2
+	kBE_MessageDigestType_MD5 = 1,
+	kBE_MessageDigestType_SHA256 = 2
+};
+
+
+enum file_type {
+	kBE_FileType_ALL = 0,
+	kBE_FileType_File = 1,
+	kBE_FileType_Folder = 2
 };
 
 

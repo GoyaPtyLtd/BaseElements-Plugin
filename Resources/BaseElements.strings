@@ -30,7 +30,7 @@
 
 "120" = "BE_ExecuteShellCommand ( command {; waitForResponse } )";
 
-"121" = "BE_ListFilesInFolder ( path )";
+"121" = "BE_ListFilesInFolder ( path {; type } )";
 
 "122" = "BE_FileMaker_Tables";
 "123" = "BE_FileMaker_Fields";
@@ -61,6 +61,13 @@
 "1002" = "BE_CancelButton";
 "1003" = "BE_AlternateButton";
 
-"2001" = "BE_MessageDigestTypeMD5";
-"2002" = "BE_MessageDigestTypeSHA256";
+"2001" = "BE_MessageDigestType_MD5";
+"2002" = "BE_MessageDigestType_SHA256";
+
+"3000" = "BE_FileType_All";
+"3001" = "BE_FileType_File";
+"3002" = "BE_FileType_Folder";
+
+
+
 

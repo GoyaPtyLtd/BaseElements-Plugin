@@ -87,7 +87,11 @@ static FMX_Long LoadPlugin ( void )
 
 	g_be_plugin->RegisterFunction ( kBE_MoveFile, BE_MoveFile, 2 );
 	g_be_plugin->RegisterFunction ( kBE_CopyFile, BE_CopyFile, 2 );
-	g_be_plugin->RegisterFunction ( kBE_ListFilesInFolder, BE_ListFilesInFolder, 1 );
+	g_be_plugin->RegisterFunction ( kBE_ListFilesInFolder, BE_ListFilesInFolder, true, 1, 2 );
+
+	g_be_plugin->RegisterFunction ( kBE_FileType_ALL + kBE_FileTypeOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_FileType_File + kBE_FileTypeOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_FileType_Folder + kBE_FileTypeOffset, BE_NumericConstants );
 
 	g_be_plugin->RegisterFunction ( kBE_SelectFile, BE_SelectFile, false, 1 );
 	g_be_plugin->RegisterFunction ( kBE_SelectFolder, BE_SelectFolder, false, 1 );
@@ -114,11 +118,12 @@ static FMX_Long LoadPlugin ( void )
 
 	g_be_plugin->RegisterFunction ( kBE_ExecuteScript, BE_ExecuteScript, true, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, true, 1, 3 );
-	g_be_plugin->RegisterFunction ( kBE_GetURL, BE_GetURL, true, 1, 3 );
+	g_be_plugin->RegisterFunction ( kBE_GetURL, BE_GetURL, true, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_SaveURLToFile, true, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_MessageDigest, BE_MessageDigest, true, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestTypeMD5 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestTypeSHA256 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestType_MD5 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestType_SHA256 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
 
 	return kCurrentExtnVersion;	// enable the plug-in
 	
