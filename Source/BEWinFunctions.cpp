@@ -18,6 +18,9 @@
 #include "BEPluginGlobalDefines.h"
 
 
+bool IsFileMakerClipboardType ( const wstring atype );
+UINT32 ClipboardOffset ( const wstring atype );
+
 // functions & globals for the dialog callback
 
 LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam );
@@ -63,9 +66,35 @@ WStringAutoPtr ClipboardFormats ( void )
 } // ClipboardFormats
 
 
+/* 
+ FileMaker clipboard types for Windows are of the form Mac-XMxx
+ */
+
+bool IsFileMakerClipboardType ( const wstring atype )
+{
+	return ( atype.find ( L"Mac-XM" ) == 0 );
+}
+
+
+/* 
+ for FileMaker types the first 4 bytes on the clipboard is the size of the data on the clipboard
+ */
+
+UINT32 ClipboardOffset ( const wstring atype )
+{
+
+	if ( IsFileMakerClipboardType ( atype ) ) {
+		return 4;
+	} else {
+		return 0;
+	}
+
+}
+
+
 StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 {
-	char * clipboard_data;
+	char * clipboard_data = NULL;
 
 	if ( OpenClipboard ( NULL ) ) {
 		
@@ -89,10 +118,14 @@ StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 	} 
 	
 	if ( !clipboard_data ) {
-		clipboard_data = "";
+		clipboard_data = new char [ 1 ]();
 	}
 
-	StringAutoPtr reply ( new string ( clipboard_data ) );
+	/* 
+	 prefix the data to place on the clipboard with the size of the data
+	 */
+	UINT32 offset = ClipboardOffset ( *atype );
+	StringAutoPtr reply ( new string ( clipboard_data + offset ) );
 
 	delete[] clipboard_data;
 
@@ -110,11 +143,19 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 		EmptyClipboard();
 
 		UINT32 data_size = data->size();
-		UINT32 clipboard_size = data_size;
+
+		/* 
+		 prefix the data to place on the clipboard with the size of the data
+		 */
+		UINT32 offset = ClipboardOffset ( *atype );
+		UINT32 clipboard_size = data_size + offset;
 		HGLOBAL memory_handle = GlobalAlloc ( GMEM_SHARE | GMEM_MOVEABLE, clipboard_size );
 
 		unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( memory_handle );
-		memcpy ( clipboard_contents, data->c_str(), clipboard_size );
+		if ( IsFileMakerClipboardType ( *atype ) == TRUE ) {
+			memcpy ( clipboard_contents, &data_size, offset );
+		}
+		memcpy ( clipboard_contents + offset, data->c_str(), clipboard_size );
 
 		GlobalUnlock ( memory_handle );
 
