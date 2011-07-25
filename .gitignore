@@ -14,4 +14,4 @@ Project/BaseElements.sdf
 Project/BaseElements.suo
 Project/BaseElements.vcxproj.user
 
-Resources/BEPluginExample.aps
+Resources/*.aps
