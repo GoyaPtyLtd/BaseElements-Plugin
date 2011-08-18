@@ -145,7 +145,7 @@ StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& data_vect, unsigned l
 		raw_data->SetText ( data_vect.AtAsText ( which ) );
 		
 		fmx::ulong text_size = (2*(raw_data->GetSize())) + 1;
-		char * text = new char [ text_size ];
+		char * text = new char [ text_size ]();
 		raw_data->GetBytes ( text, text_size, 0, (ulong)fmx::Text::kSize_End, fmx::Text::kEncoding_UTF8 );
 		result->assign ( text );
 		delete [] text;
