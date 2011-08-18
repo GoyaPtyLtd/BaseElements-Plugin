@@ -17,6 +17,7 @@
 #include "BECurl.h"
 #include "BEMessageDigest.h"
 #include "BEFileSystem.h"
+#include "BEShell.h"
 
 
 #if defined(FMX_WIN_TARGET)
@@ -27,19 +28,11 @@
 	#include "resource.h"
 	#include "BEWinFunctions.h"
 
-	#define PATH_MAX MAX_PATH
-
-	#define POPEN _popen
-	#define PCLOSE _pclose
-
 #endif
 
 #if defined(FMX_MAC_TARGET)
 
 	#include "BEMacFunctions.h"
-
-	#define POPEN popen
-	#define PCLOSE pclose
 
 #endif
 
@@ -51,6 +44,7 @@
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"
 #include "boost/thread.hpp"
+
 
 #include <iostream>
 
@@ -862,36 +856,16 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 		
 		StringAutoPtr command = ParameterAsUTF8String ( data_vect, 0 );
 		bool waitForResponse = ParameterAsBoolean ( data_vect, 1 );
-		
+
+		StringAutoPtr response ( new string ( ) );
+
 		if ( waitForResponse ) {
-				
-			FILE * command_result = POPEN ( command->c_str(), "r" );
-		
-			if ( command_result ) {
-
-				StringAutoPtr response ( new string ( ) );
-				char reply[PATH_MAX];
-
-				while ( fgets ( reply, PATH_MAX, command_result ) != NULL ) {
-					response->append ( reply );
-				}		
-			
-				g_last_error = PCLOSE ( command_result );
-
-				SetUTF8Result ( response, results );
-				
-			} else {
-				g_last_error = errno;
-			}
+			g_last_error = ExecuteShellCommand ( *command, *response );
 		} else {
-			boost::thread workerThread ( system, command->c_str() );
+			boost::thread dontWaitForThis ( ExecuteShellCommand, *command, *response );
 		}
 
-		// both PCLOSE and execl set the error to -1 when setting errno
-		if ( g_last_error == -1 ) {
-			g_last_error = errno;
-		}
-				
+		SetUTF8Result ( response, results );
 		
 	} catch ( bad_alloc e ) {
 		g_last_error = kLowMemoryError;
