@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D0023E413FDD64C00C0B57A /* BEShell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0023E213FDD64C00C0B57A /* BEShell.cpp */; };
 		4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
 		4D37E0B51339CF080084730B /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */; };
@@ -51,6 +52,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4D0023E213FDD64C00C0B57A /* BEShell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEShell.cpp; path = ../Source/BEShell.cpp; sourceTree = SOURCE_ROOT; };
+		4D0023E313FDD64C00C0B57A /* BEShell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEShell.h; path = ../Source/BEShell.h; sourceTree = SOURCE_ROOT; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
@@ -149,6 +152,8 @@
 				4D4153A5120140AF00770E14 /* BEWStringVector.cpp */,
 				4D156AE1135D8BC2001A249B /* BEMessageDigest.h */,
 				4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */,
+				4D0023E313FDD64C00C0B57A /* BEShell.h */,
+				4D0023E213FDD64C00C0B57A /* BEShell.cpp */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -244,6 +249,7 @@
 				4D37E0B51339CF080084730B /* BECurl.cpp in Sources */,
 				4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */,
 				4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */,
+				4D0023E413FDD64C00C0B57A /* BEShell.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

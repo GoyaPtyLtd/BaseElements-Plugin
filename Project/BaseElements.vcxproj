@@ -169,6 +169,7 @@
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Source\BEShell.cpp" />
     <ClCompile Include="..\Source\BEWinFunctions.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
@@ -191,6 +192,7 @@
     <ClInclude Include="..\Source\BEPluginFunctions.h" />
     <ClInclude Include="..\Source\BEPluginGlobalDefines.h" />
     <ClInclude Include="..\Source\BEPluginUtilities.h" />
+    <ClInclude Include="..\Source\BEShell.h" />
     <ClInclude Include="..\Source\BEWinFunctions.h" />
     <ClInclude Include="..\Source\BEWStringVector.h" />
     <ClInclude Include="..\Source\BEXSLT.h" />
