@@ -66,11 +66,9 @@ FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& environment
 FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
 FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short function_id, const ExprEnv& environment, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& results );
-
 FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& dataVect, fmx::Data& results );
 FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& dataVect, fmx::Data& results );
 FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results );
-//FMX_PROC(errcode) BE_GetURLAsFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results );
 FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results );
 
 FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
