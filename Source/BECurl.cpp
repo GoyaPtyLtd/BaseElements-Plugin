@@ -66,7 +66,7 @@ vector<char> GetURL ( const StringAutoPtr url, const StringAutoPtr filename, con
 	
 	//	http://curl.haxx.se/libcurl/c/curl_global_init.html
 	
-	g_last_error = curl_global_init ( CURL_GLOBAL_NOTHING );
+	g_last_error = curl_global_init ( CURL_GLOBAL_ALL );
 	curl_handle = curl_easy_init();
 	
 	// bail out now if initialisation fails
@@ -85,7 +85,6 @@ vector<char> GetURL ( const StringAutoPtr url, const StringAutoPtr filename, con
 	} else {
 		// send all data to this function
 		curl_easy_setopt ( curl_handle, CURLOPT_WRITEFUNCTION, WriteMemoryCallback );
-		
 		curl_easy_setopt ( curl_handle, CURLOPT_WRITEDATA, (void *)&chunk );		
 	}
 	
