@@ -1011,47 +1011,87 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const fmx::ExprEnv& env
 } // BE_ExecuteScript
 
 
-
 FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& dataVect, fmx::Data& results )
 {	
-	fmx::errcode error_result = kNoError;
+	g_last_error = kNoError;
 	
-	fmx::TextAutoPtr expression;
+	TextAutoPtr expression;
 	
 	try {
 		
 		expression->SetText ( dataVect.AtAsText ( 0 ) );
-
+		
 		// use tab and return when the separators are not provided
 		
-		fmx::ushort columnSeparator = '\t';
+		TextAutoPtr columnSeparator;
 		
-		fmx::ulong number_of_paramters = dataVect.Size();
+		ulong number_of_paramters = dataVect.Size();
 		
 		if ( number_of_paramters >= 2 ) {
-			dataVect.AtAsText(1).GetUnicode ( &columnSeparator, 0, 1 );
-		}
-		
-		fmx::ushort rowSeparator = '\r';
-
-		if ( number_of_paramters == 3 ) {
-			dataVect.AtAsText(2).GetUnicode ( &rowSeparator, 0, 1 );
+			columnSeparator->SetText ( dataVect.AtAsText(1) );
+		} else {
+			columnSeparator->Assign ( "\t" );
 		}
 		
 		
-		// the original api best suits the purpose
-		error_result = environment.ExecuteSQL ( *expression, results, columnSeparator, rowSeparator );
+		TextAutoPtr rowSeparator;
 		
+		if ( number_of_paramters >= 3 ) {
+			rowSeparator->SetText ( dataVect.AtAsText(2) );
+		} else {
+			rowSeparator->Assign ( "\r" );
+		}
+		
+		const TextAutoPtr filename;
+		
+		if ( number_of_paramters == 4 ) {
+			filename->SetText ( dataVect.AtAsText(3) );
+		} else {
+			filename->Assign ( "" ); // the current file
+		}
+		
+		const DataVectAutoPtr parameters;
+		RowVectAutoPtr sqlResult;
+		
+		g_last_error = environment.ExecuteFileSQL ( *expression, *filename, *parameters, *sqlResult );
+		
+        TextAutoPtr	textResult;
+		
+		ulong numberOfRows = sqlResult->Size();
+		ulong lastRow = numberOfRows - 1;
+		
+        for ( ulong row = 0; row < numberOfRows; ++row ) { 
+			
+			const DataVect &thisRow = sqlResult->At( row ); 
+			ulong numberOfColumns = thisRow.Size();
+			ulong lastColumn = numberOfColumns - 1;
+			
+			for ( ulong column = 0; column < numberOfColumns; ++column ) {
+				// should escape this ??? the old API doesn't so leave it to the FM developers
+				textResult->AppendText ( thisRow.At( column ).GetAsText() );
+				// skip last time
+				if ( column != lastColumn ) {
+					textResult->AppendText( *columnSeparator );
+				}
+			}
+			// skip last time
+			if ( row != lastRow ) {
+				textResult->AppendText ( *rowSeparator );
+			}
+        } 
+		
+		results.SetAsText( *textResult, dataVect.At( 0 ).GetLocale() );		
 		
 	} catch ( bad_alloc e ) {
-		error_result = kLowMemoryError;
+		g_last_error = kLowMemoryError;
 	} catch ( exception e ) {
-		error_result = kErrorUnknown;
+		g_last_error = kErrorUnknown;
 	}	
 	
-	return error_result;
+	return g_last_error;
 	
 } // BE_FileMakerSQL
+
 
 
 
