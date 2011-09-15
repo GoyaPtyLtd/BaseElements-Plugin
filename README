@@ -335,37 +335,6 @@ into the Libraries directory.
 
 
 =======================================================================
-libcurl
-=======================================================================
-
-Download the source from
-
-	http://curl.haxx.se/download.html
-
-and expand it into a directory on the Desktop.
-
-Open
-	vc6curl.dsw
-	
-and set the following Configuration Properties:
-
-	General -> Use of MFC == Use MFC in a Static Library
-	C/C++ -> Preprocessor -> Preprocessor Definitions ... add CURL+STATICLIB
-	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
-	
-In Visual Studio and select "Batch Build" and check the "LIB Release" configuration and then "Build".
-
-Copy the library from
-
-	curl-7.21.4\lib\LIB-Release\libcurl.lib
-
-into the Libraries directory and copy
-
-	curl-7.21.4\include\curl
-	
-to the Headers directory.
-
-=======================================================================
 OpenSSL
 =======================================================================
 
@@ -391,5 +360,42 @@ Unpack the archive onto the desktop and, using the command prompt
 
 
 	Copy libeay32.lib and ssleay32.lib to Libraries and copy includes/openssl to Headers.
+
+=======================================================================
+libcurl
+=======================================================================
+
+Note: OpenSSL must be built before building libcurl.
+
+Download the source from
+
+	http://curl.haxx.se/download.html
+
+and expand it into a directory on the Desktop.
+
+Open
+	vc6curl.dsw
+
+and set the following Configuration Properties:
+
+	General -> Use of MFC == Use MFC in a Static Library
+	C/C++ -> Preprocessor -> Preprocessor Definitions ... add USE_SSLEAY
+	C/C++ -> Preprocessor -> Preprocessor Definitions ... add USE_OPENSSL
+	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
+	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
+	
+
+In Visual Studio and select "Batch Build" and check the "LIB Release" configuration and then "Build".
+
+Copy the library from
+
+	curl-7.22.0\lib\LIB-Release\libcurl.lib
+
+into the Libraries directory and copy
+
+	curl-7.22.0\include\curl
+
+to the Headers directory.
+
 
 =======================================================================
