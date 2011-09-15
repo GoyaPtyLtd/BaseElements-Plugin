@@ -64,7 +64,7 @@ BEFileMakerPlugin * g_be_plugin;		// the plug-in instance
 // register the plug-in functions
 // the functions are defined in BEPluginFunctions.cpp
 
-static FMX_Long LoadPlugin ( void ) 
+static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call ) 
 {
 	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
 	g_be_plugin = new BEFileMakerPlugin ( plugin_id );
@@ -117,7 +117,9 @@ static FMX_Long LoadPlugin ( void )
 	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, false, 1 );
 
 	g_be_plugin->RegisterFunction ( kBE_ExecuteScript, BE_ExecuteScript, true, 1, 3 );
-	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, true, 1, 3 );
+	
+	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, true, 1, 4 );
+
 	g_be_plugin->RegisterFunction ( kBE_GetURL, BE_GetURL, true, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_SaveURLToFile, true, 2, 4 );
 
@@ -156,7 +158,7 @@ void FMX_ENTRYPT FMExternCallProc ( FMX_ExternCallPtr plugin_call ) {
 			break;
 
 		case kFMXT_Init:
-			plugin_call->result = LoadPlugin();
+			plugin_call->result = LoadPlugin ( plugin_call );
 			break;
 			
 		case kFMXT_Shutdown:
