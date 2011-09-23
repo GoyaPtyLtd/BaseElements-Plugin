@@ -718,6 +718,69 @@ FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environmen
 
 
 #pragma mark -
+#pragma mark User Preferences
+#pragma mark -
+
+
+FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
+{
+	g_last_error = kNoError;
+	
+	try {
+		
+		WStringAutoPtr key = ParameterAsWideString ( parameters, 0 );
+		WStringAutoPtr value = ParameterAsWideString ( parameters, 1 );
+		WStringAutoPtr domain = ParameterAsWideString ( parameters, 2 );
+		
+		if ( domain->empty() ) {
+			domain->assign ( USER_PREFERENCES_DOMAIN );
+		}
+
+		SetNumericResult ( SetPreference ( key, value, domain ), results );
+		
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_SetPreference
+
+
+
+FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
+{
+	g_last_error = kNoError;
+	
+	try {
+		
+		WStringAutoPtr key = ParameterAsWideString ( parameters, 0 );
+		WStringAutoPtr domain = ParameterAsWideString ( parameters, 1 );
+		
+		if ( domain->empty() ) {
+			domain->assign ( USER_PREFERENCES_DOMAIN );
+		}
+		
+		SetWideResult ( GetPreference ( key, domain ), results );
+		
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_GetPreference
+
+
+
+
+
+
+#pragma mark -
 #pragma mark Other / Ungrouped
 #pragma mark -
 

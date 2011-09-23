@@ -307,6 +307,97 @@ LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam )
 } // CBTProc
 
 
+#pragma mark -
+#pragma mark User Preferences
+#pragma mark -
+
+
+bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain )
+{
+	HKEY registry_key;
+ 
+	g_last_error = RegCreateKeyEx ( HKEY_CURRENT_USER,
+								domain->c_str(),
+								0,
+								NULL,
+								REG_OPTION_NON_VOLATILE,
+								KEY_WRITE,
+								NULL,
+								&registry_key,
+								NULL
+								);
+
+	if ( g_last_error == ERROR_SUCCESS ) {
+
+		g_last_error = RegSetValueEx ( registry_key,
+								key->c_str(),
+								0,
+								REG_SZ,
+								(PBYTE)value->c_str(),
+								(value->size() * sizeof(wchar_t)) + 1
+								);
+		RegCloseKey ( registry_key );
+	}
+
+	return ( g_last_error == ERROR_SUCCESS );
+
+}
+
+
+WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
+{
+
+	HKEY registry_key;
+	DWORD buffer_size = 1024;
+	wchar_t * preference_data = new wchar_t[buffer_size]();
+
+	g_last_error = RegOpenKeyEx ( HKEY_CURRENT_USER, 
+							domain->c_str(),
+							NULL,
+							KEY_READ,
+							&registry_key
+							);
+ 
+	if ( g_last_error == ERROR_SUCCESS ) {
+
+		g_last_error = RegQueryValueEx ( registry_key,
+									key->c_str(),
+									NULL,
+									NULL,
+									(LPBYTE)preference_data,
+									&buffer_size
+									);
+
+		// if preference_data isn't big enough resize it and try again
+		if ( g_last_error == ERROR_MORE_DATA ) {
+
+			delete [] preference_data;
+			preference_data = new wchar_t[buffer_size + 1]();
+
+			g_last_error = RegQueryValueEx ( registry_key,
+										key->c_str(),
+										NULL,
+										NULL,
+										(LPBYTE)preference_data,
+										&buffer_size
+										);
+		}
+		RegCloseKey ( registry_key );
+	}
+
+	WStringAutoPtr value = WStringAutoPtr ( new wstring ( preference_data ) );
+  
+	delete [] preference_data;
+
+	return value;
+
+}
+
+
+#pragma mark -
+#pragma mark Other
+#pragma mark -
+
 
 bool OpenURL ( WStringAutoPtr url )
 {

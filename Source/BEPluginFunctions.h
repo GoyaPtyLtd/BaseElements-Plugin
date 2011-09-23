@@ -59,6 +59,11 @@ FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* e
 FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
 
+
+FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results);
+FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results);
+
+
 FMX_PROC(errcode) BE_ExtractScriptVariables ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 
 FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );

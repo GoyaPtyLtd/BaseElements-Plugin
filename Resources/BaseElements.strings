@@ -49,7 +49,10 @@
 
 "154" = "BE_MessageDigest ( text {; type } )";
 
-"156" = "BE_SaveURLToFIle ( url; path {; username ; password } )";
+"156" = "BE_SaveURLToFile ( url; path {; username ; password } )";
+
+"160" = "BE_SetPreference ( key; value {; domain } )";
+"161" = "BE_GetPreference ( key {; domain } )";
 
 
 "200" = "BE_ApplyXSLTInMemory ( xml; xslt )";

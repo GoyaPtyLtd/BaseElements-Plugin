@@ -29,6 +29,15 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt );
 
 int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr button1, WStringAutoPtr button2, WStringAutoPtr button3 );
 
+// user preferences
+
+bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain );
+WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain );
+
+
+// other
+
 bool OpenURL ( WStringAutoPtr url );
+
 
 #endif // BEWINFUNCTIONS_H

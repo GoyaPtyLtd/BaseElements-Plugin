@@ -31,6 +31,14 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt );
 int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr ok_button, WStringAutoPtr cancel_button, WStringAutoPtr alternate_button );
 
 
+// user preferences
+
+bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain );
+WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain );
+
+
+// other
+
 bool OpenURL ( WStringAutoPtr url );
 
 

@@ -24,10 +24,13 @@
 	 */
 	#undef __CONSTANT_CFSTRINGS__
 
+	#define USER_PREFERENCES_DOMAIN L"au.com.goya.baseelements.plugin-user"
+
 #elif defined( _MSC_VER )
 
 	#define FMX_WIN_TARGET	1
 	#define _WIN32_WINNT _WIN32_WINNT_MAXVER
+	#define USER_PREFERENCES_DOMAIN L"Software\\Goya\\BaseElements\\PluginUser"
 
 #endif
 
@@ -41,9 +44,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"1.2.52"
-#define	AUTO_UPDATE_VERSION L"00010252"
-#define VERSION_STRING "1.3a2"
+#define	VERSION_NUMBER_STRING L"1.2.53"
+#define	AUTO_UPDATE_VERSION L"00010253"
+#define VERSION_STRING "1.3a3"
 
 //#define VERSION_NAME_STRING	PLUGIN_NAME " (" VERSION_STRING ")"
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -87,6 +90,8 @@ enum functions {
 	kBE_GetLastError = 153,
 	kBE_MessageDigest = 154,
 	kBE_SaveURLToFile = 156,
+	kBE_SetPreference = 160,
+	kBE_GetPreference = 161,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202

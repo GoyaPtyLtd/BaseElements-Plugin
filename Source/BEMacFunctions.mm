@@ -221,6 +221,63 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 } // DisplayDialog
 
 
+
+#pragma mark -
+#pragma mark User Preferences
+#pragma mark -
+
+
+bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain )
+{
+	
+	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+	
+	bool result = true;
+	
+	if ( standardUserDefaults ) {
+
+		NSString * domain_name = NSStringFromWStringAutoPtr ( domain );
+		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];		
+		
+		NSString * preference_key = NSStringFromWStringAutoPtr ( key );
+		NSString * preference_value = NSStringFromWStringAutoPtr ( value );
+		
+		NSMutableDictionary * new_preferences = [NSMutableDictionary dictionaryWithCapacity: [preferences count] + 1];
+		[new_preferences addEntriesFromDictionary: preferences];
+		[new_preferences setObject: preference_value forKey: preference_key];
+		
+		[standardUserDefaults setPersistentDomain: new_preferences forName: domain_name];
+		[standardUserDefaults synchronize];
+
+	} else {
+		result = false;
+	}
+	
+	return result;
+}
+
+
+WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
+{
+	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+	NSString * preference_value = nil;
+	
+	if ( standardUserDefaults ) {
+		
+		[standardUserDefaults synchronize];
+		
+		NSString * domain_name = NSStringFromWStringAutoPtr ( domain );
+		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];		
+
+		NSString * preference_key = NSStringFromWStringAutoPtr ( key );
+		preference_value = [preferences objectForKey: preference_key];
+	}
+	
+	return WStringAutoPtrFromNSString ( preference_value );
+}
+
+
+
 #pragma mark -
 #pragma mark Other
 #pragma mark -
