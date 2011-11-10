@@ -15,3 +15,7 @@ Project/BaseElements.suo
 Project/BaseElements.vcxproj.user
 
 Resources/*.aps
+
+.DS_Store
+
+Source/minizip*
