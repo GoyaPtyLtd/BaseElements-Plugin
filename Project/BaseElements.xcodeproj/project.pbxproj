@@ -22,6 +22,11 @@
 		4D9F2DDE11E934BC003D75BB /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4D9F2DDF11E934BC003D75BB /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
 		4D9F2DE011E934BC003D75BB /* BEPluginFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */; };
+		4DC182CA144CEC0900E27CAA /* BEZlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DC182C9144CEC0900E27CAA /* BEZlib.cpp */; };
+		4DC18342144D31C800E27CAA /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC18338144D31C800E27CAA /* ioapi.c */; };
+		4DC18344144D31C800E27CAA /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC1833C144D31C800E27CAA /* mztools.c */; };
+		4DC18345144D31C800E27CAA /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC1833E144D31C800E27CAA /* unzip.c */; };
+		4DC18346144D31C800E27CAA /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC18340144D31C800E27CAA /* zip.c */; };
 		4DD780D911FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */; };
 		4DD7824B11FFF57400CFC8B4 /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4DD78320120005AE00CFC8B4 /* BEXSLT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */; };
@@ -60,6 +65,7 @@
 		4D37E0B21339CF080084730B /* BECurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECurl.h; path = ../Source/BECurl.h; sourceTree = SOURCE_ROOT; };
 		4D4153A5120140AF00770E14 /* BEWStringVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEWStringVector.cpp; path = ../Source/BEWStringVector.cpp; sourceTree = SOURCE_ROOT; };
 		4D4153A6120140AF00770E14 /* BEWStringVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEWStringVector.h; path = ../Source/BEWStringVector.h; sourceTree = SOURCE_ROOT; };
+		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
 		4D6552A8119A929A00FD2D1D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileSystem.cpp; path = ../Source/BEFileSystem.cpp; sourceTree = SOURCE_ROOT; };
 		4D70428713BAE5CA00DE4484 /* BEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileSystem.h; path = ../Source/BEFileSystem.h; sourceTree = SOURCE_ROOT; };
@@ -78,6 +84,17 @@
 		4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginFunctions.cpp; path = ../Source/BEPluginFunctions.cpp; sourceTree = SOURCE_ROOT; };
 		4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginFunctions.h; path = ../Source/BEPluginFunctions.h; sourceTree = SOURCE_ROOT; };
 		4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginGlobalDefines.h; path = ../Source/BEPluginGlobalDefines.h; sourceTree = SOURCE_ROOT; };
+		4DC182C8144CEC0900E27CAA /* BEZlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEZlib.h; path = ../Source/BEZlib.h; sourceTree = SOURCE_ROOT; };
+		4DC182C9144CEC0900E27CAA /* BEZlib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEZlib.cpp; path = ../Source/BEZlib.cpp; sourceTree = SOURCE_ROOT; };
+		4DC18337144D31C800E27CAA /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = ../Source/minizip/crypt.h; sourceTree = SOURCE_ROOT; };
+		4DC18338144D31C800E27CAA /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ioapi.c; path = ../Source/minizip/ioapi.c; sourceTree = SOURCE_ROOT; };
+		4DC18339144D31C800E27CAA /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ioapi.h; path = ../Source/minizip/ioapi.h; sourceTree = SOURCE_ROOT; };
+		4DC1833C144D31C800E27CAA /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mztools.c; path = ../Source/minizip/mztools.c; sourceTree = SOURCE_ROOT; };
+		4DC1833D144D31C800E27CAA /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mztools.h; path = ../Source/minizip/mztools.h; sourceTree = SOURCE_ROOT; };
+		4DC1833E144D31C800E27CAA /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = unzip.c; path = ../Source/minizip/unzip.c; sourceTree = SOURCE_ROOT; };
+		4DC1833F144D31C800E27CAA /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = unzip.h; path = ../Source/minizip/unzip.h; sourceTree = SOURCE_ROOT; };
+		4DC18340144D31C800E27CAA /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = zip.c; path = ../Source/minizip/zip.c; sourceTree = SOURCE_ROOT; };
+		4DC18341144D31C800E27CAA /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zip.h; path = ../Source/minizip/zip.h; sourceTree = SOURCE_ROOT; };
 		4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileMakerPlugin.h; path = ../Source/BEFileMakerPlugin.h; sourceTree = "<group>"; };
 		4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileMakerPlugin.cpp; path = ../Source/BEFileMakerPlugin.cpp; sourceTree = "<group>"; };
 		4DD7831E120005AE00CFC8B4 /* BEXSLT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXSLT.h; path = ../Source/BEXSLT.h; sourceTree = "<group>"; };
@@ -118,9 +135,26 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+		4DC18336144D319D00E27CAA /* MiniZip */ = {
+			isa = PBXGroup;
+			children = (
+				4DC18337144D31C800E27CAA /* crypt.h */,
+				4DC18338144D31C800E27CAA /* ioapi.c */,
+				4DC18339144D31C800E27CAA /* ioapi.h */,
+				4DC1833C144D31C800E27CAA /* mztools.c */,
+				4DC1833D144D31C800E27CAA /* mztools.h */,
+				4DC1833E144D31C800E27CAA /* unzip.c */,
+				4DC1833F144D31C800E27CAA /* unzip.h */,
+				4DC18340144D31C800E27CAA /* zip.c */,
+				4DC18341144D31C800E27CAA /* zip.h */,
+			);
+			name = MiniZip;
+			sourceTree = "<group>";
+		};
 		C7DEDEE707E10BF3002283F3 = {
 			isa = PBXGroup;
 			children = (
+				4DC18336144D319D00E27CAA /* MiniZip */,
 				C7DEDEF607E10BF3002283F3 /* Sources */,
 				C7DEDEFC07E10BF3002283F3 /* Resources */,
 				4D9EEE5D118A8C9600EC9352 /* Libraries */,
@@ -154,6 +188,9 @@
 				4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */,
 				4D0023E313FDD64C00C0B57A /* BEShell.h */,
 				4D0023E213FDD64C00C0B57A /* BEShell.cpp */,
+				4DC182C8144CEC0900E27CAA /* BEZlib.h */,
+				4DC182C9144CEC0900E27CAA /* BEZlib.cpp */,
+				4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -250,6 +287,11 @@
 				4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */,
 				4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */,
 				4D0023E413FDD64C00C0B57A /* BEShell.cpp in Sources */,
+				4DC182CA144CEC0900E27CAA /* BEZlib.cpp in Sources */,
+				4DC18342144D31C800E27CAA /* ioapi.c in Sources */,
+				4DC18344144D31C800E27CAA /* mztools.c in Sources */,
+				4DC18345144D31C800E27CAA /* unzip.c in Sources */,
+				4DC18346144D31C800E27CAA /* zip.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,7 +408,12 @@
 				LIBRARY_SEARCH_PATHS = ../Libraries;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "-fno-constant-cfstrings";
+				OTHER_CFLAGS = (
+					"-Dfopen64=fopen",
+					"-Dftello64=ftello",
+					"-Dfseeko64=fseeko",
+					"-fno-constant-cfstrings",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-fpermissive",
 					"$(OTHER_CFLAGS)",
@@ -433,7 +480,12 @@
 				LIBRARY_SEARCH_PATHS = ../Libraries;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "-fno-constant-cfstrings";
+				OTHER_CFLAGS = (
+					"-Dfopen64=fopen",
+					"-Dftello64=ftello",
+					"-Dfseeko64=fseeko",
+					"-fno-constant-cfstrings",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-fpermissive",
 					"$(OTHER_CFLAGS)",

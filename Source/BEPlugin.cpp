@@ -126,6 +126,9 @@ static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SetPreference, BE_SetPreference, true, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_GetPreference, BE_GetPreference, true, 1, 2 );
 
+	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, 1 );
+	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1 );
+
 	g_be_plugin->RegisterFunction ( kBE_MessageDigest, BE_MessageDigest, true, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestType_MD5 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestType_SHA256 + kBE_MessageDigestTypeOffset, BE_NumericConstants );

@@ -30,13 +30,13 @@ Boost is available from
 
 	http://www.boost.org/
 	
-Note: v1.2 of the plug-in requires Boost 1.46.1 (or later).
+Note: v1.3 of the plug-in requires Boost 1.47_0 (or later).
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_46_1
+	cd boost_1_47_0
 	./bootstrap.sh
-	./bjam architecture=combined link=static runtime-link=static --with-thread --with-filesystem
+	./b2 architecture=combined link=static runtime-link=static --with-thread --with-filesystem3
 	
 See
 
@@ -53,10 +53,22 @@ The boost headers must be placed in the Headers directory and the
 libraries placed in the Libraries directory.
 
 =======================================================================
+minizip
+=======================================================================
+
+Download the zlib source from
+
+	http://www.zlib.net/
+
+and extract the folder zlib-1.2.5 to the desktop. Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory.
+
+
+=======================================================================
 OpenSSL
 =======================================================================
 
 To follow... for the moment copy OpenSSL.framework from inside the FileMaker 11 application package into the Libraries folder.
+
 
 =======================================================================
 Windows
@@ -85,7 +97,7 @@ The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 	
-Note: v1.2 of the plug-in requires Boost 1.46.1 (or later).
+Note: v1.3 of the plug-in requires Boost 1.47 (or later).
 
 See
 
@@ -93,25 +105,25 @@ See
 	
 for instructions on compiling the Boost libraries. In general
 
-	cd boost_1_46_1
+	cd boost_1_47_0
 	bootstrap.bat
-	bjam link=static runtime-link=static --with-thread --with-filesystem --with-date_time
+	b2 link=static runtime-link=static --with-thread --with-filesystem --with-date_time
 
 should do the trick.	
 	
 The boost headers must be placed in the Headers directory and the libraries copied from
 
-	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_46_1.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_46_1.lib
-	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_46_1.lib
-	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_46_1.lib
+	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_47_0.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_47_0.lib
+	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_47_0.lib
+	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_47_0.lib
 
 into the Libraries directory. For debug builds also copy 
 	
-	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_46_1.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_46_1.lib
-	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_46_1.lib
-	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_46_1.lib
+	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_47_0.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_47_0.lib
+	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_47_0.lib
+	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_47_0.lib
 
 
 =======================================================================
@@ -124,11 +136,22 @@ Building zlib is straightforward. Download the zlib source from
 
 and extract the folder zlib-1.2.5 to the desktop.
 
-Open the solution file "contrib/vstudio/vc10/zlibvc.sln" and from the "Build Menu" select "Configuration Manager" and, once in the Configuration Manager, select "ReleaseWithoutAsm" as the "Active solution configuration". Build the library and move
+Open the solution file "contrib/vstudio/vc10/zlibvc.sln" and from the "Build Menu" select "Configuration Manager" and, once in the Configuration Manager, select "ReleaseWithoutAsm" as the "Active solution configuration". 
+
+Remove ZLIB_WINAPI from the list of preprocessor definitions.
+
+Build the library and move
 
 	contrib/vstudio/vc10/x86/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
 in the Libraries directory and zlib.h in the Headers directory.
+
+
+=======================================================================
+minizip
+=======================================================================
+
+Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory.
 
 
 =======================================================================

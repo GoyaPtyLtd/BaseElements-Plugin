@@ -39,7 +39,7 @@
 
 
 "128" = "BaseElements";
-"129" = "Version: 1.3a3\n\nThis plug-in provides additional functionality for BaseElements 3 from Goya";
+"129" = "Version: 1.3a4\n\nThis plug-in provides additional functionality for BaseElements 3 from Goya";
 
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName; parameter } )";
@@ -53,6 +53,9 @@
 
 "160" = "BE_SetPreference ( key; value {; domain } )";
 "161" = "BE_GetPreference ( key {; domain } )";
+
+"170" = "BE_Unzip ( archive )";
+"171" = "BE_Zip ( file )";
 
 
 "200" = "BE_ApplyXSLTInMemory ( xml; xslt )";

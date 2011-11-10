@@ -47,7 +47,7 @@
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Libraries;$(LibraryPath)</LibraryPath>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.fmx</TargetExt>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">\\VBOXSVR\BaseElementsPlugin\Libraries;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;../Source/minizip;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\libxslt\libxslt;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\Support;$(SourcePath)</SourcePath>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\</OutDir>
@@ -182,6 +182,12 @@
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Source\BEZlib.cpp" />
+    <ClCompile Include="..\Source\minizip\ioapi.c" />
+    <ClCompile Include="..\Source\minizip\iowin32.c" />
+    <ClCompile Include="..\Source\minizip\mztools.c" />
+    <ClCompile Include="..\Source\minizip\unzip.c" />
+    <ClCompile Include="..\Source\minizip\zip.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -196,6 +202,14 @@
     <ClInclude Include="..\Source\BEWinFunctions.h" />
     <ClInclude Include="..\Source\BEWStringVector.h" />
     <ClInclude Include="..\Source\BEXSLT.h" />
+    <ClInclude Include="..\Source\BEZlib.h" />
+    <ClInclude Include="..\Source\BE_Boost_FileSystem_Additions.hpp" />
+    <ClInclude Include="..\Source\minizip\crypt.h" />
+    <ClInclude Include="..\Source\minizip\ioapi.h" />
+    <ClInclude Include="..\Source\minizip\iowin32.h" />
+    <ClInclude Include="..\Source\minizip\mztools.h" />
+    <ClInclude Include="..\Source\minizip\unzip.h" />
+    <ClInclude Include="..\Source\minizip\zip.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

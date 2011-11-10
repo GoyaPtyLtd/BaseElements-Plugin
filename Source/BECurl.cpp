@@ -16,8 +16,9 @@
 
 #if defined(FMX_WIN_TARGET)
 
-#define PATH_MAX MAX_PATH
-#include "windows.h"
+	#include "windows.h"
+
+	#define PATH_MAX MAX_PATH
 
 #endif
 

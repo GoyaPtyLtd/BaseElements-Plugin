@@ -44,9 +44,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"1.2.53"
-#define	AUTO_UPDATE_VERSION L"00010253"
-#define VERSION_STRING "1.3a3"
+#define	VERSION_NUMBER_STRING L"1.2.54"
+#define	AUTO_UPDATE_VERSION L"00010254"
+#define VERSION_STRING "1.3a4"
 
 //#define VERSION_NAME_STRING	PLUGIN_NAME " (" VERSION_STRING ")"
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -92,6 +92,8 @@ enum functions {
 	kBE_SaveURLToFile = 156,
 	kBE_SetPreference = 160,
 	kBE_GetPreference = 161,
+	kBE_Unzip = 170,
+	kBE_Zip = 171,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202
@@ -108,7 +110,9 @@ enum dialog_buttons {
 enum errors {
 	kErrorUnknown = -1,
 	kNoError = 0,
+	kNoSuchFileOrDirectoryError = 2,
 	kLowMemoryError = 7,
+	kFileExistsError = 17,
 	kErrorParameterMissing = 102,
 	kFileSystemError = 10000
 };

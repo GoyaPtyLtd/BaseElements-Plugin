@@ -18,6 +18,7 @@
 #include "BEMessageDigest.h"
 #include "BEFileSystem.h"
 #include "BEShell.h"
+#include "BEZlib.h"
 
 
 #if defined(FMX_WIN_TARGET)
@@ -777,6 +778,57 @@ FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environ
 
 
 
+#pragma mark -
+#pragma mark Compression
+#pragma mark -
+
+
+
+FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	g_last_error = kNoError;
+	
+	try {
+		
+		StringAutoPtr archive = ParameterAsUTF8String ( parameters, 0 );
+		
+		SetNumericResult ( UnZip ( archive ), results );
+		
+	} catch ( filesystem_error e ) {
+		g_last_error = e.code().value();
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_Unzip
+
+
+
+FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	g_last_error = kNoError;
+	
+	try {
+		
+		StringAutoPtr file = ParameterAsUTF8String ( parameters, 0 );
+		
+		SetNumericResult ( Zip ( file ), results );
+		
+	} catch ( filesystem_error e ) {
+		g_last_error = e.code().value();
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_Zip
 
 
 
