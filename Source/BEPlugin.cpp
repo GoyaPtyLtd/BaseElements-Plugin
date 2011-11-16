@@ -93,9 +93,11 @@ static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FileType_File + kBE_FileTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_FileType_Folder + kBE_FileTypeOffset, BE_NumericConstants );
 
-	g_be_plugin->RegisterFunction ( kBE_SelectFile, BE_SelectFile, false, 1 );
-	g_be_plugin->RegisterFunction ( kBE_SelectFolder, BE_SelectFolder, false, 1 );
+	g_be_plugin->RegisterFunction ( kBE_SelectFile, BE_SelectFile, false, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_SelectFolder, BE_SelectFolder, false, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_DisplayDialog, BE_DisplayDialog, false, 3, 5 );
+	g_be_plugin->RegisterFunction ( kBE_OpenFile, BE_OpenFile, false, 1, 1 );
+	
 	
 	g_be_plugin->RegisterFunction ( kBE_ApplyXSLT, BE_ApplyXSLT, 3 );
 	
@@ -128,6 +130,11 @@ static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, 1 );
 	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1 );
+
+	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST, 2 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Code, BE_HTTP_Response_Code );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Headers, BE_HTTP_Response_Headers );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_Set_Custom_Header, BE_HTTP_Set_Custom_Header, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_MessageDigest, BE_MessageDigest, true, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestType_MD5 + kBE_MessageDigestTypeOffset, BE_NumericConstants );

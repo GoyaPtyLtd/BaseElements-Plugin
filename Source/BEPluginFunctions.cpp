@@ -45,6 +45,9 @@
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"
 #include "boost/thread.hpp"
+#include "boost/foreach.hpp"
+#include "boost/tokenizer.hpp"
+#include "boost/algorithm/string/find.hpp"
 
 
 #include <iostream>
@@ -59,6 +62,10 @@ using namespace boost::filesystem;
 #pragma mark -
 
 errcode g_last_error;
+
+extern int g_http_response_code;
+extern string g_http_response_headers;
+extern CustomHeaders g_http_custom_headers;
 
 
 #pragma mark -
@@ -529,7 +536,7 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 			g_last_error = e.code().value();
 		}
 
-		fmx::LocaleAutoPtr default_locale;
+		LocaleAutoPtr default_locale;
 		results.SetAsText ( *list_of_files, *default_locale );
 		
 	} catch ( bad_alloc e ) {
@@ -835,6 +842,178 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 
 
 #pragma mark -
+#pragma mark HTTP / Curl
+#pragma mark -
+
+
+FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{	
+	g_last_error = kNoError;
+	
+	try {
+		
+		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr filename ( new string ( "" ) );
+		StringAutoPtr username = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
+		
+		vector<char> data = GetURL ( url, filename, username, password );
+		
+		// if a file name is supplied then send back a file
+		
+		if ( parameters.Size() > 1 ) {
+			
+			TextAutoPtr name;
+			name->SetText ( parameters.AtAsText(1) );
+			
+			BinaryDataAutoPtr resultBinary; 
+			QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
+			resultBinary->AddFNAMData ( *name ); 
+			resultBinary->Add ( *data_type, (unsigned long) data.size(), (void *)&data[0] ); 
+			results.SetBinaryData ( *resultBinary, true ); 
+			
+		} else { // otherwise try sending back text
+			
+			data.push_back ( '\0' );
+			StringAutoPtr data_string ( new string ( &data[0] ) );
+			SetUTF8Result ( data_string, results );
+			
+		}		
+		
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_GetURL
+
+
+
+FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{	
+	g_last_error = kNoError;
+	
+	try {
+		
+		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
+		
+		vector<char> data = GetURL ( url, filename, username, password );
+		
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_SaveURLToFile
+
+
+
+FMX_PROC(errcode) BE_HTTP_POST ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{	
+	g_last_error = kNoError;
+	
+	try {
+		
+		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
+		
+		vector<char> data = HTTP_POST ( url, post_parameters );
+		data.push_back ( '\0' );
+		StringAutoPtr data_string ( new string ( &data[0] ) );
+		SetUTF8Result ( data_string, results );
+		
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_HTTP_POST
+
+
+
+FMX_PROC(errcode) BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{	
+	g_last_error = kNoError;
+	
+	try {
+		
+		SetNumericResult ( g_http_response_code, results );
+		
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_HTTP_Response_Code
+
+
+
+FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{	
+	g_last_error = kNoError;
+	
+	try {
+		
+		StringAutoPtr headers ( new string ( g_http_response_headers ) );
+		SetUTF8Result ( headers, results );
+
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_HTTP_Response_Headers
+
+
+
+FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{	
+	g_last_error = kNoError;
+	
+	try {
+		
+		StringAutoPtr name = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr value = ParameterAsUTF8String ( parameters, 1 );
+		
+		if ( value->empty() ) {
+			g_http_custom_headers.erase ( *name );
+		} else {
+			g_http_custom_headers [ *name ] = *value;
+		}
+		
+		SetNumericResult ( g_last_error, results );
+		
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_HTTP_Set_Custom_Header
+
+
+
+#pragma mark -
 #pragma mark Other / Ungrouped
 #pragma mark -
 
@@ -1024,9 +1203,9 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 
 FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& reply )
 {	
-	fmx::errcode error_result = kNoError;
+	errcode error_result = kNoError;
 	
-	fmx::TextAutoPtr expression;
+	TextAutoPtr expression;
 
 	try {
 
@@ -1055,9 +1234,9 @@ FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& env
 
 FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& reply )
 {	
-	fmx::errcode error_result = kNoError;
+	errcode error_result = kNoError;
 	
-	fmx::TextAutoPtr expression;
+	TextAutoPtr expression;
 	
 	try {
 		
@@ -1132,8 +1311,8 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 		// get the parameter, if present
 		
 		if ( number_of_paramters == 3 ) {
-			fmx::LocaleAutoPtr default_locale;
-			parameter->SetAsText ( dataVect.AtAsText ( 2 ), *default_locale );
+			LocaleAutoPtr default_locale;
+			parameter->SetAsText ( parameters.AtAsText ( 2 ), *default_locale );
 		}
 		
 		error_result = FMX_StartScript ( &(*file_name), &(*script_name), kFMXT_Pause, &(*parameter) );
@@ -1151,7 +1330,7 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 } // BE_ExecuteScript
 
 
-FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& dataVect, fmx::Data& results )
+FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
 {	
 	g_last_error = kNoError;
 	
@@ -1159,16 +1338,16 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& envi
 	
 	try {
 		
-		expression->SetText ( dataVect.AtAsText ( 0 ) );
+		expression->SetText ( parameters.AtAsText ( 0 ) );
 		
 		// use tab and return when the separators are not provided
 		
 		TextAutoPtr columnSeparator;
 		
-		ulong number_of_paramters = dataVect.Size();
+		ulong number_of_paramters = parameters.Size();
 		
 		if ( number_of_paramters >= 2 ) {
-			columnSeparator->SetText ( dataVect.AtAsText(1) );
+			columnSeparator->SetText ( parameters.AtAsText(1) );
 		} else {
 			columnSeparator->Assign ( "\t" );
 		}
@@ -1177,7 +1356,7 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& envi
 		TextAutoPtr rowSeparator;
 		
 		if ( number_of_paramters >= 3 ) {
-			rowSeparator->SetText ( dataVect.AtAsText(2) );
+			rowSeparator->SetText ( parameters.AtAsText(2) );
 		} else {
 			rowSeparator->Assign ( "\r" );
 		}
@@ -1185,15 +1364,15 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& envi
 		const TextAutoPtr filename;
 		
 		if ( number_of_paramters == 4 ) {
-			filename->SetText ( dataVect.AtAsText(3) );
+			filename->SetText ( parameters.AtAsText(3) );
 		} else {
 			filename->Assign ( "" ); // the current file
 		}
 		
-		const DataVectAutoPtr parameters;
+		const DataVectAutoPtr sql_parameters;
 		RowVectAutoPtr sqlResult;
 		
-		g_last_error = environment.ExecuteFileSQL ( *expression, *filename, *parameters, *sqlResult );
+		g_last_error = environment.ExecuteFileSQL ( *expression, *filename, *sql_parameters, *sqlResult );
 		
         TextAutoPtr	textResult;
 		
@@ -1220,7 +1399,7 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& envi
 			}
         } 
 		
-		results.SetAsText( *textResult, dataVect.At( 0 ).GetLocale() );		
+		results.SetAsText( *textResult, parameters.At( 0 ).GetLocale() );		
 		
 	} catch ( bad_alloc e ) {
 		g_last_error = kLowMemoryError;
@@ -1231,78 +1410,6 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& envi
 	return g_last_error;
 	
 } // BE_FileMakerSQL
-
-
-
-
-FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results )
-{	
-	g_last_error = kNoError;
-		
-	try {
-		
-		StringAutoPtr url = ParameterAsUTF8String ( dataVect, 0 );
-		StringAutoPtr filename ( new string ( "" ) );
-		StringAutoPtr username = ParameterAsUTF8String ( dataVect, 1 );
-		StringAutoPtr password = ParameterAsUTF8String ( dataVect, 2 );
-		
-		vector<char> data = GetURL ( url, filename, username, password );
-
-		// if a file name is supplied then send back a file
-
-		if ( dataVect.Size() > 1 ) {
-
-			TextAutoPtr name;
-			name->SetText ( dataVect.AtAsText(1) );
-
-			BinaryDataAutoPtr resultBinary; 
-			QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
-			resultBinary->AddFNAMData ( *name ); 
-			resultBinary->Add ( *data_type, (unsigned long) data.size(), (void *)&data[0] ); 
-			results.SetBinaryData ( *resultBinary, true ); 
-
-		} else { // otherwise try sending back text
-			
-			data.push_back ( '\0' );
-			StringAutoPtr data_string ( new string ( &data[0] ) );
-			SetUTF8Result ( data_string, results );
-
-		}		
-		
-	} catch ( bad_alloc e ) {
-		g_last_error = kLowMemoryError;
-	} catch ( exception e ) {
-		g_last_error = kErrorUnknown;
-	}
-	
-	return g_last_error;
-	
-} // BE_GetURL
-
-
-
-FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& dataVect, fmx::Data& results )
-{	
-	g_last_error = kNoError;
-	
-	try {
-		
-		StringAutoPtr url = ParameterAsUTF8String ( dataVect, 0 );
-		StringAutoPtr filename = ParameterAsUTF8String ( dataVect, 1 );
-		StringAutoPtr username = ParameterAsUTF8String ( dataVect, 2 );
-		StringAutoPtr password = ParameterAsUTF8String ( dataVect, 3 );
-		
-		vector<char> data = GetURL ( url, filename, username, password );
-				
-	} catch ( bad_alloc e ) {
-		g_last_error = kLowMemoryError;
-	} catch ( exception e ) {
-		g_last_error = kErrorUnknown;
-	}
-	
-	return g_last_error;
-	
-} // BE_SaveURLToFile
 
 
 

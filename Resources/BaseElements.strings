@@ -58,6 +58,11 @@
 "170" = "BE_Unzip ( archive )";
 "171" = "BE_Zip ( file )";
 
+"180" = "BE_HTTP_POST ( url; parameters )";
+"181" = "BE_HTTP_Response_Code";
+"182" = "BE_HTTP_Response_Headers";
+"183" = "BE_HTTP_Set_Custom_Header ( header ; value )";
+
 
 "200" = "BE_ApplyXSLTInMemory ( xml; xslt )";
 "201" = "BE_XPath ( xml; xpath {; namespaceList } )";

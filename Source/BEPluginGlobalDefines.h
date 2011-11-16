@@ -44,9 +44,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"1.2.54"
-#define	AUTO_UPDATE_VERSION L"00010254"
-#define VERSION_STRING "1.3a4"
+#define	VERSION_NUMBER_STRING L"1.2.55"
+#define	AUTO_UPDATE_VERSION L"00010255"
+#define VERSION_STRING "1.3a5"
 
 //#define VERSION_NAME_STRING	PLUGIN_NAME " (" VERSION_STRING ")"
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -95,6 +95,10 @@ enum functions {
 	kBE_GetPreference = 161,
 	kBE_Unzip = 170,
 	kBE_Zip = 171,
+	kBE_HTTP_POST = 180,
+	kBE_HTTP_Response_Code = 181,
+	kBE_HTTP_Response_Headers = 182,
+	kBE_HTTP_Set_Custom_Header = 183,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202
