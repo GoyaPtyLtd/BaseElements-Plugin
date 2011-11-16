@@ -24,8 +24,8 @@ WStringAutoPtr ClipboardFormats ( void );
 StringAutoPtr ClipboardData ( WStringAutoPtr atype );
 bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype );
 
-WStringAutoPtr SelectFile ( WStringAutoPtr prompt );
-WStringAutoPtr SelectFolder ( WStringAutoPtr prompt );
+WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
+WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
 
 int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr button1, WStringAutoPtr button2, WStringAutoPtr button3 );
 

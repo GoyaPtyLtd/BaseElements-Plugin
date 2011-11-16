@@ -29,7 +29,7 @@ NSString * NSStringFromWStringAutoPtr ( const WStringAutoPtr text );
 WStringAutoPtr WStringAutoPtrFromNSString ( const NSString * text );
 
 
-WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, bool choose_file );
+WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder, bool choose_file );
 
 
 #pragma mark -
@@ -125,19 +125,24 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 #pragma mark Dialogs
 #pragma mark -
 
-WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, bool choose_file )
+WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder, bool choose_file )
 {
 	
 	NSOpenPanel* file_dialog = [NSOpenPanel openPanel];
 	
 	NSString * prompt_string = NSStringFromWStringAutoPtr ( prompt );
+	NSString * default_directory = NSStringFromWStringAutoPtr ( in_folder );
+	if ( [default_directory length] == 0 ) {
+		default_directory = nil;
+	}
+	
 	[file_dialog setTitle: prompt_string ];
 	[file_dialog setCanChooseFiles: choose_file];
 	[file_dialog setCanChooseDirectories: !choose_file];
 	
 	NSString * file_path;
 	
-	if ( [file_dialog runModalForDirectory:nil file:nil] == NSOKButton ) {
+	if ( [file_dialog runModalForDirectory: default_directory file: nil] == NSOKButton ) {
 		
 		NSArray* files = [file_dialog filenames]; // full paths, not just names
 		file_path = [files objectAtIndex: 0];
@@ -156,15 +161,15 @@ WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, bool choose_file )
 } // SelectFileOrFolder
 
 
-WStringAutoPtr SelectFile ( WStringAutoPtr prompt )
+WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 {
-	return SelectFileOrFolder ( prompt, YES );
+	return SelectFileOrFolder ( prompt, in_folder, YES );
 }
 
 
-WStringAutoPtr SelectFolder ( WStringAutoPtr prompt )
+WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 {
-	return SelectFileOrFolder ( prompt, NO );
+	return SelectFileOrFolder ( prompt, in_folder, NO );
 }
 
 

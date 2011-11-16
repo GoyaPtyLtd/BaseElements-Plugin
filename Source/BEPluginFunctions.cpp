@@ -555,7 +555,8 @@ FMX_PROC(errcode) BE_SelectFile ( short /* funcId */, const ExprEnv& /* environm
 	try {
 
 		WStringAutoPtr prompt = ParameterAsWideString ( data_vect, 0 );
-		WStringAutoPtr file = SelectFile ( prompt );
+		WStringAutoPtr inFolder = ParameterAsWideString ( data_vect, 1 );
+		WStringAutoPtr file = SelectFile ( prompt, inFolder );
 		SetWideResult ( file, results );
 		
 	} catch ( bad_alloc e ) {
@@ -576,7 +577,8 @@ FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* enviro
 	try {
 
 		WStringAutoPtr prompt = ParameterAsWideString ( data_vect, 0 );
-		WStringAutoPtr folder = SelectFolder ( prompt );
+		WStringAutoPtr inFolder = ParameterAsWideString ( data_vect, 1 );
+		WStringAutoPtr folder = SelectFolder ( prompt, inFolder );
 		SetWideResult ( folder, results );
 		
 	} catch ( bad_alloc e ) {

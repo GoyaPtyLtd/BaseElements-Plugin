@@ -23,6 +23,7 @@ UINT32 ClipboardOffset ( const wstring atype );
 
 // functions & globals for the dialog callback
 
+static int CALLBACK SelectFolderCallback ( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData );
 LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam );
 
 HHOOK g_window_hook;
@@ -176,12 +177,15 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 
 // file dialogs
 
-WStringAutoPtr SelectFile ( WStringAutoPtr prompt )
+WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 {
 	CWnd * parent_window = CWnd::FromHandle ( GetActiveWindow() );
 	CString filter =  "All Files (*.*)|*.*||";
 	CFileDialog file_dialog ( TRUE, NULL, NULL, OFN_HIDEREADONLY, filter, parent_window, 0 );
 	file_dialog.m_ofn.lpstrTitle = prompt->c_str();
+	if ( !in_folder->empty() ) {
+		file_dialog.m_ofn.lpstrInitialDir = in_folder->c_str();
+	}
 
 	// if the user hasn't cancelled the dialog get the path to the file
 
@@ -197,12 +201,30 @@ WStringAutoPtr SelectFile ( WStringAutoPtr prompt )
 }	//	SelectFile
 
 
-WStringAutoPtr SelectFolder ( WStringAutoPtr prompt )
+static int CALLBACK SelectFolderCallback ( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData )
+{
+	// http://msdn.microsoft.com/en-us/library/windows/desktop/bb773205(v=vs.85).aspx
+
+    if ( uMsg == BFFM_INITIALIZED ) {
+        if ( NULL != lpData ) {
+            SendMessage ( hwnd, BFFM_SETSELECTION, TRUE, lpData );
+        }
+    }
+ 
+    return 0; // should always return 0
+}
+
+
+WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 {
 	BROWSEINFO browse_info = { 0 };
 	browse_info.hwndOwner = GetActiveWindow();
 	browse_info.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI | BIF_NONEWFOLDERBUTTON;
     browse_info.lpszTitle = prompt->c_str();
+	if ( !in_folder->empty() ) {
+		browse_info.lpfn = SelectFolderCallback;
+		browse_info.lParam = (LPARAM)in_folder->c_str();
+	}
 
     LPITEMIDLIST item_list = SHBrowseForFolder ( &browse_info );
 	

@@ -14,8 +14,8 @@
 "110" = "BE_ReadTextFromFile ( path )";
 "111" = "BE_WriteTextToFile ( path; text {; append} )";
 
-"112" = "BE_SelectFile ( prompt )";
-"113" = "BE_SelectFolder ( prompt )";
+"112" = "BE_SelectFile ( prompt {; inFolder } )";
+"113" = "BE_SelectFolder ( prompt {; inFolder } )";
 
 "114" = "BE_DisplayDialog ( title; message; defaultButton {; cancelButton; alternateButton } )";
 
