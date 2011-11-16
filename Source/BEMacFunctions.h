@@ -40,6 +40,7 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain );
 // other
 
 bool OpenURL ( WStringAutoPtr url );
+bool OpenFile ( WStringAutoPtr path );
 
 
 #endif // BEMACFUNCTIONS_H

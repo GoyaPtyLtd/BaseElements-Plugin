@@ -1076,30 +1076,53 @@ FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const D
 
 
 
-FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& dataVect, fmx::Data& reply)
+FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	fmx::errcode error_result = 0;
+	errcode error_result = kNoError;
 	
 	try {
 		
-		fmx::TextAutoPtr script_name;
-		script_name->SetText ( dataVect.AtAsText ( 0 ) );
+		WStringAutoPtr path = ParameterAsWideString ( parameters, 0 );
+		
+		bool succeeded = OpenFile ( path );
+		SetNumericResult ( succeeded, results );
+		
+	} catch ( bad_alloc e ) {
+		error_result = kLowMemoryError;
+	} catch ( exception e ) {
+		error_result = kErrorUnknown;
+	}
+	
+	return error_result;
+	
+} // BE_OpenFile
+
+
+
+FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& reply)
+{
+	errcode error_result = 0;
+	
+	try {
+		
+		TextAutoPtr script_name;
+		script_name->SetText ( parameters.AtAsText ( 0 ) );
 
 		
 		// use the current file when a file name is not provided
 		
-		fmx::TextAutoPtr file_name;
-		fmx::DataAutoPtr parameter;
+		TextAutoPtr file_name;
+		DataAutoPtr parameter;
 
-		fmx::ulong number_of_paramters = dataVect.Size();
+		ulong number_of_paramters = parameters.Size();
 		
 		if ( number_of_paramters >= 2 ) {
-			file_name->SetText ( dataVect.AtAsText ( 1 ) );
+			file_name->SetText ( parameters.AtAsText ( 1 ) );
 		} else {
-			fmx::TextAutoPtr command;
+			TextAutoPtr command;
 			command->Assign ( "Get ( FileName )" );
 
-			fmx::DataAutoPtr name;
+			DataAutoPtr name;
 			environment.Evaluate ( *command, *name );
 			file_name->SetText ( name->GetAsText() );
 		}

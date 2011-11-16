@@ -36,10 +36,11 @@
 "123" = "BE_FileMaker_Fields";
 
 "124" = "BE_OpenURL ( url )";
+"125" = "BE_OpenFile ( path )";
 
 
 "128" = "BaseElements";
-"129" = "Version: 1.3a4\n\nThis plug-in provides additional functionality for BaseElements 3 from Goya";
+"129" = "Version: 1.3a5\n\nThis plug-in provides additional functionality for BaseElements 3 from Goya";
 
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName; parameter } )";

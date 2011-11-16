@@ -289,3 +289,9 @@ bool OpenURL ( WStringAutoPtr url )
 }
 
 
+bool OpenFile ( WStringAutoPtr path )
+{	
+	return [[NSWorkspace sharedWorkspace] openFile: NSStringFromWStringAutoPtr ( path ) ];
+}
+
+

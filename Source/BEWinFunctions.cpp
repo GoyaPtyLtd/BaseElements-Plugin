@@ -409,3 +409,10 @@ bool OpenURL ( WStringAutoPtr url )
 	return ( result > (HINSTANCE)32 );
 }
 
+
+bool OpenFile ( WStringAutoPtr path )
+{
+	return OpenURL ( path );
+}
+
+

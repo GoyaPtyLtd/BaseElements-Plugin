@@ -84,6 +84,7 @@ enum functions {
 	kBE_FileMaker_Tables = 122,
 	kBE_FileMaker_Fields = 123,
 	kBE_OpenURL = 124,
+	kBE_OpenFile = 125,
 	kBE_ExecuteScript = 150,
 	kBE_FileMakerSQL = 151,
 	kBE_GetURL = 152,

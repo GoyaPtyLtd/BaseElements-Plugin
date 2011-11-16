@@ -38,6 +38,7 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain );
 // other
 
 bool OpenURL ( WStringAutoPtr url );
+bool OpenFile ( WStringAutoPtr file );
 
 
 #endif // BEWINFUNCTIONS_H
