@@ -23,7 +23,7 @@
 typedef map<string, string> CustomHeaders;
 
 
-vector<char> GetURL ( const StringAutoPtr url, const StringAutoPtr filename, const StringAutoPtr username, const StringAutoPtr password );
+vector<char> GetURL ( const string url, const string filename, const string username, const string password );
 vector<char> HTTP_POST ( const StringAutoPtr url, const StringAutoPtr parameters );
 
 

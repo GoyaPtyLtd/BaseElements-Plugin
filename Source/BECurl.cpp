@@ -94,9 +94,9 @@ static vector<char> Perform ( BECurl * curl )
 
 
 
-vector<char> GetURL ( const StringAutoPtr url, const StringAutoPtr filename, const StringAutoPtr username, const StringAutoPtr password )
+vector<char> GetURL ( const string url, const string filename, const string username, const string password )
 {	
-	BECurl * curl = new BECurl ( *url, *filename, *username, *password );
+	BECurl * curl = new BECurl ( url, filename, username, password );
 	return Perform ( curl );		
 }
 

@@ -853,33 +853,14 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment 
 	try {
 		
 		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr filename ( new string ( "" ) );
-		StringAutoPtr username = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
+		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
 		
-		vector<char> data = GetURL ( url, filename, username, password );
+		vector<char> data = GetURL ( *url, *filename, *username, *password );
 		
-		// if a file name is supplied then send back a file
-		
-		if ( parameters.Size() > 1 ) {
-			
-			TextAutoPtr name;
-			name->SetText ( parameters.AtAsText(1) );
-			
-			BinaryDataAutoPtr resultBinary; 
-			QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
-			resultBinary->AddFNAMData ( *name ); 
-			resultBinary->Add ( *data_type, (unsigned long) data.size(), (void *)&data[0] ); 
-			results.SetBinaryData ( *resultBinary, true ); 
-			
-		} else { // otherwise try sending back text
-			
-			data.push_back ( '\0' );
-			StringAutoPtr data_string ( new string ( &data[0] ) );
-			SetUTF8Result ( data_string, results );
-			
-		}		
-		
+		SetBinaryDataFileResult ( *filename, data, results );
+
 	} catch ( bad_alloc e ) {
 		g_last_error = kLowMemoryError;
 	} catch ( exception e ) {
@@ -903,7 +884,7 @@ FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* envir
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
 		
-		vector<char> data = GetURL ( url, filename, username, password );
+		vector<char> data = GetURL ( *url, *filename, *username, *password );
 		
 	} catch ( bad_alloc e ) {
 		g_last_error = kLowMemoryError;
