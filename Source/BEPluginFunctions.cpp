@@ -49,12 +49,33 @@
 #include "boost/tokenizer.hpp"
 #include "boost/algorithm/string/find.hpp"
 
+#include "boost/archive/iterators/base64_from_binary.hpp"
+#include "boost/archive/iterators/binary_from_base64.hpp"
+#include "boost/archive/iterators/transform_width.hpp"
+#include "boost/archive/iterators/insert_linebreaks.hpp"
+#include "boost/archive/iterators/remove_whitespace.hpp"
+
 
 #include <iostream>
 
 
 using namespace std;
 using namespace boost::filesystem;
+using namespace boost::archive::iterators;
+
+
+typedef insert_linebreaks<
+	base64_from_binary<
+		transform_width<char *, 6, 8>
+	> ,72
+> base64_text;
+
+typedef transform_width<
+	binary_from_base64<
+		remove_whitespace<string::const_iterator>
+	>, 8, 6
+> base64_binary;
+
 
 
 #pragma mark -
@@ -788,7 +809,7 @@ FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environ
 
 
 #pragma mark -
-#pragma mark Compression
+#pragma mark Compression / Encoding
 #pragma mark -
 
 
@@ -838,6 +859,92 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 	return g_last_error;
 	
 } // BE_Zip
+
+
+
+FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	g_last_error = kNoError;
+	
+	try {
+		
+		StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
+		
+		// throws if we do not lop off any padding
+		while ( text->compare ( text->length() - 1, 1, "=" ) == 0 ) {
+			text->erase ( text->length() - 1 );
+		}
+
+		// throws if we do not lop off the trailing null
+		vector<char> data ( base64_binary(text->begin()), base64_binary(text->end()-1) );
+		
+		SetBinaryDataFileResult ( *filename, data, results );
+				
+	} catch ( dataflow_exception e ) { // invalid_base64_character
+		g_last_error = e.code;
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_Base64_Decode
+
+
+
+FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	g_last_error = kNoError;
+	
+	try {
+
+		BinaryDataAutoPtr data ( parameters.AtAsBinaryData(0) );
+
+		ulong size = 0;
+		char * buffer = NULL;
+		
+		int count = data->GetCount();
+
+		if ( count > 0 ) {
+
+			QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
+			int which = data->GetIndex ( *data_type );
+			if ( which != -1 ) {
+				size = data->GetSize ( which );
+				buffer = new char [ size ];
+				data->GetData ( which, 1, size, (void *)buffer );
+			} else {
+				g_last_error = kRequestedDataIsMissingError;
+			}
+
+		} else {
+
+			StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
+			size = text->size();
+			buffer = new char [ size ];
+			memcpy ( buffer, text->c_str(), size );
+			
+		}
+
+		StringAutoPtr base64 ( new string ( base64_text(buffer), base64_text(buffer + size) ) );
+		for ( ulong i = 0 ; i < (base64->length() % 4) ; i ++ ) {
+			base64->append ( "=" );
+		}
+		SetUTF8Result ( base64, results );
+		delete [] buffer;
+				
+	} catch ( bad_alloc e ) {
+		g_last_error = kLowMemoryError;
+	} catch ( exception e ) {
+		g_last_error = kErrorUnknown;
+	}
+	
+	return g_last_error;
+	
+} // BE_Base64_Encode
 
 
 

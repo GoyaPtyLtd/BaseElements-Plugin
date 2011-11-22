@@ -17,9 +17,11 @@
 #include "FMWrapper/FMXText.h"
 #include "FMWrapper/FMXCalcEngine.h"
 
+#include <vector>
 
 using namespace std;
 using namespace fmx;
+
 
 
 typedef auto_ptr<string> StringAutoPtr;

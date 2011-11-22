@@ -95,6 +95,8 @@ enum functions {
 	kBE_GetPreference = 161,
 	kBE_Unzip = 170,
 	kBE_Zip = 171,
+	kBE_Base64_Decode = 172,
+	kBE_Base64_Encode = 173,
 	kBE_HTTP_POST = 180,
 	kBE_HTTP_Response_Code = 181,
 	kBE_HTTP_Response_Headers = 182,
@@ -117,6 +119,7 @@ enum errors {
 	kNoError = 0,
 	kNoSuchFileOrDirectoryError = 2,
 	kLowMemoryError = 7,
+	kRequestedDataIsMissingError = 10,
 	kFileExistsError = 17,
 	kErrorParameterMissing = 102,
 	kFileSystemError = 10000

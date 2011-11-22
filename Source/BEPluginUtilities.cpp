@@ -30,6 +30,7 @@
 #endif 
 
 
+#include "FMWrapper/FMXBinaryData.h"
 #include "FMWrapper/FMXData.h"
 #include "FMWrapper/FMXFixPt.h"
 
@@ -41,6 +42,7 @@
 #include <iconv.h>
 
 
+using namespace fmx;
 using namespace boost::filesystem;
 
 

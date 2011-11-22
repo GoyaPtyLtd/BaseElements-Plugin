@@ -57,6 +57,9 @@
 
 "170" = "BE_Unzip ( archive )";
 "171" = "BE_Zip ( file )";
+"172" = "BE_Base64_Decode ( text {; name } )";
+"173" = "BE_Base64_Encode ( data )";
+
 
 "180" = "BE_HTTP_POST ( url; parameters )";
 "181" = "BE_HTTP_Response_Code";
