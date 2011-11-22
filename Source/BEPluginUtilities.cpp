@@ -50,7 +50,7 @@ using namespace boost::filesystem;
 
 // convenience functions that handle most of the work needed to return text from a function
 
-fmx::errcode TextConstantFunction ( wstring text, fmx::Data& results )
+errcode TextConstantFunction ( wstring text, Data& results )
 {
 	
 	WStringAutoPtr text_constant ( new wstring ( text ) );
@@ -60,17 +60,17 @@ fmx::errcode TextConstantFunction ( wstring text, fmx::Data& results )
 } // TextConstantFunction
 
 
-fmx::errcode TextConstantFunction ( WStringAutoPtr text, fmx::Data& results )
+errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
 {
 	
-	fmx::errcode error_result = kNoError;
+	errcode error_result = kNoError;
 	
 	try {
 		
-		fmx::TextAutoPtr result_text;
+		TextAutoPtr result_text;
 		result_text->AssignWide ( text->c_str() );
 		
-		fmx::LocaleAutoPtr default_locale;
+		LocaleAutoPtr default_locale;
 		results.SetAsText ( *result_text, *default_locale );
 		
 	} catch ( bad_alloc e ) {
@@ -86,36 +86,61 @@ fmx::errcode TextConstantFunction ( WStringAutoPtr text, fmx::Data& results )
 
 // get parameters and set function results
 
-void SetNumericResult ( long number, fmx::Data& results )
+void SetNumericResult ( long number, Data& results )
 {
-	fmx::FixPtAutoPtr numeric_result;
+	FixPtAutoPtr numeric_result;
 	numeric_result->AssignInt ( number );
 	results.SetAsNumber ( *numeric_result );
 }
 
 
-void SetUTF8Result ( StringAutoPtr text, fmx::Data& results )
+void SetUTF8Result ( StringAutoPtr text, Data& results )
 {
-	fmx::TextAutoPtr result_text;
-	result_text->Assign ( text->c_str(), fmx::Text::kEncoding_UTF8 );			
-	fmx::LocaleAutoPtr default_locale;
+	TextAutoPtr result_text;
+	result_text->Assign ( text->c_str(), Text::kEncoding_UTF8 );			
+	LocaleAutoPtr default_locale;
 	results.SetAsText ( *result_text, *default_locale );
 }
 
 
-void SetWideResult ( WStringAutoPtr text, fmx::Data& results )
+void SetWideResult ( WStringAutoPtr text, Data& results )
 {
-	fmx::TextAutoPtr result_text;
+	TextAutoPtr result_text;
 	result_text->AssignWide ( text->c_str() );			
-	fmx::LocaleAutoPtr default_locale;
+	LocaleAutoPtr default_locale;
 	results.SetAsText ( *result_text, *default_locale );
 }
 
 
-bool ParameterAsBoolean ( const fmx::DataVect& data_vect, const unsigned long which, const bool default_value )
+void SetBinaryDataFileResult ( const string filename, vector<char> data, Data& results )
+{
+	bool as_binary = !filename.empty();
+	
+	if ( as_binary ) {	// if a file name is supplied send back a file
+		
+		BinaryDataAutoPtr resultBinary;
+		TextAutoPtr file;
+		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
+		resultBinary->AddFNAMData ( *file ); 
+		QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
+		resultBinary->Add ( *data_type, data.size(), (void *)&data[0] ); 
+		results.SetBinaryData ( *resultBinary, true ); 
+		
+	} else { // otherwise try sending back text
+		
+		data.push_back ( '\0' );
+		StringAutoPtr data_string ( new string ( &data[0] ) );
+		SetUTF8Result ( data_string, results );
+		
+	}
+	
+} // SetBinaryDataResult
+
+
+bool ParameterAsBoolean ( const DataVect& parameters, const unsigned long which, const bool default_value )
 {
 	try {
-		return data_vect.AtAsBoolean ( which );
+		return parameters.AtAsBoolean ( which );
 	} catch ( exception e ) {
 		return default_value;
 	}
@@ -123,10 +148,10 @@ bool ParameterAsBoolean ( const fmx::DataVect& data_vect, const unsigned long wh
 }
 	
 	
-long ParameterAsLong ( const fmx::DataVect& data_vect, const unsigned long which, const unsigned long default_value )
+long ParameterAsLong ( const DataVect& parameters, const unsigned long which, const unsigned long default_value )
 {
 	try {
-		return data_vect.AtAsNumber ( which ).AsLong();
+		return parameters.AtAsNumber ( which ).AsLong();
 	} catch ( exception e ) {
 		return default_value;
 	}
@@ -134,19 +159,19 @@ long ParameterAsLong ( const fmx::DataVect& data_vect, const unsigned long which
 }
 
 
-StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& data_vect, unsigned long which )
+StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, unsigned long which )
 {	
 	
 	StringAutoPtr result ( new string );
 	
 	try {
 		
-		fmx::TextAutoPtr raw_data;
-		raw_data->SetText ( data_vect.AtAsText ( which ) );
+		TextAutoPtr raw_data;
+		raw_data->SetText ( parameters.AtAsText ( which ) );
 		
-		fmx::ulong text_size = (2*(raw_data->GetSize())) + 1;
+		ulong text_size = (2*(raw_data->GetSize())) + 1;
 		char * text = new char [ text_size ]();
-		raw_data->GetBytes ( text, text_size, 0, (ulong)fmx::Text::kSize_End, fmx::Text::kEncoding_UTF8 );
+		raw_data->GetBytes ( text, text_size, 0, (ulong)Text::kSize_End, Text::kEncoding_UTF8 );
 		result->assign ( text );
 		delete [] text;
 		
@@ -160,18 +185,18 @@ StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& data_vect, unsigned l
 
 
 
-WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& data_vect, unsigned long which )
+WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, unsigned long which )
 {	
 	
 	WStringAutoPtr result ( new wstring );
 	
 	try {
 		
-		fmx::TextAutoPtr raw_data;
-		raw_data->SetText ( data_vect.AtAsText(which) );
+		TextAutoPtr raw_data;
+		raw_data->SetText ( parameters.AtAsText(which) );
 		
 		long text_size = raw_data->GetSize();
-		fmx::ushort * text = new fmx::ushort [ text_size + 1 ];
+		ushort * text = new ushort [ text_size + 1 ];
 		raw_data->GetUnicode ( text, 0, text_size );
         text[text_size] = 0x0000;
 
@@ -325,7 +350,7 @@ void Do_GetString(unsigned long whichString, FMX_ULong /* winLangID */, FMX_Long
 } // Do_GetString (FMX_Unichar* version)
 
 
-void Do_GetString(unsigned long whichStringID, fmx::TextAutoPtr& intoHere, bool stripFunctionParams)
+void Do_GetString(unsigned long whichStringID, TextAutoPtr& intoHere, bool stripFunctionParams)
 {
 	FMX_Unichar			tempBuffer[kBE_GetStringMaxBufferSize];
 	
@@ -336,7 +361,7 @@ void Do_GetString(unsigned long whichStringID, fmx::TextAutoPtr& intoHere, bool 
 		
 		// The string for this whichStringID is a Function Prototype, but all the plug-in needs now is the Function Name by itself.
 		
-		fmx::TextAutoPtr		parenToken;
+		TextAutoPtr		parenToken;
 		parenToken->Assign ( " (" );
 		
 		unsigned long		originalSize = intoHere->GetSize();

@@ -31,12 +31,13 @@ errcode TextConstantFunction ( WStringAutoPtr text, Data& results );
 
 void SetNumericResult ( long number, Data& results );
 void SetUTF8Result ( StringAutoPtr text, Data& results );
-void SetWideResult ( WStringAutoPtr text, fmx::Data& results );
+void SetWideResult ( WStringAutoPtr text, Data& results );
+void SetBinaryDataFileResult ( const string filename, vector<char> data, Data& results );
 
-bool ParameterAsBoolean ( const fmx::DataVect& data_vect, const unsigned long which, const bool default_value = true );
-long ParameterAsLong ( const fmx::DataVect& data_vect, const unsigned long which, const unsigned long default_value );
-StringAutoPtr ParameterAsUTF8String ( const DataVect& data_vect, unsigned long which );
-WStringAutoPtr ParameterAsWideString ( const DataVect& data_vect, unsigned long which );
+bool ParameterAsBoolean ( const DataVect& parameters, const unsigned long which, const bool default_value = true );
+long ParameterAsLong ( const DataVect& parameters, const unsigned long which, const unsigned long default_value );
+StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, unsigned long which );
+WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, unsigned long which );
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path );
 StringAutoPtr ConvertToUTF8 ( char * in, size_t length );
 
