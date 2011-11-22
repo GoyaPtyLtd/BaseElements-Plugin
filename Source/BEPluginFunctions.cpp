@@ -72,13 +72,13 @@ extern CustomHeaders g_http_custom_headers;
 #pragma mark Version
 #pragma mark -
 
-FMX_PROC(errcode) BE_Version ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results)
+FMX_PROC(errcode) BE_Version ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results)
 {
 	return TextConstantFunction ( VERSION_NUMBER_STRING, results );	
 }
 
 
-FMX_PROC(errcode) BE_VersionAutoUpdate ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results)
+FMX_PROC(errcode) BE_VersionAutoUpdate ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results)
 {
 	return TextConstantFunction ( AUTO_UPDATE_VERSION, results );		
 }
@@ -96,7 +96,7 @@ FMX_PROC(errcode) BE_VersionAutoUpdate ( short /* funcId */, const ExprEnv& /* e
  g_last_error is cleared after calling this function... the caller should store it if necessary
  */
 
-FMX_PROC(errcode) BE_GetLastError ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results)
+FMX_PROC(errcode) BE_GetLastError ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results)
 {
 	errcode error_result = kNoError;
 	
@@ -113,19 +113,19 @@ FMX_PROC(errcode) BE_GetLastError ( short /* funcId */, const ExprEnv& /* enviro
 #pragma mark Clipboard
 #pragma mark -
 
-FMX_PROC(errcode) BE_ClipboardFormats ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results)
+FMX_PROC(errcode) BE_ClipboardFormats ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results)
 {
 	return TextConstantFunction ( ClipboardFormats(), results );	
 }
 
 
-FMX_PROC(errcode) BE_ClipboardData ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_ClipboardData ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	
 	try {
 		
-		WStringAutoPtr atype = ParameterAsWideString ( data_vect, 0 );
+		WStringAutoPtr atype = ParameterAsWideString ( parameters, 0 );
 		StringAutoPtr clipboard_contents = ClipboardData ( atype );
 		SetUTF8Result ( clipboard_contents, results );
 		
@@ -140,14 +140,14 @@ FMX_PROC(errcode) BE_ClipboardData ( short /* funcId */, const ExprEnv& /* envir
 } // BE_ClipboardData
 
 
-FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	
 	try {
 
-		StringAutoPtr to_copy = ParameterAsUTF8String ( data_vect, 0 );
-		WStringAutoPtr atype = ParameterAsWideString ( data_vect, 1 );
+		StringAutoPtr to_copy = ParameterAsUTF8String ( parameters, 0 );
+		WStringAutoPtr atype = ParameterAsWideString ( parameters, 1 );
 		bool success = SetClipboardData ( to_copy, atype );
 		SetNumericResult ( success, results );
 
@@ -170,14 +170,14 @@ FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* en
 #pragma NOTE (consider refatoring some of the detail from the file functions into BEFileSystem)
 
 
-FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results )
+FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error_result = kNoError;	
 	errcode filesystem_result = kNoError;
 	
 	try {
 
-		WStringAutoPtr folder = ParameterAsWideString ( data_vect, 0 );
+		WStringAutoPtr folder = ParameterAsWideString ( parameters, 0 );
 		path directory_path = *folder;
 		
 		try {
@@ -199,14 +199,14 @@ FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* enviro
 } // BE_CreateFolder
 
 
-FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	errcode filesystem_result = kNoError;
 	
 	try {
 		
-		WStringAutoPtr file = ParameterAsWideString ( data_vect, 0 );
+		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
 		path path = *file;
 		
 		try {
@@ -228,13 +228,13 @@ FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environm
 } // BE_DeleteFile
 
 
-FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	
 	try {
 		
-		WStringAutoPtr file = ParameterAsWideString ( data_vect, 0 );
+		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
 		path path = *file;
 
 		bool file_exists = exists ( path );
@@ -253,13 +253,13 @@ FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environm
 } // BE_FileExists
 
 
-FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	
 	try {
 
-		WStringAutoPtr file = ParameterAsWideString ( data_vect, 0 );
+		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
 		StringAutoPtr contents = ReadFileAsUTF8 ( file );
 		SetUTF8Result ( contents, results );
 
@@ -276,26 +276,26 @@ FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* en
 } // BE_ReadTextFromFile
 
 
-FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 		
 	try {
 		
-		WStringAutoPtr file = ParameterAsWideString ( data_vect, 0 );
+		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
 		path path = *file;
 		
 		// should the text be appended to the file or replace any existing contents
 		
 		ios_base::openmode mode = ios_base::trunc;
-		if ( data_vect.Size() == 3 ) {
-			bool append = data_vect.AtAsBoolean ( 2 );
+		if ( parameters.Size() == 3 ) {
+			bool append = parameters.AtAsBoolean ( 2 );
 			if ( append ) {
 				mode = ios_base::app;
 			}
 		}
 		
-		StringAutoPtr text_to_write = ParameterAsUTF8String ( data_vect, 1 );
+		StringAutoPtr text_to_write = ParameterAsUTF8String ( parameters, 1 );
 		
 		try {
 			
@@ -332,13 +332,13 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
  any invalid characters, and replaces the old file
  */
 
-FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	
 	try {
 		
-		WStringAutoPtr file = ParameterAsWideString ( data_vect, 0 );
+		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
 		path source = *file;
 
 		wstring output_path = *file + TEMPORARY_FILE_SUFFIX;
@@ -420,15 +420,15 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 } // BE_StripInvalidUTF16CharactersFromXMLFile
 
 
-FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	errcode filesystem_result = kNoError;
 	
 	try {
 		
-		WStringAutoPtr from = ParameterAsWideString ( data_vect, 0 );
-		WStringAutoPtr to = ParameterAsWideString ( data_vect, 1 );
+		WStringAutoPtr from = ParameterAsWideString ( parameters, 0 );
+		WStringAutoPtr to = ParameterAsWideString ( parameters, 1 );
 
 		try {
 			
@@ -453,15 +453,15 @@ FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environmen
 } // BE_MoveFile
 
 
-FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	g_last_error = kNoError;
 	errcode filesystem_result = kNoError;
 	
 	try {
 		
-		WStringAutoPtr from = ParameterAsWideString ( data_vect, 0 );
-		WStringAutoPtr to = ParameterAsWideString ( data_vect, 1 );
+		WStringAutoPtr from = ParameterAsWideString ( parameters, 0 );
+		WStringAutoPtr to = ParameterAsWideString ( parameters, 1 );
 		
 		try {
 			
@@ -488,7 +488,7 @@ FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environmen
 
 
 
-FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	g_last_error = kNoError;
 	
@@ -498,7 +498,7 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 		TextAutoPtr end_of_line;
 		end_of_line->Assign ( "\r" );
 
-		WStringAutoPtr directory = ParameterAsWideString ( data_vect, 0 );
+		WStringAutoPtr directory = ParameterAsWideString ( parameters, 0 );
 
 		try {
 
@@ -509,7 +509,7 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 				directory_iterator end_itr; // default construction yields past-the-end
 				directory_iterator itr ( directory_path );
 
-				long want = ParameterAsLong ( data_vect, 1, kBE_FileType_File );
+				long want = ParameterAsLong ( parameters, 1, kBE_FileType_File );
 				
 				while ( itr != end_itr ) {
 					
@@ -555,14 +555,14 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 #pragma mark Dialogs
 #pragma mark -
 
-FMX_PROC(errcode) BE_SelectFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_SelectFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	
 	try {
 
-		WStringAutoPtr prompt = ParameterAsWideString ( data_vect, 0 );
-		WStringAutoPtr inFolder = ParameterAsWideString ( data_vect, 1 );
+		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
+		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 1 );
 		WStringAutoPtr file = SelectFile ( prompt, inFolder );
 		SetWideResult ( file, results );
 		
@@ -577,14 +577,14 @@ FMX_PROC(errcode) BE_SelectFile ( short /* funcId */, const ExprEnv& /* environm
 } // BE_SelectFile
 
 
-FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	
 	try {
 
-		WStringAutoPtr prompt = ParameterAsWideString ( data_vect, 0 );
-		WStringAutoPtr inFolder = ParameterAsWideString ( data_vect, 1 );
+		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
+		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 1 );
 		WStringAutoPtr folder = SelectFolder ( prompt, inFolder );
 		SetWideResult ( folder, results );
 		
@@ -599,17 +599,17 @@ FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* enviro
 } // BE_SelectFolder
 
 
-FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 		
 	try {
 
-		WStringAutoPtr title = ParameterAsWideString ( data_vect, 0 );
-		WStringAutoPtr message = ParameterAsWideString ( data_vect, 1 );
-		WStringAutoPtr ok_button = ParameterAsWideString ( data_vect, 2 );
-		WStringAutoPtr cancel_button = ParameterAsWideString ( data_vect, 3 );
-		WStringAutoPtr alternate_button = ParameterAsWideString ( data_vect, 4 );
+		WStringAutoPtr title = ParameterAsWideString ( parameters, 0 );
+		WStringAutoPtr message = ParameterAsWideString ( parameters, 1 );
+		WStringAutoPtr ok_button = ParameterAsWideString ( parameters, 2 );
+		WStringAutoPtr cancel_button = ParameterAsWideString ( parameters, 3 );
+		WStringAutoPtr alternate_button = ParameterAsWideString ( parameters, 4 );
 	
 		int response = DisplayDialog ( title, message, ok_button, cancel_button, alternate_button );
 		SetNumericResult ( response, results );
@@ -629,17 +629,17 @@ FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* envir
 #pragma mark XSLT
 #pragma mark -
 
-FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	
 	try {
 
-		StringAutoPtr xml_path = ParameterAsUTF8String ( data_vect, 0 );
-		StringAutoPtr xslt = ParameterAsUTF8String ( data_vect, 1 );
-		StringAutoPtr csv_path = ParameterAsUTF8String ( data_vect, 2 );
+		StringAutoPtr xml_path = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr xslt = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr csv_path = ParameterAsUTF8String ( parameters, 2 );
 
-		results.SetAsText( *ApplyXSLT ( xml_path, xslt, csv_path ), data_vect.At(0).GetLocale() );
+		results.SetAsText( *ApplyXSLT ( xml_path, xslt, csv_path ), parameters.At(0).GetLocale() );
 	
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
@@ -652,16 +652,16 @@ FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environme
 } // BE_ApplyXSLT
 
 
-FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	
 	try {
 		
-		StringAutoPtr xml = ParameterAsUTF8String ( data_vect, 0 );
-		StringAutoPtr xslt = ParameterAsUTF8String ( data_vect, 1 );
+		StringAutoPtr xml = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr xslt = ParameterAsUTF8String ( parameters, 1 );
 		
-		results.SetAsText( *ApplyXSLTInMemory ( xml, xslt ), data_vect.At(0).GetLocale() );
+		results.SetAsText( *ApplyXSLTInMemory ( xml, xslt ), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
@@ -674,19 +674,19 @@ FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* e
 } // BE_ApplyXSLTInMemory
 
 
-FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results )
+FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error_result = kNoError;
 	
 	try {
-		int numParams = data_vect.Size();
-		StringAutoPtr xml = ParameterAsUTF8String ( data_vect, 0 );
-		StringAutoPtr xpath = ParameterAsUTF8String ( data_vect, 1 );
+		int numParams = parameters.Size();
+		StringAutoPtr xml = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr xpath = ParameterAsUTF8String ( parameters, 1 );
 		StringAutoPtr nsList(new string);
 		if (numParams > 2)
-			nsList = ParameterAsUTF8String ( data_vect, 2 );
+			nsList = ParameterAsUTF8String ( parameters, 2 );
 		
-		results.SetAsText( *ApplyXPath ( xml, xpath, nsList ), data_vect.At(0).GetLocale() );
+		results.SetAsText( *ApplyXPath ( xml, xpath, nsList ), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
@@ -699,21 +699,21 @@ FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment *
 } // BE_XPath
 
 
-FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results )
+FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error_result = kNoError;
 	TextAutoPtr txt;
 	
 	try {
-		int numParams = data_vect.Size();
-		StringAutoPtr xml = ParameterAsUTF8String ( data_vect, 0 );
-		StringAutoPtr xpath = ParameterAsUTF8String ( data_vect, 1 );
+		int numParams = parameters.Size();
+		StringAutoPtr xml = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr xpath = ParameterAsUTF8String ( parameters, 1 );
 		StringAutoPtr nsList( new string);
 		if (numParams > 2)
-			nsList = ParameterAsUTF8String ( data_vect, 2 );
+			nsList = ParameterAsUTF8String ( parameters, 2 );
 		
 		
-		results.SetAsText(*ApplyXPathAll (xml, xpath, nsList), data_vect.At(0).GetLocale() );
+		results.SetAsText(*ApplyXPathAll (xml, xpath, nsList), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
@@ -1010,7 +1010,7 @@ FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv&
  
 */
 
-FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results)
+FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results)
 {
 	g_last_error = kNoError;
 	
@@ -1037,14 +1037,14 @@ FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& /* environm
  found, attempt to guess the where the variable name ends
  */
 
-FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	errcode error_result = kNoError;
 	
 	try {
 		
 		BEWStringVector variables;
-		WStringAutoPtr calculation = ParameterAsWideString ( data_vect, 0 );
+		WStringAutoPtr calculation = ParameterAsWideString ( parameters, 0 );
 
 		wstring search_for = L"$/\""; // variables, comments and strings (including escaped strings)
 		size_t found = calculation->find_first_of ( search_for );
@@ -1111,7 +1111,7 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 			}
 		}
 		
-		results.SetAsText( *(variables.AsValueList()), data_vect.At(0).GetLocale() );
+		results.SetAsText( *(variables.AsValueList()), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc e ) {
 		error_result = kLowMemoryError;
@@ -1125,14 +1125,14 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 
 
 
-FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results)
+FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
 	g_last_error = kNoError;
 	
 	try {
 		
-		StringAutoPtr command = ParameterAsUTF8String ( data_vect, 0 );
-		bool waitForResponse = ParameterAsBoolean ( data_vect, 1 );
+		StringAutoPtr command = ParameterAsUTF8String ( parameters, 0 );
+		bool waitForResponse = ParameterAsBoolean ( parameters, 1 );
 
 		StringAutoPtr response ( new string ( ) );
 
