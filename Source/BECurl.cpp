@@ -207,7 +207,6 @@ vector<char> BECurl::download ( )
 			string custom_header = it->first;
 			custom_header.append ( ": " );
 			custom_header.append ( it->second );
-			custom_header.append ( "\n" );
 			custom_headers = curl_slist_append ( custom_headers, custom_header.c_str() );
 			++it;
 		}
