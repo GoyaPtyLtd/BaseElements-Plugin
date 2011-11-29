@@ -43,7 +43,11 @@
 #include "BEPluginFunctions.h"
 #include "BEPluginUtilities.h"
 #include "BEFileMakerPlugin.h"
+#include "BESQLCommand.h"
 
+#include "FMWrapper/FMXData.h"
+
+#include "BESQLCommand.h"
 
 using namespace fmx;
 
@@ -55,6 +59,8 @@ using namespace fmx;
 
 FMX_ExternCallPtr gFMX_ExternCallPtr;	// required by the FMX API
 BEFileMakerPlugin * g_be_plugin;		// the plug-in instance
+
+extern BESQLCommandAutoPtr g_ddl_command;
 
 
 #pragma mark -
@@ -73,6 +79,7 @@ static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_VersionAutoUpdate, BE_VersionAutoUpdate );
 
 	g_be_plugin->RegisterFunction ( kBE_GetLastError, BE_GetLastError );
+	g_be_plugin->RegisterFunction ( kBE_GetLastDDLError, BE_GetLastError );
 
 	g_be_plugin->RegisterFunction ( kBE_ClipboardFormats, BE_ClipboardFormats, false );
 	g_be_plugin->RegisterFunction ( kBE_ClipboardData, BE_ClipboardData, false, 1 );
@@ -155,6 +162,8 @@ static void UnloadPlugin ( void ) {
 }
 
 
+#include <iostream>
+
 // main entry point
 // calls for plug-in functions go direct to the registered function
 
@@ -175,6 +184,20 @@ void FMX_ENTRYPT FMExternCallProc ( FMX_ExternCallPtr plugin_call ) {
 		case kFMXT_Init:
 			plugin_call->result = LoadPlugin ( plugin_call );
 			break;
+			
+		case kFMXT_Idle:
+		{
+			bool safe_idle = plugin_call->parm1 != kFMXT_Unsafe;
+			
+			if ( safe_idle && g_ddl_command.get() != 0 ) {
+				
+				g_ddl_command->execute ( true );
+				g_ddl_command.reset();
+			
+			}
+			
+			break;
+		}
 			
 		case kFMXT_Shutdown:
 			UnloadPlugin();

@@ -19,6 +19,7 @@
 #include "BEFileSystem.h"
 #include "BEShell.h"
 #include "BEZlib.h"
+#include "BESQLCommand.h"
 
 
 #if defined(FMX_WIN_TARGET)
@@ -83,6 +84,7 @@ typedef transform_width<
 #pragma mark -
 
 errcode g_last_error;
+errcode g_last_ddl_error;
 
 extern int g_http_response_code;
 extern string g_http_response_headers;
@@ -110,19 +112,17 @@ FMX_PROC(errcode) BE_VersionAutoUpdate ( short /* funcId */, const ExprEnv& /* e
 #pragma mark -
 
 
-/*
- BE_GetURL & BE_ExecuteShellCommand are the only functions that populates g_last_error, calling it after any other function 
- will give an undefined result.
- 
- g_last_error is cleared after calling this function... the caller should store it if necessary
- */
-
-FMX_PROC(errcode) BE_GetLastError ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results)
+FMX_PROC(errcode) BE_GetLastError ( short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results)
 {
 	errcode error_result = kNoError;
 	
-	SetNumericResult ( g_last_error, results );
-	g_last_error = kNoError;
+	if ( funcId == kBE_GetLastError ) {
+		SetNumericResult ( g_last_error, results );
+		g_last_error = kNoError;
+	} else if ( funcId == kBE_GetLastDDLError ) {
+		SetNumericResult ( g_last_ddl_error, results );
+		g_last_ddl_error = kNoError;
+	}
 
 	return error_result;
 	
@@ -1418,76 +1418,42 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 } // BE_ExecuteScript
 
 
+
 FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
 {	
 	g_last_error = kNoError;
 	
-	TextAutoPtr expression;
-	
 	try {
 		
-		expression->SetText ( parameters.AtAsText ( 0 ) );
-		
-		// use tab and return when the separators are not provided
-		
-		TextAutoPtr columnSeparator;
+		TextAutoPtr expression;
+		expression->SetText ( parameters.AtAsText(0) );
 		
 		ulong number_of_paramters = parameters.Size();
-		
-		if ( number_of_paramters >= 2 ) {
-			columnSeparator->SetText ( parameters.AtAsText(1) );
-		} else {
-			columnSeparator->Assign ( "\t" );
-		}
-		
-		
-		TextAutoPtr rowSeparator;
-		
-		if ( number_of_paramters >= 3 ) {
-			rowSeparator->SetText ( parameters.AtAsText(2) );
-		} else {
-			rowSeparator->Assign ( "\r" );
-		}
-		
-		const TextAutoPtr filename;
-		
+
+		TextAutoPtr filename;
 		if ( number_of_paramters == 4 ) {
 			filename->SetText ( parameters.AtAsText(3) );
-		} else {
-			filename->Assign ( "" ); // the current file
 		}
 		
-		const DataVectAutoPtr sql_parameters;
-		RowVectAutoPtr sqlResult;
 		
-		g_last_error = environment.ExecuteFileSQL ( *expression, *filename, *sql_parameters, *sqlResult );
+		BESQLCommand * sql = new BESQLCommand ( expression, filename );
 		
-        TextAutoPtr	textResult;
 		
-		ulong numberOfRows = sqlResult->Size();
-		ulong lastRow = numberOfRows - 1;
+		if ( number_of_paramters >= 2 ) {
+			TextAutoPtr column_separator;
+			column_separator->SetText ( parameters.AtAsText(1) );
+			sql->set_column_separator ( column_separator );
+		}
 		
-        for ( ulong row = 0; row < numberOfRows; ++row ) { 
-			
-			const DataVect &thisRow = sqlResult->At( row ); 
-			ulong numberOfColumns = thisRow.Size();
-			ulong lastColumn = numberOfColumns - 1;
-			
-			for ( ulong column = 0; column < numberOfColumns; ++column ) {
-				// should escape this ??? the old API doesn't so leave it to the FM developers
-				textResult->AppendText ( thisRow.At( column ).GetAsText() );
-				// skip last time
-				if ( column != lastColumn ) {
-					textResult->AppendText( *columnSeparator );
-				}
-			}
-			// skip last time
-			if ( row != lastRow ) {
-				textResult->AppendText ( *rowSeparator );
-			}
-        } 
+		if ( number_of_paramters >= 3 ) {
+			TextAutoPtr row_separator;
+			row_separator->SetText ( parameters.AtAsText(2) );
+			sql->set_row_separator ( row_separator );
+		}
 		
-		results.SetAsText( *textResult, parameters.At( 0 ).GetLocale() );		
+		sql->execute ( environment );
+
+		results.SetAsText( *(sql->get_text_result()), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc e ) {
 		g_last_error = kLowMemoryError;

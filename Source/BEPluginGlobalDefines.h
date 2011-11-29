@@ -36,9 +36,9 @@
 
 
 #include "FMWrapper/FMXExtern.h"
+#include "FMWrapper/FMXText.h"
 
 extern fmx::errcode g_last_error;
-
 
 
 #define PLUGIN_NAME		"BaseElements"
@@ -90,6 +90,7 @@ enum functions {
 	kBE_GetURL = 152,
 	kBE_GetLastError = 153,
 	kBE_MessageDigest = 154,
+	kBE_GetLastDDLError = 155,
 	kBE_SaveURLToFile = 156,
 	kBE_SetPreference = 160,
 	kBE_GetPreference = 161,
@@ -122,7 +123,8 @@ enum errors {
 	kRequestedDataIsMissingError = 10,
 	kFileExistsError = 17,
 	kErrorParameterMissing = 102,
-	kFileSystemError = 10000
+	kFileSystemError = 10000,
+	kDDLCommandQueued = 11000
 };
 
 

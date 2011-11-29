@@ -21,9 +21,11 @@
 
 #include "BEPluginGlobalDefines.h"
 #include "BEPluginUtilities.h"
+#include "BESQLCommand.h"
 
 
 using namespace fmx;
+
 
 
 // The following functions are registered with FileMaker as the external functions made available via the plug-in.

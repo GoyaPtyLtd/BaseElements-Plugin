@@ -1,5 +1,5 @@
-"1" = "GyBE1nnYnnn";
-"131" = "GyBE1nnYnnn";
+"1" = "GyBE1nnYYnn";
+"131" = "GyBE1nnYYnn";
 
 "102" = "BE_Version";
 "103" = "BE_VersionAutoUpdate";
@@ -49,6 +49,8 @@
 "153" = "BE_GetLastError";
 
 "154" = "BE_MessageDigest ( text {; type } )";
+
+"155" = "BE_GetLastDDLError";
 
 "156" = "BE_SaveURLToFile ( url; path {; username ; password } )";
 
