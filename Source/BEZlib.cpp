@@ -325,7 +325,7 @@ int AddFileToArchive ( const path filename, zipFile zf, const path base )
 				
 			input_file.close();
 				
-		} catch ( filesystem_error e ) {
+		} catch ( filesystem_error& e ) {
 			error = e.code().value();
 		}
 		
@@ -368,7 +368,7 @@ int AddToArchive ( const path directory_path, zipFile zf, const path base )
 			}
 		}
 		
-	} catch ( filesystem_error e ) {
+	} catch ( filesystem_error& e ) {
 		error = e.code().value();
 	}
 	

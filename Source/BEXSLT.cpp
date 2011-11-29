@@ -68,7 +68,7 @@ static void XSLTErrorFunction ( void *context ATTRIBUTE_UNUSED, const char *mess
 			g_last_xslt_error = kLowMemoryError;
 		}
 		
-	} catch ( exception e ) {
+	} catch ( exception& e ) {
 		// if there's not enough memory to handle the error message then try sending it to stderr 
 		vfprintf ( stderr, message, parameters );
 		g_last_xslt_error = kLowMemoryError;
