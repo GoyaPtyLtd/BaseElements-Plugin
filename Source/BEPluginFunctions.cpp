@@ -48,7 +48,7 @@
 #include "boost/thread.hpp"
 #include "boost/foreach.hpp"
 #include "boost/tokenizer.hpp"
-#include "boost/algorithm/string/find.hpp"
+#include "boost/algorithm/string.hpp"
 
 #include "boost/archive/iterators/base64_from_binary.hpp"
 #include "boost/archive/iterators/binary_from_base64.hpp"
@@ -872,12 +872,13 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
 		
 		// throws if we do not lop off any padding
-		while ( text->compare ( text->length() - 1, 1, "=" ) == 0 ) {
-			text->erase ( text->length() - 1 );
-		}
-
-		// throws if we do not lop off the trailing null
-		vector<char> data ( base64_binary(text->begin()), base64_binary(text->end()-1) );
+		boost::algorithm::trim_if ( *text, boost::algorithm::is_any_of ( " \t\f\v\n\r" ) );
+		unsigned long before = text->size();
+		boost::algorithm::trim_right_if ( *text, boost::algorithm::is_any_of ( L"=" ) );
+		unsigned long skip = before > text->size();
+		
+		// decode it
+		vector<char> data ( base64_binary(text->begin()), base64_binary(text->end() - skip) );
 		
 		SetBinaryDataFileResult ( *filename, data, results );
 				
