@@ -239,32 +239,42 @@ WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, unsigned long
 #pragma mark Files
 #pragma mark -
 
+
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path )
 {
 	
 	boost::filesystem::path filesystem_path = *path;
-	size_t length = (size_t)file_size ( filesystem_path ); // boost::uintmax_t
-
-	boost::filesystem::ifstream inFile ( filesystem_path, ios_base::in | ios_base::binary | ios_base::ate );
-	inFile.seekg ( 0, ios::beg );
-
-	// slurp up the file contents
-	char * buffer = new char [length + 1];
-	inFile.read ( buffer, length );
-	inFile.close ();
 	
-	buffer[length] = '\0';
+	StringAutoPtr result ( new string );
 	
-	// convert the text in the file to utf-8 if possible
-	StringAutoPtr result = ConvertToUTF8 ( buffer, length );
-	if ( result->length() == 0 ) {
-		result->assign ( buffer );
+	if ( exists ( filesystem_path ) ) {
+		size_t length = (size_t)file_size ( filesystem_path ); // boost::uintmax_t
+		
+		boost::filesystem::ifstream inFile ( filesystem_path, ios_base::in | ios_base::binary | ios_base::ate );
+		inFile.seekg ( 0, ios::beg );
+		
+		// slurp up the file contents
+		char * buffer = new char [length + 1];
+		inFile.read ( buffer, length );
+		inFile.close ();
+		
+		buffer[length] = '\0';
+		
+		// convert the text in the file to utf-8 if possible
+		result = ConvertToUTF8 ( buffer, length );
+		if ( result->length() == 0 ) {
+			result->assign ( buffer );
+		}
+		delete [] buffer;
+	} else {
+		g_last_error = kNoSuchFileOrDirectoryError;
 	}
-	delete [] buffer;
+
 	
 	return result;
-
+	
 } // ReadFileAsUTF8
+
 
 
 #pragma mark -
