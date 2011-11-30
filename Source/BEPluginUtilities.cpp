@@ -129,10 +129,12 @@ void SetBinaryDataFileResult ( const string filename, vector<char> data, Data& r
 		results.SetBinaryData ( *resultBinary, true ); 
 		
 	} else { // otherwise try sending back text
+
+		// filemaker will go into an infinite loop if non-utf8 data is set as utf8
+		// so try to convert it first
 		
-		data.push_back ( '\0' );
-		StringAutoPtr data_string ( new string ( &data[0] ) );
-		SetUTF8Result ( data_string, results );
+		StringAutoPtr utf8 = ConvertToUTF8 ( &data[0], data.size() );
+		SetUTF8Result ( utf8, results );
 		
 	}
 	
