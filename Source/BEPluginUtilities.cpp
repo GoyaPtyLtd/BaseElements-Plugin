@@ -133,7 +133,8 @@ void SetBinaryDataFileResult ( const string filename, vector<char> data, Data& r
 		// filemaker will go into an infinite loop if non-utf8 data is set as utf8
 		// so try to convert it first
 		
-		StringAutoPtr utf8 = ConvertToUTF8 ( &data[0], data.size() );
+		const string data_string ( data.begin(), data.end() );
+		StringAutoPtr utf8 = ConvertToUTF8 ( (char *)data_string.c_str(), data_string.size() );
 		SetUTF8Result ( utf8, results );
 		
 	}
