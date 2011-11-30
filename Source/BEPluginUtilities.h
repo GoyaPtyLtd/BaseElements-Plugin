@@ -17,6 +17,9 @@
 #include "FMWrapper/FMXText.h"
 #include "FMWrapper/FMXCalcEngine.h"
 
+#include "BEPluginGlobalDefines.h"
+
+
 #include <vector>
 
 using namespace std;
@@ -42,6 +45,9 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, unsigned long 
 WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, unsigned long which );
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path );
 StringAutoPtr ConvertToUTF8 ( char * in, size_t length );
+
+errcode NoError ( void );
+errcode MapError ( errcode error = kNoError, bool map = false );
 
 
 // extract localised strings from the plug-in resources

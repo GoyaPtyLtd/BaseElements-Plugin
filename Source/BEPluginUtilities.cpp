@@ -312,6 +312,54 @@ StringAutoPtr ConvertToUTF8 ( char * in, size_t length )
 } // ConvertToUTF8
 
 
+
+#pragma mark -
+#pragma mark Errors
+#pragma mark -
+
+// Should be called at the start of each plugin function to clear out the global error
+
+errcode NoError ( void )
+{
+	g_last_error = kNoError;
+	return g_last_error;
+}
+
+// use as the return value for al plugin functions
+// only return errors to FileMaker that it can make sense of
+
+errcode MapError ( const errcode error, bool map )
+{
+	
+	errcode mapped_error = kNoError;
+	
+	// map the error to a FileMaker error (so that FMP can display an
+	// appropriate dialog etc.
+	
+	if ( map ) {
+		
+		mapped_error = error;
+		g_last_error = error;
+
+	} else {
+		
+		// map all other errors to "unknown"
+		if ( error != kNoError || g_last_error != kNoError ) {
+			mapped_error = kErrorUnknown;
+		}
+
+		// overwrite g_last_error, but only if it's not already set
+		if ( g_last_error == kNoError ) {
+			g_last_error = error;
+		}
+
+	}
+
+	return mapped_error;
+}
+
+
+
 #pragma mark -
 #pragma mark Other
 #pragma mark -

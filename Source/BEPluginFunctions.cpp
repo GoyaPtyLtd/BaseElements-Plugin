@@ -114,7 +114,7 @@ FMX_PROC(errcode) BE_VersionAutoUpdate ( short /* funcId */, const ExprEnv& /* e
 
 FMX_PROC(errcode) BE_GetLastError ( short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = kNoError; // do not use NoError();
 	
 	if ( funcId == kBE_GetLastError ) {
 		SetNumericResult ( g_last_error, results );
@@ -124,7 +124,7 @@ FMX_PROC(errcode) BE_GetLastError ( short funcId, const ExprEnv& /* environment 
 		g_last_ddl_error = kNoError;
 	}
 
-	return error_result;
+	return MapError ( error );
 	
 }
 
@@ -142,7 +142,7 @@ FMX_PROC(errcode) BE_ClipboardFormats ( short /* funcId */, const ExprEnv& /* en
 
 FMX_PROC(errcode) BE_ClipboardData ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -151,19 +151,19 @@ FMX_PROC(errcode) BE_ClipboardData ( short /* funcId */, const ExprEnv& /* envir
 		SetUTF8Result ( clipboard_contents, results );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_ClipboardData
 
 
 FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 
@@ -173,12 +173,12 @@ FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* en
 		SetNumericResult ( success, results );
 
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_SetClipboardData
 
@@ -193,8 +193,7 @@ FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* en
 
 FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
-	errcode error_result = kNoError;	
-	errcode filesystem_result = kNoError;
+	errcode error = NoError();	
 	
 	try {
 
@@ -204,26 +203,25 @@ FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* enviro
 		try {
 			create_directory ( directory_path );
 		} catch ( filesystem_error& e ) {
-			filesystem_result = e.code().value();
+			g_last_error = e.code().value();
 		}
 		
-		SetNumericResult ( filesystem_result, results );
+		SetNumericResult ( g_last_error, results );
 				
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_CreateFolder
 
 
 FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
-	errcode filesystem_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -233,73 +231,79 @@ FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environm
 		try {
 			remove_all ( path ); // if path is a directory then path and all it's contents are deleted
 		} catch ( filesystem_error& e ) {
-			filesystem_result = e.code().value();
+			g_last_error = e.code().value();
 		}
 		
-		SetNumericResult ( filesystem_result, results );
+		SetNumericResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_DeleteFile
 
 
 FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
 		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
-		path path = *file;
-
+		
+		path path = *file;			
 		bool file_exists = exists ( path );
+
 		SetNumericResult ( file_exists, results );
 		
 	} catch ( filesystem_error& e ) {
-		error_result = e.code().value();
+		g_last_error = e.code().value();
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_FileExists
 
 
 FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 
 		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
-		StringAutoPtr contents = ReadFileAsUTF8 ( file );
+		StringAutoPtr contents;
+		
+		try {
+			contents = ReadFileAsUTF8 ( file );
+		} catch ( filesystem_error& e ) {
+			g_last_error = e.code().value();
+		}
+		
 		SetUTF8Result ( contents, results );
 
-	} catch ( filesystem_error& e ) {
-		error_result = e.code().value();
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_ReadTextFromFile
 
 
 FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 		
 	try {
 		
@@ -329,20 +333,20 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 			output_file.close();
 
 		} catch ( filesystem_error& e ) {
-			error_result = e.code().value();
+			g_last_error = e.code().value();
 		} catch ( exception& e ) {
-			error_result = errno; // unable to write to the file
+			g_last_error = errno; // unable to write to the file
 		}
 		
-		SetNumericResult ( error_result, results );
+		SetNumericResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_WriteTextToFile
 
@@ -355,7 +359,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 
 FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -422,29 +426,28 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 			remove_all ( destination );
 			if ( skipped > 0 ) {
 				// if characters were skipped and the file size is wrong report an error
-				error_result = kFileSystemError;
+				error = kFileSystemError;
 			}
 		}
 
-		SetNumericResult ( error_result == kNoError, results );
+		SetNumericResult ( error == kNoError, results );
 		
 	} catch ( filesystem_error& e ) {
-		error_result = e.code().value();
+		g_last_error = e.code().value();
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_StripInvalidUTF16CharactersFromXMLFile
 
 
 FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
-	errcode filesystem_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -458,26 +461,25 @@ FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environmen
 			
 			rename ( from_path, to_path );			
 		} catch ( filesystem_error& e ) {
-			filesystem_result = e.code().value();
+			g_last_error = e.code().value();
 		}
 		
-		SetNumericResult ( filesystem_result, results );
+		SetNumericResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_MoveFile
 
 
 FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	g_last_error = kNoError;
-	errcode filesystem_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -492,18 +494,18 @@ FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environmen
 			recursive_directory_copy ( from_path, to_path );
 			
 		} catch ( filesystem_error& e ) {
-			filesystem_result = e.code().value();
+			g_last_error = e.code().value();
 		}
 		
-		SetNumericResult ( filesystem_result, results );
+		SetNumericResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_CopyFile
 
@@ -511,7 +513,7 @@ FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environmen
 
 FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -561,12 +563,12 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 		results.SetAsText ( *list_of_files, *default_locale );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_ListFilesInFolder
 
@@ -578,7 +580,7 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 
 FMX_PROC(errcode) BE_SelectFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 
@@ -588,19 +590,19 @@ FMX_PROC(errcode) BE_SelectFile ( short /* funcId */, const ExprEnv& /* environm
 		SetWideResult ( file, results );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_SelectFile
 
 
 FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 
@@ -610,19 +612,19 @@ FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* enviro
 		SetWideResult ( folder, results );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 
-	return error_result;
+	return MapError ( error );
 	
 } // BE_SelectFolder
 
 
 FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 		
 	try {
 
@@ -636,12 +638,12 @@ FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* envir
 		SetNumericResult ( response, results );
 
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 
-	return error_result;
+	return MapError ( error );
 	
 } // BE_DisplayDialog
 
@@ -652,7 +654,7 @@ FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* envir
 
 FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 
@@ -663,19 +665,19 @@ FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environme
 		results.SetAsText( *ApplyXSLT ( xml_path, xslt, csv_path ), parameters.At(0).GetLocale() );
 	
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 
-	return error_result;
+	return MapError ( error );
 	
 } // BE_ApplyXSLT
 
 
 FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -685,64 +687,69 @@ FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* e
 		results.SetAsText( *ApplyXSLTInMemory ( xml, xslt ), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_ApplyXSLTInMemory
 
 
 FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
-		int numParams = parameters.Size();
+		
 		StringAutoPtr xml = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr xpath = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr nsList(new string);
-		if (numParams > 2)
+		StringAutoPtr nsList ( new string );
+
+		const unsigned long number_of_parameters = parameters.Size();
+		if ( number_of_parameters > 2 ) {
 			nsList = ParameterAsUTF8String ( parameters, 2 );
+		}
 		
 		results.SetAsText( *ApplyXPath ( xml, xpath, nsList ), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_XPath
 
 
 FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
-	errcode error_result = kNoError;
-	TextAutoPtr txt;
+	errcode error = NoError();
+	TextAutoPtr text;
 	
 	try {
-		int numParams = parameters.Size();
+
 		StringAutoPtr xml = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr xpath = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr nsList( new string);
-		if (numParams > 2)
+
+		const unsigned long number_of_parameters = parameters.Size();
+		StringAutoPtr nsList ( new string );
+		if ( number_of_parameters > 2 ) {
 			nsList = ParameterAsUTF8String ( parameters, 2 );
-		
-		
+		}
+				
 		results.SetAsText(*ApplyXPathAll (xml, xpath, nsList), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_XPathAll
 
@@ -755,7 +762,7 @@ FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environmen
 
 FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -770,12 +777,12 @@ FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environ
 		SetNumericResult ( SetPreference ( key, value, domain ), results );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_SetPreference
 
@@ -783,7 +790,7 @@ FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environ
 
 FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -797,12 +804,12 @@ FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environ
 		SetWideResult ( GetPreference ( key, domain ), results );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_GetPreference
 
@@ -816,7 +823,7 @@ FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environ
 
 FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -827,12 +834,12 @@ FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */,
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_Unzip
 
@@ -840,7 +847,7 @@ FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */,
 
 FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -851,12 +858,12 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_Zip
 
@@ -864,7 +871,7 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 
 FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -885,12 +892,12 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 	} catch ( dataflow_exception& e ) { // invalid_base64_character
 		g_last_error = e.code;
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_Base64_Decode
 
@@ -898,7 +905,7 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 
 FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 
@@ -938,12 +945,12 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 		delete [] buffer;
 				
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_Base64_Encode
 
@@ -956,7 +963,7 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 
 FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -968,14 +975,14 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment 
 		vector<char> data = GetURL ( *url, *filename, *username, *password );
 		
 		SetBinaryDataFileResult ( *filename, data, results );
-
+		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_GetURL
 
@@ -983,7 +990,7 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment 
 
 FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -995,12 +1002,12 @@ FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* envir
 		vector<char> data = GetURL ( *url, *filename, *username, *password );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_SaveURLToFile
 
@@ -1008,7 +1015,7 @@ FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* envir
 
 FMX_PROC(errcode) BE_HTTP_POST ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -1021,12 +1028,12 @@ FMX_PROC(errcode) BE_HTTP_POST ( short /* funcId */, const ExprEnv& /* environme
 		SetUTF8Result ( data_string, results );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_HTTP_POST
 
@@ -1034,19 +1041,19 @@ FMX_PROC(errcode) BE_HTTP_POST ( short /* funcId */, const ExprEnv& /* environme
 
 FMX_PROC(errcode) BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
 		SetNumericResult ( g_http_response_code, results );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_HTTP_Response_Code
 
@@ -1054,7 +1061,7 @@ FMX_PROC(errcode) BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* 
 
 FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -1062,12 +1069,12 @@ FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& 
 		SetUTF8Result ( headers, results );
 
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_HTTP_Response_Headers
 
@@ -1075,7 +1082,7 @@ FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& 
 
 FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -1091,12 +1098,12 @@ FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv&
 		SetNumericResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_HTTP_Set_Custom_Header
 
@@ -1120,19 +1127,19 @@ FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv&
 
 FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results)
 {
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
 		SetNumericResult ( funcId % kBE_NumericConstantOffset, results );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_NumericConstants
 
@@ -1147,7 +1154,7 @@ FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& /* environm
 
 FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -1222,12 +1229,12 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 		results.SetAsText( *(variables.AsValueList()), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_ExtractScriptVariables
 
@@ -1235,7 +1242,7 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 
 FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -1253,12 +1260,12 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 		SetUTF8Result ( response, results );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_ExecuteShellCommand
 
@@ -1292,7 +1299,7 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 
 FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& reply )
 {	
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	TextAutoPtr expression;
 
@@ -1305,16 +1312,16 @@ FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& env
 		}
 		
 		// the original api best suits the purpose
-		error_result = environment.ExecuteSQL ( *expression, reply, '\t', '\n' );
+		error = environment.ExecuteSQL ( *expression, reply, '\t', '\n' );
 		
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}	
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_FileMaker_TablesOrFields
 
@@ -1323,7 +1330,7 @@ FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& env
 
 FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& reply )
 {	
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	TextAutoPtr expression;
 	
@@ -1335,12 +1342,12 @@ FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const D
 		SetNumericResult ( succeeded, reply );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}	
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_OpenURL
 
@@ -1348,7 +1355,7 @@ FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const D
 
 FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
 {
-	errcode error_result = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -1358,12 +1365,12 @@ FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment 
 		SetNumericResult ( succeeded, results );
 		
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_OpenFile
 
@@ -1371,7 +1378,7 @@ FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment 
 
 FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& reply)
 {
-	errcode error_result = 0;
+	errcode error = 0;
 	
 	try {
 		
@@ -1404,17 +1411,17 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 			parameter->SetAsText ( parameters.AtAsText ( 2 ), *default_locale );
 		}
 		
-		error_result = FMX_StartScript ( &(*file_name), &(*script_name), kFMXT_Pause, &(*parameter) );
+		error = FMX_StartScript ( &(*file_name), &(*script_name), kFMXT_Pause, &(*parameter) );
 		
-		SetNumericResult ( error_result, reply );
+		SetNumericResult ( error, reply );
 
 	} catch ( bad_alloc& e ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}	
 	
-	return error_result;
+	return MapError ( error );
 	
 } // BE_ExecuteScript
 
@@ -1422,7 +1429,7 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 
 FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
 {	
-	g_last_error = kNoError;
+	errcode error = NoError();
 	
 	try {
 		
@@ -1457,12 +1464,12 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environme
 		results.SetAsText( *(sql->get_text_result()), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}	
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_FileMakerSQL
 
@@ -1470,7 +1477,7 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environme
 
 FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
-	g_last_error = kNoError;
+	errcode error = NoError();
 		
 	try {
 		
@@ -1489,12 +1496,12 @@ FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment
 		
 		
 	} catch ( bad_alloc& e ) {
-		g_last_error = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& e ) {
-		g_last_error = kErrorUnknown;
+		error = kErrorUnknown;
 	}	
 	
-	return g_last_error;
+	return MapError ( error );
 	
 } // BE_FileMaker_TablesOrFields
 
