@@ -28,6 +28,7 @@
       <Filter>MiniZip</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\BEZlib.cpp" />
+    <ClCompile Include="..\Source\BESQLCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -63,6 +64,7 @@
     </ClInclude>
     <ClInclude Include="..\Source\BEZlib.h" />
     <ClInclude Include="..\Source\BE_Boost_FileSystem_Additions.hpp" />
+    <ClInclude Include="..\Source\BESQLCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

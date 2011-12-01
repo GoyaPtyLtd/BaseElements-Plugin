@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4D0023E413FDD64C00C0B57A /* BEShell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0023E213FDD64C00C0B57A /* BEShell.cpp */; };
+		4D10AD951484202000814440 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
 		4D37E0B51339CF080084730B /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */; };
@@ -59,6 +60,8 @@
 /* Begin PBXFileReference section */
 		4D0023E213FDD64C00C0B57A /* BEShell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEShell.cpp; path = ../Source/BEShell.cpp; sourceTree = SOURCE_ROOT; };
 		4D0023E313FDD64C00C0B57A /* BEShell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEShell.h; path = ../Source/BEShell.h; sourceTree = SOURCE_ROOT; };
+		4D10AD931484202000814440 /* BESQLCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESQLCommand.cpp; path = ../Source/BESQLCommand.cpp; sourceTree = SOURCE_ROOT; };
+		4D10AD941484202000814440 /* BESQLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESQLCommand.h; path = ../Source/BESQLCommand.h; sourceTree = SOURCE_ROOT; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
@@ -166,6 +169,8 @@
 		C7DEDEF607E10BF3002283F3 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				4D10AD931484202000814440 /* BESQLCommand.cpp */,
+				4D10AD941484202000814440 /* BESQLCommand.h */,
 				4D37E0B21339CF080084730B /* BECurl.h */,
 				4D37E0B11339CF080084730B /* BECurl.cpp */,
 				4D8824E611E93F6000F94475 /* BEPluginUtilities.h */,
@@ -292,6 +297,7 @@
 				4DC18344144D31C800E27CAA /* mztools.c in Sources */,
 				4DC18345144D31C800E27CAA /* unzip.c in Sources */,
 				4DC18346144D31C800E27CAA /* zip.c in Sources */,
+				4D10AD951484202000814440 /* BESQLCommand.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
