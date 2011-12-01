@@ -98,6 +98,7 @@ enum functions {
 	kBE_Zip = 171,
 	kBE_Base64_Decode = 172,
 	kBE_Base64_Encode = 173,
+	kBE_SetTextEncoding = 174,
 	kBE_HTTP_POST = 180,
 	kBE_HTTP_Response_Code = 181,
 	kBE_HTTP_Response_Headers = 182,

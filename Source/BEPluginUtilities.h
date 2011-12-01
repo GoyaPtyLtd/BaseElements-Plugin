@@ -43,11 +43,16 @@ bool ParameterAsBoolean ( const DataVect& parameters, const unsigned long which,
 long ParameterAsLong ( const DataVect& parameters, const unsigned long which, const unsigned long default_value );
 StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, unsigned long which );
 WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, unsigned long which );
+
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path );
-StringAutoPtr ConvertToUTF8 ( char * in, size_t length );
+vector<char> ConvertTextTo ( char * in, const size_t length, const string& encoding );
+StringAutoPtr ConvertTextTo ( StringAutoPtr in, const string& encoding );
+StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length );
+
+void SetTextEncoding ( const string& encoding );
 
 errcode NoError ( void );
-errcode MapError ( errcode error = kNoError, bool map = false );
+errcode MapError ( const errcode error = kNoError, const bool map = false );
 
 
 // extract localised strings from the plug-in resources

@@ -46,6 +46,9 @@ using namespace fmx;
 using namespace boost::filesystem;
 
 
+extern string g_text_encoding;
+
+
 #pragma mark -
 #pragma mark Plug-In Utilities
 #pragma mark -
@@ -134,7 +137,7 @@ void SetBinaryDataFileResult ( const string filename, vector<char> data, Data& r
 		// so try to convert it first
 		
 		const string data_string ( data.begin(), data.end() );
-		StringAutoPtr utf8 = ConvertToUTF8 ( (char *)data_string.c_str(), data_string.size() );
+		StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)data_string.c_str(), data_string.size() );
 		SetUTF8Result ( utf8, results );
 		
 	}
@@ -254,14 +257,12 @@ StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path )
 		inFile.seekg ( 0, ios::beg );
 		
 		// slurp up the file contents
-		char * buffer = new char [length + 1];
+		char * buffer = new char [length];
 		inFile.read ( buffer, length );
 		inFile.close ();
-		
-		buffer[length] = '\0';
-		
+				
 		// convert the text in the file to utf-8 if possible
-		result = ConvertToUTF8 ( buffer, length );
+		result = ConvertTextToUTF8 ( buffer, length );
 		if ( result->length() == 0 ) {
 			result->assign ( buffer );
 		}
@@ -269,7 +270,6 @@ StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path )
 	} else {
 		g_last_error = kNoSuchFileOrDirectoryError;
 	}
-
 	
 	return result;
 	
@@ -281,46 +281,73 @@ StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path )
 #pragma mark Unicode
 #pragma mark -
 
-// convert text to utf-8
-// currently handles utf-16, ascii and utf-8 text
-
-StringAutoPtr ConvertToUTF8 ( char * in, size_t length )
+vector<char> ConvertTextTo ( char * in, const size_t length, const string& encoding )
 {
-	size_t utf8_length = (length * 2) + 1;	// worst case for utf-16 to utf-8
-	char * utf8 = new char [utf8_length]();	// value-initialization (to zero)… we crash otherwise
+	size_t available = (length * 4) + 1;	// worst case for utf-32 to utf-8 ?
+	char * encoded = new char [available]();	// value-initialization (to zero)… we crash otherwise
 	
 	vector<string> codesets;
-	codesets.push_back ( "UTF-8" );
-	codesets.push_back ( "UTF-16" );
-	
-	int error_result = -1;
+	codesets.push_back ( g_text_encoding );
+	codesets.push_back ( "UTF-16" ); // backwards compatibility with v1.2
 	
 	/*
 	 there no clean way to determine the codeset of the supplied text so
 	 try each converting from each of the codesets in turn
 	 */
 	
+	int error_result = -1;
 	vector<string>::iterator it = codesets.begin();
+	size_t remaining = available;
+	
 	while ( error_result == -1 && it != codesets.end() ) {
-
+		
 		char * start = in;
 		size_t start_length = length;
-		char * utf8_start = utf8;
-	
-		iconv_t conversion = iconv_open ( "UTF-8", it->c_str() );
-		error_result = iconv ( conversion, &start, &start_length, &utf8_start, &utf8_length );
+		char * encoded_start = encoded;
+		
+		iconv_t conversion = iconv_open ( encoding.c_str(), it->c_str() );
+		error_result = iconv ( conversion, &start, &start_length, &encoded_start, &remaining );
 		iconv_close ( conversion );
-	
+		
 		++it;
 	}
 	
-	StringAutoPtr out ( new string ( utf8 ) );
-	delete[] utf8;
+	vector<char> out ( encoded, encoded + available - remaining );
+	delete[] encoded;
 	
 	return out;
 	
 } // ConvertToUTF8
 
+
+
+StringAutoPtr ConvertTextTo ( StringAutoPtr in, const string& encoding )
+{
+	vector<char> text = ConvertTextTo ( (char *)in->c_str(), (const size_t)in->size() - 1, encoding );
+	StringAutoPtr out ( new string ( text.begin(), text.end() ) );
+	return out;
+}
+
+
+// convert text to utf-8
+// currently handles utf-16, ascii and utf-8 text
+
+StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length )
+{
+	vector<char> text = ConvertTextTo ( in, length, "UTF-8" );
+	StringAutoPtr out ( new string ( text.begin(), text.end() ) );
+	return out;
+} // ConvertToUTF8
+
+
+void SetTextEncoding ( const string& encoding )
+{
+	if ( encoding.empty() ) {
+		g_text_encoding = "UTF-8";
+	} else {
+		g_text_encoding = encoding;
+	}	
+}
 
 
 #pragma mark -
@@ -338,7 +365,7 @@ errcode NoError ( void )
 // use as the return value for al plugin functions
 // only return errors to FileMaker that it can make sense of
 
-errcode MapError ( const errcode error, bool map )
+errcode MapError ( const errcode error, const bool map )
 {
 	
 	errcode mapped_error = kNoError;

@@ -61,6 +61,7 @@ FMX_ExternCallPtr gFMX_ExternCallPtr;	// required by the FMX API
 BEFileMakerPlugin * g_be_plugin;		// the plug-in instance
 
 extern BESQLCommandAutoPtr g_ddl_command;
+//extern string g_text_encoding;
 
 
 #pragma mark -
@@ -72,6 +73,11 @@ extern BESQLCommandAutoPtr g_ddl_command;
 
 static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call ) 
 {
+//	StringAutoPtr encoding ( new string );
+//	g_text_encoding = "";
+//	StringAutoPtr blank_encoding ( new string );
+	SetTextEncoding ( "" );
+	
 	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
 	g_be_plugin = new BEFileMakerPlugin ( plugin_id );
 
@@ -139,7 +145,9 @@ static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1 );
 	g_be_plugin->RegisterFunction ( kBE_Base64_Decode, BE_Base64_Decode, true, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Base64_Encode, BE_Base64_Encode, 1 );
+	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, true, 0, 1 );
 
+	
 	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST, 2 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Code, BE_HTTP_Response_Code );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Headers, BE_HTTP_Response_Headers );

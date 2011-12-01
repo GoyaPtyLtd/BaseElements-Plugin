@@ -61,6 +61,7 @@
 "171" = "BE_Zip ( file )";
 "172" = "BE_Base64_Decode ( text {; name } )";
 "173" = "BE_Base64_Encode ( data )";
+"174" = "BE_SetTextEncoding ( { encoding } )";
 
 
 "180" = "BE_HTTP_POST ( url; parameters )";

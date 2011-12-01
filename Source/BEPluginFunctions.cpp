@@ -85,6 +85,8 @@ typedef transform_width<
 
 errcode g_last_error;
 errcode g_last_ddl_error;
+string g_text_encoding;
+
 
 extern int g_http_response_code;
 extern string g_http_response_headers;
@@ -321,15 +323,15 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 		}
 		
 		StringAutoPtr text_to_write = ParameterAsUTF8String ( parameters, 1 );
+		vector<char> out = ConvertTextTo ( (char *)text_to_write->c_str(), text_to_write->size(), g_text_encoding );
 		
 		try {
 			
 			boost::filesystem::path filesystem_path ( path );
 			boost::filesystem::ofstream output_file ( filesystem_path, ios_base::out | mode );
-
 			output_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );			
 			
-			output_file << *text_to_write;
+			output_file.write ( &out[0], out.size() );
 			output_file.close();
 
 		} catch ( filesystem_error& e ) {
@@ -956,6 +958,28 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 
 
 
+FMX_PROC(errcode) BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr encoding = ParameterAsUTF8String ( parameters, 0 );
+		SetTextEncoding ( *encoding );
+		SetNumericResult ( error, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_SetTextEncoding
+
+
+
 #pragma mark -
 #pragma mark HTTP / Curl
 #pragma mark -
@@ -1249,7 +1273,7 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 		StringAutoPtr command = ParameterAsUTF8String ( parameters, 0 );
 		bool waitForResponse = ParameterAsBoolean ( parameters, 1 );
 
-		StringAutoPtr response ( new string ( ) );
+		StringAutoPtr response ( new string );
 
 		if ( waitForResponse ) {
 			g_last_error = ExecuteShellCommand ( *command, *response );
