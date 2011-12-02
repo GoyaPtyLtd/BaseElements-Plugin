@@ -91,7 +91,12 @@ errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
 
 // get parameters and set function results
 
-void SetNumericResult ( long number, Data& results )
+
+#pragma mark -
+#pragma mark SetResult
+#pragma mark -
+
+void SetResult ( const long number, Data& results )
 {
 	FixPtAutoPtr numeric_result;
 	numeric_result->AssignInt ( number );
@@ -99,25 +104,30 @@ void SetNumericResult ( long number, Data& results )
 }
 
 
-void SetUTF8Result ( StringAutoPtr text, Data& results )
+void SetResult ( const Text& text, Data& results )
+{
+	LocaleAutoPtr default_locale;
+	results.SetAsText ( text, *default_locale );
+}
+
+
+void SetResult ( const StringAutoPtr text, Data& results )
 {
 	TextAutoPtr result_text;
 	result_text->Assign ( text->c_str(), Text::kEncoding_UTF8 );			
-	LocaleAutoPtr default_locale;
-	results.SetAsText ( *result_text, *default_locale );
+	SetResult ( *result_text, results );
 }
 
 
-void SetWideResult ( WStringAutoPtr text, Data& results )
+void SetResult ( const WStringAutoPtr text, Data& results )
 {
 	TextAutoPtr result_text;
 	result_text->AssignWide ( text->c_str() );			
-	LocaleAutoPtr default_locale;
-	results.SetAsText ( *result_text, *default_locale );
+	SetResult ( *result_text, results );
 }
 
 
-void SetBinaryDataFileResult ( const string filename, vector<char> data, Data& results )
+void SetResult ( const string filename, const vector<char> data, Data& results )
 {
 	bool as_binary = !filename.empty();
 	
@@ -138,12 +148,16 @@ void SetBinaryDataFileResult ( const string filename, vector<char> data, Data& r
 		
 		const string data_string ( data.begin(), data.end() );
 		StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)data_string.c_str(), data_string.size() );
-		SetUTF8Result ( utf8, results );
+		SetResult ( utf8, results );
 		
 	}
 	
 } // SetBinaryDataResult
 
+
+#pragma mark -
+#pragma mark ParameterAs
+#pragma mark -
 
 bool ParameterAsBoolean ( const DataVect& parameters, const unsigned long which, const bool default_value )
 {
@@ -152,7 +166,6 @@ bool ParameterAsBoolean ( const DataVect& parameters, const unsigned long which,
 	} catch ( exception& e ) {
 		return default_value;
 	}
-
 }
 	
 	
@@ -162,8 +175,7 @@ long ParameterAsLong ( const DataVect& parameters, const unsigned long which, co
 		return parameters.AtAsNumber ( which ).AsLong();
 	} catch ( exception& e ) {
 		return default_value;
-	}
-	
+	}	
 }
 
 
@@ -238,10 +250,10 @@ WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, unsigned long
 } // ParameterAsUnicodeString
 
 
+
 #pragma mark -
 #pragma mark Files
 #pragma mark -
-
 
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path )
 {
@@ -394,7 +406,6 @@ errcode MapError ( const errcode error, const bool map )
 
 	return mapped_error;
 }
-
 
 
 #pragma mark -

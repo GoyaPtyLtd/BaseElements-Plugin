@@ -34,10 +34,11 @@ typedef auto_ptr<wstring> WStringAutoPtr;
 errcode TextConstantFunction ( wstring text, Data& results );
 errcode TextConstantFunction ( WStringAutoPtr text, Data& results );
 
-void SetNumericResult ( long number, Data& results );
-void SetUTF8Result ( StringAutoPtr text, Data& results );
-void SetWideResult ( WStringAutoPtr text, Data& results );
-void SetBinaryDataFileResult ( const string filename, vector<char> data, Data& results );
+void SetResult ( const long number, Data& results );
+void SetResult ( const Text& text, Data& results );
+void SetResult ( const StringAutoPtr text, Data& results );
+void SetResult ( const WStringAutoPtr text, Data& results );
+void SetResult ( const string filename, const vector<char> data, Data& results );
 
 bool ParameterAsBoolean ( const DataVect& parameters, const unsigned long which, const bool default_value = true );
 long ParameterAsLong ( const DataVect& parameters, const unsigned long which, const unsigned long default_value );

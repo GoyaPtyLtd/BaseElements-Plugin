@@ -119,10 +119,10 @@ FMX_PROC(errcode) BE_GetLastError ( short funcId, const ExprEnv& /* environment 
 	errcode error = kNoError; // do not use NoError();
 	
 	if ( funcId == kBE_GetLastError ) {
-		SetNumericResult ( g_last_error, results );
+		SetResult ( g_last_error, results );
 		g_last_error = kNoError;
 	} else if ( funcId == kBE_GetLastDDLError ) {
-		SetNumericResult ( g_last_ddl_error, results );
+		SetResult ( g_last_ddl_error, results );
 		g_last_ddl_error = kNoError;
 	}
 
@@ -150,7 +150,7 @@ FMX_PROC(errcode) BE_ClipboardData ( short /* funcId */, const ExprEnv& /* envir
 		
 		WStringAutoPtr atype = ParameterAsWideString ( parameters, 0 );
 		StringAutoPtr clipboard_contents = ClipboardData ( atype );
-		SetUTF8Result ( clipboard_contents, results );
+		SetResult ( clipboard_contents, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -172,7 +172,7 @@ FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* en
 		StringAutoPtr to_copy = ParameterAsUTF8String ( parameters, 0 );
 		WStringAutoPtr atype = ParameterAsWideString ( parameters, 1 );
 		bool success = SetClipboardData ( to_copy, atype );
-		SetNumericResult ( success, results );
+		SetResult ( success, results );
 
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -208,7 +208,7 @@ FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* enviro
 			g_last_error = e.code().value();
 		}
 		
-		SetNumericResult ( g_last_error, results );
+		SetResult ( g_last_error, results );
 				
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -236,7 +236,7 @@ FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environm
 			g_last_error = e.code().value();
 		}
 		
-		SetNumericResult ( g_last_error, results );
+		SetResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -260,7 +260,7 @@ FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environm
 		path path = *file;			
 		bool file_exists = exists ( path );
 
-		SetNumericResult ( file_exists, results );
+		SetResult ( file_exists, results );
 		
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -290,7 +290,7 @@ FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* en
 			g_last_error = e.code().value();
 		}
 		
-		SetUTF8Result ( contents, results );
+		SetResult ( contents, results );
 
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -340,7 +340,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 			g_last_error = errno; // unable to write to the file
 		}
 		
-		SetNumericResult ( g_last_error, results );
+		SetResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -432,7 +432,7 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 			}
 		}
 
-		SetNumericResult ( error == kNoError, results );
+		SetResult ( error == kNoError, results );
 		
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -466,7 +466,7 @@ FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environmen
 			g_last_error = e.code().value();
 		}
 		
-		SetNumericResult ( g_last_error, results );
+		SetResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -499,7 +499,7 @@ FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environmen
 			g_last_error = e.code().value();
 		}
 		
-		SetNumericResult ( g_last_error, results );
+		SetResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -561,8 +561,7 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 			g_last_error = e.code().value();
 		}
 
-		LocaleAutoPtr default_locale;
-		results.SetAsText ( *list_of_files, *default_locale );
+		SetResult ( *list_of_files, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -589,7 +588,7 @@ FMX_PROC(errcode) BE_SelectFile ( short /* funcId */, const ExprEnv& /* environm
 		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
 		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 1 );
 		WStringAutoPtr file = SelectFile ( prompt, inFolder );
-		SetWideResult ( file, results );
+		SetResult ( file, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -611,7 +610,7 @@ FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* enviro
 		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
 		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 1 );
 		WStringAutoPtr folder = SelectFolder ( prompt, inFolder );
-		SetWideResult ( folder, results );
+		SetResult ( folder, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -637,7 +636,7 @@ FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* envir
 		WStringAutoPtr alternate_button = ParameterAsWideString ( parameters, 4 );
 	
 		int response = DisplayDialog ( title, message, ok_button, cancel_button, alternate_button );
-		SetNumericResult ( response, results );
+		SetResult ( response, results );
 
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -776,7 +775,7 @@ FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environ
 			domain->assign ( USER_PREFERENCES_DOMAIN );
 		}
 
-		SetNumericResult ( SetPreference ( key, value, domain ), results );
+		SetResult ( SetPreference ( key, value, domain ), results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -803,7 +802,7 @@ FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environ
 			domain->assign ( USER_PREFERENCES_DOMAIN );
 		}
 		
-		SetWideResult ( GetPreference ( key, domain ), results );
+		SetResult ( GetPreference ( key, domain ), results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -831,7 +830,7 @@ FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */,
 		
 		StringAutoPtr archive = ParameterAsUTF8String ( parameters, 0 );
 		
-		SetNumericResult ( UnZip ( archive ), results );
+		SetResult ( UnZip ( archive ), results );
 		
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -855,7 +854,7 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 		
 		StringAutoPtr file = ParameterAsUTF8String ( parameters, 0 );
 		
-		SetNumericResult ( Zip ( file ), results );
+		SetResult ( Zip ( file ), results );
 		
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -889,7 +888,7 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 		// decode it
 		vector<char> data ( base64_binary(text->begin()), base64_binary(text->end() - skip) );
 		
-		SetBinaryDataFileResult ( *filename, data, results );
+		SetResult ( *filename, data, results );
 				
 	} catch ( dataflow_exception& e ) { // invalid_base64_character
 		g_last_error = e.code;
@@ -943,7 +942,7 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 		for ( ulong i = 0 ; i < (base64->length() % 4) ; i ++ ) {
 			base64->append ( "=" );
 		}
-		SetUTF8Result ( base64, results );
+		SetResult ( base64, results );
 		delete [] buffer;
 				
 	} catch ( bad_alloc& e ) {
@@ -966,7 +965,7 @@ FMX_PROC(errcode) BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* envir
 		
 		StringAutoPtr encoding = ParameterAsUTF8String ( parameters, 0 );
 		SetTextEncoding ( *encoding );
-		SetNumericResult ( error, results );
+		SetResult ( error, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -998,7 +997,7 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment 
 		
 		vector<char> data = GetURL ( *url, *filename, *username, *password );
 		
-		SetBinaryDataFileResult ( *filename, data, results );
+		SetResult ( *filename, data, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1049,7 +1048,7 @@ FMX_PROC(errcode) BE_HTTP_POST ( short /* funcId */, const ExprEnv& /* environme
 		vector<char> data = HTTP_POST ( url, post_parameters );
 		data.push_back ( '\0' );
 		StringAutoPtr data_string ( new string ( &data[0] ) );
-		SetUTF8Result ( data_string, results );
+		SetResult ( data_string, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1069,7 +1068,7 @@ FMX_PROC(errcode) BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* 
 	
 	try {
 		
-		SetNumericResult ( g_http_response_code, results );
+		SetResult ( g_http_response_code, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1090,7 +1089,7 @@ FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& 
 	try {
 		
 		StringAutoPtr headers ( new string ( g_http_response_headers ) );
-		SetUTF8Result ( headers, results );
+		SetResult ( headers, results );
 
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1119,7 +1118,7 @@ FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv&
 			g_http_custom_headers [ *name ] = *value;
 		}
 		
-		SetNumericResult ( g_last_error, results );
+		SetResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1155,7 +1154,7 @@ FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& /* environm
 	
 	try {
 		
-		SetNumericResult ( funcId % kBE_NumericConstantOffset, results );
+		SetResult ( funcId % kBE_NumericConstantOffset, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1281,7 +1280,7 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 			boost::thread dontWaitForThis ( ExecuteShellCommand, *command, *response );
 		}
 
-		SetUTF8Result ( response, results );
+		SetResult ( response, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1363,7 +1362,7 @@ FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const D
 		WStringAutoPtr url = ParameterAsWideString ( parameters, 0 );
 		bool succeeded = OpenURL ( url );
 
-		SetNumericResult ( succeeded, reply );
+		SetResult ( succeeded, reply );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1386,7 +1385,7 @@ FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment 
 		WStringAutoPtr path = ParameterAsWideString ( parameters, 0 );
 		
 		bool succeeded = OpenFile ( path );
-		SetNumericResult ( succeeded, results );
+		SetResult ( succeeded, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1437,7 +1436,7 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 		
 		error = FMX_StartScript ( &(*file_name), &(*script_name), kFMXT_Pause, &(*parameter) );
 		
-		SetNumericResult ( error, reply );
+		SetResult ( error, reply );
 
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1516,7 +1515,7 @@ FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment
 			digest = SHA256 ( message );
 		}
 		
-		SetUTF8Result ( digest, results );
+		SetResult ( digest, results );
 		
 		
 	} catch ( bad_alloc& e ) {
