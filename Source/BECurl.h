@@ -20,6 +20,14 @@
 #include <map>
 
 
+class BECurl_Exception : public runtime_error {
+	
+public:
+	BECurl_Exception() : runtime_error ( "BECurl_Exception" ) { }
+	
+};
+
+
 typedef map<string, string> CustomHeaders;
 
 
