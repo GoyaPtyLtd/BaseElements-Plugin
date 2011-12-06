@@ -25,6 +25,8 @@
 #include "curl/curl.h"
 
 #include <map>
+#include <errno.h>
+
 
 
 #pragma mark -
@@ -188,60 +190,73 @@ vector<char> BECurl::download ( )
 		curl_easy_setopt ( curl, CURLOPT_HEADERFUNCTION, WriteMemoryCallback );
 		curl_easy_setopt ( curl, CURLOPT_WRITEHEADER, (void *)&headers );
 		
-		// save the data to file or memory?
-		FILE *outputFile;
-		if ( filename.empty() ) {
-			// send all data to this function
-			curl_easy_setopt ( curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback );
-			curl_easy_setopt ( curl, CURLOPT_WRITEDATA, (void *)&data );		
-		} else {
-			outputFile = fopen ( filename.c_str(), "wb" );
-			curl_easy_setopt ( curl, CURLOPT_WRITEDATA, outputFile );
-		}
-		
-		
-		// add any custom headers
-		struct curl_slist *custom_headers = NULL;	
-		CustomHeaders::const_iterator it = http_custom_headers.begin();
-		while ( it != http_custom_headers.end() ) {
-			string custom_header = it->first;
-			custom_header.append ( ": " );
-			custom_header.append ( it->second );
-			custom_headers = curl_slist_append ( custom_headers, custom_header.c_str() );
-			++it;
-		}
-		
-		if ( custom_headers ) {
-			curl_easy_setopt ( curl, CURLOPT_HTTPHEADER, custom_headers );
-		}
-		
-		
-		// download this
-		curl_easy_setopt ( curl, CURLOPT_URL, url.c_str() );
-		
-		g_last_error = curl_easy_perform ( curl );
-		
-		if ( g_last_error == kNoError ) {
-			// get response code
-			g_last_error = curl_easy_getinfo( curl, CURLINFO_RESPONSE_CODE, &http_response_code );
-			
-			// record the header information
-			http_response_headers.erase();
-			for ( size_t i = 0 ; i < headers.size ; i++ ) {
-				http_response_headers.push_back ( headers.memory[i] );
+		try {
+			// save the data to file or memory?
+			FILE *outputFile;
+			if ( filename.empty() ) {
+				// send all data to this function
+				curl_easy_setopt ( curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback );
+				curl_easy_setopt ( curl, CURLOPT_WRITEDATA, (void *)&data );		
+			} else {
+				outputFile = fopen ( filename.c_str(), "wb" );
+				
+				// curl will crash rather than fail with an error if outputFile is not open
+				
+				if ( outputFile ) {
+					curl_easy_setopt ( curl, CURLOPT_WRITEDATA, outputFile );
+				} else {
+					g_last_error = errno;
+					throw BECurl_Exception();
+				}				
 			}
 			
-			// record the download response
-			result.reserve ( data.size );
-			for ( size_t i = 0 ; i < data.size ; i++ ) {
-				result.push_back ( data.memory[i] );
+			
+			// add any custom headers
+			struct curl_slist *custom_headers = NULL;	
+			CustomHeaders::const_iterator it = http_custom_headers.begin();
+			while ( it != http_custom_headers.end() ) {
+				string custom_header = it->first;
+				custom_header.append ( ": " );
+				custom_header.append ( it->second );
+				custom_headers = curl_slist_append ( custom_headers, custom_header.c_str() );
+				++it;
 			}
 			
-		}		
+			if ( custom_headers ) {
+				curl_easy_setopt ( curl, CURLOPT_HTTPHEADER, custom_headers );
+			}
+			
+			// download this
+			curl_easy_setopt ( curl, CURLOPT_URL, url.c_str() );
+			
+			g_last_error = curl_easy_perform ( curl );
+			
+			if ( g_last_error == kNoError ) {
+				// get response code
+				g_last_error = curl_easy_getinfo( curl, CURLINFO_RESPONSE_CODE, &http_response_code );
+				
+				// record the header information
+				http_response_headers.erase();
+				for ( size_t i = 0 ; i < headers.size ; i++ ) {
+					http_response_headers.push_back ( headers.memory[i] );
+				}
+				
+				// record the download response
+				result.reserve ( data.size );
+				for ( size_t i = 0 ; i < data.size ; i++ ) {
+					result.push_back ( data.memory[i] );
+				}
+				
+			}		
+
+			curl_slist_free_all ( custom_headers );
+			
+		} catch ( BECurl_Exception e ) {
+			; // nothing to to ... g_last_error set above
+		}
 		
 		// cleanup
 		curl_easy_cleanup ( curl );
-		curl_slist_free_all ( custom_headers );
 
 		if ( headers.memory ) { free ( headers.memory ); }
 		if ( data.memory ) { free ( data.memory ); }
