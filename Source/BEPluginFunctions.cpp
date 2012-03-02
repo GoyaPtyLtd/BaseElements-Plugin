@@ -881,14 +881,21 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 		
 		// throws if we do not lop off any padding
 		boost::algorithm::trim_if ( *text, boost::algorithm::is_any_of ( " \t\f\v\n\r" ) );
-		unsigned long before = text->size();
+//		unsigned long before = text->size();
 		boost::algorithm::trim_right_if ( *text, boost::algorithm::is_any_of ( L"=" ) );
-		unsigned long skip = before > text->size();
-		
+//		unsigned long skip = before > text->size();
+
 		// decode it
-		vector<char> data ( base64_binary(text->begin()), base64_binary(text->end() - skip) );
+//		vector<char> data ( base64_binary(text->begin()), base64_binary(text->end() - skip) );
 		
-		SetResult ( *filename, data, results );
+		try {
+			vector<char> data ( base64_binary ( text->begin() ), base64_binary ( text->end() ) );
+			SetResult ( *filename, data, results );
+		} catch ( dataflow_exception& e ) { // invalid_base64_character
+			vector<char> data ( base64_binary ( text->begin() ), base64_binary ( text->end() - 1 ) );
+			SetResult ( *filename, data, results );
+		}
+		
 				
 	} catch ( dataflow_exception& e ) { // invalid_base64_character
 		g_last_error = e.code;
@@ -924,7 +931,7 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 			if ( which != -1 ) {
 				size = data->GetSize ( which );
 				buffer = new char [ size ];
-				data->GetData ( which, 1, size, (void *)buffer );
+				data->GetData ( which, 0, size, (void *)buffer );
 			} else {
 				g_last_error = kRequestedDataIsMissingError;
 			}
