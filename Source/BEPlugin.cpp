@@ -143,7 +143,7 @@ static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, 1 );
 	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1 );
-	g_be_plugin->RegisterFunction ( kBE_Base64_Decode, BE_Base64_Decode, true, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Base64_Decode, BE_Base64_Decode, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Base64_Encode, BE_Base64_Encode, 1 );
 	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, true, 0, 1 );
 
