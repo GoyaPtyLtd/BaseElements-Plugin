@@ -1002,7 +1002,8 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment 
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
 		
-		vector<char> data = GetURL ( *url, *filename, *username, *password );
+		// not saving to file so do not supply the filename here
+		vector<char> data = GetURL ( *url, "", *username, *password );
 		
 		SetResult ( *filename, data, results );
 		
