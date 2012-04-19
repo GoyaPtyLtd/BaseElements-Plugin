@@ -190,7 +190,7 @@ int ExtractCurrentFile ( path parent, unzFile uf )
 				boost::filesystem::ofstream output_file ( to_write, ios_base::binary );
 				output_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );			
 				
-				uLong bytes_read = 0;
+				long bytes_read = 0;
 				do {
 					bytes_read = unzReadCurrentFile ( uf, (void *)buffer, WRITEBUFFERSIZE );
 					
