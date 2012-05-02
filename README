@@ -5,22 +5,22 @@ Building
 The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
 Notes:
-- these instructions apply to version 1.1 of the BaseElements Plugin
+- these instructions apply to version 1.3 of the BaseElements Plugin
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 
 =======================================================================
 Mac OS X
 =======================================================================
 
-Version 1.2 of the plug-in was built using Xcode 3.2.3 on Mac OS X 10.6.8.
+Version 1.3.2 of the plug-in was built using Xcode 3.2.6 on Mac OS X 10.6.8.
 
 Download the Mac version of the FileMaker External Plug-In API from
 
 	http://www.filemaker.com/support/technologies/
-	
+
 and place the FMWrapper.framework in the Libraries directory.
 
-On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built are OpenSSL and the Boost FileSystem, System and Thread libraries. 
+On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built are OpenSSL and the Boost FileSystem, System and Thread libraries.
 
 =======================================================================
 Boost
@@ -29,7 +29,7 @@ Boost
 Boost is available from
 
 	http://www.boost.org/
-	
+
 Note: v1.3 of the plug-in requires Boost 1.47_0 (or later).
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
@@ -37,14 +37,14 @@ The plug-in is a universal binary and the boost libraries should be built accord
 	cd boost_1_47_0
 	./bootstrap.sh
 	./b2 architecture=combined link=static runtime-link=static --with-thread --with-filesystem3
-	
+
 See
 
 	more/getting_started/index.html
-	
+
 for for further information on compiling the Boost libraries.
 
-The boost headers must be placed in the Headers directory and the 
+The boost headers must be placed in the Headers directory and the
 
 	bin.v2/libs/filesystem/build/darwin-4.2.1/release/architecture-combined/link-static/runtime-link-static/threading-multi/libboost_filesystem.a
 	bin.v2/libs/thread/build/darwin-4.2.1/release/architecture-combined/link-static/threading-multi/libboost_thread.a
@@ -79,7 +79,7 @@ The plug-in was built using Visual Studio 2010 Professional on Windows 7 Ultimat
 Download the Windows version of the FileMaker External Plug-In API from
 
 	http://www.filemaker.com/support/technologies/
-	
+
 rename the Headers directory FMWrapper and place it in the Headers directory. FMWrapper.lib should be placed the Libraries directory.
 
 The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries (/MTd & /MT) using libcmt.lib and nafxcw.lib for release and libcrtd.lib and nafxcwd.lib for debug builds.
@@ -96,21 +96,21 @@ Boost
 The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
-	
+
 Note: v1.3 of the plug-in requires Boost 1.47 (or later).
 
 See
 
 	more/getting_started/index.html
-	
+
 for instructions on compiling the Boost libraries. In general
 
 	cd boost_1_47_0
 	bootstrap.bat
 	b2 link=static runtime-link=static --with-thread --with-filesystem --with-date_time
 
-should do the trick.	
-	
+should do the trick.
+
 The boost headers must be placed in the Headers directory and the libraries copied from
 
 	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_47_0.lib
@@ -118,8 +118,8 @@ The boost headers must be placed in the Headers directory and the libraries copi
 	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_47_0.lib
 	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_47_0.lib
 
-into the Libraries directory. For debug builds also copy 
-	
+into the Libraries directory. For debug builds also copy
+
 	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_47_0.lib
 	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_47_0.lib
 	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_47_0.lib
@@ -136,7 +136,7 @@ Building zlib is straightforward. Download the zlib source from
 
 and extract the folder zlib-1.2.5 to the desktop.
 
-Open the solution file "contrib/vstudio/vc10/zlibvc.sln" and from the "Build Menu" select "Configuration Manager" and, once in the Configuration Manager, select "ReleaseWithoutAsm" as the "Active solution configuration". 
+Open the solution file "contrib/vstudio/vc10/zlibvc.sln" and from the "Build Menu" select "Configuration Manager" and, once in the Configuration Manager, select "ReleaseWithoutAsm" as the "Active solution configuration".
 
 Remove ZLIB_WINAPI from the list of preprocessor definitions.
 
@@ -162,14 +162,14 @@ Download the source from
 
 	http://www.gnu.org/software/libiconv/
 
-libiconv does not have any support for building using Visual Studio (and if you can get usable binaries following the supplied instructions you're doing better than I). 
+libiconv does not have any support for building using Visual Studio (and if you can get usable binaries following the supplied instructions you're doing better than I).
 
 Place the VS solution and project files from the Project\Extras\libiconv directory into the libiconv-1.13.1 directory then open the solution file
 
 	iconv.sln
 
 Rename
-	
+
 	libcharset\include\libcharset.h.in
 	libcharset\include\localcharset.h.in
 	include\iconv.h.in
@@ -197,7 +197,7 @@ with
 and the line
 
 	extern size_t iconv (iconv_t cd, @ICONV_CONST@ char* * inbuf, size_t *inbytesleft, char* * outbuf, size_t *outbytesleft);
-	
+
 with
 
 	extern LIBICONV_DLL_EXPORTED size_t iconv (iconv_t cd,  char* * inbuf, size_t *inbytesleft, char* * outbuf, size_t *outbytesleft);
@@ -206,16 +206,16 @@ Replace the two lines
 
 	#if @USE_MBSTATE_T@
 	#if @BROKEN_WCHAR_H@
-	
+
 with
 
 	#if 1
 	#if 0
-	
+
 the line
 
 	#if @USE_MBSTATE_T@
-	
+
 with
 
 	#if 1
@@ -234,11 +234,11 @@ Build the release configuration.
 Place the libraries
 
 	Release\libcharset.lib
-	
+
 and
-	
+
 	Release\iconv.lib
-	
+
 into the libraries directory and copy the file include\iconv.h into a directory, iconv, inside the Headers directory.
 
 
@@ -298,7 +298,7 @@ Finally, place the headers directory
 in the Headers directory and copy the library itself
 
 	bin.msvc\libxml2_a.lib
-	
+
 into the Libraries directory.
 
 =======================================================================
@@ -332,11 +332,11 @@ by commenting out the line
 and also change
 
 	libxml2.lib
-	
+
 to
-	
+
 	libxml2_a.lib
-	
+
 throughout.
 
 Run the commands (changing the include= & lib= paths as appropriate)
@@ -353,7 +353,7 @@ Finally, place the headers from the directories
 into directories, libxslt & libexslt, in the Headers directory and copy the libraries
 
 	bin.msvc\libxslt_a.lib & bin.msvc\libexslt_a.lib
-	
+
 into the Libraries directory.
 
 
@@ -370,7 +370,7 @@ place to start if you do not already have perl installed
 Download the latest openssl source from
 
 	http://www.openssl.org/source/
-	
+
 (openssl-1.0.0d.tar.gz at the time of writing).
 
 Unpack the archive onto the desktop and, using the command prompt
@@ -406,7 +406,7 @@ and set the following Configuration Properties:
 	C/C++ -> Preprocessor -> Preprocessor Definitions ... add USE_OPENSSL
 	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
-	
+
 
 In Visual Studio and select "Batch Build" and check the "LIB Release" configuration and then "Build".
 
