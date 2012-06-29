@@ -87,7 +87,6 @@ WStringAutoPtr ClipboardFormats ( void )
 	
 	[types release];
 	
-	//	return [formats WStringAutoPtrFromNSString];
 	return WStringAutoPtrFromNSString ( (NSString*)formats );
 	
 } // ClipboardFormats
@@ -96,12 +95,10 @@ WStringAutoPtr ClipboardFormats ( void )
 StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 {
 	NSString * pasteboard_type = NSStringFromWStringAutoPtr ( atype );
-	NSData * pasteboard_data = [[[NSPasteboard generalPasteboard] dataForType: pasteboard_type] copy];				
-	NSString * clipboard_data = [[NSString alloc] initWithData: pasteboard_data encoding: NSUTF8StringEncoding];
+	NSData * pasteboard_data = [[[[NSPasteboard generalPasteboard] dataForType: pasteboard_type] copy] autorelease];
+	NSString * clipboard_data = [[[NSString alloc] initWithData: pasteboard_data encoding: NSUTF8StringEncoding] autorelease];
 	
-	//	[pasteboard_data release];
-	
-	return StringAutoPtr ( new string ( [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding] ) );	
+	return StringAutoPtr ( new string ( [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding] ) );
 	
 } // ClipboardData
 
@@ -131,27 +128,27 @@ WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, WStringAutoPtr in_fol
 	NSOpenPanel* file_dialog = [NSOpenPanel openPanel];
 	
 	NSString * prompt_string = NSStringFromWStringAutoPtr ( prompt );
+	[file_dialog setTitle: prompt_string ];
+
 	NSString * default_directory = NSStringFromWStringAutoPtr ( in_folder );
-	if ( [default_directory length] == 0 ) {
-		default_directory = nil;
+	if ( [default_directory length] != 0 ) {
+		NSURL *directory_url = [NSURL fileURLWithPath: default_directory];
+		[file_dialog setDirectoryURL: directory_url];
 	}
 	
-	[file_dialog setTitle: prompt_string ];
 	[file_dialog setCanChooseFiles: choose_file];
 	[file_dialog setCanChooseDirectories: !choose_file];
 	
 	NSString * file_path;
 	
-	if ( [file_dialog runModalForDirectory: default_directory file: nil] == NSOKButton ) {
+	if ( [file_dialog runModal ] == NSFileHandlingPanelOKButton ) {
 		
-		NSArray* files = [file_dialog filenames]; // full paths, not just names
-		file_path = [files objectAtIndex: 0];
-		//		[files release];
+		NSArray* files = [file_dialog URLs];
+		file_path = [[files objectAtIndex: 0] path];
+		// [files release];
 		
 	} else {
-		
 		file_path = @""; // the user cancelled
-		
 	}
 	
 	//	[prompt_string release];
