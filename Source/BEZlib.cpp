@@ -407,7 +407,11 @@ int Zip ( StringAutoPtr filename )
 			
 		}
 		
-		error = zipClose ( zf, NULL );
+		// only worry about an error closing the file if there hasn't already been one
+		int close_error = zipClose ( zf, NULL );
+		if ( error == kNoError ) {
+			error = close_error;
+		}
 		
 	} else {
 		error = kNoSuchFileOrDirectoryError;
