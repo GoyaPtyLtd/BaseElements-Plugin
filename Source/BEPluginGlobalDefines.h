@@ -44,9 +44,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"1.3.1"
-#define	AUTO_UPDATE_VERSION L"00010301"
-#define VERSION_STRING "1.3.1"
+#define	VERSION_NUMBER_STRING L"1.3.2"
+#define	AUTO_UPDATE_VERSION L"00010302"
+#define VERSION_STRING "1.3.2"
 
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -55,18 +55,18 @@ extern fmx::errcode g_last_error;
 #define	TEMPORARY_FILE_SUFFIX L".be3.tmp"
 
 
-enum { 
+enum {
 	kBE_OptionsStringID = 1
 };
 
 
-enum functions { 
-	kBE_Version = 102, 
-	kBE_VersionAutoUpdate = 103, 
-	kBE_ClipboardFormats = 104, 
-	kBE_ClipboardData = 105, 
-	kBE_SetClipboardData = 106, 
-	kBE_CreateFolder = 107, 
+enum functions {
+	kBE_Version = 102,
+	kBE_VersionAutoUpdate = 103,
+	kBE_ClipboardFormats = 104,
+	kBE_ClipboardData = 105,
+	kBE_SetClipboardData = 106,
+	kBE_CreateFolder = 107,
 	kBE_DeleteFile = 108,
 	kBE_FileExists = 109,
 	kBE_ReadTextFromFile = 110,
