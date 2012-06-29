@@ -481,8 +481,7 @@ void Do_GetString(unsigned long whichStringID, TextAutoPtr& intoHere, bool strip
 
 unsigned long Sub_OSXLoadString(unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax)
 {
-	unsigned long		returnResult = 0;
-	
+	unsigned long returnResult = 0;
 	
 	if( (intoHere != NULL) && (intoHereMax > 1) ) {
 		// Turn stringID to a textual identifier, then get the string from the .strings file as a null-term unichar array.
@@ -507,10 +506,9 @@ unsigned long Sub_OSXLoadString(unsigned long stringID, FMX_Unichar* intoHere, l
 				
 			} // osxStrLen
 			
-			CFRelease( osxStr );
-			
 		} // osxStr
 		
+		if ( osxStr ) { CFRelease( osxStr ); }
 		CFRelease( strIdStr );
 		
 	} // intoHere
