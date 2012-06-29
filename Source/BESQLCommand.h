@@ -33,8 +33,8 @@ public:
 	
 	BESQLCommand ( const TextAutoPtr expression, const TextAutoPtr filename );
 	
+	void execute ( void );
 	void execute ( const ExprEnv& _environment );
-	void execute ( const bool needs_environment );
 	TextAutoPtr get_text_result ( void );
 	
 	void set_column_separator ( const TextAutoPtr new_column_separator );

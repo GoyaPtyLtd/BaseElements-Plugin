@@ -31,7 +31,7 @@ BESQLCommand::BESQLCommand ( const TextAutoPtr _expression, const TextAutoPtr _f
 
 
 
-void BESQLCommand::execute ( const bool needs_environment )
+void BESQLCommand::execute ( )
 {
 	const ExprEnvAutoPtr environment;
 	FMX_SetToCurrentEnv ( &(*environment) );
