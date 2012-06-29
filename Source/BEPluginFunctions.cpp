@@ -1304,7 +1304,7 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 /*
  a wrapper for the FileMaker SQL calls FileMaker_Tables and FileMaker_Fields
  
- under FileMaker 11 the functions return
+ under FileMaker 11 & 12 the functions return
  
  FileMaker_Tables - returns a list of TOs with associated information
 	table occurance name
@@ -1322,10 +1322,6 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 	repitions
 	modification count 
 
- Note: 
-	For FileMaker versions 8.5~10 a subset of this information is returned. 
-	The functions do not exist in versions 7 & 8 and an error is returned.
- 
  */
 
 FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& environment, const DataVect& /* parameters */, Data& reply )
@@ -1333,19 +1329,23 @@ FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& env
 	errcode error;
 	NoError();
 	
-	TextAutoPtr expression;
-
 	try {
 
+		TextAutoPtr expression;
+		
 		if ( funcId == kBE_FileMaker_Tables ) {
 			expression->Assign ( "SELECT * FROM FileMaker_Tables" );
 		} else {
 			expression->Assign ( "SELECT * FROM FileMaker_Fields" );
 		}
 		
-		// the original api best suits the purpose
-		error = environment.ExecuteSQL ( *expression, reply, '\t', '\n' );
+		TextAutoPtr filename; // there isn't one
+		BESQLCommand * sql = new BESQLCommand ( expression, filename );
+		sql->execute ( environment );
 		
+		LocaleAutoPtr default_locale;
+		error = reply.SetAsText( *(sql->get_text_result()), *default_locale );
+
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
