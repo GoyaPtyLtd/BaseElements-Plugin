@@ -42,6 +42,11 @@ void InitialiseLibXSLT ( void );
 void CleanupLibXSLT ( void );
 
 
+int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
+void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result );
+
+
+
 // globals for error reporting
 
 TextAutoPtr g_last_xslt_error_text;
