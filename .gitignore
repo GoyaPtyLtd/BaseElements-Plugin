@@ -35,3 +35,5 @@ Resources/*.aps
 *~.nib/
 
 Source/minizip*
+
+.com.apple.timemachine.supported
