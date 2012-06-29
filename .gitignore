@@ -20,7 +20,7 @@ Resources/*.aps
 *.xcuserstate
 *.xcbkptlist
 
-*/xcuserdata/*
+xcuserdata
 
 # osx noise
 *.DS_Store
