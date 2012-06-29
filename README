@@ -5,14 +5,14 @@ Building
 The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
 Notes:
-- these instructions apply to version 1.3.2 of the BaseElements Plugin
+- these instructions apply to version 2.0 of the BaseElements Plugin
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 
 =======================================================================
 Mac OS X
 =======================================================================
 
-Version 1.3.2 of the plug-in was built using Xcode 3.2.6 on Mac OS X 10.6.8.
+Version 2.0 of the plug-in was built using Xcode 4.3.3 on Mac OS X 10.7.4.
 
 Download the Mac version of the FileMaker External Plug-In API from
 
@@ -30,13 +30,13 @@ Boost is available from
 
 	http://www.boost.org/
 
-Note: v1.3.2 of the plug-in requires Boost 1.47_0 (or later).
+Note: v2.0 of the plug-in requires Boost 1.49_0 (or later).
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_47_0
+	cd boost_1_49_0
 	./bootstrap.sh
-	./b2 architecture=combined link=static runtime-link=static --with-thread --with-filesystem3
+	./b2 architecture=x86 link=static runtime-link=static --with-thread --with-filesystem
 
 See
 
@@ -60,7 +60,7 @@ Download the zlib source from
 
 	http://www.zlib.net/
 
-and extract the folder zlib-1.2.5 to the desktop. Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory.
+and extract the folder zlib-1.2.7 to the desktop. Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory.
 
 
 =======================================================================
@@ -68,6 +68,20 @@ OpenSSL
 =======================================================================
 
 To follow... for the moment copy OpenSSL.framework from inside the FileMaker 11 application package into the Libraries folder.
+
+Download the latest openssl source from
+
+	http://www.openssl.org/source/
+
+(openssl-1.0.1c.tar.gz at the time of writing).
+
+Unpack the archive onto the desktop and, using the command prompt
+
+	cd /Users/mark/Desktop/openssl-1.0.1c
+	./Configure darwin-i386-cc --openssldir=/Users/mark/Desktop/openssl-i386
+	make install
+
+Copy openssl-i386/libcrypto.a and openssl-i386/libssl.a to Libraries and copy openssl-i386/includes/openssl to Headers.
 
 
 =======================================================================
@@ -88,6 +102,8 @@ Note: source code for some of the libraries is supplied as gzipped tar archives;
 
 	http://www.stuffit.com/win-expander.html
 
+Another note: when doing both debug and release builds clean the project when switching from one t'other.
+
 
 =======================================================================
 Boost
@@ -97,7 +113,7 @@ The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 
-Note: v1.3.2 of the plug-in requires Boost 1.47 (or later).
+Note: v2.0 of the plug-in requires Boost 1.49 (or later).
 
 See
 
@@ -105,7 +121,7 @@ See
 
 for instructions on compiling the Boost libraries. In general
 
-	cd boost_1_47_0
+	cd boost_1_49_0
 	bootstrap.bat
 	b2 link=static runtime-link=static --with-thread --with-filesystem --with-date_time
 
@@ -113,17 +129,17 @@ should do the trick.
 
 The boost headers must be placed in the Headers directory and the libraries copied from
 
-	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_47_0.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_47_0.lib
-	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_47_0.lib
-	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_47_0.lib
+	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_49.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_49.lib
+	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_49.lib
+	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_49.lib
 
 into the Libraries directory. For debug builds also copy
 
-	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_47_0.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_47_0.lib
-	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_47_0.lib
-	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_47_0.lib
+	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_49.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_49.lib
+	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_49.lib
+	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_49.lib
 
 
 =======================================================================
@@ -134,7 +150,7 @@ Building zlib is straightforward. Download the zlib source from
 
 	http://www.zlib.net/
 
-and extract the folder zlib-1.2.5 to the desktop.
+and extract the folder zlib-1.2.7 to the desktop.
 
 Open the solution file "contrib/vstudio/vc10/zlibvc.sln" and from the "Build Menu" select "Configuration Manager" and, once in the Configuration Manager, select "ReleaseWithoutAsm" as the "Active solution configuration".
 
@@ -155,98 +171,28 @@ Copy the minizip directory from the contrib directory in the zlib distribution t
 
 
 =======================================================================
-libiconv & libcharset
+libiconv & libxml2
 =======================================================================
 
-Download the source from
+Download the libiconv source from
 
 	http://www.gnu.org/software/libiconv/
 
-libiconv does not have any support for building using Visual Studio (and if you can get usable binaries following the supplied instructions you're doing better than I).
+Download a patch to provide Visual Studio support from
 
-Place the VS solution and project files from the Project\Extras\libiconv directory into the libiconv-1.13.1 directory then open the solution file
+	https://sites.google.com/site/kontr0kontradiktion/software/patches
 
-	iconv.sln
+and download the Windows port of the patch from
 
-Rename
+	http://gnuwin32.sourceforge.net/packages/patch.htm
 
-	libcharset\include\libcharset.h.in
-	libcharset\include\localcharset.h.in
-	include\iconv.h.in
-	lib\config.h.in
+Then, in a terminal prompt
 
-so that the ".in" suffix is removed.
-
-Open the iconv.sln file and then edit
-
-	include\iconv.h
-
-replacing the line
-
-	extern @DLL_VARIABLE@ int _libiconv_version; /* Likewise */
-
-with
-
-	#if 1 && BUILDING_LIBICONV
-	#define LIBICONV_DLL_EXPORTED __attribute__((__visibility__("default")))
-	#else
-	#define LIBICONV_DLL_EXPORTED
-	#endif
-	extern LIBICONV_DLL_EXPORTED  int _libiconv_version; /* Likewise */
-
-and the line
-
-	extern size_t iconv (iconv_t cd, @ICONV_CONST@ char* * inbuf, size_t *inbytesleft, char* * outbuf, size_t *outbytesleft);
-
-with
-
-	extern LIBICONV_DLL_EXPORTED size_t iconv (iconv_t cd,  char* * inbuf, size_t *inbytesleft, char* * outbuf, size_t *outbytesleft);
-
-Replace the two lines
-
-	#if @USE_MBSTATE_T@
-	#if @BROKEN_WCHAR_H@
-
-with
-
-	#if 1
-	#if 0
-
-the line
-
-	#if @USE_MBSTATE_T@
-
-with
-
-	#if 1
-
-and, finally, replace
-
-	#if @HAVE_WCHAR_T@
-
-with
-
-	#if 1
+	cd libiconv-1.14
+	patch.exe -p1 -i ..\libiconv-1.14.vc10.patch --binary
 
 
-Build the release configuration.
-
-Place the libraries
-
-	Release\libcharset.lib
-
-and
-
-	Release\iconv.lib
-
-into the libraries directory and copy the file include\iconv.h into a directory, iconv, inside the Headers directory.
-
-
-=======================================================================
-libxml2
-=======================================================================
-
-Download the source from
+Download the source for libxml2 from
 
 	http://xmlsoft.org/downloads.html
 
@@ -254,52 +200,60 @@ and expand it into a directory on the Desktop.
 
 Note: the full path of the directory should not contain any spaces.
 
-Open a Command Prompt and set up the Visual Studio command line environment
+Rename the folder libiconv-1.14 to libiconv-1.14.vc10
 
-	c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat
+The Visual Studio solution file is in
 
-then move to the win32 directory in the archive
+	libxml2-2.8.0\win32\VC10
 
-	cd Desktop\libxml2-2.7.8\win32
+From the "Build" menu select "Confuration Manager" and then set "Active solution configuration" to Release and in the "Build" column, uncheck "runsuite".
 
-Edit the file
+In the Property Pages
 
-	Makefile.msvc
+	libxml2 -> Configuration Properties -> VC++ Directories -> Include Directories
 
-by changing the line
+add paths to the following directories
 
-	LIBS = $(LIBS) iconv.lib
+	libxml2-2.8.0win32\VC10
+	libxml2-2.8.0win32\include
+	libiconv-1.14.vc10\include
 
-to read
+and in
 
-	LIBS = $(LIBS) iconv.lib libcharset.lib
+	libxml2 -> Configuration Properties -> General -> Project Defaults
 
-and commenting out the lines
+set
 
-	+!if "$(WITH_ICU)" == "1"
-	+LIBS = $(LIBS) icu.lib
-	+!endif
+	Configuration Type = Static Library (.lib)
+	Character Set = Use Unicode Character Set
 
-and
+In the Property Pages of both libxml2 & iconv set
 
-	DFLAGS = $(LDFLAGS) /OPT:NOWIN98
+	... -> Configuration Properties -> C/C++ -> Code Generation -> Runtime Library = Multi-threaded (/MT)
 
-Run the commands (changing the include= & lib= paths as appropriate)
+and then build the project.
+
+Copy Release\iconv.lib & Release\libxml2.lib to the BE Plugin Libraries folder and, finally, copy
+
+	libxml2-2.8.0\include\libxml
+
+into the BE Plugin Headers folder and create a folder, iconv, in the BE Plugin Headers folder and copy
+
+	libiconv-1.14.vc10\include\iconv.h
+
+into that.
+
+
+=======================================================================
+libxml2
+=======================================================================
+
 
 	cscript configure.js static=yes debug=no cruntime=-MT include="\\VBOXSVR\BaseElements-Plugin\Headers\iconv" lib="\\VBOXSVR\BaseElements-Plugin\Libraries"
 	nmake -f Makefile.msvc MFLAGS=-MT libxmla
 
 to configure and build the source.
 
-Finally, place the headers directory
-
-	libxml2-2.7.8\include\libxml
-
-in the Headers directory and copy the library itself
-
-	bin.msvc\libxml2_a.lib
-
-into the Libraries directory.
 
 =======================================================================
 libxslt & libexslt
@@ -371,18 +325,17 @@ Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-(openssl-1.0.0d.tar.gz at the time of writing).
+(openssl-1.0.1c.tar.gz at the time of writing).
 
 Unpack the archive onto the desktop and, using the command prompt
 
-	cd c:\Users\Mark\Desktop\openssl-1.0.0d
+	cd c:\Users\Mark\Desktop\openssl-1.0.1c
 	perl Configure VC-WIN32 enable-static-engine no-asm
 	ms\do_nt
 	c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat
 	nmake -f ms\nt.mak
 
-
-	Copy libeay32.lib and ssleay32.lib to Libraries and copy includes/openssl to Headers.
+Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries and copy inc32\openssl to Headers.
 
 =======================================================================
 libcurl
@@ -402,6 +355,7 @@ Open
 and set the following Configuration Properties:
 
 	General -> Use of MFC == Use MFC in a Static Library
+	Project Defaults -> Character Set == Use Unicode Character Set
 	C/C++ -> Preprocessor -> Preprocessor Definitions ... add USE_SSLEAY
 	C/C++ -> Preprocessor -> Preprocessor Definitions ... add USE_OPENSSL
 	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
@@ -412,11 +366,11 @@ In Visual Studio and select "Batch Build" and check the "LIB Release" configurat
 
 Copy the library from
 
-	curl-7.22.0\lib\LIB-Release\libcurl.lib
+	curl-7.26.0\lib\LIB-Release\libcurl.lib
 
 into the Libraries directory and copy
 
-	curl-7.22.0\include\curl
+	curl-7.26.0\include\curl
 
 to the Headers directory.
 

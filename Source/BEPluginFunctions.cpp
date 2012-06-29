@@ -928,7 +928,7 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 
 			QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
 			int which = data->GetIndex ( *data_type );
-			if ( which != -1 ) {
+			if ( which != kBE_DataType_Not_Found ) {
 				size = data->GetSize ( which );
 				buffer = new char [ size ];
 				data->GetData ( which, 0, size, (void *)buffer );
@@ -1330,7 +1330,8 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 
 FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& environment, const DataVect& /* parameters */, Data& reply )
 {	
-	errcode error = NoError();
+	errcode error;
+	NoError();
 	
 	TextAutoPtr expression;
 

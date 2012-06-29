@@ -10,11 +10,12 @@
 		4D0023E413FDD64C00C0B57A /* BEShell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0023E213FDD64C00C0B57A /* BEShell.cpp */; };
 		4D10AD951484202000814440 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
+		4D2931CB159A89AD0005DDB0 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D2931C9159A89AD0005DDB0 /* libcrypto.a */; };
+		4D2931CC159A89AD0005DDB0 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D2931CA159A89AD0005DDB0 /* libssl.a */; };
 		4D37E0B51339CF080084730B /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */; };
 		4D6552A9119A929A00FD2D1D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6552A8119A929A00FD2D1D /* Cocoa.framework */; };
 		4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
-		4D77EA8713B2A1D2006C31FA /* OpenSSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D77EA8613B2A1D2006C31FA /* OpenSSL.framework */; };
 		4D8824E711E93F6000F94475 /* BEPluginUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */; };
 		4D8BA595134579BD003A90B5 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8BA594134579BD003A90B5 /* libboost_thread.a */; };
 		4D99B2EB135E5BAA00BCB3C0 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D99B2EA135E5BAA00BCB3C0 /* libcurl.dylib */; };
@@ -50,7 +51,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 7;
+			dstSubfolderSpec = 10;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,6 +65,8 @@
 		4D10AD941484202000814440 /* BESQLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESQLCommand.h; path = ../Source/BESQLCommand.h; sourceTree = SOURCE_ROOT; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
+		4D2931C9159A89AD0005DDB0 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		4D2931CA159A89AD0005DDB0 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B21339CF080084730B /* BECurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECurl.h; path = ../Source/BECurl.h; sourceTree = SOURCE_ROOT; };
 		4D4153A5120140AF00770E14 /* BEWStringVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEWStringVector.cpp; path = ../Source/BEWStringVector.cpp; sourceTree = SOURCE_ROOT; };
@@ -72,7 +75,6 @@
 		4D6552A8119A929A00FD2D1D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileSystem.cpp; path = ../Source/BEFileSystem.cpp; sourceTree = SOURCE_ROOT; };
 		4D70428713BAE5CA00DE4484 /* BEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileSystem.h; path = ../Source/BEFileSystem.h; sourceTree = SOURCE_ROOT; };
-		4D77EA8613B2A1D2006C31FA /* OpenSSL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenSSL.framework; path = ../Libraries/OpenSSL.framework; sourceTree = SOURCE_ROOT; };
 		4D7FCA5C11E9308B0047A453 /* BaseElements.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = BaseElements.strings; path = ../Resources/BaseElements.strings; sourceTree = SOURCE_ROOT; };
 		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginUtilities.cpp; path = ../Source/BEPluginUtilities.cpp; sourceTree = SOURCE_ROOT; };
@@ -121,7 +123,8 @@
 				4D6552A9119A929A00FD2D1D /* Cocoa.framework in Frameworks */,
 				4D8BA595134579BD003A90B5 /* libboost_thread.a in Frameworks */,
 				4D99B2EB135E5BAA00BCB3C0 /* libcurl.dylib in Frameworks */,
-				4D77EA8713B2A1D2006C31FA /* OpenSSL.framework in Frameworks */,
+				4D2931CB159A89AD0005DDB0 /* libcrypto.a in Frameworks */,
+				4D2931CC159A89AD0005DDB0 /* libssl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +134,8 @@
 		4D9EEE5D118A8C9600EC9352 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				4D2931C9159A89AD0005DDB0 /* libcrypto.a */,
+				4D2931CA159A89AD0005DDB0 /* libssl.a */,
 				4D9EEE7F118A8E9C00EC9352 /* libboost_filesystem.a */,
 				4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */,
 				4D8BA594134579BD003A90B5 /* libboost_thread.a */,
@@ -217,7 +222,6 @@
 				C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */,
 				4D6552A8119A929A00FD2D1D /* Cocoa.framework */,
 				4D99B2EA135E5BAA00BCB3C0 /* libcurl.dylib */,
-				4D77EA8613B2A1D2006C31FA /* OpenSSL.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -250,6 +254,7 @@
 		C7DEDEEB07E10BF3002283F3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = Goya;
 			};
 			buildConfigurationList = 6FD50587097C3165009399BF /* Build configuration list for PBXProject "BaseElements" */;
@@ -320,25 +325,23 @@
 					"\"$(SRCROOT)\"",
 				);
 				HEADER_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/usr/include/libxml2/,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/include/,
+					/usr/include/libxml2/,
+					/usr/include/,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../Libraries\"",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/../../../../../Desktop/openssl-1.0.0d\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = (
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libxml2.dylib,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libxslt.dylib,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libexslt.dylib,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libz.dylib,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libcrypto.dylib,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libiconv.dylib,
+					/usr/lib/libxml2.dylib,
+					/usr/lib/libxslt.dylib,
+					/usr/lib/libexslt.dylib,
+					/usr/lib/libz.dylib,
+					/usr/lib/libiconv.dylib,
 				);
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 			};
 			name = Release;
@@ -352,25 +355,23 @@
 					"\"$(SRCROOT)\"",
 				);
 				HEADER_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/usr/include/libxml2/,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/include/,
+					/usr/include/libxml2/,
+					/usr/include/,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../Libraries\"",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/../../../../../Desktop/openssl-1.0.0d\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = (
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libxml2.dylib,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libxslt.dylib,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libexslt.dylib,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libz.dylib,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libcrypto.dylib,
-					/Developer/SDKs/MacOSX10.5.sdk/usr/lib/libiconv.dylib,
+					/usr/lib/libxml2.dylib,
+					/usr/lib/libxslt.dylib,
+					/usr/lib/libexslt.dylib,
+					/usr/lib/libz.dylib,
+					/usr/lib/libiconv.dylib,
 				);
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 			};
 			name = Debug;
@@ -433,12 +434,13 @@
 				);
 				OTHER_LDFLAGS = "-search_paths_first";
 				PRODUCT_NAME = BaseElements;
-				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
-				SDKROOT = macosx10.5;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				SDKROOT = macosx;
 				SEPARATE_STRIP = YES;
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
-				VALID_ARCHS = "ppc i386";
+				VALID_ARCHS = i386;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -505,12 +507,13 @@
 				);
 				OTHER_LDFLAGS = "-search_paths_first";
 				PRODUCT_NAME = BaseElements;
-				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
-				SDKROOT = macosx10.5;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				SDKROOT = macosx;
 				SEPARATE_STRIP = NO;
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
-				VALID_ARCHS = "ppc i386";
+				VALID_ARCHS = i386;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",

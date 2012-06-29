@@ -61,7 +61,6 @@ FMX_ExternCallPtr gFMX_ExternCallPtr;	// required by the FMX API
 BEFileMakerPlugin * g_be_plugin;		// the plug-in instance
 
 extern BESQLCommandAutoPtr g_ddl_command;
-//extern string g_text_encoding;
 
 
 #pragma mark -
@@ -73,9 +72,8 @@ extern BESQLCommandAutoPtr g_ddl_command;
 
 static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call ) 
 {
-//	StringAutoPtr encoding ( new string );
-//	g_text_encoding = "";
-//	StringAutoPtr blank_encoding ( new string );
+#pragma unused ( plugin_call )
+	
 	SetTextEncoding ( "" );
 	
 	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
@@ -199,7 +197,7 @@ void FMX_ENTRYPT FMExternCallProc ( FMX_ExternCallPtr plugin_call ) {
 			
 			if ( safe_idle && g_ddl_command.get() != 0 ) {
 				
-				g_ddl_command->execute ( true );
+				g_ddl_command->execute ( );
 				g_ddl_command.reset();
 			
 			}

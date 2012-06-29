@@ -20,8 +20,7 @@ Resources/*.aps
 *.xcuserstate
 *.xcbkptlist
 
-*/xcuserdata
-
+*/xcuserdata/*
 
 # osx noise
 *.DS_Store
@@ -29,10 +28,9 @@ Resources/*.aps
 # xcode noise
 *.mode1v3
 *.pbxuser
-*.perspective 
+*.perspective
 *.perspectivev3
-*.pyc 
+*.pyc
 *~.nib/
 
 Source/minizip*
-BaseElements.fmx
