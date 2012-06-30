@@ -14,11 +14,6 @@
 #include "BEPluginGlobalDefines.h"
 
 
-#if defined(FMX_WIN_TARGET)
-	#define PATH_MAX MAX_PATH
-#endif
-
-
 #include <map>
 #include <errno.h>
 

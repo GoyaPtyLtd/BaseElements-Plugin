@@ -20,8 +20,6 @@
 
 	#include "afxdlgs.h"
 
-	#define PATH_MAX MAX_PATH
-
 	#define POPEN _popen
 	#define PCLOSE _pclose
 

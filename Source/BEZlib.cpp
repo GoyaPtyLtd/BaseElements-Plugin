@@ -31,8 +31,6 @@
 
 	#include <Windows.h>
 
-	#define PATH_MAX MAX_PATH
-
 	#define USEWIN32IOAPI
 	#include "minizip/iowin32.h"
 
