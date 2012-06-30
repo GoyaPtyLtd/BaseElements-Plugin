@@ -1070,6 +1070,33 @@ FMX_PROC(errcode) BE_HTTP_POST ( short /* funcId */, const ExprEnv& /* environme
 
 
 
+FMX_PROC(errcode) BE_HTTP_DELETE ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{	
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr username = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
+		
+		vector<char> data = HTTP_DELETE ( *url, *username, *password );
+		data.push_back ( '\0' );
+		StringAutoPtr data_string ( new string ( &data[0] ) );
+		SetResult ( data_string, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_HTTP_DELETE
+
+
+
 FMX_PROC(errcode) BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
 {	
 	errcode error = NoError();

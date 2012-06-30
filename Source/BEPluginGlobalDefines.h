@@ -105,6 +105,7 @@ enum functions {
 	kBE_HTTP_Response_Code = 181,
 	kBE_HTTP_Response_Headers = 182,
 	kBE_HTTP_Set_Custom_Header = 183,
+	kBE_HTTP_DELETE = 184,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202

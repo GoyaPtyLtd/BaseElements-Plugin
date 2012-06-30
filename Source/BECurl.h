@@ -51,6 +51,7 @@ struct MemoryStruct {
 
 vector<char> GetURL ( const string url, const string filename, const string username, const string password );
 vector<char> HTTP_POST ( const string url, const string post_parameters );
+vector<char> HTTP_DELETE ( const string url, const string username, const string password );
 
 
 class BECurl {
@@ -63,6 +64,7 @@ public:
 	~BECurl();
 	
     vector<char> download ( );
+    vector<char> http_delete ( );
 	
 	void set_parameters ( );
 	void set_username_and_password ( const string username, const string password );

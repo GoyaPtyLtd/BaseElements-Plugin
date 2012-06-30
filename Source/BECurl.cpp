@@ -19,6 +19,12 @@
 
 
 
+enum http_methods {
+	kBE_HTTP_METHOD_POST,
+	kBE_HTTP_METHOD_DELETE
+};
+
+
 #pragma mark -
 #pragma mark Globals
 #pragma mark -
@@ -66,10 +72,22 @@ static MemoryStruct InitalizeCallbackMemory ( void )
 }
 
 
-static vector<char> PerformAction ( BECurl * curl )
+static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_POST )
 {	
 	curl->set_custom_headers ( g_http_custom_headers );
-	vector<char>data = curl->download();
+	
+	vector<char>data;
+	
+	switch ( which ) {
+		case kBE_HTTP_METHOD_DELETE:
+			data = curl->http_delete ( );
+			break;
+			
+		default:
+			data = curl->download ( );
+			break;
+	}
+
 	g_http_response_code = curl->response_code();
 	g_http_response_headers = curl->response_headers();
 	g_http_custom_headers.clear();
@@ -91,6 +109,13 @@ vector<char> HTTP_POST ( const string url, const string parameters )
 {	
 	BECurl * curl = new BECurl ( url, parameters );
 	return PerformAction ( curl );		
+}
+
+
+vector<char> HTTP_DELETE ( const string url, const string username, const string password )
+{	
+	BECurl * curl = new BECurl ( url, "", username, password );
+	return PerformAction ( curl, kBE_HTTP_METHOD_DELETE );		
 }
 
 
@@ -196,6 +221,33 @@ vector<char> BECurl::download ( )
 	return result;
 	
 }	//	download
+
+
+
+vector<char> BECurl::http_delete ( )
+{
+	
+	prepare ( );
+	
+	try {
+
+		write_to_memory ( );		
+		
+		curl_easy_setopt ( curl, CURLOPT_CUSTOMREQUEST, "DELETE" );
+
+		// download this
+		curl_easy_setopt ( curl, CURLOPT_URL, url.c_str() );
+		perform ( );
+		
+	} catch ( BECurl_Exception e ) {
+		; // nothing to to ... g_last_error set above
+	}
+	
+	cleanup ();
+	
+	return result;
+	
+}	//	delete
 
 
 

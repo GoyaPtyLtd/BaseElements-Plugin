@@ -147,6 +147,8 @@ static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	
 	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST, 2 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_DELETE, BE_HTTP_DELETE, true, 1, 3 );
+
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Code, BE_HTTP_Response_Code );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Headers, BE_HTTP_Response_Headers );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Set_Custom_Header, BE_HTTP_Set_Custom_Header, 2 );
