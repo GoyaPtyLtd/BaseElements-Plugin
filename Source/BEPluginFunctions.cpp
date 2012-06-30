@@ -1053,7 +1053,7 @@ FMX_PROC(errcode) BE_HTTP_POST ( short /* funcId */, const ExprEnv& /* environme
 		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
 		
-		vector<char> data = HTTP_POST ( url, post_parameters );
+		vector<char> data = HTTP_POST ( *url, *post_parameters );
 		data.push_back ( '\0' );
 		StringAutoPtr data_string ( new string ( &data[0] ) );
 		SetResult ( data_string, results );
