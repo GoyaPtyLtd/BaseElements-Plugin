@@ -50,7 +50,8 @@ struct MemoryStruct {
 
 
 vector<char> GetURL ( const string url, const string filename, const string username, const string password );
-vector<char> HTTP_POST ( const string url, const string post_parameters );
+vector<char> HTTP_POST ( const string url, const string post_parameters, const string username, const string password );
+vector<char> HTTP_PUT ( const string url, const string post_parameters, const string username, const string password );
 vector<char> HTTP_DELETE ( const string url, const string username, const string password );
 
 
@@ -58,12 +59,12 @@ class BECurl {
 	
 public:
 	
-	BECurl ( const string download_this, const string to_file, string username, const string password );
-	BECurl ( const string download_this, const string parameters );
+	BECurl ( const string download_this, const string to_file, string username, const string password, const string parameters );
 	void init ( const string download_this, const string to_file, const string username, const string password, const string post_parameters );
 	~BECurl();
 	
     vector<char> download ( );
+    vector<char> http_put ( );
     vector<char> http_delete ( );
 	
 	void set_parameters ( );
@@ -76,7 +77,10 @@ public:
 protected:
 	
 	string url;
+
 	string filename;
+	FILE * upload_file;
+
 	string parameters;
 	
 	CURL *curl;
@@ -94,6 +98,7 @@ protected:
 	void write_to_memory ( );
 	void perform ( );
 	void cleanup ( );
+
 };
 
 

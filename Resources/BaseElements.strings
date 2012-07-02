@@ -64,11 +64,12 @@
 "174" = "BE_SetTextEncoding ( { encoding } )";
 
 
-"180" = "BE_HTTP_POST ( url; parameters )";
+"180" = "BE_HTTP_POST ( url; parameters {; username ; password } )";
 "181" = "BE_HTTP_Response_Code";
 "182" = "BE_HTTP_Response_Headers";
 "183" = "BE_HTTP_Set_Custom_Header ( header ; value )";
 "184" = "BE_HTTP_DELETE ( url {; username ; password } )";
+"185" = "BE_HTTP_PUT ( url; path {; username ; password } )";
 
 
 "200" = "BE_ApplyXSLTInMemory ( xml; xslt )";

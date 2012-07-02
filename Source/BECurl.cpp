@@ -18,10 +18,20 @@
 #include <errno.h>
 
 
+#include "boost/filesystem.hpp"
+#include "boost/filesystem/fstream.hpp"
+
+#include <iostream>
+
+
+using namespace std;
+using namespace boost::filesystem;
+
 
 enum http_methods {
 	kBE_HTTP_METHOD_POST,
-	kBE_HTTP_METHOD_DELETE
+	kBE_HTTP_METHOD_DELETE,
+	kBE_HTTP_METHOD_PUT
 };
 
 
@@ -83,6 +93,10 @@ static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_P
 			data = curl->http_delete ( );
 			break;
 			
+		case kBE_HTTP_METHOD_PUT:
+			data = curl->http_put ( );
+			break;
+			
 		default:
 			data = curl->download ( );
 			break;
@@ -100,21 +114,28 @@ static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_P
 
 vector<char> GetURL ( const string url, const string filename, const string username, const string password )
 {	
-	BECurl * curl = new BECurl ( url, filename, username, password );
+	BECurl * curl = new BECurl ( url, filename, username, password, "" );
 	return PerformAction ( curl );		
 }
 
 
-vector<char> HTTP_POST ( const string url, const string parameters )
+vector<char> HTTP_POST ( const string url, const string parameters, const string username, const string password )
 {	
-	BECurl * curl = new BECurl ( url, parameters );
+	BECurl * curl = new BECurl ( url, "", username, password, parameters );
 	return PerformAction ( curl );		
+}
+
+
+vector<char> HTTP_PUT ( const string url, const string filename, const string username, const string password )
+{	
+	BECurl * curl = new BECurl ( url, filename, username, password, "" );
+	return PerformAction ( curl, kBE_HTTP_METHOD_PUT );		
 }
 
 
 vector<char> HTTP_DELETE ( const string url, const string username, const string password )
 {	
-	BECurl * curl = new BECurl ( url, "", username, password );
+	BECurl * curl = new BECurl ( url, "", username, password, "" );
 	return PerformAction ( curl, kBE_HTTP_METHOD_DELETE );		
 }
 
@@ -124,15 +145,10 @@ vector<char> HTTP_DELETE ( const string url, const string username, const string
 #pragma mark Constructors
 #pragma mark -
 
-BECurl::BECurl ( const string download_this, const string to_file, const string username, const string password )
-{
-	init ( download_this, to_file, username, password, "" );
-}
 
-
-BECurl::BECurl ( const string download_this, const string post_parameters )
+BECurl::BECurl ( const string download_this, const string to_file, const string username, const string password, const string post_parameters )
 {
-	init ( download_this, "", "", "", post_parameters );
+	init ( download_this, to_file, username, password, post_parameters );
 }
 
 
@@ -141,6 +157,7 @@ void BECurl::init ( const string download_this, const string to_file, const stri
 {
 	url = download_this;
 	filename = to_file;
+	upload_file = NULL;
 	
 	http_response_code = 0;
 	
@@ -213,7 +230,7 @@ vector<char> BECurl::download ( )
 		perform ( );
 		
 	} catch ( BECurl_Exception e ) {
-		; // nothing to to ... g_last_error set above
+		; // nothing to to ... g_last_error already set
 	}
 	
 	cleanup ();
@@ -224,24 +241,58 @@ vector<char> BECurl::download ( )
 
 
 
+vector<char> BECurl::http_put ( )
+{
+	
+	prepare ( );
+	write_to_memory ( );		
+	curl_easy_setopt ( curl, CURLOPT_UPLOAD, 1L );
+	
+	try {
+		
+		path path = filename;			
+
+		// no directories etc.
+		if ( exists ( path ) && is_regular_file ( path ) ) {
+
+			upload_file = fopen ( filename.c_str(), "rb" );			
+			curl_easy_setopt ( curl, CURLOPT_READDATA, upload_file );
+			curl_easy_setopt ( curl, CURLOPT_INFILESIZE, (curl_off_t)file_size ( path ) );
+			
+			// HTTP PUT please
+			curl_easy_setopt ( curl, CURLOPT_PUT, 1L );
+		
+			// put this
+			curl_easy_setopt ( curl, CURLOPT_URL, url.c_str() );
+			perform ( );
+
+		} else {
+			g_last_error = kFileSystemError;
+		}
+		
+	} catch ( filesystem_error& e ) {
+		g_last_error = e.code().value();
+	}
+	
+	cleanup ();
+	
+	return result;
+	
+}	//	delete
+
+
+
 vector<char> BECurl::http_delete ( )
 {
 	
 	prepare ( );
-	
-	try {
-
-		write_to_memory ( );		
+	write_to_memory ( );		
 		
-		curl_easy_setopt ( curl, CURLOPT_CUSTOMREQUEST, "DELETE" );
+	curl_easy_setopt ( curl, CURLOPT_CUSTOMREQUEST, "DELETE" );
 
-		// download this
-		curl_easy_setopt ( curl, CURLOPT_URL, url.c_str() );
-		perform ( );
-		
-	} catch ( BECurl_Exception e ) {
-		; // nothing to to ... g_last_error set above
-	}
+	// delete this
+	curl_easy_setopt ( curl, CURLOPT_URL, url.c_str() );
+	perform ( );
 	
 	cleanup ();
 	
@@ -361,6 +412,8 @@ void BECurl::perform ( )
 
 void BECurl::cleanup ( )
 {
+
+	if ( upload_file ) { fclose ( upload_file ); }
 	
 	if ( headers.memory ) { free ( headers.memory ); }
 	if ( data.memory ) { free ( data.memory ); }
@@ -368,3 +421,5 @@ void BECurl::cleanup ( )
 	if ( custom_headers ) { curl_slist_free_all ( custom_headers ); }	
 	
 }
+
+

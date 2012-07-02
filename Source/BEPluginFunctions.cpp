@@ -1044,7 +1044,7 @@ FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* envir
 
 
 
-FMX_PROC(errcode) BE_HTTP_POST ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
 	errcode error = NoError();
 	
@@ -1052,8 +1052,17 @@ FMX_PROC(errcode) BE_HTTP_POST ( short /* funcId */, const ExprEnv& /* environme
 		
 		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
+				
+		vector<char> data;
 		
-		vector<char> data = HTTP_POST ( *url, *post_parameters );
+		if ( funcId == kBE_HTTP_POST ) {
+			data = HTTP_POST ( *url, *post_parameters, *username, *password );
+		} else { // kBE_HTTP_PUT
+			data = HTTP_PUT ( *url, *post_parameters, *username, *password );
+		}
+
 		data.push_back ( '\0' );
 		StringAutoPtr data_string ( new string ( &data[0] ) );
 		SetResult ( data_string, results );
