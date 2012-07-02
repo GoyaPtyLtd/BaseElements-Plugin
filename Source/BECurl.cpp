@@ -101,7 +101,8 @@ static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_P
 			data = curl->download ( );
 			break;
 	}
-
+	
+	g_last_error = curl->last_error();
 	g_http_response_code = curl->response_code();
 	g_http_response_headers = curl->response_headers();
 	g_http_custom_headers.clear();
@@ -115,7 +116,7 @@ static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_P
 vector<char> GetURL ( const string url, const string filename, const string username, const string password )
 {	
 	BECurl * curl = new BECurl ( url, filename, username, password, "" );
-	return PerformAction ( curl );		
+	return PerformAction ( curl );
 }
 
 
@@ -148,43 +149,34 @@ vector<char> HTTP_DELETE ( const string url, const string username, const string
 
 BECurl::BECurl ( const string download_this, const string to_file, const string username, const string password, const string post_parameters )
 {
-	init ( download_this, to_file, username, password, post_parameters );
-}
-
-
-
-void BECurl::init ( const string download_this, const string to_file, const string username, const string password, const string post_parameters )
-{
 	url = download_this;
 	filename = to_file;
-	upload_file = NULL;
+	upload_file = NULL; // must intialise, we crash otherwise
 	
 	http_response_code = 0;
 	
 	// set up curl as much as we can
 	
-	g_last_error = curl_global_init ( CURL_GLOBAL_ALL );
-	if ( g_last_error != kNoError ) {
-		throw BECurl_Exception();
+	error = curl_global_init ( CURL_GLOBAL_ALL );
+	if ( error != kNoError ) {
+		throw BECurl_Exception ( error );
 	}	
 	
 	curl = curl_easy_init ();
 	
 	if ( !curl ) {
-		g_last_error = kLowMemoryError; // curl_easy_init thinks all errors are memory errors
-		throw bad_alloc();
+		throw bad_alloc(); // curl_easy_init thinks all errors are memory errors
 	}
 	
 	set_username_and_password ( username, password );
-
+	
 	// curl doesn't make a copy of the post_args so we have to stop them being dealloced before they're used
 	parameters = post_parameters;
 	set_parameters ( );
 	
-	curl_easy_setopt ( curl, CURLOPT_USERAGENT, USER_AGENT_STRING );		
-	curl_easy_setopt ( curl, CURLOPT_SSL_VERIFYPEER, 0L );
-	curl_easy_setopt ( curl, CURLOPT_SSL_VERIFYHOST, 0L );
-	
+	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
+	easy_setopt ( CURLOPT_SSL_VERIFYPEER, 0L );
+	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
 }
 
 
@@ -203,9 +195,9 @@ BECurl::~BECurl()
 vector<char> BECurl::download ( )
 {
 	
-	prepare ( );
-	
 	try {
+		
+		prepare ( );
 		
 		// save the data to file or memory?
 		
@@ -213,24 +205,24 @@ vector<char> BECurl::download ( )
 			write_to_memory ( );		
 		} else {
 			
-			FILE *outputFile = fopen ( filename.c_str(), "wb" );
+			FILE * outputFile = fopen ( filename.c_str(), "wb" );
 			
 			// curl will crash rather than fail with an error if outputFile is not open
 			
 			if ( outputFile ) {
-				curl_easy_setopt ( curl, CURLOPT_WRITEDATA, outputFile );
+				easy_setopt ( CURLOPT_WRITEDATA, outputFile );
 			} else {
-				g_last_error = errno;
-				throw BECurl_Exception();
-			}				
+				throw BECurl_Exception ( CURLE_WRITE_ERROR );
+			}
+			
 		}
 		
 		// download this
-		curl_easy_setopt ( curl, CURLOPT_URL, url.c_str() );
+		easy_setopt ( CURLOPT_URL, url.c_str() );
 		perform ( );
 		
-	} catch ( BECurl_Exception e ) {
-		; // nothing to to ... g_last_error already set
+	} catch ( BECurl_Exception& e ) {
+		error = e.code();
 	}
 	
 	cleanup ();
@@ -244,34 +236,36 @@ vector<char> BECurl::download ( )
 vector<char> BECurl::http_put ( )
 {
 	
-	prepare ( );
-	write_to_memory ( );		
-	curl_easy_setopt ( curl, CURLOPT_UPLOAD, 1L );
-	
 	try {
 		
+		prepare ( );
+		write_to_memory ( );		
+		easy_setopt ( CURLOPT_UPLOAD, 1L );
+		
 		path path = filename;			
-
+		
 		// no directories etc.
 		if ( exists ( path ) && is_regular_file ( path ) ) {
-
+			
 			upload_file = fopen ( filename.c_str(), "rb" );			
-			curl_easy_setopt ( curl, CURLOPT_READDATA, upload_file );
-			curl_easy_setopt ( curl, CURLOPT_INFILESIZE, (curl_off_t)file_size ( path ) );
+			easy_setopt ( CURLOPT_READDATA, upload_file );
+			easy_setopt ( CURLOPT_INFILESIZE, (curl_off_t)file_size ( path ) );
 			
 			// HTTP PUT please
-			curl_easy_setopt ( curl, CURLOPT_PUT, 1L );
-		
+			easy_setopt ( CURLOPT_PUT, 1L );
+			
 			// put this
-			curl_easy_setopt ( curl, CURLOPT_URL, url.c_str() );
+			easy_setopt ( CURLOPT_URL, url.c_str() );
 			perform ( );
-
+			
 		} else {
-			g_last_error = kFileSystemError;
+			error = (CURLcode)kFileSystemError;
 		}
 		
 	} catch ( filesystem_error& e ) {
-		g_last_error = e.code().value();
+		error = (CURLcode)e.code().value();
+	} catch ( BECurl_Exception& e ) {
+		error = e.code();
 	}
 	
 	cleanup ();
@@ -284,17 +278,22 @@ vector<char> BECurl::http_put ( )
 
 vector<char> BECurl::http_delete ( )
 {
-	
-	prepare ( );
-	write_to_memory ( );		
+	try {
 		
-	curl_easy_setopt ( curl, CURLOPT_CUSTOMREQUEST, "DELETE" );
+		prepare ( );
+		write_to_memory ( );		
+		
+		easy_setopt ( CURLOPT_CUSTOMREQUEST, "DELETE" );
+		
+		// delete this
+		easy_setopt ( CURLOPT_URL, url.c_str() );
+		perform ( );
+		
+		cleanup ();
 
-	// delete this
-	curl_easy_setopt ( curl, CURLOPT_URL, url.c_str() );
-	perform ( );
-	
-	cleanup ();
+	} catch ( BECurl_Exception& e ) {
+		error = e.code();
+	}
 	
 	return result;
 	
@@ -304,13 +303,13 @@ vector<char> BECurl::http_delete ( )
 
 void BECurl::set_parameters ( )
 {
-
+	
 	// add the parameters to the form
 	if ( !parameters.empty() ) {
-		curl_easy_setopt ( curl, CURLOPT_POSTFIELDS, parameters.c_str() );
-		curl_easy_setopt ( curl, CURLOPT_POSTFIELDSIZE, parameters.length() );
+		easy_setopt ( CURLOPT_POSTFIELDS, parameters.c_str() );
+		easy_setopt ( CURLOPT_POSTFIELDSIZE, parameters.length() );
 	}
-
+	
 }	//	set_parameters
 
 
@@ -320,13 +319,13 @@ void BECurl::set_username_and_password ( const string username, const string pas
 	// set user name and password for the authentication
 	if ( !( username.empty() || password.empty() ) ) {
 		
-		curl_easy_setopt ( curl, CURLOPT_HTTPAUTH, (long)CURLAUTH_ANY );
+		easy_setopt ( CURLOPT_HTTPAUTH, (long)CURLAUTH_ANY );
 		
 		string username_and_password = username;
 		username_and_password.append ( ":" );
 		username_and_password.append ( password );
 		
-		curl_easy_setopt ( curl, CURLOPT_USERPWD, username_and_password.c_str() );
+		easy_setopt ( CURLOPT_USERPWD, username_and_password.c_str() );
 		
 	}
 	
@@ -347,10 +346,10 @@ void BECurl::prepare ( )
 	// send all headers & data to these functions
 	
 	headers = InitalizeCallbackMemory();
-	curl_easy_setopt ( curl, CURLOPT_WRITEHEADER, (void *)&headers );
+	easy_setopt ( CURLOPT_WRITEHEADER, (void *)&headers );
 	
 	data = InitalizeCallbackMemory();
-	curl_easy_setopt ( curl, CURLOPT_HEADERFUNCTION, WriteMemoryCallback );
+	easy_setopt ( CURLOPT_HEADERFUNCTION, WriteMemoryCallback );
 	
 }	//	prepare
 
@@ -371,7 +370,7 @@ void BECurl::add_custom_headers ( )
 	}
 	
 	if ( custom_headers ) {
-		curl_easy_setopt ( curl, CURLOPT_HTTPHEADER, custom_headers );
+		easy_setopt ( CURLOPT_HTTPHEADER, custom_headers );
 	}
 	
 }	//	add_custom_headers
@@ -380,31 +379,32 @@ void BECurl::add_custom_headers ( )
 void BECurl::write_to_memory ( )
 {
 	// send all data to this function
-	curl_easy_setopt ( curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback );
-	curl_easy_setopt ( curl, CURLOPT_WRITEDATA, (void *)&data );	
+	easy_setopt ( CURLOPT_WRITEFUNCTION, WriteMemoryCallback );
+	easy_setopt ( CURLOPT_WRITEDATA, (void *)&data );	
 }
 
 void BECurl::perform ( )
 {
 	
-	g_last_error = curl_easy_perform ( curl );
+	error = curl_easy_perform ( curl );
 	
-	if ( g_last_error == kNoError ) {
-		// get response code
-		g_last_error = curl_easy_getinfo ( curl, CURLINFO_RESPONSE_CODE, &http_response_code );
+	if ( error == kNoError ) {
+
+		error = curl_easy_getinfo ( curl, CURLINFO_RESPONSE_CODE, &http_response_code );
 		
-		// record the header information
-		http_response_headers.erase();
-		for ( size_t i = 0 ; i < headers.size ; i++ ) {
-			http_response_headers.push_back ( headers.memory[i] );
+		if ( error == kNoError ) {
+			// record the header information
+			http_response_headers.erase();
+			for ( size_t i = 0 ; i < headers.size ; i++ ) {
+				http_response_headers.push_back ( headers.memory[i] );
+			}
+		
+			// record the download response
+			result.reserve ( data.size );
+			for ( size_t i = 0 ; i < data.size ; i++ ) {
+				result.push_back ( data.memory[i] );
+			}
 		}
-		
-		// record the download response
-		result.reserve ( data.size );
-		for ( size_t i = 0 ; i < data.size ; i++ ) {
-			result.push_back ( data.memory[i] );
-		}
-		
 	}
 	
 }	//	easy_perform
@@ -412,7 +412,7 @@ void BECurl::perform ( )
 
 void BECurl::cleanup ( )
 {
-
+	
 	if ( upload_file ) { fclose ( upload_file ); }
 	
 	if ( headers.memory ) { free ( headers.memory ); }
@@ -422,4 +422,15 @@ void BECurl::cleanup ( )
 	
 }
 
-
+#include <stdarg.h>
+void BECurl::easy_setopt ( CURLoption option, ... )
+{
+	va_list curl_parameter;
+	va_start ( curl_parameter, option );
+	error = curl_easy_setopt ( curl, option, va_arg ( curl_parameter, void * ) );
+	va_end ( curl_parameter );
+	if ( error ) {
+		throw BECurl_Exception ( error );
+	}
+	
+}

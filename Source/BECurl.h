@@ -34,7 +34,15 @@
 class BECurl_Exception : public runtime_error {
 	
 public:
-	BECurl_Exception() : runtime_error ( "BECurl_Exception" ) { }
+	BECurl_Exception ( const CURLcode _code ) : runtime_error ( "BECurl_Exception" ) { error_code = _code; }
+	
+	virtual const CURLcode code() const throw()
+	{
+		return error_code;
+	}
+	
+	private:
+	CURLcode error_code;
 	
 };
 
@@ -60,7 +68,6 @@ class BECurl {
 public:
 	
 	BECurl ( const string download_this, const string to_file, string username, const string password, const string parameters );
-	void init ( const string download_this, const string to_file, const string username, const string password, const string post_parameters );
 	~BECurl();
 	
     vector<char> download ( );
@@ -73,6 +80,7 @@ public:
 	int response_code ( ) { return http_response_code; }
 	string response_headers ( ) { return http_response_headers; }
 	void set_custom_headers ( CustomHeaders _headers ) { http_custom_headers = _headers; }
+	CURLcode last_error ( ) { return error; }
 	
 protected:
 	
@@ -92,12 +100,14 @@ protected:
 	int http_response_code;
 	CustomHeaders http_custom_headers;
 	string http_response_headers;
+	CURLcode error;
 	
     void prepare ( );
 	void add_custom_headers ( );
 	void write_to_memory ( );
 	void perform ( );
 	void cleanup ( );
+	void easy_setopt ( CURLoption option, ... );
 
 };
 
