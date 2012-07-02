@@ -1004,7 +1004,6 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment 
 		
 		// not saving to file so do not supply the filename here
 		vector<char> data = GetURL ( *url, "", *username, *password );
-		
 		SetResult ( *filename, data, results );
 		
 	} catch ( bad_alloc& e ) {
@@ -1063,9 +1062,7 @@ FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environm
 			data = HTTP_PUT ( *url, *post_parameters, *username, *password );
 		}
 
-		data.push_back ( '\0' );
-		StringAutoPtr data_string ( new string ( &data[0] ) );
-		SetResult ( data_string, results );
+		SetResult ( data, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1090,9 +1087,7 @@ FMX_PROC(errcode) BE_HTTP_DELETE ( short /* funcId */, const ExprEnv& /* environ
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
 		
 		vector<char> data = HTTP_DELETE ( *url, *username, *password );
-		data.push_back ( '\0' );
-		StringAutoPtr data_string ( new string ( &data[0] ) );
-		SetResult ( data_string, results );
+		SetResult ( data, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;

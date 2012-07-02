@@ -126,6 +126,15 @@ void SetResult ( const WStringAutoPtr text, Data& results )
 	SetResult ( *result_text, results );
 }
 
+void SetResult ( vector<char> data, Data& results )
+{
+	data.push_back ( '\0' );
+	StringAutoPtr data_string ( new string ( &data[0] ) );
+	SetResult ( data_string, results );
+	
+}
+
+
 
 void SetResult ( const string filename, const vector<char> data, Data& results )
 {
