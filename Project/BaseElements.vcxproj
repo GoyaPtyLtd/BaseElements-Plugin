@@ -212,7 +212,6 @@
     <ClInclude Include="..\Source\minizip\mztools.h" />
     <ClInclude Include="..\Source\minizip\unzip.h" />
     <ClInclude Include="..\Source\minizip\zip.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

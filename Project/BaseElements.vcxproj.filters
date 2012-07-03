@@ -43,7 +43,6 @@
     <ClInclude Include="..\Source\BEWinFunctions.h" />
     <ClInclude Include="..\Source\BEWStringVector.h" />
     <ClInclude Include="..\Source\BEXSLT.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="..\Source\minizip\crypt.h">
       <Filter>MiniZip</Filter>
     </ClInclude>

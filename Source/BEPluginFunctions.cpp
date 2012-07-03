@@ -926,8 +926,42 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 
 		if ( count > 0 ) {
 
+			// when it's a file or a sound it's easy
+			
 			QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
 			int which = data->GetIndex ( *data_type );
+			if ( which == kBE_DataType_Not_Found ) {
+				QuadCharAutoPtr sound_type ( 's', 'n', 'd', ' ' );
+				which = data->GetIndex ( *sound_type );
+			}
+
+			// try and guess which image format to try
+			
+			if ( which == kBE_DataType_Not_Found ) {
+
+				// non-image data streams
+				QuadCharAutoPtr dpi__type ( 'D', 'P', 'I', '_' );
+				QuadCharAutoPtr fnam_type ( 'F', 'N', 'A', 'M' );
+				QuadCharAutoPtr size_type ( 'S', 'I', 'Z', 'E' );
+								
+				for ( int i = 0 ; i < count ; i++ ) {
+					QuadCharAutoPtr e_type;
+					data->GetType ( i, *e_type );
+					if ( *e_type != *dpi__type && *e_type != *fnam_type && *e_type != *size_type ) {
+						which = i;
+						
+						// don't overwrite another type with an fm generated jpeg preview
+						QuadCharAutoPtr jpeg_type ( 'J', 'P', 'E', 'G' );
+						if ( *e_type != *jpeg_type ) {
+							break;
+						}
+
+					}
+				}
+
+			}
+						
+			
 			if ( which != kBE_DataType_Not_Found ) {
 				size = data->GetSize ( which );
 				buffer = new char [ size ];
@@ -938,6 +972,9 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 
 		} else {
 
+			// if we don't have any streams try getting text
+			// note: we also end up here for anything inserted as QuickTime, which is probably not what the user wants, but...
+			
 			StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
 			size = text->size();
 			buffer = new char [ size ];
