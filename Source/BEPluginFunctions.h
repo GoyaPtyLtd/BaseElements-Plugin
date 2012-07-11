@@ -42,6 +42,7 @@ FMX_PROC(errcode) BE_SetClipboardData ( short funcId, const ExprEnv& environment
 FMX_PROC(errcode) BE_CreateFolder ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_DeleteFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_FileExists ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
+FMX_PROC(errcode) BE_FileSize ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_ReadTextFromFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_WriteTextToFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
