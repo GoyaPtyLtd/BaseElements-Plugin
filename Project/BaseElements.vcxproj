@@ -179,6 +179,10 @@
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Source\BEXMLReader.cpp" />
+    <ClCompile Include="..\Source\BEXMLReaderInterface.cpp" />
+    <ClCompile Include="..\Source\BEXMLTextReader.cpp" />
+    <ClCompile Include="..\Source\BEXMLTextWriter.cpp" />
     <ClCompile Include="..\Source\BEXSLT.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
@@ -203,6 +207,10 @@
     <ClInclude Include="..\Source\BESQLCommand.h" />
     <ClInclude Include="..\Source\BEWinFunctions.h" />
     <ClInclude Include="..\Source\BEWStringVector.h" />
+    <ClInclude Include="..\Source\BEXMLReader.h" />
+    <ClInclude Include="..\Source\BEXMLReaderInterface.h" />
+    <ClInclude Include="..\Source\BEXMLTextReader.h" />
+    <ClInclude Include="..\Source\BEXMLTextWriter.h" />
     <ClInclude Include="..\Source\BEXSLT.h" />
     <ClInclude Include="..\Source\BEZlib.h" />
     <ClInclude Include="..\Source\BE_Boost_FileSystem_Additions.hpp" />

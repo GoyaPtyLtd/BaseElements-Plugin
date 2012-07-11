@@ -96,7 +96,7 @@ errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
 #pragma mark SetResult
 #pragma mark -
 
-void SetResult ( const long number, Data& results )
+void SetResult ( const uintmax_t number, Data& results )
 {
 	FixPtAutoPtr numeric_result;
 	numeric_result->AssignInt ( number );

@@ -11,9 +11,13 @@
 		4D10AD951484202000814440 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
 		4D37E0B51339CF080084730B /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
+		4D3BA85215A3FE3F008AC145 /* BEXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */; };
 		4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */; };
 		4D6552A9119A929A00FD2D1D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6552A8119A929A00FD2D1D /* Cocoa.framework */; };
 		4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
+		4D760F7915AD50E2001A0BAF /* BEXMLTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */; };
+		4D760F7D15AD52C7001A0BAF /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
+		4D760F8015AD648F001A0BAF /* BEXMLReaderInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */; };
 		4D8824E711E93F6000F94475 /* BEPluginUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */; };
 		4D8BA595134579BD003A90B5 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8BA594134579BD003A90B5 /* libboost_thread.a */; };
 		4D99B2EB135E5BAA00BCB3C0 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D99B2EA135E5BAA00BCB3C0 /* libcurl.dylib */; };
@@ -67,12 +71,20 @@
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B21339CF080084730B /* BECurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECurl.h; path = ../Source/BECurl.h; sourceTree = SOURCE_ROOT; };
+		4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLReader.cpp; path = ../Source/BEXMLReader.cpp; sourceTree = "<group>"; };
+		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
 		4D4153A5120140AF00770E14 /* BEWStringVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEWStringVector.cpp; path = ../Source/BEWStringVector.cpp; sourceTree = SOURCE_ROOT; };
 		4D4153A6120140AF00770E14 /* BEWStringVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEWStringVector.h; path = ../Source/BEWStringVector.h; sourceTree = SOURCE_ROOT; };
 		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
 		4D6552A8119A929A00FD2D1D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileSystem.cpp; path = ../Source/BEFileSystem.cpp; sourceTree = SOURCE_ROOT; };
 		4D70428713BAE5CA00DE4484 /* BEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileSystem.h; path = ../Source/BEFileSystem.h; sourceTree = SOURCE_ROOT; };
+		4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLTextReader.cpp; path = ../Source/BEXMLTextReader.cpp; sourceTree = "<group>"; };
+		4D760F7A15AD50F8001A0BAF /* BEXMLTextReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLTextReader.h; path = ../Source/BEXMLTextReader.h; sourceTree = "<group>"; };
+		4D760F7B15AD5265001A0BAF /* BEXMLTextWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLTextWriter.h; path = ../Source/BEXMLTextWriter.h; sourceTree = "<group>"; };
+		4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLTextWriter.cpp; path = ../Source/BEXMLTextWriter.cpp; sourceTree = "<group>"; };
+		4D760F7E15AD646D001A0BAF /* BEXMLReaderInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReaderInterface.h; path = ../Source/BEXMLReaderInterface.h; sourceTree = "<group>"; };
+		4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLReaderInterface.cpp; path = ../Source/BEXMLReaderInterface.cpp; sourceTree = "<group>"; };
 		4D7FCA5C11E9308B0047A453 /* BaseElements.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = BaseElements.strings; path = ../Resources/BaseElements.strings; sourceTree = SOURCE_ROOT; };
 		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginUtilities.cpp; path = ../Source/BEPluginUtilities.cpp; sourceTree = SOURCE_ROOT; };
@@ -201,6 +213,14 @@
 				4DC182C8144CEC0900E27CAA /* BEZlib.h */,
 				4DC182C9144CEC0900E27CAA /* BEZlib.cpp */,
 				4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */,
+				4D3BA85315A3FE59008AC145 /* BEXMLReader.h */,
+				4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */,
+				4D760F7A15AD50F8001A0BAF /* BEXMLTextReader.h */,
+				4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */,
+				4D760F7B15AD5265001A0BAF /* BEXMLTextWriter.h */,
+				4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */,
+				4D760F7E15AD646D001A0BAF /* BEXMLReaderInterface.h */,
+				4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -310,6 +330,10 @@
 				4DC18345144D31C800E27CAA /* unzip.c in Sources */,
 				4DC18346144D31C800E27CAA /* zip.c in Sources */,
 				4D10AD951484202000814440 /* BESQLCommand.cpp in Sources */,
+				4D3BA85215A3FE3F008AC145 /* BEXMLReader.cpp in Sources */,
+				4D760F7915AD50E2001A0BAF /* BEXMLTextReader.cpp in Sources */,
+				4D760F7D15AD52C7001A0BAF /* BEXMLTextWriter.cpp in Sources */,
+				4D760F8015AD648F001A0BAF /* BEXMLReaderInterface.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +404,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = "../Build/$(PROJECT_NAME).dst";
@@ -453,6 +478,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DSTROOT = "../Build/$(PROJECT_NAME).dst";

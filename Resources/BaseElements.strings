@@ -37,10 +37,11 @@
 
 "124" = "BE_OpenURL ( url )";
 "125" = "BE_OpenFile ( path )";
+"126" = "BE_FileSize ( path )";
 
 
 "128" = "BaseElements";
-"129" = "Version: 2.0a2\n\nThis plug-in provides additional functionality for BaseElements 4 from Goya";
+"129" = "Version: 2.0b1\n\nThis plug-in provides additional functionality for BaseElements 4 from Goya";
 
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName; parameter } )";
@@ -75,6 +76,8 @@
 "200" = "BE_ApplyXSLTInMemory ( xml; xslt )";
 "201" = "BE_XPath ( xml; xpath {; namespaceList } )";
 "202" = "BE_XPathAll ( xml; xpath {; namespaceList } )";
+
+"210" = "BE_StripXMLNodes ( inputPath; outputPath; nodeNames )";
 
 
 "1001" = "BE_OKButton";

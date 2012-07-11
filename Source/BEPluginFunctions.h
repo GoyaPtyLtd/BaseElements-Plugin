@@ -61,6 +61,7 @@ FMX_PROC(errcode) BE_ApplyXSLT ( short funcId, const ExprEnv& environment, const
 FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
 FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
+FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 
 
 FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results);
@@ -76,7 +77,7 @@ FMX_PROC(errcode) BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* envir
 
 FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_HTTP_DELETE ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );

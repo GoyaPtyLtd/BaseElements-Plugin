@@ -29,6 +29,10 @@
     </ClCompile>
     <ClCompile Include="..\Source\BEZlib.cpp" />
     <ClCompile Include="..\Source\BESQLCommand.cpp" />
+    <ClCompile Include="..\Source\BEXMLReader.cpp" />
+    <ClCompile Include="..\Source\BEXMLReaderInterface.cpp" />
+    <ClCompile Include="..\Source\BEXMLTextReader.cpp" />
+    <ClCompile Include="..\Source\BEXMLTextWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -64,6 +68,10 @@
     <ClInclude Include="..\Source\BEZlib.h" />
     <ClInclude Include="..\Source\BE_Boost_FileSystem_Additions.hpp" />
     <ClInclude Include="..\Source\BESQLCommand.h" />
+    <ClInclude Include="..\Source\BEXMLReader.h" />
+    <ClInclude Include="..\Source\BEXMLReaderInterface.h" />
+    <ClInclude Include="..\Source\BEXMLTextReader.h" />
+    <ClInclude Include="..\Source\BEXMLTextWriter.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

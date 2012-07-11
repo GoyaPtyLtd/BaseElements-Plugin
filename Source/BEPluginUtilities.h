@@ -21,10 +21,11 @@
 
 
 #include <vector>
+#include <stdint.h>
+
 
 using namespace std;
 using namespace fmx;
-
 
 
 typedef auto_ptr<string> StringAutoPtr;
@@ -34,7 +35,7 @@ typedef auto_ptr<wstring> WStringAutoPtr;
 errcode TextConstantFunction ( wstring text, Data& results );
 errcode TextConstantFunction ( WStringAutoPtr text, Data& results );
 
-void SetResult ( const long number, Data& results );
+void SetResult ( const uintmax_t number, Data& results );
 void SetResult ( const Text& text, Data& results );
 void SetResult ( const StringAutoPtr text, Data& results );
 void SetResult ( const WStringAutoPtr text, Data& results );

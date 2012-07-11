@@ -20,6 +20,7 @@
 #include "BEShell.h"
 #include "BEZlib.h"
 #include "BESQLCommand.h"
+#include "BEXMLReader.h"
 
 
 #if defined(FMX_WIN_TARGET)
@@ -273,6 +274,34 @@ FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environm
 	return MapError ( error );
 	
 } // BE_FileExists
+
+
+
+FMX_PROC(errcode) BE_FileSize ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
+{
+	errcode error = NoError();
+	
+	try {
+		
+		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
+		
+		path path = *file;			
+		uintmax_t size = file_size ( path );
+		
+		SetResult ( size, results );
+		
+	} catch ( filesystem_error& e ) {
+		g_last_error = e.code().value();
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_FileSize
+
 
 
 FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
@@ -650,7 +679,7 @@ FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* envir
 
 
 #pragma mark -
-#pragma mark XSLT
+#pragma mark XML / XSLT
 #pragma mark -
 
 FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
@@ -753,6 +782,37 @@ FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environmen
 	return MapError ( error );
 	
 } // BE_XPathAll
+
+
+
+FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error =	NoError();
+	
+	try {
+		
+		StringAutoPtr input_file = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr output_file = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr node_names = ParameterAsUTF8String ( parameters, 2 );
+		
+		vector<string> node_names_vector;
+		boost::tokenizer<> tokeniser ( *node_names );
+		for ( boost::tokenizer<>::iterator it = tokeniser.begin() ; it != tokeniser.end() ; ++it ) {
+			node_names_vector.push_back ( *it );
+		}
+		
+		StripXMLNodes ( *input_file, *output_file, node_names_vector );
+		SetResult ( error, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_StripXMLNodes
 
 
 
@@ -972,7 +1032,7 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 
 		} else {
 
-			// if we don't have any streams try getting text
+			// if we don't have any streams try getting as text
 			// note: we also end up here for anything inserted as QuickTime, which is probably not what the user wants, but...
 			
 			StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
