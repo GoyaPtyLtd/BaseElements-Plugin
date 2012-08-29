@@ -427,7 +427,7 @@ errcode MapError ( const errcode error, const bool map )
  FileMaker Developer/Pro Advance versions 7 through 10 and are used by permission.
  */
 
-void Do_GetString(unsigned long whichString, FMX_ULong /* winLangID */, FMX_Long resultsize, FMX_Unichar* string)
+void Do_GetString(unsigned long whichString, FMX_UInt32 /* winLangID */, FMX_Int32 resultsize, FMX_Unichar* string)
 {
 	
 	switch ( whichString )

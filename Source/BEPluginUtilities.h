@@ -60,7 +60,7 @@ errcode MapError ( const errcode error = kNoError, const bool map = false );
 
 // extract localised strings from the plug-in resources
 
-void Do_GetString ( unsigned long whichString, FMX_ULong winLangID, FMX_Long resultsize, FMX_Unichar* string );
+void Do_GetString ( unsigned long whichString, FMX_UInt32 winLangID, FMX_Int32 resultsize, FMX_Unichar* string );
 void Do_GetString ( unsigned long whichString,  TextAutoPtr& intoHere, bool stripFunctionParams = false );
 
 // used by Do_GetString
