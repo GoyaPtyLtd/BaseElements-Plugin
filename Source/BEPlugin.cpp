@@ -70,7 +70,7 @@ extern BESQLCommandAutoPtr g_ddl_command;
 // register the plug-in functions
 // the functions are defined in BEPluginFunctions.cpp
 
-static FMX_Long LoadPlugin ( FMX_ExternCallPtr plugin_call ) 
+static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call ) 
 {
 #pragma unused ( plugin_call )
 	
