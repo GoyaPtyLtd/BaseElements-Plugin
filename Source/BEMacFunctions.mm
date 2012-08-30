@@ -234,6 +234,7 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 
 bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain )
 {
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	
 	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
 	
@@ -258,12 +259,16 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 		result = false;
 	}
 	
+	[pool drain];
+	
 	return result;
 }
 
 
 WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 {
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	
 	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
 	NSString * preference_value = nil;
 	
@@ -278,7 +283,11 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 		preference_value = [preferences objectForKey: preference_key];
 	}
 	
-	return WStringAutoPtrFromNSString ( preference_value );
+	WStringAutoPtr preference = WStringAutoPtrFromNSString ( preference_value );
+	
+	[pool drain];
+	
+	return preference;
 }
 
 
