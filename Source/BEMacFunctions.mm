@@ -16,9 +16,9 @@
 #import <Cocoa/Cocoa.h>
 
 #if TARGET_RT_BIG_ENDIAN
-#define ENCODING kCFStringEncodingUTF32BE
+	#define ENCODING kCFStringEncodingUTF32BE
 #else
-#define ENCODING kCFStringEncodingUTF32LE
+	#define ENCODING kCFStringEncodingUTF32LE
 #endif
 
 const NSStringEncoding kEncoding_wchar_t = CFStringConvertEncodingToNSStringEncoding ( ENCODING );
@@ -53,7 +53,7 @@ NSString * NSStringFromStringAutoPtr ( StringAutoPtr text )
 NSString * NSStringFromWStringAutoPtr ( const WStringAutoPtr text )
 {
 	char * string_data = (char *)text->data();
-	unsigned size = text->size() * sizeof ( wchar_t );
+	unsigned long size = text->size() * sizeof ( wchar_t );
 	
 	NSString* new_string = [[[NSString alloc] initWithBytes: string_data
 													 length: size
@@ -180,7 +180,7 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 	NSString * alternate_button_string = NSStringFromWStringAutoPtr ( alternate_button );
 	NSString * message_string = NSStringFromWStringAutoPtr ( message );
 	
-	int response = NSRunAlertPanel (  ( title_string ),
+	NSInteger response = NSRunAlertPanel (  ( title_string ),
 									@"%@", 
 									( ok_button_string ), 
 									( cancel_button_string ), 
@@ -231,6 +231,7 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 
 bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain )
 {
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
 	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
 	
@@ -250,10 +251,12 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 		
 		[standardUserDefaults setPersistentDomain: new_preferences forName: domain_name];
 		[standardUserDefaults synchronize];
-
+		
 	} else {
 		result = false;
 	}
+	
+	[pool drain];
 	
 	return result;
 }
@@ -261,6 +264,8 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 
 WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 {
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	
 	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
 	NSString * preference_value = nil;
 	
@@ -275,7 +280,11 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 		preference_value = [preferences objectForKey: preference_key];
 	}
 	
-	return WStringAutoPtrFromNSString ( preference_value );
+	WStringAutoPtr preference = WStringAutoPtrFromNSString ( preference_value );
+	
+	[pool drain];
+	
+	return preference;
 }
 
 
