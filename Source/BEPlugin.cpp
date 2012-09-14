@@ -126,9 +126,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	
 	g_be_plugin->RegisterFunction ( kBE_ExecuteShellCommand, BE_ExecuteShellCommand, false, 1, 2 );
 	
-	g_be_plugin->RegisterFunction ( kBE_FileMaker_Tables, BE_FileMaker_TablesOrFields );
-	g_be_plugin->RegisterFunction ( kBE_FileMaker_Fields, BE_FileMaker_TablesOrFields );
-
 	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, false, 1 );
 
 	g_be_plugin->RegisterFunction ( kBE_ExecuteScript, BE_ExecuteScript, true, 1, 3 );
@@ -159,6 +156,12 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_MessageDigest, BE_MessageDigest, true, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestType_MD5 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestType_SHA256 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
+
+	// depreciated
+	
+	g_be_plugin->RegisterHiddenFunction ( kBE_FileMaker_Tables, BE_FileMaker_TablesOrFields, true );
+	g_be_plugin->RegisterHiddenFunction ( kBE_FileMaker_Fields, BE_FileMaker_TablesOrFields, true );
+	
 
 	return kCurrentExtnVersion;	// enable the plug-in
 	

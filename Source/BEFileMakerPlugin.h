@@ -35,7 +35,9 @@ public:
     BEFileMakerPlugin ( QuadCharAutoPtr plugin_id );
 	~BEFileMakerPlugin();
 	
+    errcode RegisterHiddenFunction ( short function_id, ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
     errcode RegisterFunction ( short function_id, ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
+    errcode RegisterPluginFunction ( FMX_UInt32 function_flags, short function_id, ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
     errcode RegisterFunction ( short function_id, ExtPluginType funcion_pointer, int minumum_parameters = 0 );
 
 };
