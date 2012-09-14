@@ -105,7 +105,7 @@ StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 			
 			HGLOBAL memory_handle = GetClipboardData ( format_wanted );
 			unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( memory_handle );
-			UINT clipboard_size = GlobalSize ( memory_handle );
+			SIZE_T clipboard_size = GlobalSize ( memory_handle );
 
 			clipboard_data = new char [ clipboard_size + 1 ]();
 			memcpy ( clipboard_data, clipboard_contents, clipboard_size );
@@ -143,13 +143,13 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 		
 		EmptyClipboard();
 
-		UINT32 data_size = data->size();
+		SIZE_T data_size = data->size();
 
 		/* 
 		 prefix the data to place on the clipboard with the size of the data
 		 */
-		UINT32 offset = ClipboardOffset ( *atype );
-		UINT32 clipboard_size = data_size + offset;
+		SIZE_T offset = ClipboardOffset ( *atype );
+		SIZE_T clipboard_size = data_size + offset;
 		HGLOBAL memory_handle = GlobalAlloc ( GMEM_SHARE | GMEM_MOVEABLE, clipboard_size );
 
 		unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( memory_handle );
@@ -356,7 +356,7 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 								0,
 								REG_SZ,
 								(PBYTE)value->c_str(),
-								(value->size() * sizeof(wchar_t)) + 1
+								(DWORD)(value->size() * sizeof(wchar_t)) + 1
 								);
 		RegCloseKey ( registry_key );
 	}

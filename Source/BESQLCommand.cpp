@@ -70,16 +70,16 @@ TextAutoPtr BESQLCommand::get_text_result ( void )
 	TextAutoPtr	text_result;
 
 	if ( !waiting ) {
-		const ulong number_of_rows = result->Size();
-		const ulong last_row = number_of_rows - 1;
+		const FMX_UInt32 number_of_rows = result->Size();
+		const FMX_UInt32 last_row = number_of_rows - 1;
 		
-		for ( ulong row = 0; row < number_of_rows; ++row ) { 
+		for ( FMX_UInt32 row = 0; row < number_of_rows; ++row ) { 
 			
 			const DataVect& this_row = result->At( row ); 
-			const ulong number_of_columns = this_row.Size();
-			const ulong last_column = number_of_columns - 1;
+			const FMX_UInt32 number_of_columns = this_row.Size();
+			const FMX_UInt32 last_column = number_of_columns - 1;
 			
-			for ( ulong column = 0; column < number_of_columns; ++column ) {
+			for ( FMX_UInt32 column = 0; column < number_of_columns; ++column ) {
 				// should escape this ??? the old API doesn't so leave it to the FM developers
 				text_result->AppendText ( this_row.At( column ).GetAsText() );
 				// skip last time

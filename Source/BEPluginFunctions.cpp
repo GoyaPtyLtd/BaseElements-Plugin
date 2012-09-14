@@ -979,7 +979,7 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 
 		BinaryDataAutoPtr data ( parameters.AtAsBinaryData(0) );
 
-		ulong size = 0;
+		FMX_UInt32 size = 0;
 		char * buffer = NULL;
 		
 		int count = data->GetCount();
@@ -1036,14 +1036,14 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 			// note: we also end up here for anything inserted as QuickTime, which is probably not what the user wants, but...
 			
 			StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
-			size = text->size();
+			size = (FMX_UInt32)text->size();
 			buffer = new char [ size ];
 			memcpy ( buffer, text->c_str(), size );
 			
 		}
 
 		StringAutoPtr base64 ( new string ( base64_text(buffer), base64_text(buffer + size) ) );
-		for ( ulong i = 0 ; i < (base64->length() % 4) ; i ++ ) {
+		for ( FMX_UInt32 i = 0 ; i < (base64->length() % 4) ; i ++ ) {
 			base64->append ( "=" );
 		}
 		SetResult ( base64, results );
@@ -1430,6 +1430,9 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 
 
 /*
+ 
+ DEPRECIATED as of FM12 (which has native functions) ... will be removed in plug-in version 3.0
+ 
  a wrapper for the FileMaker SQL calls FileMaker_Tables and FileMaker_Fields
  
  under FileMaker 11 & 12 the functions return
@@ -1551,7 +1554,7 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 		TextAutoPtr file_name;
 		DataAutoPtr parameter;
 
-		ulong number_of_paramters = parameters.Size();
+		FMX_UInt32 number_of_paramters = parameters.Size();
 		
 		if ( number_of_paramters >= 2 ) {
 			file_name->SetText ( parameters.AtAsText ( 1 ) );
@@ -1596,7 +1599,7 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environme
 		TextAutoPtr expression;
 		expression->SetText ( parameters.AtAsText(0) );
 		
-		ulong number_of_paramters = parameters.Size();
+		FMX_UInt32 number_of_paramters = parameters.Size();
 
 		TextAutoPtr filename;
 		if ( number_of_paramters == 4 ) {

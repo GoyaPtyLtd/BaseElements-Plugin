@@ -99,7 +99,7 @@ errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
 void SetResult ( const uintmax_t number, Data& results )
 {
 	FixPtAutoPtr numeric_result;
-	numeric_result->AssignInt ( number );
+	numeric_result->AssignDouble ( number );
 	results.SetAsNumber ( *numeric_result );
 }
 
@@ -147,7 +147,7 @@ void SetResult ( const string filename, const vector<char> data, Data& results )
 		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
 		resultBinary->AddFNAMData ( *file ); 
 		QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
-		resultBinary->Add ( *data_type, data.size(), (void *)&data[0] ); 
+		resultBinary->Add ( *data_type, (FMX_UInt32)data.size(), (void *)&data[0] );
 		results.SetBinaryData ( *resultBinary, true ); 
 		
 	} else { // otherwise try sending back text
@@ -168,7 +168,7 @@ void SetResult ( const string filename, const vector<char> data, Data& results )
 #pragma mark ParameterAs
 #pragma mark -
 
-bool ParameterAsBoolean ( const DataVect& parameters, const unsigned long which, const bool default_value )
+bool ParameterAsBoolean ( const DataVect& parameters, const FMX_UInt32 which, const bool default_value )
 {
 	try {
 		return parameters.AtAsBoolean ( which );
@@ -178,7 +178,7 @@ bool ParameterAsBoolean ( const DataVect& parameters, const unsigned long which,
 }
 	
 	
-long ParameterAsLong ( const DataVect& parameters, const unsigned long which, const unsigned long default_value )
+long ParameterAsLong ( const DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value )
 {
 	try {
 		return parameters.AtAsNumber ( which ).AsLong();
@@ -188,7 +188,7 @@ long ParameterAsLong ( const DataVect& parameters, const unsigned long which, co
 }
 
 
-StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, unsigned long which )
+StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, FMX_UInt32 which )
 {	
 	
 	StringAutoPtr result ( new string );
@@ -198,9 +198,9 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, unsigned long 
 		TextAutoPtr raw_data;
 		raw_data->SetText ( parameters.AtAsText ( which ) );
 		
-		ulong text_size = (2*(raw_data->GetSize())) + 1;
+		FMX_UInt32 text_size = (2*(raw_data->GetSize())) + 1;
 		char * text = new char [ text_size ]();
-		raw_data->GetBytes ( text, text_size, 0, (ulong)Text::kSize_End, Text::kEncoding_UTF8 );
+		raw_data->GetBytes ( text, text_size, 0, (FMX_UInt32)Text::kSize_End, Text::kEncoding_UTF8 );
 		result->assign ( text );
 		delete [] text;
 		
@@ -214,7 +214,7 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, unsigned long 
 
 
 
-WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, unsigned long which )
+WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, FMX_UInt32 which )
 {	
 	
 	WStringAutoPtr result ( new wstring );
@@ -224,8 +224,8 @@ WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, unsigned long
 		TextAutoPtr raw_data;
 		raw_data->SetText ( parameters.AtAsText(which) );
 		
-		long text_size = raw_data->GetSize();
-		ushort * text = new ushort [ text_size + 1 ];
+		FMX_Int32 text_size = raw_data->GetSize();
+		FMX_UInt16 * text = new FMX_UInt16 [ text_size + 1 ];
 		raw_data->GetUnicode ( text, 0, text_size );
         text[text_size] = 0x0000;
 
@@ -316,11 +316,12 @@ vector<char> ConvertTextTo ( char * in, const size_t length, const string& encod
 	 try each converting from each of the codesets in turn
 	 */
 	
-	int error_result = -1;
+	const size_t kError = -1;
+	size_t error_result = kError;
 	vector<string>::iterator it = codesets.begin();
 	size_t remaining = available;
 	
-	while ( error_result == -1 && it != codesets.end() ) {
+	while ( error_result == kError && it != codesets.end() ) {
 		
 		char * start = in;
 		size_t start_length = length;
@@ -427,7 +428,7 @@ errcode MapError ( const errcode error, const bool map )
  FileMaker Developer/Pro Advance versions 7 through 10 and are used by permission.
  */
 
-void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_UInt32 resultsize, FMX_Unichar* string)
+void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_PtrType resultsize, FMX_Unichar* string)
 {
 	
 	switch ( whichString )
@@ -435,7 +436,7 @@ void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_UI
 		case kFMXT_OptionsStr:
 		{
 #if defined(FMX_WIN_TARGET)
-			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), kBE_OptionsStringID, (LPWSTR)string, resultsize);
+			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), kBE_OptionsStringID, (LPWSTR)string, (uint32)resultsize);
 #endif
 			
 #if defined(FMX_MAC_TARGET)
@@ -447,7 +448,7 @@ void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_UI
 		}
 		default:
 #if defined(FMX_WIN_TARGET)
-			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)whichString, (LPWSTR)string, resultsize);
+			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)whichString, (LPWSTR)string, (uint32)resultsize);
 #endif
 				
 #if defined(FMX_MAC_TARGET)
@@ -474,8 +475,8 @@ void Do_GetString(unsigned long whichStringID, TextAutoPtr& intoHere, bool strip
 		TextAutoPtr		parenToken;
 		parenToken->Assign ( " (" );
 		
-		unsigned long		originalSize = intoHere->GetSize();
-		unsigned long		firstParenLocation; 
+		FMX_UInt32 originalSize = intoHere->GetSize();
+		FMX_UInt32 firstParenLocation;
 		firstParenLocation = intoHere->Find(*parenToken, 0);
 		
 		intoHere->DeleteText(firstParenLocation, originalSize-firstParenLocation);

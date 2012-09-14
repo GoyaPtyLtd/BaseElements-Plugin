@@ -66,7 +66,7 @@ using namespace boost::filesystem;
 #pragma mark -
 
 void ChangeFileDate ( path file, tm_unz tmu_date );
-int ExtractCurrentFile ( path parent, unzFile uf );
+long ExtractCurrentFile ( path parent, unzFile uf );
 
 void FileTime ( const path file, zip_fileinfo * zi );
 bool IsLargeFile ( const path file );
@@ -105,9 +105,9 @@ void ChangeFileDate ( path file, tm_unz tmu_date )
 } // ChangeFileDate
 
 
-int UnZip ( const StringAutoPtr archive )
+long UnZip ( const StringAutoPtr archive )
 {
-	short error = kNoError;
+	long error = kNoError;
 	
 	path archive_path = *archive;
 	archive_path.make_preferred();
@@ -120,7 +120,7 @@ int UnZip ( const StringAutoPtr archive )
 	    error = unzGetGlobalInfo64 ( uf, &gi );
 	    if ( error == UNZ_OK ) {
 		
-			for ( ulong i = 0; i < gi.number_entry; i++ ) {
+			for ( FMX_UInt32 i = 0; i < gi.number_entry; i++ ) {
 			
 				error = ExtractCurrentFile ( archive_path.parent_path(), uf );
 				if ( error == UNZ_OK ) {
@@ -137,7 +137,7 @@ int UnZip ( const StringAutoPtr archive )
 			}
 		}
 
-		int close_error = unzClose ( uf );
+		long close_error = unzClose ( uf );
 		if ( error == UNZ_OK ) {
 			error = close_error;
 		}
@@ -149,9 +149,9 @@ int UnZip ( const StringAutoPtr archive )
 } // UnZip
 
 
-int ExtractCurrentFile ( path parent, unzFile uf )
+long ExtractCurrentFile ( path parent, unzFile uf )
 {
-    int error = UNZ_OK;
+    long error = UNZ_OK;
 
     char filename_inzip[PATH_MAX];
     unz_file_info64 file_info;
@@ -375,9 +375,9 @@ int AddToArchive ( const path directory_path, zipFile zf, const path base )
 } // AddToArchive
 
 
-int Zip ( StringAutoPtr filename )
+long Zip ( StringAutoPtr filename )
 {
-    int error = 0;
+    long error = 0;
 	
 	path file = *filename;
 

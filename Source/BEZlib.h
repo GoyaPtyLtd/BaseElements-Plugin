@@ -17,8 +17,8 @@
 #include "BEPluginUtilities.h"
 
 
-int UnZip ( const StringAutoPtr archive );
-int Zip ( const StringAutoPtr filename );
+long UnZip ( const StringAutoPtr archive );
+long Zip ( const StringAutoPtr filename );
 
 
 #endif // BEZLIB_H

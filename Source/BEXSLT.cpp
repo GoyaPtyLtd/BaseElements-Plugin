@@ -451,7 +451,7 @@ TextAutoPtr ApplyXPath ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr n
 	
 	if (xpathObj) {
 		xmlChar* str = xmlXPathCastNodeSetToString(xpathObj->nodesetval);
-		result->AssignWithLength((char*)str, strlen((char*)str), fmx::Text::kEncoding_UTF8);	// return node set as string on success
+		result->AssignWithLength((char*)str, (FMX_UInt32)strlen((char*)str), fmx::Text::kEncoding_UTF8);	// return node set as string on success
 		xmlFree(str);
 	}
 	
@@ -484,7 +484,7 @@ void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result )
 	for (int i = 0; i < ns->nodeNr; i++) {
 		xmlChar* str = xmlXPathCastNodeToString(ns->nodeTab[i]);
 		if (str) {
-			value->AssignWithLength((char*)str, strlen((char*)str), fmx::Text::kEncoding_UTF8);
+			value->AssignWithLength((char*)str, (FMX_UInt32)strlen((char*)str), fmx::Text::kEncoding_UTF8);
 			result->AppendText(*value);
 			xmlFree(str);
 		}

@@ -6,21 +6,22 @@ The following notes describe the process for building the the plugin and the thi
 
 Notes:
 - these instructions apply to version 2.0 of the BaseElements Plugin
+- version 12.0.1.5 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 
 =======================================================================
 Mac OS X
 =======================================================================
 
-Version 2.0 of the plug-in was built using Xcode 4.3.3 on Mac OS X 10.7.4.
+Version 2.0 of the plug-in was built using Xcode 4.4.1 on Mac OS X 10.8.1.
 
-Download the Mac version of the FileMaker External Plug-In API from
+Download the FileMaker External Plug-In API from
 
 	http://www.filemaker.com/support/technologies/
 
 and place the FMWrapper.framework in the Libraries directory.
 
-On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built are OpenSSL and the Boost FileSystem, System and Thread libraries.
+On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built the Boost FileSystem, System and Thread libraries.
 
 =======================================================================
 Boost
@@ -30,13 +31,13 @@ Boost is available from
 
 	http://www.boost.org/
 
-Note: v2.0 of the plug-in requires Boost 1.49_0 (or later).
+Note: v2.0 of the plug-in requires Boost 1.51_0 (or later).
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_49_0
+	cd boost_1_51_0
 	./bootstrap.sh
-	./b2 architecture=x86 link=static runtime-link=static --with-thread --with-filesystem
+	./b2 architecture=x86 address-model=32_64 link=static runtime-link=static --with-thread --with-filesystem
 
 See
 
@@ -46,9 +47,9 @@ for for further information on compiling the Boost libraries.
 
 The boost headers must be placed in the Headers directory and the
 
-	bin.v2/libs/filesystem/build/darwin-4.2.1/release/architecture-combined/link-static/runtime-link-static/threading-multi/libboost_filesystem.a
-	bin.v2/libs/thread/build/darwin-4.2.1/release/architecture-combined/link-static/threading-multi/libboost_thread.a
-	bin.v2/libs/system/build/darwin-4.2.1/release/architecture-combined/link-static/threading-multi/libboost_system.a
+	bin.v2/libs/filesystem/build/darwin-4.2.1/release/address-model-32_64/architecture-x86/link-static/runtime-link-static/threading-multi/libboost_filesystem.a
+	bin.v2/libs/system/build/darwin-4.2.1/release/address-model-32_64/architecture-x86/link-static/runtime-link-static/threading-multi/libboost_system.a
+	bin.v2/libs/thread/build/darwin-4.2.1/release/address-model-32_64/architecture-x86/link-static/runtime-link-static/threading-multi/libboost_thread.a
 
 libraries placed in the Libraries directory.
 
@@ -64,39 +65,20 @@ and extract the folder zlib-1.2.7 to the desktop. Copy the minizip directory fro
 
 
 =======================================================================
-OpenSSL
-=======================================================================
-
-To follow... for the moment copy OpenSSL.framework from inside the FileMaker 11 application package into the Libraries folder.
-
-Download the latest openssl source from
-
-	http://www.openssl.org/source/
-
-(openssl-1.0.1c.tar.gz at the time of writing).
-
-Unpack the archive onto the desktop and, using the command prompt
-
-	cd /Users/mark/Desktop/openssl-1.0.1c
-	./Configure darwin-i386-cc --openssldir=/Users/mark/Desktop/openssl-i386
-	make install
-
-Copy openssl-i386/libcrypto.a and openssl-i386/libssl.a to Libraries and copy openssl-i386/includes/openssl to Headers.
-
-
-=======================================================================
 Windows
 =======================================================================
 
-The plug-in was built using Visual Studio 2010 Professional on Windows 7 Ultimate.
+The plug-in was built using Visual Studio 2010 Professional on Windows 7 Ultimate (32-bit).
 
-Download the Windows version of the FileMaker External Plug-In API from
+Download the FileMaker External Plug-In API from
 
 	http://www.filemaker.com/support/technologies/
 
-rename the Headers directory FMWrapper and place it in the Headers directory. FMWrapper.lib should be placed the Libraries directory.
+and place the FMWrapper directory inside the SDK's Headers directory in the Headers directory. The version of FMWrapper.lib in the Libraries\Win\win32 should be placed the Libraries directory. If building a 64-bit plug-in place the Libraries\Win\x86 in the Libraries\x86 directory.
 
 The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries (/MTd & /MT) using libcmt.lib and nafxcw.lib for release and libcrtd.lib and nafxcwd.lib for debug builds.
+
+Unicode is used rather than the multi-byte character set.
 
 Note: source code for some of the libraries is supplied as gzipped tar archives; there are a number of applications that can unpack these archives, for example, Stuffit Expander
 
@@ -113,33 +95,54 @@ The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 
-Note: v2.0 of the plug-in requires Boost 1.49 (or later).
+Note: v2.0 of the plug-in requires Boost 1.51_0 (or later).
 
 See
 
 	more/getting_started/index.html
 
-for instructions on compiling the Boost libraries. In general
+for instructions on compiling the Boost libraries. From the command prompt try
 
-	cd boost_1_49_0
+	cd boost_1_51_0
 	bootstrap.bat
 	b2 link=static runtime-link=static --with-thread --with-filesystem --with-date_time
 
-should do the trick.
+and for 64-bit support
 
-The boost headers must be placed in the Headers directory and the libraries copied from
+	b2 address-model=64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time
 
-	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_49.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_49.lib
-	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_49.lib
-	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_49.lib
+
+The boost headers must be placed in the Headers directory and for 32-bit builds copy
+
+	bin.v2\libs\chrono\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-s-1_51.lib
+	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_51.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_51.lib
+	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_51.lib
+	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_51.lib
 
 into the Libraries directory. For debug builds also copy
 
-	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_49.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_49.lib
-	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_49.lib
-	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_49.lib
+	bin.v2\libs\chrono\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-sgd-1_51.lib
+	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_51.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_51.lib
+	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_51.lib
+	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_51.lib
+
+For 64-bit builds copy
+
+	bin.v2\libs\chrono\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-s-1_51.lib
+	bin.v2\libs\date_time\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_51.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_51.lib
+	bin.v2\libs\thread\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_51.lib
+	bin.v2\libs\system\build\msvc-10.0\release\laddress-model-64\ink-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_51.lib
+
+into the Libraries\x86 directory. For debug builds also copy
+
+	bin.v2\libs\chrono\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-sgd-1_51.lib
+	bin.v2\libs\date_time\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_51.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_51.lib
+	bin.v2\libs\thread\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_51.lib
+	bin.v2\libs\system\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_51.lib
 
 
 =======================================================================
@@ -161,6 +164,12 @@ Build the library and move
 	contrib/vstudio/vc10/x86/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
 in the Libraries directory and zlib.h in the Headers directory.
+
+For x64 builds set the "Active Solution Platform" in the "Configuration Manager" to x64, remove ZLIB_WINAPI from the list of preprocessor definitions and build the solution. Move
+
+	contrib/vstudio/vc10/x64/ZlibStatReleaseWithoutAsm/zlibstat.lib
+
+to the Libraries/x64 directory.
 
 
 =======================================================================
@@ -214,8 +223,8 @@ In the Property Pages
 
 add paths to the following directories
 
-	libxml2-2.8.0win32\VC10
-	libxml2-2.8.0win32\include
+	libxml2-2.8.0\win32\VC10
+	libxml2-2.8.0\include
 	libiconv-1.14.vc10\include
 
 and in
@@ -244,15 +253,14 @@ into the BE Plugin Headers folder and create a folder, iconv, in the BE Plugin H
 into that.
 
 
-=======================================================================
-libxml2
-=======================================================================
+For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK". Set the "Active solution configuration" to "Release" and uncheck "Build" for "runsuite".
 
+Make the changes to the configuration properties as per the x86 instructions, above, and then build the project. Move
 
-	cscript configure.js static=yes debug=no cruntime=-MT include="\\VBOXSVR\BaseElements-Plugin\Headers\iconv" lib="\\VBOXSVR\BaseElements-Plugin\Libraries"
-	nmake -f Makefile.msvc MFLAGS=-MT libxmla
+	win32/VC10/x64/Release/iconv.lib
+	win32/VC10/x64/Release/libxml2.lib
 
-to configure and build the source.
+to the Libraries/x64 directory.
 
 
 =======================================================================
@@ -267,35 +275,22 @@ and expand it into a directory on the Desktop.
 
 Note: the full path of the directory should not contain any spaces.
 
-Open a terminal window and set up the Visual Studio command line environment
+For Win32 builds use the "Visual Studio Command Prompt (2010)" and for x64 builds the "Visual Studio x64 Cross Tools Command Prompt (2010)".
 
-	c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat
-
-then move to the win32 directory in the archive
+Move to the win32 directory in the archive
 
 	cd Desktop\libxslt-1.1.26\win32
 
-Edit the file
-
-	Makefile.msvc
-
-by commenting out the line
-
-	DFLAGS = $(LDFLAGS) /OPT:NOWIN98
-
-and also change
-
-	libxml2.lib
-
-to
-
-	libxml2_a.lib
-
-throughout.
-
 Run the commands (changing the include= & lib= paths as appropriate)
 
+32-bit
+
 	cscript configure.js static=yes debug=no cruntime=-MT include="\\VBOXSVR\BaseElements-Plugin\Headers;\\VBOXSVR\BaseElements-Plugin\Headers\iconv" lib="\\VBOXSVR\BaseElements-Plugin\Libraries"
+
+64-bit
+
+cscript configure.js static=yes debug=no cruntime=-MT include="\\VBOXSVR\BaseElements-Plugin\Headers;\\VBOXSVR\BaseElements-Plugin\Headers\iconv" lib="\\VBOXSVR\BaseElements-Plugin\Libraries\x64"
+
 	nmake -f Makefile.msvc MFLAGS=-MT libxslta libexslta
 
 to configure and build the source.
@@ -327,15 +322,24 @@ Download the latest openssl source from
 
 (openssl-1.0.1c.tar.gz at the time of writing).
 
-Unpack the archive onto the desktop and, using the command prompt
+Unpack the archive onto the desktop and, using the "Visual Studio Command Prompt (2010)"
 
 	cd c:\Users\Mark\Desktop\openssl-1.0.1c
 	perl Configure VC-WIN32 enable-static-engine no-asm
 	ms\do_nt
-	c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat
 	nmake -f ms\nt.mak
 
 Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries and copy inc32\openssl to Headers.
+
+For x64 builds in a "Visual Studio x64 Cross Tools Command Prompt (2010)" use:
+
+	cd c:\Users\Mark\Desktop\openssl-1.0.1c
+	perl Configure VC-WIN64A enable-static-engine no-asm
+	ms\do_win64a
+	nmake -f ms\nt.mak
+
+Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\x64 and copy inc32\openssl to Headers.
+
 
 =======================================================================
 libcurl
@@ -366,13 +370,26 @@ In Visual Studio and select "Batch Build" and check the "LIB Release" configurat
 
 Copy the library from
 
-	curl-7.26.0\lib\LIB-Release\libcurl.lib
+	curl-7.27.0\lib\LIB-Release\libcurl.lib
 
 into the Libraries directory and copy
 
-	curl-7.26.0\include\curl
+	curl-7.27.0\include\curl
 
 to the Headers directory.
 
+For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK".
+
+Set the following Configuration Property:
+
+	Librarian -> General -> Taraget Machine == MachineX64 (/MACHINE:X64)
+
+Select "Batch Build" and check the "LIB Release" configuration for the "x64" platform and then "Build".
+
+Copy the library from
+
+	curl-7.27.0\lib\LIB-Release\libcurl.lib
+
+into the Libraries\x64 directory.
 
 =======================================================================

@@ -25,27 +25,26 @@
 
 
 using namespace std;
-using namespace fmx;
 
 
 typedef auto_ptr<string> StringAutoPtr;
 typedef auto_ptr<wstring> WStringAutoPtr;
 
 
-errcode TextConstantFunction ( wstring text, Data& results );
-errcode TextConstantFunction ( WStringAutoPtr text, Data& results );
+fmx::errcode TextConstantFunction ( wstring text, fmx::Data& results );
+fmx::errcode TextConstantFunction ( WStringAutoPtr text, fmx::Data& results );
 
-void SetResult ( const uintmax_t number, Data& results );
-void SetResult ( const Text& text, Data& results );
-void SetResult ( const StringAutoPtr text, Data& results );
-void SetResult ( const WStringAutoPtr text, Data& results );
-void SetResult ( vector<char> data, Data& results );
-void SetResult ( const string filename, const vector<char> data, Data& results );
+void SetResult ( const uintmax_t number, fmx::Data& results );
+void SetResult ( const fmx::Text& text, fmx::Data& results );
+void SetResult ( const StringAutoPtr text, fmx::Data& results );
+void SetResult ( const WStringAutoPtr text, fmx::Data& results );
+void SetResult ( vector<char> data, fmx::Data& results );
+void SetResult ( const string filename, const vector<char> data, fmx::Data& results );
 
-bool ParameterAsBoolean ( const DataVect& parameters, const unsigned long which, const bool default_value = true );
-long ParameterAsLong ( const DataVect& parameters, const unsigned long which, const unsigned long default_value );
-StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, unsigned long which );
-WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, unsigned long which );
+bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which, const bool default_value = true );
+long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value );
+StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, FMX_UInt32 which );
+WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, FMX_UInt32 which );
 
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path );
 vector<char> ConvertTextTo ( char * in, const size_t length, const string& encoding );
@@ -54,14 +53,14 @@ StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length );
 
 void SetTextEncoding ( const string& encoding );
 
-errcode NoError ( void );
-errcode MapError ( const errcode error = kNoError, const bool map = false );
+fmx::errcode NoError ( void );
+fmx::errcode MapError ( const fmx::errcode error = kNoError, const bool map = false );
 
 
 // extract localised strings from the plug-in resources
 
-void Do_GetString ( unsigned long whichString, FMX_PtrType winLangID, FMX_UInt32 resultsize, FMX_Unichar* string );
-void Do_GetString ( unsigned long whichString,  TextAutoPtr& intoHere, bool stripFunctionParams = false );
+void Do_GetString ( unsigned long whichString, FMX_PtrType winLangID, FMX_PtrType resultsize, FMX_Unichar* string );
+void Do_GetString ( unsigned long whichString,  fmx::TextAutoPtr& intoHere, bool stripFunctionParams = false );
 
 // used by Do_GetString
 #if defined(FMX_MAC_TARGET)
