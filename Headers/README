@@ -1,15 +1,3 @@
-When building the BaseElements Plugin the following headers/directories should be present in the Headers directory:
+When building the BaseElements Plugin the place the headers from third-party libraries in this directory.
 
-
-Mac OS X
-
-boost
-
-Windows
-
-boost
-iconv/iconv.h
-zlib.h
-libxml
-libxsl
-libexslt
+For the headers needed please see the build instructions in the README file in the top level directory.

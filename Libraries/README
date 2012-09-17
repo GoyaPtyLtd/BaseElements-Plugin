@@ -1,32 +1,3 @@
-When building the BaseElements Plugin the following libraries should be present in the Libraries directory:
+Place 32-bit Windows libraries and all OS X libraries and frameworks in this directory.
 
-
-Mac OS X
-
-FMWrapper.framework
-libboost_filesystem.a
-libboost_system.a
-
-
-Windows
-
-Boost Notes
-
-For debug builds use:
-
-libboost_filesystem-vc100-mt-sgd-1_45.lib
-libboost_system-vc100-mt-sgd-1_45.lib
-
-rather than the libraries given below. Depending on which version of boost is used the version numbers for the libraries, 1_45 in this case, will be different.
-
-FMWrapper.lib
-libboost_filesystem-vc100-mt-s-1_45.lib
-libboost_system-vc100-mt-s-1_45.lib
-iconv.lib
-libcharset.lib
-zlibstat.lib
-libxml2_a.lib
-libxslt_a.lib
-libexslt_a.lib
-
-
+For the list of libraries needed please see the build instructions in the README file in the top level directory.

@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 2.0 of the plug-in was built using Xcode 4.4.1 on Mac OS X 10.8.1.
+Version 2.0 of the plug-in was built using Xcode 4.4.1, but using the 10.6 base SDK, on Mac OS X 10.8.1.
 
 Download the FileMaker External Plug-In API from
 
