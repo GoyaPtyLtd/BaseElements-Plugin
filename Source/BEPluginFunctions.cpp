@@ -92,6 +92,7 @@ string g_text_encoding;
 extern int g_http_response_code;
 extern string g_http_response_headers;
 extern CustomHeaders g_http_custom_headers;
+extern string g_http_proxy;
 
 
 #pragma mark -
@@ -1253,6 +1254,28 @@ FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv&
 		} else {
 			g_http_custom_headers [ *name ] = *value;
 		}
+		
+		SetResult ( g_last_error, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_HTTP_Set_Custom_Header
+
+
+
+FMX_PROC(errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		g_http_proxy = *ParameterAsUTF8String ( parameters, 0 );
 		
 		SetResult ( g_last_error, results );
 		

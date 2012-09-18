@@ -108,6 +108,7 @@ enum functions {
 	kBE_HTTP_Set_Custom_Header = 183,
 	kBE_HTTP_DELETE = 184,
 	kBE_HTTP_PUT = 185,
+	kBE_HTTP_Set_Proxy = 186,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,

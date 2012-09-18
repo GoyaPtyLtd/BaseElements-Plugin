@@ -80,6 +80,7 @@ public:
 	int response_code ( ) { return http_response_code; }
 	string response_headers ( ) { return http_response_headers; }
 	void set_custom_headers ( CustomHeaders _headers ) { http_custom_headers = _headers; }
+	void set_proxy ( string proxy_server )  { proxy = proxy_server; };
 	CURLcode last_error ( ) { return error; }
 	
 protected:
@@ -101,6 +102,7 @@ protected:
 	CustomHeaders http_custom_headers;
 	string http_response_headers;
 	CURLcode error;
+	string proxy;
 	
     void prepare ( );
 	void add_custom_headers ( );

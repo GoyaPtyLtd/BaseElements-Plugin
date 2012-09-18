@@ -43,6 +43,7 @@ int g_http_response_code;
 string g_http_response_headers;
 
 CustomHeaders g_http_custom_headers;
+string g_http_proxy;
 
 
 #pragma mark -
@@ -84,6 +85,7 @@ static MemoryStruct InitalizeCallbackMemory ( void )
 
 static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_POST )
 {	
+	curl->set_proxy ( g_http_proxy );
 	curl->set_custom_headers ( g_http_custom_headers );
 	
 	vector<char>data;
@@ -177,6 +179,7 @@ BECurl::BECurl ( const string download_this, const string to_file, const string 
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
 	easy_setopt ( CURLOPT_SSL_VERIFYPEER, 0L );
 	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
+
 }
 
 
@@ -341,6 +344,7 @@ void BECurl::set_username_and_password ( const string username, const string pas
 void BECurl::prepare ( )
 {
 	
+	easy_setopt ( CURLOPT_PROXY, proxy.c_str() );
 	add_custom_headers ( );
 	
 	// send all headers & data to these functions
@@ -383,6 +387,7 @@ void BECurl::write_to_memory ( )
 	easy_setopt ( CURLOPT_WRITEDATA, (void *)&data );	
 }
 
+
 void BECurl::perform ( )
 {
 	
@@ -422,7 +427,8 @@ void BECurl::cleanup ( )
 	
 }
 
-#include <stdarg.h>
+
+
 void BECurl::easy_setopt ( CURLoption option, ... )
 {
 	va_list curl_parameter;
