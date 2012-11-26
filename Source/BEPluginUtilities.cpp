@@ -368,7 +368,7 @@ void SetTextEncoding ( const string& encoding )
 		g_text_encoding = "UTF-8";
 	} else {
 		g_text_encoding = encoding;
-	}	
+	}
 }
 
 
