@@ -1,0 +1,2 @@
+# use text diffs for .rc files
+*.rc diff
