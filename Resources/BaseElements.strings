@@ -6,35 +6,38 @@
 
 "104" = "BE_ClipboardFormats";
 "105" = "BE_ClipboardText ( format )";
-"106" = "BE_SetClipboardText ( text; format )";
+"106" = "BE_SetClipboardText ( text ; format )";
 
 "107" = "BE_CreateFolder ( path )";
 "108" = "BE_DeleteFile ( path )";
 "109" = "BE_FileExists ( path )";
 "110" = "BE_ReadTextFromFile ( path )";
-"111" = "BE_WriteTextToFile ( path; text {; append} )";
+"111" = "BE_WriteTextToFile ( path ; text {; append} )";
 
 "112" = "BE_SelectFile ( prompt {; inFolder } )";
 "113" = "BE_SelectFolder ( prompt {; inFolder } )";
 
-"114" = "BE_DisplayDialog ( title; message; defaultButton {; cancelButton; alternateButton } )";
+"114" = "BE_DisplayDialog ( title ; message ; defaultButton {; cancelButton ; alternateButton } )";
 
-"115" = "BE_ApplyXSLT ( xmlPath; xslt; outputPath )";
+"115" = "BE_ApplyXSLT ( xmlPath ; xslt ; outputPath )";
 
 "116" = "BE_ExtractScriptVariables ( calculation )";
 
 "117" = "BE_StripInvalidUTF16CharactersFromXMLFile ( path )";
 
-"118" = "BE_MoveFile ( from; to )";
-"119" = "BE_CopyFile ( from; to )";
+"118" = "BE_MoveFile ( from ; to )";
+"119" = "BE_CopyFile ( from ; to )";
 
 // depreciated
 "120" = "BE_ExecuteShellCommand ( command {; waitForResponse } )";
 
+
 "121" = "BE_ListFilesInFolder ( path {; type } )";
 
+// depreciated
 "122" = "BE_FileMaker_Tables";
 "123" = "BE_FileMaker_Fields";
+
 
 "124" = "BE_OpenURL ( url )";
 "125" = "BE_OpenFile ( path )";
@@ -45,8 +48,8 @@
 "129" = "Version: 2.0b3\n\nThis plug-in provides additional functionality for BaseElements 4 from Goya";
 
 
-"150" = "BE_ExecuteScript ( scriptName {; fileName; parameter } )";
-"151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator; rowSeparator; database } )";
+"150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
+"151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )";
 "152" = "BE_GetURL ( url {; filename ; username ; password } )";
 "153" = "BE_GetLastError";
 
@@ -54,9 +57,9 @@
 
 "155" = "BE_GetLastDDLError";
 
-"156" = "BE_SaveURLToFile ( url; path {; username ; password } )";
+"156" = "BE_SaveURLToFile ( url ; path {; username ; password } )";
 
-"160" = "BE_SetPreference ( key; value {; domain } )";
+"160" = "BE_SetPreference ( key ; value {; domain } )";
 "161" = "BE_GetPreference ( key {; domain } )";
 
 "170" = "BE_Unzip ( archive )";
@@ -66,22 +69,30 @@
 "174" = "BE_SetTextEncoding ( { encoding } )";
 
 
-"180" = "BE_HTTP_POST ( url; parameters {; username ; password } )";
+"180" = "BE_HTTP_POST ( url ; parameters {; username ; password } )";
 "181" = "BE_HTTP_Response_Code";
 "182" = "BE_HTTP_Response_Headers";
 "183" = "BE_HTTP_Set_Custom_Header ( header ; value )";
 "184" = "BE_HTTP_DELETE ( url {; username ; password } )";
-"185" = "BE_HTTP_PUT ( url; path {; username ; password } )";
+"185" = "BE_HTTP_PUT ( url ; path {; username ; password } )";
 "186" = "BE_HTTP_Set_Proxy ( proxy )";
 
 
-"200" = "BE_ApplyXSLTInMemory ( xml; xslt )";
-"201" = "BE_XPath ( xml; xpath {; namespaceList } )";
-"202" = "BE_XPathAll ( xml; xpath {; namespaceList } )";
+"200" = "BE_ApplyXSLTInMemory ( xml ; xslt )";
+"201" = "BE_XPath ( xml ; xpath {; namespaceList } )";
+"202" = "BE_XPathAll ( xml ; xpath {; namespaceList } )";
+
+"210" = "BE_StripXMLNodes ( inputPath ; outputPath ; nodeNames )";
+
+
+"220" = "BE_CurrentTimeMilliseconds";
+"221" = "BE_UTCMilliseconds";
+"222" = "BE_TimeZoneOffset";
+
+
 // replaces 120 BE_ExecuteShellCommand
 "1120" = "BE_ExecuteSystemCommand ( command { ; timeout } )";
 
-"210" = "BE_StripXMLNodes ( inputPath; outputPath; nodeNames )";
 
 
 "1001" = "BE_OKButton";
