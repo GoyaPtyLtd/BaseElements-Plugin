@@ -28,6 +28,7 @@
 "118" = "BE_MoveFile ( from; to )";
 "119" = "BE_CopyFile ( from; to )";
 
+// depreciated
 "120" = "BE_ExecuteShellCommand ( command {; waitForResponse } )";
 
 "121" = "BE_ListFilesInFolder ( path {; type } )";
@@ -77,6 +78,8 @@
 "200" = "BE_ApplyXSLTInMemory ( xml; xslt )";
 "201" = "BE_XPath ( xml; xpath {; namespaceList } )";
 "202" = "BE_XPathAll ( xml; xpath {; namespaceList } )";
+// replaces 120 BE_ExecuteShellCommand
+"1120" = "BE_ExecuteSystemCommand ( command { ; timeout } )";
 
 "210" = "BE_StripXMLNodes ( inputPath; outputPath; nodeNames )";
 
