@@ -69,10 +69,8 @@ using namespace boost::filesystem;
 using namespace boost::archive::iterators;
 
 
-typedef insert_linebreaks<
-	base64_from_binary<
-		transform_width<char *, 6, 8>
-	> ,72
+typedef base64_from_binary<
+	transform_width<char *, 6, 8>
 > base64_text;
 
 typedef transform_width<
@@ -945,22 +943,12 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 		
 		// throws if we do not lop off any padding
 		boost::algorithm::trim_if ( *text, boost::algorithm::is_any_of ( " \t\f\v\n\r" ) );
-//		unsigned long before = text->size();
 		boost::algorithm::trim_right_if ( *text, boost::algorithm::is_any_of ( L"=" ) );
-//		unsigned long skip = before > text->size();
 
-		// decode it
-//		vector<char> data ( base64_binary(text->begin()), base64_binary(text->end() - skip) );
+		// decode it...
+		vector<char> data ( base64_binary ( text->begin() ), base64_binary ( text->end() - 1 ) );
+		SetResult ( *filename, data, results );
 		
-		try {
-			vector<char> data ( base64_binary ( text->begin() ), base64_binary ( text->end() ) );
-			SetResult ( *filename, data, results );
-		} catch ( dataflow_exception& e ) { // invalid_base64_character
-			vector<char> data ( base64_binary ( text->begin() ), base64_binary ( text->end() - 1 ) );
-			SetResult ( *filename, data, results );
-		}
-		
-				
 	} catch ( dataflow_exception& e ) { // invalid_base64_character
 		g_last_error = e.code;
 	} catch ( bad_alloc& e ) {
