@@ -320,13 +320,16 @@ void BECurl::set_username_and_password ( const string username, const string pas
 {
 	
 	// set user name and password for the authentication
-	if ( !( username.empty() || password.empty() ) ) {
+	if ( !username.empty() ) {
 		
 		easy_setopt ( CURLOPT_HTTPAUTH, (long)CURLAUTH_ANY );
 		
 		string username_and_password = username;
-		username_and_password.append ( ":" );
-		username_and_password.append ( password );
+		
+		if ( !password.empty() ) {
+			username_and_password.append ( ":" );
+			username_and_password.append ( password );
+		}
 		
 		easy_setopt ( CURLOPT_USERPWD, username_and_password.c_str() );
 		
