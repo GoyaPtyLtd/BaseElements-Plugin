@@ -33,6 +33,7 @@
     <ClCompile Include="..\Source\BEXMLReaderInterface.cpp" />
     <ClCompile Include="..\Source\BEXMLTextReader.cpp" />
     <ClCompile Include="..\Source\BEXMLTextWriter.cpp" />
+    <ClCompile Include="..\Source\BETime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -72,6 +73,7 @@
     <ClInclude Include="..\Source\BEXMLReaderInterface.h" />
     <ClInclude Include="..\Source\BEXMLTextReader.h" />
     <ClInclude Include="..\Source\BEXMLTextWriter.h" />
+    <ClInclude Include="..\Source\BETime.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

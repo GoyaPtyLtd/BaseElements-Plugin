@@ -21,6 +21,7 @@
 #include "BEZlib.h"
 #include "BESQLCommand.h"
 #include "BEXMLReader.h"
+#include "BETime.h"
 
 
 #if defined(FMX_WIN_TARGET)
@@ -57,6 +58,8 @@
 #include "boost/archive/iterators/insert_linebreaks.hpp"
 #include "boost/archive/iterators/remove_whitespace.hpp"
 
+#include "boost/date_time/posix_time/posix_time.hpp"
+#include <boost/date_time/c_local_time_adjustor.hpp>
 
 #include <iostream>
 
@@ -384,7 +387,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 
 
 /*
- filemaker can create DDRs that contains utf-16 characters that are not
+ filemaker can create DDRs which contain utf-16 characters that are not
  valid in an XML document. reads the DDR and writes out a new one, skipping
  any invalid characters, and replaces the old file
  */
@@ -1326,6 +1329,53 @@ FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& /* environm
 } // BE_NumericConstants
 
 
+FMX_PROC(errcode) BE_TimeFunctions ( const short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		fmx::int64 reply = 0;
+		
+		switch ( funcId ) {
+			
+			case kBE_CurrentTimeMilliseconds:
+				reply = ptime_to_milliseconds ( boost::posix_time::microsec_clock::local_time() );
+				break;
+				
+			case kBE_UTCMilliseconds:
+				reply = ptime_to_milliseconds ( boost::posix_time::microsec_clock::universal_time() );
+				break;
+				
+			case kBE_TimeZoneOffset:
+				typedef boost::date_time::c_local_adjustor<boost::posix_time::ptime> local_adjustor;
+				
+				const boost::posix_time::ptime utc_time = boost::posix_time::second_clock::universal_time();
+				const boost::posix_time::ptime local_time = local_adjustor::utc_to_local ( utc_time );
+				const boost::posix_time::time_duration offset = local_time - utc_time;
+				reply = offset.total_seconds() / 60; // can has minutes
+				break;
+			
+			// should not be here
+			// default:
+			//	;
+				
+		}		
+		
+		SetResult ( reply, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_TimeFunctions
+
+
+
 /*
  BE_ExtractScriptVariables implements are somewhat imperfect heuristic for finding
  script variables within chunks of filemaker calculation
@@ -1334,7 +1384,7 @@ FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& /* environm
  found, attempt to guess the where the variable name ends
  */
 
-FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
+FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
@@ -1421,8 +1471,13 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 } // BE_ExtractScriptVariables
 
 
+/*
+ 
+ DEPRECIATED as of v2.0 in favour of BE_ExecuteSystemCommand ... will be removed in plug-in version 3.0
 
-FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
+ */
+ 
+FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
@@ -1430,15 +1485,15 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 		
 		StringAutoPtr command = ParameterAsUTF8String ( parameters, 0 );
 		bool waitForResponse = ParameterAsBoolean ( parameters, 1 );
-
+		
 		StringAutoPtr response ( new string );
-
+		
 		if ( waitForResponse ) {
 			g_last_error = ExecuteShellCommand ( *command, *response );
 		} else {
 			boost::thread dontWaitForThis ( ExecuteShellCommand, *command, *response );
 		}
-
+		
 		SetResult ( response, results );
 		
 	} catch ( bad_alloc& e ) {
@@ -1450,6 +1505,40 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 	return MapError ( error );
 	
 } // BE_ExecuteShellCommand
+
+
+
+FMX_PROC(errcode) BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr command = ParameterAsUTF8String ( parameters, 0 );
+		long timeout = ParameterAsLong ( parameters, 1, kBE_Never );
+
+		StringAutoPtr response ( new string );
+		error = ExecuteSystemCommand ( *command, *response, timeout );
+		
+		SetResult ( response, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	// return a result and set last error when there is a timeout
+	if ( error == kCommandTimeout ) {
+		g_last_error = kCommandTimeout;
+		error = kNoError;
+	} else {
+		error = MapError ( error );
+	}
+	
+	return error;
+	
+} // BE_ExecuteSystemCommand
 
 
 /*

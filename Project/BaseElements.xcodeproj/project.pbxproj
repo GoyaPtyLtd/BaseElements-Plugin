@@ -34,6 +34,7 @@
 		4DD780D911FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */; };
 		4DD7824B11FFF57400CFC8B4 /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4DD78320120005AE00CFC8B4 /* BEXSLT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */; };
+		4DDBA8B7164386A900CC6FD7 /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
 		4DF3617F15EDE773003A0CB9 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */; };
 		4DF3618115EDE783003A0CB9 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3618015EDE782003A0CB9 /* libssl.dylib */; };
 		C7DEDF3807E10CBC002283F3 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */; };
@@ -111,6 +112,8 @@
 		4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileMakerPlugin.cpp; path = ../Source/BEFileMakerPlugin.cpp; sourceTree = "<group>"; };
 		4DD7831E120005AE00CFC8B4 /* BEXSLT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXSLT.h; path = ../Source/BEXSLT.h; sourceTree = "<group>"; };
 		4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXSLT.cpp; path = ../Source/BEXSLT.cpp; sourceTree = "<group>"; };
+		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
+		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
 		4DF3617A15EDE74F003A0CB9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		4DF3617C15EDE761003A0CB9 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcurl.dylib; sourceTree = DEVELOPER_DIR; };
 		4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcrypto.dylib; sourceTree = DEVELOPER_DIR; };
@@ -167,7 +170,6 @@
 		C7DEDEE707E10BF3002283F3 = {
 			isa = PBXGroup;
 			children = (
-				4D55C63815EE0F0A008F7FBA /* Carbon.framework */,
 				4DC18336144D319D00E27CAA /* MiniZip */,
 				C7DEDEF607E10BF3002283F3 /* Sources */,
 				C7DEDEFC07E10BF3002283F3 /* Resources */,
@@ -215,6 +217,8 @@
 				4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */,
 				4D760F7E15AD646D001A0BAF /* BEXMLReaderInterface.h */,
 				4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */,
+				4DDBA8B5164386A900CC6FD7 /* BETime.cpp */,
+				4DDBA8B6164386A900CC6FD7 /* BETime.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -231,6 +235,7 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D55C63815EE0F0A008F7FBA /* Carbon.framework */,
 				4DF3617A15EDE74F003A0CB9 /* Cocoa.framework */,
 				4DF3618015EDE782003A0CB9 /* libssl.dylib */,
 				4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */,
@@ -328,6 +333,7 @@
 				4D760F7915AD50E2001A0BAF /* BEXMLTextReader.cpp in Sources */,
 				4D760F7D15AD52C7001A0BAF /* BEXMLTextWriter.cpp in Sources */,
 				4D760F8015AD648F001A0BAF /* BEXMLReaderInterface.cpp in Sources */,
+				4DDBA8B7164386A900CC6FD7 /* BETime.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

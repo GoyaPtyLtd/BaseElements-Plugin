@@ -37,6 +37,8 @@
 #endif
 
 
+#define FILEMAKER_EPOCH_OFFSET 62135596800
+
 #include "FMWrapper/FMXExtern.h"
 #include "FMWrapper/FMXText.h"
 
@@ -46,9 +48,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"1.9.4"
-#define	AUTO_UPDATE_VERSION L"00010904"
-#define VERSION_STRING "1.9.4"
+#define	VERSION_NUMBER_STRING L"1.9.5"
+#define	AUTO_UPDATE_VERSION L"00010905"
+#define VERSION_STRING "1.9.5"
 
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -81,10 +83,10 @@ enum functions {
 	kBE_StripInvalidUTF16CharactersFromXMLFile = 117,
 	kBE_MoveFile = 118,
 	kBE_CopyFile = 119,
-	kBE_ExecuteShellCommand = 120,
+	kBE_ExecuteShellCommand = 120, // depreciated
 	kBE_ListFilesInFolder = 121,
-	kBE_FileMaker_Tables = 122,
-	kBE_FileMaker_Fields = 123,
+	kBE_FileMaker_Tables = 122, // depreciated
+	kBE_FileMaker_Fields = 123, // depreciated
 	kBE_OpenURL = 124,
 	kBE_OpenFile = 125,
 	kBE_FileSize = 126,
@@ -112,7 +114,11 @@ enum functions {
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,
-	kBE_StripXMLNodes = 210
+	kBE_StripXMLNodes = 210,
+	kBE_CurrentTimeMilliseconds = 220,
+	kBE_UTCMilliseconds = 221,
+	kBE_TimeZoneOffset = 222,
+	kBE_ExecuteSystemCommand = 1120
 };
 
 
@@ -132,7 +138,8 @@ enum errors {
 	kFileExistsError = 17,
 	kErrorParameterMissing = 102,
 	kFileSystemError = 10000,
-	kDDLCommandQueued = 11000
+	kDDLCommandQueued = 11000,
+	kCommandTimeout = 12000
 };
 
 
@@ -160,6 +167,11 @@ enum file_type {
 
 enum data_type {
 	kBE_DataType_Not_Found = -1
+};
+
+
+enum timeout {
+	kBE_Never = -1
 };
 
 

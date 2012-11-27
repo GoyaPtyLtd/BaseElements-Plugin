@@ -2,7 +2,7 @@
  BEWinFunctions.h
  BaseElements Plug-in
 
- Copyright 2010-2011 Goya. All rights reserved.
+ Copyright 2010-2012 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -40,5 +40,10 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain );
 bool OpenURL ( WStringAutoPtr url );
 bool OpenFile ( WStringAutoPtr file );
 
+// utilities
+
+wstring utf8toutf16 ( const string& instr );
+string utf16ToUTF8 ( const wstring& s );
+//string test ( string x ) { return x; }
 
 #endif // BEWINFUNCTIONS_H

@@ -2,7 +2,7 @@
  BEWinFunctions.cpp
  BaseElements Plug-in
 	
- Copyright 2010-2011 Goya. All rights reserved.
+ Copyright 2010-2012 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -437,4 +437,42 @@ bool OpenFile ( WStringAutoPtr path )
 	return OpenURL ( path );
 }
 
+
+
+#pragma mark -
+#pragma mark Utilities
+#pragma mark -
+
+wstring utf8toutf16 ( const string& instr )
+{
+    // Assumes std::string is encoded using the UTF-8 codepage
+    int bufferlen = ::MultiByteToWideChar(CP_UTF8, 0, instr.c_str(), instr.size(), NULL, 0);
+
+    // Allocate new LPWSTR - must deallocate it later
+    LPWSTR widestr = new WCHAR[bufferlen + 1];
+
+    ::MultiByteToWideChar(CP_UTF8, 0, instr.c_str(), instr.size(), widestr, bufferlen);
+
+    // Ensure wide string is null terminated
+    widestr[bufferlen] = 0;
+
+    // Do something with widestr
+	wstring out ( widestr );
+
+    delete[] widestr;
+
+    return out;
+}
+
+
+
+string utf16ToUTF8 ( const wstring& s )
+{
+    const int size = ::WideCharToMultiByte( CP_UTF8, 0, s.c_str(), -1, NULL, 0, 0, NULL );
+
+    vector<char> buf( size );
+    ::WideCharToMultiByte( CP_UTF8, 0, s.c_str(), -1, &buf[0], size, 0, NULL );
+
+    return string( &buf[0] );
+}
 

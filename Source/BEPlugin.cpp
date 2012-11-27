@@ -124,7 +124,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_CancelButton + kBE_ButtonOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_AlternateButton + kBE_ButtonOffset, BE_NumericConstants );
 	
-	g_be_plugin->RegisterFunction ( kBE_ExecuteShellCommand, BE_ExecuteShellCommand, false, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_ExecuteSystemCommand, BE_ExecuteSystemCommand, false, 1, 2 );
 	
 	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, false, 1 );
 
@@ -158,8 +158,13 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestType_MD5 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestType_SHA256 + kBE_MessageDigestTypeOffset, BE_NumericConstants );
 
+	g_be_plugin->RegisterFunction ( kBE_CurrentTimeMilliseconds, BE_TimeFunctions );
+	g_be_plugin->RegisterFunction ( kBE_UTCMilliseconds, BE_TimeFunctions );
+	g_be_plugin->RegisterFunction ( kBE_TimeZoneOffset, BE_TimeFunctions );
+
 	// depreciated
 	
+	g_be_plugin->RegisterHiddenFunction ( kBE_ExecuteShellCommand, BE_ExecuteShellCommand, false, 1, 2 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_FileMaker_Tables, BE_FileMaker_TablesOrFields, true );
 	g_be_plugin->RegisterHiddenFunction ( kBE_FileMaker_Fields, BE_FileMaker_TablesOrFields, true );
 	
