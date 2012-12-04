@@ -104,6 +104,7 @@ enum functions {
 	kBE_Base64_Decode = 172,
 	kBE_Base64_Encode = 173,
 	kBE_SetTextEncoding = 174,
+	kBE_Base64_URL_Encode = 175,
 	kBE_HTTP_POST = 180,
 	kBE_HTTP_Response_Code = 181,
 	kBE_HTTP_Response_Headers = 182,

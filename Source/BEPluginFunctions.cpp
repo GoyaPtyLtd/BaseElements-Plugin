@@ -944,10 +944,33 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 		// throws if we do not lop off any padding
 		boost::algorithm::trim_if ( *text, boost::algorithm::is_any_of ( " \t\f\v\n\r" ) );
 		boost::algorithm::trim_right_if ( *text, boost::algorithm::is_any_of ( L"=" ) );
+		
+		// if we have base64url convert it to base64
+		string::iterator it = text->begin();
+		while ( it < text->end() ) {
+			switch ( *it ) {
+				case '-':
+					*it = '+';
+					break;
+				case '_':
+					*it = '/';
+					break;
+				case ',': // not in rfc4648 but seen in the wild
+					*it = '=';
+					break;
+				default:
+					; // do nothing
+			}
+			++it;
+		}
 
 		// decode it...
-		vector<char> data ( base64_binary ( text->begin() ), base64_binary ( text->end() - 1 ) );
-		SetResult ( *filename, data, results );
+		vector<char> data ( base64_binary ( text->begin() ), base64_binary ( --text->end() ) );
+		if ( filename->empty() ) {
+			SetResult ( data, results );
+		} else {
+			SetResult ( *filename, data, results );
+		}
 		
 	} catch ( dataflow_exception& e ) { // invalid_base64_character
 		g_last_error = e.code;
@@ -963,7 +986,7 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 
 
 
-FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+FMX_PROC(errcode) BE_Base64_Encode ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
@@ -1033,11 +1056,38 @@ FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environ
 			memcpy ( buffer, text->c_str(), size );
 			
 		}
-
+		
 		StringAutoPtr base64 ( new string ( base64_text(buffer), base64_text(buffer + size) ) );
-		for ( FMX_UInt32 i = 0 ; i < (base64->length() % 4) ; i ++ ) {
-			base64->append ( "=" );
+		
+		string padding = "=";
+		
+		// if we need base64url convert it
+		if ( funcId == kBE_Base64_URL_Encode ) {
+
+			// not in rfc4648 but seen in the wild
+//			padding = ",";
+			
+			string::iterator it = base64->begin();
+			while ( it < base64->end() ) {
+				switch ( *it ) {
+					case '+':
+						*it = '-';
+						break;
+					case '/':
+						*it = '_';
+						break;
+					default:
+						; // do nothing
+				}
+				++it;
+			}
+
 		}
+		
+		for ( FMX_UInt32 i = 0 ; i < (base64->length() % 4) ; i ++ ) {
+			base64->append ( padding );
+		}
+		
 		SetResult ( base64, results );
 		delete [] buffer;
 				
