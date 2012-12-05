@@ -22,6 +22,15 @@
 const int BEXMLReaderInterface::last_error()
 {
 	xmlErrorPtr xml_error = xmlGetLastError();
-	return xml_error->code;
+	
+	// don't crash if there's no xml_error
+	int error;
+	if ( xml_error ) {
+		error = xml_error->code;
+	} else {
+		error = kErrorUnknown;
+	}
+	
+	return error;
 }
 
