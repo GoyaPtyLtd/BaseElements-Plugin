@@ -803,7 +803,7 @@ FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* envir
 			node_names_vector.push_back ( *it );
 		}
 		
-		StripXMLNodes ( *input_file, *output_file, node_names_vector );
+		error = StripXMLNodes ( *input_file, *output_file, node_names_vector );
 		SetResult ( error, results );
 		
 	} catch ( bad_alloc& e ) {
