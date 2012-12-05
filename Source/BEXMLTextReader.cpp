@@ -15,6 +15,8 @@
 #include <algorithm>
 #include <string>
 
+#include "boost/filesystem.hpp"
+
 
 using namespace std;
 
@@ -29,12 +31,21 @@ BEXMLTextReader::BEXMLTextReader ( const string path )
 {
 	last_node = false;
 	
-    reader = xmlNewTextReaderFilename ( path.c_str() );
-	
-	if ( reader == NULL ) {
-		throw BEXMLReaderInterface_Exception ( last_error() );
+	boost::filesystem::path file = path;
+	bool file_exists = boost::filesystem::exists ( file );
+
+	if ( file_exists ) {
+
+		reader = xmlNewTextReaderFilename ( path.c_str() );
+
+		if ( reader == NULL ) {
+			throw BEXMLReaderInterface_Exception ( last_error() );
+		}
+		
+	} else {
+		throw BEXMLReaderInterface_Exception ( kNoSuchFileOrDirectoryError );
 	}
-	
+
 }
 
 
