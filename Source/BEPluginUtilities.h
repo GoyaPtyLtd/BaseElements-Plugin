@@ -34,7 +34,7 @@ typedef auto_ptr<wstring> WStringAutoPtr;
 fmx::errcode TextConstantFunction ( wstring text, fmx::Data& results );
 fmx::errcode TextConstantFunction ( WStringAutoPtr text, fmx::Data& results );
 
-void SetResult ( const uintmax_t number, fmx::Data& results );
+void SetResult ( const intmax_t number, fmx::Data& results );
 void SetResult ( const fmx::Text& text, fmx::Data& results );
 void SetResult ( const StringAutoPtr text, fmx::Data& results );
 void SetResult ( const WStringAutoPtr text, fmx::Data& results );
