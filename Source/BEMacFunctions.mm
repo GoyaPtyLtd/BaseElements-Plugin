@@ -138,6 +138,11 @@ WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, WStringAutoPtr in_fol
 	
 	[file_dialog setCanChooseFiles: choose_file];
 	[file_dialog setCanChooseDirectories: !choose_file];
+
+	// allow new directories to be created when selecting directories
+	if ( !choose_file ) {
+		[file_dialog setCanCreateDirectories: YES];
+	}
 	
 	NSString * file_path;
 	

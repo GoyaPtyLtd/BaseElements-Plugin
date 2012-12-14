@@ -219,7 +219,7 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 {
 	BROWSEINFO browse_info = { 0 };
 	browse_info.hwndOwner = GetActiveWindow();
-	browse_info.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI | BIF_NONEWFOLDERBUTTON;
+	browse_info.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
     browse_info.lpszTitle = prompt->c_str();
 	if ( !in_folder->empty() ) {
 		browse_info.lpfn = SelectFolderCallback;
