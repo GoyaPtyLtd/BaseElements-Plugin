@@ -316,24 +316,30 @@ vector<char> ConvertTextTo ( char * in, const size_t length, const string& encod
 	 try each converting from each of the codesets in turn
 	 */
 	
-	const size_t kError = -1;
-	size_t error_result = kError;
+	const size_t kIconvError = -1;
+	size_t error_result = kIconvError;
 	vector<string>::iterator it = codesets.begin();
 	size_t remaining = available;
 	
-	while ( error_result == kError && it != codesets.end() ) {
+	while ( error_result == kIconvError && it != codesets.end() ) {
 		
 		char * start = in;
 		size_t start_length = length;
 		char * encoded_start = encoded;
 		
 		iconv_t conversion = iconv_open ( encoding.c_str(), it->c_str() );
-		error_result = iconv ( conversion, &start, &start_length, &encoded_start, &remaining );
-		iconv_close ( conversion );
-		
+		if ( conversion != (iconv_t)kIconvError ) {
+			error_result = iconv ( conversion, &start, &start_length, &encoded_start, &remaining );
+			iconv_close ( conversion );
+		} else {
+			error_result = errno;
+		}
+
 		++it;
 	}
-	
+
+	g_last_error = error_result;
+
 	vector<char> out ( encoded, encoded + available - remaining );
 	delete[] encoded;
 	
