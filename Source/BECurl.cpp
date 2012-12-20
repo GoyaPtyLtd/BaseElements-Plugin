@@ -43,7 +43,7 @@ int g_http_response_code;
 string g_http_response_headers;
 
 CustomHeaders g_http_custom_headers;
-string g_http_proxy;
+struct host_details g_http_proxy;
 
 
 #pragma mark -
@@ -179,6 +179,11 @@ BECurl::BECurl ( const string download_this, const string to_file, const string 
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
 	easy_setopt ( CURLOPT_SSL_VERIFYPEER, 0L );
 	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
+	
+#if defined(FMX_MAC_TARGET)
+	#warning experimental - for Howard Schlossberg
+#endif
+	easy_setopt ( CURLOPT_FORBID_REUSE, 1L );
 
 }
 
@@ -339,6 +344,22 @@ void BECurl::set_username_and_password ( const string username, const string pas
 
 
 
+void BECurl::set_proxy ( struct host_details proxy_server )
+{
+	proxy = proxy_server.host;
+	if ( !proxy_server.port.empty() ) {
+		proxy += ":" + proxy_server.port;
+	}
+	
+	proxy_login = proxy_server.username;
+	if ( !proxy_server.password.empty() ) {
+		proxy += ":" + proxy_server.password;
+	}
+	
+}
+
+
+
 #pragma mark -
 #pragma mark Protected Methods
 #pragma mark -
@@ -348,6 +369,7 @@ void BECurl::prepare ( )
 {
 	
 	easy_setopt ( CURLOPT_PROXY, proxy.c_str() );
+	easy_setopt ( CURLOPT_PROXYUSERPWD, proxy_login.c_str() );
 	add_custom_headers ( );
 	
 	// send all headers & data to these functions

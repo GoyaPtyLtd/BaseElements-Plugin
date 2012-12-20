@@ -93,7 +93,7 @@ string g_text_encoding;
 extern int g_http_response_code;
 extern string g_http_response_headers;
 extern CustomHeaders g_http_custom_headers;
-extern string g_http_proxy;
+extern struct host_details g_http_proxy;
 
 
 #pragma mark -
@@ -1316,8 +1316,11 @@ FMX_PROC(errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* envi
 	
 	try {
 		
-		g_http_proxy = *ParameterAsUTF8String ( parameters, 0 );
-		
+		g_http_proxy.host = *ParameterAsUTF8String ( parameters, 0 );
+		g_http_proxy.port = *ParameterAsUTF8String ( parameters, 1 );
+		g_http_proxy.username = *ParameterAsUTF8String ( parameters, 2 );
+		g_http_proxy.password = *ParameterAsUTF8String ( parameters, 3 );
+				
 		SetResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {

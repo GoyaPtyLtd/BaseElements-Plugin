@@ -56,6 +56,13 @@ struct MemoryStruct {
 };
 
 
+struct host_details {
+	string host;
+	string port;
+	string username;
+	string password;
+};
+
 
 vector<char> GetURL ( const string url, const string filename, const string username, const string password );
 vector<char> HTTP_POST ( const string url, const string post_parameters, const string username, const string password );
@@ -80,7 +87,8 @@ public:
 	int response_code ( ) { return http_response_code; }
 	string response_headers ( ) { return http_response_headers; }
 	void set_custom_headers ( CustomHeaders _headers ) { http_custom_headers = _headers; }
-	void set_proxy ( string proxy_server )  { proxy = proxy_server; };
+	//	void set_proxy ( string proxy_server )  { proxy = proxy_server; };
+	void set_proxy ( struct host_details proxy_server );
 	CURLcode last_error ( ) { return error; }
 	
 protected:
@@ -103,6 +111,7 @@ protected:
 	string http_response_headers;
 	CURLcode error;
 	string proxy;
+	string proxy_login;
 	
     void prepare ( );
 	void add_custom_headers ( );
