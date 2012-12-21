@@ -61,6 +61,8 @@
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include <boost/date_time/c_local_time_adjustor.hpp>
 
+#include <iconv.h>
+
 #include <iostream>
 
 
@@ -1110,7 +1112,16 @@ FMX_PROC(errcode) BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* envir
 	try {
 		
 		StringAutoPtr encoding = ParameterAsUTF8String ( parameters, 0 );
-		SetTextEncoding ( *encoding );
+		
+		iconv_t conversion = iconv_open ( encoding->c_str(), encoding->c_str() );
+		if ( conversion != (iconv_t)-1 ) {
+			SetTextEncoding ( *encoding );
+			iconv_close ( conversion );
+		 } else {
+			error = errno;
+		 }
+
+
 		SetResult ( error, results );
 		
 	} catch ( bad_alloc& e ) {
