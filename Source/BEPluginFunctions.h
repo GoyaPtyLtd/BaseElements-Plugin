@@ -33,7 +33,7 @@ using namespace fmx;
 FMX_PROC(errcode) BE_Version ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_VersionAutoUpdate ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 
-FMX_PROC(errcode) BE_GetLastError ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results);
+FMX_PROC(errcode) BE_GetLastError ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results );
 
 FMX_PROC(errcode) BE_ClipboardFormats ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_ClipboardData ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
@@ -47,9 +47,9 @@ FMX_PROC(errcode) BE_ReadTextFromFile ( short funcId, const ExprEnv& environment
 FMX_PROC(errcode) BE_WriteTextToFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 
-FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
-FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
-FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
+FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
+FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
+FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
 
 
 FMX_PROC(errcode) BE_SelectFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
@@ -58,14 +58,14 @@ FMX_PROC(errcode) BE_DisplayDialog ( short funcId, const ExprEnv& environment, c
 
 FMX_PROC(errcode) BE_ApplyXSLT ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 
-FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results);
+FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 
 
-FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results);
-FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results);
+FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 
 
 FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
@@ -90,7 +90,7 @@ FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& environment
 FMX_PROC(errcode) BE_TimeFunctions ( const short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results );
 FMX_PROC(errcode) BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results);
+FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
