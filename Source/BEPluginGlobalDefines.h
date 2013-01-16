@@ -49,14 +49,14 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"1.9.5"
-#define	AUTO_UPDATE_VERSION L"01090501"
+#define	AUTO_UPDATE_VERSION L"01090503"
 #define VERSION_STRING "1.9.5"
 
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
 
 
-#define	TEMPORARY_FILE_SUFFIX L".be3.tmp"
+#define	TEMPORARY_FILE_SUFFIX L".be4.tmp"
 
 
 enum {
