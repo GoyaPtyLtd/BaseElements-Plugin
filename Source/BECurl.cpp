@@ -181,7 +181,7 @@ BECurl::BECurl ( const string download_this, const string to_file, const string 
 	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
 	
 #if defined(FMX_MAC_TARGET)
-	#warning experimental - for Howard Schlossberg
+	#warning experimental - stop fms running out of file descriptors under heavy usage ???
 #endif
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L );
 
@@ -353,10 +353,10 @@ void BECurl::set_proxy ( struct host_details proxy_server )
 	
 	proxy_login = proxy_server.username;
 	if ( !proxy_server.password.empty() ) {
-		proxy += ":" + proxy_server.password;
+		proxy_login += ":" + proxy_server.password;
 	}
 	
-}
+}	//	set_proxy
 
 
 
@@ -368,8 +368,12 @@ void BECurl::set_proxy ( struct host_details proxy_server )
 void BECurl::prepare ( )
 {
 	
-	easy_setopt ( CURLOPT_PROXY, proxy.c_str() );
-	easy_setopt ( CURLOPT_PROXYUSERPWD, proxy_login.c_str() );
+	if ( !proxy.empty() ) {
+		easy_setopt ( CURLOPT_PROXY, proxy.c_str() );
+		easy_setopt ( CURLOPT_PROXYUSERPWD, proxy_login.c_str() );
+		easy_setopt ( CURLOPT_PROXYAUTH, CURLAUTH_ANY );
+	}
+
 	add_custom_headers ( );
 	
 	// send all headers & data to these functions
