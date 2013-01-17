@@ -47,6 +47,7 @@ using namespace boost::filesystem;
 
 
 extern string g_text_encoding;
+extern errcode g_last_ddl_error;
 
 
 #pragma mark -
@@ -386,6 +387,8 @@ void SetTextEncoding ( const string& encoding )
 
 errcode NoError ( void )
 {
+	g_last_ddl_error = kNoError;
+	
 	g_last_error = kNoError;
 	return g_last_error;
 }

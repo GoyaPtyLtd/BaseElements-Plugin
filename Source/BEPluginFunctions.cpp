@@ -123,16 +123,21 @@ FMX_PROC(errcode) BE_GetLastError ( short funcId, const ExprEnv& /* environment 
 {
 	errcode error = kNoError; // do not use NoError();
 	
-	if ( funcId == kBE_GetLastError ) {
-		SetResult ( g_last_error, results );
-		g_last_error = kNoError;
-	} else if ( funcId == kBE_GetLastDDLError ) {
-		SetResult ( g_last_ddl_error, results );
-		g_last_ddl_error = kNoError;
+	try {
+		
+		if ( funcId == kBE_GetLastError ) {
+			SetResult ( g_last_error, results );
+		} else if ( funcId == kBE_GetLastDDLError ) {
+			SetResult ( g_last_ddl_error, results );
+		}
+
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
 	}
 
-	return MapError ( error );
-	
+	return error; // MapError ( error );
 }
 
 
@@ -1154,6 +1159,7 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment 
 		
 		// not saving to file so do not supply the filename here
 		vector<char> data = GetURL ( *url, "", *username, *password );
+		error = g_last_error;
 		SetResult ( *filename, data, results );
 		
 	} catch ( bad_alloc& e ) {
@@ -1180,6 +1186,7 @@ FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* envir
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
 		
 		vector<char> data = GetURL ( *url, *filename, *username, *password );
+		error = g_last_error;
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1212,6 +1219,7 @@ FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environm
 			data = HTTP_PUT ( *url, *post_parameters, *username, *password );
 		}
 
+		error = g_last_error;
 		SetResult ( data, results );
 		
 	} catch ( bad_alloc& e ) {
@@ -1237,6 +1245,7 @@ FMX_PROC(errcode) BE_HTTP_DELETE ( short /* funcId */, const ExprEnv& /* environ
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
 		
 		vector<char> data = HTTP_DELETE ( *url, *username, *password );
+		error = g_last_error;
 		SetResult ( data, results );
 		
 	} catch ( bad_alloc& e ) {
