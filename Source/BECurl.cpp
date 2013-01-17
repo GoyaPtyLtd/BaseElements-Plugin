@@ -439,6 +439,8 @@ void BECurl::perform ( )
 				result.push_back ( data.memory[i] );
 			}
 		}
+	} else {
+		throw BECurl_Exception ( error );
 	}
 	
 }	//	easy_perform
