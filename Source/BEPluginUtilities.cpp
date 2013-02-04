@@ -504,7 +504,7 @@ unsigned long Sub_OSXLoadString(unsigned long stringID, FMX_Unichar* intoHere, l
 	
 	if( (intoHere != NULL) && (intoHereMax > 1) ) {
 		// Turn stringID to a textual identifier, then get the string from the .strings file as a null-term unichar array.
-		CFStringRef 	strIdStr = CFStringCreateWithFormat( kCFAllocatorDefault, NULL, CFSTR("%d"), stringID );
+		CFStringRef 	strIdStr = CFStringCreateWithFormat( kCFAllocatorDefault, NULL, CFSTR("%ld"), stringID );
 		
 		// Note: The plug-in must be explicit about the bundle and file it wants to pull the string from.
 		CFStringRef 	osxStr = CFBundleCopyLocalizedString( reinterpret_cast<CFBundleRef>(gFMX_ExternCallPtr->instanceID), strIdStr, strIdStr, CFSTR( PLUGIN_NAME ) );

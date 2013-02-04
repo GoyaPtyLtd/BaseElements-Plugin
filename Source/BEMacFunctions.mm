@@ -65,7 +65,7 @@ NSString * NSStringFromWStringAutoPtr ( const WStringAutoPtr text )
 WStringAutoPtr WStringAutoPtrFromNSString ( const NSString * text )
 {
 	NSData * string_data = [text dataUsingEncoding: kEncoding_wchar_t];
-	unsigned size = [string_data length] / sizeof ( wchar_t );
+	size_t size = (size_t)[string_data length] / sizeof ( wchar_t );
 	
 	return WStringAutoPtr ( new wstring ( (wchar_t *)[string_data bytes], size ) );
 }
