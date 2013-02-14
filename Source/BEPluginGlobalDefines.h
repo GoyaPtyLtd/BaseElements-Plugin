@@ -48,9 +48,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"2.0.0"
-#define	AUTO_UPDATE_VERSION L"02000000"
-#define VERSION_STRING "2.0"
+#define	VERSION_NUMBER_STRING L"2.0.1"
+#define	AUTO_UPDATE_VERSION L"02000101"
+#define VERSION_STRING "2.0.1"
 
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
