@@ -38,7 +38,9 @@ BEXMLTextReader::BEXMLTextReader ( const string path )
 
 		reader = xmlNewTextReaderFilename ( path.c_str() );
 
-		if ( reader == NULL ) {
+		if ( reader != NULL ) {
+			xml_document = xmlTextReaderCurrentDoc ( reader );
+		} else {
 			throw BEXMLReaderInterface_Exception ( last_error() );
 		}
 		
@@ -53,6 +55,10 @@ BEXMLTextReader::BEXMLTextReader ( const string path )
 BEXMLTextReader::~BEXMLTextReader()
 {
 	xmlFreeTextReader ( reader );
+	if ( xml_document ) {
+		xmlFreeDoc ( xml_document );
+	}
+	
 }
 
 
@@ -166,4 +172,22 @@ string BEXMLTextReader::value()
 	xmlFree ( (void *)reader_value );
 	return value;
 }
+
+
+string BEXMLTextReader::raw_xml()
+{
+	xmlBufferPtr node_content = xmlBufferCreate();
+	xmlOutputBufferPtr node = (xmlOutputBufferPtr) xmlMalloc ( sizeof(xmlOutputBuffer) );
+	memset ( node, 0, (size_t) sizeof(xmlOutputBuffer) );
+	node->buffer = node_content;
+	
+	xmlNodeDumpOutput ( node, xml_document, xmlTextReaderCurrentNode ( reader ), 0, true, "UTF-8" );
+	const xmlChar * xml_data = xmlBufferContent ( (xmlBufferPtr)node_content );
+	size_t xml_length = xmlBufferLength ( node_content );
+	string xml_result ( (char *)xml_data, xml_length );
+	
+	xmlFree ( (xmlChar *)xml_data );
+	
+	return xml_result;
+} // raw_xml
 

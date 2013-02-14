@@ -47,11 +47,13 @@ public:
 	string get_attribute ( const string attribute_name );
 	bool empty();
 	string value();
+	string raw_xml();
 	
 protected:
 	
 	bool last_node;
 	xmlTextReaderPtr reader;
+	xmlDocPtr xml_document;
 		
 };
 
