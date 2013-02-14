@@ -36,6 +36,7 @@ public:
 	void end_element ( );
 	void write_string ( const string to_write );
 	void write_cdata ( const string to_write );
+	void write_raw ( const string to_write );
 
 protected:
 	

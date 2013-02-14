@@ -84,7 +84,10 @@ int StripXMLNodes ( const string input_file, const string output_file, const vec
 					break;
 					
 				case XML_READER_TYPE_CDATA:
-					writer->write_cdata ( reader->value() );
+					// don't use reader->value() since it returns the CDATA as text (not as CDATA)
+					// and don't use writer->write_cdata since we already have cdata content
+					writer->write_raw ( reader->raw_xml() );
+					
 					break;
 					
 				case XML_READER_TYPE_END_ELEMENT:
@@ -103,7 +106,7 @@ int StripXMLNodes ( const string input_file, const string output_file, const vec
 		
 		delete writer;
 		delete reader;
-
+		
 	} catch ( BEXMLReaderInterface_Exception& e ) {
 		return e.code();
 	}

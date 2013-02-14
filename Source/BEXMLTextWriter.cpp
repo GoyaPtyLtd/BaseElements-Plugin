@@ -105,3 +105,11 @@ void BEXMLTextWriter::write_cdata ( const string to_write )
 	}
 }
 
+
+void BEXMLTextWriter::write_raw ( const string to_write )
+{
+	int return_code = xmlTextWriterWriteRaw ( writer, (xmlChar *)to_write.c_str() );
+	if ( return_code == kBE_XMLReaderError ) {
+		throw BEXMLReaderInterface_Exception ( last_error() );
+	}
+}
