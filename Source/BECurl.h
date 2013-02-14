@@ -25,7 +25,7 @@
 // when BECurl.h is included in BEPluginFuncitons.cpp
 
 #if defined(FMX_WIN_TARGET)
-	#include "afxdlgs.h"
+	#include "windows.h"
 #endif
 
 #include "curl/curl.h"

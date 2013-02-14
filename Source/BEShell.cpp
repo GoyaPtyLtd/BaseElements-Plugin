@@ -22,7 +22,7 @@
 
 #if defined(FMX_WIN_TARGET)
 
-	#include "afxdlgs.h"
+	#include "windows.h"
 
 	#define POPEN _popen
 	#define PCLOSE _pclose
@@ -175,7 +175,7 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 
 #if defined(FMX_WIN_TARGET)
 
-#include "afxdlgs.h"
+//#include "windows.h"
 #include <tchar.h>
 
 #include "BEWinFunctions.h"

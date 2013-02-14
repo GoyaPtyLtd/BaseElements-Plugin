@@ -11,7 +11,7 @@
 
 
 #include "BEWinFunctions.h"
-#include "afxdlgs.h"
+#include "windows.h"
 #include "Shlwapi.h"
 #include "ShlObj.h"
 

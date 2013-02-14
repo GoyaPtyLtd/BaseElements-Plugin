@@ -26,7 +26,7 @@
 
 #if defined(FMX_WIN_TARGET)
 
-	#include "afxdlgs.h"
+	#include "windows.h"
 	#include <locale.h>
 
 	#include "resource.h"

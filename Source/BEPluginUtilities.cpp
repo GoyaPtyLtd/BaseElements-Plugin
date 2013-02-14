@@ -16,7 +16,7 @@
 
 #if defined(FMX_WIN_TARGET)
 
-	#include "afx.h"
+	#include "windows.h"
 	#include "resource.h"
 
 #endif

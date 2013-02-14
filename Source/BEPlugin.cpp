@@ -36,7 +36,7 @@
 
 
 #if defined(FMX_WIN_TARGET)
-	#include "afxwin.h"
+	#include "windows.h"
 #endif
 
 #include "BEPluginGlobalDefines.h"
