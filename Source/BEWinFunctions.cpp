@@ -177,26 +177,36 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 
 // file dialogs
 
+
+// SelectFile based on code provided by Dan Smith, https://github.com/dansmith65
+
 WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 {
-	CWnd * parent_window = CWnd::FromHandle ( GetActiveWindow() );
-	CString filter =  "All Files (*.*)|*.*||";
-	CFileDialog file_dialog ( TRUE, NULL, NULL, OFN_HIDEREADONLY, filter, parent_window, 0 );
-	file_dialog.m_ofn.lpstrTitle = prompt->c_str();
-	if ( !in_folder->empty() ) {
-		file_dialog.m_ofn.lpstrInitialDir = in_folder->c_str();
-	}
+	OPENFILENAME open_file_dialog;   // common dialog box structure
 
-	// if the user hasn't cancelled the dialog get the path to the file
+	ZeroMemory ( &open_file_dialog, sizeof(open_file_dialog) );
+
+	open_file_dialog.lStructSize = sizeof(open_file_dialog);
+	open_file_dialog.hwndOwner = GetActiveWindow();
+
+	wchar_t szFile[MAX_PATH];        // buffer for file name
+	open_file_dialog.lpstrFile = szFile;
+	open_file_dialog.lpstrFilter = L"All Files (*.*)\0*.*\0";
+	open_file_dialog.lpstrFile[0] = '\0';
+	open_file_dialog.nMaxFile = sizeof(szFile);
+	open_file_dialog.lpstrTitle = prompt->c_str();
+	open_file_dialog.lpstrInitialDir = in_folder->c_str();
+	open_file_dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+
+	 // Display the Open dialog box
 
 	wchar_t path[MAX_PATH] = L"";
-	
-	if ( file_dialog.DoModal() == IDOK ) {
-		CString file_path = file_dialog.GetPathName();
-		wcscpy_s ( path, (LPCTSTR)file_path );
-	}
 
-	return WStringAutoPtr ( new wstring ( path ) );
+	if ( GetOpenFileName ( &open_file_dialog ) == TRUE ) {
+		wcscpy_s ( path, open_file_dialog.lpstrFile );
+	 }
+
+	 return WStringAutoPtr ( new wstring ( path ) );
 
 }	//	SelectFile
 
