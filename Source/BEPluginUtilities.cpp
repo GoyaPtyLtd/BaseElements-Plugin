@@ -38,6 +38,7 @@
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"
 
+#include <sstream>
 #include <iostream>
 #include <iconv.h>
 
@@ -102,6 +103,25 @@ void SetResult ( const intmax_t number, Data& results )
 	FixPtAutoPtr numeric_result;
 	numeric_result->AssignDouble ( number );
 	results.SetAsNumber ( *numeric_result );
+}
+
+
+// Cannot use SetResult as the compiler is not disignusing const double and const intmax_t
+
+void SetResultAsDouble ( const double number, Data& results )
+{
+//	FixPtAutoPtr numeric_result;
+//	numeric_result->AssignDouble ( number );
+//	results.SetAsNumber ( *numeric_result );
+
+//	const std::string as_string = boost::lexical_cast<std::string>( number );
+	
+	// do this the c++ vay due to avoid rounding errors
+	ostringstream stream;
+	stream << number;
+	StringAutoPtr result ( new string );
+	*result = stream.str();
+	SetResult ( result, results );
 }
 
 
