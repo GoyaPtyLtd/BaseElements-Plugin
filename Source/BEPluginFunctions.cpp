@@ -882,6 +882,35 @@ FMX_PROC(errcode) BE_JSON_Error ( short /* funcId */, const ExprEnv& /* environm
 
 
 
+FMX_PROC(errcode) BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	g_json_error = "";
+	
+	try {
+		
+		StringAutoPtr json = ParameterAsUTF8String ( parameters, 0 );
+		
+		BEJSON * json_document = new BEJSON ( json );
+		json_document->array_size ( results );
+		delete json_document;
+		
+	} catch ( BEJSON_Exception& e ) {
+		error = e.code();
+		g_json_error = e.description();
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_JSON_ArraySize
+
+
+
 #pragma mark -
 #pragma mark User Preferences
 #pragma mark -

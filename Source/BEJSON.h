@@ -77,6 +77,7 @@ public:
 		~BEJSON ( );
 
 	void json_path_query ( const StringAutoPtr json_path, fmx::Data& results );
+	void array_size ( fmx::Data& results );
 	
 protected:
 	

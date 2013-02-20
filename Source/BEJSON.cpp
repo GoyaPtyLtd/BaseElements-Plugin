@@ -73,5 +73,12 @@ void BEJSON::json_path_query ( const StringAutoPtr json_path, fmx::Data& results
 		throw BEJSON_Exception ( kBE_JSON_JSONPathDoesNotExistError );
 	}
 			
-}
+} // json_path_query
+
+
+void BEJSON::array_size ( fmx::Data& results ) {
+	
+	SetResult ( json_array_size ( document ), results );
+
+} // array_size
 

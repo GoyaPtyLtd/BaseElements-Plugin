@@ -132,6 +132,12 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	
 	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, true, 1, 4 );
 
+	
+	g_be_plugin->RegisterFunction ( kBE_JSONPath, BE_JSONPath, true, 2 );
+	g_be_plugin->RegisterFunction ( kBE_JSON_Error, BE_JSON_Error );
+	g_be_plugin->RegisterFunction ( kBE_JSON_ArraySize, BE_JSON_ArraySize, true, 1 );
+	
+	
 	g_be_plugin->RegisterFunction ( kBE_GetURL, BE_GetURL, true, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_SaveURLToFile, true, 2, 4 );
 
