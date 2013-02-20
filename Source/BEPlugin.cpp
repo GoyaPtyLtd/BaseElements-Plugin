@@ -165,6 +165,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	
 	g_be_plugin->RegisterFunction ( kBE_JSONPath, BE_JSONPath, true, 2 );
+	g_be_plugin->RegisterFunction ( kBE_JSON_Error, BE_JSON_Error );
 	
 	
 	// depreciated

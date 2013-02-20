@@ -14,7 +14,7 @@ BEJSON::BEJSON ( StringAutoPtr json ) {
 	json_error_t json_error;
 	document = json_loadb ( json->c_str(), json->size(), 0, &json_error );
 	if ( !document ) {
-		throw BEJSON_Exception ( kBE_JSON_LoadDocumentError );
+		throw BEJSON_Exception ( json_error );
 	}
 
 }
@@ -73,25 +73,5 @@ void BEJSON::json_path_query ( const StringAutoPtr json_path, fmx::Data& results
 		throw BEJSON_Exception ( kBE_JSON_JSONPathDoesNotExistError );
 	}
 			
-}
-
-
-const int BEJSON::last_error()
-{
-/*
-	xmlErrorPtr xml_error = xmlGetLastError();
-	
-	// don't crash if there's no xml_error
-	int error;
-	if ( xml_error ) {
-		error = xml_error->code;
-	} else {
-		error = kErrorUnknown;
-	}
-	
-	return error;
-*/
-	return 0;
-
 }
 

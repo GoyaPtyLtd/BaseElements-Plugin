@@ -64,6 +64,10 @@ FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environmen
 FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 
 
+FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+FMX_PROC(errcode) BE_JSON_Error ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+
+
 FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 
@@ -94,9 +98,6 @@ FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment 
 FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-
-
-FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 
 
 // DEPRECIATED as of FM12 (which has native functions) ... will be removed in plug-in version 3.0

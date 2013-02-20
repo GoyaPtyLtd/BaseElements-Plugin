@@ -91,6 +91,7 @@
 "222" = "BE_TimeZoneOffset";
 
 "300" = "BE_JSONPath ( json ; path )";
+"301" = "BE_JSON_Error";
 
 
 // replaces 120 BE_ExecuteShellCommand

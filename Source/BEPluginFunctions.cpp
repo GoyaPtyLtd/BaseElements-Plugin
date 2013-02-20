@@ -91,6 +91,7 @@ typedef transform_width<
 errcode g_last_error;
 errcode g_last_ddl_error;
 string g_text_encoding;
+string g_json_error;
 
 
 extern int g_http_response_code;
@@ -827,6 +828,61 @@ FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* envir
 
 
 #pragma mark -
+#pragma mark JSON
+#pragma mark -
+
+
+FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	g_json_error = "";
+	
+	try {
+		
+		StringAutoPtr json = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr path = ParameterAsUTF8String ( parameters, 1 );
+		
+		BEJSON * json_document = new BEJSON ( json );
+		json_document->json_path_query ( path, results );
+		delete json_document;
+		
+	} catch ( BEJSON_Exception& e ) {
+		error = e.code();
+		g_json_error = e.description();
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_JSONPath
+
+
+
+FMX_PROC(errcode) BE_JSON_Error ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+
+		SetResult ( g_json_error, results );
+
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_JSON_Error
+
+
+
+#pragma mark -
 #pragma mark User Preferences
 #pragma mark -
 
@@ -1361,7 +1417,7 @@ FMX_PROC(errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* envi
 #pragma mark -
 
 
-/* 
+/*
  
  invoked for multiple plug-in functions... funcId is used to determine which one
  
@@ -1843,32 +1899,4 @@ FMX_PROC(errcode) BE_MessageDigest ( short /* funcId */, const ExprEnv& /* envir
 } // BE_FileMaker_TablesOrFields
 
 
-
-FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-	
-	try {
-		
-		StringAutoPtr json = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr path = ParameterAsUTF8String ( parameters, 1 );
-				
-		//	BE_JSONPath ( BE_ReadTextFromFile ( "/Users/mark/Desktop/json.json" ) ; "$.store.book[*].author" )
-		//	BE_JSONPath ( BE_ReadTextFromFile ( "/Users/mark/Desktop/json.json" ) ; "$.obj.int" )
-		
-		BEJSON * json_document = new BEJSON ( json );
-		json_document->json_path_query ( path, results );
-		delete json_document;
-		
-	} catch ( BEJSON_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& e ) {
-		error = kLowMemoryError;
-	} catch ( exception& e ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-	
-} // BE_JSONPath
 
