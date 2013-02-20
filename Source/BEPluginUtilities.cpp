@@ -132,6 +132,14 @@ void SetResult ( const Text& text, Data& results )
 }
 
 
+void SetResult ( const string text, Data& results )
+{
+	TextAutoPtr result_text;
+	result_text->Assign ( text.c_str(), Text::kEncoding_UTF8 );
+	SetResult ( *result_text, results );
+}
+
+
 void SetResult ( const StringAutoPtr text, Data& results )
 {
 	TextAutoPtr result_text;

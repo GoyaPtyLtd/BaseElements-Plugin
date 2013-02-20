@@ -37,6 +37,7 @@ fmx::errcode TextConstantFunction ( WStringAutoPtr text, fmx::Data& results );
 void SetResult ( const intmax_t number, fmx::Data& results );
 void SetResultAsDouble ( const double number, fmx::Data& results );
 void SetResult ( const fmx::Text& text, fmx::Data& results );
+void SetResult ( const string text, fmx::Data& results );
 void SetResult ( const StringAutoPtr text, fmx::Data& results );
 void SetResult ( const WStringAutoPtr text, fmx::Data& results );
 void SetResult ( vector<char> data, fmx::Data& results );
