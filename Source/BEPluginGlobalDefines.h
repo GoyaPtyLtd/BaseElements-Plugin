@@ -49,7 +49,7 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"2.0.0"
-#define	AUTO_UPDATE_VERSION L"02000002"
+#define	AUTO_UPDATE_VERSION L"02000003"
 #define VERSION_STRING "2.1a2"
 
 
@@ -119,6 +119,7 @@ enum functions {
 	kBE_CurrentTimeMilliseconds = 220,
 	kBE_UTCMilliseconds = 221,
 	kBE_TimeZoneOffset = 222,
+	kBE_JSONPath = 300,
 	kBE_ExecuteSystemCommand = 1120
 };
 

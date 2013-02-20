@@ -34,6 +34,7 @@
     <ClCompile Include="..\Source\BEXMLTextReader.cpp" />
     <ClCompile Include="..\Source\BEXMLTextWriter.cpp" />
     <ClCompile Include="..\Source\BETime.cpp" />
+    <ClCompile Include="..\Source\BEJSON.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -74,6 +75,7 @@
     <ClInclude Include="..\Source\BEXMLTextReader.h" />
     <ClInclude Include="..\Source\BEXMLTextWriter.h" />
     <ClInclude Include="..\Source\BETime.h" />
+    <ClInclude Include="..\Source\BEJSON.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

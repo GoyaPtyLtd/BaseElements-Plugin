@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 2.0 of the plug-in was built on Mac OS X 10.8.2 using Xcode 4.6 with the 10.6 base SDK from Xcode 4.3.3.
+Version 2.0 of the plug-in was built on Mac OS X 10.8.2 using Xcode 4.6 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -62,6 +62,22 @@ Download the zlib source from
 	http://www.zlib.net/
 
 and extract the folder zlib-1.2.7 to the desktop. Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory.
+
+
+
+=======================================================================
+Jansson
+=======================================================================
+
+Download the source from
+
+	https://github.com/rogerz/jansson/tree/json_path
+
+and follow the supplied building instructions but with the following ./configure command (to build a universal binary)
+
+	./configure CFLAGS="-arch i386 -arch x86_64" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
+
+Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and  ./src/.libs/libjansson.a to Libraries.
 
 
 =======================================================================
@@ -392,4 +408,26 @@ Copy the library from
 
 into the Libraries\x64 directory.
 
+
 =======================================================================
+Jansson
+=======================================================================
+
+Download the source from
+
+	https://github.com/rogerz/jansson/tree/json_path
+
+And
+
+1. Open the Visual Studio solution and add the file src/path.c to the Source files.
+2. Change the Configuration Properties->General->Configuration Type to "Static library (.lib)".
+3. Add the src directory to Configuration Properties->VC++ Directories->Include Directories.
+4. Change Configuration Properties->C/C++->Code Generation->Runtime Library to "Multi-threaded Debug (/MTd)" for the the debug configuration and "Multi-threaded (/MT)" for the release one.
+5. Add new configurations for x64 and change Configuration Properties->General->Output Directory to "Output\$(Configuration)\x64" for the x64 configurations.
+
+Finally, Build->Batch Build to build the two "Release" configurations.
+
+Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib  to Libraries and win32/vs2010/Output/Release/jansson.lib to Libraries\x64.
+
+=======================================================================
+

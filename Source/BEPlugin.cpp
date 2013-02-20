@@ -163,6 +163,10 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_UTCMilliseconds, BE_TimeFunctions );
 	g_be_plugin->RegisterFunction ( kBE_TimeZoneOffset, BE_TimeFunctions );
 
+	
+	g_be_plugin->RegisterFunction ( kBE_JSONPath, BE_JSONPath, true, 2 );
+	
+	
 	// depreciated
 	
 	g_be_plugin->RegisterHiddenFunction ( kBE_ExecuteShellCommand, BE_ExecuteShellCommand, false, 1, 2 );

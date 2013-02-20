@@ -90,6 +90,8 @@
 "221" = "BE_UTCMilliseconds";
 "222" = "BE_TimeZoneOffset";
 
+"300" = "BE_JSONPath ( json ; path )";
+
 
 // replaces 120 BE_ExecuteShellCommand
 "1120" = "BE_ExecuteSystemCommand ( command { ; timeout } )";

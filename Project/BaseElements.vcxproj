@@ -129,7 +129,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -165,7 +165,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -207,7 +207,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -258,7 +258,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -286,6 +286,7 @@
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEFileSystem.cpp" />
+    <ClCompile Include="..\Source\BEJSON.cpp" />
     <ClCompile Include="..\Source\BEMessageDigest.cpp" />
     <ClCompile Include="..\Source\BEPlugin.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -348,6 +349,7 @@
     <ClInclude Include="..\Source\BECurl.h" />
     <ClInclude Include="..\Source\BEFileMakerPlugin.h" />
     <ClInclude Include="..\Source\BEFileSystem.h" />
+    <ClInclude Include="..\Source\BEJSON.h" />
     <ClInclude Include="..\Source\BEMessageDigest.h" />
     <ClInclude Include="..\Source\BEPluginFunctions.h" />
     <ClInclude Include="..\Source\BEPluginGlobalDefines.h" />
