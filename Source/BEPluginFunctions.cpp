@@ -91,7 +91,7 @@ typedef transform_width<
 errcode g_last_error;
 errcode g_last_ddl_error;
 string g_text_encoding;
-string g_json_error;
+string g_json_error_description;
 
 
 extern int g_http_response_code;
@@ -836,7 +836,7 @@ FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environmen
 {
 	errcode error = NoError();
 	
-	g_json_error = "";
+	g_json_error_description = "";
 	
 	try {
 		
@@ -849,7 +849,7 @@ FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environmen
 		
 	} catch ( BEJSON_Exception& e ) {
 		error = e.code();
-		g_json_error = e.description();
+		g_json_error_description = e.description();
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
 	} catch ( exception& e ) {
@@ -862,13 +862,13 @@ FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environmen
 
 
 
-FMX_PROC(errcode) BE_JSON_Error ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+FMX_PROC(errcode) BE_JSON_Error_Description ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
 {
 	errcode error = NoError();
 	
 	try {
 
-		SetResult ( g_json_error, results );
+		SetResult ( g_json_error_description, results );
 
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -878,7 +878,7 @@ FMX_PROC(errcode) BE_JSON_Error ( short /* funcId */, const ExprEnv& /* environm
 	
 	return MapError ( error );
 	
-} // BE_JSON_Error
+} // BE_JSON_Error_Description
 
 
 
@@ -886,7 +886,7 @@ FMX_PROC(errcode) BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* envi
 {
 	errcode error = NoError();
 	
-	g_json_error = "";
+	g_json_error_description = "";
 	
 	try {
 		
@@ -898,7 +898,7 @@ FMX_PROC(errcode) BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* envi
 		
 	} catch ( BEJSON_Exception& e ) {
 		error = e.code();
-		g_json_error = e.description();
+		g_json_error_description = e.description();
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
 	} catch ( exception& e ) {

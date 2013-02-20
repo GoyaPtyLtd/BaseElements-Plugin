@@ -65,7 +65,7 @@ FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* envir
 
 
 FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_JSON_Error ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results );
+FMX_PROC(errcode) BE_JSON_Error_Description ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results );
 FMX_PROC(errcode) BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 
 

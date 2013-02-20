@@ -91,7 +91,7 @@
 "222" = "BE_TimeZoneOffset";
 
 "300" = "BE_JSONPath ( json ; path )";
-"301" = "BE_JSON_Error";
+"301" = "BE_JSON_Error_Description";
 "302" = "BE_JSON_ArraySize ( json )";
 
 
