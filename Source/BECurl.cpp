@@ -470,8 +470,8 @@ void BECurl::cleanup ( )
 	
 	if ( upload_file ) { fclose ( upload_file ); }
 	
-	if ( headers.memory ) { free ( headers.memory ); }
-	if ( data.memory ) { free ( data.memory ); }
+	be_free ( headers.memory );
+	be_free ( data.memory );
 	
 	if ( custom_headers ) { curl_slist_free_all ( custom_headers ); }	
 	
