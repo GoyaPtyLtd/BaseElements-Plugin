@@ -94,6 +94,10 @@
 "301" = "BE_JSON_Error_Description";
 "302" = "BE_JSON_ArraySize ( json )";
 
+//"320" = "BE_OAuth_RequestToken ( url ; consumer_key ; consumer_secret )";
+"321" = "BE_OAuth_RequestAccessToken ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )";
+//"322" = "BE_OAuth_ClearToken";
+
 
 // replaces 120 BE_ExecuteShellCommand
 "1120" = "BE_ExecuteSystemCommand ( command { ; timeout } )";

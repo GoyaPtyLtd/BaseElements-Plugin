@@ -10,6 +10,8 @@
 		4D0023E413FDD64C00C0B57A /* BEShell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0023E213FDD64C00C0B57A /* BEShell.cpp */; };
 		4D00CC5A16D3279000160030 /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
 		4D10AD951484202000814440 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
+		4D13006516DADAE60075FE0C /* liboauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D13006416DADAE60075FE0C /* liboauth.a */; };
+		4D13006816DADD8A0075FE0C /* BEOAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D13006616DADD8A0075FE0C /* BEOAuth.cpp */; };
 		4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
 		4D37E0B51339CF080084730B /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4D3BA85215A3FE3F008AC145 /* BEXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */; };
@@ -32,6 +34,7 @@
 		4DC18344144D31C800E27CAA /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC1833C144D31C800E27CAA /* mztools.c */; };
 		4DC18345144D31C800E27CAA /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC1833E144D31C800E27CAA /* unzip.c */; };
 		4DC18346144D31C800E27CAA /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC18340144D31C800E27CAA /* zip.c */; };
+		4DD3E8FD16DD6DA300DC0070 /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
 		4DD780D911FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */; };
 		4DD7824B11FFF57400CFC8B4 /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4DD78320120005AE00CFC8B4 /* BEXSLT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */; };
@@ -80,6 +83,9 @@
 		4D00CC6716D3357C00160030 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4D10AD931484202000814440 /* BESQLCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESQLCommand.cpp; path = ../Source/BESQLCommand.cpp; sourceTree = SOURCE_ROOT; };
 		4D10AD941484202000814440 /* BESQLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESQLCommand.h; path = ../Source/BESQLCommand.h; sourceTree = SOURCE_ROOT; };
+		4D13006416DADAE60075FE0C /* liboauth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liboauth.a; path = ../Libraries/liboauth.a; sourceTree = "<group>"; };
+		4D13006616DADD8A0075FE0C /* BEOAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEOAuth.cpp; path = ../Source/BEOAuth.cpp; sourceTree = "<group>"; };
+		4D13006716DADD8A0075FE0C /* BEOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEOAuth.h; path = ../Source/BEOAuth.h; sourceTree = "<group>"; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
@@ -123,6 +129,8 @@
 		4DC1833F144D31C800E27CAA /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = unzip.h; path = ../Source/minizip/unzip.h; sourceTree = SOURCE_ROOT; };
 		4DC18340144D31C800E27CAA /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = zip.c; path = ../Source/minizip/zip.c; sourceTree = SOURCE_ROOT; };
 		4DC18341144D31C800E27CAA /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zip.h; path = ../Source/minizip/zip.h; sourceTree = SOURCE_ROOT; };
+		4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECppUtilities.cpp; path = ../Source/BECppUtilities.cpp; sourceTree = "<group>"; };
+		4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECppUtilities.h; path = ../Source/BECppUtilities.h; sourceTree = "<group>"; };
 		4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileMakerPlugin.h; path = ../Source/BEFileMakerPlugin.h; sourceTree = "<group>"; };
 		4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileMakerPlugin.cpp; path = ../Source/BEFileMakerPlugin.cpp; sourceTree = "<group>"; };
 		4DD7831E120005AE00CFC8B4 /* BEXSLT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXSLT.h; path = ../Source/BEXSLT.h; sourceTree = "<group>"; };
@@ -163,6 +171,7 @@
 				4D9EEE80118A8E9C00EC9352 /* libboost_filesystem.a in Frameworks */,
 				4D9E2B0C118A9F4A00EC9352 /* libboost_system.a in Frameworks */,
 				4D8BA595134579BD003A90B5 /* libboost_thread.a in Frameworks */,
+				4D13006516DADAE60075FE0C /* liboauth.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,6 +191,7 @@
 		4D9EEE5D118A8C9600EC9352 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				4D13006416DADAE60075FE0C /* liboauth.a */,
 				4D76701E16CDC17A00010A75 /* libjansson.a */,
 				4D9EEE7F118A8E9C00EC9352 /* libboost_filesystem.a */,
 				4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */,
@@ -260,6 +270,10 @@
 				4DDBA8B6164386A900CC6FD7 /* BETime.h */,
 				4D00CC5816D3279000160030 /* BEJSON.cpp */,
 				4D00CC5916D3279000160030 /* BEJSON.h */,
+				4D13006616DADD8A0075FE0C /* BEOAuth.cpp */,
+				4D13006716DADD8A0075FE0C /* BEOAuth.h */,
+				4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */,
+				4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -385,6 +399,8 @@
 				4D760F8015AD648F001A0BAF /* BEXMLReaderInterface.cpp in Sources */,
 				4DDBA8B7164386A900CC6FD7 /* BETime.cpp in Sources */,
 				4D00CC5A16D3279000160030 /* BEJSON.cpp in Sources */,
+				4D13006816DADD8A0075FE0C /* BEOAuth.cpp in Sources */,
+				4DD3E8FD16DD6DA300DC0070 /* BECppUtilities.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

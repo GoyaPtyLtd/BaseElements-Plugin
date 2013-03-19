@@ -168,7 +168,12 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_CurrentTimeMilliseconds, BE_TimeFunctions );
 	g_be_plugin->RegisterFunction ( kBE_UTCMilliseconds, BE_TimeFunctions );
 	g_be_plugin->RegisterFunction ( kBE_TimeZoneOffset, BE_TimeFunctions );
-
+	
+	
+//	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestToken, BE_OAuth_RequestAccessToken, true, 3 );
+	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
+//	g_be_plugin->RegisterFunction ( kBE_OAuth_ClearToken, BE_OAuth_RequestAccessToken, true );
+	
 	
 	// depreciated
 	

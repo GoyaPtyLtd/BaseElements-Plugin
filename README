@@ -37,7 +37,7 @@ The plug-in is a universal binary and the boost libraries should be built accord
 
 	cd boost_1_51_0
 	./bootstrap.sh
-	./b2 architecture=x86 address-model=32_64 link=static runtime-link=static --with-thread --with-filesystem
+	./b2 architecture=x86 address-model=32_64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time
 
 See
 
@@ -78,6 +78,21 @@ and follow the supplied building instructions but with the following ./configure
 	./configure CFLAGS="-arch i386 -arch x86_64" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
 
 Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and  ./src/.libs/libjansson.a to Libraries.
+
+
+=======================================================================
+liboauth
+=======================================================================
+
+Download the source from
+
+	http://liboauth.sourceforge.net/
+
+and follow the supplied building instructions but with the following ./configure command (to build a universal binary)
+
+	./configure CFLAGS="-arch i386 -arch x86_64" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
+
+Copy liboauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a to Libraries.
 
 
 =======================================================================
@@ -428,6 +443,19 @@ And
 Finally, Build->Batch Build to build the two "Release" configurations.
 
 Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib  to Libraries and win32/vs2010/Output/Release/jansson.lib to Libraries\x64.
+
+
+=======================================================================
+liboauth
+=======================================================================
+
+Download the source from
+
+	http://liboauth.sourceforge.net/
+
+Unpack directory containing the Visual Studio solution files (from Projects/Extras), open the Solution make sure the project can find the BaseElements plug-in Header and Libraries directories. Then, from Build->Batch Build build the two "Release" configurations.
+
+Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib  to Libraries and liboauth\Release\liboauth.lib to Libraries\x64.
 
 =======================================================================
 

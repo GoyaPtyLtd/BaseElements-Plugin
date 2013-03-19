@@ -12,6 +12,7 @@
 
 #include "BECurl.h"
 #include "BEPluginGlobalDefines.h"
+#include "BEOAuth.h"
 
 
 #include <map>
@@ -45,6 +46,8 @@ string g_http_response_headers;
 CustomHeaders g_http_custom_headers;
 struct host_details g_http_proxy;
 
+extern BEOAuth * g_oauth;
+
 
 #pragma mark -
 #pragma mark Functions
@@ -73,12 +76,18 @@ static size_t WriteMemoryCallback (void *ptr, size_t size, size_t nmemb, void *d
 static MemoryStruct InitalizeCallbackMemory ( void )
 {
 	struct MemoryStruct data;
+
+// suppress "Memory is never released; potential leak of memory pointed to by..."
 	
-	data.memory = (char *)malloc(1);  // this is grown as needed by WriteMemoryCallback 
+#ifndef __clang_analyzer__
+	
+	data.memory = (char *)malloc(1);  // this is grown as needed by WriteMemoryCallback
 	data.memory[0] = '\0'; 
 	data.size = 0;
 	
 	return data;
+	
+#endif
 	
 }
 
@@ -169,11 +178,21 @@ BECurl::BECurl ( const string download_this, const string to_file, const string 
 	if ( !curl ) {
 		throw bad_alloc(); // curl_easy_init thinks all errors are memory errors
 	}
+		
+	if ( g_oauth ) {
+
+		int oauth_error = g_oauth->sign_url ( url, parameters );
+		if ( oauth_error != kNoError ) {
+			throw BECurl_Exception ( CURLE_LOGIN_DENIED );
+		}
+
+	} else {
+		set_username_and_password ( username, password );
+
+		// curl doesn't make a copy of the post_args so we have to stop them being dealloced before they're used
+		parameters = post_parameters;
+	}
 	
-	set_username_and_password ( username, password );
-	
-	// curl doesn't make a copy of the post_args so we have to stop them being dealloced before they're used
-	parameters = post_parameters;
 	set_parameters ( );
 	
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );

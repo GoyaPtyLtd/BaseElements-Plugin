@@ -101,6 +101,9 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environme
 FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 
 
+FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results );
+
+
 // DEPRECIATED as of FM12 (which has native functions) ... will be removed in plug-in version 3.0
 FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short function_id, const ExprEnv& environment, const DataVect& parameters, Data& results );

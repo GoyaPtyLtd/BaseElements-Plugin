@@ -35,6 +35,8 @@
     <ClCompile Include="..\Source\BEXMLTextWriter.cpp" />
     <ClCompile Include="..\Source\BETime.cpp" />
     <ClCompile Include="..\Source\BEJSON.cpp" />
+    <ClCompile Include="..\Source\BEOAuth.cpp" />
+    <ClCompile Include="..\Source\BECppUtilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -76,6 +78,8 @@
     <ClInclude Include="..\Source\BEXMLTextWriter.h" />
     <ClInclude Include="..\Source\BETime.h" />
     <ClInclude Include="..\Source\BEJSON.h" />
+    <ClInclude Include="..\Source\BEOAuth.h" />
+    <ClInclude Include="..\Source\BECppUtilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

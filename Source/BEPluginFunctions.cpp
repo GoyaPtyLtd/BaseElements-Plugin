@@ -23,6 +23,7 @@
 #include "BEXMLReader.h"
 #include "BETime.h"
 #include "BEJSON.h"
+#include "BEOAuth.h"
 
 
 #if defined(FMX_WIN_TARGET)
@@ -92,6 +93,8 @@ errcode g_last_error;
 errcode g_last_ddl_error;
 string g_text_encoding;
 string g_json_error_description;
+
+BEOAuth * g_oauth;
 
 
 extern int g_http_response_code;
@@ -1426,7 +1429,7 @@ FMX_PROC(errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* envi
 		g_http_proxy.port = *ParameterAsUTF8String ( parameters, 1 );
 		g_http_proxy.username = *ParameterAsUTF8String ( parameters, 2 );
 		g_http_proxy.password = *ParameterAsUTF8String ( parameters, 3 );
-				
+
 		SetResult ( g_last_error, results );
 		
 	} catch ( bad_alloc& e ) {
@@ -1438,6 +1441,68 @@ FMX_PROC(errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* envi
 	return MapError ( error );
 	
 } // BE_HTTP_Set_Custom_Header
+
+
+
+
+#pragma mark -
+#pragma mark OAuth
+#pragma mark -
+
+
+FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr uri = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr consumer_key = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr consumer_secret = ParameterAsUTF8String ( parameters, 2 );
+		StringAutoPtr request_key = ParameterAsUTF8String ( parameters, 3 );
+		StringAutoPtr request_secret = ParameterAsUTF8String ( parameters, 4 );
+		
+		if ( g_oauth ) {
+			delete g_oauth;
+			g_oauth = NULL;
+		}
+		
+		string response;
+		
+		// if the uri is empty then we are only clearing out any set oauth data
+		
+		if ( !uri->empty() ) {
+			
+			BEOAuth * oauth = new BEOAuth ( *consumer_key, *consumer_secret );
+			error = oauth->oauth_request ( *uri, *request_key, *request_secret );
+			
+			if ( error == kNoError ) {
+				
+				const unsigned long number_of_parameters = parameters.Size();
+				
+				if ( number_of_parameters == 3 ) {
+					response = oauth->get_request_key() + "\r" + oauth->get_request_secret();
+				} else {
+					response = oauth->get_access_key() + "\r" + oauth->get_access_secret();
+				}
+				
+				g_oauth = oauth; // must assign after the authorisation request otherwise BECurl will try and use g_oauth
+				
+			}
+
+		}
+		
+		SetResult ( response, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_OAuth_RequestAccessToken
 
 
 

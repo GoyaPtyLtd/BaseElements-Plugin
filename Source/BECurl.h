@@ -20,14 +20,6 @@
 #include <map>
 
 
-// needed to avoid
-//	fatal error C1189: #error : WINDOWS.H already included. MFC apps must not #include <windows.h>
-// when BECurl.h is included in BEPluginFuncitons.cpp
-
-#if defined(FMX_WIN_TARGET)
-	#include "windows.h"
-#endif
-
 #include "curl/curl.h"
 
 
@@ -64,10 +56,10 @@ struct host_details {
 };
 
 
-vector<char> GetURL ( const string url, const string filename, const string username, const string password );
-vector<char> HTTP_POST ( const string url, const string post_parameters, const string username, const string password );
-vector<char> HTTP_PUT ( const string url, const string post_parameters, const string username, const string password );
-vector<char> HTTP_DELETE ( const string url, const string username, const string password );
+vector<char> GetURL ( const string url, const string filename = "", const string username = "", const string password = "" );
+vector<char> HTTP_POST ( const string url, const string post_parameters, const string username = "", const string password = "" );
+vector<char> HTTP_PUT ( const string url, const string post_parameters, const string username = "", const string password = "" );
+vector<char> HTTP_DELETE ( const string url, const string username = "", const string password = "" );
 
 
 class BECurl {
@@ -87,7 +79,6 @@ public:
 	int response_code ( ) { return http_response_code; }
 	string response_headers ( ) { return http_response_headers; }
 	void set_custom_headers ( CustomHeaders _headers ) { http_custom_headers = _headers; }
-	//	void set_proxy ( string proxy_server )  { proxy = proxy_server; };
 	void set_proxy ( struct host_details proxy_server );
 	CURLcode last_error ( ) { return error; }
 	
