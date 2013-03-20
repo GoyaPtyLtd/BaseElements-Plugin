@@ -24,6 +24,7 @@
 #include "BETime.h"
 #include "BEJSON.h"
 #include "BEOAuth.h"
+#include "BEValueList.h"
 
 
 #if defined(FMX_WIN_TARGET)
@@ -1500,6 +1501,112 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 	
 } // BE_OAuth_RequestAccessToken
 
+
+
+#pragma mark -
+#pragma mark Value Lists
+#pragma mark -
+
+
+FMX_PROC(errcode) BE_Values_Unique ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
+
+		auto_ptr<BEValueList> values ( new BEValueList ( *value_list ) );
+		string response = values->unique();
+		
+		SetResult ( response, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Values_Unique
+
+
+
+FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr filter_out = ParameterAsUTF8String ( parameters, 1 );
+		
+		auto_ptr<BEValueList> values ( new BEValueList ( *value_list ) );
+		auto_ptr<BEValueList> filter ( new BEValueList ( *filter_out ) );
+		string response = values->filter_out ( filter );
+				
+		SetResult ( response, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Values_FilterOut
+
+
+FMX_PROC(errcode) BE_Values_Union ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr list_a = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr list_b = ParameterAsUTF8String ( parameters, 1 );
+		
+		auto_ptr<BEValueList> list_a_values ( new BEValueList ( *list_a ) );
+		auto_ptr<BEValueList> list_b_values ( new BEValueList ( *list_b ) );
+		string response = list_a_values->list_union ( list_b_values );
+		
+		SetResult ( response, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Values_Union
+
+
+FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
+		
+		auto_ptr<BEValueList> values ( new BEValueList ( *value_list ) );
+		string response = values->sort();
+		
+		SetResult ( response, results );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Values_Sort
 
 
 #pragma mark -

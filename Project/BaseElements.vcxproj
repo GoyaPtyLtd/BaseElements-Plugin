@@ -317,6 +317,7 @@
     <ClCompile Include="..\Source\BEShell.cpp" />
     <ClCompile Include="..\Source\BESQLCommand.cpp" />
     <ClCompile Include="..\Source\BETime.cpp" />
+    <ClCompile Include="..\Source\BEValueList.cpp" />
     <ClCompile Include="..\Source\BEWinFunctions.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
@@ -361,6 +362,7 @@
     <ClInclude Include="..\Source\BEShell.h" />
     <ClInclude Include="..\Source\BESQLCommand.h" />
     <ClInclude Include="..\Source\BETime.h" />
+    <ClInclude Include="..\Source\BEValueList.h" />
     <ClInclude Include="..\Source\BEWinFunctions.h" />
     <ClInclude Include="..\Source\BEWStringVector.h" />
     <ClInclude Include="..\Source\BEXMLReader.h" />

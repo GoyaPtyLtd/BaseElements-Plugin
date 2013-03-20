@@ -76,6 +76,8 @@ extern fmx::errcode g_last_error;
 
 #define	TEMPORARY_FILE_SUFFIX L".be4.tmp"
 
+#define FILEMAKER_END_OF_LINE "\r"
+
 
 enum {
 	kBE_OptionsStringID = 1
@@ -143,6 +145,10 @@ enum functions {
 //	kBE_OAuth_RequestToken = 320,
 	kBE_OAuth_RequestAccessToken = 321,
 //	kBE_OAuth_SetToken = 322,
+	kBE_Values_Unique = 350,
+	kBE_Values_FilterOut = 351,
+	kBE_Values_Union = 352,
+	kBE_Values_Sort = 353,
 	kBE_ExecuteSystemCommand = 1120
 };
 

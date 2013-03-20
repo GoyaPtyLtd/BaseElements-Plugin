@@ -37,6 +37,7 @@
     <ClCompile Include="..\Source\BEJSON.cpp" />
     <ClCompile Include="..\Source\BEOAuth.cpp" />
     <ClCompile Include="..\Source\BECppUtilities.cpp" />
+    <ClCompile Include="..\Source\BEValueList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -80,6 +81,7 @@
     <ClInclude Include="..\Source\BEJSON.h" />
     <ClInclude Include="..\Source\BEOAuth.h" />
     <ClInclude Include="..\Source\BECppUtilities.h" />
+    <ClInclude Include="..\Source\BEValueList.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

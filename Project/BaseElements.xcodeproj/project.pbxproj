@@ -17,6 +17,7 @@
 		4D3BA85215A3FE3F008AC145 /* BEXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */; };
 		4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */; };
 		4D55C63A15EE0F4E008F7FBA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3617A15EDE74F003A0CB9 /* Cocoa.framework */; };
+		4D59DAFB16F95E2500F87180 /* BEValueList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D59DAF916F95E2300F87180 /* BEValueList.cpp */; };
 		4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
 		4D760F7915AD50E2001A0BAF /* BEXMLTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */; };
 		4D760F7D15AD52C7001A0BAF /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
@@ -96,6 +97,8 @@
 		4D4153A6120140AF00770E14 /* BEWStringVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEWStringVector.h; path = ../Source/BEWStringVector.h; sourceTree = SOURCE_ROOT; };
 		4D55C63815EE0F0A008F7FBA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
+		4D59DAF916F95E2300F87180 /* BEValueList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEValueList.cpp; path = ../Source/BEValueList.cpp; sourceTree = "<group>"; };
+		4D59DAFA16F95E2400F87180 /* BEValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEValueList.h; path = ../Source/BEValueList.h; sourceTree = "<group>"; };
 		4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileSystem.cpp; path = ../Source/BEFileSystem.cpp; sourceTree = SOURCE_ROOT; };
 		4D70428713BAE5CA00DE4484 /* BEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileSystem.h; path = ../Source/BEFileSystem.h; sourceTree = SOURCE_ROOT; };
 		4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLTextReader.cpp; path = ../Source/BEXMLTextReader.cpp; sourceTree = "<group>"; };
@@ -274,6 +277,8 @@
 				4D13006716DADD8A0075FE0C /* BEOAuth.h */,
 				4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */,
 				4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */,
+				4D59DAF916F95E2300F87180 /* BEValueList.cpp */,
+				4D59DAFA16F95E2400F87180 /* BEValueList.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -401,6 +406,7 @@
 				4D00CC5A16D3279000160030 /* BEJSON.cpp in Sources */,
 				4D13006816DADD8A0075FE0C /* BEOAuth.cpp in Sources */,
 				4DD3E8FD16DD6DA300DC0070 /* BECppUtilities.cpp in Sources */,
+				4D59DAFB16F95E2500F87180 /* BEValueList.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,11 +485,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_WARN_CONSTANT_CONVERSION = NO;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = "../Build/$(PROJECT_NAME).dst";
 				FRAMEWORK_SEARCH_PATHS = ../Libraries;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -553,11 +563,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_WARN_CONSTANT_CONVERSION = NO;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DSTROOT = "../Build/$(PROJECT_NAME).dst";
 				FRAMEWORK_SEARCH_PATHS = ../Libraries;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
