@@ -214,7 +214,7 @@ FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* enviro
 		path directory_path = *folder;
 		
 		try {
-			create_directory ( directory_path );
+			create_directories ( directory_path );
 		} catch ( filesystem_error& e ) {
 			g_last_error = e.code().value();
 		}
