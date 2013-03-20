@@ -843,9 +843,8 @@ FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environmen
 		StringAutoPtr json = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr path = ParameterAsUTF8String ( parameters, 1 );
 		
-		BEJSON * json_document = new BEJSON ( json );
+		auto_ptr<BEJSON> json_document ( new BEJSON ( json ) );
 		json_document->json_path_query ( path, results );
-		delete json_document;
 		
 	} catch ( BEJSON_Exception& e ) {
 		error = e.code();
@@ -892,9 +891,8 @@ FMX_PROC(errcode) BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* envi
 		
 		StringAutoPtr json = ParameterAsUTF8String ( parameters, 0 );
 		
-		BEJSON * json_document = new BEJSON ( json );
+		auto_ptr<BEJSON> json_document ( new BEJSON ( json ) );
 		json_document->array_size ( results );
-		delete json_document;
 		
 	} catch ( BEJSON_Exception& e ) {
 		error = e.code();
