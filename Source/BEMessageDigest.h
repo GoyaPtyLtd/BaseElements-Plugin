@@ -18,7 +18,6 @@
 
 
 
-
 StringAutoPtr MD5 ( StringAutoPtr message );
 StringAutoPtr SHA256 ( StringAutoPtr message );
 

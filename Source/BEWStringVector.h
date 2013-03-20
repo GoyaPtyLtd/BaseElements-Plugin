@@ -13,9 +13,9 @@
 #if !defined(BEWSTRINGVECTOR_H)
 	#define BEWSTRINGVECTOR_H
 
-#include "FMWrapper/FMXTypes.h"
-#include "FMWrapper/FMXCalcEngine.h"
-#include "FMWrapper/FMXText.h"
+
+#include "BEPluginGlobalDefines.h"
+
 
 #include <vector>
 

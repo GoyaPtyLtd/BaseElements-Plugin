@@ -13,8 +13,9 @@
 #if !defined(BEFILEMAKERPLUGIN_H)
 	#define BEFILEMAKERPLUGIN_H
 
-#include "FMWrapper/FMXTypes.h"
-#include "FMWrapper/FMXCalcEngine.h"
+
+#include "BEPluginGlobalDefines.h"
+
 
 #include <vector>
 

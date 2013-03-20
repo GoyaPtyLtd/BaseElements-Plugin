@@ -13,9 +13,6 @@
 #if !defined(BEPLUGINUTILITIES_H)
 	#define BEPLUGINUTILITIES_H
 
-#include "FMWrapper/FMXTypes.h"
-#include "FMWrapper/FMXText.h"
-#include "FMWrapper/FMXCalcEngine.h"
 
 #include "BEPluginGlobalDefines.h"
 

@@ -30,10 +30,6 @@
 #endif 
 
 
-#include "FMWrapper/FMXBinaryData.h"
-#include "FMWrapper/FMXData.h"
-#include "FMWrapper/FMXFixPt.h"
-
 #include "boost/format.hpp"
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"

@@ -11,13 +11,7 @@
 #if !defined(BESQLCOMMAND_H)
 #define BESQLCOMMAND_H
 
-#include "FMWrapper/FMXExtern.h"
-#include "FMWrapper/FMXTypes.h"
-#include "FMWrapper/FMXText.h"
-#include "FMWrapper/FMXFixPt.h"
-#include "FMWrapper/FMXData.h"
-#include "FMWrapper/FMXBinaryData.h"
-#include "FMWrapper/FMXCalcEngine.h"
+#include "BEPluginGlobalDefines.h"
 
 #include <string>
 

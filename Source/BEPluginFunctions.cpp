@@ -42,10 +42,6 @@
 
 #endif
 
-#include "FMWrapper/FMXFixPt.h"
-#include "FMWrapper/FMXData.h"
-#include "FMWrapper/FMXBinaryData.h"
-#include "FMWrapper/FMXCalcEngine.h"
 
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"

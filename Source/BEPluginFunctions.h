@@ -14,11 +14,6 @@
 	#define BEPLUGINFUNCTIONS_H
 
 
-#include "FMWrapper/FMXExtern.h"
-#include "FMWrapper/FMXTypes.h"
-#include "FMWrapper/FMXText.h"
-
-
 #include "BEPluginGlobalDefines.h"
 #include "BEPluginUtilities.h"
 #include "BESQLCommand.h"

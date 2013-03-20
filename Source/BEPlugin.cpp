@@ -45,9 +45,6 @@
 #include "BEFileMakerPlugin.h"
 #include "BESQLCommand.h"
 
-#include "FMWrapper/FMXData.h"
-
-#include "BESQLCommand.h"
 
 using namespace fmx;
 
