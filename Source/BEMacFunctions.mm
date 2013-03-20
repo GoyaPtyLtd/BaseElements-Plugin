@@ -82,7 +82,7 @@ WStringAutoPtr ClipboardFormats ( void )
 	
 	for ( NSString *type in types ) {
 		[formats appendString: type];
-		[formats appendString: @"\r"];
+		[formats appendString: @FILEMAKER_END_OF_LINE];
 	}
 	
 	[types release];

@@ -561,7 +561,7 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 		
 		TextAutoPtr list_of_files;
 		TextAutoPtr end_of_line;
-		end_of_line->Assign ( "\r" );
+		end_of_line->Assign ( FILEMAKER_END_OF_LINE );
 
 		WStringAutoPtr directory = ParameterAsWideString ( parameters, 0 );
 
@@ -1476,9 +1476,9 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 				const unsigned long number_of_parameters = parameters.Size();
 				
 				if ( number_of_parameters == 3 ) {
-					response = oauth->get_request_key() + "\r" + oauth->get_request_secret();
+					response = oauth->get_request_key() + FILEMAKER_END_OF_LINE + oauth->get_request_secret();
 				} else {
-					response = oauth->get_access_key() + "\r" + oauth->get_access_secret();
+					response = oauth->get_access_key() + FILEMAKER_END_OF_LINE + oauth->get_access_secret();
 				}
 				
 				g_oauth = oauth; // must assign after the authorisation request otherwise BECurl will try and use g_oauth
