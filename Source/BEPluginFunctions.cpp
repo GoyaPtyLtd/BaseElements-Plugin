@@ -1515,9 +1515,9 @@ FMX_PROC(errcode) BE_Values_Unique ( short /* funcId */, const ExprEnv& /* envir
 		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
 
 		auto_ptr<BEValueList> values ( new BEValueList ( *value_list ) );
-		string response = values->unique();
+		string unique_values = values->unique();
 		
-		SetResult ( response, results );
+		SetResult ( unique_values, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1542,9 +1542,9 @@ FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* en
 		
 		auto_ptr<BEValueList> values ( new BEValueList ( *value_list ) );
 		auto_ptr<BEValueList> filter ( new BEValueList ( *filter_out ) );
-		string response = values->filter_out ( filter );
+		string filtered_values = values->filter_out ( filter );
 				
-		SetResult ( response, results );
+		SetResult ( filtered_values, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1568,9 +1568,9 @@ FMX_PROC(errcode) BE_Values_Union ( short /* funcId */, const ExprEnv& /* enviro
 		
 		auto_ptr<BEValueList> list_a_values ( new BEValueList ( *list_a ) );
 		auto_ptr<BEValueList> list_b_values ( new BEValueList ( *list_b ) );
-		string response = list_a_values->list_union ( list_b_values );
+		string values_in_both_lists = list_a_values->list_union ( list_b_values );
 		
-		SetResult ( response, results );
+		SetResult ( values_in_both_lists, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
@@ -1592,9 +1592,9 @@ FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environ
 		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
 		
 		auto_ptr<BEValueList> values ( new BEValueList ( *value_list ) );
-		string response = values->sort();
+		string sorted_values = values->sort();
 		
-		SetResult ( response, results );
+		SetResult ( sorted_values, results );
 		
 	} catch ( bad_alloc& e ) {
 		error = kLowMemoryError;
