@@ -11,23 +11,12 @@
 
 
 #include "BEPluginGlobalDefines.h"
-#include "BEPluginFunctions.h"
-#include "BEXSLT.h"
-#include "BEWStringVector.h"
-#include "BECurl.h"
-#include "BEMessageDigest.h"
-#include "BEFileSystem.h"
-#include "BEShell.h"
-#include "BEZlib.h"
-#include "BESQLCommand.h"
-#include "BEXMLReader.h"
-#include "BETime.h"
-#include "BEJSON.h"
-#include "BEOAuth.h"
-#include "BEValueList.h"
 
 
 #if defined(FMX_WIN_TARGET)
+
+	// boost 1.53 breaks without this
+	#define NOMINMAX
 
 	#include "windows.h"
 	#include <locale.h>
@@ -42,6 +31,22 @@
 	#include "BEMacFunctions.h"
 
 #endif
+
+
+#include "BEPluginFunctions.h"
+#include "BEXSLT.h"
+#include "BEWStringVector.h"
+#include "BECurl.h"
+#include "BEMessageDigest.h"
+#include "BEFileSystem.h"
+#include "BEShell.h"
+#include "BEZlib.h"
+#include "BESQLCommand.h"
+#include "BEXMLReader.h"
+#include "BETime.h"
+#include "BEJSON.h"
+#include "BEOAuth.h"
+#include "BEValueList.h"
 
 
 #include "boost/filesystem.hpp"
@@ -1056,7 +1061,7 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 		}
 
 		// decode it...
-		vector<char> data ( base64_binary ( text->begin() ), base64_binary ( --text->end() ) );
+		vector<char> data ( base64_binary ( text->begin() ), base64_binary ( text->end() ) );
 		if ( filename->empty() ) {
 			SetResult ( data, results );
 		} else {

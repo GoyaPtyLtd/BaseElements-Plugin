@@ -31,11 +31,11 @@ Boost is available from
 
 	http://www.boost.org/
 
-Note: v2.0 of the plug-in requires Boost 1.51_0 (or later).
+Note: v2.0 of the plug-in requires Boost 1.53_0 (or later).
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_51_0
+	cd boost_1_53_0
 	./bootstrap.sh
 	./b2 architecture=x86 address-model=32_64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time
 
@@ -47,6 +47,7 @@ for for further information on compiling the Boost libraries.
 
 The boost headers must be placed in the Headers directory and the
 
+	bin.v2/libs/date_time/build/darwin-4.2.1/release/address-model-32_64/architecture-x86/link-static/runtime-link-static/threading-multi/libboost_date_time.a
 	bin.v2/libs/filesystem/build/darwin-4.2.1/release/address-model-32_64/architecture-x86/link-static/runtime-link-static/threading-multi/libboost_filesystem.a
 	bin.v2/libs/system/build/darwin-4.2.1/release/address-model-32_64/architecture-x86/link-static/runtime-link-static/threading-multi/libboost_system.a
 	bin.v2/libs/thread/build/darwin-4.2.1/release/address-model-32_64/architecture-x86/link-static/runtime-link-static/threading-multi/libboost_thread.a
@@ -126,7 +127,7 @@ The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 
-Note: v2.0 of the plug-in requires Boost 1.51_0 (or later).
+Note: v2.0 of the plug-in requires Boost 1.53_0 (or later).
 
 See
 
@@ -134,46 +135,46 @@ See
 
 for instructions on compiling the Boost libraries. From the command prompt try
 
-	cd boost_1_51_0
+	cd boost_1_53_0
 	bootstrap.bat
-	b2 link=static runtime-link=static --with-thread --with-filesystem --with-date_time
+	b2 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono
 
 and for 64-bit support
 
-	b2 address-model=64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time
+	b2 address-model=64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono
 
 
 The boost headers must be placed in the Headers directory and for 32-bit builds copy
 
-	bin.v2\libs\chrono\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-s-1_51.lib
-	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_51.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_51.lib
-	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_51.lib
-	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_51.lib
+	bin.v2\libs\chrono\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-s-1_53.lib
+	bin.v2\libs\date_time\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_53.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_53.lib
+	bin.v2\libs\thread\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_53.lib
+	bin.v2\libs\system\build\msvc-10.0\release\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_53.lib
 
 into the Libraries directory. For debug builds also copy
 
-	bin.v2\libs\chrono\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-sgd-1_51.lib
-	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_51.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_51.lib
-	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_51.lib
-	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_51.lib
+	bin.v2\libs\chrono\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-sgd-1_53.lib
+	bin.v2\libs\date_time\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_53.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_53.lib
+	bin.v2\libs\thread\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_53.lib
+	bin.v2\libs\system\build\msvc-10.0\debug\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_53.lib
 
 For 64-bit builds copy
 
-	bin.v2\libs\chrono\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-s-1_51.lib
-	bin.v2\libs\date_time\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_51.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_51.lib
-	bin.v2\libs\thread\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_51.lib
-	bin.v2\libs\system\build\msvc-10.0\release\laddress-model-64\ink-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_51.lib
+	bin.v2\libs\chrono\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-s-1_53.lib
+	bin.v2\libs\date_time\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-s-1_53.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-s-1_53.lib
+	bin.v2\libs\thread\build\msvc-10.0\release\address-model-64\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-s-1_53.lib
+	bin.v2\libs\system\build\msvc-10.0\release\laddress-model-64\ink-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-s-1_53.lib
 
 into the Libraries\x86 directory. For debug builds also copy
 
-	bin.v2\libs\chrono\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-sgd-1_51.lib
-	bin.v2\libs\date_time\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_51.lib
-	bin.v2\libs\filesystem\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_51.lib
-	bin.v2\libs\thread\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_51.lib
-	bin.v2\libs\system\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_51.lib
+	bin.v2\libs\chrono\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_chrono-vc100-mt-sgd-1_53.lib
+	bin.v2\libs\date_time\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_date_time-vc100-mt-sgd-1_53.lib
+	bin.v2\libs\filesystem\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_filesystem-vc100-mt-sgd-1_53.lib
+	bin.v2\libs\thread\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_thread-vc100-mt-sgd-1_53.lib
+	bin.v2\libs\system\build\msvc-10.0\debug\address-model-64\link-static\runtime-link-static\threading-multi\libboost_system-vc100-mt-sgd-1_53.lib
 
 
 =======================================================================

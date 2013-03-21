@@ -49,6 +49,7 @@
 		4DDA52EA16D355DA00E10827 /* libexslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E016D3553200E10827 /* libexslt.dylib */; };
 		4DDA52EC16D355F100E10827 /* libcharset.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52EB16D355F100E10827 /* libcharset.dylib */; };
 		4DDBA8B7164386A900CC6FD7 /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
+		4DEB348816FA7A7B004AD91C /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB348716FA7A7B004AD91C /* libboost_date_time.a */; };
 		C7DEDF3807E10CBC002283F3 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */; };
 /* End PBXBuildFile section */
 
@@ -146,6 +147,7 @@
 		4DDA52EB16D355F100E10827 /* libcharset.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcharset.dylib; path = usr/lib/libcharset.dylib; sourceTree = SDKROOT; };
 		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
 		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
+		4DEB348716FA7A7B004AD91C /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../Libraries/libboost_date_time.a; sourceTree = "<group>"; };
 		4DF3617A15EDE74F003A0CB9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		4DF3617C15EDE761003A0CB9 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcurl.dylib; sourceTree = DEVELOPER_DIR; };
 		4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcrypto.dylib; sourceTree = DEVELOPER_DIR; };
@@ -175,6 +177,7 @@
 				4D9E2B0C118A9F4A00EC9352 /* libboost_system.a in Frameworks */,
 				4D8BA595134579BD003A90B5 /* libboost_thread.a in Frameworks */,
 				4D13006516DADAE60075FE0C /* liboauth.a in Frameworks */,
+				4DEB348816FA7A7B004AD91C /* libboost_date_time.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +199,7 @@
 			children = (
 				4D13006416DADAE60075FE0C /* liboauth.a */,
 				4D76701E16CDC17A00010A75 /* libjansson.a */,
+				4DEB348716FA7A7B004AD91C /* libboost_date_time.a */,
 				4D9EEE7F118A8E9C00EC9352 /* libboost_filesystem.a */,
 				4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */,
 				4D8BA594134579BD003A90B5 /* libboost_thread.a */,
