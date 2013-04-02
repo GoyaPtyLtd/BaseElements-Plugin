@@ -694,6 +694,57 @@ FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* envir
 } // BE_DisplayDialog
 
 
+
+FMX_PROC(errcode) BE_ProgressDialog ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& /* results */ )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		WStringAutoPtr title = ParameterAsWideString ( parameters, 0 );
+		WStringAutoPtr description = ParameterAsWideString ( parameters, 1 );
+		long maximum = ParameterAsLong ( parameters, 3, 0 ); // 0 == indeterminite
+		
+		// allow the user to cancel ?
+		bool can_cancel = AllowUserAbort ( environment );
+		
+		// display the progress bar
+		error = DisplayProgressDialog ( title, description, maximum, can_cancel );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_ProgressDialog
+
+
+FMX_PROC(errcode) BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		long value = ParameterAsLong ( parameters, 0, 0 );
+		WStringAutoPtr description = ParameterAsWideString ( parameters, 1 );
+		
+		error = UpdateProgressDialog ( value, description );
+		
+	} catch ( bad_alloc& e ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_ProgressDialog_Update
+
+
+
 #pragma mark -
 #pragma mark XML / XSLT
 #pragma mark -

@@ -106,6 +106,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SelectFolder, BE_SelectFolder, false, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_DisplayDialog, BE_DisplayDialog, false, 3, 5 );
 	g_be_plugin->RegisterFunction ( kBE_OpenFile, BE_OpenFile, false, 1, 1 );
+	g_be_plugin->RegisterFunction ( kBE_ProgressDialog, BE_ProgressDialog, false, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_ProgressDialog_Update, BE_ProgressDialog_Update, false, 1, 2 );
 	
 	
 	g_be_plugin->RegisterFunction ( kBE_ApplyXSLT, BE_ApplyXSLT, 3 );
@@ -176,7 +178,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Values_FilterOut, BE_Values_FilterOut, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Values_Union, BE_Values_Union, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Values_Sort, BE_Values_Sort, 1 );
-
+	
 	
 	// depreciated
 	

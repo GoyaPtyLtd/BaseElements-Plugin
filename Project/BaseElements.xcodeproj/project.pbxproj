@@ -36,6 +36,8 @@
 		4DC18345144D31C800E27CAA /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC1833E144D31C800E27CAA /* unzip.c */; };
 		4DC18346144D31C800E27CAA /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC18340144D31C800E27CAA /* zip.c */; };
 		4DD3E8FD16DD6DA300DC0070 /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
+		4DD613EF16FBAB7C00C25A3E /* ProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* ProgressDialog.xib */; };
+		4DD613F316FBBACF00C25A3E /* ProgressDialogWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */; };
 		4DD780D911FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */; };
 		4DD7824B11FFF57400CFC8B4 /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4DD78320120005AE00CFC8B4 /* BEXSLT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */; };
@@ -135,6 +137,9 @@
 		4DC18341144D31C800E27CAA /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zip.h; path = ../Source/minizip/zip.h; sourceTree = SOURCE_ROOT; };
 		4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECppUtilities.cpp; path = ../Source/BECppUtilities.cpp; sourceTree = "<group>"; };
 		4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECppUtilities.h; path = ../Source/BECppUtilities.h; sourceTree = "<group>"; };
+		4DD613EE16FBAB7C00C25A3E /* ProgressDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProgressDialog.xib; path = ../Resources/ProgressDialog.xib; sourceTree = "<group>"; };
+		4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressDialogWindowController.h; path = ../Source/ProgressDialogWindowController.h; sourceTree = "<group>"; };
+		4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressDialogWindowController.m; path = ../Source/ProgressDialogWindowController.m; sourceTree = "<group>"; };
 		4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileMakerPlugin.h; path = ../Source/BEFileMakerPlugin.h; sourceTree = "<group>"; };
 		4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileMakerPlugin.cpp; path = ../Source/BEFileMakerPlugin.cpp; sourceTree = "<group>"; };
 		4DD7831E120005AE00CFC8B4 /* BEXSLT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXSLT.h; path = ../Source/BEXSLT.h; sourceTree = "<group>"; };
@@ -283,6 +288,8 @@
 				4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */,
 				4D59DAF916F95E2300F87180 /* BEValueList.cpp */,
 				4D59DAFA16F95E2400F87180 /* BEValueList.h */,
+				4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */,
+				4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -292,6 +299,7 @@
 			children = (
 				4D7FCA5C11E9308B0047A453 /* BaseElements.strings */,
 				4D7FCA5E11E9308B0047A453 /* Info.plist */,
+				4DD613EE16FBAB7C00C25A3E /* ProgressDialog.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -375,6 +383,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DD7824B11FFF57400CFC8B4 /* BaseElements.strings in Resources */,
+				4DD613EF16FBAB7C00C25A3E /* ProgressDialog.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +420,7 @@
 				4D13006816DADD8A0075FE0C /* BEOAuth.cpp in Sources */,
 				4DD3E8FD16DD6DA300DC0070 /* BECppUtilities.cpp in Sources */,
 				4D59DAFB16F95E2500F87180 /* BEValueList.cpp in Sources */,
+				4DD613F316FBBACF00C25A3E /* ProgressDialogWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

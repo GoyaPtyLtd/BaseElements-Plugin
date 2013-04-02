@@ -13,6 +13,7 @@
 #if !defined(BEMACFUNCTIONS_H)
 	#define BEMACFUNCTIONS_H
 
+#include "BEPluginGlobalDefines.h"
 #include "BEPluginUtilities.h"
 
 #include <string>
@@ -29,6 +30,12 @@ WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
 WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
 
 int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr ok_button, WStringAutoPtr cancel_button, WStringAutoPtr alternate_button );
+
+
+// Progress Dialog
+
+fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAutoPtr description, const long maximum, const bool can_cancel );
+fmx::errcode UpdateProgressDialog ( const long value, const WStringAutoPtr description );
 
 
 // user preferences

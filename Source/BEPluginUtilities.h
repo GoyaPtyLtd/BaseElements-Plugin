@@ -56,6 +56,8 @@ fmx::errcode NoError ( void );
 fmx::errcode MapError ( const fmx::errcode error = kNoError, const bool map = false );
 
 
+bool AllowUserAbort ( const fmx::ExprEnv& environment );
+
 // extract localised strings from the plug-in resources
 
 void Do_GetString ( unsigned long whichString, FMX_PtrType winLangID, FMX_PtrType resultsize, FMX_Unichar* string );

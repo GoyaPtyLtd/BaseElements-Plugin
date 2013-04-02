@@ -455,6 +455,20 @@ errcode MapError ( const errcode error, const bool map )
 #pragma mark Other
 #pragma mark -
 
+
+bool AllowUserAbort ( const ExprEnv& environment )
+{
+	TextAutoPtr command;
+	command->Assign ( "Get ( AllowAbortState )" );
+	
+	DataAutoPtr reply;
+	environment.Evaluate ( *command, *reply );
+	bool allow_abort = reply->GetAsBoolean();
+
+	return allow_abort;
+}
+
+
 /*
  The following functions are modifications of ones included in the Example plug-in
  shipped by FileMaker Inc. with the External Plug-In API on the CDs for 

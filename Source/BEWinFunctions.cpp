@@ -11,11 +11,11 @@
 
 
 #include "BEWinFunctions.h"
-#include "windows.h"
-#include "Shlwapi.h"
-#include "ShlObj.h"
 
-#include "BEPluginGlobalDefines.h"
+#include <windows.h>
+#include <Shlwapi.h>
+#include <ShlObj.h>
+#include <commctrl.h>
 
 
 bool IsFileMakerClipboardType ( const wstring atype );
@@ -31,6 +31,20 @@ HHOOK g_window_hook;
 wstring g_button1_name;
 wstring g_button2_name;
 wstring g_button3_name;
+
+// globals for the progress dialog
+
+#ifndef PROGDLG_MARQUEEPROGRESS
+#define PROGDLG_MARQUEEPROGRESS  0x00000020
+#endif
+
+#ifndef PROGDLG_NOCANCEL
+#define PROGDLG_NOCANCEL         0x00000040
+#endif
+
+IProgressDialog * progress_dialog;
+long progress_dialog_maximum;
+
 
 // clipbaord functions
 
@@ -337,6 +351,81 @@ LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam )
 	return result;
 
 } // CBTProc
+
+
+
+#pragma mark -
+#pragma mark Progress Dialog
+#pragma mark -
+
+
+fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAutoPtr description, const long maximum, const bool can_cancel )
+{
+	fmx::errcode error = kNoError;
+
+	if ( progress_dialog ) {
+		return error;
+	}
+
+	progress_dialog_maximum = maximum;
+
+	HWND parent_window = GetActiveWindow ( );
+	error = CoCreateInstance ( CLSID_ProgressDialog, NULL, CLSCTX_INPROC_SERVER, IID_IProgressDialog, (void**)&progress_dialog );
+
+	if ( error == S_OK ) {
+		error = progress_dialog->SetTitle ( title->c_str () );
+	}
+
+	if ( error == S_OK ) {
+		progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
+	}
+
+	DWORD flags = PROGDLG_NORMAL;
+	if ( !can_cancel ) {
+		flags |= PROGDLG_NOCANCEL;
+	}
+
+	if ( 0 == maximum ) {
+		flags |= PROGDLG_MARQUEEPROGRESS;
+	}
+
+	if ( error == S_OK ) {
+		error = progress_dialog->StartProgressDialog ( parent_window, NULL, flags, NULL );
+	}
+
+	return error;
+
+} // DisplayProgressDialog
+
+
+fmx::errcode UpdateProgressDialog ( const long value, const WStringAutoPtr description )
+{
+	fmx::errcode error = kNoError;
+
+	if ( progress_dialog->HasUserCancelled() || value > progress_dialog_maximum ) {
+
+		progress_dialog->StopProgressDialog();
+		progress_dialog->Release();
+        progress_dialog = NULL;
+
+		if ( progress_dialog->HasUserCancelled() ) {
+			error = kUserCancelledError;
+		}
+
+	} else {
+
+		if ( !description->empty () ) {
+			error = progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
+		}
+
+		if ( error == S_OK ) {
+			error = progress_dialog->SetProgress64 ( value, progress_dialog_maximum );
+		}
+	}
+
+	return error;
+}
+
 
 
 #pragma mark -

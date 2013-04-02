@@ -50,6 +50,9 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 FMX_PROC(errcode) BE_SelectFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_SelectFolder ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 FMX_PROC(errcode) BE_DisplayDialog ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
+FMX_PROC(errcode) BE_ProgressDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+FMX_PROC(errcode) BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+
 
 FMX_PROC(errcode) BE_ApplyXSLT ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
 
@@ -102,7 +105,6 @@ FMX_PROC(errcode) BE_Values_Unique ( short /* funcId */, const ExprEnv& /* envir
 FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_Values_Union ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
 FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-
 
 
 // DEPRECIATED as of FM12 (which has native functions) ... will be removed in plug-in version 3.0

@@ -29,6 +29,13 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
 
 int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr button1, WStringAutoPtr button2, WStringAutoPtr button3 );
 
+
+// Progress Dialog
+
+fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAutoPtr description, const long maximum, const bool can_cancel );
+fmx::errcode UpdateProgressDialog ( const long value, const WStringAutoPtr description );
+
+
 // user preferences
 
 bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain );

@@ -59,6 +59,11 @@
 
 "156" = "BE_SaveURLToFile ( url ; path {; username ; password } )";
 
+
+"157" = "BE_ProgressDialog ( title ; description ; maximum )";
+"158" = "BE_ProgressDialog_Update ( number {; description } )";
+
+
 "160" = "BE_SetPreference ( key ; value {; domain } )";
 "161" = "BE_GetPreference ( key {; domain } )";
 

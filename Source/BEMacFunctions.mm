@@ -230,6 +230,56 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 
 
 #pragma mark -
+#pragma mark Progress Dialog
+#pragma mark -
+
+
+#import "ProgressDialogWindowController.h"
+
+
+ProgressDialogWindowController* progressDialog;
+
+
+fmx::errcode DisplayProgressDialog ( WStringAutoPtr title, WStringAutoPtr description, const long maximum, const bool can_cancel )
+{
+	
+	if ( [progressDialog shouldRestart] ) {
+		[progressDialog dealloc];
+		progressDialog = nil;
+	}
+	
+	if (progressDialog == nil) {
+
+		progressDialog = [[ProgressDialogWindowController alloc] initWithWindowNibName: @"ProgressDialog"];
+
+		NSString * title_string = NSStringFromWStringAutoPtr ( title );
+		NSString * description_string = NSStringFromWStringAutoPtr ( description );
+		[progressDialog show: title_string description: description_string maximumValue: maximum canCancel: can_cancel];
+		
+	}
+
+	return kNoError;
+}
+
+
+fmx::errcode UpdateProgressDialog ( const long value, WStringAutoPtr description )
+{
+	NSString * description_string;
+	
+	if ( !description->empty() ) {
+		description_string = NSStringFromWStringAutoPtr ( description );
+	} else {
+		description_string = NULL;
+	}
+
+	fmx::errcode error = [progressDialog update: value description: description_string];
+
+	return error;
+}
+
+
+
+#pragma mark -
 #pragma mark User Preferences
 #pragma mark -
 

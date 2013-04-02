@@ -40,6 +40,8 @@
 #define FILEMAKER_EPOCH_OFFSET 62135596800
 
 
+#ifdef __cplusplus
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wall"
 
@@ -59,19 +61,22 @@
 
 #include "BECppUtilities.h"
 
-
 extern fmx::errcode g_last_error;
+
+
+#endif // __cplusplus
 
 
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"2.0.0"
-#define	AUTO_UPDATE_VERSION L"02000008"
+#define	AUTO_UPDATE_VERSION L"02000009"
 #define VERSION_STRING "2.1a3"
 
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
+#define BUNDLE_IDENTIFIER "au.com.goya.baseelements"
 
 
 #define	TEMPORARY_FILE_SUFFIX L".be4.tmp"
@@ -117,6 +122,8 @@ enum functions {
 	kBE_MessageDigest = 154,
 	kBE_GetLastDDLError = 155,
 	kBE_SaveURLToFile = 156,
+	kBE_ProgressDialog = 157,
+	kBE_ProgressDialog_Update = 158,
 	kBE_SetPreference = 160,
 	kBE_GetPreference = 161,
 	kBE_Unzip = 170,
@@ -163,6 +170,7 @@ enum dialog_buttons {
 enum errors {
 	kErrorUnknown = -1,
 	kNoError = 0,
+	kUserCancelledError = 1,
 	kNoSuchFileOrDirectoryError = 2,
 	kLowMemoryError = 7,
 	kRequestedDataIsMissingError = 10,
