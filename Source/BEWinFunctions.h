@@ -18,7 +18,6 @@
 
 #include <string>
 
-using namespace std;
 
 WStringAutoPtr ClipboardFormats ( void );
 StringAutoPtr ClipboardData ( WStringAutoPtr atype );
@@ -49,8 +48,8 @@ bool OpenFile ( WStringAutoPtr file );
 
 // utilities
 
-wstring utf8toutf16 ( const string& instr );
-string utf16ToUTF8 ( const wstring& s );
-//string test ( string x ) { return x; }
+std::wstring utf8toutf16 ( const std::string& instr );
+std::string utf16ToUTF8 ( const std::wstring& s );
+
 
 #endif // BEWINFUNCTIONS_H

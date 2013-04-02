@@ -18,10 +18,6 @@
 #include "boost/filesystem.hpp"
 
 
-using namespace std;
-
-
-
 #pragma mark -
 #pragma mark Constructors
 #pragma mark -

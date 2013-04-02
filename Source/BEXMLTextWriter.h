@@ -28,15 +28,15 @@ class BEXMLTextWriter : public BEXMLReaderInterface {
 	
 public:
 	
-	BEXMLTextWriter ( const string path );
+	BEXMLTextWriter ( const std::string path );
 	~BEXMLTextWriter();
 
-	void start_element ( const string name );
-	void attribute ( const string name, const string value );
+	void start_element ( const std::string name );
+	void attribute ( const std::string name, const std::string value );
 	void end_element ( );
-	void write_string ( const string to_write );
-	void write_cdata ( const string to_write );
-	void write_raw ( const string to_write );
+	void write_string ( const std::string to_write );
+	void write_cdata ( const std::string to_write );
+	void write_raw ( const std::string to_write );
 
 protected:
 	

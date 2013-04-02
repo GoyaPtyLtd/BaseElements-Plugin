@@ -46,7 +46,9 @@
 #include "BESQLCommand.h"
 
 
+using namespace std;
 using namespace fmx;
+
 
 // the "main" file for the plug-in
 

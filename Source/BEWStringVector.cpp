@@ -16,6 +16,10 @@
 #include <algorithm>
 
 
+using namespace std;
+using namespace fmx;
+
+
 void BEWStringVector::PushBack ( wstring item )
 {
 	// only add an item if it's not already present

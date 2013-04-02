@@ -18,6 +18,9 @@
 #include <commctrl.h>
 
 
+using namespace std;
+
+
 bool IsFileMakerClipboardType ( const wstring atype );
 UINT32 ClipboardOffset ( const wstring atype );
 

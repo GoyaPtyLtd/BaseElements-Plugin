@@ -19,9 +19,6 @@
 #include <string>
 
 
-using namespace std;
-
-
 WStringAutoPtr ClipboardFormats ( void );
 StringAutoPtr ClipboardData ( WStringAutoPtr atype );
 bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype );

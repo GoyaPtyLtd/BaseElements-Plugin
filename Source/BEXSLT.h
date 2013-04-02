@@ -17,13 +17,10 @@
 #include "BEPluginUtilities.h"
 
 
-using namespace fmx;
+fmx::TextAutoPtr ApplyXSLT ( StringAutoPtr xml_path, StringAutoPtr xslt, StringAutoPtr csv_path );
 
-
-TextAutoPtr ApplyXSLT ( StringAutoPtr xml_path, StringAutoPtr xslt, StringAutoPtr csv_path );
-
-TextAutoPtr ApplyXSLTInMemory (StringAutoPtr xml, StringAutoPtr xslt );
-TextAutoPtr ApplyXPath ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr nsList );
-TextAutoPtr ApplyXPathAll ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr nsList );
+fmx::TextAutoPtr ApplyXSLTInMemory (StringAutoPtr xml, StringAutoPtr xslt );
+fmx::TextAutoPtr ApplyXPath ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr nsList );
+fmx::TextAutoPtr ApplyXPathAll ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr nsList );
 
 #endif // BEXSLT_H

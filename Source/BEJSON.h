@@ -30,7 +30,7 @@ enum {
 
 
 
-class BEJSON_Exception : public runtime_error {
+class BEJSON_Exception : public std::runtime_error {
 	
 public:
 	BEJSON_Exception ( const int _code ) : runtime_error ( "BEJSON_Exception" ) { error_code = _code; }
@@ -40,15 +40,15 @@ public:
 		return error_code;
 	}
 	
-	virtual const string description() const throw() {
+	virtual const std::string description() const throw() {
 		
 		if ( error_code == kBE_JSON_LoadDocumentError ) {
 			
-			ostringstream error_description;
-			error_description << "Error: " << json_error.text << endl;
-			error_description << "Line: " << json_error.line << endl;
-			error_description << "Column: " << json_error.column << endl;
-			error_description << "Position: " << json_error.position << endl;
+			std::ostringstream error_description;
+			error_description << "Error: " << json_error.text << std::endl;
+			error_description << "Line: " << json_error.line << std::endl;
+			error_description << "Column: " << json_error.column << std::endl;
+			error_description << "Position: " << json_error.position << std::endl;
 //			error_description << "Source: " << json_error.source << endl;	//	is always <buffer>
 
 			return error_description.str();

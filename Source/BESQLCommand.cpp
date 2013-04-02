@@ -14,6 +14,10 @@
 #include <iostream>
 
 
+using namespace std;
+using namespace fmx;
+
+
 extern errcode g_last_ddl_error;
 BESQLCommandAutoPtr g_ddl_command;
 

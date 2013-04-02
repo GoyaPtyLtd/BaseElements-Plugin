@@ -36,6 +36,10 @@
 #include <iostream>
 
 
+using namespace std;
+using namespace fmx;
+
+
 TextAutoPtr ReportXSLTError ( const xmlChar * url );
 StringAutoPtr ConvertFileMakerEOLs ( StringAutoPtr in );
 void InitialiseLibXSLT ( void );

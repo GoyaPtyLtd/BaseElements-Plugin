@@ -165,7 +165,7 @@ long ExtractCurrentFile ( path parent, unzFile uf )
 
 	if ( error == UNZ_OK ) {
 
-		string macos = "__MACOSX";
+		std::string macos = "__MACOSX";
 		if ( file.string().compare ( 0, macos.length(), macos ) == 0 ) {
 			return kNoError;
 		}
@@ -185,7 +185,7 @@ long ExtractCurrentFile ( path parent, unzFile uf )
 
 				char * buffer = new char [ WRITEBUFFERSIZE ];
 				
-				boost::filesystem::ofstream output_file ( to_write, ios_base::binary );
+				boost::filesystem::ofstream output_file ( to_write, std::ios_base::binary );
 				output_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );			
 				
 				long bytes_read = 0;
@@ -272,7 +272,7 @@ int AddFileToArchive ( const path filename, zipFile zf, const path base )
 	zip_fileinfo zi;
 	FileTime ( filename, &zi );
 	
-	string relative_path = NaiveUncomplete ( filename, base ).string();
+	std::string relative_path = NaiveUncomplete ( filename, base ).string();
 	int compression_level = Z_BEST_COMPRESSION;
 	const char* password = NULL;
 	unsigned long crcFile = 0;
@@ -303,10 +303,10 @@ int AddFileToArchive ( const path filename, zipFile zf, const path base )
 
 		try {
 			
-			boost::filesystem::ifstream input_file ( filename, ios_base::in | ios_base::binary );
+			boost::filesystem::ifstream input_file ( filename, std::ios_base::in | std::ios_base::binary );
 			input_file.exceptions ( boost::filesystem::ifstream::badbit );
 
-			streamsize size_read = 0;
+			std::streamsize size_read = 0;
 							
 			do {
 				
@@ -383,7 +383,7 @@ long Zip ( StringAutoPtr filename )
 
 	if ( exists ( file ) ) {
 
-		string archive_name = *filename + ".zip";
+		std::string archive_name = *filename + ".zip";
 		zipFile zf;
 		
 		bool dont_overwrite = false;

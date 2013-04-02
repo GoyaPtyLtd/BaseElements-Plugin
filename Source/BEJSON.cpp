@@ -33,7 +33,7 @@ void BEJSON::json_path_query ( const StringAutoPtr json_path, fmx::Data& results
 		
 	if ( node ) {
 
-		StringAutoPtr string_result ( new string );
+		StringAutoPtr string_result ( new std::string );
 			
 		switch ( json_typeof ( node ) ) {
 				

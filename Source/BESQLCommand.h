@@ -16,33 +16,29 @@
 #include <string>
 
 
-using namespace std;
-using namespace fmx;
-
-
 class BESQLCommand
 {
 	
 public:
 	
-	BESQLCommand ( const TextAutoPtr expression, const TextAutoPtr filename );
+	BESQLCommand ( const fmx::TextAutoPtr expression, const fmx::TextAutoPtr filename );
 	
 	void execute ( void );
-	void execute ( const ExprEnv& _environment );
-	TextAutoPtr get_text_result ( void );
+	void execute ( const fmx::ExprEnv& _environment );
+	fmx::TextAutoPtr get_text_result ( void );
 	
-	void set_column_separator ( const TextAutoPtr new_column_separator );
-	void set_row_separator ( const TextAutoPtr new_row_separator );
+	void set_column_separator ( const fmx::TextAutoPtr new_column_separator );
+	void set_row_separator ( const fmx::TextAutoPtr new_row_separator );
 	
 protected:
 	
-	TextAutoPtr expression;
-	TextAutoPtr filename;
-	DataVectAutoPtr parameters;
-	RowVectAutoPtr result;
+	fmx::TextAutoPtr expression;
+	fmx::TextAutoPtr filename;
+	fmx::DataVectAutoPtr parameters;
+	fmx::RowVectAutoPtr result;
 	
-	TextAutoPtr column_separator;
-	TextAutoPtr row_separator;
+	fmx::TextAutoPtr column_separator;
+	fmx::TextAutoPtr row_separator;
 	
 	bool is_ddl_command ( void ) const;
 	
@@ -51,7 +47,7 @@ protected:
 };
 
 
-typedef auto_ptr<BESQLCommand> BESQLCommandAutoPtr;
+typedef std::auto_ptr<BESQLCommand> BESQLCommandAutoPtr;
 
 
 #endif // BESQLCOMMAND_H

@@ -37,6 +37,8 @@
 #endif
 
 
+using namespace std;
+
 
 short ExecuteShellCommand ( const string command, string& result )
 {

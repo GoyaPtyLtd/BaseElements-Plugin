@@ -22,6 +22,8 @@
 #include <libxml/xmlreader.h>
 
 
+using namespace std;
+
 
 // Partial wrapper for the libxml2 XMLTextReader interface to simplify error handling
 

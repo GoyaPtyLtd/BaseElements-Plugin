@@ -38,7 +38,7 @@ StringAutoPtr MD5 ( StringAutoPtr message )
     output[ 2 * md5_length ] = 0;
 	
 
-	StringAutoPtr digest ( new string ( output ) );
+	StringAutoPtr digest ( new std::string ( output ) );
 	
 	return digest;
 	
@@ -64,7 +64,7 @@ StringAutoPtr SHA256 ( StringAutoPtr message )
     output [ size ] = 0;
 	
 	
-	StringAutoPtr digest ( new string ( output ) );
+	StringAutoPtr digest ( new std::string ( output ) );
 	
 	return digest;
 

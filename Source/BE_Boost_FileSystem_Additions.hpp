@@ -15,13 +15,12 @@
 
 #include <boost/filesystem.hpp>
 
-using namespace boost::filesystem;
 
-path NaiveUncomplete ( const path file, const path base );
-
+boost::filesystem::path NaiveUncomplete ( const boost::filesystem::path file, const boost::filesystem::path base );
 
 
-path NaiveUncomplete ( const path file, const path base )
+
+boost::filesystem::path NaiveUncomplete ( const boost::filesystem::path file, const boost::filesystem::path base )
 {
     if ( file.has_root_path() ) {
 		
@@ -37,7 +36,7 @@ path NaiveUncomplete ( const path file, const path base )
             throw "cannot uncomplete a path relative path from a rooted base";
         } else {
 
-            typedef path::const_iterator path_iterator;
+            typedef boost::filesystem::path::const_iterator path_iterator;
             path_iterator path_it = file.begin();
             path_iterator base_it = base.begin();
 			
@@ -51,7 +50,7 @@ path NaiveUncomplete ( const path file, const path base )
             
 			}
             
-			path result;
+			boost::filesystem::path result;
             for ( ; base_it != base.end(); ++base_it ) {
                 result /= "..";
             }

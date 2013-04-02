@@ -16,6 +16,9 @@
 #include "oauth.h"
 
 
+using namespace std;
+
+
 BEOAuth::BEOAuth ( const string key, const string secret ) {
 	
 	consumer_key = key;

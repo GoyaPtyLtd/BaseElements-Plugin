@@ -17,7 +17,7 @@
 #include "BEPluginUtilities.h"
 
 
-int StripXMLNodes ( const string input_file, const string output_file, const vector<string> node_names );
+int StripXMLNodes ( const std::string input_file, const std::string output_file, const std::vector<std::string> node_names );
 
 
 

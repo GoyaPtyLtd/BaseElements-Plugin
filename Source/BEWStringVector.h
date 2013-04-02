@@ -20,23 +20,19 @@
 #include <vector>
 
 
-using namespace std;
-using namespace fmx;
-
-
 // A container that preserves instertion order but disallows duplicate entries.
 
 class BEWStringVector {
 	
-	vector<wstring> contents;
+	std::vector<std::wstring> contents;
 	
 public:
 	
 	// add an item to the end of the vector, only unique items are added
-	void PushBack ( wstring );
+	void PushBack ( std::wstring );
 	
 	// compile a FileMaker "value list" of the contents
-	TextAutoPtr AsValueList();
+	fmx::TextAutoPtr AsValueList();
 	
 };
 

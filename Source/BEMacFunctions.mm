@@ -21,6 +21,10 @@
 	#define ENCODING kCFStringEncodingUTF32LE
 #endif
 
+
+using namespace std;
+
+
 const NSStringEncoding kEncoding_wchar_t = CFStringConvertEncodingToNSStringEncoding ( ENCODING );
 
 

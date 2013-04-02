@@ -17,11 +17,7 @@
 #include "boost/filesystem.hpp"
 
 
-using namespace boost::filesystem;
-
-
-bool recursive_directory_copy ( const path & from, const path & to  );
-
+bool recursive_directory_copy ( const boost::filesystem::path & from, const boost::filesystem::path & to  );
 
 
 #endif // BEFILESYSTEM_H

@@ -20,7 +20,7 @@
 // Parent class for a partial wrapper for the libxml2 XMLReader/XMLWriter to simplify error handling
 
 
-class BEXMLReaderInterface_Exception : public runtime_error {
+class BEXMLReaderInterface_Exception : public std::runtime_error {
 	
 public:
 	BEXMLReaderInterface_Exception ( const int _code ) : runtime_error ( "BEXMLReaderInterface_Exception" ) { error_code = _code; }

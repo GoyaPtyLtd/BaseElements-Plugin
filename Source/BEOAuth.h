@@ -30,30 +30,30 @@ class BEOAuth {
 
 	public:
 				
-		BEOAuth ( const string key, const string secret );
+	BEOAuth ( const std::string key, const std::string secret );
 		
-		int oauth_request ( const string uri, string key = "", string secret = "" );
-		int sign_url ( string& url, string& post_arguments );
+		int oauth_request ( const std::string uri, std::string key = "", std::string secret = "" );
+		int sign_url ( std::string& url, std::string& post_arguments );
 	
-		string get_request_key ( void ) { return request_key; }
-		string get_request_secret ( void ) { return request_secret; }
+		std::string get_request_key ( void ) { return request_key; }
+		std::string get_request_secret ( void ) { return request_secret; }
 
-		string get_access_key ( void ) { return access_key; }
-		string get_access_secret ( void ) { return access_secret; }
+		std::string get_access_key ( void ) { return access_key; }
+		std::string get_access_secret ( void ) { return access_secret; }
 		
 	protected:
 		
-		int parse_reply ( const string reply, string& key, string& secret );
-		string http_request ( const string url, const string post_arguments );
+		int parse_reply ( const std::string reply, std::string& key, std::string& secret );
+		std::string http_request ( const std::string url, const std::string post_arguments );
 	
-		string consumer_key;
-		string consumer_secret;
+		std::string consumer_key;
+		std::string consumer_secret;
 		
-		string request_key;
-		string request_secret;
+		std::string request_key;
+		std::string request_secret;
 
-		string access_key;
-		string access_secret;
+		std::string access_key;
+		std::string access_secret;
 
 };
 

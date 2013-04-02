@@ -18,7 +18,7 @@
 	// boost 1.53 breaks without this
 	#define NOMINMAX
 
-	#include "windows.h"
+	#include <windows.h>
 	#include <locale.h>
 
 	#include "resource.h"
@@ -63,14 +63,15 @@
 #include "boost/archive/iterators/remove_whitespace.hpp"
 
 #include "boost/date_time/posix_time/posix_time.hpp"
-#include <boost/date_time/c_local_time_adjustor.hpp>
+#include "boost/date_time/c_local_time_adjustor.hpp"
 
-#include <iconv.h>
+#include "iconv.h"
 
 #include <iostream>
 
 
 using namespace std;
+using namespace fmx;
 using namespace boost::filesystem;
 using namespace boost::archive::iterators;
 

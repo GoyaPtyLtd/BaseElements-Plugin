@@ -39,6 +39,7 @@
 #include <iconv.h>
 
 
+using namespace std;
 using namespace fmx;
 using namespace boost::filesystem;
 

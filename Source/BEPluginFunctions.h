@@ -19,97 +19,93 @@
 #include "BESQLCommand.h"
 
 
-using namespace fmx;
-
-
-
 // The following functions are registered with FileMaker as the external functions made available via the plug-in.
 
-FMX_PROC(errcode) BE_Version ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_VersionAutoUpdate ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
+FMX_PROC(fmx::errcode) BE_Version ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_VersionAutoUpdate ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
-FMX_PROC(errcode) BE_GetLastError ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* data_vect */, Data& results );
+FMX_PROC(fmx::errcode) BE_GetLastError ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* data_vect */, fmx::Data& results );
 
-FMX_PROC(errcode) BE_ClipboardFormats ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_ClipboardData ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_SetClipboardData ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
+FMX_PROC(fmx::errcode) BE_ClipboardFormats ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ClipboardData ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_SetClipboardData ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
-FMX_PROC(errcode) BE_CreateFolder ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_DeleteFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_FileExists ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_FileSize ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_ReadTextFromFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_WriteTextToFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
+FMX_PROC(fmx::errcode) BE_CreateFolder ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_DeleteFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_FileExists ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_FileSize ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ReadTextFromFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_WriteTextToFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
-FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
-
-
-FMX_PROC(errcode) BE_SelectFile ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_SelectFolder ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_DisplayDialog ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_ProgressDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+FMX_PROC(fmx::errcode) BE_MoveFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_CopyFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ListFilesInFolder ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
 
 
-FMX_PROC(errcode) BE_ApplyXSLT ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-
-FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-
-
-FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_JSON_Error_Description ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results );
-FMX_PROC(errcode) BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+FMX_PROC(fmx::errcode) BE_SelectFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_SelectFolder ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_DisplayDialog ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ProgressDialog ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ProgressDialog_Update ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
-FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+FMX_PROC(fmx::errcode) BE_ApplyXSLT ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+
+FMX_PROC(fmx::errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_XPath ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_XPathAll ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_StripXMLNodes ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
-FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_Base64_Encode ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+FMX_PROC(fmx::errcode) BE_JSONPath ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_JSON_Error_Description ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* parameters */, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_JSON_ArraySize ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
-FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_HTTP_DELETE ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+FMX_PROC(fmx::errcode) BE_SetPreference ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_GetPreference ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
-FMX_PROC(errcode) BE_ExtractScriptVariables ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& environment, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_TimeFunctions ( const short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results );
-FMX_PROC(errcode) BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_OpenURL ( short funcId, const ExprEnv& environment, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_MessageDigest ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+FMX_PROC(fmx::errcode) BE_Unzip ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_Zip ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_Base64_Decode ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_Base64_Encode ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_SetTextEncoding ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
-FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results );
+FMX_PROC(fmx::errcode) BE_GetURL ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_SaveURLToFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_HTTP_POST_OR_PUT ( short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_HTTP_DELETE ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_HTTP_Response_Code ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_HTTP_Response_Headers ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
-FMX_PROC(errcode) BE_Values_Unique ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_Values_Union ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
-FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results );
+
+FMX_PROC(fmx::errcode) BE_ExtractScriptVariables ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_NumericConstants ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_TimeFunctions ( const short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* parameters */, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ExecuteSystemCommand ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_OpenURL ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_OpenFile ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ExecuteScript ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_MessageDigest ( short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+
+
+FMX_PROC(fmx::errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+
+FMX_PROC(fmx::errcode) BE_Values_Unique ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_Values_FilterOut ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_Values_Union ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_Values_Sort ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 // DEPRECIATED as of FM12 (which has native functions) ... will be removed in plug-in version 3.0
-FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& data_vect, Data& results );
-FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short function_id, const ExprEnv& environment, const DataVect& parameters, Data& results );
+FMX_PROC(fmx::errcode) BE_ExecuteShellCommand ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_FileMaker_TablesOrFields ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
  
 #endif // BEPLUGINFUNCTIONS_H

@@ -20,26 +20,22 @@
 #include <vector>
 
 
-using namespace std;
-using namespace fmx;
-
-
 // the plug-in object... register & un-register functions
 
 class BEFileMakerPlugin {
 	
-	QuadCharAutoPtr id;
-	vector<short> registered_functions;
+	fmx::QuadCharAutoPtr id;
+	std::vector<short> registered_functions;
 	
 public:
 	
-    BEFileMakerPlugin ( QuadCharAutoPtr plugin_id );
+    BEFileMakerPlugin ( fmx::QuadCharAutoPtr plugin_id );
 	~BEFileMakerPlugin();
 	
-    errcode RegisterHiddenFunction ( short function_id, ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
-    errcode RegisterFunction ( short function_id, ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
-    errcode RegisterPluginFunction ( FMX_UInt32 function_flags, short function_id, ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
-    errcode RegisterFunction ( short function_id, ExtPluginType funcion_pointer, int minumum_parameters = 0 );
+    fmx::errcode RegisterHiddenFunction ( short function_id, fmx::ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
+    fmx::errcode RegisterFunction ( short function_id, fmx::ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
+    fmx::errcode RegisterPluginFunction ( FMX_UInt32 function_flags, short function_id, fmx::ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
+    fmx::errcode RegisterFunction ( short function_id, fmx::ExtPluginType funcion_pointer, int minumum_parameters = 0 );
 
 };
 

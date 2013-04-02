@@ -23,7 +23,7 @@
 #include "curl/curl.h"
 
 
-class BECurl_Exception : public runtime_error {
+class BECurl_Exception : public std::runtime_error {
 	
 public:
 	BECurl_Exception ( const CURLcode _code ) : runtime_error ( "BECurl_Exception" ) { error_code = _code; }
@@ -39,7 +39,7 @@ public:
 };
 
 
-typedef map<string, string> CustomHeaders;
+typedef std::map<std::string, std::string> CustomHeaders;
 
 
 struct MemoryStruct {
@@ -49,60 +49,60 @@ struct MemoryStruct {
 
 
 struct host_details {
-	string host;
-	string port;
-	string username;
-	string password;
+	std::string host;
+	std::string port;
+	std::string username;
+	std::string password;
 };
 
 
-vector<char> GetURL ( const string url, const string filename = "", const string username = "", const string password = "" );
-vector<char> HTTP_POST ( const string url, const string post_parameters, const string username = "", const string password = "" );
-vector<char> HTTP_PUT ( const string url, const string post_parameters, const string username = "", const string password = "" );
-vector<char> HTTP_DELETE ( const string url, const string username = "", const string password = "" );
+std::vector<char> GetURL ( const std::string url, const std::string filename = "", const std::string username = "", const std::string password = "" );
+std::vector<char> HTTP_POST ( const std::string url, const std::string post_parameters, const std::string username = "", const std::string password = "" );
+std::vector<char> HTTP_PUT ( const std::string url, const std::string post_parameters, const std::string username = "", const std::string password = "" );
+std::vector<char> HTTP_DELETE ( const std::string url, const std::string username = "", const std::string password = "" );
 
 
 class BECurl {
 	
 public:
 	
-	BECurl ( const string download_this, const string to_file, string username, const string password, const string parameters );
+	BECurl ( const std::string download_this, const std::string to_file, std::string username, const std::string password, const std::string parameters );
 	~BECurl();
 	
-    vector<char> download ( );
-    vector<char> http_put ( );
-    vector<char> http_delete ( );
+    std::vector<char> download ( );
+    std::vector<char> http_put ( );
+    std::vector<char> http_delete ( );
 	
 	void set_parameters ( );
-	void set_username_and_password ( const string username, const string password );
+	void set_username_and_password ( const std::string username, const std::string password );
 	
 	int response_code ( ) { return http_response_code; }
-	string response_headers ( ) { return http_response_headers; }
+	std::string response_headers ( ) { return http_response_headers; }
 	void set_custom_headers ( CustomHeaders _headers ) { http_custom_headers = _headers; }
 	void set_proxy ( struct host_details proxy_server );
 	CURLcode last_error ( ) { return error; }
 	
 protected:
 	
-	string url;
+	std::string url;
 
-	string filename;
+	std::string filename;
 	FILE * upload_file;
 
-	string parameters;
+	std::string parameters;
 	
 	CURL *curl;
 	struct curl_slist *custom_headers;	
 	struct MemoryStruct headers;
 	struct MemoryStruct data;
-	vector<char> result;
+	std::vector<char> result;
 	
 	int http_response_code;
 	CustomHeaders http_custom_headers;
-	string http_response_headers;
+	std::string http_response_headers;
 	CURLcode error;
-	string proxy;
-	string proxy_login;
+	std::string proxy;
+	std::string proxy_login;
 	
     void prepare ( );
 	void add_custom_headers ( );
