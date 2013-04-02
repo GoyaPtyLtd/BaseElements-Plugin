@@ -105,7 +105,7 @@
 
 "350" = "BE_Values_Unique ( listOfValues )";
 "351" = "BE_Values_FilterOut ( textToFilter ; filterValues )";
-"352" = "BE_Values_Union ( listOfValues ; alternateListOfValues )";
+
 "353" = "BE_Values_Sort ( listOfValues )";
 
 

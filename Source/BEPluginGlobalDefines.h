@@ -154,7 +154,6 @@ enum functions {
 //	kBE_OAuth_SetToken = 322,
 	kBE_Values_Unique = 350,
 	kBE_Values_FilterOut = 351,
-	kBE_Values_Union = 352,
 	kBE_Values_Sort = 353,
 	kBE_ExecuteSystemCommand = 1120
 };

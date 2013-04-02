@@ -80,35 +80,6 @@ string BEValueList::filter_out ( auto_ptr<BEValueList> filter_out ) {
 }
 
 
-string BEValueList::list_union ( auto_ptr<BEValueList> additional_values ) {
-	
-	vector<string> to_add = additional_values->get_values();
-	set<string> add_set ( to_add.begin(), to_add.end() );
-
-	std::stringstream text;
-	set<string> found;
-
-	for ( vector<string>::iterator it = values.begin() ; it != values.end(); ++it ) {
-		
-		pair<set<string>::iterator, bool> inserted = add_set.insert ( *it );	//	it's in both
-		pair<set<string>::iterator, bool> new_value = found.insert ( *it );		//	we've seen it before
-
-		if ( inserted.second == false && new_value.second == true ) {
-
-			if ( text.rdbuf()->in_avail() > 0 ) {
-				text << FILEMAKER_END_OF_LINE;
-			}
-			text << *it;
-
-		}
-		
-	}
-	
-	return text.str();
-	
-}
-
-
 string BEValueList::sort ( ) {
 	
 	vector<string> sorted ( values.begin(), values.end() );

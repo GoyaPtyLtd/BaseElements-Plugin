@@ -24,7 +24,6 @@ public:
 
 	std::string unique ( );
 	std::string filter_out ( std::auto_ptr<BEValueList> filter_out );
-	std::string list_union ( std::auto_ptr<BEValueList> additional_values );
 	std::string sort ( );
 	
 	std::vector<std::string> get_values ( void ) { return values; }

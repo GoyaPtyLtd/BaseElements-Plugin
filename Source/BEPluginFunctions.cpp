@@ -1614,32 +1614,6 @@ FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* en
 } // BE_Values_FilterOut
 
 
-FMX_PROC(errcode) BE_Values_Union ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-	
-	try {
-		
-		StringAutoPtr list_a = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr list_b = ParameterAsUTF8String ( parameters, 1 );
-		
-		auto_ptr<BEValueList> list_a_values ( new BEValueList ( *list_a ) );
-		auto_ptr<BEValueList> list_b_values ( new BEValueList ( *list_b ) );
-		string values_in_both_lists = list_a_values->list_union ( list_b_values );
-		
-		SetResult ( values_in_both_lists, results );
-		
-	} catch ( bad_alloc& e ) {
-		error = kLowMemoryError;
-	} catch ( exception& e ) {
-		error = kErrorUnknown;
-	}
-	
-	return MapError ( error );
-	
-} // BE_Values_Union
-
-
 FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
