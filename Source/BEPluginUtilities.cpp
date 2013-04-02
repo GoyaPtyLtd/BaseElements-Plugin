@@ -77,9 +77,9 @@ errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
 		LocaleAutoPtr default_locale;
 		results.SetAsText ( *result_text, *default_locale );
 		
-	} catch ( bad_alloc& e ) {
+	} catch ( bad_alloc& /* e */ ) {
 		error_result = kLowMemoryError;
-	} catch ( exception& e ) {
+	} catch ( exception& /* e */ ) {
 		error_result = kErrorUnknown;
 	}
 	
@@ -198,7 +198,7 @@ bool ParameterAsBoolean ( const DataVect& parameters, const FMX_UInt32 which, co
 {
 	try {
 		return parameters.AtAsBoolean ( which );
-	} catch ( exception& e ) {
+	} catch ( exception& /* e */ ) {
 		return default_value;
 	}
 }
@@ -208,7 +208,7 @@ long ParameterAsLong ( const DataVect& parameters, const FMX_UInt32 which, const
 {
 	try {
 		return parameters.AtAsNumber ( which ).AsLong();
-	} catch ( exception& e ) {
+	} catch ( exception& /* e */ ) {
 		return default_value;
 	}	
 }
@@ -230,7 +230,7 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, FMX_UInt32 whi
 		result->assign ( text );
 		delete [] text;
 		
-	} catch ( exception& e ) {
+	} catch ( exception& /* e */ ) {
 		;	// return an empty string
 	}
 	
@@ -276,7 +276,7 @@ WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, FMX_UInt32 wh
 		result->append ( parameter );
 		delete [] parameter; // parameter == text on Windows
 				
-	} catch ( exception& e ) {
+	} catch ( exception& /* e */ ) {
 		;	// return an empty string
 	}
 	

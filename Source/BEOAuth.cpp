@@ -63,7 +63,7 @@ string BEOAuth::http_request ( const string url, const string post_arguments ) {
 			response = HTTP_POST ( url, post_arguments );
 		}
 
-	} catch ( BECurl_Exception& e ) {
+	} catch ( BECurl_Exception& /* e */ ) {
 		;// error = e.code(); // we return an empty string on error
 	}
 	
