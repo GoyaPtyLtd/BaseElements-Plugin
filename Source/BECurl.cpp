@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
  
- Copyright 2011-2012 Goya. All rights reserved.
+ Copyright 2011-2013 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -41,13 +41,11 @@ enum http_methods {
 
 int g_http_response_code;
 string g_http_response_headers;
-
 CustomHeaders g_http_custom_headers;
 struct host_details g_http_proxy;
+BECurlOptionMap g_curl_options;
 
 extern BEOAuth * g_oauth;
-
-BECurlOptionMap g_curl_options;
 
 
 #pragma mark -

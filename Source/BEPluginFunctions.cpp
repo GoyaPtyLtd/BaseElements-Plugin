@@ -100,7 +100,6 @@ string g_json_error_description;
 
 BEOAuth * g_oauth;
 
-
 extern int g_http_response_code;
 extern string g_http_response_headers;
 extern CustomHeaders g_http_custom_headers;
