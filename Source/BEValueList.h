@@ -1,10 +1,14 @@
-//
-//  BEValueList.h
-//  BaseElements
-//
-//  Created by Mark Banks on 20/03/13.
-//  Copyright (c) 2013 Goya. All rights reserved.
-//
+/*
+ BEValueList.h
+ BaseElements Plug-In
+ 
+ Copyright 2013 Goya. All rights reserved.
+ For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
+ 
+ http://www.goya.com.au/baseelements/plugin
+ 
+ */
+
 
 #ifndef __BaseElements__BEValueList__
 #define __BaseElements__BEValueList__

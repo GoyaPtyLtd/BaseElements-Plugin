@@ -2,7 +2,7 @@
  BEWinFunctions.h
  BaseElements Plug-in
 
- Copyright 2010-2012 Goya. All rights reserved.
+ Copyright 2010-2013 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
