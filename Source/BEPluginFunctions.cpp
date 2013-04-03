@@ -1514,11 +1514,18 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 				break;
 				
 			case 1:
-				g_curl_options.erase ( g_curl_options.find ( *option ) );
+			{
+				BECurlOptionMap::iterator it = g_curl_options.find ( *option );
+				if ( it != g_curl_options.end() ) {
+					g_curl_options.erase ( it );
+				} else {
+					error = kNotFoundError;
+				}
 				break;
+			}
 				
 			case 2:
-				BECurlOption * curl_option = new BECurlOption ( *option, parameters.At ( 1 ) ); // will throw if option is not known or we don't handle it
+				boost::shared_ptr<BECurlOption> curl_option ( new BECurlOption ( *option, parameters.At ( 1 ) ) ); // throws if option not known or not handled
 				g_curl_options [ *option ] = curl_option;
 				break;
 				

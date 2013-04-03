@@ -17,6 +17,7 @@
 #include "BEPluginUtilities.h"
 #include "BECurlOption.h"
 
+#include "boost/shared_ptr.hpp"
 
 #include <vector>
 #include <map>
@@ -25,7 +26,7 @@
 #include "curl/curl.h"
 
 
-typedef std::map<std::string, BECurlOption *> BECurlOptionMap;
+typedef std::map<std::string, boost::shared_ptr<BECurlOption> > BECurlOptionMap;
 
 
 class BECurl_Exception : public std::runtime_error {
