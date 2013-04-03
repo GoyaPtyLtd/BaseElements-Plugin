@@ -15,7 +15,6 @@
 #include "BEOAuth.h"
 
 
-#include <map>
 #include <errno.h>
 
 
@@ -47,6 +46,8 @@ CustomHeaders g_http_custom_headers;
 struct host_details g_http_proxy;
 
 extern BEOAuth * g_oauth;
+
+BECurlOptionMap g_curl_options;
 
 
 #pragma mark -
@@ -379,6 +380,40 @@ void BECurl::set_proxy ( struct host_details proxy_server )
 
 
 
+void BECurl::set_options ( BECurlOptionMap options )
+{
+	
+	BECurlOptionMap::iterator it = options.begin();
+	while ( it != options.end() ) {
+		
+		BECurlOption * curl_option = it->second;
+		
+		switch ( curl_option->type() ) {
+				
+			case BECurlOption::type_string:
+				easy_setopt ( curl_option->option(), curl_option->as_string().c_str() );
+				break;
+				
+			case BECurlOption::type_long:
+				easy_setopt ( curl_option->option(), curl_option->as_long() );
+				break;
+				
+			case BECurlOption::type_curl_off_t:
+				easy_setopt ( curl_option->option(), curl_option->as_curl_off_t() );
+				break;
+				
+			default:
+				break;
+		}
+		
+		++it;
+	}
+	
+	
+}	//	set_options
+
+
+
 #pragma mark -
 #pragma mark Protected Methods
 #pragma mark -
@@ -402,6 +437,9 @@ void BECurl::prepare ( )
 	
 	data = InitalizeCallbackMemory();
 	easy_setopt ( CURLOPT_HEADERFUNCTION, WriteMemoryCallback );
+	
+	// any custom options
+	set_options ( g_curl_options );
 	
 }	//	prepare
 

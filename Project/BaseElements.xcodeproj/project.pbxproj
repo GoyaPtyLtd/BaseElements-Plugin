@@ -35,6 +35,7 @@
 		4DC18344144D31C800E27CAA /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC1833C144D31C800E27CAA /* mztools.c */; };
 		4DC18345144D31C800E27CAA /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC1833E144D31C800E27CAA /* unzip.c */; };
 		4DC18346144D31C800E27CAA /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC18340144D31C800E27CAA /* zip.c */; };
+		4DCCE05E170BC61D00835D21 /* BECurlOption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */; };
 		4DD3E8FD16DD6DA300DC0070 /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
 		4DD613EF16FBAB7C00C25A3E /* ProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* ProgressDialog.xib */; };
 		4DD613F316FBBACF00C25A3E /* ProgressDialogWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */; };
@@ -135,6 +136,8 @@
 		4DC1833F144D31C800E27CAA /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = unzip.h; path = ../Source/minizip/unzip.h; sourceTree = SOURCE_ROOT; };
 		4DC18340144D31C800E27CAA /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = zip.c; path = ../Source/minizip/zip.c; sourceTree = SOURCE_ROOT; };
 		4DC18341144D31C800E27CAA /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zip.h; path = ../Source/minizip/zip.h; sourceTree = SOURCE_ROOT; };
+		4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurlOption.cpp; path = ../Source/BECurlOption.cpp; sourceTree = "<group>"; };
+		4DCCE05D170BC61D00835D21 /* BECurlOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECurlOption.h; path = ../Source/BECurlOption.h; sourceTree = "<group>"; };
 		4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECppUtilities.cpp; path = ../Source/BECppUtilities.cpp; sourceTree = "<group>"; };
 		4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECppUtilities.h; path = ../Source/BECppUtilities.h; sourceTree = "<group>"; };
 		4DD613EE16FBAB7C00C25A3E /* ProgressDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProgressDialog.xib; path = ../Resources/ProgressDialog.xib; sourceTree = "<group>"; };
@@ -243,10 +246,12 @@
 		C7DEDEF607E10BF3002283F3 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				4D10AD931484202000814440 /* BESQLCommand.cpp */,
 				4D10AD941484202000814440 /* BESQLCommand.h */,
+				4D10AD931484202000814440 /* BESQLCommand.cpp */,
 				4D37E0B21339CF080084730B /* BECurl.h */,
 				4D37E0B11339CF080084730B /* BECurl.cpp */,
+				4DCCE05D170BC61D00835D21 /* BECurlOption.h */,
+				4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */,
 				4D8824E611E93F6000F94475 /* BEPluginUtilities.h */,
 				4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */,
 				4D70428713BAE5CA00DE4484 /* BEFileSystem.h */,
@@ -421,6 +426,7 @@
 				4DD3E8FD16DD6DA300DC0070 /* BECppUtilities.cpp in Sources */,
 				4D59DAFB16F95E2500F87180 /* BEValueList.cpp in Sources */,
 				4DD613F316FBBACF00C25A3E /* ProgressDialogWindowController.m in Sources */,
+				4DCCE05E170BC61D00835D21 /* BECurlOption.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

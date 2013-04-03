@@ -47,6 +47,7 @@
 #include "BEJSON.h"
 #include "BEOAuth.h"
 #include "BEValueList.h"
+#include "BECurlOption.h"
 
 
 #include "boost/filesystem.hpp"
@@ -104,6 +105,7 @@ extern int g_http_response_code;
 extern string g_http_response_headers;
 extern CustomHeaders g_http_custom_headers;
 extern struct host_details g_http_proxy;
+extern BECurlOptionMap g_curl_options;
 
 
 #pragma mark -
@@ -1495,6 +1497,49 @@ FMX_PROC(errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* envi
 } // BE_HTTP_Set_Custom_Header
 
 
+
+FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr option = ParameterAsUTF8String ( parameters, 0 );
+		
+		const unsigned long number_of_parameters = parameters.Size();
+		switch ( number_of_parameters ) {
+			
+			case 0:
+				g_curl_options.clear();
+				break;
+				
+			case 1:
+				g_curl_options.erase ( g_curl_options.find ( *option ) );
+				break;
+				
+			case 2:
+				BECurlOption * curl_option = new BECurlOption ( *option, parameters.At ( 1 ) ); // will throw if option is not known or we don't handle it
+				g_curl_options [ *option ] = curl_option;
+				break;
+				
+//			default:
+//				;
+				
+		}
+
+	} catch ( BECurlOption_Exception& e ) { // we don't handle it
+		error = e.code();
+	} catch ( out_of_range& /* e */ ) { // we don't know about it
+		error = kNameIsNotValid;
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_HTTP_Set_Custom_Header
 
 
 #pragma mark -

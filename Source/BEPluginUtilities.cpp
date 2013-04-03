@@ -404,6 +404,57 @@ void SetTextEncoding ( const string& encoding )
 }
 
 
+
+string TextAsUTF8String ( const Text& fmx_text )
+{
+	
+	string result;
+	
+	try {
+		
+		FMX_UInt32 text_size = (2*(fmx_text.GetSize())) + 1;
+		char * text = new char [ text_size ]();
+		fmx_text.GetBytes ( text, text_size, 0, (FMX_UInt32)Text::kSize_End, Text::kEncoding_UTF8 );
+		result.assign ( text );
+		delete [] text;
+		
+	} catch ( exception& /* e */ ) {
+		;	// return an empty string
+	}
+	
+	return result;
+	
+} // TextAsString
+
+
+
+string DataAsUTF8String ( const Data& data )
+{
+	return TextAsUTF8String ( data.GetAsText() );	
+}
+
+
+
+
+long DataAsLong ( const Data& data )
+{
+	FixPtAutoPtr number;
+	number->AssignFixPt ( data.GetAsNumber() );
+	
+	return ( number->AsLong() );
+}
+
+
+
+double DataAsDouble ( const Data& data )
+{
+	FixPtAutoPtr number;
+	number->AssignFixPt ( data.GetAsNumber() );
+	
+	return ( number->AsFloat() );
+}
+
+
 #pragma mark -
 #pragma mark Errors
 #pragma mark -

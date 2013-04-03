@@ -48,6 +48,11 @@ StringAutoPtr ConvertTextTo ( StringAutoPtr in, const std::string& encoding );
 StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length );
 
 void SetTextEncoding ( const std::string& encoding );
+std::string TextAsUTF8String ( const fmx::Text& fmx_text );
+std::string DataAsUTF8String ( const fmx::Data& data );
+long DataAsLong ( const fmx::Data& data );
+double DataAsDouble ( const fmx::Data& data );
+
 
 fmx::errcode NoError ( void );
 fmx::errcode MapError ( const fmx::errcode error = kNoError, const bool map = false );

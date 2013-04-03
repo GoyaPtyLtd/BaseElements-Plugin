@@ -15,12 +15,17 @@
 
 
 #include "BEPluginUtilities.h"
+#include "BECurlOption.h"
+
 
 #include <vector>
 #include <map>
 
 
 #include "curl/curl.h"
+
+
+typedef std::map<std::string, BECurlOption *> BECurlOptionMap;
 
 
 class BECurl_Exception : public std::runtime_error {
@@ -80,6 +85,7 @@ public:
 	std::string response_headers ( ) { return http_response_headers; }
 	void set_custom_headers ( CustomHeaders _headers ) { http_custom_headers = _headers; }
 	void set_proxy ( struct host_details proxy_server );
+	void set_options ( BECurlOptionMap options );
 	CURLcode last_error ( ) { return error; }
 	
 protected:

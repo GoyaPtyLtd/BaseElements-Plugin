@@ -71,7 +71,7 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"2.0.0"
-#define	AUTO_UPDATE_VERSION L"02000009"
+#define	AUTO_UPDATE_VERSION L"02000010"
 #define VERSION_STRING "2.1a3"
 
 
@@ -139,6 +139,7 @@ enum functions {
 	kBE_HTTP_DELETE = 184,
 	kBE_HTTP_PUT = 185,
 	kBE_HTTP_Set_Proxy = 186,
+	kBE_Curl_Set_Option = 187,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,
@@ -173,11 +174,13 @@ enum errors {
 	kNoSuchFileOrDirectoryError = 2,
 	kLowMemoryError = 7,
 	kRequestedDataIsMissingError = 10,
+	kNameIsNotValid = 11,
 	kFileExistsError = 17,
 	kErrorParameterMissing = 102,
 	kFileSystemError = 10000,
 	kDDLCommandQueued = 11000,
-	kCommandTimeout = 12000
+	kCommandTimeout = 12000,
+	kNotImplemented = 13000
 };
 
 
