@@ -177,6 +177,7 @@ enum errors {
 	kNameIsNotValid = 11,
 	kFileExistsError = 17,
 	kErrorParameterMissing = 102,
+	kNotFoundError = 401,
 	kFileSystemError = 10000,
 	kDDLCommandQueued = 11000,
 	kCommandTimeout = 12000,
