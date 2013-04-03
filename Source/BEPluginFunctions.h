@@ -2,7 +2,7 @@
  BEPluginFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2012 Goya. All rights reserved.
+ Copyright 2010-2013 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -15,8 +15,6 @@
 
 
 #include "BEPluginGlobalDefines.h"
-#include "BEPluginUtilities.h"
-#include "BESQLCommand.h"
 
 
 // The following functions are registered with FileMaker as the external functions made available via the plug-in.
