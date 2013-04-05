@@ -90,14 +90,14 @@
 
 -(int) update: (double) newValue description: (NSString *) _description
 {
-	int error = 0;//kNoError;
+	int error = kNoError;
 	
 	if ( userCancelled ) {
 		return kUserCancelledError;
 	}
 	
 	
-	if ( newValue < [progressIndicator maxValue] ) {
+	if ( newValue <= [progressIndicator maxValue] ) {
 		
 		if ( ![progressIndicator isIndeterminate] ) {
 			[progressIndicator setDoubleValue: newValue];
@@ -105,16 +105,6 @@
 		
 		[self _update: _description];
 
-	} else if ( newValue == [progressIndicator maxValue] ){
-		
-		if ( ![progressIndicator isIndeterminate] ) {
-			[progressIndicator setDoubleValue: newValue];
-		} else {
-			[progressIndicator stopAnimation: self];
-		}
-
-		[self _update: _description];
-		
 	} else {
 		
 		[self closeWindow];
