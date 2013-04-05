@@ -46,7 +46,7 @@ wstring g_button3_name;
 #endif
 
 IProgressDialog * progress_dialog;
-long progress_dialog_maximum;
+DWORD progress_dialog_maximum;
 
 
 // clipbaord functions
@@ -405,15 +405,15 @@ fmx::errcode UpdateProgressDialog ( const long value, const WStringAutoPtr descr
 {
 	fmx::errcode error = kNoError;
 
-	if ( progress_dialog->HasUserCancelled() || value > progress_dialog_maximum ) {
+	bool user_cancelled = progress_dialog->HasUserCancelled();
+
+	if ( user_cancelled || value > progress_dialog_maximum ) {
 
 		progress_dialog->StopProgressDialog();
 		progress_dialog->Release();
         progress_dialog = NULL;
 
-		if ( progress_dialog->HasUserCancelled() ) {
-			error = kUserCancelledError;
-		}
+		error = user_cancelled ? kUserCancelledError : error;
 
 	} else {
 
@@ -422,7 +422,8 @@ fmx::errcode UpdateProgressDialog ( const long value, const WStringAutoPtr descr
 		}
 
 		if ( error == S_OK ) {
-			error = progress_dialog->SetProgress64 ( value, progress_dialog_maximum );
+			error = progress_dialog->SetProgress ( value, progress_dialog_maximum );
+			error = error == S_FALSE ? kNoError : error;
 		}
 	}
 
