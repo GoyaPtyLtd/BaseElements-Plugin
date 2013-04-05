@@ -60,7 +60,7 @@
 "156" = "BE_SaveURLToFile ( url ; path {; username ; password } )";
 
 
-"157" = "BE_ProgressDialog ( title ; description ; maximum )";
+"157" = "BE_ProgressDialog ( title ; description {; maximum } )";
 "158" = "BE_ProgressDialog_Update ( number {; description } )";
 
 
