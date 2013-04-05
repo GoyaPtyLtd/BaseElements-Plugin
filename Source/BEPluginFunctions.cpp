@@ -705,7 +705,7 @@ FMX_PROC(errcode) BE_ProgressDialog ( short /* funcId */, const ExprEnv& environ
 		
 		WStringAutoPtr title = ParameterAsWideString ( parameters, 0 );
 		WStringAutoPtr description = ParameterAsWideString ( parameters, 1 );
-		long maximum = ParameterAsLong ( parameters, 3, 0 ); // 0 == indeterminite
+		long maximum = ParameterAsLong ( parameters, 2, 0 ); // 0 == indeterminite
 		
 		// allow the user to cancel ?
 		bool can_cancel = AllowUserAbort ( environment );
@@ -731,6 +731,8 @@ FMX_PROC(errcode) BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& 
 	try {
 		
 		long value = ParameterAsLong ( parameters, 0, 0 );
+		value = value < 0 ? 0 : value;
+		
 		WStringAutoPtr description = ParameterAsWideString ( parameters, 1 );
 		
 		error = UpdateProgressDialog ( value, description );
