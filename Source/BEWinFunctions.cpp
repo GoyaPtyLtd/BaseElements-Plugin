@@ -17,10 +17,14 @@
 #include <ShlObj.h>
 #include <commctrl.h>
 
+#include <boost/algorithm/string.hpp>
+
 
 using namespace std;
 
 
+wstring ClipboardFormatNameForID ( const UINT format_id );
+UINT ClipboardFormatIDForName ( const wstring format_name );
 bool IsFileMakerClipboardType ( const wstring atype );
 UINT32 ClipboardOffset ( const wstring atype );
 
@@ -51,6 +55,203 @@ DWORD progress_dialog_maximum;
 
 // clipbaord functions
 
+
+// default, system formats
+// http://msdn.microsoft.com/en-us/library/windows/desktop/ff729168(v=vs.85).aspx
+
+
+wstring ClipboardFormatNameForID ( const UINT format_id )
+{
+	wstring format_name;
+
+	switch ( format_id ) {
+
+		case CF_BITMAP:
+			format_name = L"CF_BITMAP";
+			break;
+
+		case CF_DIB:
+			format_name = L"CF_DIB";
+			break;
+
+		case CF_DIBV5:
+			format_name = L"CF_DIBV5";
+			break;
+
+		case CF_DIF:
+			format_name = L"CF_DIF";
+			break;
+
+		case CF_DSPBITMAP:
+			format_name = L"CF_DSPBITMAP";
+			break;
+
+		case CF_DSPENHMETAFILE:
+			format_name = L"CF_DSPENHMETAFILE";
+			break;
+
+		case CF_DSPMETAFILEPICT:
+			format_name = L"CF_DSPMETAFILEPICT";
+			break;
+
+		case CF_DSPTEXT:
+			format_name = L"CF_DSPTEXT";
+			break;
+
+		case CF_ENHMETAFILE:
+			format_name = L"CF_ENHMETAFILE";
+			break;
+
+		case CF_GDIOBJFIRST:
+			format_name = L"CF_GDIOBJFIRST";
+			break;
+
+		case CF_GDIOBJLAST:
+			format_name = L"CF_GDIOBJLAST";
+			break;
+
+		case CF_HDROP:
+			format_name = L"CF_HDROP";
+			break;
+
+		case CF_LOCALE:
+			format_name = L"CF_LOCALE";
+			break;
+
+		case CF_METAFILEPICT:
+			format_name = L"CF_METAFILEPICT";
+			break;
+
+		case CF_OEMTEXT:
+			format_name = L"CF_OEMTEXT";
+			break;
+
+		case CF_OWNERDISPLAY:
+			format_name = L"CF_OWNERDISPLAY";
+			break;
+
+		case CF_PALETTE:
+			format_name = L"CF_PALETTE";
+			break;
+
+		case CF_PENDATA:
+			format_name = L"CF_PENDATA";
+			break;
+
+		case CF_PRIVATEFIRST:
+			format_name = L"CF_PRIVATEFIRST";
+			break;
+
+		case CF_PRIVATELAST:
+			format_name = L"CF_PRIVATELAST";
+			break;
+
+		case CF_RIFF:
+			format_name = L"CF_RIFF";
+			break;
+
+		case CF_SYLK:
+			format_name = L"CF_SYLK";
+			break;
+
+		case CF_TEXT:
+			format_name = L"CF_TEXT";
+			break;
+
+		case CF_TIFF:
+			format_name = L"CF_TIFF";
+			break;
+
+		case CF_UNICODETEXT:
+			format_name = L"CF_UNICODETEXT";
+			break;
+
+		case CF_WAVE:
+			format_name = L"CF_WAVE";
+			break;
+
+		default:
+
+			wchar_t format[PATH_MAX];
+			int name_length = GetClipboardFormatName ( format_id, format, PATH_MAX );
+			format_name = format;
+
+	}
+
+	return format_name;
+
+}
+
+
+
+UINT ClipboardFormatIDForName ( const wstring name ) {
+	
+	UINT format_id = 0;
+
+	wstring format_name = boost::to_upper_copy ( name );
+
+	if ( format_name == L"CF_BITMAP" ) {
+		format_id = CF_BITMAP;
+	} else if ( format_name == L"CF_DIB" ) {
+		format_id = CF_DIB;
+	} else if ( format_name == L"CF_DIBV5" ) {
+		format_id = CF_DIBV5;
+	} else if ( format_name == L"CF_DIF" ) {
+		format_id = CF_DIF;
+	} else if ( format_name == L"CF_DSPBITMAP" ) {
+		format_id = CF_DSPBITMAP;
+	} else if ( format_name == L"CF_DSPENHMETAFILE" ) {
+		format_id = CF_DSPENHMETAFILE;
+	} else if ( format_name == L"CF_DSPMETAFILEPICT" ) {
+		format_id = CF_DSPMETAFILEPICT;
+	} else if ( format_name == L"CF_DSPTEXT" ) {
+		format_id = CF_DSPTEXT;
+	} else if ( format_name == L"CF_ENHMETAFILE" ) {
+		format_id = CF_ENHMETAFILE;
+	} else if ( format_name == L"CF_GDIOBJFIRST" ) {
+		format_id = CF_GDIOBJFIRST;
+	} else if ( format_name == L"CF_GDIOBJLAST" ) {
+		format_id = CF_GDIOBJLAST;
+	} else if ( format_name == L"CF_HDROP" ) {
+		format_id = CF_HDROP;
+	} else if ( format_name == L"CF_LOCALE" ) {
+		format_id = CF_LOCALE;
+	} else if ( format_name == L"CF_METAFILEPICT" ) {
+		format_id = CF_METAFILEPICT;
+	} else if ( format_name == L"CF_OEMTEXT" ) {
+		format_id = CF_OEMTEXT;
+	} else if ( format_name == L"CF_OWNERDISPLAY" ) {
+		format_id = CF_OWNERDISPLAY;
+	} else if ( format_name == L"CF_PALETTE" ) {
+		format_id = CF_PALETTE;
+	} else if ( format_name == L"CF_PENDATA" ) {
+		format_id = CF_PENDATA;
+	} else if ( format_name == L"CF_PRIVATEFIRST" ) {
+		format_id = CF_PRIVATEFIRST;
+	} else if ( format_name == L"CF_PRIVATELAST" ) {
+		format_id = CF_PRIVATELAST;
+	} else if ( format_name == L"CF_RIFF" ) {
+		format_id = CF_RIFF;
+	} else if ( format_name == L"CF_SYLK" ) {
+		format_id = CF_SYLK;
+	} else if ( format_name == L"CF_TEXT" ) {
+		format_id = CF_TEXT;
+	} else if ( format_name == L"CF_TIFF" ) {
+		format_id = CF_TIFF;
+	} else if ( format_name == L"CF_UNICODETEXT" ) {
+		format_id = CF_UNICODETEXT;
+	} else if ( format_name == L"CF_WAVE" ) {
+		format_id = CF_WAVE;
+	} else {
+		format_id = RegisterClipboardFormat ( name.c_str() );
+	}
+
+	return format_id;
+
+}
+	
+	
+	
 WStringAutoPtr ClipboardFormats ( void )
 {
 	wstring format_list = L"";
@@ -64,14 +265,8 @@ WStringAutoPtr ClipboardFormats ( void )
 			
 			next_format = EnumClipboardFormats ( next_format );
 
-			const int max_count = 4096;
-			wchar_t format_name[max_count];
-			int name_length = GetClipboardFormatName ( next_format, format_name, max_count );
-			
-			if ( name_length > 0 ) {
-				format_list += format_name;
-				format_list += L"\r";
-			}
+			format_list += ClipboardFormatNameForID ( next_format );
+			format_list += L"\r"; // ( FILEMAKER_END_OF_LINE );
 			
 		}
 
@@ -116,7 +311,7 @@ StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 
 	if ( OpenClipboard ( NULL ) ) {
 		
-		UINT format_wanted = RegisterClipboardFormat ( atype->c_str() );
+		UINT format_wanted = ClipboardFormatIDForName ( *atype );
 
 		if ( IsClipboardFormatAvailable ( format_wanted ) ) {
 			
