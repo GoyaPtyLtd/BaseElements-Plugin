@@ -71,7 +71,7 @@
 	[cancelButton setEnabled: allowCancel];
 	[progressIndicator displayIfNeeded];
 
-	[self.window update];
+	[self.window display];
 	
 }
 
@@ -80,10 +80,12 @@
 	
 	if ( _description ) {
 		[description setStringValue: _description];
+//		[description setNeedsDisplay: YES]; // not working?
 	}
 	
 	[progressIndicator displayIfNeeded];
-	[self.window update];
+//	[self.window update];
+	[self.window display];
 
 }
 
