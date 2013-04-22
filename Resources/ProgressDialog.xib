@@ -44,7 +44,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{196, 240}, {511, 165}}</string>
 				<int key="NSWTFlags">544735232</int>
-				<string key="NSWindowTitle">Progress Dialog</string>
+				<string key="NSWindowTitle"/>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
@@ -106,7 +106,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="811965735">
 								<int key="NSCellFlags">68157504</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">Description</string>
+								<string key="NSContents"/>
 								<reference key="NSSupport" ref="131822737"/>
 								<string key="NSCellIdentifier">_NS:1535</string>
 								<reference key="NSControlView" ref="790726044"/>
