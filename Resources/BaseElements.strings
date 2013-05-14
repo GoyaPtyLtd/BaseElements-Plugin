@@ -80,9 +80,10 @@
 "182" = "BE_HTTP_Response_Headers";
 "183" = "BE_HTTP_Set_Custom_Header ( header ; value )";
 "184" = "BE_HTTP_DELETE ( url {; username ; password } )";
-"185" = "BE_HTTP_PUT ( url ; path {; username ; password } )";
+"185" = "BE_HTTP_PUT_FILE ( url ; path {; username ; password } )";
 "186" = "BE_HTTP_Set_Proxy ( proxy {; port ; username ; password } )";
 "187" = "BE_Curl_Set_Option ( option ; value )";
+"188" = "BE_HTTP_PUT_DATA ( url ; data {; username ; password } )";
 
 
 "200" = "BE_ApplyXSLTInMemory ( xml ; xslt )";

@@ -214,7 +214,7 @@ long ParameterAsLong ( const DataVect& parameters, const FMX_UInt32 which, const
 }
 
 
-StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, FMX_UInt32 which )
+StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which )
 {	
 	
 	StringAutoPtr result ( new string );
@@ -240,7 +240,8 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, FMX_UInt32 whi
 
 
 
-WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, FMX_UInt32 which )
+
+WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which )
 {	
 	
 	WStringAutoPtr result ( new wstring );
@@ -283,6 +284,83 @@ WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, FMX_UInt32 wh
 	return result;
 	
 } // ParameterAsUnicodeString
+
+
+void ParameterAsChar ( const DataVect& parameters, const FMX_UInt32 which, char ** char_data, FMX_UInt32& size )
+{
+//	errcode error = NoError();
+	
+	BinaryDataAutoPtr data ( parameters.AtAsBinaryData ( which ) );
+		
+	size = 0;
+	char * buffer = NULL;
+		
+	int count = data->GetCount();
+		
+	if ( count > 0 ) {
+			
+		// when it's a file or a sound it's easy
+			
+		QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' );
+		int which_type = data->GetIndex ( *data_type );
+		if ( which_type == kBE_DataType_Not_Found ) {
+			QuadCharAutoPtr sound_type ( 's', 'n', 'd', ' ' );
+			which_type = data->GetIndex ( *sound_type );
+		}
+			
+		// try and guess which image format to try
+			
+		if ( which_type == kBE_DataType_Not_Found ) {
+				
+			// non-image data streams
+			QuadCharAutoPtr dpi__type ( 'D', 'P', 'I', '_' );
+			QuadCharAutoPtr fnam_type ( 'F', 'N', 'A', 'M' );
+			QuadCharAutoPtr size_type ( 'S', 'I', 'Z', 'E' );
+				
+			for ( int i = 0 ; i < count ; i++ ) {
+				QuadCharAutoPtr e_type;
+				data->GetType ( i, *e_type );
+				if ( *e_type != *dpi__type && *e_type != *fnam_type && *e_type != *size_type ) {
+					which_type = i;
+						
+					// don't overwrite another type with an fm generated jpeg preview
+					QuadCharAutoPtr jpeg_type ( 'J', 'P', 'E', 'G' );
+					if ( *e_type != *jpeg_type ) {
+						break;
+					}
+					
+				}
+			}
+			
+		}
+			
+			
+		if ( which_type != kBE_DataType_Not_Found ) {
+			size = data->GetSize ( which_type );
+			buffer = new char [ size ];
+			data->GetData ( which_type, 0, size, (void *)buffer );
+		} else {
+			g_last_error = kRequestedDataIsMissingError;
+		}
+			
+	} else {
+			
+		// if we don't have any streams try getting as text
+		// note: we also end up here for anything inserted as QuickTime, which is probably not what the user wants, but...
+			
+		StringAutoPtr text = ParameterAsUTF8String ( parameters, which );
+		size = (FMX_UInt32)text->size();
+		buffer = new char [ size ];
+		memcpy ( buffer, text->c_str(), size );
+		
+	}
+		
+		*char_data = buffer;
+		
+//		delete [] buffer;
+		
+	
+} // ParameterAsChar
 
 
 

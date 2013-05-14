@@ -155,7 +155,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	
 	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST_OR_PUT, true, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_DELETE, BE_HTTP_DELETE, true, 1, 3 );
-	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT, BE_HTTP_POST_OR_PUT, true, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_File, BE_HTTP_POST_OR_PUT, true, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_Data, BE_HTTP_POST_OR_PUT, true, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Code, BE_HTTP_Response_Code );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Headers, BE_HTTP_Response_Headers );

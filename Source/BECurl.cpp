@@ -72,6 +72,44 @@ static size_t WriteMemoryCallback (void *ptr, size_t size, size_t nmemb, void *d
 }
 
 
+static size_t ReadMemoryCallback (void *ptr, size_t size, size_t nmemb, void *data )
+{
+	
+	size_t curl_size = nmemb * size;
+	
+	struct MemoryStruct * userdata = (struct MemoryStruct *)data;
+	
+	size_t to_copy = ( userdata->size < curl_size ) ? userdata->size : curl_size;
+	memcpy ( ptr, userdata->memory, to_copy );
+	userdata->origin = userdata->memory;
+	userdata->size -= to_copy;
+	userdata->memory += to_copy;
+	
+	return to_copy;
+	
+}
+
+
+// required when doing authenticated http put
+
+static int SeekFunction ( void *instream, curl_off_t offset, int origin )
+{
+	int result = CURL_SEEKFUNC_OK;
+	
+	struct MemoryStruct *userdata = (struct MemoryStruct *)instream;
+	
+	if ( origin == SEEK_SET ) {
+		userdata->size = (size_t)userdata->memory - (size_t)userdata->origin + (size_t)offset;
+		userdata->memory = userdata->origin + offset;
+	} else {
+		// shouldn't be here
+		result = CURL_SEEKFUNC_CANTSEEK;
+	}
+	
+	return result;
+}
+
+
 static MemoryStruct InitalizeCallbackMemory ( void )
 {
 	struct MemoryStruct data;
@@ -138,9 +176,16 @@ vector<char> HTTP_POST ( const string url, const string parameters, const string
 
 
 vector<char> HTTP_PUT ( const string url, const string filename, const string username, const string password )
-{	
+{
 	BECurl * curl = new BECurl ( url, filename, username, password, "" );
 	return PerformAction ( curl, kBE_HTTP_METHOD_PUT );		
+}
+
+
+vector<char> HTTP_PUT_DATA ( const std::string url, const char * data, const size_t size, const std::string username , const std::string password )
+{
+	BECurl * curl = new BECurl ( url, data, size, username, password );
+	return PerformAction ( curl, kBE_HTTP_METHOD_PUT );
 }
 
 
@@ -159,9 +204,29 @@ vector<char> HTTP_DELETE ( const string url, const string username, const string
 
 BECurl::BECurl ( const string download_this, const string to_file, const string username, const string password, const string post_parameters )
 {
+	Init ( download_this, to_file, username, password, post_parameters );
+}
+
+
+// file_data is NOT copied
+
+BECurl::BECurl ( const string download_this, const char * file_data, const size_t size, const string username, const string password )
+{
+	Init ( download_this, "", username, password, "" );
+	upload_data = (char *)file_data;
+	upload_data_size = size;
+}
+
+
+// the real constructor
+
+void BECurl::Init ( const string download_this, const string to_file, const string username, const string password, const string post_parameters )
+{
 	url = download_this;
 	filename = to_file;
 	upload_file = NULL; // must intialise, we crash otherwise
+	upload_data = NULL;
+	upload_data_size = 0;
 	
 	http_response_code = 0;
 	
@@ -170,24 +235,24 @@ BECurl::BECurl ( const string download_this, const string to_file, const string 
 	error = curl_global_init ( CURL_GLOBAL_ALL );
 	if ( error != kNoError ) {
 		throw BECurl_Exception ( error );
-	}	
+	}
 	
 	curl = curl_easy_init ();
 	
 	if ( !curl ) {
 		throw bad_alloc(); // curl_easy_init thinks all errors are memory errors
 	}
-		
+	
 	if ( g_oauth ) {
-
+		
 		int oauth_error = g_oauth->sign_url ( url, parameters );
 		if ( oauth_error != kNoError ) {
 			throw BECurl_Exception ( CURLE_LOGIN_DENIED );
 		}
-
+		
 	} else {
 		set_username_and_password ( username, password );
-
+		
 		// curl doesn't make a copy of the post_args so we have to stop them being dealloced before they're used
 		parameters = post_parameters;
 	}
@@ -199,12 +264,11 @@ BECurl::BECurl ( const string download_this, const string to_file, const string 
 	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
 	
 #if defined(FMX_MAC_TARGET)
-	#warning experimental - stop fms running out of file descriptors under heavy usage ???
+#warning experimental - stop fms running out of file descriptors under heavy usage ???
 #endif
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L );
-
+	
 }
-
 
 
 BECurl::~BECurl()
@@ -268,25 +332,46 @@ vector<char> BECurl::http_put ( )
 		write_to_memory ( );		
 		easy_setopt ( CURLOPT_UPLOAD, 1L );
 		
-		path path = filename;			
-		
-		// no directories etc.
-		if ( exists ( path ) && is_regular_file ( path ) ) {
+		if ( filename.empty() ) {
 			
-			upload_file = fopen ( filename.c_str(), "rb" );			
-			easy_setopt ( CURLOPT_READDATA, upload_file );
-			easy_setopt ( CURLOPT_INFILESIZE, (curl_off_t)file_size ( path ) );
+			easy_setopt ( CURLOPT_READFUNCTION, ReadMemoryCallback );
 			
-			// HTTP PUT please
-			easy_setopt ( CURLOPT_PUT, 1L );
-			
-			// put this
-			easy_setopt ( CURLOPT_URL, url.c_str() );
-			perform ( );
-			
+			struct MemoryStruct userdata = InitalizeCallbackMemory ( );
+			userdata.memory = upload_data;
+			userdata.size = upload_data_size;
+			easy_setopt ( CURLOPT_READDATA, &userdata );
+			easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
+
+			easy_setopt ( CURLOPT_SEEKFUNCTION, SeekFunction );
+			easy_setopt ( CURLOPT_SEEKDATA, &userdata );
+
 		} else {
-			error = (CURLcode)kFileSystemError;
+			
+			path path = filename;
+			
+			// no directories etc.
+			if ( exists ( path ) && is_regular_file ( path ) ) {
+				
+				upload_file = fopen ( filename.c_str(), "rb" );
+				easy_setopt ( CURLOPT_READDATA, upload_file );
+				easy_setopt ( CURLOPT_INFILESIZE, (curl_off_t)file_size ( path ) );
+				
+			} else {
+				throw BECurl_Exception ( (CURLcode)kFileExistsError );
+//				error = (CURLcode)kFileSystemError;
+			}
+
 		}
+		
+		easy_setopt ( CURLOPT_PUT, 1L );
+		
+		// put this
+		easy_setopt ( CURLOPT_URL, url.c_str() );
+		
+		perform ( );
+		
+		if ( upload_file ) { fclose ( upload_file ); }
+		
 		
 	} catch ( filesystem_error& e ) {
 		error = (CURLcode)e.code().value();

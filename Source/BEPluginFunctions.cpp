@@ -1143,70 +1143,9 @@ FMX_PROC(errcode) BE_Base64_Encode ( short funcId, const ExprEnv& /* environment
 	
 	try {
 
-		BinaryDataAutoPtr data ( parameters.AtAsBinaryData(0) );
-
 		FMX_UInt32 size = 0;
 		char * buffer = NULL;
-		
-		int count = data->GetCount();
-
-		if ( count > 0 ) {
-
-			// when it's a file or a sound it's easy
-			
-			QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
-			int which = data->GetIndex ( *data_type );
-			if ( which == kBE_DataType_Not_Found ) {
-				QuadCharAutoPtr sound_type ( 's', 'n', 'd', ' ' );
-				which = data->GetIndex ( *sound_type );
-			}
-
-			// try and guess which image format to try
-			
-			if ( which == kBE_DataType_Not_Found ) {
-
-				// non-image data streams
-				QuadCharAutoPtr dpi__type ( 'D', 'P', 'I', '_' );
-				QuadCharAutoPtr fnam_type ( 'F', 'N', 'A', 'M' );
-				QuadCharAutoPtr size_type ( 'S', 'I', 'Z', 'E' );
-								
-				for ( int i = 0 ; i < count ; i++ ) {
-					QuadCharAutoPtr e_type;
-					data->GetType ( i, *e_type );
-					if ( *e_type != *dpi__type && *e_type != *fnam_type && *e_type != *size_type ) {
-						which = i;
-						
-						// don't overwrite another type with an fm generated jpeg preview
-						QuadCharAutoPtr jpeg_type ( 'J', 'P', 'E', 'G' );
-						if ( *e_type != *jpeg_type ) {
-							break;
-						}
-
-					}
-				}
-
-			}
-						
-			
-			if ( which != kBE_DataType_Not_Found ) {
-				size = data->GetSize ( which );
-				buffer = new char [ size ];
-				data->GetData ( which, 0, size, (void *)buffer );
-			} else {
-				g_last_error = kRequestedDataIsMissingError;
-			}
-
-		} else {
-
-			// if we don't have any streams try getting as text
-			// note: we also end up here for anything inserted as QuickTime, which is probably not what the user wants, but...
-			
-			StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
-			size = (FMX_UInt32)text->size();
-			buffer = new char [ size ];
-			memcpy ( buffer, text->c_str(), size );
-			
-		}
+		ParameterAsChar ( parameters, 0, &buffer, size );
 		
 		StringAutoPtr base64 ( new string ( base64_text(buffer), base64_text(buffer + size) ) );
 		
@@ -1351,20 +1290,35 @@ FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environm
 	try {
 		
 		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
 				
-		vector<char> data;
+		vector<char> response;
 		
 		if ( funcId == kBE_HTTP_POST ) {
-			data = HTTP_POST ( *url, *post_parameters, *username, *password );
-		} else { // kBE_HTTP_PUT
-			data = HTTP_PUT ( *url, *post_parameters, *username, *password );
+
+			StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
+			response = HTTP_POST ( *url, *post_parameters, *username, *password );
+
+		} else if ( funcId == kBE_HTTP_PUT_File ) {
+
+			StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
+			response = HTTP_PUT ( *url, *post_parameters, *username, *password );
+
+		} else { // kBE_HTTP_PUT_DATA
+			
+			char * data = NULL;
+			FMX_UInt32 size = 0;
+			ParameterAsChar ( parameters, 1, &data, size );
+
+			response = HTTP_PUT_DATA ( *url, data, size, *username, *password );
+			
+			delete [] data;
+			
 		}
 
 		error = g_last_error;
-		SetResult ( data, results );
+		SetResult ( response, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;

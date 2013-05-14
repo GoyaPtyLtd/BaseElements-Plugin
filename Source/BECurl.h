@@ -49,8 +49,9 @@ typedef std::map<std::string, std::string> CustomHeaders;
 
 
 struct MemoryStruct {
-	char *memory;
+	char * memory;
 	size_t size;
+	char * origin;
 };
 
 
@@ -65,6 +66,7 @@ struct host_details {
 std::vector<char> GetURL ( const std::string url, const std::string filename = "", const std::string username = "", const std::string password = "" );
 std::vector<char> HTTP_POST ( const std::string url, const std::string post_parameters, const std::string username = "", const std::string password = "" );
 std::vector<char> HTTP_PUT ( const std::string url, const std::string post_parameters, const std::string username = "", const std::string password = "" );
+std::vector<char> HTTP_PUT_DATA ( const std::string url, const char * data, const size_t size, const std::string username = "", const std::string password = "" );
 std::vector<char> HTTP_DELETE ( const std::string url, const std::string username = "", const std::string password = "" );
 
 
@@ -73,6 +75,7 @@ class BECurl {
 public:
 	
 	BECurl ( const std::string download_this, const std::string to_file, std::string username, const std::string password, const std::string parameters );
+	BECurl ( const std::string download_this, const char * data, const size_t size, const std::string username, const std::string password );
 	~BECurl();
 	
     std::vector<char> download ( );
@@ -95,6 +98,9 @@ protected:
 
 	std::string filename;
 	FILE * upload_file;
+	
+	char * upload_data;
+	size_t upload_data_size;
 
 	std::string parameters;
 	
@@ -110,7 +116,9 @@ protected:
 	CURLcode error;
 	std::string proxy;
 	std::string proxy_login;
-	
+
+	void Init ( const std::string download_this, const std::string to_file, std::string username, const std::string password, const std::string parameters );
+
     void prepare ( );
 	void add_custom_headers ( );
 	void write_to_memory ( );

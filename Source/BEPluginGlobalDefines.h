@@ -71,7 +71,7 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"2.0.0"
-#define	AUTO_UPDATE_VERSION L"02000015"
+#define	AUTO_UPDATE_VERSION L"02000017"
 #define VERSION_STRING "2.1a4"
 
 
@@ -137,9 +137,10 @@ enum functions {
 	kBE_HTTP_Response_Headers = 182,
 	kBE_HTTP_Set_Custom_Header = 183,
 	kBE_HTTP_DELETE = 184,
-	kBE_HTTP_PUT = 185,
+	kBE_HTTP_PUT_File = 185,
 	kBE_HTTP_Set_Proxy = 186,
 	kBE_Curl_Set_Option = 187,
+	kBE_HTTP_PUT_Data = 188,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,

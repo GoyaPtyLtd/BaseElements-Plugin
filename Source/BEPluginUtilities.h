@@ -39,8 +39,10 @@ void SetResult ( const std::string filename, const std::vector<char> data, fmx::
 
 bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which, const bool default_value = true );
 long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value );
-StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, FMX_UInt32 which );
-WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, FMX_UInt32 which );
+StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which );
+WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which );
+void ParameterAsChar ( const fmx::DataVect& parameters, const FMX_UInt32 which, char ** char_data, FMX_UInt32& size );
+
 
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path );
 std::vector<char> ConvertTextTo ( char * in, const size_t length, const std::string& encoding );
