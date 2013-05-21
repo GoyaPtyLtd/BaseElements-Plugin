@@ -969,6 +969,47 @@ FMX_PROC(errcode) BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* envi
 
 
 
+FMX_PROC(errcode) BE_JSON_Encode ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	g_json_error_description = "";
+	
+	try {
+		
+		StringAutoPtr key = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr type = ParameterAsUTF8String ( parameters, 2 );
+		
+		if ( parameters.Size() == 1 ) {
+
+			string out = "\"" + *key + "\":";
+			SetResult ( out, results );
+
+		} else {
+
+			auto_ptr<BEJSON> json_document ( new BEJSON ( ) );
+			StringAutoPtr json = json_document->encode ( key, parameters.At ( 1 ), type );
+			json->erase ( 0, 1 ); // remove {
+			json->erase ( json->length() - 1 ); // remove }
+			SetResult ( json, results );
+
+		}
+		
+	} catch ( BEJSON_Exception& e ) {
+		error = e.code();
+		g_json_error_description = e.description();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_JSON_Encode
+
+
+
 #pragma mark -
 #pragma mark User Preferences
 #pragma mark -

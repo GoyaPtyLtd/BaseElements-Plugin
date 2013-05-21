@@ -25,7 +25,8 @@
 
 enum {
 	kBE_JSON_LoadDocumentError = 1,
-	kBE_JSON_JSONPathDoesNotExistError = 2
+	kBE_JSON_JSONPathDoesNotExistError = 2,
+	kBE_JSON_InvalidDataTypeError = 3
 };
 
 
@@ -73,11 +74,13 @@ class BEJSON {
 	
 public:
 	
+	BEJSON ( );
 	BEJSON ( const StringAutoPtr json );
 		~BEJSON ( );
 
 	void json_path_query ( const StringAutoPtr json_path, fmx::Data& results );
 	void array_size ( fmx::Data& results );
+	StringAutoPtr encode ( const StringAutoPtr format, const fmx::Data& value, const StringAutoPtr type );
 	
 protected:
 	

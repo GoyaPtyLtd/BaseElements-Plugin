@@ -100,6 +100,8 @@
 "300" = "BE_JSONPath ( json ; path )";
 "301" = "BE_JSON_Error_Description";
 "302" = "BE_JSON_ArraySize ( json )";
+"303" = "BE_JSON_Encode ( key {; value ; type } )";
+
 
 //"320" = "BE_OAuth_RequestToken ( url ; consumer_key ; consumer_secret )";
 "321" = "BE_OAuth_RequestAccessToken ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )";
