@@ -295,12 +295,12 @@ vector<char> BECurl::download ( )
 			write_to_memory ( );		
 		} else {
 			
-			FILE * outputFile = fopen ( filename.c_str(), "wb" );
+			upload_file = fopen ( filename.c_str(), "wb" );
 			
 			// curl will crash rather than fail with an error if outputFile is not open
 			
-			if ( outputFile ) {
-				easy_setopt ( CURLOPT_WRITEDATA, outputFile );
+			if ( upload_file ) {
+				easy_setopt ( CURLOPT_WRITEDATA, upload_file );
 			} else {
 				throw BECurl_Exception ( CURLE_WRITE_ERROR );
 			}
@@ -589,7 +589,10 @@ void BECurl::perform ( )
 void BECurl::cleanup ( )
 {
 	
-	if ( upload_file ) { fclose ( upload_file ); }
+	if ( upload_file ) {
+		fclose ( upload_file );
+		upload_file = NULL;
+	}
 	
 	be_free ( headers.memory );
 	be_free ( data.memory );
