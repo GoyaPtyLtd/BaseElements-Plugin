@@ -454,7 +454,7 @@ Download the source from
 
 	http://liboauth.sourceforge.net/
 
-Unpack directory containing the Visual Studio solution files (from Projects/Extras), open the Solution make sure the project can find the BaseElements plug-in Header and Libraries directories. Then, from Build->Batch Build build the two "Release" configurations.
+Unpack directory containing the Visual Studio solution files (from the BaseElements-Plugin Projects/Extras), open the Solution make sure the project can find the BaseElements plug-in Header and Libraries directories. Then, from Build->Batch Build build the two "Release" configurations.
 
 Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib  to Libraries and liboauth\Release\liboauth.lib to Libraries\x64.
 
