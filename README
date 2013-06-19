@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 2.0 of the plug-in was built on Mac OS X 10.8.3 using Xcode 4.6.2 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
+Version 2.1 of the plug-in was built on Mac OS X 10.8.4 using Xcode 4.6.3 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -31,7 +31,7 @@ Boost is available from
 
 	http://www.boost.org/
 
-Note: v2.0 of the plug-in requires Boost 1.53_0 (or later).
+Note: v2.1 of the plug-in requires Boost 1.53_0 (or later).
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
@@ -127,7 +127,7 @@ The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 
-Note: v2.0 of the plug-in requires Boost 1.53_0 (or later).
+Note: v2.1 of the plug-in requires Boost 1.53_0 (or later).
 
 See
 
