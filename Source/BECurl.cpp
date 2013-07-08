@@ -578,7 +578,10 @@ void BECurl::perform ( )
 			for ( size_t i = 0 ; i < data.size ; i++ ) {
 				result.push_back ( data.memory[i] );
 			}
+		} else {
+			throw BECurl_Exception ( error );
 		}
+		
 	} else {
 		throw BECurl_Exception ( error );
 	}
