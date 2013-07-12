@@ -148,16 +148,30 @@ WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, WStringAutoPtr in_fol
 		[file_dialog setCanCreateDirectories: YES];
 	}
 	
-	NSString * file_path;
+	if ( choose_file ) {
+		[file_dialog setAllowsMultipleSelection: YES];
+	}
+	
+	NSMutableString * file_path = [NSMutableString stringWithString: @""];
 	
 	if ( [file_dialog runModal ] == NSFileHandlingPanelOKButton ) {
 		
 		NSArray* files = [file_dialog URLs];
-		file_path = [[files objectAtIndex: 0] path];
+		NSUInteger number_of_files = [files count];
+		
+		// return the file paths as a value list
+		
+		for ( NSUInteger i = 0 ; i < number_of_files ; i++ ) {
+			[file_path appendString: [[files objectAtIndex: i] path]];
+			if ( i + 1 != number_of_files ) {
+				[file_path appendString: @FILEMAKER_END_OF_LINE];
+			}
+		}
+		
 		// [files release];
 		
 	} else {
-		file_path = @""; // the user cancelled
+//		[file_path stringWithString: @""]; // the user cancelled
 	}
 	
 	//	[prompt_string release];

@@ -17,6 +17,8 @@
 #include <ShlObj.h>
 #include <commctrl.h>
 
+#include <sstream>
+
 #include <boost/algorithm/string.hpp>
 
 
@@ -408,7 +410,7 @@ WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 	open_file_dialog.nMaxFile = sizeof(szFile);
 	open_file_dialog.lpstrTitle = prompt->c_str();
 	open_file_dialog.lpstrInitialDir = in_folder->c_str();
-	open_file_dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+	open_file_dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT;
 
 	 // Display the Open dialog box
 
@@ -418,7 +420,35 @@ WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 		wcscpy_s ( path, open_file_dialog.lpstrFile );
 	 }
 
-	 return WStringAutoPtr ( new wstring ( path ) );
+	// return the file paths as a value list
+
+	wstringstream wss ( path );
+	istream_iterator<wstring, wchar_t, std::char_traits<wchar_t> > begin ( wss );
+	istream_iterator<wstring, wchar_t, std::char_traits<wchar_t> > end;
+	vector <wstring> values ( begin, end );
+
+	WStringAutoPtr selected_files = WStringAutoPtr ( new wstring ( L"" ) );
+
+	int number_of_files = values.size();
+
+	if ( number_of_files == 1 ) {
+		selected_files->append ( values[0] );
+	} else {
+
+		for ( int i = 1 ; i < number_of_files ; i++ ) {
+
+			selected_files->append ( values[0] );
+			selected_files->append ( values[i] );
+
+			if ( i + 1 != number_of_files ) {
+				selected_files->append ( L"\r" /*FILEMAKER_END_OF_LINE*/ );
+			}
+
+		}
+
+	}
+	
+	return selected_files;
 
 }	//	SelectFile
 
