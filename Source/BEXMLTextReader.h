@@ -2,7 +2,7 @@
  BEXMLTextReader.h
  BaseElements Plug-In
  
- Copyright 2012 Goya. All rights reserved.
+ Copyright 2012-3 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -25,8 +25,10 @@
 using namespace std;
 
 
-// Partial wrapper for the libxml2 XMLTextReader interface to simplify error handling
+static std::string error_report;
 
+
+// Partial wrapper for the libxml2 XMLTextReader interface to simplify error handling
 
 class BEXMLTextReader : public BEXMLReaderInterface {
 	
@@ -37,6 +39,8 @@ public:
 	
 	void read ( );
 	bool end ( ) { return last_node; };
+	
+	std::string parse ( );
 
 	string name();
 	int node_type();
@@ -50,13 +54,15 @@ public:
 	bool empty();
 	string value();
 	string raw_xml();
+		
+	static void error_reader (void * arg, const char * msg, xmlParserSeverities severity, xmlTextReaderLocatorPtr locator );
 	
 protected:
 	
 	bool last_node;
 	xmlTextReaderPtr reader;
 	xmlDocPtr xml_document;
-		
+	
 };
 
 

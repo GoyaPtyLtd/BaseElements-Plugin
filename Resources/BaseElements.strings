@@ -91,6 +91,7 @@
 "202" = "BE_XPathAll ( xml ; xpath {; namespaceList } )";
 
 "210" = "BE_StripXMLNodes ( inputPath ; outputPath ; nodeNames )";
+"211" = "BE_XML_Parse ( path )";
 
 
 "220" = "BE_CurrentTimeMilliseconds";

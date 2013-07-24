@@ -54,6 +54,7 @@ FMX_PROC(fmx::errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const fmx::Exp
 FMX_PROC(fmx::errcode) BE_XPath ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_XPathAll ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_StripXMLNodes ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_XML_Parse ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 FMX_PROC(fmx::errcode) BE_JSONPath ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );

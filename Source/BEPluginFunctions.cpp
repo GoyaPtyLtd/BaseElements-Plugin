@@ -886,6 +886,37 @@ FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* envir
 } // BE_StripXMLNodes
 
 
+#include "BEXMLTextReader.h"
+
+FMX_PROC(errcode) BE_XML_Parse ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error =	NoError();
+	
+	try {
+		
+		StringAutoPtr input_file = ParameterAsUTF8String ( parameters, 0 );
+		
+		BEXMLTextReader * reader = new BEXMLTextReader ( *input_file );
+		
+		string result = reader->parse();
+		
+		delete reader;
+		
+		SetResult ( result, results );
+		
+	} catch ( BEXMLReaderInterface_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_XML_Parse
+
+
 
 #pragma mark -
 #pragma mark JSON

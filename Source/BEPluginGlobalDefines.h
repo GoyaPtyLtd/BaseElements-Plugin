@@ -71,7 +71,7 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"2.2.0"
-#define	AUTO_UPDATE_VERSION L"02010050"
+#define	AUTO_UPDATE_VERSION L"02010051"
 #define VERSION_STRING "2.2"
 
 
@@ -145,6 +145,7 @@ enum functions {
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,
 	kBE_StripXMLNodes = 210,
+	kBE_XML_Parse = 211,
 	kBE_CurrentTimeMilliseconds = 220,
 	kBE_UTCMilliseconds = 221,
 	kBE_TimeZoneOffset = 222,

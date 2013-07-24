@@ -2,7 +2,7 @@
  BEXMLTextReader.cpp
  BaseElements Plug-In
  
- Copyright 2012 Goya. All rights reserved.
+ Copyright 2012-3 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -14,6 +14,8 @@
 
 #include <algorithm>
 #include <string>
+#include <iostream>
+#include <sstream>
 
 #include "boost/filesystem.hpp"
 
@@ -26,6 +28,7 @@
 BEXMLTextReader::BEXMLTextReader ( const string path )
 {
 	last_node = false;
+	error_report = "";
 	
 	boost::filesystem::path file = path;
 	bool file_exists = boost::filesystem::exists ( file );
@@ -73,6 +76,34 @@ void BEXMLTextReader::read ( )
 	}
 	
 }
+
+
+void BEXMLTextReader::error_reader (void * /* arg */, const char * msg, xmlParserSeverities /* severity */, xmlTextReaderLocatorPtr locator )
+{
+	ostringstream error;
+
+	error << xmlTextReaderLocatorBaseURI ( locator ) << " at line ";
+	error << xmlTextReaderLocatorLineNumber ( locator ) << std::endl;
+	error << msg << std::endl;
+
+	error_report.append ( error.str() );
+}
+
+
+string BEXMLTextReader::parse ( )
+{
+		
+	xmlTextReaderSetErrorHandler ( reader, (xmlTextReaderErrorFunc) BEXMLTextReader::error_reader, 0 );
+	
+	int result = 1;
+
+	while ( result == 1 ) {
+		result = xmlTextReaderRead ( reader );
+	}
+
+	return error_report;
+
+} // validate
 
 
 string BEXMLTextReader::name()
