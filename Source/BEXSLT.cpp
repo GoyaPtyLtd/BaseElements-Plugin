@@ -47,6 +47,7 @@ void CleanupLibXSLT ( void );
 
 
 int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
+TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
 void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result );
 
 
@@ -429,6 +430,57 @@ int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList )
 }
 
 
+
+TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
+{
+	
+	TextAutoPtr result;
+
+	xmlChar* str;
+	
+	switch ( xpathObj->type ) {
+			
+		case XPATH_BOOLEAN:
+			str = xmlXPathCastBooleanToString ( xpathObj->boolval );
+			break;
+			
+		case XPATH_NUMBER:
+			str = xmlXPathCastNumberToString ( xpathObj->floatval );
+			break;
+			
+		case XPATH_STRING:
+			str = xmlStrdup ( xpathObj->stringval );
+			break;
+			
+		case XPATH_NODESET:
+			// hope it's a string
+			str = xmlXPathCastNodeSetToString ( xpathObj->nodesetval );
+			break;
+			
+		case XPATH_UNDEFINED:
+		case XPATH_POINT:
+		case XPATH_RANGE:
+		case XPATH_LOCATIONSET:
+		case XPATH_USERS:
+		case XPATH_XSLT_TREE:
+			
+		default:
+			
+			// we got nothing
+			;
+			
+	}
+	
+	if ( str ) {
+		result->AssignWithLength((char*)str, (FMX_UInt32)strlen((char*)str), fmx::Text::kEncoding_UTF8);	// return node set as string on success
+		xmlFree ( str );
+	}
+
+	return result;
+}
+
+
+
 TextAutoPtr ApplyXPath ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr nsList )
 {
 	g_last_xslt_error = kNoError;
@@ -453,10 +505,8 @@ TextAutoPtr ApplyXPath ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr n
 	
 	xpathObj = xmlXPathEvalExpression((xmlChar *)xpath->c_str(), xpathCtx);
 	
-	if (xpathObj) {
-		xmlChar* str = xmlXPathCastNodeSetToString(xpathObj->nodesetval);
-		result->AssignWithLength((char*)str, (FMX_UInt32)strlen((char*)str), fmx::Text::kEncoding_UTF8);	// return node set as string on success
-		xmlFree(str);
+	if ( xpathObj ) {
+		result->SetText ( *(XPathObjectAsText ( xpathObj )) );
 	}
 	
 cleanup:
@@ -487,6 +537,7 @@ void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result )
 		xmlXPathNodeSetSort(ns);
 	for (int i = 0; i < ns->nodeNr; i++) {
 		xmlChar* str = xmlXPathCastNodeToString(ns->nodeTab[i]);
+		
 		if (str) {
 			value->AssignWithLength((char*)str, (FMX_UInt32)strlen((char*)str), fmx::Text::kEncoding_UTF8);
 			result->AppendText(*value);
@@ -521,10 +572,15 @@ TextAutoPtr ApplyXPathAll ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPt
 	
 	xpathObj = xmlXPathEvalExpression((xmlChar *)xpath->c_str(), xpathCtx);
 	
-	if (xpathObj) {
-		TextAutoPtr valueList;
-		NodeSetToValueList(xpathObj->nodesetval, valueList);
-		result->SetText(*valueList);
+	if ( xpathObj ) {
+		
+		if ( xpathObj->type == XPATH_NODESET ) {
+			TextAutoPtr valueList;
+			NodeSetToValueList(xpathObj->nodesetval, valueList);
+			result->SetText(*valueList);
+		} else {
+			result->SetText ( *(XPathObjectAsText ( xpathObj )) );
+		}
 	}
 	
 cleanup:
