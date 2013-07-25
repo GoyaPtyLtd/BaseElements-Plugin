@@ -237,9 +237,9 @@ TextAutoPtr ApplyXSLT ( StringAutoPtr xml_path, StringAutoPtr xslt, StringAutoPt
 
 
 
-///////////////////////////////////////////////////////////////////////
-//	The follow code kindly supplied by Magnus Strand, http://www.smartasystem.se/
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+//	The following code originally supplied by Magnus Strand, http://www.smartasystem.se/
+////////////////////////////////////////////////////////////////////////////////////////
 
 
 #if defined(FMX_MAC_TARGET)
@@ -436,44 +436,43 @@ TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 	
 	TextAutoPtr result;
 
-	xmlChar* str;
+	xmlChar* oject_as_string = NULL;
 	
 	switch ( xpathObj->type ) {
 			
 		case XPATH_BOOLEAN:
-			str = xmlXPathCastBooleanToString ( xpathObj->boolval );
+			oject_as_string = xmlXPathCastBooleanToString ( xpathObj->boolval );
 			break;
 			
 		case XPATH_NUMBER:
-			str = xmlXPathCastNumberToString ( xpathObj->floatval );
+			oject_as_string = xmlXPathCastNumberToString ( xpathObj->floatval );
 			break;
 			
 		case XPATH_STRING:
-			str = xmlStrdup ( xpathObj->stringval );
+			oject_as_string = xmlStrdup ( xpathObj->stringval );
 			break;
 			
 		case XPATH_NODESET:
 			// hope it's a string
-			str = xmlXPathCastNodeSetToString ( xpathObj->nodesetval );
+			oject_as_string = xmlXPathCastNodeSetToString ( xpathObj->nodesetval );
 			break;
 			
-		case XPATH_UNDEFINED:
-		case XPATH_POINT:
-		case XPATH_RANGE:
-		case XPATH_LOCATIONSET:
-		case XPATH_USERS:
-		case XPATH_XSLT_TREE:
+//		case XPATH_UNDEFINED:
+//		case XPATH_POINT:
+//		case XPATH_RANGE:
+//		case XPATH_LOCATIONSET:
+//		case XPATH_USERS:
+//		case XPATH_XSLT_TREE:
 			
 		default:
-			
 			// we got nothing
 			;
 			
 	}
 	
-	if ( str ) {
-		result->AssignWithLength((char*)str, (FMX_UInt32)strlen((char*)str), fmx::Text::kEncoding_UTF8);	// return node set as string on success
-		xmlFree ( str );
+	if ( oject_as_string ) {
+		result->AssignWithLength ( (char*)oject_as_string, (FMX_UInt32)strlen ( (char*)oject_as_string ), fmx::Text::kEncoding_UTF8 );
+		xmlFree ( oject_as_string );
 	}
 
 	return result;
