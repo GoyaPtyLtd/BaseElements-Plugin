@@ -2,7 +2,7 @@
  BEZlib.h
  BaseElements Plug-In
  
- Copyright 2011 Goya. All rights reserved.
+ Copyright 2011-2013 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -17,8 +17,8 @@
 #include "BEPluginUtilities.h"
 
 
-long UnZip ( const StringAutoPtr archive );
-long Zip ( const StringAutoPtr filename );
+long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_directory );
+long Zip ( const StringAutoPtr filename, const StringAutoPtr archive );
 
 
 #endif // BEZLIB_H

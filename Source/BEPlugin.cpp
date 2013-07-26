@@ -148,8 +148,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SetPreference, BE_SetPreference, true, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_GetPreference, BE_GetPreference, true, 1, 2 );
 
-	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, 1 );
-	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1 );
+	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, true, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, true, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Base64_Decode, BE_Base64_Decode, true, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Base64_Encode, BE_Base64_Encode, 1 );
 	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, true, 0, 1 );

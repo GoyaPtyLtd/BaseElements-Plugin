@@ -1114,8 +1114,9 @@ FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */,
 	try {
 		
 		StringAutoPtr archive = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
 		
-		SetResult ( UnZip ( archive ), results );
+		SetResult ( UnZip ( archive, output_directory ), results );
 		
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -1138,8 +1139,9 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 	try {
 		
 		StringAutoPtr file = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
 		
-		SetResult ( Zip ( file ), results );
+		SetResult ( Zip ( file, output_directory ), results );
 		
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();

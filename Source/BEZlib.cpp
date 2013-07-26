@@ -2,7 +2,7 @@
  BEZlib.cpp
  BaseElements Plug-In
  
- Copyright 2011 Goya. All rights reserved.
+ Copyright 2011-2013 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -66,9 +66,9 @@ using namespace boost::filesystem;
 #pragma mark -
 
 void ChangeFileDate ( path file, tm_unz tmu_date );
-long ExtractCurrentFile ( path parent, unzFile uf );
+long ExtractCurrentFile ( path parent, unzFile zip_file );
 
-void FileTime ( const path file, zip_fileinfo * zi );
+void FileTime ( const path file, zip_fileinfo * file_info );
 bool IsLargeFile ( const path file );
 int AddFileToArchive ( const path filename, zipFile zf, const path base );
 int AddToArchive ( const path directory_path, zipFile zf, const path base );
@@ -82,51 +82,57 @@ int AddToArchive ( const path directory_path, zipFile zf, const path base );
 void ChangeFileDate ( path file, tm_unz tmu_date )
 {
 
-	struct tm newdate;
-	newdate.tm_sec = tmu_date.tm_sec;
-	newdate.tm_min = tmu_date.tm_min;
-	newdate.tm_hour = tmu_date.tm_hour;
-	newdate.tm_mday = tmu_date.tm_mday;
-	newdate.tm_mon = tmu_date.tm_mon;
+	struct tm new_date;
+	new_date.tm_sec = tmu_date.tm_sec;
+	new_date.tm_min = tmu_date.tm_min;
+	new_date.tm_hour = tmu_date.tm_hour;
+	new_date.tm_mday = tmu_date.tm_mday;
+	new_date.tm_mon = tmu_date.tm_mon;
 
 	if ( tmu_date.tm_year > 1900 ) {
-		newdate.tm_year = tmu_date.tm_year - 1900;
+		new_date.tm_year = tmu_date.tm_year - 1900;
 	} else {
-		newdate.tm_year = tmu_date.tm_year ;		
+		new_date.tm_year = tmu_date.tm_year ;		
 	}
 	
-	newdate.tm_isdst = -1;
+	new_date.tm_isdst = -1;
 
-	struct utimbuf ut;
-	ut.actime = ut.modtime = mktime ( &newdate );
+	struct utimbuf file_date;
+	file_date.actime = file_date.modtime = mktime ( &new_date );
 
-	utime ( file.string().c_str(), &ut );
+	utime ( file.string().c_str(), &file_date );
 
 } // ChangeFileDate
 
 
-long UnZip ( const StringAutoPtr archive )
+long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_directory )
 {
 	long error = kNoError;
 	
 	path archive_path = *archive;
 	archive_path.make_preferred();
+	
+	path output_path = *output_directory;
+	if ( output_directory->empty() ) {
+		output_path = archive_path.parent_path();
+	}
+	output_path.make_preferred();
 
-	unzFile uf = unzOpen64 ( archive_path.string().c_str() );
+	unzFile zip_file = unzOpen64 ( archive_path.string().c_str() );
 
-	if ( uf != NULL ) {
+	if ( zip_file != NULL ) {
 
-	    unz_global_info64 gi;
-	    error = unzGetGlobalInfo64 ( uf, &gi );
+	    unz_global_info64 file_info;
+	    error = unzGetGlobalInfo64 ( zip_file, &file_info );
 	    if ( error == UNZ_OK ) {
 		
-			for ( FMX_UInt32 i = 0; i < gi.number_entry; i++ ) {
+			for ( FMX_UInt32 i = 0; i < file_info.number_entry; i++ ) {
 			
-				error = ExtractCurrentFile ( archive_path.parent_path(), uf );
+				error = ExtractCurrentFile ( output_path, zip_file );
 				if ( error == UNZ_OK ) {
 				
-					if ( ( i + 1 ) < gi.number_entry ) {
-						error = unzGoToNextFile ( uf );
+					if ( ( i + 1 ) < file_info.number_entry ) {
+						error = unzGoToNextFile ( zip_file );
 					}
 
 				}
@@ -137,7 +143,7 @@ long UnZip ( const StringAutoPtr archive )
 			}
 		}
 
-		long close_error = unzClose ( uf );
+		long close_error = unzClose ( zip_file );
 		if ( error == UNZ_OK ) {
 			error = close_error;
 		}
@@ -149,14 +155,14 @@ long UnZip ( const StringAutoPtr archive )
 } // UnZip
 
 
-long ExtractCurrentFile ( path parent, unzFile uf )
+long ExtractCurrentFile ( path parent, unzFile zip_file )
 {
     long error = UNZ_OK;
 
     char filename_inzip[PATH_MAX];
     unz_file_info64 file_info;
 	
-    error = unzGetCurrentFileInfo64 ( uf, &file_info, filename_inzip, sizeof ( filename_inzip ), NULL, 0, NULL, 0 );
+    error = unzGetCurrentFileInfo64 ( zip_file, &file_info, filename_inzip, sizeof ( filename_inzip ), NULL, 0, NULL, 0 );
 	
 	path file = filename_inzip;
 
@@ -179,7 +185,7 @@ long ExtractCurrentFile ( path parent, unzFile uf )
 			
 		} else {
 			
-			error = unzOpenCurrentFilePassword ( uf, NULL );
+			error = unzOpenCurrentFilePassword ( zip_file, NULL );
 
 			if ( error == UNZ_OK ) {
 
@@ -190,7 +196,7 @@ long ExtractCurrentFile ( path parent, unzFile uf )
 				
 				long bytes_read = 0;
 				do {
-					bytes_read = unzReadCurrentFile ( uf, (void *)buffer, WRITEBUFFERSIZE );
+					bytes_read = unzReadCurrentFile ( zip_file, (void *)buffer, WRITEBUFFERSIZE );
 					
 					if ( bytes_read > 0 ) {
 						output_file.write ( buffer, bytes_read );
@@ -206,7 +212,7 @@ long ExtractCurrentFile ( path parent, unzFile uf )
 			}
 			
 			// don't lose the error
-			int close_error = unzCloseCurrentFile ( uf );
+			int close_error = unzCloseCurrentFile ( zip_file );
 			if ( error == UNZ_OK ) {
 				error = close_error;
 			}
@@ -223,12 +229,12 @@ long ExtractCurrentFile ( path parent, unzFile uf )
 #pragma mark -
 
 
-void FileTime ( const path file, zip_fileinfo * zi )
+void FileTime ( const path file, zip_fileinfo * zip_info )
 {
 	time_t when = last_write_time ( file );
 	struct tm * filedate = localtime ( &when );
 	
-	tm_zip tmzip = zi->tmz_date;
+	tm_zip tmzip = zip_info->tmz_date;
 	
 	tmzip.tm_sec  = filedate->tm_sec;
 	tmzip.tm_min  = filedate->tm_min;
@@ -243,13 +249,13 @@ void FileTime ( const path file, zip_fileinfo * zi )
     HANDLE hFind;
     WIN32_FIND_DATAA ff32;
 
-	uLong * dt = &(zi->dosDate);
+	uLong * dt = &(zip_info->dosDate);
 
     hFind = FindFirstFileA ( file.string().c_str(), &ff32 );
     if ( hFind != INVALID_HANDLE_VALUE ) {
 		FileTimeToLocalFileTime ( &(ff32.ftLastWriteTime), &ftLocal );
         FileTimeToDosDateTime ( &ftLocal, ((LPWORD)dt) + 1, ((LPWORD)dt) + 0 );
-		zi->dosDate = *dt;
+		zip_info->dosDate = *dt;
         FindClose ( hFind );
 	}
 
@@ -265,22 +271,22 @@ bool IsLargeFile ( const path file )
 }
 
 
-int AddFileToArchive ( const path filename, zipFile zf, const path base )
+int AddFileToArchive ( const path filename, zipFile zip_file, const path base )
 {		
     int error = kNoError;
 	
-	zip_fileinfo zi;
-	FileTime ( filename, &zi );
+	zip_fileinfo zip_info;
+	FileTime ( filename, &zip_info );
 	
 	std::string relative_path = NaiveUncomplete ( filename, base ).string();
 	int compression_level = Z_BEST_COMPRESSION;
 	const char* password = NULL;
-	unsigned long crcFile = 0;
+	unsigned long crc_file = 0;
 	bool zip64 = IsLargeFile ( filename );
 
-	error = zipOpenNewFileInZip3_64 ( zf,
+	error = zipOpenNewFileInZip3_64 ( zip_file,
 									 relative_path.c_str(),
-									 &zi,
+									 &zip_info,
 									 NULL,
 									 0,
 									 NULL,
@@ -293,7 +299,7 @@ int AddFileToArchive ( const path filename, zipFile zf, const path base )
 									 DEF_MEM_LEVEL, 
 									 Z_DEFAULT_STRATEGY,
 									 password,
-									 crcFile, 
+									 crc_file,
 									 zip64
 									 );
 	
@@ -314,7 +320,7 @@ int AddFileToArchive ( const path filename, zipFile zf, const path base )
 				size_read = input_file.gcount();
 
 				if ( size_read > 0 ) {
-					error = zipWriteInFileInZip ( zf, (void *)buffer, (unsigned int)size_read );
+					error = zipWriteInFileInZip ( zip_file, (void *)buffer, (unsigned int)size_read );
 				} else if ( size_read < 0 ) {
 					error = ZIP_ERRNO;
 				}
@@ -330,7 +336,7 @@ int AddFileToArchive ( const path filename, zipFile zf, const path base )
 		delete [] buffer;
 
 		// don't loose the error
-		int close_error = zipCloseFileInZip ( zf );
+		int close_error = zipCloseFileInZip ( zip_file );
 		if ( error == ZIP_OK ) {
 			error = close_error;
 		}
@@ -344,7 +350,7 @@ int AddFileToArchive ( const path filename, zipFile zf, const path base )
 } // AddFileToArchive
 
 
-int AddToArchive ( const path directory_path, zipFile zf, const path base )
+int AddToArchive ( const path directory_path, zipFile zip_file, const path base )
 {
     int error = 0;
 	
@@ -353,14 +359,14 @@ int AddToArchive ( const path directory_path, zipFile zf, const path base )
 		if ( exists ( directory_path ) ) {
 			
 			if ( ! is_directory ( directory_path ) ) {
-				error = AddFileToArchive ( directory_path, zf, base );
+				error = AddFileToArchive ( directory_path, zip_file, base );
 			} else {
 
 				directory_iterator end_itr; // default construction yields past-the-end
 				directory_iterator itr ( directory_path );
 				
 				while ( itr != end_itr ) {
-					error = AddToArchive ( itr->path(), zf, base );
+					error = AddToArchive ( itr->path(), zip_file, base );
 					++itr;					
 				}
 			}
@@ -375,38 +381,38 @@ int AddToArchive ( const path directory_path, zipFile zf, const path base )
 } // AddToArchive
 
 
-long Zip ( StringAutoPtr filename )
+long Zip ( StringAutoPtr filename, const StringAutoPtr archive )
 {
     long error = 0;
 	
 	path file = *filename;
+	path archive_path = *archive;
 
-	if ( exists ( file ) ) {
+	if ( exists ( file ) && ( archive->empty() || exists ( archive_path.parent_path() ) ) ) {
 
-		std::string archive_name = *filename + ".zip";
-		zipFile zf;
+		if ( archive->empty() ) {
+			*archive = *filename + ".zip";
+		}
 		
+		zipFile zip_file;
 		bool dont_overwrite = false;
 		
 #ifdef USEWIN32IOAPI
 		zlib_filefunc64_def ffunc;
-		fill_win32_filefunc64A(&ffunc);
-		zf = zipOpen2_64 ( archive_name.c_str(), dont_overwrite, NULL, &ffunc );
+		fill_win32_filefunc64A ( &ffunc );
+		zip_file = zipOpen2_64 ( archive->c_str(), dont_overwrite, NULL, &ffunc );
 #else
-		zf = zipOpen64 ( archive_name.c_str(), dont_overwrite );
+		zip_file = zipOpen64 ( archive->c_str(), dont_overwrite );
 #endif
 		
-		if ( zf == NULL ) {
+		if ( zip_file == NULL ) {
 			error = ZIP_ERRNO;
 		} else {
-			
-			path base = file.parent_path();
-			error = AddToArchive ( file, zf, base );
-			
+			error = AddToArchive ( file, zip_file, file.parent_path() );
 		}
 		
 		// only worry about an error closing the file if there hasn't already been one
-		int close_error = zipClose ( zf, NULL );
+		int close_error = zipClose ( zip_file, NULL );
 		if ( error == kNoError ) {
 			error = close_error;
 		}

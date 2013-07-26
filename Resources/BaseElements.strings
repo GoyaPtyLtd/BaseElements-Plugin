@@ -67,8 +67,8 @@
 "160" = "BE_SetPreference ( key ; value {; domain } )";
 "161" = "BE_GetPreference ( key {; domain } )";
 
-"170" = "BE_Unzip ( archive )";
-"171" = "BE_Zip ( file )";
+"170" = "BE_Unzip ( archive {; output_directory} )";
+"171" = "BE_Zip ( file {; archive} )";
 "172" = "BE_Base64_Decode ( text {; name } )";
 "173" = "BE_Base64_Encode ( data )";
 "174" = "BE_SetTextEncoding ( { encoding } )";
