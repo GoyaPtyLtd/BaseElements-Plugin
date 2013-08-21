@@ -48,6 +48,7 @@ void CleanupLibXSLT ( void );
 
 int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
 TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
+TextAutoPtr XPathObjectAsXML ( const xmlDocPtr doc, const xmlXPathContextPtr xpathCtx, const xmlXPathObjectPtr xpathObj );
 void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result );
 
 
@@ -480,7 +481,38 @@ TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 
 
 
-TextAutoPtr ApplyXPath ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr nsList )
+TextAutoPtr XPathObjectAsXML ( const xmlDocPtr doc, const xmlXPathContextPtr xpathCtx, const xmlXPathObjectPtr xpathObj )
+{
+	
+	TextAutoPtr result;
+		
+	xmlBufferPtr buffer;
+	buffer = xmlBufferCreate();
+	
+	xmlOutputBufferPtr buf;
+	buf = (xmlOutputBufferPtr) xmlMalloc ( sizeof ( xmlOutputBuffer ) );
+	
+	memset ( buf, 0, (size_t) sizeof ( xmlOutputBuffer ) );
+	buf->buffer = buffer;
+	
+	xmlNode *node = xpathObj->nodesetval->nodeTab[0];
+	xmlNodeDumpOutput ( buf, doc, node, 0, true, "UTF-8" );
+	const xmlChar * str = xmlBufferContent ( (xmlBufferPtr)buffer );
+	
+	FMX_UInt32 buffer_length = (FMX_UInt32)xmlBufferLength ( buffer );
+	
+
+	if ( str ) {
+		result->AssignWithLength ( (char*)str, buffer_length, fmx::Text::kEncoding_UTF8 );	// return node set as string on success
+		xmlFree ( (xmlChar *)str );
+	}
+
+	return result;
+}
+
+
+
+TextAutoPtr ApplyXPath ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr nsList, bool as_text )
 {
 	g_last_xslt_error = kNoError;
 	TextAutoPtr result;
@@ -505,7 +537,11 @@ TextAutoPtr ApplyXPath ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr n
 	xpathObj = xmlXPathEvalExpression((xmlChar *)xpath->c_str(), xpathCtx);
 	
 	if ( xpathObj ) {
-		result->SetText ( *(XPathObjectAsText ( xpathObj )) );
+		if ( as_text ) {
+			result->SetText ( *(XPathObjectAsText ( xpathObj )) );
+		} else {
+			result->SetText ( *(XPathObjectAsXML ( doc, xpathCtx, xpathObj )) );
+		}
 	}
 	
 cleanup:

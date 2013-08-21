@@ -813,7 +813,12 @@ FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment *
 			nsList = ParameterAsUTF8String ( parameters, 2 );
 		}
 		
-		results.SetAsText( *ApplyXPath ( xml, xpath, nsList ), parameters.At(0).GetLocale() );
+		bool as_text = true;
+		if ( number_of_parameters > 2 ) {
+			as_text = ParameterAsBoolean ( parameters, 3 );
+		}
+		
+		results.SetAsText( *ApplyXPath ( xml, xpath, nsList, as_text ), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;

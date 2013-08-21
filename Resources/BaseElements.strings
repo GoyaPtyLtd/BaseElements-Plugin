@@ -87,7 +87,7 @@
 
 
 "200" = "BE_ApplyXSLTInMemory ( xml ; xslt )";
-"201" = "BE_XPath ( xml ; xpath {; namespaceList } )";
+"201" = "BE_XPath ( xml ; xpath {; namespaceList ; asText } )";
 "202" = "BE_XPathAll ( xml ; xpath {; namespaceList } )";
 
 "210" = "BE_StripXMLNodes ( inputPath ; outputPath ; nodeNames )";

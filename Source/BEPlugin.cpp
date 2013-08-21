@@ -115,7 +115,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_ApplyXSLT, BE_ApplyXSLT, 3 );
 	
 	g_be_plugin->RegisterFunction ( kBE_ApplyXSLTInMemory, BE_ApplyXSLTInMemory, 2 );
-	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, false, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, false, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_XPathAll, BE_XPathAll, false, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_StripXMLNodes, BE_StripXMLNodes, 3 );
 	g_be_plugin->RegisterFunction ( kBE_XML_Parse, BE_XML_Parse, 1 );
