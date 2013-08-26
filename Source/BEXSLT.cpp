@@ -48,7 +48,7 @@ void CleanupLibXSLT ( void );
 
 int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
 TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
-TextAutoPtr XPathObjectAsXML ( const xmlDocPtr doc, const xmlXPathContextPtr xpathCtx, const xmlXPathObjectPtr xpathObj );
+TextAutoPtr XPathObjectAsXML ( const xmlDocPtr doc, const xmlXPathObjectPtr xpathObj );
 void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result );
 
 
@@ -481,7 +481,7 @@ TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 
 
 
-TextAutoPtr XPathObjectAsXML ( const xmlDocPtr doc, const xmlXPathContextPtr xpathCtx, const xmlXPathObjectPtr xpathObj )
+TextAutoPtr XPathObjectAsXML ( const xmlDocPtr doc, const xmlXPathObjectPtr xpathObj )
 {
 	
 	TextAutoPtr result;
@@ -540,7 +540,7 @@ TextAutoPtr ApplyXPath ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr n
 		if ( as_text ) {
 			result->SetText ( *(XPathObjectAsText ( xpathObj )) );
 		} else {
-			result->SetText ( *(XPathObjectAsXML ( doc, xpathCtx, xpathObj )) );
+			result->SetText ( *(XPathObjectAsXML ( doc, xpathObj )) );
 		}
 	}
 	
