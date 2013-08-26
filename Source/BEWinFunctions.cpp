@@ -27,6 +27,7 @@ using namespace std;
 
 wstring ClipboardFormatNameForID ( const UINT format_id );
 UINT ClipboardFormatIDForName ( const wstring format_name );
+bool SafeOpenClipboard ( void );
 bool IsFileMakerClipboardType ( const wstring atype );
 UINT32 ClipboardOffset ( const wstring atype );
 
@@ -252,13 +253,30 @@ UINT ClipboardFormatIDForName ( const wstring name ) {
 
 }
 	
-	
+// transient access is denied errors (#5) can occur after setting the clipboard
+
+bool SafeOpenClipboard ( void )
+{
+	bool is_open = OpenClipboard ( NULL );
+	int i = 0;
+	while ( GetLastError() && i < 1 )  {
+		Sleep ( 10 );
+		++i;
+		is_open = OpenClipboard ( NULL );
+	}
+
+	g_last_error = GetLastError();
+
+	return is_open;
+
+}
+
 	
 WStringAutoPtr ClipboardFormats ( void )
 {
 	wstring format_list = L"";
 
-	if ( OpenClipboard ( NULL ) ) {
+	if ( SafeOpenClipboard() ) {
 		
 		UINT formats = CountClipboardFormats();
 		UINT next_format = 0;
@@ -272,7 +290,9 @@ WStringAutoPtr ClipboardFormats ( void )
 			
 		}
 
-		CloseClipboard();
+		if ( CloseClipboard() ) {
+			g_last_error = GetLastError();
+		}
 
 	}
 
@@ -299,7 +319,7 @@ UINT32 ClipboardOffset ( const wstring atype )
 {
 
 	if ( IsFileMakerClipboardType ( atype ) ) {
-		return 4;
+		return 4; // char not wchar_t
 	} else {
 		return 0;
 	}
@@ -307,30 +327,19 @@ UINT32 ClipboardOffset ( const wstring atype )
 }
 
 
-StringAutoPtr ClipboardData ( WStringAutoPtr atype )
+StringAutoPtr UTF8ClipboardData ( const WStringAutoPtr atype )
 {
 	char * clipboard_data = NULL;
 
-	if ( OpenClipboard ( NULL ) ) {
-		
-		UINT format_wanted = ClipboardFormatIDForName ( *atype );
+	UINT format_wanted = ClipboardFormatIDForName ( *atype );
+	HGLOBAL clipboard_memory = GetClipboardData ( format_wanted );
+	unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( clipboard_memory );
+	SIZE_T clipboard_size = GlobalSize ( clipboard_memory );
 
-		if ( IsClipboardFormatAvailable ( format_wanted ) ) {
-			
-			HGLOBAL memory_handle = GetClipboardData ( format_wanted );
-			unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( memory_handle );
-			SIZE_T clipboard_size = GlobalSize ( memory_handle );
+	clipboard_data = new char [ clipboard_size + 1 ]();
+	memcpy_s ( clipboard_data, clipboard_size, clipboard_contents, clipboard_size );
 
-			clipboard_data = new char [ clipboard_size + 1 ]();
-			memcpy ( clipboard_data, clipboard_contents, clipboard_size );
-
-			GlobalUnlock ( memory_handle );
-
-		}
-		
-		CloseClipboard();
-	
-	} 
+	GlobalUnlock ( clipboard_memory );
 	
 	if ( !clipboard_data ) {
 		clipboard_data = new char [ 1 ]();
@@ -346,41 +355,140 @@ StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 
 	return reply;
 
+} // UTF8ClipboardData
+
+
+StringAutoPtr WideClipboardData ( const WStringAutoPtr atype )
+{
+	wchar_t * clipboard_data = NULL;
+
+	UINT format_wanted = ClipboardFormatIDForName ( *atype );
+
+	HGLOBAL clipboard_memory = GetClipboardData ( format_wanted );
+	wchar_t * clipboard_contents = (wchar_t *)GlobalLock ( clipboard_memory );
+	SIZE_T clipboard_size = GlobalSize ( clipboard_memory ) / sizeof ( wchar_t );
+	clipboard_data = new wchar_t [ clipboard_size + 1 ]();
+	wmemcpy_s ( clipboard_data, clipboard_size, clipboard_contents, clipboard_size );
+
+	GlobalUnlock ( clipboard_memory );
+	
+	if ( !clipboard_data ) {
+		clipboard_data = new wchar_t [ 1 ]();
+	}
+
+	string utf8 = utf16ToUTF8 ( clipboard_data );
+	delete[] clipboard_data;
+	StringAutoPtr reply ( new string ( utf8 ) );
+
+	return reply;
+
+} // WideClipboardData
+
+
+StringAutoPtr ClipboardData ( WStringAutoPtr atype )
+{
+	StringAutoPtr reply ( new string );
+
+	if ( SafeOpenClipboard() ) {
+		
+		UINT format = ClipboardFormatIDForName ( *atype );
+
+		if ( IsClipboardFormatAvailable ( format ) ) {
+
+			if ( format == CF_UNICODETEXT ) {
+				reply = WideClipboardData ( atype );
+			} else {
+				reply = UTF8ClipboardData ( atype );
+			}
+
+		}
+		
+		if ( CloseClipboard() ) {
+			g_last_error = GetLastError();
+		}
+	
+	}
+	
+	return reply;
+
 } // ClipboardData
+
+
+
+HGLOBAL DataForClipboardAsUTF8 ( const StringAutoPtr data, const WStringAutoPtr atype )
+{
+	SIZE_T data_size = data->size();
+
+	/* 
+	 prefix the data to place on the clipboard with the size of the data
+	 */
+	SIZE_T offset = ClipboardOffset ( *atype );
+	SIZE_T clipboard_size = data_size + offset;
+
+	HGLOBAL clipboard_memory = GlobalAlloc ( GMEM_MOVEABLE, clipboard_size );
+	unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( clipboard_memory );
+
+	if ( IsFileMakerClipboardType ( *atype ) == TRUE ) {
+		memcpy_s ( clipboard_contents, offset, &data_size, offset );
+	}
+
+	memcpy_s ( clipboard_contents + offset, clipboard_size, data->c_str(), clipboard_size );
+
+	GlobalUnlock ( clipboard_memory );
+
+	return clipboard_memory;
+
+}	//	DataForClipboardAsUTF8
+
+
+
+void * DataForClipboardAsWide ( const StringAutoPtr data )
+{
+	wstring data_as_wide = utf8toutf16 ( *data );
+
+	SIZE_T clipboard_size = data_as_wide.size() + 1;
+	SIZE_T memory_size = clipboard_size * sizeof ( wchar_t );
+
+	HGLOBAL clipboard_memory = GlobalAlloc ( GMEM_MOVEABLE, memory_size );
+	wchar_t * clipboard_contents = (wchar_t *)GlobalLock ( clipboard_memory );
+	wmemcpy_s ( clipboard_contents, clipboard_size, data_as_wide.c_str(), clipboard_size );
+
+	GlobalUnlock ( clipboard_memory );
+
+	return clipboard_memory;
+
+}	//	DataForClipboardAsWide
+
 
 
 bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 {
 	bool ok = FALSE;
 	
-	if ( OpenClipboard ( NULL ) ) {
+	if ( OpenClipboard ( GetActiveWindow() ) ) {
 		
-		EmptyClipboard();
+		if ( EmptyClipboard() ) {
 
-		SIZE_T data_size = data->size();
+			UINT format = ClipboardFormatIDForName ( *atype );
 
-		/* 
-		 prefix the data to place on the clipboard with the size of the data
-		 */
-		SIZE_T offset = ClipboardOffset ( *atype );
-		SIZE_T clipboard_size = data_size + offset;
-		HGLOBAL memory_handle = GlobalAlloc ( GMEM_SHARE | GMEM_MOVEABLE, clipboard_size );
+			HGLOBAL clipboard_memory;
 
-		unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( memory_handle );
-		if ( IsFileMakerClipboardType ( *atype ) == TRUE ) {
-			memcpy ( clipboard_contents, &data_size, offset );
-		}
-		memcpy ( clipboard_contents + offset, data->c_str(), clipboard_size );
+			if ( format == CF_UNICODETEXT ) {
+				clipboard_memory = DataForClipboardAsWide ( data );
+			} else {
+				clipboard_memory = DataForClipboardAsUTF8 ( data, atype );
+			}
 
-		GlobalUnlock ( memory_handle );
-
-		UINT format = RegisterClipboardFormat ( atype->c_str() );
-		
-		if ( SetClipboardData ( format, clipboard_contents ) ) {
-			ok = TRUE;
+			if ( SetClipboardData ( format, clipboard_memory ) ) {
+				ok = TRUE;
+			}
+		} else {
+			g_last_error = GetLastError();
 		}
 
-		CloseClipboard();
+		if ( CloseClipboard() ) {
+			g_last_error = g_last_error ? g_last_error : GetLastError();
+		}
 
 	}
 
