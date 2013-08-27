@@ -814,7 +814,7 @@ FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment *
 		}
 		
 		bool as_text = true;
-		if ( number_of_parameters > 2 ) {
+		if ( number_of_parameters > 3 ) {
 			as_text = ParameterAsBoolean ( parameters, 3 );
 		}
 		
