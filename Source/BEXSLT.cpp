@@ -48,7 +48,7 @@ void CleanupLibXSLT ( void );
 
 int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
 TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
-TextAutoPtr XPathObjectAsXML ( const xmlDocPtr doc, const xmlXPathObjectPtr xpathObj );
+TextAutoPtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj );
 void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result );
 
 
@@ -481,30 +481,54 @@ TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 
 
 
-TextAutoPtr XPathObjectAsXML ( const xmlDocPtr doc, const xmlXPathObjectPtr xpathObj )
+TextAutoPtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj )
 {
-	
 	TextAutoPtr result;
-		
-	xmlBufferPtr buffer;
-	buffer = xmlBufferCreate();
 	
-	xmlOutputBufferPtr buf;
-	buf = (xmlOutputBufferPtr) xmlMalloc ( sizeof ( xmlOutputBuffer ) );
+	xmlOutputBufferPtr xml_output = (xmlOutputBufferPtr) xmlMalloc ( sizeof ( xmlOutputBuffer ) );
+	xmlErrorPtr xml_error = xmlGetLastError();
 	
-	memset ( buf, 0, (size_t) sizeof ( xmlOutputBuffer ) );
-	buf->buffer = buffer;
-	
-	xmlNode *node = xpathObj->nodesetval->nodeTab[0];
-	xmlNodeDumpOutput ( buf, doc, node, 0, true, "UTF-8" );
-	const xmlChar * str = xmlBufferContent ( (xmlBufferPtr)buffer );
-	
-	FMX_UInt32 buffer_length = (FMX_UInt32)xmlBufferLength ( buffer );
-	
+	if ( xml_output && xml_error == NULL ) {
 
-	if ( str ) {
-		result->AssignWithLength ( (char*)str, buffer_length, fmx::Text::kEncoding_UTF8 );	// return node set as string on success
-		xmlFree ( (xmlChar *)str );
+		memset ( xml_output, 0, (size_t) sizeof ( xmlOutputBuffer ) );
+		xmlBufferPtr xml_buffer = xmlBufferCreate();
+		xml_error = xmlGetLastError();
+		
+		if ( xml_buffer && xml_error == NULL ) {
+			
+			xml_output->buffer = xml_buffer;
+			
+			xmlNode *node = xpathObj->nodesetval->nodeTab[0];
+			xmlNodeDumpOutput ( xml_output, xml_document, node, 0, true, "UTF-8" );
+			xml_error = xmlGetLastError();
+
+			if ( xml_error == NULL ) {
+				
+				const xmlChar * node_as_xml = xmlBufferContent ( (xmlBufferPtr)xml_buffer );
+				xml_error = xmlGetLastError();
+				
+				if ( node_as_xml && xml_error == NULL ) {
+					FMX_UInt32 xml_buffer_length = (FMX_UInt32)xmlBufferLength ( xml_buffer );
+					result->AssignWithLength ( (char*)node_as_xml, xml_buffer_length, fmx::Text::kEncoding_UTF8 );	// return node set as string on success
+					xmlFree ( (xmlChar *)node_as_xml );
+				} else {
+					result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
+				}
+
+			} else {
+				result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
+			}
+				
+			xmlFree ( xml_buffer );
+
+		} else {
+			result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
+		}
+		
+		xmlFree ( xml_output );
+
+	} else {
+		result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
 	}
 
 	return result;
