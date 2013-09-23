@@ -288,6 +288,7 @@
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEFileSystem.cpp" />
+    <ClCompile Include="..\Source\BEFileTextReader.cpp" />
     <ClCompile Include="..\Source\BEJSON.cpp" />
     <ClCompile Include="..\Source\BEMessageDigest.cpp" />
     <ClCompile Include="..\Source\BEOAuth.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="..\Source\BECurlOption.h" />
     <ClInclude Include="..\Source\BEFileMakerPlugin.h" />
     <ClInclude Include="..\Source\BEFileSystem.h" />
+    <ClInclude Include="..\Source\BEFileTextReader.h" />
     <ClInclude Include="..\Source\BEJSON.h" />
     <ClInclude Include="..\Source\BEMessageDigest.h" />
     <ClInclude Include="..\Source\BEOAuth.h" />

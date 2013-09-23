@@ -2,7 +2,7 @@
  BEXMLTextReader.h
  BaseElements Plug-In
  
- Copyright 2012-3 Goya. All rights reserved.
+ Copyright 2012-2013 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -53,7 +53,11 @@ public:
 	string get_attribute ( const string attribute_name );
 	bool empty();
 	string value();
+	string as_string();
 	string raw_xml();
+	string inner_raw_xml();
+	string content();
+	void skip_unwanted_nodes ( const bool wanted );
 		
 	static void error_reader (void * arg, const char * msg, xmlParserSeverities severity, xmlTextReaderLocatorPtr locator );
 	

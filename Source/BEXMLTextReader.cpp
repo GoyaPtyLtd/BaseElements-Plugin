@@ -2,7 +2,7 @@
  BEXMLTextReader.cpp
  BaseElements Plug-In
  
- Copyright 2012-3 Goya. All rights reserved.
+ Copyright 2012-2013 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -109,10 +109,19 @@ string BEXMLTextReader::parse ( )
 string BEXMLTextReader::name()
 {
 	const xmlChar * node_name = xmlTextReaderName ( reader );
-	string name = (const char *)node_name;
-	xmlFree ( (xmlChar *)node_name );
+	string name = "";
+	if ( node_name ) {
+		name = (const char *)node_name;
+		xmlFree ( (xmlChar *)node_name );
+	} else {
+		throw BEXMLReaderInterface_Exception ( last_error ( kBE_XMLReaderAttributeNotFoundError ) );
+	}
+
 	return name;
+
 }
+
+
 
 
 int BEXMLTextReader::node_type()
@@ -137,11 +146,11 @@ int BEXMLTextReader::depth()
 
 bool BEXMLTextReader::has_attributes()
 {
-	int has_attributes = xmlTextReaderHasAttributes ( reader ) == 1;
+	int has_attributes = xmlTextReaderHasAttributes ( reader );
 	if ( has_attributes == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
-	return has_attributes == 1;
+	return has_attributes == true;
 }
 
 
@@ -163,13 +172,22 @@ void BEXMLTextReader::move_to_element()
 	}
 }
 
+
 string BEXMLTextReader::get_attribute ( const string attribute_name )
 {
 	const xmlChar * attribute_value = xmlTextReaderGetAttribute ( reader, (xmlChar *)attribute_name.c_str() );
-	string value = (const char *)attribute_value;
-	xmlFree ( (xmlChar *)attribute_value );
+	string value = "";
+	if ( attribute_value ) {
+		value = (const char *)attribute_value;
+		xmlFree ( (xmlChar *)attribute_value );
+	} else {
+		throw BEXMLReaderInterface_Exception ( last_error ( kBE_XMLReaderAttributeNotFoundError ) );
+	}
+	
 	return value;
 }
+
+
 
 void BEXMLTextReader::move_to_attribute ( const int attribute_number )
 {
@@ -216,5 +234,60 @@ string BEXMLTextReader::raw_xml()
 	xmlFree ( (xmlChar *)xml_data );
 	
 	return xml_result;
+	
 } // raw_xml
+
+
+string BEXMLTextReader::inner_raw_xml()
+{
+	string inner_xml;
+	
+	int depth = this->depth();
+	do {
+		this->read();
+		inner_xml.append ( this->raw_xml() );
+	} while ( this->depth() != depth );
+	
+	this->read(); // consume the element's end tag
+		
+	return inner_xml;
+	
+} // rinner_aw_xml
+
+
+string BEXMLTextReader::content()
+{
+	const xmlChar * xml_data = xmlNodeGetContent ( xmlTextReaderCurrentNode ( reader ) );
+	string xml_result ( (char *)xml_data, xmlStrlen ( xml_data ) );
+	xmlFree ( (xmlChar *)xml_data );
+	
+	return xml_result;
+} // content
+
+
+string BEXMLTextReader::as_string()
+{
+	const xmlChar * reader_value = xmlTextReaderReadString ( reader );
+	string value = (const char *)reader_value;
+	xmlFree ( (void *)reader_value );
+	return value;
+} // as_string
+
+
+void BEXMLTextReader::skip_unwanted_nodes ( const bool wanted )
+{
+	// Skip over unwanted tags (including subtrees)
+	
+	if ( !wanted ) {
+		
+		int depth = this->depth();
+		do {
+			this->read();
+		} while ( this->depth() != depth );
+		
+		this->read(); // consume the element's end tag
+
+	}
+
+}
 

@@ -39,7 +39,8 @@ private:
 class BEXMLReaderInterface {
 	
 public:
-	const int last_error();
+
+	const int last_error ( const int default_error = kErrorUnknown );
 	
 	enum {
 		kBE_XMLReaderError = -1,

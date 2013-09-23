@@ -19,7 +19,8 @@
 #include <libxml/xmlreader.h>
 
 
-const int BEXMLReaderInterface::last_error()
+
+const int BEXMLReaderInterface::last_error ( const int default_error )
 {
 	xmlErrorPtr xml_error = xmlGetLastError();
 	
@@ -28,7 +29,7 @@ const int BEXMLReaderInterface::last_error()
 	if ( xml_error ) {
 		error = xml_error->code;
 	} else {
-		error = kErrorUnknown;
+		error = default_error;
 	}
 	
 	return error;

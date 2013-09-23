@@ -2,7 +2,7 @@
  BEXMLReader.cpp
  BaseElements Plug-In
  
- Copyright 2012 Goya. All rights reserved.
+ Copyright 2012-2013 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -12,13 +12,20 @@
 #include "BEXMLReader.h"
 #include "BEXMLTextReader.h"
 #include "BEXMLTextWriter.h"
+#include "BEFileTextReader.h"
 
 
 #include <algorithm>
 #include <string>
 
 
+#include "boost/filesystem.hpp"
+#include "boost/filesystem/fstream.hpp"
+#include "boost/algorithm/string.hpp"
+
+
 using namespace std;
+using namespace boost::filesystem;
 
 
 int StripXMLNodes ( const string input_file, const string output_file, const vector<string> node_names )
@@ -32,27 +39,14 @@ int StripXMLNodes ( const string input_file, const string output_file, const vec
 		reader->read();
 		
 		while ( !reader->end() ) {
-		
-			string name = reader->name();
-			int type = reader->node_type();
 
-			// Skip over unwanted tags (including subtrees)
-			
+			string name = reader->name();
 			bool unwanted = find ( node_names.begin(), node_names.end(), name ) != node_names.end();
-			if ( (type == XML_READER_TYPE_ELEMENT) && unwanted ) {
-			
-				int depth = reader->depth();
-				do {
-					reader->read();
-				} while ( reader->depth() != depth );
-			
-				reader->read(); // consume the element's end tag
-				continue;			
-			}
-		
+			reader->skip_unwanted_nodes ( (reader->node_type() == XML_READER_TYPE_ELEMENT) && !unwanted );
+
 			// process the node
 		
-			switch ( type ) {
+			switch ( reader->node_type() ) {
 				
 				case XML_READER_TYPE_ELEMENT:
 				
@@ -114,4 +108,70 @@ int StripXMLNodes ( const string input_file, const string output_file, const vec
 	return kNoError;
 	
  }
+
+
+
+int SplitBEXMLFiles ( const string input_file )
+{
+	
+	try {
+		
+		BEFileTextReader * reader = new BEFileTextReader ( input_file );
+		
+		reader->read();
+		
+		while ( !reader->end() ) {
+			
+			if ( reader->wanted() ) {
+				
+				// write it out
+				
+				try {
+					
+					path output_path = input_file;
+					output_path.remove_filename() /= reader->name_attribute ();
+					
+					string type = reader->type_attribute();
+					output_path.replace_extension ( type );
+					
+					ios_base::openmode mode = reader->overwrite() ? ios_base::trunc : ios_base::app;					
+					boost::filesystem::ofstream output_file ( output_path, ios_base::out | mode );
+					output_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
+					
+					string payload;
+					
+					if ( reader->is_xml() ) {
+						payload = reader->inner_raw_xml();
+					} else {
+						payload = reader->as_string();
+					}
+					
+					if ( !payload.empty() ) {
+						output_file.write ( payload.c_str(), payload.size() );
+						output_file.close();
+					}
+					
+				} catch ( filesystem_error& e ) {
+					g_last_error = e.code().value();
+				} catch ( exception& /* e */ ) {
+					g_last_error = errno; // unable to write to the file
+				}
+				
+			}
+
+			reader->read();
+			
+		}
+		
+		// the output may not be fully written unless we clean up
+		
+		delete reader;
+		
+	} catch ( BEXMLReaderInterface_Exception& e ) {
+		return e.code();
+	}
+	
+	return kNoError;
+	
+}
 

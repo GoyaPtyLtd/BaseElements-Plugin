@@ -48,7 +48,7 @@
 #include "BEOAuth.h"
 #include "BEValueList.h"
 #include "BECurlOption.h"
-
+#include "BEXMLTextReader.h"
 
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"
@@ -891,7 +891,6 @@ FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* envir
 } // BE_StripXMLNodes
 
 
-#include "BEXMLTextReader.h"
 
 FMX_PROC(errcode) BE_XML_Parse ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
@@ -920,6 +919,32 @@ FMX_PROC(errcode) BE_XML_Parse ( short /* funcId */, const ExprEnv& /* environme
 	return MapError ( error );
 	
 } // BE_XML_Parse
+
+
+
+FMX_PROC(errcode) BE_SplitBEFileNodes ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error =	NoError();
+	
+	try {
+		
+		StringAutoPtr input_file = ParameterAsUTF8String ( parameters, 0 );
+		
+		int result = SplitBEXMLFiles ( *input_file );
+				
+		SetResult ( result, results );
+		
+	} catch ( BEXMLReaderInterface_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_SplitBEFileNodes
 
 
 

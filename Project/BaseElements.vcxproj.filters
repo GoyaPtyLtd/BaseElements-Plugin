@@ -39,6 +39,7 @@
     <ClCompile Include="..\Source\BECppUtilities.cpp" />
     <ClCompile Include="..\Source\BEValueList.cpp" />
     <ClCompile Include="..\Source\BECurlOption.cpp" />
+    <ClCompile Include="..\Source\BEFileTextReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -84,6 +85,7 @@
     <ClInclude Include="..\Source\BECppUtilities.h" />
     <ClInclude Include="..\Source\BEValueList.h" />
     <ClInclude Include="..\Source\BECurlOption.h" />
+    <ClInclude Include="..\Source\BEFileTextReader.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />
