@@ -386,7 +386,10 @@ long Zip ( StringAutoPtr filename, const StringAutoPtr archive )
     long error = 0;
 	
 	path file = *filename;
+//	file.make_preferred();
+
 	path archive_path = *archive;
+//	archive_path.make_preferred();
 
 	if ( exists ( file ) && ( archive->empty() || exists ( archive_path.parent_path() ) ) ) {
 
@@ -395,10 +398,10 @@ long Zip ( StringAutoPtr filename, const StringAutoPtr archive )
 		}
 		
 		zipFile zip_file;
-		bool dont_overwrite = false;
+		bool dont_overwrite = APPEND_STATUS_CREATE;
 		
 #ifdef USEWIN32IOAPI
-		zlib_filefunc64_def ffunc;
+		zlib_filefunc64_def ffunc = {0};
 		fill_win32_filefunc64A ( &ffunc );
 		zip_file = zipOpen2_64 ( archive->c_str(), dont_overwrite, NULL, &ffunc );
 #else
