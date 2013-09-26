@@ -262,11 +262,7 @@ void BECurl::Init ( const string download_this, const string to_file, const stri
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
 	easy_setopt ( CURLOPT_SSL_VERIFYPEER, 0L );
 	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
-	
-#if defined(FMX_MAC_TARGET)
-#warning experimental - stop fms running out of file descriptors under heavy usage ???
-#endif
-	easy_setopt ( CURLOPT_FORBID_REUSE, 1L );
+	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
 	
 }
 
@@ -274,6 +270,7 @@ void BECurl::Init ( const string download_this, const string to_file, const stri
 BECurl::~BECurl()
 {
 	if ( curl ) { curl_easy_cleanup ( curl ); }
+	curl_global_cleanup();
 }
 
 
@@ -369,10 +366,7 @@ vector<char> BECurl::http_put ( )
 		easy_setopt ( CURLOPT_URL, url.c_str() );
 		
 		perform ( );
-		
-		if ( upload_file ) { fclose ( upload_file ); }
-		
-		
+				
 	} catch ( filesystem_error& e ) {
 		error = (CURLcode)e.code().value();
 	} catch ( BECurl_Exception& e ) {
@@ -400,12 +394,12 @@ vector<char> BECurl::http_delete ( )
 		easy_setopt ( CURLOPT_URL, url.c_str() );
 		perform ( );
 		
-		cleanup ();
-
 	} catch ( BECurl_Exception& e ) {
 		error = e.code();
 	}
 	
+	cleanup ();
+
 	return result;
 	
 }	//	delete
