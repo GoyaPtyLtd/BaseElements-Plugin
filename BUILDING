@@ -414,7 +414,7 @@ For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "
 
 Set the following Configuration Property:
 
-	Librarian -> General -> Taraget Machine == MachineX64 (/MACHINE:X64)
+	Librarian -> General -> Target Machine == MachineX64 (/MACHINE:X64)
 
 Select "Batch Build" and check the "LIB Release" configuration for the "x64" platform and then "Build".
 
