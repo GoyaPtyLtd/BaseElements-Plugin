@@ -363,7 +363,7 @@
 		C7DEDEEB07E10BF3002283F3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = Goya;
 			};
 			buildConfigurationList = 6FD50587097C3165009399BF /* Build configuration list for PBXProject "BaseElements" */;
