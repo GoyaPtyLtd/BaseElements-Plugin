@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 2.1 of the plug-in was built on Mac OS X 10.8.4 using Xcode 4.6.3 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
+Version 2.2 of the plug-in is built on Mac OS X 10.8.5 using Xcode 5.0 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -386,11 +386,10 @@ Download the source from
 and expand it into a directory on the Desktop.
 
 Open
-	vc6curl.dsw
+	vs\vc8\lib\vc8libcurl.vcproj
 
 and set the following Configuration Properties:
 
-	General -> Use of MFC == Use MFC in a Static Library
 	Project Defaults -> Character Set == Use Unicode Character Set
 	C/C++ -> Preprocessor -> Preprocessor Definitions ... add USE_SSLEAY
 	C/C++ -> Preprocessor -> Preprocessor Definitions ... add USE_OPENSSL
@@ -402,11 +401,11 @@ In Visual Studio and select "Batch Build" and check the "LIB Release" configurat
 
 Copy the library from
 
-	curl-7.27.0\lib\LIB-Release\libcurl.lib
+	curl-7.32.0\vs\vc8\lib\Release\libcurl.lib
 
 into the Libraries directory and copy
 
-	curl-7.27.0\include\curl
+	curl-7.32.0\include\curl
 
 to the Headers directory.
 
@@ -416,11 +415,11 @@ Set the following Configuration Property:
 
 	Librarian -> General -> Target Machine == MachineX64 (/MACHINE:X64)
 
-Select "Batch Build" and check the "LIB Release" configuration for the "x64" platform and then "Build".
+Select "Batch Build" and check the "Release" configuration for the "x64" platform and then "Build".
 
 Copy the library from
 
-	curl-7.27.0\lib\LIB-Release\libcurl.lib
+	curl-7.32.0\vs\vc8\lib\Release\libcurl.lib
 
 into the Libraries\x64 directory.
 
