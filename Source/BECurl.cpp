@@ -20,6 +20,8 @@
 
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"
+#include "boost/scoped_ptr.hpp"
+
 
 #include <iostream>
 
@@ -163,36 +165,36 @@ static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_P
 
 vector<char> GetURL ( const string url, const string filename, const string username, const string password )
 {	
-	BECurl * curl = new BECurl ( url, filename, username, password, "" );
-	return PerformAction ( curl );
+	boost::scoped_ptr<BECurl> curl(new BECurl ( url, filename, username, password, "" ));
+	return PerformAction ( curl.get() );
 }
 
 
 vector<char> HTTP_POST ( const string url, const string parameters, const string username, const string password )
 {	
-	BECurl * curl = new BECurl ( url, "", username, password, parameters );
-	return PerformAction ( curl );		
+	boost::scoped_ptr<BECurl> curl(new BECurl ( url, "", username, password, parameters ));
+	return PerformAction ( curl.get() );		
 }
 
 
 vector<char> HTTP_PUT ( const string url, const string filename, const string username, const string password )
 {
-	BECurl * curl = new BECurl ( url, filename, username, password, "" );
-	return PerformAction ( curl, kBE_HTTP_METHOD_PUT );		
+	boost::scoped_ptr<BECurl> curl(new BECurl ( url, filename, username, password, "" ));
+	return PerformAction ( curl.get(), kBE_HTTP_METHOD_PUT );		
 }
 
 
 vector<char> HTTP_PUT_DATA ( const std::string url, const char * data, const size_t size, const std::string username , const std::string password )
 {
-	BECurl * curl = new BECurl ( url, data, size, username, password );
-	return PerformAction ( curl, kBE_HTTP_METHOD_PUT );
+	boost::scoped_ptr<BECurl> curl(new BECurl ( url, data, size, username, password ));
+	return PerformAction ( curl.get(), kBE_HTTP_METHOD_PUT );
 }
 
 
 vector<char> HTTP_DELETE ( const string url, const string username, const string password )
 {	
-	BECurl * curl = new BECurl ( url, "", username, password, "" );
-	return PerformAction ( curl, kBE_HTTP_METHOD_DELETE );		
+	boost::scoped_ptr<BECurl> curl(new BECurl ( url, "", username, password, "" ));
+	return PerformAction ( curl.get(), kBE_HTTP_METHOD_DELETE );		
 }
 
 
