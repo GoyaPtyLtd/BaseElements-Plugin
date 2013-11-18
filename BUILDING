@@ -91,7 +91,7 @@ Download the source from
 
 and follow the supplied building instructions but with the following ./configure command (to build a universal binary)
 
-	./configure CFLAGS="-arch i386 -arch x86_64" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
+	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
 
 Copy liboauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a to Libraries.
 
