@@ -402,13 +402,7 @@ long Zip ( StringAutoPtr filename, const StringAutoPtr archive )
 		zipFile zip_file;
 		bool dont_overwrite = APPEND_STATUS_CREATE;
 		
-//#ifdef USEWIN32IOAPI
-//		zlib_filefunc64_def ffunc = {0};
-//		fill_win32_filefunc64A ( &ffunc );
-//		zip_file = zipOpen2_64 ( archive->c_str(), dont_overwrite, NULL, &ffunc );
-//#else
 		zip_file = zipOpen64 ( archive->c_str(), dont_overwrite );
-//#endif
 		
 		if ( zip_file == NULL ) {
 			error = ZIP_ERRNO;
