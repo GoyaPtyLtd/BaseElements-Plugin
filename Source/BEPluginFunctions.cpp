@@ -209,7 +209,7 @@ FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* en
 #pragma mark -
 
 
-#pragma NOTE (consider refatoring some of the detail from the file functions into BEFileSystem)
+#pragma NOTE (consider refactoring some of the detail from the file functions into BEFileSystem)
 
 
 FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -1645,6 +1645,7 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 			BEOAuth * oauth = new BEOAuth ( *consumer_key, *consumer_secret );
 			error = oauth->oauth_request ( *uri, *request_key, *request_secret );
 			
+			// argh, nasty
 			if ( error == kNoError ) {
 				
 				const unsigned long number_of_parameters = parameters.Size();
@@ -1657,8 +1658,13 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 				
 				g_oauth = oauth; // must assign after the authorisation request otherwise BECurl will try and use g_oauth
 				
+			} else {
+				response = oauth->get_last_error();
+				if ( !response.empty() ) {
+					error = kNoError;
+				}
 			}
-
+			
 		}
 		
 		SetResult ( response, results );

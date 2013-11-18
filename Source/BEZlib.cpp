@@ -231,18 +231,10 @@ long ExtractCurrentFile ( path parent, unzFile zip_file )
 
 void FileTime ( const path file, zip_fileinfo * zip_info )
 {
-	time_t when = last_write_time ( file );
-	struct tm * filedate = localtime ( &when );
-	
-	tm_zip tmzip = zip_info->tmz_date;
-	
-	tmzip.tm_sec  = filedate->tm_sec;
-	tmzip.tm_min  = filedate->tm_min;
-	tmzip.tm_hour = filedate->tm_hour;
-	tmzip.tm_mday = filedate->tm_mday;
-	tmzip.tm_mon  = filedate->tm_mon ;
-	tmzip.tm_year = filedate->tm_year;
-	
+	zip_info->dosDate = 0;
+	zip_info->internal_fa = 0;
+	zip_info->external_fa = 0;
+
 #if defined( _MSC_VER )
 
 	FILETIME ftLocal;
@@ -255,12 +247,20 @@ void FileTime ( const path file, zip_fileinfo * zip_info )
     if ( hFind != INVALID_HANDLE_VALUE ) {
 		FileTimeToLocalFileTime ( &(ff32.ftLastWriteTime), &ftLocal );
         FileTimeToDosDateTime ( &ftLocal, ((LPWORD)dt) + 1, ((LPWORD)dt) + 0 );
-		zip_info->dosDate = *dt;
         FindClose ( hFind );
 	}
 
 #endif
 
+	time_t when = last_write_time ( file );
+	struct tm * filedate = localtime ( &when );
+	
+	zip_info->tmz_date.tm_sec  = filedate->tm_sec;
+	zip_info->tmz_date.tm_min  = filedate->tm_min;
+	zip_info->tmz_date.tm_hour = filedate->tm_hour;
+	zip_info->tmz_date.tm_mday = filedate->tm_mday;
+	zip_info->tmz_date.tm_mon  = filedate->tm_mon ;
+	zip_info->tmz_date.tm_year = filedate->tm_year;
 
 } // FileTime
 
@@ -279,10 +279,11 @@ int AddFileToArchive ( const path filename, zipFile zip_file, const path base )
 	FileTime ( filename, &zip_info );
 	
 	std::string relative_path = NaiveUncomplete ( filename, base ).string();
+	
 	int compression_level = Z_BEST_COMPRESSION;
 	const char* password = NULL;
 	unsigned long crc_file = 0;
-	bool zip64 = IsLargeFile ( filename );
+	bool zip64 = IsLargeFile ( filename );	
 
 	error = zipOpenNewFileInZip3_64 ( zip_file,
 									 relative_path.c_str(),
@@ -292,7 +293,7 @@ int AddFileToArchive ( const path filename, zipFile zip_file, const path base )
 									 NULL,
 									 0,
 									 NULL,
-									 (compression_level != 0) ? Z_DEFLATED : 0,
+									 Z_DEFLATED,
 									 compression_level,
 									 0,
 									 -MAX_WBITS, 
@@ -303,6 +304,7 @@ int AddFileToArchive ( const path filename, zipFile zip_file, const path base )
 									 zip64
 									 );
 	
+
 	if ( error == ZIP_OK ) {
 		
 		char * buffer = new char [ WRITEBUFFERSIZE ];
@@ -400,13 +402,13 @@ long Zip ( StringAutoPtr filename, const StringAutoPtr archive )
 		zipFile zip_file;
 		bool dont_overwrite = APPEND_STATUS_CREATE;
 		
-#ifdef USEWIN32IOAPI
-		zlib_filefunc64_def ffunc = {0};
-		fill_win32_filefunc64A ( &ffunc );
-		zip_file = zipOpen2_64 ( archive->c_str(), dont_overwrite, NULL, &ffunc );
-#else
+//#ifdef USEWIN32IOAPI
+//		zlib_filefunc64_def ffunc = {0};
+//		fill_win32_filefunc64A ( &ffunc );
+//		zip_file = zipOpen2_64 ( archive->c_str(), dont_overwrite, NULL, &ffunc );
+//#else
 		zip_file = zipOpen64 ( archive->c_str(), dont_overwrite );
-#endif
+//#endif
 		
 		if ( zip_file == NULL ) {
 			error = ZIP_ERRNO;
