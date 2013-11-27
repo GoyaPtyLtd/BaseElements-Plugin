@@ -40,7 +40,9 @@ class BEOAuth {
 
 		std::string get_access_key ( void ) { return access_key; }
 		std::string get_access_secret ( void ) { return access_secret; }
-		
+	
+		std::string get_last_error ( void ) { return last_error; }
+	
 	protected:
 		
 		int parse_reply ( const std::string reply, std::string& key, std::string& secret );
@@ -54,6 +56,8 @@ class BEOAuth {
 
 		std::string access_key;
 		std::string access_secret;
+	
+		std::string last_error;
 
 };
 
