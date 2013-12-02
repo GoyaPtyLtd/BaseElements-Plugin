@@ -217,7 +217,8 @@ enum data_type {
 
 
 enum timeout {
-	kBE_Never = -1
+	kBE_Never = -1,
+	kBE_Immediate = 0
 };
 
 

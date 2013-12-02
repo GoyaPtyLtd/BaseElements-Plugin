@@ -183,7 +183,6 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 #include "BEWinFunctions.h"
 
 
-
 short ExecuteSystemCommand ( const string command, string& result, const long command_timeout )
 {
 
@@ -196,11 +195,10 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 	security_attributes.bInheritHandle = TRUE;
 	security_attributes.lpSecurityDescriptor = NULL;
 	
-	// Create a pipe for the child process's STDOUT.
+	// Create pipes for the child process's STDIN & STDOUT.
 	
 	HANDLE command_result = NULL;
 	HANDLE command_input = NULL;
-//	HANDLE command_output = NULL;
 
 	if ( ! CreatePipe ( &command_result, &command_input, &security_attributes, 0 ) ) {
 		return ::GetLastError ( );
@@ -211,20 +209,20 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 	if ( ! SetHandleInformation ( command_result, HANDLE_FLAG_INHERIT, 0 ) ) {
 		return ::GetLastError ( );
 	}
-	
+
 	// Create the child process.
 	
 	PROCESS_INFORMATION process_information;
 	ZeroMemory ( &process_information, sizeof ( PROCESS_INFORMATION ) );
 	
-	// This structure specifies the STDIN and STDOUT handles for redirection.
+	// Specify the STDIN and STDOUT handles for redirection.
 	
 	STARTUPINFO startup_information;
 	ZeroMemory ( &startup_information, sizeof ( STARTUPINFO ) );
 	startup_information.cb = sizeof ( STARTUPINFO );
 	startup_information.hStdError = command_input;
 	startup_information.hStdOutput = command_input;
-//	startup_information.hStdInput = NULL;
+	startup_information.hStdInput = command_result;
 	startup_information.dwFlags |= STARTF_USESTDHANDLES;
 	
 	// Create the child process.
@@ -267,26 +265,33 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 				BOOL did_read = FALSE;
 				DWORD read_error = kNoError;
 
-				do {
-					
-					did_read = ReadFile ( command_result, reply, PATH_MAX, &number_read, NULL );
-					if ( did_read && (number_read > 0) ) {
-						reply [ number_read ] = '\0';
-						result.append ( reply );
-					} else {
-						read_error = GetLastError ( );
-					}
+				// only wait for a result when we do not timeout straight away
 
-					if ( (command_timeout > kBE_Never) && ( (boost::posix_time::microsec_clock::universal_time() - start).total_milliseconds() > command_timeout) ) {
-						error = kCommandTimeout;
-						break ;
-					}
+				if ( timeout != kBE_Immediate ) {
+
+					do {
+					
+						did_read = ReadFile ( command_result, reply, PATH_MAX, &number_read, NULL );
+
+						if ( did_read && (number_read > 0) ) {
+							reply [ number_read ] = '\0';
+							result.append ( reply );
+						} else {
+							read_error = GetLastError ( );
+						}
+
+						if ( (command_timeout > kBE_Never) && ( (boost::posix_time::microsec_clock::universal_time() - start).total_milliseconds() > command_timeout) ) {
+							error = kCommandTimeout;
+							break ;
+						}
 										
-				} while ( did_read || read_error == ERROR_IO_PENDING );
-//				error = read_error;
+					} while ( did_read || read_error == ERROR_IO_PENDING );
+
+//					error = read_error;
+				}
+
 				break;
 		}
-
 
 	} else {
 		error = GetLastError ( );
