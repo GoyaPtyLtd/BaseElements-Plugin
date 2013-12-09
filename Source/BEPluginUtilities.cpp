@@ -224,7 +224,7 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt
 		TextAutoPtr raw_data;
 		raw_data->SetText ( parameters.AtAsText ( which ) );
 		
-		FMX_UInt32 text_size = (2*(raw_data->GetSize())) + 1;
+		FMX_UInt32 text_size = (4*(raw_data->GetSize())) + 1;
 		char * text = new char [ text_size ]();
 		raw_data->GetBytes ( text, text_size, 0, (FMX_UInt32)Text::kSize_End, Text::kEncoding_UTF8 );
 		result->assign ( text );
