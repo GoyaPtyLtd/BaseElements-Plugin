@@ -101,8 +101,8 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 				timeout.tv_sec = command_timeout / 1000;
 				timeout.tv_usec = (command_timeout % 1000) * 1000;
 				
-		}
-
+		} // switch
+		
 		boost::posix_time::ptime start = boost::posix_time::microsec_clock::universal_time();
 
 		fd_set readfd;
@@ -143,12 +143,11 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 //					error = errno;
 					break;
 				}
-				
-			}
 			
-		}
+			} // if ( select_response < 0 )
 		
-
+		} // while
+	
 		short close_error = pclose ( command_result );
 		if ( error == kNoError ) { // don't overwrite an earlier error
 			error = close_error;

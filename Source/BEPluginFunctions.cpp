@@ -1943,7 +1943,7 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
  DEPRECIATED as of v2.0 in favour of BE_ExecuteSystemCommand ... will be removed in plug-in version 3.0
 
  */
- 
+
 FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
@@ -1957,11 +1957,16 @@ FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /*
 		
 		if ( waitForResponse ) {
 			g_last_error = ExecuteShellCommand ( *command, *response );
+			SetResult ( response, results );
 		} else {
-			boost::thread dontWaitForThis ( ExecuteShellCommand, *command, *response );
-		}
-		
-		SetResult ( response, results );
+
+			// minimum effort "fix" for depreciated function
+			// leaks, but at least it doesn't crash fm13
+			
+			boost::thread * dontWaitForThis = new boost::thread ( ExecuteShellCommand, *command, *response );
+//			dontWaitForThis->detach();
+						
+		}		
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
