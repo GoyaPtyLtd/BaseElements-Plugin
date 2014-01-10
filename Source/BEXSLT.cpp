@@ -485,47 +485,32 @@ TextAutoPtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjec
 {
 	TextAutoPtr result;
 	
-	xmlOutputBufferPtr xml_output = (xmlOutputBufferPtr) xmlMalloc ( sizeof ( xmlOutputBuffer ) );
+	xmlBufferPtr xml_buffer = xmlBufferCreate();
 	xmlErrorPtr xml_error = xmlGetLastError();
 	
-	if ( xml_output && xml_error == NULL ) {
-
-		memset ( xml_output, 0, (size_t) sizeof ( xmlOutputBuffer ) );
-		xmlBufferPtr xml_buffer = xmlBufferCreate();
+	if ( xml_buffer && xml_error == NULL ) {
+			
+		xmlNode *node = xpathObj->nodesetval->nodeTab[0];
+		int xml_buffer_length = xmlNodeDump ( xml_buffer, xml_document, node, 0, true );
 		xml_error = xmlGetLastError();
-		
-		if ( xml_buffer && xml_error == NULL ) {
-			
-			xml_output->buffer = xml_buffer;
-			
-			xmlNode *node = xpathObj->nodesetval->nodeTab[0];
-			xmlNodeDumpOutput ( xml_output, xml_document, node, 0, true, "UTF-8" );
+
+		if ( xml_error == NULL ) {
+				
+			const xmlChar * node_as_xml = xmlBufferContent ( (xmlBufferPtr)xml_buffer );
 			xml_error = xmlGetLastError();
-
-			if ( xml_error == NULL ) {
 				
-				const xmlChar * node_as_xml = xmlBufferContent ( (xmlBufferPtr)xml_buffer );
-				xml_error = xmlGetLastError();
-				
-				if ( node_as_xml && xml_error == NULL ) {
-					FMX_UInt32 xml_buffer_length = (FMX_UInt32)xmlBufferLength ( xml_buffer );
-					result->AssignWithLength ( (char*)node_as_xml, xml_buffer_length, fmx::Text::kEncoding_UTF8 );	// return node set as string on success
-					xmlFree ( (xmlChar *)node_as_xml );
-				} else {
-					result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
-				}
-
+			if ( node_as_xml && xml_error == NULL ) {
+				result->AssignWithLength ( (char*)node_as_xml, xml_buffer_length, fmx::Text::kEncoding_UTF8 );	// return node set as string on success
+				xmlFree ( (xmlChar *)node_as_xml );
 			} else {
 				result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
 			}
-				
-			xmlFree ( xml_buffer );
 
 		} else {
 			result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
 		}
-		
-		xmlFree ( xml_output );
+				
+		xmlFree ( xml_buffer );
 
 	} else {
 		result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
