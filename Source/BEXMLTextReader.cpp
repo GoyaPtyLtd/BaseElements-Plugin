@@ -2,7 +2,7 @@
  BEXMLTextReader.cpp
  BaseElements Plug-In
  
- Copyright 2012-2013 Goya. All rights reserved.
+ Copyright 2012-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
