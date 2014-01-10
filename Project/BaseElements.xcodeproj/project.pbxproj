@@ -12,12 +12,15 @@
 		4D10AD951484202000814440 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4D13006816DADD8A0075FE0C /* BEOAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D13006616DADD8A0075FE0C /* BEOAuth.cpp */; };
 		4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
+		4D27C380186115E300E7F4A1 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C37F186115E300E7F4A1 /* libcurl.dylib */; };
+		4D27C382186115EB00E7F4A1 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C381186115EB00E7F4A1 /* libssl.dylib */; };
+		4D27C384186115F300E7F4A1 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C383186115F300E7F4A1 /* libcrypto.dylib */; };
+		4D27C3861861160000E7F4A1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4D35117C17E1314A00AEDF01 /* BEFileTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D35117A17E1314A00AEDF01 /* BEFileTextReader.cpp */; };
 		4D37E0B51339CF080084730B /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4D3884FE17FE6DDC00E1894F /* liboauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3884FD17FE6DDC00E1894F /* liboauth.a */; };
 		4D3BA85215A3FE3F008AC145 /* BEXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */; };
 		4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */; };
-		4D55C63A15EE0F4E008F7FBA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3617A15EDE74F003A0CB9 /* Cocoa.framework */; };
 		4D59DAFB16F95E2500F87180 /* BEValueList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D59DAF916F95E2300F87180 /* BEValueList.cpp */; };
 		4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
 		4D760F7915AD50E2001A0BAF /* BEXMLTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */; };
@@ -67,15 +70,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4D59E1B413777D30002454D2 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +87,10 @@
 		4D13006716DADD8A0075FE0C /* BEOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEOAuth.h; path = ../Source/BEOAuth.h; sourceTree = "<group>"; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
+		4D27C37F186115E300E7F4A1 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
+		4D27C381186115EB00E7F4A1 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
+		4D27C383186115F300E7F4A1 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
+		4D27C3851861160000E7F4A1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4D35117A17E1314A00AEDF01 /* BEFileTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileTextReader.cpp; path = ../Source/BEFileTextReader.cpp; sourceTree = "<group>"; };
 		4D35117B17E1314A00AEDF01 /* BEFileTextReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileTextReader.h; path = ../Source/BEFileTextReader.h; sourceTree = "<group>"; };
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
@@ -172,18 +170,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D27C3861861160000E7F4A1 /* Cocoa.framework in Frameworks */,
+				4DDA52E216D355A300E10827 /* libz.dylib in Frameworks */,
+				4D27C384186115F300E7F4A1 /* libcrypto.dylib in Frameworks */,
+				4D27C382186115EB00E7F4A1 /* libssl.dylib in Frameworks */,
+				4D27C380186115E300E7F4A1 /* libcurl.dylib in Frameworks */,
+				4DDA52E716D355C100E10827 /* libiconv.dylib in Frameworks */,
+				4DDA52E816D355C800E10827 /* libxml2.dylib in Frameworks */,
+				4DDA52E916D355D200E10827 /* libxslt.dylib in Frameworks */,
 				4DDA52EC16D355F100E10827 /* libcharset.dylib in Frameworks */,
 				4DDA52EA16D355DA00E10827 /* libexslt.dylib in Frameworks */,
-				4DDA52E916D355D200E10827 /* libxslt.dylib in Frameworks */,
-				4DDA52E816D355C800E10827 /* libxml2.dylib in Frameworks */,
-				4DDA52E716D355C100E10827 /* libiconv.dylib in Frameworks */,
 				4DDA52E516D355B700E10827 /* libcurl.dylib in Frameworks */,
 				4DDA52E416D355B200E10827 /* libssl.dylib in Frameworks */,
 				4DDA52E316D355AC00E10827 /* libcrypto.dylib in Frameworks */,
-				4DDA52E216D355A300E10827 /* libz.dylib in Frameworks */,
 				4D76701F16CDC17A00010A75 /* libjansson.a in Frameworks */,
 				4D3884FE17FE6DDC00E1894F /* liboauth.a in Frameworks */,
-				4D55C63A15EE0F4E008F7FBA /* Cocoa.framework in Frameworks */,
 				C7DEDF3807E10CBC002283F3 /* FMWrapper.framework in Frameworks */,
 				4D9EEE80118A8E9C00EC9352 /* libboost_filesystem.a in Frameworks */,
 				4D9E2B0C118A9F4A00EC9352 /* libboost_system.a in Frameworks */,
@@ -317,6 +318,10 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D27C3851861160000E7F4A1 /* Cocoa.framework */,
+				4D27C383186115F300E7F4A1 /* libcrypto.dylib */,
+				4D27C381186115EB00E7F4A1 /* libssl.dylib */,
+				4D27C37F186115E300E7F4A1 /* libcurl.dylib */,
 				4D55C63815EE0F0A008F7FBA /* Carbon.framework */,
 				4DF3617A15EDE74F003A0CB9 /* Cocoa.framework */,
 				4DF3618015EDE782003A0CB9 /* libssl.dylib */,
@@ -346,7 +351,6 @@
 				4D59E19913777790002454D2 /* CopyFiles */,
 				C7DEDEF007E10BF3002283F3 /* Resources */,
 				C7DEDEF107E10BF3002283F3 /* Frameworks */,
-				4D59E1B413777D30002454D2 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -447,6 +451,7 @@
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../Libraries\"",
@@ -456,18 +461,15 @@
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"\\\"$(SRCROOT)/../Libraries\\\"",
-					"$(SRCROOT)",
-					"\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib\\\"",
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
-				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../Libraries";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = macosx10.6;
+				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_STYLE = "non-global";
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
@@ -482,6 +484,7 @@
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
+				DEPLOYMENT_POSTPROCESSING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../Libraries\"",
@@ -491,18 +494,16 @@
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"\\\"$(SRCROOT)/../Libraries\\\"",
-					"$(SRCROOT)",
-					"\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib\\\"",
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
-				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../Libraries";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = macosx10.6;
+				SEPARATE_STRIP = NO;
+				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_STYLE = "non-global";
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
@@ -576,6 +577,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx10.6;
 				SEPARATE_STRIP = YES;
+				STRIP_STYLE = "non-global";
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
@@ -654,6 +656,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx10.6;
 				SEPARATE_STRIP = NO;
+				STRIP_STYLE = "non-global";
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
