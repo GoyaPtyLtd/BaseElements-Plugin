@@ -16,9 +16,6 @@
 #include "oauth.h"
 
 
-#include "boost/algorithm/string.hpp"
-
-
 using namespace std;
 
 
@@ -31,9 +28,9 @@ BEOAuth::BEOAuth ( const string key, const string secret ) {
 
 
 int BEOAuth::parse_reply ( const string reply, string& key, string& secret ) {
-
+	
 	int error = kNoError;
-
+	
 	char **tokens = NULL;
 	
 	int number_of_parameters = oauth_split_url_parameters ( reply.c_str(), &tokens );
@@ -45,51 +42,44 @@ int BEOAuth::parse_reply ( const string reply, string& key, string& secret ) {
 	} else {
 		error = kBE_OAuth_TokensNotFoundError;
 	}
-
+	
 	be_free ( tokens );
-
+	
 	return error;
-
+	
 } // parse_reply
 
 
 
 string BEOAuth::http_request ( const string url, const string post_arguments ) {
-
+	
 	vector<char> response;
 	
 	try {
-
+		
 		if ( post_arguments.empty() ) { // no post arguments? make a GET request
 			response = GetURL ( url );
 		} else {
 			response = HTTP_POST ( url, post_arguments );
 		}
-
+		
 	} catch ( BECurl_Exception& /* e */ ) {
 		;// error = e.code(); // we return an empty string on error
 	}
 	
 	const string reply ( response.begin(), response.end() );
-		
+	
 	return reply;
-
+	
 } // http_request
 
 
 int BEOAuth::sign_url ( string& url, string& post_arguments ) {
 	
 	int error = kNoError;
-
+	
 	char * post_args = NULL;
-	
-	// argh ugly
-	OAuthMethod method = OA_HMAC;
-	if ( consumer_secret.length() > 32 ) {
-		method = OA_RSA;
-	}
-	
-	char * oauth_url = oauth_sign_url2 ( url.c_str(), &post_args, method, NULL, consumer_key.c_str(), consumer_secret.c_str(), access_key.c_str(), access_secret.c_str() );
+	char * oauth_url = oauth_sign_url2 ( url.c_str(), &post_args, OA_HMAC, NULL, consumer_key.c_str(), consumer_secret.c_str(), access_key.c_str(), access_secret.c_str() );
 	
 	if ( oauth_url ) {
 		
@@ -101,10 +91,10 @@ int BEOAuth::sign_url ( string& url, string& post_arguments ) {
 		
 	} else {
 		error = kBE_OAuth_SignURLFailedError;
-	}	
-
-	return error;
+	}
 	
+	return error;
+
 } // sign_url
 
 
@@ -116,44 +106,21 @@ int BEOAuth::oauth_request ( const string uri, string key, string secret ) {
 	char * token_key = key.empty() ? NULL : (char *)key.c_str();
 	char * token_secret = secret.empty() ? NULL : (char *)secret.c_str();
 	char * post_arguments = NULL;
-	string post_args;
 	
-	char * oauth_url;
-	
-	OAuthMethod method = OA_HMAC;
-	if ( consumer_secret.length() < 32 ) {
-		
-		oauth_url = oauth_sign_url2 ( uri.c_str(), &post_arguments, method, NULL, consumer_key.c_str(), consumer_secret.c_str(), token_key, token_secret );
-		post_args = post_arguments;
-
-	} else {
-		
-		method = OA_RSA;
-		boost::algorithm::replace_all ( consumer_secret, FILEMAKER_END_OF_LINE, "\r\n" );
-		token_secret = NULL;
-		
-		oauth_url = oauth_sign_url2 ( uri.c_str(), NULL, method, NULL, consumer_key.c_str(), consumer_secret.c_str(), token_key, token_secret );
-
-	}
+	char * oauth_url = oauth_sign_url2 ( uri.c_str(), &post_arguments, OA_HMAC, NULL, consumer_key.c_str(), consumer_secret.c_str(), token_key, token_secret );
 	
 	if ( oauth_url ) {
 		
-		string reply = http_request ( oauth_url, post_args );
-
+		string reply = http_request ( oauth_url, post_arguments );
+		
 		be_free ( oauth_url );
-
-		last_error = "";
 		
 		if ( !reply.empty() ) {
-
+			
 			if ( token_key ) {
 				error = parse_reply ( reply, access_key, access_secret );
 			} else {
 				error = parse_reply ( reply, request_key, request_secret );
-			}
-			
-			if ( error != 0 ) {
-				last_error = reply;
 			}
 			
 		} else {
@@ -164,13 +131,9 @@ int BEOAuth::oauth_request ( const string uri, string key, string secret ) {
 		error = kBE_OAuth_SignURLFailedError;
 	}
 	
-//	be_free ( token_key );
-//	be_free ( token_secret );
 	be_free ( post_arguments );
 	
 	return error;
-
+	
 } // oauth_request
-
-
 
