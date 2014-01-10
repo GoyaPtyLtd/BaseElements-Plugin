@@ -50,7 +50,6 @@ BEXMLTextReader::BEXMLTextReader ( const string path )
 }
 
 
-
 BEXMLTextReader::~BEXMLTextReader()
 {
 	xmlFreeTextReader ( reader );
@@ -120,8 +119,6 @@ string BEXMLTextReader::name()
 	return name;
 
 }
-
-
 
 
 int BEXMLTextReader::node_type()
@@ -213,25 +210,46 @@ bool BEXMLTextReader::empty()
 string BEXMLTextReader::value()
 {
 	const xmlChar * reader_value = xmlTextReaderValue ( reader );
-	string value = (const char *)reader_value;
-	xmlFree ( (void *)reader_value );
+	string value;
+	
+	if ( reader_value ) {
+		value = (const char *)reader_value;
+		xmlFree ( (void *)reader_value );
+	}
+
 	return value;
+
 }
 
 
 string BEXMLTextReader::raw_xml()
 {
+	string xml_result;
+	
 	xmlBufferPtr node_content = xmlBufferCreate();
-	xmlOutputBufferPtr node = (xmlOutputBufferPtr) xmlMalloc ( sizeof(xmlOutputBuffer) );
-	memset ( node, 0, (size_t) sizeof(xmlOutputBuffer) );
-	node->buffer = node_content;
+		
+	if ( node_content ) {
 	
-	xmlNodeDumpOutput ( node, xml_document, xmlTextReaderCurrentNode ( reader ), 0, true, "UTF-8" );
-	const xmlChar * xml_data = xmlBufferContent ( (xmlBufferPtr)node_content );
-	size_t xml_length = xmlBufferLength ( node_content );
-	string xml_result ( (char *)xml_data, xml_length );
-	
-	xmlFree ( (xmlChar *)xml_data );
+		int xml_buffer_length = xmlNodeDump ( node_content, xml_document, xmlTextReaderCurrentNode ( reader ), 0, true );
+						
+		xmlErrorPtr	xml_error = xmlGetLastError();
+		if ( xml_error == NULL ) {
+
+			const xmlChar * xml_data = xmlBufferContent ( (xmlBufferPtr)node_content );
+			xml_result.assign ( (char *)xml_data, xml_buffer_length );
+			xmlBufferFree ( node_content );
+
+		} else {
+			throw BEXMLReaderInterface_Exception ( xml_error->code );
+		}
+
+	} else {
+
+		xmlErrorPtr	xml_error = xmlGetLastError();
+		if ( xml_error ) {
+			throw BEXMLReaderInterface_Exception ( xml_error->code );
+		}
+	}
 	
 	return xml_result;
 	
@@ -242,14 +260,18 @@ string BEXMLTextReader::inner_raw_xml()
 {
 	string inner_xml;
 	
-	int depth = this->depth();
+	const int depth = this->depth();
 	do {
 		this->read();
 		inner_xml.append ( this->raw_xml() );
 	} while ( this->depth() != depth );
 	
-	this->read(); // consume the element's end tag
-		
+	// consume the element's end tag
+	
+	if ( this->node_type() == XML_READER_TYPE_END_ELEMENT ) {
+		this->read();
+	}
+
 	return inner_xml;
 	
 } // rinner_aw_xml
@@ -274,20 +296,21 @@ string BEXMLTextReader::as_string()
 } // as_string
 
 
-void BEXMLTextReader::skip_unwanted_nodes ( const bool wanted )
+void BEXMLTextReader::skip_unwanted_nodes ( )
 {
 	// Skip over unwanted tags (including subtrees)
 	
-	if ( !wanted ) {
-		
-		int depth = this->depth();
-		do {
-			this->read();
-		} while ( this->depth() != depth );
-		
-		this->read(); // consume the element's end tag
+	const int depth = this->depth();
 
+	do {
+		this->read();
+	} while ( this->depth() != depth );
+
+	// consume the element's end tag
+	
+	if ( this->node_type() == XML_READER_TYPE_END_ELEMENT ) {
+		this->read();
 	}
 
-}
+} // skip_unwanted_nodes
 

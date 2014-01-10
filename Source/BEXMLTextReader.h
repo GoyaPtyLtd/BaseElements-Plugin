@@ -57,7 +57,7 @@ public:
 	string raw_xml();
 	string inner_raw_xml();
 	string content();
-	void skip_unwanted_nodes ( const bool wanted );
+	void skip_unwanted_nodes();
 		
 	static void error_reader (void * arg, const char * msg, xmlParserSeverities severity, xmlTextReaderLocatorPtr locator );
 	
