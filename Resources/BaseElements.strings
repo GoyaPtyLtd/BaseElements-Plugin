@@ -45,7 +45,7 @@
 
 
 "128" = "BaseElements";
-"129" = "Version: 2.2a1\n\nThis plug-in provides additional functionality for BaseElements 4 from Goya";
+"129" = "Version: 3.0a1\n\nThis plug-in provides additional functionality for BaseElements 4 from Goya";
 
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
