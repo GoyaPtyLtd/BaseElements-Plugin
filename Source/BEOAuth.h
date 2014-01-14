@@ -13,9 +13,16 @@
 #ifndef __BaseElements__BEOAuth__
 #define __BaseElements__BEOAuth__
 
+
 #include <iostream>
 
+
 #include "BEPluginUtilities.h"
+
+
+#include "oauth.h"
+#include "boost/algorithm/string.hpp"
+
 
 
 enum {

@@ -332,6 +332,7 @@
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Source\BEXero.cpp" />
     <ClCompile Include="..\Source\BEXMLReader.cpp" />
     <ClCompile Include="..\Source\BEXMLReaderInterface.cpp" />
     <ClCompile Include="..\Source\BEXMLTextReader.cpp" />
@@ -369,6 +370,7 @@
     <ClInclude Include="..\Source\BEValueList.h" />
     <ClInclude Include="..\Source\BEWinFunctions.h" />
     <ClInclude Include="..\Source\BEWStringVector.h" />
+    <ClInclude Include="..\Source\BEXero.h" />
     <ClInclude Include="..\Source\BEXMLReader.h" />
     <ClInclude Include="..\Source\BEXMLReaderInterface.h" />
     <ClInclude Include="..\Source\BEXMLTextReader.h" />

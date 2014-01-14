@@ -109,6 +109,12 @@
 "321" = "BE_OAuth_RequestAccessToken ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )";
 //"322" = "BE_OAuth_ClearToken";
 
+
+//"330" = "BE_Xero_SetTokens ( consumer_key ; consumer_secret {; request_key ; request_secret} )";
+"330" = "BE_Xero_SetTokens ( consumer_key ; consumer_secret )";
+"331" = "BE_Xero_GET ( url )";
+
+
 "350" = "BE_Values_Unique ( listOfValues )";
 "351" = "BE_Values_FilterOut ( textToFilter ; filterValues )";
 

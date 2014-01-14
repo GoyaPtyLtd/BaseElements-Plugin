@@ -71,6 +71,11 @@
 #include <iostream>
 
 
+#ifdef PRIVATE_VERSION
+#include "BEXero.h"
+#endif
+
+
 using namespace std;
 using namespace fmx;
 using namespace boost::filesystem;
@@ -99,6 +104,7 @@ string g_text_encoding;
 string g_json_error_description;
 
 BEOAuth * g_oauth;
+BEXero * g_xero;
 
 extern int g_http_response_code;
 extern string g_http_response_headers;
@@ -1678,6 +1684,81 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 	return MapError ( error );
 	
 } // BE_OAuth_RequestAccessToken
+
+
+#ifdef PRIVATE_VERSION
+
+FMX_PROC(errcode) BE_Xero_SetTokens ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr consumer_key = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr consumer_secret = ParameterAsUTF8String ( parameters, 1 );
+		
+		if ( g_xero ) {
+			delete g_xero;
+			g_xero = NULL;
+		}
+				
+		// if the consumer_key is empty then we are only clearing out any set oauth data
+		
+		if ( !consumer_key->empty() ) {
+			BEXero * xero = new BEXero ( *consumer_key, *consumer_secret );
+			g_xero = xero; // must assign after the authorisation request otherwise BECurl will try and use g_xero
+		}
+		
+		SetResult ( "", results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Xero_SetTokens
+
+
+
+FMX_PROC(errcode) BE_Xero_GET ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr uri = ParameterAsUTF8String ( parameters, 0 );
+		
+		string response;
+			
+		error = g_xero->oauth_request ( *uri );
+
+		if ( error == kNoError ) {
+					
+			response = g_xero->get_request_key() + FILEMAKER_END_OF_LINE + g_xero->get_request_secret();
+					
+		} else {
+			response = g_xero->get_last_error();
+			if ( !response.empty() ) {
+				error = kNoError;
+			}
+		}
+			
+		SetResult ( response, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Xero_GET
+
+#endif
 
 
 

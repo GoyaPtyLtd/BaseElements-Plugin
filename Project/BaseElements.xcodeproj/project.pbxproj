@@ -57,6 +57,7 @@
 		4DDA52EC16D355F100E10827 /* libcharset.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52EB16D355F100E10827 /* libcharset.dylib */; };
 		4DDBA8B7164386A900CC6FD7 /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
 		4DEB348816FA7A7B004AD91C /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB348716FA7A7B004AD91C /* libboost_date_time.a */; };
+		4DFFF8B31884A0390015B531 /* BEXero.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFF8B11884A0390015B531 /* BEXero.cpp */; };
 		C7DEDF3807E10CBC002283F3 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */; };
 /* End PBXBuildFile section */
 
@@ -161,6 +162,8 @@
 		4DF3617C15EDE761003A0CB9 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcurl.dylib; sourceTree = DEVELOPER_DIR; };
 		4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcrypto.dylib; sourceTree = DEVELOPER_DIR; };
 		4DF3618015EDE782003A0CB9 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libssl.dylib; sourceTree = DEVELOPER_DIR; };
+		4DFFF8B11884A0390015B531 /* BEXero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXero.cpp; path = ../Source/BEXero.cpp; sourceTree = "<group>"; };
+		4DFFF8B21884A0390015B531 /* BEXero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXero.h; path = ../Source/BEXero.h; sourceTree = "<group>"; };
 		C77AF38407E11A7C00897241 /* BaseElements.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaseElements.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/FMWrapper.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -295,6 +298,8 @@
 				4D00CC5816D3279000160030 /* BEJSON.cpp */,
 				4D13006716DADD8A0075FE0C /* BEOAuth.h */,
 				4D13006616DADD8A0075FE0C /* BEOAuth.cpp */,
+				4DFFF8B21884A0390015B531 /* BEXero.h */,
+				4DFFF8B11884A0390015B531 /* BEXero.cpp */,
 				4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */,
 				4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */,
 				4D59DAFA16F95E2400F87180 /* BEValueList.h */,
@@ -410,6 +415,7 @@
 			files = (
 				4D9F2DDE11E934BC003D75BB /* BEMacFunctions.mm in Sources */,
 				4D9F2DDF11E934BC003D75BB /* BEPlugin.cpp in Sources */,
+				4DFFF8B31884A0390015B531 /* BEXero.cpp in Sources */,
 				4D9F2DE011E934BC003D75BB /* BEPluginFunctions.cpp in Sources */,
 				4D8824E711E93F6000F94475 /* BEPluginUtilities.cpp in Sources */,
 				4DD780D911FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp in Sources */,
