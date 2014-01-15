@@ -24,56 +24,14 @@
 
 	#include "windows.h"
 
-	#define POPEN _popen
-	#define PCLOSE _pclose
-
-#endif
-
-#if defined(FMX_MAC_TARGET)
-
-	#define POPEN popen
-	#define PCLOSE pclose
-
 #endif
 
 
 using namespace std;
 
 
-short ExecuteShellCommand ( const string command, string& result )
-{
-	
-	short error = kNoError;
-	
-	FILE * command_result = POPEN ( command.c_str(), "r" );
-	
-	if ( command_result ) {
-		
-		char reply[PATH_MAX];
-		
-		while ( fgets ( reply, PATH_MAX, command_result ) != NULL ) {
-			result.append ( reply );
-		}
-		
-		error = PCLOSE ( command_result );
-		
-	} else {
-		error = errno;
-	}
-	
-	// both PCLOSE and execl set the error to -1 when setting errno
-	if ( error == -1 ) {
-		error = errno;
-	}
-	
-	return error;
-	
-} // ExecuteShellCommand
-
-
 
 #if defined(FMX_MAC_TARGET)
-
 
 
 short ExecuteSystemCommand ( const string command, string& result, const long command_timeout )

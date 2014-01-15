@@ -109,10 +109,5 @@ FMX_PROC(fmx::errcode) BE_Values_Unique ( short /* funcId */, const fmx::ExprEnv
 FMX_PROC(fmx::errcode) BE_Values_FilterOut ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_Values_Sort ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
-
-// DEPRECIATED as of FM12 (which has native functions) ... will be removed in plug-in version 3.0
-FMX_PROC(fmx::errcode) BE_ExecuteShellCommand ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
-FMX_PROC(fmx::errcode) BE_FileMaker_TablesOrFields ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-
  
 #endif // BEPLUGINFUNCTIONS_H

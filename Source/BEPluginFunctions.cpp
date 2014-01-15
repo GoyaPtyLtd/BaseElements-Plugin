@@ -2019,47 +2019,6 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 } // BE_ExtractScriptVariables
 
 
-/*
- 
- DEPRECIATED as of v2.0 in favour of BE_ExecuteSystemCommand ... will be removed in plug-in version 3.0
-
- */
-
-FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-	
-	try {
-		
-		StringAutoPtr command = ParameterAsUTF8String ( parameters, 0 );
-		bool waitForResponse = ParameterAsBoolean ( parameters, 1 );
-		
-		StringAutoPtr response ( new string );
-		
-		if ( waitForResponse ) {
-			g_last_error = ExecuteShellCommand ( *command, *response );
-			SetResult ( response, results );
-		} else {
-
-			// minimum effort "fix" for depreciated function
-			// leaks, but at least it doesn't crash fm13
-			
-			boost::thread * dontWaitForThis = new boost::thread ( ExecuteShellCommand, *command, *response );
-//			dontWaitForThis->detach();
-						
-		}		
-		
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-	
-	return MapError ( error );
-	
-} // BE_ExecuteShellCommand
-
-
 
 FMX_PROC(errcode) BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
@@ -2093,65 +2052,6 @@ FMX_PROC(errcode) BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /
 	
 } // BE_ExecuteSystemCommand
 
-
-/*
- 
- DEPRECIATED as of FM12 (which has native functions) ... will be removed in plug-in version 3.0
- 
- a wrapper for the FileMaker SQL calls FileMaker_Tables and FileMaker_Fields
- 
- under FileMaker 11 & 12 the functions return
- 
- FileMaker_Tables - returns a list of TOs with associated information
-	table occurance name
-	table occurance id
-	table name
-	file name
-	schema modification count 
-
- FileMaker_Fields - returns a list of fields...
-	table occurance name
-	name
-	type
-	id
-	class
-	repitions
-	modification count 
-
- */
-
-FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& environment, const DataVect& /* parameters */, Data& results )
-{	
-	errcode error;
-	NoError();
-	
-	try {
-
-		TextAutoPtr expression;
-		
-		if ( funcId == kBE_FileMaker_Tables ) {
-			expression->Assign ( "SELECT * FROM FileMaker_Tables" );
-		} else {
-			expression->Assign ( "SELECT * FROM FileMaker_Fields" );
-		}
-		
-		TextAutoPtr filename; // there isn't one
-		BESQLCommand * sql = new BESQLCommand ( expression, filename );
-		sql->execute ( environment );
-		
-		LocaleAutoPtr default_locale;
-		error = results.SetAsText( *(sql->get_text_result()), *default_locale );
-
-		
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}	
-	
-	return MapError ( error );
-	
-} // BE_FileMaker_TablesOrFields
 
 
 // open the supplied url in the user's default browser

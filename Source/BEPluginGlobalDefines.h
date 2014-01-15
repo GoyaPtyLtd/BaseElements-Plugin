@@ -74,7 +74,7 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"3.0.0"
-#define	AUTO_UPDATE_VERSION L"02990001"
+#define	AUTO_UPDATE_VERSION L"02990002"
 #define VERSION_STRING "3.0"
 
 
@@ -111,10 +111,10 @@ enum functions {
 	kBE_StripInvalidUTF16CharactersFromXMLFile = 117,
 	kBE_MoveFile = 118,
 	kBE_CopyFile = 119,
-	kBE_ExecuteShellCommand = 120, // depreciated
+//	kBE_ExecuteShellCommand = 120, // removed, do not use
 	kBE_ListFilesInFolder = 121,
-	kBE_FileMaker_Tables = 122, // depreciated
-	kBE_FileMaker_Fields = 123, // depreciated
+//	kBE_FileMaker_Tables = 122, // removed, do not use
+//	kBE_FileMaker_Fields = 123, // removed, do not use
 	kBE_OpenURL = 124,
 	kBE_OpenFile = 125,
 	kBE_FileSize = 126,

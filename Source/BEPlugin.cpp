@@ -198,13 +198,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	//	g_be_plugin->RegisterFunction ( kBE_OAuth_ClearToken, BE_OAuth_RequestAccessToken, true );
 	
 	
-	// depreciated
-	
-	g_be_plugin->RegisterHiddenFunction ( kBE_ExecuteShellCommand, BE_ExecuteShellCommand, false, 1, 2 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_FileMaker_Tables, BE_FileMaker_TablesOrFields, true );
-	g_be_plugin->RegisterHiddenFunction ( kBE_FileMaker_Fields, BE_FileMaker_TablesOrFields, true );
-	
-
 	return kCurrentExtnVersion;	// enable the plug-in
 	
 } // LoadPlugin
