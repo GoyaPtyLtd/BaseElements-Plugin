@@ -33,7 +33,7 @@ BEXMLTextWriter::BEXMLTextWriter ( const string path )
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
 	
-	int return_code = xmlTextWriterStartDocument ( writer, "1.0", "UTF-8", NULL );
+	int return_code = xmlTextWriterStartDocument ( writer, "1.0", UTF8, NULL );
 	if ( return_code != kBE_XMLReaderError ) {
 		return_code = xmlTextWriterSetIndent ( writer, 0 ); // indent off gives smaller files
 	}

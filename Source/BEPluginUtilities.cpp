@@ -182,7 +182,7 @@ void SetResult ( const string filename, const vector<char> data, Data& results )
 		// so try to convert it first
 		
 		const string data_string ( data.begin(), data.end() );
-		StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)data_string.c_str(), data_string.size() );
+		StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)data_string.c_str(), data_string.size(), g_text_encoding );
 		SetResult ( utf8, results );
 		
 	}
@@ -387,7 +387,7 @@ StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path )
 		inFile.close ();
 				
 		// convert the text in the file to utf-8 if possible
-		result = ConvertTextToUTF8 ( buffer, length );
+		result = ConvertTextToUTF8 ( buffer, length, g_text_encoding );
 		if ( result->length() == 0 ) {
 			result->assign ( buffer );
 		}
@@ -406,14 +406,17 @@ StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path )
 #pragma mark Unicode
 #pragma mark -
 
-vector<char> ConvertTextTo ( char * in, const size_t length, const string& encoding )
+vector<char> ConvertTextEncoding ( char * in, const size_t length, const string& to, const string& from )
 {
 	size_t available = (length * 4) + 1;	// worst case for utf-32 to utf-8 ?
 	char * encoded = new char [available]();	// value-initialization (to zero)… we crash otherwise
 	
 	vector<string> codesets;
-	codesets.push_back ( g_text_encoding );
-	codesets.push_back ( "UTF-16" ); // backwards compatibility with v1.2
+	if ( from != UTF8 ) {
+		codesets.push_back ( from );
+	}
+	codesets.push_back ( UTF8 );
+	codesets.push_back ( UTF16 ); // backwards compatibility with v1.2
 	
 	/*
 	 there no clean way to determine the codeset of the supplied text so
@@ -431,7 +434,7 @@ vector<char> ConvertTextTo ( char * in, const size_t length, const string& encod
 		size_t start_length = length;
 		char * encoded_start = encoded;
 		
-		iconv_t conversion = iconv_open ( encoding.c_str(), it->c_str() );
+		iconv_t conversion = iconv_open ( to.c_str(), it->c_str() );
 		if ( conversion != (iconv_t)kIconvError ) {
 			error_result = iconv ( conversion, &start, &start_length, &encoded_start, &remaining );
 			iconv_close ( conversion );
@@ -449,13 +452,13 @@ vector<char> ConvertTextTo ( char * in, const size_t length, const string& encod
 	
 	return out;
 	
-} // ConvertToUTF8
+} // ConvertTextEncoding
 
 
 
-StringAutoPtr ConvertTextTo ( StringAutoPtr in, const string& encoding )
+StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const string& to, const std::string& from )
 {
-	vector<char> text = ConvertTextTo ( (char *)in->c_str(), (const size_t)in->size() - 1, encoding );
+	vector<char> text = ConvertTextEncoding ( (char *)in->c_str(), (const size_t)in->size() - 1, to, from );
 	StringAutoPtr out ( new string ( text.begin(), text.end() ) );
 	return out;
 }
@@ -464,9 +467,9 @@ StringAutoPtr ConvertTextTo ( StringAutoPtr in, const string& encoding )
 // convert text to utf-8
 // currently handles utf-16, ascii and utf-8 text
 
-StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length )
+StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from )
 {
-	vector<char> text = ConvertTextTo ( in, length, "UTF-8" );
+	vector<char> text = ConvertTextEncoding ( in, length, UTF8, from );
 	StringAutoPtr out ( new string ( text.begin(), text.end() ) );
 	return out;
 } // ConvertToUTF8
@@ -475,7 +478,7 @@ StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length )
 void SetTextEncoding ( const string& encoding )
 {
 	if ( encoding.empty() ) {
-		g_text_encoding = "UTF-8";
+		g_text_encoding = UTF8;
 	} else {
 		g_text_encoding = encoding;
 	}

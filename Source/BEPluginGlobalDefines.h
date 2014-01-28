@@ -86,6 +86,9 @@ extern fmx::errcode g_last_error;
 
 #define FILEMAKER_END_OF_LINE "\r"
 
+#define UTF8 "UTF-8"
+#define UTF16 "UTF-16"
+
 
 enum {
 	kBE_OptionsStringID = 1

@@ -376,7 +376,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 		}
 		
 		StringAutoPtr text_to_write = ParameterAsUTF8String ( parameters, 1 );
-		vector<char> out = ConvertTextTo ( (char *)text_to_write->c_str(), text_to_write->size(), g_text_encoding );
+		vector<char> out = ConvertTextEncoding ( (char *)text_to_write->c_str(), text_to_write->size(), g_text_encoding, UTF8 );
 		
 		try {
 			
