@@ -71,7 +71,7 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"2.2.0"
-#define	AUTO_UPDATE_VERSION L"02010066"
+#define	AUTO_UPDATE_VERSION L"02010067"
 #define VERSION_STRING "2.2"
 
 
@@ -82,6 +82,9 @@ extern fmx::errcode g_last_error;
 #define	TEMPORARY_FILE_SUFFIX L".be4.tmp"
 
 #define FILEMAKER_END_OF_LINE "\r"
+
+#define UTF8 "UTF-8"
+#define UTF16 "UTF-16"
 
 
 enum {

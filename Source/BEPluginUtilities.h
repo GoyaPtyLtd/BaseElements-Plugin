@@ -45,9 +45,9 @@ void ParameterAsChar ( const fmx::DataVect& parameters, const FMX_UInt32 which, 
 
 
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path );
-std::vector<char> ConvertTextTo ( char * in, const size_t length, const std::string& encoding );
-StringAutoPtr ConvertTextTo ( StringAutoPtr in, const std::string& encoding );
-StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length );
+std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from );
+StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const std::string& to, const std::string& from );
+StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from );
 
 void SetTextEncoding ( const std::string& encoding );
 std::string TextAsUTF8String ( const fmx::Text& fmx_text );
