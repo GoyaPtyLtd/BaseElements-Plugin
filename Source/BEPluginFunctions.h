@@ -2,7 +2,7 @@
  BEPluginFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -101,7 +101,6 @@ FMX_PROC(fmx::errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const f
 
 #ifdef PRIVATE_VERSION
 FMX_PROC(fmx::errcode) BE_Xero_SetTokens ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
-FMX_PROC(fmx::errcode) BE_Xero_GET ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 #endif
 
 

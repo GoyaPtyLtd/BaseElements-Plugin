@@ -2,7 +2,7 @@
  BECurl.h
  BaseElements Plug-In
  
- Copyright 2011-2012 Goya. All rights reserved.
+ Copyright 2011-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -27,6 +27,21 @@
 
 
 typedef std::map<std::string, boost::shared_ptr<BECurlOption> > BECurlOptionMap;
+
+
+typedef enum be_http_method {
+	kBE_HTTP_METHOD_DELETE,
+	kBE_HTTP_METHOD_GET,
+	kBE_HTTP_METHOD_POST,
+	kBE_HTTP_METHOD_PUT
+} be_http_method;
+
+
+#define HTTP_METHOD_DELETE "DELETE"
+#define HTTP_METHOD_GET "GET"
+#define HTTP_METHOD_POST "POST"
+#define HTTP_METHOD_PUT "PUT"
+
 
 
 class BECurl_Exception : public std::runtime_error {
@@ -74,13 +89,16 @@ class BECurl {
 	
 public:
 	
-	BECurl ( const std::string download_this, const std::string to_file, std::string username, const std::string password, const std::string parameters );
-	BECurl ( const std::string download_this, const char * data, const size_t size, const std::string username, const std::string password );
+	BECurl ( const std::string download_this, const be_http_method method = kBE_HTTP_METHOD_GET, const std::string to_file = "", const std::string username = "", const std::string password = "", const std::string post_parameters = "", const char * put_data = NULL, const size_t size = 0  );
+
 	~BECurl();
 	
     std::vector<char> download ( );
     std::vector<char> http_put ( );
     std::vector<char> http_delete ( );
+	
+	be_http_method get_http_method ( ) { return http_method; };
+	void set_http_method ( be_http_method method ) { http_method = method; };
 	
 	void set_parameters ( );
 	void set_username_and_password ( const std::string username, const std::string password );
@@ -95,6 +113,8 @@ public:
 protected:
 	
 	std::string url;
+	
+	be_http_method http_method;
 
 	std::string filename;
 	FILE * upload_file;
@@ -117,14 +137,14 @@ protected:
 	std::string proxy;
 	std::string proxy_login;
 
-	void Init ( const std::string download_this, const std::string to_file, std::string username, const std::string password, const std::string parameters );
-
     void prepare ( );
 	void add_custom_headers ( );
 	void write_to_memory ( );
 	void perform ( );
 	void cleanup ( );
 	void easy_setopt ( CURLoption option, ... );
+	
+	std::string http_method_as_string ( );
 
 };
 

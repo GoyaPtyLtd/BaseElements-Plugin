@@ -2,7 +2,7 @@
  BEPlugin.cpp
  BaseElements Plug-in
   
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without 
@@ -184,7 +184,10 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	
 #ifdef PRIVATE_VERSION
 	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, true, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Xero_GET, BE_Xero_GET, true, 1 );
+//	g_be_plugin->RegisterFunction ( kBE_Xero_GET, BE_Xero_GET, true, 1 );
+//	g_be_plugin->RegisterFunction ( kBE_Xero_POST, BE_Xero_POST, true, 2, 3 );
+//	g_be_plugin->RegisterFunction ( kBE_Xero_PUT, BE_Xero_PUT, true, 2, 3 );
+//	g_be_plugin->RegisterFunction ( kBE_Xero_RequestAccessToken, BE_Xero_RequestAccessToken, true, 3, 5 );
 #endif
 	
 	// still alpha

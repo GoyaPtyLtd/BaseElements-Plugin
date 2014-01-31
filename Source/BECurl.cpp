@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
  
- Copyright 2011-2013 Goya. All rights reserved.
+ Copyright 2011-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,6 +13,7 @@
 #include "BECurl.h"
 #include "BEPluginGlobalDefines.h"
 #include "BEOAuth.h"
+#include "BEXero.h"
 
 
 #include <errno.h>
@@ -30,13 +31,6 @@ using namespace std;
 using namespace boost::filesystem;
 
 
-enum http_methods {
-	kBE_HTTP_METHOD_POST,
-	kBE_HTTP_METHOD_DELETE,
-	kBE_HTTP_METHOD_PUT
-};
-
-
 #pragma mark -
 #pragma mark Globals
 #pragma mark -
@@ -48,6 +42,7 @@ struct host_details g_http_proxy;
 BECurlOptionMap g_curl_options;
 
 extern BEOAuth * g_oauth;
+//extern BEXero * g_oauth;
 
 
 #pragma mark -
@@ -131,14 +126,14 @@ static MemoryStruct InitalizeCallbackMemory ( void )
 }
 
 
-static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_POST )
+static vector<char> PerformAction ( BECurl * curl )
 {	
 	curl->set_proxy ( g_http_proxy );
 	curl->set_custom_headers ( g_http_custom_headers );
 	
 	vector<char>data;
 	
-	switch ( which ) {
+	switch ( curl->get_http_method() ) {
 		case kBE_HTTP_METHOD_DELETE:
 			data = curl->http_delete ( );
 			break;
@@ -165,36 +160,36 @@ static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_P
 
 vector<char> GetURL ( const string url, const string filename, const string username, const string password )
 {	
-	boost::scoped_ptr<BECurl> curl(new BECurl ( url, filename, username, password, "" ));
+	boost::scoped_ptr<BECurl> curl ( new BECurl ( url, kBE_HTTP_METHOD_GET, filename, username, password ) );
 	return PerformAction ( curl.get() );
 }
 
 
 vector<char> HTTP_POST ( const string url, const string parameters, const string username, const string password )
 {	
-	boost::scoped_ptr<BECurl> curl(new BECurl ( url, "", username, password, parameters ));
-	return PerformAction ( curl.get() );		
+	boost::scoped_ptr<BECurl> curl ( new BECurl ( url, kBE_HTTP_METHOD_POST, "", username, password, parameters ) );
+	return PerformAction ( curl.get() );
 }
 
 
 vector<char> HTTP_PUT ( const string url, const string filename, const string username, const string password )
 {
-	boost::scoped_ptr<BECurl> curl(new BECurl ( url, filename, username, password, "" ));
-	return PerformAction ( curl.get(), kBE_HTTP_METHOD_PUT );		
+	boost::scoped_ptr<BECurl> curl ( new BECurl ( url, kBE_HTTP_METHOD_PUT, filename, username, password ) );
+	return PerformAction ( curl.get() );
 }
 
 
-vector<char> HTTP_PUT_DATA ( const std::string url, const char * data, const size_t size, const std::string username , const std::string password )
+vector<char> HTTP_PUT_DATA ( const std::string url, const char * data, const size_t size, const std::string username, const std::string password )
 {
-	boost::scoped_ptr<BECurl> curl(new BECurl ( url, data, size, username, password ));
-	return PerformAction ( curl.get(), kBE_HTTP_METHOD_PUT );
+	boost::scoped_ptr<BECurl> curl ( new BECurl ( url, kBE_HTTP_METHOD_PUT, "", username, password, "", data, size ) );
+	return PerformAction ( curl.get() );
 }
 
 
 vector<char> HTTP_DELETE ( const string url, const string username, const string password )
 {	
-	boost::scoped_ptr<BECurl> curl(new BECurl ( url, "", username, password, "" ));
-	return PerformAction ( curl.get(), kBE_HTTP_METHOD_DELETE );		
+	boost::scoped_ptr<BECurl> curl ( new BECurl ( url, kBE_HTTP_METHOD_DELETE, "", username, password ) );
+	return PerformAction ( curl.get() );
 }
 
 
@@ -204,31 +199,16 @@ vector<char> HTTP_DELETE ( const string url, const string username, const string
 #pragma mark -
 
 
-BECurl::BECurl ( const string download_this, const string to_file, const string username, const string password, const string post_parameters )
+BECurl::BECurl ( const string download_this, const be_http_method method, const string to_file, const string username, const string password, const string post_parameters, const char * put_data, const size_t size )
 {
-	Init ( download_this, to_file, username, password, post_parameters );
-}
 
-
-// file_data is NOT copied
-
-BECurl::BECurl ( const string download_this, const char * file_data, const size_t size, const string username, const string password )
-{
-	Init ( download_this, "", username, password, "" );
-	upload_data = (char *)file_data;
-	upload_data_size = size;
-}
-
-
-// the real constructor
-
-void BECurl::Init ( const string download_this, const string to_file, const string username, const string password, const string post_parameters )
-{
 	url = download_this;
+	http_method = method;
 	filename = to_file;
 	upload_file = NULL; // must intialise, we crash otherwise
-	upload_data = NULL;
-	upload_data_size = 0;
+	upload_data = (char *)put_data;	// file_data is NOT copied
+	upload_data_size = size;
+	parameters = post_parameters;
 	
 	http_response_code = 0;
 	
@@ -244,21 +224,18 @@ void BECurl::Init ( const string download_this, const string to_file, const stri
 	if ( !curl ) {
 		throw bad_alloc(); // curl_easy_init thinks all errors are memory errors
 	}
-	
+
 	if ( g_oauth ) {
 		
-		int oauth_error = g_oauth->sign_url ( url, parameters );
+		int oauth_error = g_oauth->sign_url ( url, parameters, http_method_as_string() );
 		if ( oauth_error != kNoError ) {
 			throw BECurl_Exception ( CURLE_LOGIN_DENIED );
 		}
-		
+	
 	} else {
 		set_username_and_password ( username, password );
-		
-		// curl doesn't make a copy of the post_args so we have to stop them being dealloced before they're used
-		parameters = post_parameters;
 	}
-	
+
 	set_parameters ( );
 	
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
@@ -390,7 +367,7 @@ vector<char> BECurl::http_delete ( )
 		prepare ( );
 		write_to_memory ( );		
 		
-		easy_setopt ( CURLOPT_CUSTOMREQUEST, "DELETE" );
+		easy_setopt ( CURLOPT_CUSTOMREQUEST, HTTP_METHOD_DELETE );
 		
 		// delete this
 		easy_setopt ( CURLOPT_URL, url.c_str() );
@@ -613,3 +590,34 @@ void BECurl::easy_setopt ( CURLoption option, ... )
 	}
 	
 }
+
+
+string BECurl::http_method_as_string ( )
+{
+	string method = "";
+	
+	switch ( http_method ) {
+			
+		case kBE_HTTP_METHOD_DELETE:
+			method = HTTP_METHOD_DELETE;
+			break;
+			
+		case kBE_HTTP_METHOD_GET:
+			method = HTTP_METHOD_GET;
+			break;
+			
+		case kBE_HTTP_METHOD_POST:
+			method = HTTP_METHOD_POST;
+			break;
+
+		case kBE_HTTP_METHOD_PUT:
+			method = HTTP_METHOD_PUT;
+			break;
+			
+		default:
+			break;
+	}
+	
+	return method;
+}
+

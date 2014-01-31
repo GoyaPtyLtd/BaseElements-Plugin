@@ -110,9 +110,9 @@
 //"322" = "BE_OAuth_ClearToken";
 
 
-//"330" = "BE_Xero_SetTokens ( consumer_key ; consumer_secret {; request_key ; request_secret} )";
-"330" = "BE_Xero_SetTokens ( consumer_key ; consumer_secret )";
-"331" = "BE_Xero_GET ( url )";
+//#ifdef PRIVATE_VERSION
+"330" = "BE_Xero_SetTokens ( consumer_key ; private_key )";
+//#endif
 
 
 "350" = "BE_Values_Unique ( listOfValues )";

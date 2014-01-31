@@ -2,7 +2,7 @@
  BEOAuth.cpp
  BaseElements Plug-In
  
- Copyright 2013 Goya. All rights reserved.
+ Copyright 2013-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -23,6 +23,11 @@ BEOAuth::BEOAuth ( const string key, const string secret ) {
 	consumer_secret = secret;
 	
 }
+
+
+
+BEOAuth::~BEOAuth ( ) {};
+
 
 
 int BEOAuth::parse_reply ( const string reply, string& key, string& secret ) {
@@ -72,7 +77,7 @@ string BEOAuth::http_request ( const string url, const string post_arguments ) {
 } // http_request
 
 
-int BEOAuth::sign_url ( string& url, string& post_arguments ) {
+int BEOAuth::sign_url ( string& url, string& post_arguments, const std::string /* http_method */ ) {
 	
 	int error = kNoError;
 	

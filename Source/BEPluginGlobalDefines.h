@@ -74,7 +74,7 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"3.0.0"
-#define	AUTO_UPDATE_VERSION L"02990002"
+#define	AUTO_UPDATE_VERSION L"02990003"
 #define VERSION_STRING "3.0"
 
 
@@ -166,6 +166,9 @@ enum functions {
 #ifdef PRIVATE_VERSION
 	kBE_Xero_SetTokens = 330,
 	kBE_Xero_GET = 331,
+	kBE_Xero_POST = 332,
+	kBE_Xero_PUT = 333,
+	kBE_Xero_RequestAccessToken = 334,
 #endif
 	kBE_Values_Unique = 350,
 	kBE_Values_FilterOut = 351,

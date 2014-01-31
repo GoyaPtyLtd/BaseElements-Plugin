@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
  
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -102,9 +102,7 @@ errcode g_last_error;
 errcode g_last_ddl_error;
 string g_text_encoding;
 string g_json_error_description;
-
 BEOAuth * g_oauth;
-BEXero * g_xero;
 
 extern int g_http_response_code;
 extern string g_http_response_headers;
@@ -1688,25 +1686,34 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 
 #ifdef PRIVATE_VERSION
 
+#pragma mark -
+#pragma mark Xero
+#pragma mark -
+
+
 FMX_PROC(errcode) BE_Xero_SetTokens ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
 	try {
 		
+		if ( g_oauth ) {
+			delete g_oauth;
+			g_oauth = NULL;
+		}
+		
 		StringAutoPtr consumer_key = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr consumer_secret = ParameterAsUTF8String ( parameters, 1 );
 		
-		if ( g_xero ) {
-			delete g_xero;
-			g_xero = NULL;
-		}
-				
 		// if the consumer_key is empty then we are only clearing out any set oauth data
 		
 		if ( !consumer_key->empty() ) {
+			
+			boost::algorithm::replace_all ( *consumer_secret, FILEMAKER_END_OF_LINE, "\r\n" );
+
 			BEXero * xero = new BEXero ( *consumer_key, *consumer_secret );
-			g_xero = xero; // must assign after the authorisation request otherwise BECurl will try and use g_xero
+			g_oauth = xero; // must assign after the authorisation request otherwise BECurl will try and use g_oauth
+			
 		}
 		
 		SetResult ( "", results );
@@ -1722,41 +1729,6 @@ FMX_PROC(errcode) BE_Xero_SetTokens ( short /* funcId */, const ExprEnv& /* envi
 } // BE_Xero_SetTokens
 
 
-
-FMX_PROC(errcode) BE_Xero_GET ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-	
-	try {
-		
-		StringAutoPtr uri = ParameterAsUTF8String ( parameters, 0 );
-		
-		string response;
-			
-		error = g_xero->oauth_request ( *uri );
-
-		if ( error == kNoError ) {
-					
-			response = g_xero->get_request_key() + FILEMAKER_END_OF_LINE + g_xero->get_request_secret();
-					
-		} else {
-			response = g_xero->get_last_error();
-			if ( !response.empty() ) {
-				error = kNoError;
-			}
-		}
-			
-		SetResult ( response, results );
-		
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-	
-	return MapError ( error );
-	
-} // BE_Xero_GET
 
 #endif
 

@@ -19,7 +19,7 @@ public:
 	
 	explicit BEXero ( const std::string key, const std::string secret ) : BEOAuth ( key, secret ) { }
 	
-	int oauth_request ( const std::string uri );
+	int sign_url ( std::string& url, std::string& post_arguments, const std::string http_method );
 
 };
 
