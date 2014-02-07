@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
  
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,20 +13,14 @@
 #include "BEPluginGlobalDefines.h"
 
 
-#if defined(FMX_WIN_TARGET)
+#if defined( FMX_WIN_TARGET )
 
-	// boost 1.53 breaks without this
-	#define NOMINMAX
-
-	#include <windows.h>
 	#include <locale.h>
-
-	#include "resource.h"
 	#include "BEWinFunctions.h"
 
 #endif
 
-#if defined(FMX_MAC_TARGET)
+#if defined( FMX_MAC_TARGET )
 
 	#include "BEMacFunctions.h"
 
@@ -34,6 +28,8 @@
 
 
 #include "BEPluginFunctions.h"
+
+
 #include "BEXSLT.h"
 #include "BEWStringVector.h"
 #include "BECurl.h"

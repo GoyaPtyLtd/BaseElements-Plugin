@@ -14,6 +14,7 @@
 #define BEZLIB_H
 
 
+#include "BEPluginGlobalDefines.h"
 #include "BEPluginUtilities.h"
 
 

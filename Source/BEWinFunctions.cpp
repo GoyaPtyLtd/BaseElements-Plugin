@@ -2,7 +2,7 @@
  BEWinFunctions.cpp
  BaseElements Plug-in
 	
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -10,16 +10,20 @@
  */
 
 
-#include "BEWinFunctions.h"
-
 #include <windows.h>
 #include <Shlwapi.h>
 #include <ShlObj.h>
-#include <commctrl.h>
+#include <ShObjIdl.h>
+#include <ObjBase.h>
+
 
 #include <sstream>
 
+
 #include <boost/algorithm/string.hpp>
+
+
+#include "BEWinFunctions.h"
 
 
 using namespace std;
@@ -554,8 +558,8 @@ WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 
 		}
 
-	}
-	
+	} // if ( number_of_files == 1 )
+
 	return selected_files;
 
 }	//	SelectFile
@@ -734,13 +738,13 @@ fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAu
 } // DisplayProgressDialog
 
 
-fmx::errcode UpdateProgressDialog ( const long value, const WStringAutoPtr description )
+fmx::errcode UpdateProgressDialog ( const unsigned long value, const WStringAutoPtr description )
 {
 	fmx::errcode error = kNoError;
 
 	bool user_cancelled = progress_dialog->HasUserCancelled();
 
-	if ( user_cancelled || value > progress_dialog_maximum ) {
+	if ( user_cancelled || (value > progress_dialog_maximum) ) {
 
 		progress_dialog->StopProgressDialog();
 		progress_dialog->Release();

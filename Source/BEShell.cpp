@@ -2,7 +2,7 @@
  BEShell.cpp
  BaseElements Plug-In
  
- Copyright 2011-2012 Goya. All rights reserved.
+ Copyright 2011-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -10,19 +10,17 @@
  */
 
 
-#include "BEShell.h"
 #include "BEPluginGlobalDefines.h"
+#include "BEShell.h"
+
 
 #include <errno.h>
+
 
 #include "boost/date_time/posix_time/posix_time.hpp"
 
 
-
-
 #if defined(FMX_WIN_TARGET)
-
-	#include "windows.h"
 
 	#define POPEN _popen
 	#define PCLOSE _pclose
@@ -176,7 +174,6 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 
 #if defined(FMX_WIN_TARGET)
 
-//#include "windows.h"
 #include <tchar.h>
 
 #include "BEWinFunctions.h"

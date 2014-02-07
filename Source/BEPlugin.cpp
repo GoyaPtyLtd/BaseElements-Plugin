@@ -35,10 +35,6 @@
  */
 
 
-#if defined(FMX_WIN_TARGET)
-	#include "windows.h"
-#endif
-
 #include "BEPluginGlobalDefines.h"
 #include "BEPluginFunctions.h"
 #include "BEPluginUtilities.h"

@@ -14,8 +14,6 @@
 
 
 #include "BEZlib.h"
-#include "BEPluginGlobalDefines.h"
-
 #include "BE_Boost_FileSystem_Additions.hpp"
 
 #include "boost/filesystem.hpp"
@@ -27,9 +25,11 @@
 #include "minizip/unzip.h"
 
 
-#if defined( _MSC_VER )
+#if defined( FMX_MAC_TARGET )
 
-	#include <Windows.h>
+	#include <utime.h>
+
+#else
 
 	#define USEWIN32IOAPI
 	#include "minizip/iowin32.h"
@@ -48,10 +48,6 @@
 	#ifndef _FILE_OFFSET_BIT
 		#define _FILE_OFFSET_BIT 64
 	#endif
-
-#else
-
-	#include <utime.h>
 
 #endif
 
@@ -235,7 +231,7 @@ void FileTime ( const path file, zip_fileinfo * zip_info )
 	zip_info->internal_fa = 0;
 	zip_info->external_fa = 0;
 
-#if defined( _MSC_VER )
+#if defined( FMX_WIN_TARGET )
 
 	FILETIME ftLocal;
     HANDLE hFind;
