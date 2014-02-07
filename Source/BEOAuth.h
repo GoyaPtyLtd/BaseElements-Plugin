@@ -2,7 +2,7 @@
  BEOAuth.h
  BaseElements Plug-In
  
- Copyright 2013 Goya. All rights reserved.
+ Copyright 2013-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,7 +13,6 @@
 #ifndef __BaseElements__BEOAuth__
 #define __BaseElements__BEOAuth__
 
-#include <iostream>
 
 #include "BEPluginUtilities.h"
 
