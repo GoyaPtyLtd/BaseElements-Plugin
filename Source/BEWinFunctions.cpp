@@ -261,7 +261,7 @@ UINT ClipboardFormatIDForName ( const wstring name ) {
 
 bool SafeOpenClipboard ( void )
 {
-	bool is_open = OpenClipboard ( NULL );
+	BOOL is_open = OpenClipboard ( NULL );
 	int i = 0;
 	while ( GetLastError() && i < 1 )  {
 		Sleep ( 10 );
@@ -271,7 +271,7 @@ bool SafeOpenClipboard ( void )
 
 	g_last_error = GetLastError();
 
-	return is_open;
+	return is_open != 0;
 
 }
 
@@ -742,9 +742,9 @@ fmx::errcode UpdateProgressDialog ( const unsigned long value, const WStringAuto
 {
 	fmx::errcode error = kNoError;
 
-	bool user_cancelled = progress_dialog->HasUserCancelled();
+	BOOL user_cancelled = progress_dialog->HasUserCancelled();
 
-	if ( user_cancelled || (value > progress_dialog_maximum) ) {
+	if ( (user_cancelled != 0) || (value > progress_dialog_maximum) ) {
 
 		progress_dialog->StopProgressDialog();
 		progress_dialog->Release();
