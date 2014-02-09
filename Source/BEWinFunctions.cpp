@@ -59,8 +59,15 @@ IProgressDialog * progress_dialog;
 DWORD progress_dialog_maximum;
 
 
-// clipbaord functions
+// dry... fmx::errcode is not large enough to hold all results from GetLastError()
 
+fmx::errcode GetLastErrorAsFMX ( void )
+{
+	return (fmx::errcode)GetLastError();
+}
+
+
+// clipbaord functions
 
 // default, system formats
 // http://msdn.microsoft.com/en-us/library/windows/desktop/ff729168(v=vs.85).aspx
@@ -268,7 +275,7 @@ bool SafeOpenClipboard ( void )
 		is_open = OpenClipboard ( NULL );
 	}
 
-	g_last_error = GetLastError();
+	g_last_error = GetLastErrorAsFMX();
 
 	return is_open != 0;
 
@@ -294,7 +301,7 @@ WStringAutoPtr ClipboardFormats ( void )
 		}
 
 		if ( CloseClipboard() ) {
-			g_last_error = GetLastError();
+			g_last_error = GetLastErrorAsFMX();
 		}
 
 	}
@@ -407,7 +414,7 @@ StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 		}
 		
 		if ( CloseClipboard() ) {
-			g_last_error = GetLastError();
+			g_last_error = GetLastErrorAsFMX();
 		}
 	
 	}
@@ -486,11 +493,11 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 				ok = TRUE;
 			}
 		} else {
-			g_last_error = GetLastError();
+			g_last_error = GetLastErrorAsFMX();
 		}
 
 		if ( CloseClipboard() ) {
-			g_last_error = g_last_error ? g_last_error : GetLastError();
+			g_last_error = g_last_error ? g_last_error : GetLastErrorAsFMX();
 		}
 
 	}

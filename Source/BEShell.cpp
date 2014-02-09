@@ -149,13 +149,13 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 	HANDLE command_input = NULL;
 
 	if ( ! CreatePipe ( &command_result, &command_input, &security_attributes, 0 ) ) {
-		return ::GetLastError ( );
+		return GetLastErrorAsFMX();
 	}
 
 	// Ensure the read handle to the pipe for STDOUT is not inherited.
 	
 	if ( ! SetHandleInformation ( command_result, HANDLE_FLAG_INHERIT, 0 ) ) {
-		return ::GetLastError ( );
+		return GetLastErrorAsFMX();
 	}
 
 	// Create the child process.
@@ -242,7 +242,7 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 		}
 
 	} else {
-		error = GetLastError ( );
+		error = GetLastErrorAsFMX ( );
 	}
 
 	CloseHandle ( command_result );
