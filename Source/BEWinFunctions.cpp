@@ -716,13 +716,13 @@ fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAu
 	progress_dialog_maximum = maximum;
 
 	HWND parent_window = GetActiveWindow ( );
-	error = CoCreateInstance ( CLSID_ProgressDialog, NULL, CLSCTX_INPROC_SERVER, IID_IProgressDialog, (void**)&progress_dialog );
+	HRESULT result = CoCreateInstance ( CLSID_ProgressDialog, NULL, CLSCTX_INPROC_SERVER, IID_IProgressDialog, (void**)&progress_dialog );
 
-	if ( error == S_OK ) {
-		error = progress_dialog->SetTitle ( title->c_str () );
+	if ( result == S_OK ) {
+		result = progress_dialog->SetTitle ( title->c_str () );
 	}
 
-	if ( error == S_OK ) {
+	if ( result == S_OK ) {
 		progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
 	}
 
@@ -735,11 +735,11 @@ fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAu
 		flags |= PROGDLG_MARQUEEPROGRESS;
 	}
 
-	if ( error == S_OK ) {
-		error = progress_dialog->StartProgressDialog ( parent_window, NULL, flags, NULL );
+	if ( result == S_OK ) {
+		result = progress_dialog->StartProgressDialog ( parent_window, NULL, flags, NULL );
 	}
 
-	return error;
+	return (fmx::errcode)result;
 
 } // DisplayProgressDialog
 
@@ -760,13 +760,15 @@ fmx::errcode UpdateProgressDialog ( const unsigned long value, const WStringAuto
 
 	} else {
 
+		HRESULT result;
+
 		if ( !description->empty () ) {
-			error = progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
+			result = progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
 		}
 
-		if ( error == S_OK ) {
-			error = progress_dialog->SetProgress ( value, progress_dialog_maximum );
-			error = error == S_FALSE ? kNoError : error;
+		if ( result == S_OK ) {
+			result = progress_dialog->SetProgress ( value, progress_dialog_maximum );
+			error = result == S_FALSE ? kNoError : (fmx::errcode)result;
 		}
 	}
 
@@ -784,7 +786,9 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 {
 	HKEY registry_key;
  
-	g_last_error = RegCreateKeyEx ( HKEY_CURRENT_USER,
+	LSTATUS status;
+
+	status = RegCreateKeyEx ( HKEY_CURRENT_USER,
 								domain->c_str(),
 								0,
 								NULL,
@@ -795,9 +799,9 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 								NULL
 								);
 
-	if ( g_last_error == ERROR_SUCCESS ) {
+	if ( status == ERROR_SUCCESS ) {
 
-		g_last_error = RegSetValueEx ( registry_key,
+		status = RegSetValueEx ( registry_key,
 								key->c_str(),
 								0,
 								REG_SZ,
@@ -807,7 +811,9 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 		RegCloseKey ( registry_key );
 	}
 
-	return ( g_last_error == ERROR_SUCCESS );
+	g_last_error = (fmx::errcode)status;
+
+	return ( status == ERROR_SUCCESS );
 
 }
 
@@ -819,16 +825,18 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 	DWORD buffer_size = 1024;
 	wchar_t * preference_data = new wchar_t[buffer_size]();
 
-	g_last_error = RegOpenKeyEx ( HKEY_CURRENT_USER, 
+	LSTATUS status;
+
+	status = RegOpenKeyEx ( HKEY_CURRENT_USER, 
 							domain->c_str(),
 							NULL,
 							KEY_READ,
 							&registry_key
 							);
  
-	if ( g_last_error == ERROR_SUCCESS ) {
+	if ( status == ERROR_SUCCESS ) {
 
-		g_last_error = RegQueryValueEx ( registry_key,
+		status = RegQueryValueEx ( registry_key,
 									key->c_str(),
 									NULL,
 									NULL,
@@ -837,12 +845,12 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 									);
 
 		// if preference_data isn't big enough resize it and try again
-		if ( g_last_error == ERROR_MORE_DATA ) {
+		if ( status == ERROR_MORE_DATA ) {
 
 			delete [] preference_data;
 			preference_data = new wchar_t[buffer_size + 1]();
 
-			g_last_error = RegQueryValueEx ( registry_key,
+			status = RegQueryValueEx ( registry_key,
 										key->c_str(),
 										NULL,
 										NULL,
@@ -856,6 +864,8 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 	WStringAutoPtr value = WStringAutoPtr ( new wstring ( preference_data ) );
   
 	delete [] preference_data;
+
+	g_last_error = (fmx::errcode)status;
 
 	return value;
 
