@@ -548,13 +548,13 @@ WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 
 	WStringAutoPtr selected_files = WStringAutoPtr ( new wstring ( L"" ) );
 
-	int number_of_files = values.size();
+	size_t number_of_files = values.size();
 
 	if ( number_of_files == 1 ) {
 		selected_files->append ( values[0] );
 	} else {
 
-		for ( int i = 1 ; i < number_of_files ; i++ ) {
+		for ( size_t i = 1 ; i < number_of_files ; i++ ) {
 
 			selected_files->append ( values[0] );
 			selected_files->append ( values[i] );
@@ -903,12 +903,12 @@ bool OpenFile ( WStringAutoPtr path )
 wstring utf8toutf16 ( const string& instr )
 {
     // Assumes std::string is encoded using the UTF-8 codepage
-    int bufferlen = ::MultiByteToWideChar(CP_UTF8, 0, instr.c_str(), instr.size(), NULL, 0);
+    int bufferlen = MultiByteToWideChar ( CP_UTF8, 0, instr.c_str(), (int)instr.size(), NULL, 0 );
 
     // Allocate new LPWSTR - must deallocate it later
     LPWSTR widestr = new WCHAR[bufferlen + 1];
 
-    ::MultiByteToWideChar(CP_UTF8, 0, instr.c_str(), instr.size(), widestr, bufferlen);
+    MultiByteToWideChar ( CP_UTF8, 0, instr.c_str(), (int)instr.size(), widestr, bufferlen );
 
     // Ensure wide string is null terminated
     widestr[bufferlen] = 0;
