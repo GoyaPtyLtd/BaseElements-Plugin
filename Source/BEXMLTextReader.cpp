@@ -147,7 +147,7 @@ bool BEXMLTextReader::has_attributes()
 	if ( has_attributes == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
-	return has_attributes == true;
+	return has_attributes == 1;
 }
 
 
