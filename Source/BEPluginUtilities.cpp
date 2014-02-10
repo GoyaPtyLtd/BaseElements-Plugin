@@ -439,7 +439,7 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 		++it;
 	}
 
-	g_last_error = error_result;
+	g_last_error = (fmx::errcode)error_result;
 
 	vector<char> out ( encoded, encoded + available - remaining );
 	delete[] encoded;
