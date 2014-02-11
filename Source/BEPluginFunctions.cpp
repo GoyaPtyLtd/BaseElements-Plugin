@@ -566,7 +566,6 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 	
 	try {
 		
-		TextAutoPtr list_of_files;
 		TextAutoPtr end_of_line;
 		end_of_line->Assign ( FILEMAKER_END_OF_LINE );
 
@@ -575,19 +574,21 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 		try {
 
 			path directory_path = *directory;
+			bool directory_exists = exists ( directory_path );
 			
-			if ( exists ( directory_path ) ) {
+			if ( directory_exists ) {
 				
 				directory_iterator end_itr; // default construction yields past-the-end
 				directory_iterator itr ( directory_path );
 
+				TextAutoPtr list_of_files;
 				long want = ParameterAsLong ( parameters, 1, kBE_FileType_File );
 				
 				while ( itr != end_itr ) {
 					
 					bool is_folder = is_directory ( itr->status() );
 				
-					if ( 
+					if (
 							(!is_folder && (want == kBE_FileType_File)) ||
 							(is_folder && (want == kBE_FileType_Folder)) ||
 							(want == kBE_FileType_ALL)
@@ -602,14 +603,16 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 					
 				}
 
+				SetResult ( *list_of_files, results );
+				
+			} else {
+				error = kNoSuchFileOrDirectoryError;
 			}
 
 		} catch ( filesystem_error& e ) {
-			g_last_error = e.code().value();
+			error = e.code().value();
 		}
 
-		SetResult ( *list_of_files, results );
-		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
