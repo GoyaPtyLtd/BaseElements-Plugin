@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
  
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -11,15 +11,6 @@
 
 
 #include "BEPluginGlobalDefines.h"
-#include "BEPluginUtilities.h"
-
-
-#if defined(FMX_WIN_TARGET)
-
-	#include "windows.h"
-	#include "resource.h"
-
-#endif
 
 
 #if defined(FMX_MAC_TARGET)
@@ -28,6 +19,9 @@
 	#include <Carbon/Carbon.h>
 
 #endif 
+
+
+#include "BEPluginUtilities.h"
 
 
 #include "boost/format.hpp"

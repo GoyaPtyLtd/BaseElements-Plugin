@@ -14,7 +14,7 @@
 	#define BEPLUGINGLOBALDEFINES_H
 
 
-#if defined( __GNUC__ )
+#if defined( __APPLE__ )
 
 	#define FMX_MAC_TARGET	1
 
@@ -27,6 +27,9 @@
 	#define USER_PREFERENCES_DOMAIN L"au.com.goya.baseelements.plugin-user"
 
 #elif defined( _MSC_VER )
+
+	#define NOMINMAX // boost 1.53 breaks without this defined before including windows.h
+	#include <windows.h> // life comes to an end if this is not included before anything else
 
 	#define FMX_WIN_TARGET	1
 	#define _WIN32_WINNT _WIN32_WINNT_MAXVER

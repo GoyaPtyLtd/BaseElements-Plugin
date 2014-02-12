@@ -13,20 +13,14 @@
 #include "BEPluginGlobalDefines.h"
 
 
-#if defined(FMX_WIN_TARGET)
+#if defined ( FMX_WIN_TARGET )
 
-	// boost 1.53 breaks without this
-	#define NOMINMAX
-
-	#include <windows.h>
 	#include <locale.h>
-
-	#include "resource.h"
 	#include "BEWinFunctions.h"
 
 #endif
 
-#if defined(FMX_MAC_TARGET)
+#if defined ( FMX_MAC_TARGET )
 
 	#include "BEMacFunctions.h"
 
@@ -34,6 +28,8 @@
 
 
 #include "BEPluginFunctions.h"
+
+
 #include "BEXSLT.h"
 #include "BEWStringVector.h"
 #include "BECurl.h"

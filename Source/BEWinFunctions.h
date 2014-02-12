@@ -2,7 +2,7 @@
  BEWinFunctions.h
  BaseElements Plug-in
 
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,8 +13,8 @@
 #if !defined(BEWINFUNCTIONS_H)  		// Only include once.
 	#define BEWINFUNCTIONS_H
 
-#include "BEPluginUtilities.h"
 #include "BEPluginGlobalDefines.h"
+#include "BEPluginUtilities.h"
 
 #include <string>
 
@@ -32,7 +32,7 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 // Progress Dialog
 
 fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAutoPtr description, const long maximum, const bool can_cancel );
-fmx::errcode UpdateProgressDialog ( const long value, const WStringAutoPtr description );
+fmx::errcode UpdateProgressDialog ( const unsigned long value, const WStringAutoPtr description );
 
 
 // user preferences
