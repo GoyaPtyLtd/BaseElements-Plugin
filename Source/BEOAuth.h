@@ -14,9 +14,6 @@
 #define __BaseElements__BEOAuth__
 
 
-#include <iostream>
-
-
 #include "BEPluginUtilities.h"
 
 
