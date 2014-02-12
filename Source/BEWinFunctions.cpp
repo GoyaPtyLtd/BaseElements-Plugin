@@ -28,6 +28,7 @@
 using namespace std;
 
 
+bool IsWindowsVistaOrLater ( );
 wstring ClipboardFormatNameForID ( const UINT format_id );
 UINT ClipboardFormatIDForName ( const wstring format_name );
 bool SafeOpenClipboard ( void );
@@ -64,6 +65,20 @@ DWORD progress_dialog_maximum;
 fmx::errcode GetLastErrorAsFMX ( void )
 {
 	return (fmx::errcode)GetLastError();
+}
+
+
+bool IsWindowsVistaOrLater ( )
+{
+    OSVERSIONINFO os_version;
+    ZeroMemory ( &os_version, sizeof(OSVERSIONINFO) );
+    os_version.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+
+    GetVersionEx ( &os_version );
+
+    BOOL isWindowsVistaOrLater = os_version.dwMajorVersion >= 6;
+
+	return isWindowsVistaOrLater != 0;
 }
 
 
@@ -510,65 +525,138 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 // file dialogs
 
 
-// SelectFile based on code provided by Dan Smith, https://github.com/dansmith65
-
 WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 {
-	OPENFILENAME open_file_dialog;   // common dialog box structure
-
-	ZeroMemory ( &open_file_dialog, sizeof(open_file_dialog) );
-
-	open_file_dialog.lStructSize = sizeof(open_file_dialog);
-	open_file_dialog.hwndOwner = GetActiveWindow();
-
-	wchar_t szFile[MAX_PATH];        // buffer for file name
-	open_file_dialog.lpstrFile = szFile;
-	open_file_dialog.lpstrFilter = L"All Files (*.*)\0*.*\0";
-	open_file_dialog.lpstrFile[0] = '\0';
-	open_file_dialog.nMaxFile = sizeof(szFile);
-	open_file_dialog.lpstrTitle = prompt->c_str();
-	open_file_dialog.lpstrInitialDir = in_folder->c_str();
-	open_file_dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT;
-
-	 // Display the Open dialog box
-
-	wchar_t path[MAX_PATH] = L"";
-
-	if ( GetOpenFileName ( &open_file_dialog ) == TRUE ) {
-		wcscpy_s ( path, open_file_dialog.lpstrFile );
-	 }
-
-	// return the file paths as a value list
-
-	wstringstream wss ( path );
-	istream_iterator<wstring, wchar_t, std::char_traits<wchar_t> > begin ( wss );
-	istream_iterator<wstring, wchar_t, std::char_traits<wchar_t> > end;
-	vector <wstring> values ( begin, end );
-
+	HRESULT hr = 0;
 	WStringAutoPtr selected_files = WStringAutoPtr ( new wstring ( L"" ) );
 
-	size_t number_of_files = values.size();
+	if ( IsWindowsVistaOrLater( ) ) {
 
-	if ( number_of_files == 1 ) {
-		selected_files->append ( values[0] );
-	} else {
+		IFileOpenDialog *open_file_dialog = NULL;
+		hr = CoCreateInstance ( CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS ( &open_file_dialog ) );
+	    if (SUCCEEDED(hr)) {
 
-		for ( size_t i = 1 ; i < number_of_files ; i++ ) {
+			// Set the options on the dialog.
+            DWORD dwFlags;
+            hr = open_file_dialog->GetOptions ( &dwFlags ); // Before setting, always get the options first in order not to override existing options.
+			if (SUCCEEDED(hr)) {
+                // In this case, get shell items only for file system items.
+				hr = open_file_dialog->SetOptions ( dwFlags | FOS_FORCEFILESYSTEM | FOS_ALLOWMULTISELECT | FOS_PATHMUSTEXIST | FOS_FILEMUSTEXIST | FOS_NOREADONLYRETURN );
+				if (SUCCEEDED(hr)) {
 
-			selected_files->append ( values[0] );
-			selected_files->append ( values[i] );
+					// go to the recently used folder if we don't specify one
+					if ( in_folder->empty() ) {
+						hr = open_file_dialog->SetDefaultFolder ( NULL );
+					} else {
+						IShellItem *psiFolder;
+						LPCWSTR szFilePath = in_folder->c_str();
+						hr = SHCreateItemFromParsingName ( szFilePath, NULL, IID_PPV_ARGS(&psiFolder) );
+						hr= open_file_dialog->SetFolder ( psiFolder );
+						psiFolder->Release();
+					}
 
-			if ( i + 1 != number_of_files ) {
-				selected_files->append ( L"\r" /*FILEMAKER_END_OF_LINE*/ );
+					if (SUCCEEDED(hr)) {
+						hr = open_file_dialog->SetTitle ( prompt->c_str() );
+                        if (SUCCEEDED(hr)) {
+							// Show the dialog
+							hr = open_file_dialog->Show ( NULL );
+							if (SUCCEEDED(hr)) {
+								// loop over the selected files
+								IShellItemArray * pItemArray;
+								hr = open_file_dialog->GetResults ( &pItemArray );
+								if ( SUCCEEDED(hr) ) {
+									DWORD number_of_files_selected;
+									hr = pItemArray->GetCount ( &number_of_files_selected );
+									if ( SUCCEEDED(hr) ) {
+										for ( DWORD j = 0; j < number_of_files_selected; j++ ) {
+											IShellItem * pItem;
+											hr = pItemArray->GetItemAt ( j, &pItem );
+											if ( SUCCEEDED(hr) ) {
+												LPOLESTR pwsz = NULL;
+												hr = pItem->GetDisplayName ( SIGDN_FILESYSPATH, &pwsz ); // Get its file system path.
+												if ( SUCCEEDED(hr) ) {
+													selected_files->append ( pwsz );
+													if ( j < (number_of_files_selected - 1) ) {
+														selected_files->append ( L"\r" /*FILEMAKER_END_OF_LINE*/ );
+													}
+												}
+											}
+											pItem->Release();
+										}
+									}
+									pItemArray->Release();
+								}
+							}
+						}
+					}
+				}
 			}
-
 		}
 
-	} // if ( number_of_files == 1 )
+		open_file_dialog->Release();
+
+	} else {
+
+		// based on code provided by Dan Smith, https://github.com/dansmith65
+		
+		OPENFILENAME open_file_dialog;   // common dialog box structure
+
+		ZeroMemory ( &open_file_dialog, sizeof(open_file_dialog) );
+
+		open_file_dialog.lStructSize = sizeof(open_file_dialog);
+		open_file_dialog.hwndOwner = GetActiveWindow();
+
+		wchar_t szFile[MAX_PATH];        // buffer for file name
+		open_file_dialog.lpstrFile = szFile;
+		open_file_dialog.lpstrFilter = L"All Files (*.*)\0*.*\0";
+		open_file_dialog.lpstrFile[0] = '\0';
+		open_file_dialog.nMaxFile = sizeof(szFile);
+		open_file_dialog.lpstrTitle = prompt->c_str();
+		open_file_dialog.lpstrInitialDir = in_folder->c_str();
+		open_file_dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT;
+
+		 // Display the Open dialog box
+
+		wchar_t path[MAX_PATH] = L"";
+
+		if ( GetOpenFileName ( &open_file_dialog ) == TRUE ) {
+			wcscpy_s ( path, open_file_dialog.lpstrFile );
+		 }
+
+		// return the file paths as a value list
+
+		wstringstream wss ( path );
+		istream_iterator<wstring, wchar_t, std::char_traits<wchar_t> > begin ( wss );
+		istream_iterator<wstring, wchar_t, std::char_traits<wchar_t> > end;
+		vector <wstring> values ( begin, end );
+
+		int number_of_files = values.size();
+
+		if ( number_of_files == 1 ) {
+			selected_files->append ( values[0] );
+		} else {
 	
+			for ( int i = 1 ; i < number_of_files ; i++ ) {
+
+				selected_files->append ( values[0] );
+				selected_files->append ( values[i] );
+
+				if ( i + 1 != number_of_files ) {
+					selected_files->append ( L"\r" /*FILEMAKER_END_OF_LINE*/ );
+				}
+
+			}
+
+		} // if ( number_of_files == 1 )
+
+	} // if ( IsWindowsVistaOrGreater() )
+	
+	g_last_error = (fmx::errcode)hr;
+
 	return selected_files;
 
 }	//	SelectFile
+
 
 
 static int CALLBACK SelectFolderCallback ( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData )
@@ -582,6 +670,7 @@ static int CALLBACK SelectFolderCallback ( HWND hwnd, UINT uMsg, LPARAM lParam, 
     }
  
     return 0; // should always return 0
+
 }
 
 
