@@ -583,7 +583,7 @@ WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 												}
 											}
 											pItem->Release();
-										}
+										} // for
 									}
 									pItemArray->Release();
 								}
