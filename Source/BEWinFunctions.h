@@ -13,8 +13,8 @@
 #if !defined(BEWINFUNCTIONS_H)  		// Only include once.
 	#define BEWINFUNCTIONS_H
 
-#include "BEPluginUtilities.h"
 #include "BEPluginGlobalDefines.h"
+#include "BEPluginUtilities.h"
 
 #include <string>
 

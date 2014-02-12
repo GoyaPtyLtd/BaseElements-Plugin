@@ -10,7 +10,6 @@
  */
 
 
-#include <windows.h>
 #include <Shlwapi.h>
 #include <ShlObj.h>
 #include <ShObjIdl.h>
