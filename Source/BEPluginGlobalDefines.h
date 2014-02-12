@@ -76,7 +76,7 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"3.0.0"
-#define	AUTO_UPDATE_VERSION L"02990003"
+#define	AUTO_UPDATE_VERSION L"02990004"
 #define VERSION_STRING "3.0"
 
 
