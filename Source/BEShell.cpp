@@ -179,11 +179,11 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 	TCHAR *command_line = (wchar_t *)command_string.c_str();
 	DWORD creation_flags = NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW;
 
-	bool success = CreateProcess ( NULL, command_line, NULL, NULL, TRUE, creation_flags, NULL, NULL, &startup_information, &process_information );
+	BOOL success = CreateProcess ( NULL, command_line, NULL, NULL, TRUE, creation_flags, NULL, NULL, &startup_information, &process_information );
 	
 	boost::posix_time::ptime start = boost::posix_time::microsec_clock::universal_time(); 
 
-	if ( success ) {
+	if ( success != 0 ) {
 		// Close handles to the child process and its primary thread.
 
 		DWORD timeout = command_timeout == kBE_Never ? INFINITE : command_timeout;
