@@ -35,7 +35,7 @@ BEXMLTextReader::BEXMLTextReader ( const string path )
 
 	if ( file_exists ) {
 
-		reader = xmlNewTextReaderFilename ( path.c_str() );
+		reader = xmlReaderForFile ( path.c_str(), NULL, XML_PARSE_HUGE );
 
 		if ( reader != NULL ) {
 			xml_document = xmlTextReaderCurrentDoc ( reader );
