@@ -13,6 +13,7 @@
 #include "BEXSLT.h"
 #include "BEPluginGlobalDefines.h"
 #include "BEMacFunctions.h"
+#include "BEValueList.h"
 
 #include <libxml/xmlexports.h>
 #include <libxml/xmlstring.h>
@@ -22,8 +23,6 @@
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlIO.h>
-
-#include <libxml/xpathInternals.h>
 
 #include <libxslt/extra.h>
 #include <libxslt/transform.h>
@@ -93,7 +92,12 @@ static void XSLTErrorFunction ( void *context ATTRIBUTE_UNUSED, const char *mess
 // format an error as per xsltproc
 
 TextAutoPtr ReportXSLTError ( const xmlChar * url )
-{		
+{	
+	if ( url == NULL ) {
+		string unknown = ""; // <unknown>
+		url = (xmlChar *)unknown.c_str();
+	}
+
 	TextAutoPtr	result_text;
 	result_text->AppendText ( *g_last_xslt_error_text );
 
@@ -490,26 +494,34 @@ TextAutoPtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjec
 	
 	if ( xml_buffer && xml_error == NULL ) {
 			
-		xmlNode *node = xpathObj->nodesetval->nodeTab[0];
-		int xml_buffer_length = xmlNodeDump ( xml_buffer, xml_document, node, 0, true );
-		xml_error = xmlGetLastError();
+		if ( xpathObj->type == XPATH_NODESET && xpathObj->nodesetval->nodeNr > 0 ) {
 
-		if ( xml_error == NULL ) {
-				
-			const xmlChar * node_as_xml = xmlBufferContent ( (xmlBufferPtr)xml_buffer );
+			xmlNode *node = xpathObj->nodesetval->nodeTab[0];
+			int xml_buffer_length = xmlNodeDump ( xml_buffer, xml_document, node, 0, true );
 			xml_error = xmlGetLastError();
+			
+			if ( xml_error == NULL ) {
 				
-			if ( node_as_xml && xml_error == NULL ) {
-				result->AssignWithLength ( (char*)node_as_xml, xml_buffer_length, fmx::Text::kEncoding_UTF8 );	// return node set as string on success
-				xmlFree ( (xmlChar *)node_as_xml );
+				const xmlChar * node_as_xml = xmlBufferContent ( (xmlBufferPtr)xml_buffer );
+				xml_error = xmlGetLastError();
+				
+				if ( node_as_xml && xml_error == NULL ) {
+					result->AssignWithLength ( (char*)node_as_xml, xml_buffer_length, fmx::Text::kEncoding_UTF8 );	// return node set as string on success
+					xmlFree ( (xmlChar *)node_as_xml );
+				} else {
+					result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
+				}
+				
 			} else {
 				result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
-			}
+			} // if ( xml_error == NULL )
 
+		} else if ( xpathObj->type == XPATH_NODESET && xpathObj->nodesetval->nodeNr == 0 ) {
+			; // an empty nodeset ... do nothing
 		} else {
 			result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
 		}
-				
+		
 		xmlFree ( xml_buffer );
 
 	} else {
@@ -520,125 +532,83 @@ TextAutoPtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjec
 }
 
 
-
-TextAutoPtr ApplyXPath ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr nsList, bool as_text )
-{
-	g_last_xslt_error = kNoError;
-	TextAutoPtr result;
-	xmlXPathContextPtr xpathCtx = NULL;
-	xmlXPathObjectPtr xpathObj = NULL;
-	xmlDocPtr doc = NULL;
-	
-	xmlInitParser();
-	
-	// parse the xml
-	int options = XML_PARSE_HUGE;
-	doc = xmlReadDoc ( (xmlChar *)xml->c_str(), NULL, NULL, options );
-	if (!doc)
-		goto cleanup;
-	
-	xpathCtx = xmlXPathNewContext(doc);
-	if (!xpathCtx)
-		goto cleanup;
-	
-	RegisterNamespaces(xpathCtx, (xmlChar *)nsList->c_str());
-	
-	xpathObj = xmlXPathEvalExpression((xmlChar *)xpath->c_str(), xpathCtx);
-	
-	if ( xpathObj ) {
-		if ( as_text ) {
-			result->SetText ( *(XPathObjectAsText ( xpathObj )) );
-		} else {
-			result->SetText ( *(XPathObjectAsXML ( doc, xpathObj )) );
-		}
-	}
-	
-cleanup:
-	if (xpathObj)
-		xmlXPathFreeObject(xpathObj);
-	if (doc)
-		xmlFreeDoc(doc);
-	if (xpathCtx)
-		xmlXPathFreeContext(xpathCtx);
-	
-	xmlCleanupParser();
-	
-	return result;
-} // ApplyXPath
-
-
 void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result )
 {
-	TextAutoPtr value;
-	TextAutoPtr	cr;
 	
-	cr->Assign("\r");
-	
-	if ((ns == NULL) || (ns->nodeNr == 0) || (ns->nodeTab == NULL))
+	if ( (ns == NULL) || (ns->nodeNr == 0) || (ns->nodeTab == NULL) ) {
 		return;
-	
-	if (ns->nodeNr > 1)
-		xmlXPathNodeSetSort(ns);
-	for (int i = 0; i < ns->nodeNr; i++) {
-		xmlChar* str = xmlXPathCastNodeToString(ns->nodeTab[i]);
-		
-		if (str) {
-			value->AssignWithLength((char*)str, (FMX_UInt32)strlen((char*)str), fmx::Text::kEncoding_UTF8);
-			result->AppendText(*value);
-			xmlFree(str);
-		}
-		result->AppendText(*cr);
 	}
+	
+	if ( ns->nodeNr > 1 ) {
+		xmlXPathNodeSetSort ( ns );
+	}
+	
+	BEValueList value_list = BEValueList ( );
+
+	for ( int i = 0; i < ns->nodeNr; i++ ) {
+		xmlChar* str = xmlXPathCastNodeToString ( ns->nodeTab[i] );
+		if ( str ) {
+			
+			string new_value = string ( (char*)str, (FMX_UInt32)strlen ( (char*)str ) );
+			value_list.append ( new_value );
+			xmlFree ( str );
+		}
+		result->Assign ( value_list.get_as_filemaker_string().c_str(), fmx::Text::kEncoding_UTF8 );
+	}
+
 }
 
 
-TextAutoPtr ApplyXPathAll ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr nsList )
+TextAutoPtr ApplyXPathExpression ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr ns_list, const xmlXPathObjectType xpath_object_type )
 {
 	g_last_xslt_error = kNoError;
-	xmlXPathContextPtr xpathCtx = NULL;
-	xmlXPathObjectPtr xpathObj = NULL;
-	xmlDocPtr doc = NULL;
 	TextAutoPtr result;
 	
 	xmlInitParser();
 	
 	// parse the xml
 	int options = XML_PARSE_HUGE;
-	doc = xmlReadDoc ( (xmlChar *)xml->c_str(), NULL, NULL, options );
-	if (!doc)
-		goto cleanup;
-	
-	xpathCtx = xmlXPathNewContext(doc);
-	if (!xpathCtx)
-		goto cleanup;
-	
-	RegisterNamespaces(xpathCtx, (xmlChar *)nsList->c_str());
-	
-	xpathObj = xmlXPathEvalExpression((xmlChar *)xpath->c_str(), xpathCtx);
-	
-	if ( xpathObj ) {
+	xmlDocPtr doc = xmlReadDoc ( (xmlChar *)xml->c_str(), NULL, NULL, options );
+	if ( doc ) {
 		
-		if ( xpathObj->type == XPATH_NODESET ) {
-			TextAutoPtr valueList;
-			NodeSetToValueList(xpathObj->nodesetval, valueList);
-			result->SetText(*valueList);
-		} else {
-			result->SetText ( *(XPathObjectAsText ( xpathObj )) );
+		xmlXPathContextPtr xpathCtx = xmlXPathNewContext ( doc );
+		if ( xpathCtx ) {
+			
+			RegisterNamespaces ( xpathCtx, (xmlChar *)ns_list->c_str() );
+			
+			xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression ( (xmlChar *)xpath->c_str(), xpathCtx );
+			
+			if ( xpathObj ) {
+				
+				if ( xpath_object_type == XPATH_NODESET && xpathObj->type == XPATH_NODESET ) {
+					TextAutoPtr valueList;
+					NodeSetToValueList ( xpathObj->nodesetval, valueList );
+					result->SetText(*valueList);
+				} else if ( xpath_object_type == XPATH_NODESET || xpath_object_type == XPATH_STRING ) {
+					result->SetText ( *(XPathObjectAsText ( xpathObj )) );
+				} else {
+					result->SetText ( *(XPathObjectAsXML ( doc, xpathObj )) );
+				}
+				
+				xmlXPathFreeObject ( xpathObj );
+				
+			}
+			
+			xmlXPathFreeContext ( xpathCtx );
+			
 		}
+		
+		xmlFreeDoc ( doc );
+		
 	}
-	
-cleanup:
-	if (xpathObj)
-		xmlXPathFreeObject(xpathObj);
-	if (doc)
-		xmlFreeDoc(doc);
-	if (xpathCtx)
-		xmlXPathFreeContext(xpathCtx);
 	
 	xmlCleanupParser();
 	
 	return result;
-} // ApplyXPathAll
+	
+} // ApplyXPathExpression
+
+
 
 ///////////////////////////////////////////////////////////////////////
 

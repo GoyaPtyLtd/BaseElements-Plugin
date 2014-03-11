@@ -805,19 +805,24 @@ FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment *
 		
 		StringAutoPtr xml = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr xpath = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr nsList ( new string );
+		StringAutoPtr ns_list ( new string );
 
 		const unsigned long number_of_parameters = parameters.Size();
 		if ( number_of_parameters > 2 ) {
-			nsList = ParameterAsUTF8String ( parameters, 2 );
+			ns_list = ParameterAsUTF8String ( parameters, 2 );
 		}
 		
-		bool as_text = true;
+		xmlXPathObjectType xpath_object_type = XPATH_STRING;
 		if ( number_of_parameters > 3 ) {
-			as_text = ParameterAsBoolean ( parameters, 3 );
+			
+			bool as_text = ParameterAsBoolean ( parameters, 3 );
+			if ( as_text != true ) {
+				xpath_object_type = XPATH_UNDEFINED; // get the result as xml
+			}
+		
 		}
 		
-		results.SetAsText( *ApplyXPath ( xml, xpath, nsList, as_text ), parameters.At(0).GetLocale() );
+		results.SetAsText( *ApplyXPathExpression ( xml, xpath, ns_list, xpath_object_type ), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
@@ -841,12 +846,12 @@ FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environmen
 		StringAutoPtr xpath = ParameterAsUTF8String ( parameters, 1 );
 
 		const unsigned long number_of_parameters = parameters.Size();
-		StringAutoPtr nsList ( new string );
+		StringAutoPtr ns_list ( new string );
 		if ( number_of_parameters > 2 ) {
-			nsList = ParameterAsUTF8String ( parameters, 2 );
+			ns_list = ParameterAsUTF8String ( parameters, 2 );
 		}
 				
-		results.SetAsText(*ApplyXPathAll (xml, xpath, nsList), parameters.At(0).GetLocale() );
+		results.SetAsText ( *ApplyXPathExpression ( xml, xpath, ns_list, XPATH_NODESET ), parameters.At(0).GetLocale() );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
