@@ -45,6 +45,7 @@
 #include "BEValueList.h"
 #include "BECurlOption.h"
 #include "BEXMLTextReader.h"
+#include "BEBase64.h"
 
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"
@@ -52,12 +53,6 @@
 #include "boost/foreach.hpp"
 #include "boost/tokenizer.hpp"
 #include "boost/algorithm/string.hpp"
-
-#include "boost/archive/iterators/base64_from_binary.hpp"
-#include "boost/archive/iterators/binary_from_base64.hpp"
-#include "boost/archive/iterators/transform_width.hpp"
-#include "boost/archive/iterators/insert_linebreaks.hpp"
-#include "boost/archive/iterators/remove_whitespace.hpp"
 
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/date_time/c_local_time_adjustor.hpp"
@@ -70,19 +65,6 @@
 using namespace std;
 using namespace fmx;
 using namespace boost::filesystem;
-using namespace boost::archive::iterators;
-
-
-typedef base64_from_binary<
-	transform_width<char *, 6, 8>
-> base64_text;
-
-typedef transform_width<
-	binary_from_base64<
-		remove_whitespace<string::const_iterator>
-	>, 8, 6
-> base64_binary;
-
 
 
 #pragma mark -
@@ -1200,39 +1182,15 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
 		
-		// throws if we do not lop off any padding
-		boost::algorithm::trim_if ( *text, boost::algorithm::is_any_of ( " \t\f\v\n\r" ) );
-		boost::algorithm::trim_right_if ( *text, boost::algorithm::is_any_of ( L"=" ) );
 		
-		// if we have base64url convert it to base64
-		string::iterator it = text->begin();
-		while ( it < text->end() ) {
-			switch ( *it ) {
-				case '-':
-					*it = '+';
-					break;
-				case '_':
-					*it = '/';
-					break;
-				case ',': // not in rfc4648 but seen in the wild
-					*it = '=';
-					break;
-				default:
-					; // do nothing
-			}
-			++it;
-		}
-
 		// decode it...
-		vector<char> data ( base64_binary ( text->begin() ), base64_binary ( text->end() ) );
+		vector<unsigned char> data = Base64_Decode ( text );
 		if ( filename->empty() ) {
 			SetResult ( data, results );
 		} else {
 			SetResult ( *filename, data, results );
 		}
 		
-	} catch ( dataflow_exception& e ) { // invalid_base64_character
-		g_last_error = e.code;
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1250,45 +1208,13 @@ FMX_PROC(errcode) BE_Base64_Encode ( short funcId, const ExprEnv& /* environment
 	errcode error = NoError();
 	
 	try {
-
-		FMX_UInt32 size = 0;
-		char * buffer = NULL;
-		ParameterAsChar ( parameters, 0, &buffer, size );
 		
-		StringAutoPtr base64 ( new string ( base64_text(buffer), base64_text(buffer + size) ) );
+		vector<unsigned char> data = ParameterAsVectorUnsignedChar ( parameters, 0 );
 		
-		string padding = "=";
-		
-		// if we need base64url convert it
-		if ( funcId == kBE_Base64_URL_Encode ) {
-
-			// not in rfc4648 but seen in the wild
-//			padding = ",";
-			
-			string::iterator it = base64->begin();
-			while ( it < base64->end() ) {
-				switch ( *it ) {
-					case '+':
-						*it = '-';
-						break;
-					case '/':
-						*it = '_';
-						break;
-					default:
-						; // do nothing
-				}
-				++it;
-			}
-
-		}
-		
-		for ( FMX_UInt32 i = 0 ; i < (base64->length() % 4) ; i ++ ) {
-			base64->append ( padding );
-		}
+		StringAutoPtr base64 ( new string ( *Base64_Encode( data, funcId == kBE_Base64_URL_Encode ) ) );
 		
 		SetResult ( base64, results );
-		delete [] buffer;
-				
+		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1329,6 +1255,92 @@ FMX_PROC(errcode) BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* envir
 	return MapError ( error );
 	
 } // BE_SetTextEncoding
+
+
+
+#pragma mark -
+#pragma mark Encryption
+#pragma mark -
+
+
+#include "BEValueList.h"
+#include "BEOpenSSLAES.h"
+#include <openssl/rand.h>
+
+FMX_PROC(errcode) BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr key = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr input_vector = ParameterAsUTF8String ( parameters, 2 );
+		
+		if ( input_vector->empty() ) {
+			
+			// generate the input_vector
+			
+			int size = 16;
+			unsigned char * salt = new unsigned char [ size ]();
+			int rt = RAND_bytes ( salt, size ); // http://www.freebsd.org/cgi/man.cgi?query=RAND_bytes&sektion=3&n=1
+			input_vector->assign ( (char *)salt );
+			delete[] salt;
+			
+		}
+		
+		vector<unsigned char> out = Encrypt_AES ( *key, *text, *input_vector );
+		
+		string prefix = *input_vector + FILEMAKER_END_OF_LINE;
+		out.insert ( out.begin(), prefix.begin(), prefix.end() );
+		
+		StringAutoPtr base64 = Base64_Encode ( out );
+		SetResult ( base64, results );
+		
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Encrypt_AES
+
+
+
+FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr key = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr input_vector = ParameterAsUTF8String ( parameters, 2 );
+		
+		vector<unsigned char> decoded = Base64_Decode ( text );
+		
+		std::vector<unsigned char>::iterator it = find ( decoded.begin(), decoded.end(), FILEMAKER_END_OF_LINE_CHAR );
+		
+		if ( input_vector->empty() ) {
+			input_vector->assign ( decoded.begin(), it );
+		}
+		
+		decoded.erase ( decoded.begin(), it + 1 );
+		const vector<unsigned char> out = Decrypt_AES ( *key, decoded, *input_vector );
+		SetResult ( out, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Decrypt_AES
 
 
 

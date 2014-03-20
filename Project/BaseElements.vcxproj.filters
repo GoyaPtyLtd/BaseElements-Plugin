@@ -40,6 +40,8 @@
     <ClCompile Include="..\Source\BEValueList.cpp" />
     <ClCompile Include="..\Source\BECurlOption.cpp" />
     <ClCompile Include="..\Source\BEFileTextReader.cpp" />
+    <ClCompile Include="..\Source\BEBase64.cpp" />
+    <ClCompile Include="..\Source\BEOpenSSLAES.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -86,6 +88,8 @@
     <ClInclude Include="..\Source\BEValueList.h" />
     <ClInclude Include="..\Source\BECurlOption.h" />
     <ClInclude Include="..\Source\BEFileTextReader.h" />
+    <ClInclude Include="..\Source\BEBase64.h" />
+    <ClInclude Include="..\Source\BEOpenSSLAES.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

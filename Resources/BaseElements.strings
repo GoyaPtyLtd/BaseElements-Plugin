@@ -45,7 +45,7 @@
 
 
 "128" = "BaseElements";
-"129" = "Version: 2.2.1\n\nThis plug-in provides additional functionality for BaseElements 4 from Goya";
+"129" = "Version: 2.3a1\n\nThis plug-in provides additional functionality for BaseElements 4 from Goya";
 
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
@@ -113,6 +113,10 @@
 "351" = "BE_Values_FilterOut ( textToFilter ; filterValues )";
 
 "353" = "BE_Values_Sort ( listOfValues )";
+
+
+"500" = "BE_Encrypt_AES ( key ; text {; inputVector } )";
+"501" = "BE_Decrypt_AES ( key ; text {; inputVector } )";
 
 
 // replaces 120 BE_ExecuteShellCommand

@@ -72,9 +72,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"2.2.1"
-#define	AUTO_UPDATE_VERSION L"02020100"
-#define VERSION_STRING "2.2.1"
+#define	VERSION_NUMBER_STRING L"2.3.0"
+#define	AUTO_UPDATE_VERSION L"02020150"
+#define VERSION_STRING "2.3"
 
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -84,6 +84,7 @@ extern fmx::errcode g_last_error;
 #define	TEMPORARY_FILE_SUFFIX L".be4.tmp"
 
 #define FILEMAKER_END_OF_LINE "\r"
+#define FILEMAKER_END_OF_LINE_CHAR '\r'
 
 #define UTF8 "UTF-8"
 #define UTF16 "UTF-16"
@@ -165,6 +166,8 @@ enum functions {
 	kBE_Values_Unique = 350,
 	kBE_Values_FilterOut = 351,
 	kBE_Values_Sort = 353,
+	kBE_Encrypt_AES = 500,
+	kBE_Decrypt_AES = 501,
 	kBE_ExecuteSystemCommand = 1120
 };
 

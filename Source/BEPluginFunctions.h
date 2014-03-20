@@ -75,6 +75,10 @@ FMX_PROC(fmx::errcode) BE_Base64_Encode ( short /*funcId*/, const fmx::ExprEnv& 
 FMX_PROC(fmx::errcode) BE_SetTextEncoding ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
+FMX_PROC(fmx::errcode) BE_Encrypt_AES ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_Decrypt_AES ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+
+
 FMX_PROC(fmx::errcode) BE_GetURL ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_SaveURLToFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_HTTP_POST_OR_PUT ( short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
