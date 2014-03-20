@@ -154,6 +154,13 @@ void SetResult ( vector<char> data, Data& results )
 	
 }
 
+void SetResult ( vector<unsigned char> data, Data& results )
+{
+	vector<char> char_data ( data.begin(), data.end() );
+	SetResult ( char_data, results );
+	
+}
+
 
 
 void SetResult ( const string filename, const vector<char> data, Data& results )
@@ -182,6 +189,14 @@ void SetResult ( const string filename, const vector<char> data, Data& results )
 	}
 	
 } // SetBinaryDataResult
+
+
+void SetResult ( const string filename, const vector<unsigned char> data, Data& results )
+{
+	vector<char> char_data ( data.begin(), data.end() );
+	return SetResult ( filename, char_data, results );
+}
+
 
 
 #pragma mark -
@@ -356,6 +371,37 @@ void ParameterAsChar ( const DataVect& parameters, const FMX_UInt32 which, char 
 	
 } // ParameterAsChar
 
+
+vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX_UInt32 which )
+{
+	char * char_data;
+	FMX_UInt32 size;
+	
+	ParameterAsChar ( parameters, which, &char_data, size );
+	
+	vector<char> out ( char_data, char_data + size );
+
+	delete[] char_data;
+	
+	return out;
+
+}
+
+
+vector<unsigned char> ParameterAsVectorUnsignedChar ( const DataVect& parameters, const FMX_UInt32 which )
+{
+	char * char_data;
+	FMX_UInt32 size;
+	
+	ParameterAsChar ( parameters, which, &char_data, size );
+	
+	vector<unsigned char> out ( char_data, char_data + size );
+	
+	delete[] char_data;
+	
+	return out;
+	
+}
 
 
 #pragma mark -

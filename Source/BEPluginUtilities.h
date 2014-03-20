@@ -2,7 +2,7 @@
  BEPluginUtilities.h
  BaseElements Plug-In
 	
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -35,13 +35,17 @@ void SetResult ( const std::string text, fmx::Data& results );
 void SetResult ( const StringAutoPtr text, fmx::Data& results );
 void SetResult ( const WStringAutoPtr text, fmx::Data& results );
 void SetResult ( std::vector<char> data, fmx::Data& results );
+void SetResult ( std::vector<unsigned char> data, fmx::Data& results );
 void SetResult ( const std::string filename, const std::vector<char> data, fmx::Data& results );
+void SetResult ( const std::string filename, const std::vector<unsigned char> data, fmx::Data& results );
 
 bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which, const bool default_value = true );
 long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value );
 StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which );
 WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which );
 void ParameterAsChar ( const fmx::DataVect& parameters, const FMX_UInt32 which, char ** char_data, FMX_UInt32& size );
+std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which );
+std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which );
 
 
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path );
