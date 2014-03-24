@@ -46,18 +46,23 @@
 #include "BECurlOption.h"
 #include "BEXMLTextReader.h"
 #include "BEBase64.h"
+#include "BEOpenSSLAES.h"
 
-#include "boost/filesystem.hpp"
-#include "boost/filesystem/fstream.hpp"
-#include "boost/thread.hpp"
-#include "boost/foreach.hpp"
-#include "boost/tokenizer.hpp"
-#include "boost/algorithm/string.hpp"
 
-#include "boost/date_time/posix_time/posix_time.hpp"
-#include "boost/date_time/c_local_time_adjustor.hpp"
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
+#include <boost/thread.hpp>
+#include <boost/foreach.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/algorithm/string.hpp>
 
-#include "iconv.h"
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/c_local_time_adjustor.hpp>
+
+#include <iconv.h>
+
+#include <openssl/rand.h>
+#include <openssl/evp.h>
 
 #include <iostream>
 
@@ -1263,10 +1268,6 @@ FMX_PROC(errcode) BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* envir
 #pragma mark -
 
 
-#include "BEValueList.h"
-#include "BEOpenSSLAES.h"
-#include <openssl/rand.h>
-
 FMX_PROC(errcode) BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
@@ -1275,24 +1276,29 @@ FMX_PROC(errcode) BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		
 		StringAutoPtr key = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr input_vector = ParameterAsUTF8String ( parameters, 2 );
+		vector<unsigned char> input_vector = ParameterAsVectorUnsignedChar ( parameters, 2 );
+				
+		// if no input vector is supplied generate a random one
 		
-		if ( input_vector->empty() ) {
+		if ( input_vector.empty() ) {
 			
 			// generate the input_vector
-			
-			int size = 16;
-			unsigned char * salt = new unsigned char [ size ]();
-			int rt = RAND_bytes ( salt, size ); // http://www.freebsd.org/cgi/man.cgi?query=RAND_bytes&sektion=3&n=1
-			input_vector->assign ( (char *)salt );
+			unsigned char * salt = new unsigned char [ EVP_MAX_IV_LENGTH ]();
+//			int rt = RAND_bytes ( salt, EVP_MAX_IV_LENGTH );
+			RAND_bytes ( salt, EVP_MAX_IV_LENGTH );
+			input_vector.assign ( salt, salt + EVP_MAX_IV_LENGTH );
 			delete[] salt;
 			
+			// escape the delimiter we use below
+			replace ( input_vector.begin(), input_vector.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
+						
 		}
 		
-		vector<unsigned char> out = Encrypt_AES ( *key, *text, *input_vector );
-		
-		string prefix = *input_vector + FILEMAKER_END_OF_LINE;
-		out.insert ( out.begin(), prefix.begin(), prefix.end() );
+		vector<unsigned char> out ( input_vector.begin(), input_vector.end() );
+		out.push_back ( FILEMAKER_END_OF_LINE_CHAR );
+
+		vector<unsigned char> encrypted = Encrypt_AES ( *key, *text, input_vector );
+		out.insert ( out.end(), encrypted.begin(), encrypted.end() );
 		
 		StringAutoPtr base64 = Base64_Encode ( out );
 		SetResult ( base64, results );
@@ -1318,18 +1324,21 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		
 		StringAutoPtr key = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr input_vector = ParameterAsUTF8String ( parameters, 2 );
+		vector<unsigned char> input_vector = ParameterAsVectorUnsignedChar ( parameters, 2 );
 		
 		vector<unsigned char> decoded = Base64_Decode ( text );
 		
 		std::vector<unsigned char>::iterator it = find ( decoded.begin(), decoded.end(), FILEMAKER_END_OF_LINE_CHAR );
 		
-		if ( input_vector->empty() ) {
-			input_vector->assign ( decoded.begin(), it );
+		// if the input vector is not supplied dig it out of the decoded text
+		
+		if ( input_vector.empty() ) {
+			input_vector.assign ( decoded.begin(), it );
 		}
 		
-		decoded.erase ( decoded.begin(), it + 1 );
-		const vector<unsigned char> out = Decrypt_AES ( *key, decoded, *input_vector );
+		decoded.erase ( decoded.begin(), it + 1 ); // remove the input vector from the input
+		
+		const vector<unsigned char> out = Decrypt_AES ( *key, decoded, input_vector );
 		SetResult ( out, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
