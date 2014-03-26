@@ -299,8 +299,15 @@ void ParameterAsChar ( const DataVect& parameters, const FMX_UInt32 which, char 
 {
 //	errcode error = NoError();
 	
+	// make sure there's a parameter to get
+	if ( parameters.Size() <= which ) {
+		*char_data = NULL;
+		size = 0;
+		return;
+	}
+	
 	BinaryDataAutoPtr data ( parameters.AtAsBinaryData ( which ) );
-		
+	
 	size = 0;
 	char * buffer = NULL;
 		
