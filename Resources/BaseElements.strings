@@ -115,8 +115,8 @@
 "353" = "BE_Values_Sort ( listOfValues )";
 
 
-"500" = "BE_Encrypt_AES ( key ; text {; inputVector } )";
-"501" = "BE_Decrypt_AES ( key ; text {; inputVector } )";
+"500" = "BE_Encrypt_AES ( key ; text )";
+"501" = "BE_Decrypt_AES ( key ; text )";
 
 
 // replaces 120 BE_ExecuteShellCommand

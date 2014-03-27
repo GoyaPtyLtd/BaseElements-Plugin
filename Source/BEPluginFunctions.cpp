@@ -1276,31 +1276,23 @@ FMX_PROC(errcode) BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		
 		StringAutoPtr key = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
-		vector<unsigned char> input_vector = ParameterAsVectorUnsignedChar ( parameters, 2 );
-				
-		// if no input vector is supplied generate a random one
-		
-		if ( input_vector.empty() ) {
 			
-			// generate the input_vector
-			unsigned char * salt = new unsigned char [ EVP_MAX_IV_LENGTH ]();
-//			int rt = RAND_bytes ( salt, EVP_MAX_IV_LENGTH );
-			RAND_bytes ( salt, EVP_MAX_IV_LENGTH );
-			input_vector.assign ( salt, salt + EVP_MAX_IV_LENGTH );
-			delete[] salt;
+		// generate the input_vector
+		unsigned char * salt = new unsigned char [ EVP_MAX_IV_LENGTH ]();
+		RAND_bytes ( salt, EVP_MAX_IV_LENGTH );	//		int rt = RAND_bytes ( salt, EVP_MAX_IV_LENGTH );
+		vector<unsigned char> input_vector ( salt, salt + EVP_MAX_IV_LENGTH );
+		delete[] salt;
 			
-			// escape the delimiter we use below
-			replace ( input_vector.begin(), input_vector.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
-						
-		}
+		// escape the delimiter we use below
+		replace ( input_vector.begin(), input_vector.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
 		
-		vector<unsigned char> out ( input_vector.begin(), input_vector.end() );
-		out.push_back ( FILEMAKER_END_OF_LINE_CHAR );
+		vector<unsigned char> output_to_encode ( input_vector.begin(), input_vector.end() );
+		output_to_encode.push_back ( FILEMAKER_END_OF_LINE_CHAR );
 
-		vector<unsigned char> encrypted = Encrypt_AES ( *key, *text, input_vector );
-		out.insert ( out.end(), encrypted.begin(), encrypted.end() );
+		vector<unsigned char> encrypted_data = Encrypt_AES ( *key, *text, input_vector );
+		output_to_encode.insert ( output_to_encode.end(), encrypted_data.begin(), encrypted_data.end() );
 		
-		StringAutoPtr base64 = Base64_Encode ( out );
+		StringAutoPtr base64 = Base64_Encode ( output_to_encode );
 		SetResult ( base64, results );
 		
 		
@@ -1324,22 +1316,17 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		
 		StringAutoPtr key = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
-		vector<unsigned char> input_vector = ParameterAsVectorUnsignedChar ( parameters, 2 );
 		
 		vector<unsigned char> decoded = Base64_Decode ( text );
 		
 		std::vector<unsigned char>::iterator it = find ( decoded.begin(), decoded.end(), FILEMAKER_END_OF_LINE_CHAR );
 		
-		// if the input vector is not supplied dig it out of the decoded text
-		
-		if ( input_vector.empty() ) {
-			input_vector.assign ( decoded.begin(), it );
-		}
+		vector<unsigned char> input_vector ( decoded.begin(), it );
 		
 		decoded.erase ( decoded.begin(), it + 1 ); // remove the input vector from the input
 		
-		const vector<unsigned char> out = Decrypt_AES ( *key, decoded, input_vector );
-		SetResult ( out, results );
+		const vector<unsigned char> decrypted_data = Decrypt_AES ( *key, decoded, input_vector );
+		SetResult ( decrypted_data, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;

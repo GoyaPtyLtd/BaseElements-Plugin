@@ -153,8 +153,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Base64_URL_Encode, BE_Base64_Encode, 1 );
 
 	
-	g_be_plugin->RegisterFunction ( kBE_Encrypt_AES, BE_Encrypt_AES, true, 2, 3 );
-	g_be_plugin->RegisterFunction ( kBE_Decrypt_AES, BE_Decrypt_AES, true, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_Encrypt_AES, BE_Encrypt_AES, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Decrypt_AES, BE_Decrypt_AES, 2 );
 	
 	
 	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST_OR_PUT, true, 2, 4 );
