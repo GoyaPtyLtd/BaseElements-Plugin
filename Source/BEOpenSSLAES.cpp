@@ -11,13 +11,34 @@
 
 
 #include "BEOpenSSLAES.h"
+#include "BEPluginException.h"
 
 
-#include "openssl/evp.h"
+#include <openssl/evp.h>
 
 
 using namespace std;
 using namespace fmx;
+
+
+void GenerateKeyAndInputVector ( const string password, string& key, vector<unsigned char>& input_vector )
+{
+	const int key_length = 32;
+	const int rounds = 5;
+	unsigned char key_buffer [ key_length ];
+	unsigned char iv [ key_length ];
+	
+	int key_size = EVP_BytesToKey ( EVP_aes_256_cbc(), EVP_sha1(), NULL, (unsigned char*)password.c_str(), (int)password.size(), rounds, key_buffer , iv );
+	if ( key_size == key_length ) {
+
+		key.assign ( key_buffer, key_buffer + key_length );
+		input_vector.assign ( iv, iv + key_length );
+		
+	} else {
+		throw BEPlugin_Exception ( kKeyEncodingError );
+	}
+
+} // GenerateKeyAndInputVector
 
 
 //		http://www.openssl.org/docs/crypto/EVP_EncryptInit.html#
@@ -46,6 +67,8 @@ const vector<unsigned char> Encrypt_AES ( const string key, const string text, c
 //			reply = EVP_EncryptFinal_ex ( &context, encrypted_data + output_length, &final_output_length );
 			EVP_EncryptFinal_ex ( &context, encrypted_data + output_length, &final_output_length );
 					
+		} else {
+			throw BEPlugin_Exception ( kEncryptionUpdateFailed );
 		}
 				
 		EVP_CIPHER_CTX_cleanup ( &context );
@@ -54,6 +77,8 @@ const vector<unsigned char> Encrypt_AES ( const string key, const string text, c
 				
 		delete[] encrypted_data;
 
+	} else {
+		throw BEPlugin_Exception ( kEncryptionInitialisationFailed );
 	}
 	
 	return result;
@@ -84,6 +109,8 @@ const vector<unsigned char> Decrypt_AES ( const string key, const vector<unsigne
 //			reply = EVP_DecryptFinal_ex ( &context, decrypted_data + output_length, &final_output_length );
 			EVP_DecryptFinal_ex ( &context, decrypted_data + output_length, &final_output_length );
 			
+		} else {
+			throw BEPlugin_Exception ( kDecryptionUpdateFailed );
 		}
 		
 		EVP_CIPHER_CTX_cleanup ( &context );
@@ -92,6 +119,8 @@ const vector<unsigned char> Decrypt_AES ( const string key, const vector<unsigne
 		
 		delete[] decrypted_data;
 					
+	} else {
+		throw BEPlugin_Exception ( kEncryptionInitialisationFailed );
 	}
 	
 	return result;

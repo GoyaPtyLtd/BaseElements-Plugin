@@ -193,7 +193,11 @@ enum errors {
 	kFileSystemError = 10000,
 	kDDLCommandQueued = 11000,
 	kCommandTimeout = 12000,
-	kNotImplemented = 13000
+	kNotImplemented = 13000,
+	kKeyEncodingError = 14000,
+	kEncryptionInitialisationFailed = 14001,
+	kEncryptionUpdateFailed = 14002,
+	kDecryptionUpdateFailed = 14003
 };
 
 

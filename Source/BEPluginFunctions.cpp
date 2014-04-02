@@ -47,6 +47,7 @@
 #include "BEXMLTextReader.h"
 #include "BEBase64.h"
 #include "BEOpenSSLAES.h"
+#include "BEPluginException.h"
 
 
 #include <boost/filesystem.hpp>
@@ -1274,28 +1275,28 @@ FMX_PROC(errcode) BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 	
 	try {
 		
-		StringAutoPtr key = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
-			
-		// generate the input_vector
-		unsigned char * salt = new unsigned char [ EVP_MAX_IV_LENGTH ]();
-		RAND_bytes ( salt, EVP_MAX_IV_LENGTH );	//		int rt = RAND_bytes ( salt, EVP_MAX_IV_LENGTH );
-		vector<unsigned char> input_vector ( salt, salt + EVP_MAX_IV_LENGTH );
-		delete[] salt;
-			
+		
+		string key;
+		vector<unsigned char> input_vector;
+		GenerateKeyAndInputVector ( *password, key, input_vector );
+		
 		// escape the delimiter we use below
 		replace ( input_vector.begin(), input_vector.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
 		
 		vector<unsigned char> output_to_encode ( input_vector.begin(), input_vector.end() );
 		output_to_encode.push_back ( FILEMAKER_END_OF_LINE_CHAR );
-
-		vector<unsigned char> encrypted_data = Encrypt_AES ( *key, *text, input_vector );
+		
+		vector<unsigned char> encrypted_data = Encrypt_AES ( key, *text, input_vector );
 		output_to_encode.insert ( output_to_encode.end(), encrypted_data.begin(), encrypted_data.end() );
 		
 		StringAutoPtr base64 = Base64_Encode ( output_to_encode );
 		SetResult ( base64, results );
 		
 		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1314,8 +1315,12 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 	
 	try {
 		
-		StringAutoPtr key = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
+		
+		string key;
+		vector<unsigned char> unwanted;
+		GenerateKeyAndInputVector ( *password, key, unwanted );
 		
 		vector<unsigned char> decoded = Base64_Decode ( text );
 		
@@ -1325,9 +1330,11 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		
 		decoded.erase ( decoded.begin(), it + 1 ); // remove the input vector from the input
 		
-		const vector<unsigned char> decrypted_data = Decrypt_AES ( *key, decoded, input_vector );
+		const vector<unsigned char> decrypted_data = Decrypt_AES ( key, decoded, input_vector );
 		SetResult ( decrypted_data, results );
 		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
