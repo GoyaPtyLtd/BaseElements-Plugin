@@ -90,6 +90,7 @@
     <ClInclude Include="..\Source\BEFileTextReader.h" />
     <ClInclude Include="..\Source\BEBase64.h" />
     <ClInclude Include="..\Source\BEOpenSSLAES.h" />
+    <ClInclude Include="..\Source\BEPluginException.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

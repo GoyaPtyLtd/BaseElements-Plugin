@@ -132,6 +132,7 @@
 		4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginFunctions.cpp; path = ../Source/BEPluginFunctions.cpp; sourceTree = SOURCE_ROOT; };
 		4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginFunctions.h; path = ../Source/BEPluginFunctions.h; sourceTree = SOURCE_ROOT; };
 		4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginGlobalDefines.h; path = ../Source/BEPluginGlobalDefines.h; sourceTree = SOURCE_ROOT; };
+		4DAD27FA18EB8999005D82B3 /* BEPluginException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEPluginException.h; path = ../Source/BEPluginException.h; sourceTree = "<group>"; };
 		4DC182C8144CEC0900E27CAA /* BEZlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEZlib.h; path = ../Source/BEZlib.h; sourceTree = SOURCE_ROOT; };
 		4DC182C9144CEC0900E27CAA /* BEZlib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEZlib.cpp; path = ../Source/BEZlib.cpp; sourceTree = SOURCE_ROOT; };
 		4DC18337144D31C800E27CAA /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = ../Source/minizip/crypt.h; sourceTree = SOURCE_ROOT; };
@@ -311,6 +312,7 @@
 				4D54F7CB18DAB8E100F9ACB5 /* BEOpenSSLAES.cpp */,
 				4D54F7CA18DAB8E100F9ACB5 /* BEBase64.h */,
 				4D54F7C918DAB8E100F9ACB5 /* BEBase64.cpp */,
+				4DAD27FA18EB8999005D82B3 /* BEPluginException.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";

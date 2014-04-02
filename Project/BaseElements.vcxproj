@@ -364,6 +364,7 @@
     <ClInclude Include="..\Source\BEMessageDigest.h" />
     <ClInclude Include="..\Source\BEOAuth.h" />
     <ClInclude Include="..\Source\BEOpenSSLAES.h" />
+    <ClInclude Include="..\Source\BEPluginException.h" />
     <ClInclude Include="..\Source\BEPluginFunctions.h" />
     <ClInclude Include="..\Source\BEPluginGlobalDefines.h" />
     <ClInclude Include="..\Source\BEPluginUtilities.h" />
