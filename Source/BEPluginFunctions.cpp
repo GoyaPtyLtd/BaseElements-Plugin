@@ -2053,8 +2053,7 @@ FMX_PROC(errcode) BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /
 
 FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& environment, const DataVect& /* parameters */, Data& results )
 {	
-	errcode error;
-	NoError();
+	errcode error = NoError();
 	
 	try {
 
@@ -2067,13 +2066,10 @@ FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& env
 		}
 		
 		TextAutoPtr filename; // there isn't one
-		BESQLCommand * sql = new BESQLCommand ( expression, filename );
+		BESQLCommandAutoPtr sql ( new BESQLCommand ( expression, filename ) );
 		sql->execute ( environment );
-		
-		LocaleAutoPtr default_locale;
-		error = results.SetAsText( *(sql->get_text_result()), *default_locale );
+		SetResult ( *(sql->get_text_result()), results );
 
-		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2187,7 +2183,7 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 
 
 FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
-{	
+{
 	errcode error = NoError();
 	
 	try {
@@ -2196,15 +2192,13 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environme
 		expression->SetText ( parameters.AtAsText(0) );
 		
 		FMX_UInt32 number_of_paramters = parameters.Size();
-
+		
 		TextAutoPtr filename;
 		if ( number_of_paramters == 4 ) {
 			filename->SetText ( parameters.AtAsText(3) );
 		}
 		
-		
-		BESQLCommand * sql = new BESQLCommand ( expression, filename );
-		
+		BESQLCommandAutoPtr sql ( new BESQLCommand ( expression, filename ) );
 		
 		if ( number_of_paramters >= 2 ) {
 			TextAutoPtr column_separator;
@@ -2219,14 +2213,14 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environme
 		}
 		
 		sql->execute ( environment );
-
-		results.SetAsText( *(sql->get_text_result()), parameters.At(0).GetLocale() );
+		
+		SetResult ( *(sql->get_text_result()), results );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
-	}	
+	}
 	
 	return MapError ( error );
 	
