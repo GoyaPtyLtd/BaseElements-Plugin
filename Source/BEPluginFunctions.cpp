@@ -2133,7 +2133,7 @@ FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment 
 
 FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
 {
-	errcode error = 0;
+	errcode error = NoError();
 	
 	try {
 		
