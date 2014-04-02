@@ -1,17 +1,17 @@
 /*
- *  BESQLCommand.cpp
- *  BaseElements
- *
- *  Created by Mark Banks on 28/11/11.
- *  Copyright 2011 Goya. All rights reserved.
- *
+ BESQLCommand.cpp
+ BaseElements Plug-In
+ 
+ Copyright 2011-2014 Goya. All rights reserved.
+ For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
+ 
+ http://www.goya.com.au/baseelements/plugin
+ 
  */
+
 
 #include "BESQLCommand.h"
 #include "BEPluginGlobalDefines.h"
-
-
-#include <iostream>
 
 
 using namespace std;
@@ -28,11 +28,10 @@ BESQLCommand::BESQLCommand ( const TextAutoPtr _expression, const TextAutoPtr _f
 	filename->SetText ( *_filename );
 
 	column_separator->Assign ( "\t" );
-	row_separator->Assign ( "\r" );
+	row_separator->Assign ( FILEMAKER_END_OF_LINE );
 	
 	waiting = false;
 }
-
 
 
 void BESQLCommand::execute ( )
@@ -48,16 +47,19 @@ void BESQLCommand::execute ( const ExprEnv& environment )
 {	
 	bool ddl = is_ddl_command();
 	
-	if ( !waiting && ddl ) {
-		BESQLCommandAutoPtr command ( this );
+	if ( ddl && !waiting ) {
+
+		// auto_ptrs : do not use the copy constructor
+		BESQLCommandAutoPtr command ( new BESQLCommand ( expression, filename ) );
+		command->set_column_separator ( column_separator );
+		command->set_row_separator ( row_separator );
+		command->wait();
+		
 		g_ddl_command = command;
-		waiting = true;
+
 	} else {
-		errcode error = kNoError;
-
-		error = environment.ExecuteFileSQL ( *expression, *filename, *parameters, *result );
-
-		waiting = false;
+		
+		errcode error = environment.ExecuteFileSQL ( *expression, *filename, *parameters, *result );
 		
 		if ( ddl ) {
 			g_last_ddl_error = error;

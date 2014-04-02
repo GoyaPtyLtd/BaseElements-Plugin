@@ -1,19 +1,20 @@
 /*
- *  BESQL.h
- *  BaseElements
- *
- *  Created by Mark Banks on 28/11/11.
- *  Copyright 2011 Goya. All rights reserved.
- *
+ BESQLCommand.h
+ BaseElements Plug-In
+ 
+ Copyright 2011-2014 Goya. All rights reserved.
+ For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
+ 
+ http://www.goya.com.au/baseelements/plugin
+ 
  */
 
 
 #if !defined(BESQLCOMMAND_H)
 #define BESQLCOMMAND_H
 
-#include "BEPluginGlobalDefines.h"
 
-#include <string>
+#include "BEPluginGlobalDefines.h"
 
 
 class BESQLCommand
@@ -22,13 +23,15 @@ class BESQLCommand
 public:
 	
 	BESQLCommand ( const fmx::TextAutoPtr expression, const fmx::TextAutoPtr filename );
-	
+
 	void execute ( void );
 	void execute ( const fmx::ExprEnv& _environment );
 	fmx::TextAutoPtr get_text_result ( void );
 	
 	void set_column_separator ( const fmx::TextAutoPtr new_column_separator );
 	void set_row_separator ( const fmx::TextAutoPtr new_row_separator );
+	
+	void wait ( ) { waiting = true; };
 	
 protected:
 	
