@@ -1160,10 +1160,12 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 	
 	try {
 		
-		StringAutoPtr file = ParameterAsUTF8String ( parameters, 0 );
+		const BEValueList * files  = new BEValueList ( *ParameterAsUTF8String ( parameters, 0 ) );
 		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
+				
+		SetResult ( Zip ( files, output_directory ), results );
 		
-		SetResult ( Zip ( file, output_directory ), results );
+		delete files;
 		
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();

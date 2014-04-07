@@ -101,7 +101,7 @@ void ChangeFileDate ( path file, tm_unz tmu_date )
 } // ChangeFileDate
 
 
-long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_directory )
+const long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_directory )
 {
 	long error = kNoError;
 	
@@ -379,31 +379,40 @@ int AddToArchive ( const path directory_path, zipFile zip_file, const path base 
 } // AddToArchive
 
 
-long Zip ( StringAutoPtr filename, const StringAutoPtr archive )
+const long Zip ( const BEValueList * filenames, const StringAutoPtr archive )
 {
     long error = 0;
 	
-	path file = *filename;
-	//	file.make_preferred();
+	const path file = filenames->first();
+	const path archive_path = *archive;
 	
-	path archive_path = *archive;
-	//	archive_path.make_preferred();
-	
-	if ( exists ( file ) && ( archive->empty() || exists ( archive_path.parent_path() ) ) ) {
+	if ( archive->empty() || exists ( archive_path.parent_path() ) ) {
 		
 		if ( archive->empty() ) {
-			*archive = *filename + ".zip";
+			*archive = file.string() + ".zip";
 		}
 		
 		zipFile zip_file;
-		bool dont_overwrite = APPEND_STATUS_CREATE;
+		const bool dont_overwrite = APPEND_STATUS_CREATE;
 		
 		zip_file = zipOpen64 ( archive->c_str(), dont_overwrite );
 		
 		if ( zip_file == NULL ) {
 			error = ZIP_ERRNO;
 		} else {
-			error = AddToArchive ( file, zip_file, file.parent_path() );
+			
+			for ( size_t i = 0 ; i < filenames->size() ; i++ ) {
+
+				path file_to_archive = filenames->at ( i );
+				
+				if ( exists ( file_to_archive ) ) {
+					error = AddToArchive ( file_to_archive, zip_file, file.parent_path() );
+				} else {
+					error = kNoSuchFileOrDirectoryError;
+					break;
+				}
+			
+			}
 		}
 		
 		// only worry about an error closing the file if there hasn't already been one

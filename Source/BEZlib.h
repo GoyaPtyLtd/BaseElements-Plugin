@@ -16,10 +16,11 @@
 
 #include "BEPluginGlobalDefines.h"
 #include "BEPluginUtilities.h"
+#include "BEValueList.h"
 
 
-long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_directory );
-long Zip ( const StringAutoPtr filename, const StringAutoPtr archive );
+const long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_directory );
+const long Zip ( const BEValueList * filename, const StringAutoPtr archive );
 
 
 #endif // BEZLIB_H
