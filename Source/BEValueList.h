@@ -13,7 +13,7 @@
 #ifndef __BaseElements__BEValueList__
 #define __BaseElements__BEValueList__
 
-#include <iostream>
+
 #include <string>
 #include <vector>
 
@@ -27,8 +27,13 @@ public:
 	BEValueList ( const std::string value_list );
 	
 	bool not_empty ( );
+	size_t size ( ) const;
+
 	void append ( BEValueList to_append );
 	void append ( const std::string to_append );
+	
+	std::string first ( ) const;
+	std::string at ( const size_t which ) const;
 	
 	std::string unique ( );
 	std::string filter_out ( std::auto_ptr<BEValueList> filter_out );

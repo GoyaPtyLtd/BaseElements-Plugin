@@ -45,6 +45,12 @@ bool BEValueList::not_empty ( )
 }
 
 
+size_t BEValueList::size ( ) const
+{
+	return values.size();
+}
+
+
 void BEValueList::append ( BEValueList to_append )
 {
 	const vector<string> new_values = to_append.get_values();
@@ -55,6 +61,18 @@ void BEValueList::append ( BEValueList to_append )
 void BEValueList::append ( const string to_append )
 {
 	values.push_back ( to_append );
+}
+
+
+std::string BEValueList::first ( ) const
+{
+	return values.front();
+};
+
+
+std::string BEValueList::at ( const size_t which ) const
+{
+	return values.at ( which );
 }
 
 
