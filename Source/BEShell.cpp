@@ -55,12 +55,12 @@ short ExecuteShellCommand ( const string command, string& result )
 		
 		error = PCLOSE ( command_result );
 		
+		if ( WIFEXITED ( error ) ) {
+			error = WEXITSTATUS ( error );
+		}
+
+		
 	} else {
-		error = errno;
-	}
-	
-	// both PCLOSE and execl set the error to -1 when setting errno
-	if ( error == -1 ) {
 		error = errno;
 	}
 	
@@ -76,11 +76,11 @@ short ExecuteShellCommand ( const string command, string& result )
 
 short ExecuteSystemCommand ( const string command, string& result, const long command_timeout )
 {
-	
+
 	short error = kNoError;
 	
 	FILE * command_result = popen ( command.c_str(), "r" );
-				
+	
 	if ( command_result ) {
 		
 		char reply[PATH_MAX];
@@ -148,17 +148,18 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 	
 		short close_error = pclose ( command_result );
 		if ( error == kNoError ) { // don't overwrite an earlier error
-			error = close_error;
+			
+			if ( WIFEXITED ( close_error ) ) {
+				error = WEXITSTATUS ( close_error );
+			} else {
+				error = close_error;
+			}
+			
 		} else if ( error == 13 ) { // report an error on command timeout
 			error = kCommandTimeout;
 		}
-				
+	
 	} else {
-		error = errno;
-	}
-		
-	// both PCLOSE and execl set the error to -1 when setting errno
-	if ( error == -1 ) {
 		error = errno;
 	}
 		
