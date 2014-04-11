@@ -25,12 +25,6 @@
 	#define POPEN _popen
 	#define PCLOSE _pclose
 
-	// pinched from sys/wait.h
-	#define	_W_INT(w)	(*(int *)&(w))
-	#define	_WSTATUS(x)	(_W_INT(x) & 0177)
-	#define WIFEXITED(x)	(_WSTATUS(x) == 0)
-	#define WEXITSTATUS(x)	(_W_INT(x) >> 8)
-
 #endif
 
 #if defined(FMX_MAC_TARGET)
@@ -61,9 +55,11 @@ short ExecuteShellCommand ( const string command, string& result )
 		
 		error = PCLOSE ( command_result );
 		
-		if ( WIFEXITED ( error ) ) {
-			error = WEXITSTATUS ( error );
+		// both PCLOSE and execl set the error to -1 when setting errno
+		if ( error == -1 ) {
+			error = errno;
 		}
+		
 		
 	} else {
 		error = errno;
