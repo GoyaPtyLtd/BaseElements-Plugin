@@ -5,7 +5,7 @@ Building
 The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
 Notes:
-- these instructions apply to version 2.2.1 of the BaseElements Plugin
+- these instructions apply to version 2.2.2 of the BaseElements Plugin
 - version 12.0.1.5 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 
@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 2.2.1 of the plug-in is built on Mac OS X 10.9.1 using Xcode 5.0.2 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
+The plug-in is built on Mac OS X 10.9.2 using Xcode 5.1 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -31,7 +31,7 @@ Boost is available from
 
 	http://www.boost.org/
 
-Note: v3 of the plug-in requires Boost 1.55_0 (or later).
+Note: Boost 1.55_0 (or later) is required.
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
@@ -120,7 +120,7 @@ The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 
-Note: v3.0 of the plug-in requires Boost 1.55_0 (or later).
+Note: Boost 1.55_0 (or later) is required.
 
 See
 
@@ -314,11 +314,11 @@ Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-(openssl-1.0.1c.tar.gz at the time of writing).
+(openssl-1.0.1g.tar.gz at the time of writing).
 
 Unpack the archive onto the desktop and, using the "Visual Studio Command Prompt (2010)"
 
-	cd c:\Users\Mark\Desktop\openssl-1.0.1c
+	cd c:\Users\Mark\Desktop\openssl-1.0.1g
 	perl Configure VC-WIN32 enable-static-engine no-asm
 	ms\do_nt
 	nmake -f ms\nt.mak
@@ -327,7 +327,7 @@ Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries and copy inc32\opens
 
 For x64 builds in a "Visual Studio x64 Cross Tools Command Prompt (2010)" use:
 
-	cd c:\Users\Mark\Desktop\openssl-1.0.1c
+	cd c:\Users\Mark\Desktop\openssl-1.0.1g
 	perl Configure VC-WIN64A enable-static-engine no-asm
 	ms\do_win64a
 	nmake -f ms\nt.mak
@@ -359,15 +359,15 @@ and set the following Configuration Properties:
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
 
 
-In Visual Studio and select "Batch Build" and check the "LIB Release" configuration and then "Build".
+In Visual Studio and select "Batch Build" and check the "Release" configuration and then "Build".
 
 Copy the library from
 
-	curl-7.32.0\vs\vc8\lib\Release\libcurl.lib
+	curl-7.36.0\vs\vc8\lib\Release\libcurl.lib
 
 into the Libraries directory and copy
 
-	curl-7.32.0\include\curl
+	curl-7.36.0\include\curl
 
 to the Headers directory.
 
@@ -381,7 +381,7 @@ Select "Batch Build" and check the "Release" configuration for the "x64" platfor
 
 Copy the library from
 
-	curl-7.32.0\vs\vc8\lib\Release\libcurl.lib
+	curl-7.36.0\vs\vc8\lib\Release\libcurl.lib
 
 into the Libraries\x64 directory.
 
