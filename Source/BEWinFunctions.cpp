@@ -28,6 +28,7 @@
 using namespace std;
 
 
+const bool IsUnicodeFormat ( const UINT format_id );
 bool IsWindowsVistaOrLater ( );
 wstring ClipboardFormatNameForID ( const UINT format_id );
 UINT ClipboardFormatIDForName ( const wstring format_name );
@@ -59,6 +60,19 @@ wstring g_button3_name;
 IProgressDialog * progress_dialog;
 DWORD progress_dialog_maximum;
 
+// undocumented/private(?) system clipboard formats
+UINT BE_CF_FileGroupDescriptorW;
+UINT BE_CF_FileNameW;
+UINT BE_CF_FileNameMapW;
+
+
+void InitialiseWindows ( void )
+{
+	BE_CF_FileGroupDescriptorW = RegisterClipboardFormat ( CFSTR_FILEDESCRIPTORW );
+	BE_CF_FileNameW = RegisterClipboardFormat ( CFSTR_FILENAMEW );
+	BE_CF_FileNameMapW = RegisterClipboardFormat ( CFSTR_FILEDESCRIPTORW );
+}
+
 
 // dry... fmx::errcode is not large enough to hold all results from GetLastError()
 
@@ -83,6 +97,24 @@ bool IsWindowsVistaOrLater ( )
 
 
 // clipbaord functions
+
+const bool IsUnicodeFormat ( const UINT format_id )
+{
+
+	bool is_unicode = false;
+
+	if (
+		format_id == CF_UNICODETEXT ||
+		format_id == BE_CF_FileGroupDescriptorW ||
+		format_id == BE_CF_FileNameW ||
+		format_id == BE_CF_FileNameMapW
+		) {
+			is_unicode = true;
+	}
+
+	return is_unicode;
+
+}
 
 // default, system formats
 // http://msdn.microsoft.com/en-us/library/windows/desktop/ff729168(v=vs.85).aspx
@@ -270,6 +302,12 @@ UINT ClipboardFormatIDForName ( const wstring name ) {
 		format_id = CF_UNICODETEXT;
 	} else if ( format_name == L"CF_WAVE" ) {
 		format_id = CF_WAVE;
+	} else if ( format_name == CFSTR_FILEDESCRIPTORW ) {
+		format_id = BE_CF_FileGroupDescriptorW;
+	} else if ( format_name == CFSTR_FILENAMEW ) {
+		format_id = BE_CF_FileNameW;
+	} else if ( format_name == CFSTR_FILEDESCRIPTORW ) {
+		format_id = BE_CF_FileNameMapW;
 	} else {
 		format_id = RegisterClipboardFormat ( name.c_str() );
 	}
@@ -420,7 +458,7 @@ StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 
 		if ( IsClipboardFormatAvailable ( format ) ) {
 
-			if ( format == CF_UNICODETEXT ) {
+			if ( IsUnicodeFormat ( format ) ) {
 				reply = WideClipboardData ( atype );
 			} else {
 				reply = UTF8ClipboardData ( atype );
@@ -498,7 +536,7 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 
 			HGLOBAL clipboard_memory;
 
-			if ( format == CF_UNICODETEXT ) {
+			if ( IsUnicodeFormat ( format ) ) {
 				clipboard_memory = DataForClipboardAsWide ( data );
 			} else {
 				clipboard_memory = DataForClipboardAsUTF8 ( data, atype );

@@ -19,6 +19,7 @@
 #include <string>
 
 
+void InitialiseWindows ( void );
 fmx::errcode GetLastErrorAsFMX ( void );
 
 WStringAutoPtr ClipboardFormats ( void );
