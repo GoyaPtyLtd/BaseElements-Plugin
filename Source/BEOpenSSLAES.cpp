@@ -90,39 +90,43 @@ const vector<unsigned char> Decrypt_AES ( const string key, const vector<unsigne
 {
 	vector<unsigned char> result;
 	
-	EVP_CIPHER_CTX context;
-	EVP_CIPHER_CTX_init ( &context );
-	int reply = EVP_DecryptInit_ex ( &context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), &input_vector[0] );
-	
-	if ( reply ) {
-		
-		const size_t input_size = encrypted_data.size();
-		const size_t output_size = input_size + EVP_MAX_BLOCK_LENGTH;
-		unsigned char * decrypted_data = new unsigned char [ output_size ]();
+	if ( !encrypted_data.empty() ) {
 
-		int output_length = 0;
-		int final_output_length = 0;
-		
-		reply = EVP_DecryptUpdate ( &context, decrypted_data, &output_length, (unsigned char *)&encrypted_data[0], (int)input_size );
-		if ( reply ) {
-			
-//			reply = EVP_DecryptFinal_ex ( &context, decrypted_data + output_length, &final_output_length );
-			EVP_DecryptFinal_ex ( &context, decrypted_data + output_length, &final_output_length );
-			
-		} else {
-			throw BEPlugin_Exception ( kDecryptionUpdateFailed );
-		}
-		
-		EVP_CIPHER_CTX_cleanup ( &context );
-		
-		result.insert ( result.end(), decrypted_data, decrypted_data + output_length + final_output_length );
-		
-		delete[] decrypted_data;
-					
-	} else {
-		throw BEPlugin_Exception ( kEncryptionInitialisationFailed );
-	}
+		EVP_CIPHER_CTX context;
+		EVP_CIPHER_CTX_init ( &context );
+		int reply = EVP_DecryptInit_ex ( &context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), &input_vector[0] );
 	
+		if ( reply ) {
+		
+			const size_t input_size = encrypted_data.size();
+			const size_t output_size = input_size + EVP_MAX_BLOCK_LENGTH;
+			unsigned char * decrypted_data = new unsigned char [ output_size ]();
+
+			int output_length = 0;
+			int final_output_length = 0;
+		
+			reply = EVP_DecryptUpdate ( &context, decrypted_data, &output_length, (unsigned char *)&encrypted_data[0], (int)input_size );
+			if ( reply ) {
+			
+//				reply = EVP_DecryptFinal_ex ( &context, decrypted_data + output_length, &final_output_length );
+				EVP_DecryptFinal_ex ( &context, decrypted_data + output_length, &final_output_length );
+			
+			} else {
+				throw BEPlugin_Exception ( kDecryptionUpdateFailed );
+			}
+		
+			EVP_CIPHER_CTX_cleanup ( &context );
+		
+			result.insert ( result.end(), decrypted_data, decrypted_data + output_length + final_output_length );
+		
+			delete[] decrypted_data;
+					
+		} else {
+			throw BEPlugin_Exception ( kEncryptionInitialisationFailed );
+		}
+	
+	}
+
 	return result;
 	
 } // Decrypt_AES
