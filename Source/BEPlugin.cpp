@@ -107,6 +107,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_SelectFile, BE_SelectFile, false, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_SelectFolder, BE_SelectFolder, false, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_SaveFileDialog, BE_SaveFileDialog, false, 1, 3 );
+	
 	g_be_plugin->RegisterFunction ( kBE_DisplayDialog, BE_DisplayDialog, false, 3, 5 );
 	g_be_plugin->RegisterFunction ( kBE_OpenFile, BE_OpenFile, false, 1, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ProgressDialog, BE_ProgressDialog, false, 2, 3 );

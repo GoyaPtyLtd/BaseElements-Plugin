@@ -43,6 +43,8 @@ FMX_PROC(fmx::errcode) BE_ListFilesInFolder ( short /* funcId */, const fmx::Exp
 
 FMX_PROC(fmx::errcode) BE_SelectFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_SelectFolder ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_SaveFileDialog ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+
 FMX_PROC(fmx::errcode) BE_DisplayDialog ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_ProgressDialog ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_ProgressDialog_Update ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );

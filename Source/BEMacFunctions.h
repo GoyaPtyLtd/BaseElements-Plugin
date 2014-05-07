@@ -25,6 +25,7 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype );
 
 WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
 WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
+WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr fileName, WStringAutoPtr inFolder );
 
 int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr ok_button, WStringAutoPtr cancel_button, WStringAutoPtr alternate_button );
 

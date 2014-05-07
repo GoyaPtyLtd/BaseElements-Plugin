@@ -193,6 +193,40 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 }
 
 
+WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr fileName, WStringAutoPtr inFolder )
+{
+	NSSavePanel* file_dialog = [NSSavePanel savePanel];
+	
+	NSString * prompt_string = NSStringFromWStringAutoPtr ( prompt );
+	[file_dialog setTitle: prompt_string ];
+
+	NSString * filename_string = NSStringFromWStringAutoPtr ( fileName );
+	[file_dialog setNameFieldStringValue: filename_string ];
+		
+	NSString * default_directory = NSStringFromWStringAutoPtr ( inFolder );
+	if ( [default_directory length] != 0 ) {
+		NSURL *directory_url = [NSURL fileURLWithPath: default_directory];
+		[file_dialog setDirectoryURL: directory_url];
+	}
+	
+	[file_dialog setCanCreateDirectories: YES];
+	
+	NSMutableString * file_path = [NSMutableString stringWithString: @""];
+	
+	if ( [file_dialog runModal ] == NSFileHandlingPanelOKButton ) {
+		file_path = (NSMutableString *)[[file_dialog URL] path];
+	} else {
+		// the user cancelled
+	}
+	
+	//	[prompt_string release];
+	//	[filename_string release];
+
+	return WStringAutoPtrFromNSString ( file_path );
+	
+} // SaveFileDialog
+
+
 int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr ok_button, WStringAutoPtr cancel_button, WStringAutoPtr alternate_button )
 {
 	int button_pressed = 0;

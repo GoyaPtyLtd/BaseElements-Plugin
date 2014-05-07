@@ -648,7 +648,7 @@ WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 		open_file_dialog.lpstrFile = szFile;
 		open_file_dialog.lpstrFilter = L"All Files (*.*)\0*.*\0";
 		open_file_dialog.lpstrFile[0] = '\0';
-		open_file_dialog.nMaxFile = sizeof(szFile);
+		open_file_dialog.nMaxFile = sizeof ( szFile );
 		open_file_dialog.lpstrTitle = prompt->c_str();
 		open_file_dialog.lpstrInitialDir = in_folder->c_str();
 		open_file_dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT;
@@ -735,6 +735,109 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 	return WStringAutoPtr ( new wstring ( path ) );
 
 }	//	SelectFolder
+
+
+WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr file_name, WStringAutoPtr in_folder )
+{
+	HRESULT hr = 0;
+	WStringAutoPtr save_file_as ( new wstring );
+
+	if ( IsWindowsVistaOrLater( ) ) {
+
+		IFileSaveDialog *save_file_dialog = NULL;
+		hr = CoCreateInstance ( CLSID_FileSaveDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS ( &save_file_dialog ) );
+	    if ( SUCCEEDED ( hr ) ) {
+
+			// Set the options on the dialog.
+            DWORD dialog_flags;
+            hr = save_file_dialog->GetOptions ( &dialog_flags ); // Before setting, always get the options first in order not to override existing options.
+			if ( SUCCEEDED ( hr ) ) {
+
+				hr = save_file_dialog->SetOptions ( dialog_flags | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST | FOS_FILEMUSTEXIST | FOS_NOREADONLYRETURN );
+				if ( SUCCEEDED ( hr ) ) {
+
+					// go to the recently used folder if we don't specify one
+					if ( in_folder->empty() ) {
+						hr = save_file_dialog->SetDefaultFolder ( NULL );
+					} else {
+
+						IShellItem * use_folder;
+						hr = SHCreateItemFromParsingName ( in_folder->c_str(), NULL, IID_PPV_ARGS ( &use_folder) );
+						if ( SUCCEEDED ( hr ) ) {
+							hr = save_file_dialog->SetFolder ( use_folder );
+						}
+
+					}
+
+					hr = save_file_dialog->SetFileName ( file_name->c_str() );
+					if ( SUCCEEDED ( hr ) ) {
+
+						hr = save_file_dialog->SetTitle ( prompt->c_str() );
+                        if ( SUCCEEDED ( hr ) ) {
+
+							// Show the dialog
+							hr = save_file_dialog->Show ( NULL );
+							if ( SUCCEEDED ( hr ) ) {
+
+								IShellItem * new_file_name_item;
+
+								hr = save_file_dialog->GetResult ( &new_file_name_item );
+								if ( SUCCEEDED ( hr ) ) {
+
+									LPOLESTR new_file_name = NULL;
+									hr = new_file_name_item->GetDisplayName ( SIGDN_FILESYSPATH, &new_file_name ); // Get its file system path.
+									if ( SUCCEEDED ( hr ) ) {
+										save_file_as->assign ( new_file_name );
+									}
+								}
+
+								new_file_name_item->Release();
+
+							} else {
+
+								if ( HRESULT_FROM_WIN32 ( ERROR_CANCELLED ) ) {
+									hr = S_OK;
+								}
+
+							} // Show the dialog
+						}
+					}
+				}
+			}
+		}
+
+		save_file_dialog->Release();
+
+	} else {
+
+		OPENFILENAME save_file_dialog;
+
+	    ZeroMemory ( &save_file_dialog, sizeof ( save_file_dialog ) );
+
+		save_file_dialog.lStructSize = sizeof ( save_file_dialog ); 
+		save_file_dialog.hwndOwner = NULL;
+	    save_file_dialog.lpstrFilter = (LPCWSTR)L"All Files (*.*)\0*.*\0";
+
+		save_file_dialog.lpstrTitle = prompt->c_str();
+		wchar_t path[MAX_PATH] = L"";
+		wcscpy_s ( path, file_name->c_str() );
+		save_file_dialog.lpstrFile = (LPWSTR)path;
+		save_file_dialog.lpstrInitialDir = in_folder->c_str();
+
+		save_file_dialog.nMaxFile = MAX_PATH;
+	    save_file_dialog.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+
+		if ( GetSaveFileName ( &save_file_dialog ) == TRUE ) {
+			save_file_as->assign ( save_file_dialog.lpstrFile );
+		}
+
+	}
+
+	g_last_error = (fmx::errcode)hr;
+
+	return save_file_as;
+
+} // SaveFileDialog
 
 
 // (customized) alert dialogs

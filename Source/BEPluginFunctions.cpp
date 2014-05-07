@@ -657,6 +657,31 @@ FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* enviro
 } // BE_SelectFolder
 
 
+FMX_PROC(errcode) BE_SaveFileDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
+		WStringAutoPtr fileName = ParameterAsWideString ( parameters, 1 );
+		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 2 );
+		
+		WStringAutoPtr folder = SaveFileDialog ( prompt, fileName, inFolder );
+		
+		SetResult ( folder, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_SelectFolder
+
+
 FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
