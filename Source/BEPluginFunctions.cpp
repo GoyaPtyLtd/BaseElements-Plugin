@@ -621,8 +621,10 @@ FMX_PROC(errcode) BE_SelectFile ( short /* funcId */, const ExprEnv& /* environm
 
 		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
 		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 1 );
-		WStringAutoPtr file = SelectFile ( prompt, inFolder );
-		SetResult ( file, results );
+
+		WStringAutoPtr files ( SelectFile ( prompt, inFolder ) );
+
+		SetResult ( files, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
@@ -643,7 +645,9 @@ FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* enviro
 
 		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
 		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 1 );
+		
 		WStringAutoPtr folder = SelectFolder ( prompt, inFolder );
+		
 		SetResult ( folder, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
@@ -1185,7 +1189,7 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 	
 	try {
 		
-		const BEValueList * files  = new BEValueList ( *ParameterAsUTF8String ( parameters, 0 ) );
+		const BEValueList<string> * files  = new BEValueList<string> ( *ParameterAsUTF8String ( parameters, 0 ) );
 		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
 				
 		SetResult ( Zip ( files, output_directory ), results );
@@ -1740,7 +1744,7 @@ FMX_PROC(errcode) BE_Values_Unique ( short /* funcId */, const ExprEnv& /* envir
 		
 		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
 
-		auto_ptr<BEValueList> values ( new BEValueList ( *value_list ) );
+		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
 		string unique_values = values->unique();
 		
 		SetResult ( unique_values, results );
@@ -1766,8 +1770,8 @@ FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* en
 		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr filter_out = ParameterAsUTF8String ( parameters, 1 );
 		
-		auto_ptr<BEValueList> values ( new BEValueList ( *value_list ) );
-		auto_ptr<BEValueList> filter ( new BEValueList ( *filter_out ) );
+		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
+		auto_ptr< BEValueList<string> > filter ( new BEValueList<string> ( *filter_out ) );
 		string filtered_values = values->filter_out ( filter );
 				
 		SetResult ( filtered_values, results );
@@ -1791,7 +1795,7 @@ FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environ
 		
 		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
 		
-		auto_ptr<BEValueList> values ( new BEValueList ( *value_list ) );
+		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
 		string sorted_values = values->sort();
 		
 		SetResult ( sorted_values, results );
