@@ -10,10 +10,7 @@
  */
 
 
-#include <Shlwapi.h>
 #include <ShlObj.h>
-#include <ShObjIdl.h>
-#include <ObjBase.h>
 
 
 #include <sstream>
@@ -23,6 +20,7 @@
 
 
 #include "BEWinFunctions.h"
+#include "BEWinIFileDialog.h"
 
 
 using namespace std;
@@ -35,6 +33,7 @@ UINT ClipboardFormatIDForName ( const wstring format_name );
 bool SafeOpenClipboard ( void );
 bool IsFileMakerClipboardType ( const wstring atype );
 UINT32 ClipboardOffset ( const wstring atype );
+
 
 // functions & globals for the dialog callback
 
@@ -565,131 +564,15 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 
 WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 {
-	HRESULT hr = 0;
-	WStringAutoPtr selected_files = WStringAutoPtr ( new wstring ( L"" ) );
+	BEWinCommonFileOpenDialogAutoPtr file_dialog;
 
 	if ( IsWindowsVistaOrLater( ) ) {
-
-		IFileOpenDialog *open_file_dialog = NULL;
-		hr = CoCreateInstance ( CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS ( &open_file_dialog ) );
-	    if (SUCCEEDED(hr)) {
-
-			// Set the options on the dialog.
-            DWORD dwFlags;
-            hr = open_file_dialog->GetOptions ( &dwFlags ); // Before setting, always get the options first in order not to override existing options.
-			if (SUCCEEDED(hr)) {
-                // In this case, get shell items only for file system items.
-				hr = open_file_dialog->SetOptions ( dwFlags | FOS_FORCEFILESYSTEM | FOS_ALLOWMULTISELECT | FOS_PATHMUSTEXIST | FOS_FILEMUSTEXIST | FOS_NOREADONLYRETURN );
-				if (SUCCEEDED(hr)) {
-
-					// go to the recently used folder if we don't specify one
-					if ( in_folder->empty() ) {
-						hr = open_file_dialog->SetDefaultFolder ( NULL );
-					} else {
-						IShellItem *psiFolder;
-						LPCWSTR szFilePath = in_folder->c_str();
-						hr = SHCreateItemFromParsingName ( szFilePath, NULL, IID_PPV_ARGS(&psiFolder) );
-						hr= open_file_dialog->SetFolder ( psiFolder );
-						psiFolder->Release();
-					}
-
-					if (SUCCEEDED(hr)) {
-						hr = open_file_dialog->SetTitle ( prompt->c_str() );
-                        if (SUCCEEDED(hr)) {
-							// Show the dialog
-							hr = open_file_dialog->Show ( NULL );
-							if (SUCCEEDED(hr)) {
-								// loop over the selected files
-								IShellItemArray * pItemArray;
-								hr = open_file_dialog->GetResults ( &pItemArray );
-								if ( SUCCEEDED(hr) ) {
-									DWORD number_of_files_selected;
-									hr = pItemArray->GetCount ( &number_of_files_selected );
-									if ( SUCCEEDED(hr) ) {
-										for ( DWORD j = 0; j < number_of_files_selected; j++ ) {
-											IShellItem * pItem;
-											hr = pItemArray->GetItemAt ( j, &pItem );
-											if ( SUCCEEDED(hr) ) {
-												LPOLESTR pwsz = NULL;
-												hr = pItem->GetDisplayName ( SIGDN_FILESYSPATH, &pwsz ); // Get its file system path.
-												if ( SUCCEEDED(hr) ) {
-													selected_files->append ( pwsz );
-													if ( j < (number_of_files_selected - 1) ) {
-														selected_files->append ( L"\r" /*FILEMAKER_END_OF_LINE*/ );
-													}
-												}
-											}
-											pItem->Release();
-										} // for
-									}
-									pItemArray->Release();
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		open_file_dialog->Release();
-
+		file_dialog.reset ( new BEWinIFileOpenDialog ( prompt, in_folder ) );
 	} else {
+		file_dialog.reset ( new BEWinCommonFileOpenDialog ( prompt, in_folder ) );
+	}
 
-		// based on code provided by Dan Smith, https://github.com/dansmith65
-		
-		OPENFILENAME open_file_dialog;   // common dialog box structure
-
-		ZeroMemory ( &open_file_dialog, sizeof(open_file_dialog) );
-
-		open_file_dialog.lStructSize = sizeof(open_file_dialog);
-		open_file_dialog.hwndOwner = GetActiveWindow();
-
-		wchar_t szFile[MAX_PATH];        // buffer for file name
-		open_file_dialog.lpstrFile = szFile;
-		open_file_dialog.lpstrFilter = L"All Files (*.*)\0*.*\0";
-		open_file_dialog.lpstrFile[0] = '\0';
-		open_file_dialog.nMaxFile = sizeof ( szFile );
-		open_file_dialog.lpstrTitle = prompt->c_str();
-		open_file_dialog.lpstrInitialDir = in_folder->c_str();
-		open_file_dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT;
-
-		 // Display the Open dialog box
-
-		wchar_t path[MAX_PATH] = L"";
-
-		if ( GetOpenFileName ( &open_file_dialog ) == TRUE ) {
-			wcscpy_s ( path, open_file_dialog.lpstrFile );
-		 }
-
-		// return the file paths as a value list
-
-		wstringstream wss ( path );
-		istream_iterator<wstring, wchar_t, std::char_traits<wchar_t> > begin ( wss );
-		istream_iterator<wstring, wchar_t, std::char_traits<wchar_t> > end;
-		vector <wstring> values ( begin, end );
-
-		int number_of_files = values.size();
-
-		if ( number_of_files == 1 ) {
-			selected_files->append ( values[0] );
-		} else {
-	
-			for ( int i = 1 ; i < number_of_files ; i++ ) {
-
-				selected_files->append ( values[0] );
-				selected_files->append ( values[i] );
-
-				if ( i + 1 != number_of_files ) {
-					selected_files->append ( L"\r" /*FILEMAKER_END_OF_LINE*/ );
-				}
-
-			}
-
-		} // if ( number_of_files == 1 )
-
-	} // if ( IsWindowsVistaOrGreater() )
-	
-	g_last_error = (fmx::errcode)hr;
+	WStringAutoPtr selected_files ( file_dialog->Show ( ) );
 
 	return selected_files;
 
@@ -739,101 +622,15 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 
 WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr file_name, WStringAutoPtr in_folder )
 {
-	HRESULT hr = 0;
-	WStringAutoPtr save_file_as ( new wstring );
+	BEWinCommonFileSaveDialogAutoPtr file_dialog;
 
 	if ( IsWindowsVistaOrLater( ) ) {
-
-		IFileSaveDialog *save_file_dialog = NULL;
-		hr = CoCreateInstance ( CLSID_FileSaveDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS ( &save_file_dialog ) );
-	    if ( SUCCEEDED ( hr ) ) {
-
-			// Set the options on the dialog.
-            DWORD dialog_flags;
-            hr = save_file_dialog->GetOptions ( &dialog_flags ); // Before setting, always get the options first in order not to override existing options.
-			if ( SUCCEEDED ( hr ) ) {
-
-				hr = save_file_dialog->SetOptions ( dialog_flags | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST | FOS_FILEMUSTEXIST | FOS_NOREADONLYRETURN );
-				if ( SUCCEEDED ( hr ) ) {
-
-					// go to the recently used folder if we don't specify one
-					if ( in_folder->empty() ) {
-						hr = save_file_dialog->SetDefaultFolder ( NULL );
-					} else {
-
-						IShellItem * use_folder;
-						hr = SHCreateItemFromParsingName ( in_folder->c_str(), NULL, IID_PPV_ARGS ( &use_folder) );
-						if ( SUCCEEDED ( hr ) ) {
-							hr = save_file_dialog->SetFolder ( use_folder );
-						}
-
-					}
-
-					hr = save_file_dialog->SetFileName ( file_name->c_str() );
-					if ( SUCCEEDED ( hr ) ) {
-
-						hr = save_file_dialog->SetTitle ( prompt->c_str() );
-                        if ( SUCCEEDED ( hr ) ) {
-
-							// Show the dialog
-							hr = save_file_dialog->Show ( NULL );
-							if ( SUCCEEDED ( hr ) ) {
-
-								IShellItem * new_file_name_item;
-
-								hr = save_file_dialog->GetResult ( &new_file_name_item );
-								if ( SUCCEEDED ( hr ) ) {
-
-									LPOLESTR new_file_name = NULL;
-									hr = new_file_name_item->GetDisplayName ( SIGDN_FILESYSPATH, &new_file_name ); // Get its file system path.
-									if ( SUCCEEDED ( hr ) ) {
-										save_file_as->assign ( new_file_name );
-									}
-								}
-
-								new_file_name_item->Release();
-
-							} else {
-
-								if ( HRESULT_FROM_WIN32 ( ERROR_CANCELLED ) ) {
-									hr = S_OK;
-								}
-
-							} // Show the dialog
-						}
-					}
-				}
-			}
-		}
-
-		save_file_dialog->Release();
-
+		file_dialog.reset ( new BEWinIFileSaveDialog ( prompt, file_name, in_folder ) );
 	} else {
-
-		OPENFILENAME save_file_dialog;
-
-	    ZeroMemory ( &save_file_dialog, sizeof ( save_file_dialog ) );
-
-		save_file_dialog.lStructSize = sizeof ( save_file_dialog ); 
-		save_file_dialog.hwndOwner = NULL;
-	    save_file_dialog.lpstrFilter = (LPCWSTR)L"All Files (*.*)\0*.*\0";
-
-		save_file_dialog.lpstrTitle = prompt->c_str();
-		wchar_t path[MAX_PATH] = L"";
-		wcscpy_s ( path, file_name->c_str() );
-		save_file_dialog.lpstrFile = (LPWSTR)path;
-		save_file_dialog.lpstrInitialDir = in_folder->c_str();
-
-		save_file_dialog.nMaxFile = MAX_PATH;
-	    save_file_dialog.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-
-		if ( GetSaveFileName ( &save_file_dialog ) == TRUE ) {
-			save_file_as->assign ( save_file_dialog.lpstrFile );
-		}
-
+		file_dialog.reset ( new BEWinCommonFileSaveDialog ( prompt, file_name, in_folder ) );
 	}
 
-	g_last_error = (fmx::errcode)hr;
+	WStringAutoPtr save_file_as ( file_dialog->Show ( ) );
 
 	return save_file_as;
 
@@ -867,7 +664,7 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 	 choice on OS X
 	 */
 
-	int button_clicked = MessageBox ( GetActiveWindow(), message->c_str(), title->c_str(), type );
+	int button_clicked = MessageBox ( GetDesktopWindow(), message->c_str(), title->c_str(), type );
 
 	unsigned long response = 0;
 
@@ -944,7 +741,7 @@ fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAu
 
 	progress_dialog_maximum = maximum;
 
-	HWND parent_window = GetActiveWindow ( );
+	HWND parent_window = GetDesktopWindow ( );
 	HRESULT result = CoCreateInstance ( CLSID_ProgressDialog, NULL, CLSCTX_INPROC_SERVER, IID_IProgressDialog, (void**)&progress_dialog );
 
 	if ( result == S_OK ) {
