@@ -110,7 +110,7 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;WINVER=0x5000;CURL_STATICLIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;CURL_STATICLIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -134,7 +134,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\Build\BaseElements.lib</ImportLibrary>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib;shell32.lib</IgnoreSpecificDefaultLibraries>
+      <DelayLoadDLLs>shell32.dll</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -170,7 +171,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\Build\BaseElements.lib</ImportLibrary>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib;shell32.lib</IgnoreSpecificDefaultLibraries>
+      <DelayLoadDLLs>shell32.dll</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -207,24 +209,28 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\Build\BaseElementsD.pdb</ProgramDatabaseFile>
       <ImportLibrary>..\Build\BaseElementsD.lib</ImportLibrary>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;nafxcwd.lib;msvcrt.lib;libcmt.lib;uafxcwd.lib;libcpmt.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;msvcrt.lib;libcmt.lib;libcpmt.lib;shell32.lib</IgnoreSpecificDefaultLibraries>
       <AssemblyLinkResource>
       </AssemblyLinkResource>
-      <DelayLoadDLLs>
-      </DelayLoadDLLs>
+      <DelayLoadDLLs>shell32.dll</DelayLoadDLLs>
       <Profile>true</Profile>
       <EntryPointSymbol>
       </EntryPointSymbol>
+      <SupportNobindOfDelayLoadedDLL>false</SupportNobindOfDelayLoadedDLL>
     </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -267,11 +273,10 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;msvcrt.lib;libcmt.lib;libcpmt.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;msvcrt.lib;libcmt.lib;libcpmt.lib;shell32.lib</IgnoreSpecificDefaultLibraries>
       <AssemblyLinkResource>
       </AssemblyLinkResource>
-      <DelayLoadDLLs>
-      </DelayLoadDLLs>
+      <DelayLoadDLLs>shell32.dll</DelayLoadDLLs>
       <Profile>true</Profile>
       <EntryPointSymbol>
       </EntryPointSymbol>
@@ -321,13 +326,14 @@
     <ClCompile Include="..\Source\BEShell.cpp" />
     <ClCompile Include="..\Source\BESQLCommand.cpp" />
     <ClCompile Include="..\Source\BETime.cpp" />
-    <ClCompile Include="..\Source\BEValueList.cpp" />
+    <ClCompile Include="..\Source\BEWinCommonFileDialog.cpp" />
     <ClCompile Include="..\Source\BEWinFunctions.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Source\BEWinIFileDialog.cpp" />
     <ClCompile Include="..\Source\BEWStringVector.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
@@ -372,7 +378,9 @@
     <ClInclude Include="..\Source\BESQLCommand.h" />
     <ClInclude Include="..\Source\BETime.h" />
     <ClInclude Include="..\Source\BEValueList.h" />
+    <ClInclude Include="..\Source\BEWinCommonFileDialog.h" />
     <ClInclude Include="..\Source\BEWinFunctions.h" />
+    <ClInclude Include="..\Source\BEWinIFileDialog.h" />
     <ClInclude Include="..\Source\BEWStringVector.h" />
     <ClInclude Include="..\Source\BEXMLReader.h" />
     <ClInclude Include="..\Source\BEXMLReaderInterface.h" />

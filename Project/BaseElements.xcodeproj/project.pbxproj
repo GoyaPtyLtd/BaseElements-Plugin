@@ -23,7 +23,6 @@
 		4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */; };
 		4D54F7CD18DAB8E100F9ACB5 /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D54F7C918DAB8E100F9ACB5 /* BEBase64.cpp */; };
 		4D54F7CE18DAB8E100F9ACB5 /* BEOpenSSLAES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D54F7CB18DAB8E100F9ACB5 /* BEOpenSSLAES.cpp */; };
-		4D59DAFB16F95E2500F87180 /* BEValueList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D59DAF916F95E2300F87180 /* BEValueList.cpp */; };
 		4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
 		4D760F7915AD50E2001A0BAF /* BEXMLTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */; };
 		4D760F7D15AD52C7001A0BAF /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
@@ -108,7 +107,6 @@
 		4D54F7CC18DAB8E100F9ACB5 /* BEOpenSSLAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEOpenSSLAES.h; path = ../Source/BEOpenSSLAES.h; sourceTree = "<group>"; };
 		4D55C63815EE0F0A008F7FBA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
-		4D59DAF916F95E2300F87180 /* BEValueList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEValueList.cpp; path = ../Source/BEValueList.cpp; sourceTree = "<group>"; };
 		4D59DAFA16F95E2400F87180 /* BEValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEValueList.h; path = ../Source/BEValueList.h; sourceTree = "<group>"; };
 		4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileSystem.cpp; path = ../Source/BEFileSystem.cpp; sourceTree = SOURCE_ROOT; };
 		4D70428713BAE5CA00DE4484 /* BEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileSystem.h; path = ../Source/BEFileSystem.h; sourceTree = SOURCE_ROOT; };
@@ -305,7 +303,6 @@
 				4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */,
 				4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */,
 				4D59DAFA16F95E2400F87180 /* BEValueList.h */,
-				4D59DAF916F95E2300F87180 /* BEValueList.cpp */,
 				4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */,
 				4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */,
 				4D54F7CC18DAB8E100F9ACB5 /* BEOpenSSLAES.h */,
@@ -447,7 +444,6 @@
 				4D54F7CD18DAB8E100F9ACB5 /* BEBase64.cpp in Sources */,
 				4D13006816DADD8A0075FE0C /* BEOAuth.cpp in Sources */,
 				4DD3E8FD16DD6DA300DC0070 /* BECppUtilities.cpp in Sources */,
-				4D59DAFB16F95E2500F87180 /* BEValueList.cpp in Sources */,
 				4DD613F316FBBACF00C25A3E /* ProgressDialogWindowController.m in Sources */,
 				4DCCE05E170BC61D00835D21 /* BECurlOption.cpp in Sources */,
 				4D35117C17E1314A00AEDF01 /* BEFileTextReader.cpp in Sources */,
