@@ -24,9 +24,9 @@
 #include "BEPluginUtilities.h"
 
 
-#include "boost/format.hpp"
-#include "boost/filesystem.hpp"
-#include "boost/filesystem/fstream.hpp"
+#include <boost/format.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 #include <sstream>
 #include <iostream>
@@ -131,6 +131,14 @@ void SetResult ( const string text, Data& results )
 }
 
 
+void SetResult ( const wstring text, Data& results )
+{
+	TextAutoPtr result_text;
+	result_text->AssignWide ( text.c_str() );
+	SetResult ( *result_text, results );
+}
+
+
 void SetResult ( const StringAutoPtr text, Data& results )
 {
 	TextAutoPtr result_text;
@@ -196,7 +204,6 @@ void SetResult ( const string filename, const vector<unsigned char> data, Data& 
 	vector<char> char_data ( data.begin(), data.end() );
 	return SetResult ( filename, char_data, results );
 }
-
 
 
 #pragma mark -
