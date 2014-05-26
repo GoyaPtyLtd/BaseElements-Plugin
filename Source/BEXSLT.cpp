@@ -543,7 +543,7 @@ void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result )
 		xmlXPathNodeSetSort ( ns );
 	}
 	
-	BEValueList value_list = BEValueList ( );
+	BEValueList<string> value_list = BEValueList<string> ( );
 
 	for ( int i = 0; i < ns->nodeNr; i++ ) {
 		xmlChar* str = xmlXPathCastNodeToString ( ns->nodeTab[i] );

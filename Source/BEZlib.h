@@ -20,7 +20,7 @@
 
 
 const long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_directory );
-const long Zip ( const BEValueList * filename, const StringAutoPtr archive );
+const long Zip ( const BEValueList<std::string> * filename, const StringAutoPtr archive );
 
 
 #endif // BEZLIB_H

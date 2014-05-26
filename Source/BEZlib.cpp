@@ -379,7 +379,7 @@ int AddToArchive ( const path directory_path, zipFile zip_file, const path base 
 } // AddToArchive
 
 
-const long Zip ( const BEValueList * filenames, const StringAutoPtr archive )
+const long Zip ( const BEValueList<std::string> * filenames, const StringAutoPtr archive )
 {
     long error = 0;
 	
