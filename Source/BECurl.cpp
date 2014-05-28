@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
  
- Copyright 2011-2013 Goya. All rights reserved.
+ Copyright 2011-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,17 +13,24 @@
 #include "BECurl.h"
 #include "BEPluginGlobalDefines.h"
 #include "BEOAuth.h"
+#include "BEPluginUtilities.h"
 
+#if defined ( FMX_WIN_TARGET )
+	#include "BEWinFunctions.h"
+#endif
 
-#include <errno.h>
-
-
-#include "boost/filesystem.hpp"
-#include "boost/filesystem/fstream.hpp"
-#include "boost/scoped_ptr.hpp"
-
+#if defined ( FMX_MAC_TARGET )
+	#include "BEMacFunctions.h"
+#endif
 
 #include <iostream>
+#include <sstream>
+#include <errno.h>
+
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 
 using namespace std;
@@ -131,8 +138,90 @@ static MemoryStruct InitalizeCallbackMemory ( void )
 }
 
 
+static int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow )
+{
+	
+	const curl_off_t total_bytes = dltotal > 0 ? dltotal : ultotal;
+	curl_off_t bytes_so_far = dlnow > 0 ? dlnow : ulnow;
+	const wstring direction = dltotal > 0 ? L"Down" : L"Up";
+	
+	const double bytes_per_megabyte = 1000000;
+	const double mb_total = (double)total_bytes / bytes_per_megabyte;
+	const double mb_so_far = (double)bytes_so_far / bytes_per_megabyte;
+	
+	WStringAutoPtr description ( new wstring );
+	
+	fmx::errcode error = kNoError;
+	static boost::posix_time::ptime last;
+	
+	const bool completed = dlnow == dltotal;
+	
+	static bool visible = false;
+
+	if ( visible ) {
+
+		boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+		const boost::posix_time::time_duration msdiff = now - last;
+		
+		// only update 5 times a second... slows down too much otherwise
+		
+		const boost::posix_time::hours::tick_type how_long = msdiff.total_milliseconds();
+
+		if ( how_long > 200 || completed ) {
+			
+			wstringstream d;
+			d.precision ( 1 );
+			wstring mb_suffix = L" MB";
+			d << direction << L"loading... " << mb_so_far << mb_suffix << L" of " << mb_total << mb_suffix;
+			description->assign ( d.str() );
+			
+			if ( completed ) {
+				++bytes_so_far;
+			}
+			
+			error = UpdateProgressDialog ( (unsigned long)bytes_so_far, description );
+			
+			last = now;
+		}
+	} else {
+		
+		if ( ! completed ) {
+			
+			WStringAutoPtr title ( new wstring ( direction + L"load Progress" ) );
+			
+//			const fmx::ExprEnvAutoPtr environment;
+//			FMX_SetToCurrentEnv ( &(*environment) );
+			
+			description->append ( L"Starting " + direction + L"load." );
+			
+			error = DisplayProgressDialog ( title, description, (unsigned long)total_bytes, false /* AllowUserAbort ( *environment ) */ );
+
+		}
+	}
+
+	visible = completed ? false : error == CURLE_OK;
+
+	g_last_error = error;
+	
+	return error;
+}
+
+
+/* for libcurl older than 7.32.0 (CURLOPT_PROGRESSFUNCTION) */
+static int old_progress_dialog ( void *p, double dltotal, double dlnow, double ultotal, double ulnow )
+{
+	int error = kNoError;
+	
+	if ( dltotal > 0 || ultotal > 0 ) {
+		error = progress_dialog ( p, (curl_off_t)dltotal, (curl_off_t)dlnow, (curl_off_t)ultotal, (curl_off_t)ulnow );
+	}
+	
+	return error;
+}
+
+
 static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_POST )
-{	
+{
 	curl->set_proxy ( g_http_proxy );
 	curl->set_custom_headers ( g_http_custom_headers );
 	
@@ -266,7 +355,9 @@ void BECurl::Init ( const string download_this, const string to_file, const stri
 	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
 	
-}
+	configure_progress_dialog ( );
+
+} // Init
 
 
 BECurl::~BECurl()
@@ -545,6 +636,32 @@ void BECurl::add_custom_headers ( )
 }	//	add_custom_headers
 
 
+void BECurl::configure_progress_dialog ( )
+{
+	// libcurl uses CURLOPT_XFERINFOFUNCTION if it can and CURLOPT_PROGRESSFUNCTION when it cannot
+	
+	error = curl_easy_setopt ( curl, CURLOPT_PROGRESSFUNCTION, old_progress_dialog );
+	if ( error ) {
+		throw BECurl_Exception ( error );
+	}
+
+	// xferinfo was introduced in 7.32.0
+
+#if LIBCURL_VERSION_NUM >= 0x072000
+	
+	error = curl_easy_setopt ( curl, CURLOPT_XFERINFOFUNCTION, progress_dialog );
+	if ( error != CURLE_OK && error != CURLE_UNKNOWN_OPTION ) {
+		throw BECurl_Exception ( error );
+	}
+
+#endif
+
+	// and disable it... enabled by the user when required
+	easy_setopt ( CURLOPT_NOPROGRESS, 1L );
+
+} // configure_progress_dialog
+
+
 void BECurl::write_to_memory ( )
 {
 	// send all data to this function
@@ -558,11 +675,11 @@ void BECurl::perform ( )
 	
 	error = curl_easy_perform ( curl );
 	
-	if ( error == kNoError ) {
+	if ( error == CURLE_OK ) {
 
 		error = curl_easy_getinfo ( curl, CURLINFO_RESPONSE_CODE, &http_response_code );
 		
-		if ( error == kNoError ) {
+		if ( error == CURLE_OK ) {
 			// record the header information
 			http_response_headers.erase();
 			for ( size_t i = 0 ; i < headers.size ; i++ ) {

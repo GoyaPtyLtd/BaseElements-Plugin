@@ -2,7 +2,7 @@
  BECurl.h
  BaseElements Plug-In
  
- Copyright 2011-2012 Goya. All rights reserved.
+ Copyright 2011-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -116,17 +116,19 @@ protected:
 	CURLcode error;
 	std::string proxy;
 	std::string proxy_login;
-
+	
 	void Init ( const std::string download_this, const std::string to_file, std::string username, const std::string password, const std::string parameters );
 
     void prepare ( );
 	void add_custom_headers ( );
+	void configure_progress_dialog ( );
 	void write_to_memory ( );
 	void perform ( );
 	void cleanup ( );
 	void easy_setopt ( CURLoption option, ... );
 
 };
+
 
 
 #endif // BEXBECURL_HSLT_H
