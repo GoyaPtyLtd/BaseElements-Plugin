@@ -2,7 +2,7 @@
  BECurlOptions.cpp
  BaseElements Plug-In
  
- Copyright 2013 Goya. All rights reserved.
+ Copyright 2013-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -220,6 +220,8 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_SSH_AUTH_TYPES" ] = type_long;
 	types [ "CURLOPT_NEW_FILE_PERMS" ] = type_long;
 	types [ "CURLOPT_NEW_DIRECTORY_PERMS" ] = type_long;
+	
+	types [ "CURLOPT_NOPROGRESS" ] = type_long;
 
 	types [ "CURLOPT_POSTFIELDSIZE_LARGE" ] = type_curl_off_t;
 	types [ "CURLOPT_RESUME_FROM_LARGE" ] = type_curl_off_t;
@@ -495,6 +497,7 @@ CURLoption BECurlOption::option ( )
 	options [ "CURLOPT_SSH_KEYFUNCTION" ] = CURLOPT_SSH_KEYFUNCTION;
 	options [ "CURLOPT_SHARE" ] = CURLOPT_SHARE;
 	options [ "CURLOPT_TELNETOPTIONS" ] = CURLOPT_TELNETOPTIONS;
+	options [ "CURLOPT_NOPROGRESS" ] = CURLOPT_NOPROGRESS;
 	
 	return options.at ( boost::to_upper_copy ( name ) ); // note: at throws if not found
 	
