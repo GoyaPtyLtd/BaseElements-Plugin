@@ -14,6 +14,7 @@
 #include "BEPluginGlobalDefines.h"
 #include "BEOAuth.h"
 #include "BEPluginUtilities.h"
+#include "BEFileMakerPlugin.h"
 
 #if defined ( FMX_WIN_TARGET )
 	#include "BEWinFunctions.h"
@@ -55,6 +56,7 @@ struct host_details g_http_proxy;
 BECurlOptionMap g_curl_options;
 
 extern BEOAuth * g_oauth;
+extern BEFileMakerPlugin * g_be_plugin;
 
 
 #pragma mark -
@@ -140,6 +142,7 @@ static MemoryStruct InitalizeCallbackMemory ( void )
 
 static int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow )
 {
+#pragma unused ( p )
 	
 	const curl_off_t total_bytes = dltotal > 0 ? dltotal : ultotal;
 	curl_off_t bytes_so_far = dlnow > 0 ? dlnow : ulnow;
@@ -172,7 +175,7 @@ static int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl
 			wstringstream d;
 			d.precision ( 1 );
 			wstring mb_suffix = L" MB";
-			d << direction << L"loading... " << mb_so_far << mb_suffix << L" of " << mb_total << mb_suffix;
+			d << direction << L"loading... " << fixed << mb_so_far << mb_suffix << L" of " << fixed << mb_total << mb_suffix;
 			description->assign ( d.str() );
 			
 			if ( completed ) {
@@ -356,7 +359,7 @@ void BECurl::Init ( const string download_this, const string to_file, const stri
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
 	
 	configure_progress_dialog ( );
-
+	
 } // Init
 
 
@@ -579,6 +582,9 @@ void BECurl::set_options ( BECurlOptionMap options )
 		++it;
 	}
 	
+	if ( g_be_plugin->running_on_server ( ) ) {
+		easy_setopt ( CURLOPT_NOPROGRESS, 1L );
+	}
 	
 }	//	set_options
 
