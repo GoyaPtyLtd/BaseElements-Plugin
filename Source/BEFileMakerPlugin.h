@@ -2,7 +2,7 @@
  BEFileMakerPlugin.h
  BaseElements Plug-In
  
- Copyright 2010-2012 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -36,6 +36,13 @@ public:
     fmx::errcode RegisterFunction ( short function_id, fmx::ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
     fmx::errcode RegisterPluginFunction ( FMX_UInt32 function_flags, short function_id, fmx::ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
     fmx::errcode RegisterFunction ( short function_id, fmx::ExtPluginType funcion_pointer, int minumum_parameters = 0 );
+	
+	void set_fmx_application ( const FMX_Application fmx_application_value );
+	bool running_on_server ( );
+
+protected:
+	
+	FMX_Application fmx_application;
 
 };
 

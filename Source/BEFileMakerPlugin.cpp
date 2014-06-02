@@ -2,7 +2,7 @@
  BEFileMakerPlugin.cpp
  BaseElements Plug-In
  
- Copyright 2010-2012 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -14,12 +14,16 @@
 
 #include "BEPluginGlobalDefines.h"
 #include "BEPluginUtilities.h"
+#include "BEFileMakerPlugin.h"
 
 #include <iostream>
 #include <vector>
 
 
 using namespace fmx;
+
+
+extern BEFileMakerPlugin * g_be_plugin;		// the plug-in instance
 
 
 #pragma mark -
@@ -103,4 +107,18 @@ errcode BEFileMakerPlugin::RegisterFunction ( short function_id, ExtPluginType f
 {
 	return RegisterFunction ( function_id, function_pointer, true, minimum_parameters, minimum_parameters );
 }
+
+
+
+void BEFileMakerPlugin::set_fmx_application ( const FMX_Application fmx_application_value )
+{
+	fmx_application = fmx_application_value;
+}
+
+
+bool BEFileMakerPlugin::running_on_server ( )
+{
+	return (fmx_application == kFMXT_Server) || (fmx_application == kFMXT_Web);
+}
+
 
