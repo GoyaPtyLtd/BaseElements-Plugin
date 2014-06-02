@@ -550,13 +550,16 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 	
 	try {
 		
-		TextAutoPtr end_of_line;
-		end_of_line->Assign ( FILEMAKER_END_OF_LINE );
+//		TextAutoPtr end_of_line;
+//		end_of_line->Assign ( FILEMAKER_END_OF_LINE );
 
-		WStringAutoPtr directory = ParameterAsWideString ( parameters, 0 );
+		const StringAutoPtr directory = ParameterAsUTF8String ( parameters, 0 );
+		const long file_type_wanted = ParameterAsLong ( parameters, 1, kBE_FileType_File );
+		const bool include_subfolders = ParameterAsBoolean ( parameters, 2, false );
+		const bool use_full_path = ParameterAsBoolean ( parameters, 3, false );
 
 		try {
-
+/*
 			path directory_path = *directory;
 			bool directory_exists = exists ( directory_path );
 			
@@ -592,9 +595,17 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 			} else {
 				error = kNoSuchFileOrDirectoryError;
 			}
-
-		} catch ( filesystem_error& e ) {
-			error = e.code().value();
+*/
+			BEValueListStringAutoPtr list_of_files ( list_files_in_directory ( *directory, file_type_wanted, include_subfolders ) );
+			if ( ! use_full_path ) {
+				list_of_files->remove_prefix ( *directory );
+			}
+			SetResult ( list_of_files->get_as_filemaker_string(), results );
+			
+		} catch ( BEPlugin_Exception& e ) {
+			error = e.code();
+//		} catch ( filesystem_error& e ) {
+//			error = e.code().value();
 		}
 
 	} catch ( bad_alloc& /* e */ ) {

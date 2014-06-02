@@ -32,7 +32,7 @@
 "120" = "BE_ExecuteShellCommand ( command {; waitForResponse } )";
 
 
-"121" = "BE_ListFilesInFolder ( path {; type } )";
+"121" = "BE_ListFilesInFolder ( path {; type ; includeSubdirectories ; useFullPath } )";
 
 // depreciated
 "122" = "BE_FileMaker_Tables";
