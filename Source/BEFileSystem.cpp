@@ -2,7 +2,7 @@
  BEFileSystem.cpp
  BaseElements Plug-In
  
- Copyright 2011 Goya. All rights reserved.
+ Copyright 2011-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -11,6 +11,7 @@
 
 
 #include "BEFileSystem.h"
+#include "BEPluginException.h"
 
 
 using namespace std;
@@ -52,5 +53,54 @@ bool recursive_directory_copy ( const path & from, const path & to  ) {
 	
 	return true;
 	
-}
+} // recursive_directory_copy
+
+
+BEValueListStringAutoPtr list_files_in_directory ( const boost::filesystem::path & directory, const long file_type_wanted = kBE_FileType_ALL, const bool recurse = false )
+{
+
+	BEValueListStringAutoPtr list_of_files ( new BEValueList<string> );
+	
+	try {
+		
+		path directory_path = directory;
+		bool directory_exists = exists ( directory_path );
+		
+		if ( directory_exists ) {
+			
+			directory_iterator end_itr; // default construction yields past-the-end
+			directory_iterator itr ( directory_path );
+						
+			while ( itr != end_itr ) {
+				
+				bool is_folder = is_directory ( itr->status() );
+				
+				if (
+					(!is_folder && (file_type_wanted == kBE_FileType_File)) ||
+					(is_folder && (file_type_wanted == kBE_FileType_Folder)) ||
+					(file_type_wanted == kBE_FileType_ALL)
+					) {
+					
+					list_of_files->append ( itr->path().string().c_str() );
+
+					if ( is_folder && recurse ) {
+						list_of_files->append ( *list_files_in_directory ( itr->path(), file_type_wanted ) );
+					}
+				}
+				
+				++itr;
+				
+			}
+			
+		} else {
+			throw BEPlugin_Exception ( kNoSuchFileOrDirectoryError );
+		}
+		
+	} catch ( filesystem_error& e ) {
+		throw BEPlugin_Exception ( e.code().value() );
+	}
+	
+	return list_of_files;
+
+} // list_files_in_directory
 
