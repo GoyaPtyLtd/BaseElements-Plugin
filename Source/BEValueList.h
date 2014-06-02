@@ -14,6 +14,8 @@
 #define __BaseElements__BEValueList__
 
 
+#include "BEPluginGlobalDefines.h"
+
 #include <string>
 #include <vector>
 #include <sstream>
@@ -49,6 +51,7 @@ public:
 	T unique ( );
 	T filter_out ( std::auto_ptr<BEValueList> filter_out );
 	T sort ( );
+	void remove_prefix ( const T prefix );
 	
 	std::vector<T> get_values ( void ) { return values; }
 	T get_as_comma_separated ( void );
@@ -60,6 +63,10 @@ protected:
 	
 };
 
+
+
+typedef std::auto_ptr<BEValueList<std::string> > BEValueListStringAutoPtr;
+typedef std::auto_ptr<BEValueList<std::wstring> > BEValueListWideStringAutoPtr;
 
 
 
@@ -202,6 +209,20 @@ T BEValueList<T>::sort ( ) {
 	return text.str();
 	
 } // sort
+
+
+template <typename T>
+void BEValueList<T>::remove_prefix ( const T prefix ) {
+	
+	for ( typename std::vector<T>::iterator it = values.begin() ; it != values.end(); ++it ) {
+		
+		size_t where = it->find ( prefix );
+		if ( where == 0 ) {
+			it->erase ( 0, prefix.size() + 1 );
+		}
+	}
+	
+} // remove_prefix
 
 
 template <typename T>
