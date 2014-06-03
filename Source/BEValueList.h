@@ -218,7 +218,7 @@ void BEValueList<T>::remove_prefix ( const T prefix ) {
 		
 		size_t where = it->find ( prefix );
 		if ( where == 0 ) {
-			it->erase ( 0, prefix.size() + 1 );
+			it->erase ( 0, prefix.size() );
 		}
 	}
 	
