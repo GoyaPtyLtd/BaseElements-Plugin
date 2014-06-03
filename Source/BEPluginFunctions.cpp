@@ -550,52 +550,13 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 	
 	try {
 		
-//		TextAutoPtr end_of_line;
-//		end_of_line->Assign ( FILEMAKER_END_OF_LINE );
-
 		const StringAutoPtr directory = ParameterAsUTF8String ( parameters, 0 );
 		const long file_type_wanted = ParameterAsLong ( parameters, 1, kBE_FileType_File );
 		const bool include_subfolders = ParameterAsBoolean ( parameters, 2, false );
 		const bool use_full_path = ParameterAsBoolean ( parameters, 3, false );
 
 		try {
-/*
-			path directory_path = *directory;
-			bool directory_exists = exists ( directory_path );
-			
-			if ( directory_exists ) {
-				
-				directory_iterator end_itr; // default construction yields past-the-end
-				directory_iterator itr ( directory_path );
 
-				TextAutoPtr list_of_files;
-				long want = ParameterAsLong ( parameters, 1, kBE_FileType_File );
-				
-				while ( itr != end_itr ) {
-					
-					bool is_folder = is_directory ( itr->status() );
-				
-					if (
-							(!is_folder && (want == kBE_FileType_File)) ||
-							(is_folder && (want == kBE_FileType_Folder)) ||
-							(want == kBE_FileType_ALL)
-						) {
-						TextAutoPtr file_name;
-						file_name->AssignWide ( itr->path().filename().wstring().c_str() );
-						list_of_files->AppendText ( *file_name );
-						list_of_files->AppendText ( *end_of_line );
-					}
-					
-					++itr;
-					
-				}
-
-				SetResult ( *list_of_files, results );
-				
-			} else {
-				error = kNoSuchFileOrDirectoryError;
-			}
-*/
 			BEValueListStringAutoPtr list_of_files ( list_files_in_directory ( *directory, file_type_wanted, include_subfolders ) );
 			if ( ! use_full_path ) {
 				list_of_files->remove_prefix ( *directory );
@@ -604,10 +565,8 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 			
 		} catch ( BEPlugin_Exception& e ) {
 			error = e.code();
-//		} catch ( filesystem_error& e ) {
-//			error = e.code().value();
 		}
-
+		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
