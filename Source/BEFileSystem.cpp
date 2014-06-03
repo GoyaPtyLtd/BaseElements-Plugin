@@ -75,6 +75,10 @@ BEValueListStringAutoPtr list_files_in_directory ( const boost::filesystem::path
 				
 				bool is_folder = is_directory ( itr->status() );
 				
+				if ( is_folder && recurse ) {
+					list_of_files->append ( *list_files_in_directory ( itr->path(), file_type_wanted, recurse ) );
+				}
+
 				if (
 					(!is_folder && (file_type_wanted == kBE_FileType_File)) ||
 					(is_folder && (file_type_wanted == kBE_FileType_Folder)) ||
@@ -83,9 +87,6 @@ BEValueListStringAutoPtr list_files_in_directory ( const boost::filesystem::path
 					
 					list_of_files->append ( itr->path().string().c_str() );
 
-					if ( is_folder && recurse ) {
-						list_of_files->append ( *list_files_in_directory ( itr->path(), file_type_wanted ) );
-					}
 				}
 				
 				++itr;
