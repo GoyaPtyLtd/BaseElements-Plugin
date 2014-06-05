@@ -1,0 +1,270 @@
+########################################################################
+Version 2.3b1
+########################################################################
+
+June 3, 2014
+
+New Functions
+
+BE_Decrypt_AES
+BE_Encrypt_AES
+BE_SaveFileDialog
+
+Changes
+
+BE_ExecuteShellCommand, BE_ExecuteSystemCommand: improved error handling
+BE_ClipboardFormats, BE_ClipboardText, BE_SetClipboardText: support CF_FILEGROUPDESCRIPTORW, CF_FILENAMEW & CF_FILENAMEMAPW clipboard formats (Win)
+BE_FileMakerSQL: fix memory leak
+BE_ListFilesInFolder: option to list contents recursively
+BE_ListFilesInFolder: option to return full, rather than relative paths
+BE_SaveURLToFile: optionally show a progress dialog
+BE_Zip: zip multiple files/folders
+
+Load correctly on XP (broken in 2.1)
+
+
+########################################################################
+Version 2.2.2
+########################################################################
+
+April 11, 2014
+
+Changes
+
+Update OpenSSL for the "Heartbleed" bug (Win)
+
+
+########################################################################
+Version 2.2.1
+########################################################################
+
+March 12, 2014
+
+Changes
+
+Allow working with large files for all XML functions
+BE_XPath, BE_XPathAll: return an empty string when getting an empty node set as xml
+BE_Zip: correctly set the path delimiters when adding files to an archive (Win)
+
+
+########################################################################
+Version 2.2
+########################################################################
+
+February 25, 2014
+
+New Functions
+
+BE_SplitBEFileNodes
+
+Changes
+
+BE_ExecuteShellCommand: work-around for crashing bug
+BE_ExecuteSystemCommand: never return output when the timeout is 0
+BE_ListFilesInFolder: return "?" and sets BE_GetLastError when the directory does not exist
+BE_MessageDigest: correctly handle unicode input
+BE_SelectFile: allow selection of multiple files
+BE_SelectFile, BE_SelectFolder: use modern dialogs on Vista and later (Win)
+BE_XPAth: optionally return node values as XML
+BE_XPath, BE_XPathAll: support objects of type XPATH_BOOLEAN, XPATH_NUMBER and XPATH_STRING
+BE_Unzip, BE_Zip: allow control over the name/destination of the output
+
+
+########################################################################
+Version 2.1
+########################################################################
+
+June 19, 2013
+
+New Functions
+
+BE_Curl_Set_Option
+BE_HTTP_PUT_Data
+BE_HTTP_PUT_File
+BE_JSON_ArraySize
+BE_JSON_Encode
+BE_JSON_Error_Description
+BE_JSONPath
+BE_OAuth_RequestAccessToken
+BE_ProgressDialog
+BE_ProgressDialog_Update
+BE_Values_FilterOut
+BE_Values_Sort
+BE_Values_Unique
+
+Changes
+
+BE_CreateFolder: create directory structures recursively
+BE_ClipboardFormats, BE_ClipboardText, BE_SetClipboardText: support default/system clipboard format names on (Win)
+BE_StripXMLNodes: handle nested CDATA sections correctly
+
+
+########################################################################
+Version 2.0
+########################################################################
+
+February 5, 2013
+
+New Functions
+
+BE_Base64_URL_Encode
+BE_CurrentTimeMilliseconds
+BE_ExecuteSystemCommand
+BE_FileSize
+BE_HTTP_Delete
+BE_HTTP_PUT
+BE_HTTP_Set_Proxy
+BE_StripXMLNodes
+BE_TimeZoneOffset
+BE_UTCMilliseconds
+
+Changes
+
+BE_Base64_Decode: Base 64 URL decode support added
+BE_Base64_Encode: encode images in container fields
+BE_ExecuteShellCommand: depreciated
+BE_FileMakerTables, BE_FileMakerFields: depreciated
+BE_GetLastError: do not reset the last error when calling BE_GetURL, BE_SaveURLToFile & BE_HTTP_[POST|PUT|DELETE]
+BE_GetPreferences, BE_SetPreferences: fix memory leak (OS X)
+BE_HTTP_POST: added options for username and password
+BE_SelectFolder: "New Folder" button added
+BE_VersionAutoUpdate: now uses the form: xx Major version xx Minor version xx Revision xx Build
+BE_Zip: bug fix
+
+64-bit support
+
+
+########################################################################
+Version 1.3.2
+########################################################################
+
+June 19, 2012
+
+Changes
+
+BE_GetURL: bug fix
+BE_Unzip: bug fix
+
+
+########################################################################
+Version 1.3.1
+########################################################################
+
+March 2, 2012
+
+Changes
+
+BE_Base64_Decode: both parameters are required
+BE_Base64_Decode, BE_Base64_Encode: bug fix
+
+
+########################################################################
+Version 1.3
+########################################################################
+
+January 31, 2012
+
+New Functions
+
+BE_Base64_Decode
+BE_Base64_Encode
+BE_GetLastDDLError
+BE_GetPreferences
+BE_HTTP_POST
+BE_HTTP_Response_Code
+BE_HTTP_Response_Headers
+BE_HTTP_Set_Custom_Header
+BE_OpenFile
+BE_SetPreferences
+BE_SetTextEncoding
+BE_Unzip
+BE_Zip
+
+Changes
+
+BE_FileMakerSQL: accept multi-character delimiters
+BE_FileMakerSQL: option to specify the database
+BE_GetURL, BE_SaveURLToFile: HTTPS enabled
+BE_SelectFile, BE_SelectFolder: option to specify the folder to start in
+
+
+########################################################################
+Version 1.2.1
+########################################################################
+
+August 19, 2011
+
+Changes
+
+BE_ExecuteShellCommand: bug fix
+
+
+########################################################################
+Version 1.2
+########################################################################
+
+July 26, 2011
+
+New Functions
+
+BE_ApplyXSLTInMemory
+BE_ExecuteScript
+BE_FileMakerSQL
+BE_GetLastError
+BE_GetURL
+BE_MessageDigest
+BE_SaveURLToFile
+BE_XPath
+BE_XPathAll
+
+Changes
+
+BE_CopyFiles: handle directories
+BE_ExecuteShellCommand: waitForResponse parameter added
+
+
+########################################################################
+Version 1.1
+########################################################################
+
+May 2, 2011
+
+New Functions
+
+BE_CopyFile
+BE_ExecuteShellCommand
+BE_FileMaker_Fields
+BE_FileMaker_Tables
+BE_ListFilesInFolder
+BE_MoveFile
+BE_OpenURL
+
+Changes
+
+BE_CreateFolder & BE_DeleteFile return error codes rather than ? for filesystem errors
+BE_FileExists, BE_ReadTextFromFile, BE_WriteTextToFile & BE_StripInvalidUTF16CharactersFromXMLFile use the boost filesystem error code rather than the generic kFilesystemError where possible
+BE_WriteTextToFile: allow text to be appended to a file (not just create/overwrite it)
+BE_WriteTextToFile returns an error code, 0 on success, not a boolean, true on success
+
+########################################################################
+Version 1.0
+########################################################################
+
+October 8, 2010
+
+BE_Version
+BE_VersionAutoUpdate
+BE_ClipboardFormats
+BE_ClipboardText
+BE_SetClipboardText
+BE_CreateFolder
+BE_DeleteFile
+BE_FileExists
+BE_ReadTextFromFile
+BE_WriteTextToFile
+BE_SelectFile
+BE_SelectFolder
+BE_DisplayDialog
+BE_ApplyXSLT
+BE_ExtractScriptVariables
+BE_StripInvalidUTF16CharactersFromXMLFile
