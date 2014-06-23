@@ -1,8 +1,8 @@
 ########################################################################
-Version 2.3b1
+Version 2.3
 ########################################################################
 
-June 3, 2014
+June 23, 2014
 
 New Functions
 
@@ -20,7 +20,7 @@ BE_ListFilesInFolder: option to return full, rather than relative paths
 BE_SaveURLToFile: optionally show a progress dialog
 BE_Zip: zip multiple files/folders
 
-Load correctly on XP (broken in 2.1)
+Load correctly on XP (broken in 2.2)
 
 
 ########################################################################

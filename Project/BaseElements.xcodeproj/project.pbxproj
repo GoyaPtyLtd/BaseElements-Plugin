@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		4D0023E413FDD64C00C0B57A /* BEShell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0023E213FDD64C00C0B57A /* BEShell.cpp */; };
 		4D00CC5A16D3279000160030 /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
+		4D05C5F71954071700733B6F /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05C5F61954071700733B6F /* libldap.dylib */; };
 		4D10AD951484202000814440 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4D13006816DADD8A0075FE0C /* BEOAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D13006616DADD8A0075FE0C /* BEOAuth.cpp */; };
 		4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
-		4D27C380186115E300E7F4A1 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C37F186115E300E7F4A1 /* libcurl.dylib */; };
 		4D27C382186115EB00E7F4A1 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C381186115EB00E7F4A1 /* libssl.dylib */; };
 		4D27C384186115F300E7F4A1 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C383186115F300E7F4A1 /* libcrypto.dylib */; };
 		4D27C3861861160000E7F4A1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
@@ -28,6 +28,8 @@
 		4D760F7D15AD52C7001A0BAF /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
 		4D760F8015AD648F001A0BAF /* BEXMLReaderInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */; };
 		4D76701F16CDC17A00010A75 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76701E16CDC17A00010A75 /* libjansson.a */; };
+		4D838A4B1953F8D100E55DE7 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D838A4A1953F8D100E55DE7 /* libssh2.a */; };
+		4D838A4D1953F90600E55DE7 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D838A4C1953F90600E55DE7 /* libcurl.a */; };
 		4D8824E711E93F6000F94475 /* BEPluginUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */; };
 		4D8BA595134579BD003A90B5 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8BA594134579BD003A90B5 /* libboost_thread.a */; };
 		4D9E2B0C118A9F4A00EC9352 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */; };
@@ -82,6 +84,7 @@
 		4D00CC6516D3357C00160030 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		4D00CC6616D3357C00160030 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		4D00CC6716D3357C00160030 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		4D05C5F61954071700733B6F /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = usr/lib/libldap.dylib; sourceTree = SDKROOT; };
 		4D10AD931484202000814440 /* BESQLCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESQLCommand.cpp; path = ../Source/BESQLCommand.cpp; sourceTree = SOURCE_ROOT; };
 		4D10AD941484202000814440 /* BESQLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESQLCommand.h; path = ../Source/BESQLCommand.h; sourceTree = SOURCE_ROOT; };
 		4D13006616DADD8A0075FE0C /* BEOAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEOAuth.cpp; path = ../Source/BEOAuth.cpp; sourceTree = "<group>"; };
@@ -119,6 +122,8 @@
 		4D76701E16CDC17A00010A75 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/libjansson.a; sourceTree = "<group>"; };
 		4D7FCA5C11E9308B0047A453 /* BaseElements.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = BaseElements.strings; path = ../Resources/BaseElements.strings; sourceTree = SOURCE_ROOT; };
 		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Info.plist; sourceTree = SOURCE_ROOT; };
+		4D838A4A1953F8D100E55DE7 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/libssh2.a; sourceTree = "<group>"; };
+		4D838A4C1953F90600E55DE7 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/libcurl.a; sourceTree = "<group>"; };
 		4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginUtilities.cpp; path = ../Source/BEPluginUtilities.cpp; sourceTree = SOURCE_ROOT; };
 		4D8824E611E93F6000F94475 /* BEPluginUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginUtilities.h; path = ../Source/BEPluginUtilities.h; sourceTree = SOURCE_ROOT; };
 		4D8BA594134579BD003A90B5 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../Libraries/libboost_thread.a; sourceTree = SOURCE_ROOT; };
@@ -175,11 +180,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D05C5F71954071700733B6F /* libldap.dylib in Frameworks */,
 				4D27C3861861160000E7F4A1 /* Cocoa.framework in Frameworks */,
 				4DDA52E216D355A300E10827 /* libz.dylib in Frameworks */,
 				4D27C384186115F300E7F4A1 /* libcrypto.dylib in Frameworks */,
 				4D27C382186115EB00E7F4A1 /* libssl.dylib in Frameworks */,
-				4D27C380186115E300E7F4A1 /* libcurl.dylib in Frameworks */,
 				4DDA52E716D355C100E10827 /* libiconv.dylib in Frameworks */,
 				4DDA52E816D355C800E10827 /* libxml2.dylib in Frameworks */,
 				4DDA52E916D355D200E10827 /* libxslt.dylib in Frameworks */,
@@ -195,6 +200,8 @@
 				4D9E2B0C118A9F4A00EC9352 /* libboost_system.a in Frameworks */,
 				4D8BA595134579BD003A90B5 /* libboost_thread.a in Frameworks */,
 				4DEB348816FA7A7B004AD91C /* libboost_date_time.a in Frameworks */,
+				4D838A4B1953F8D100E55DE7 /* libssh2.a in Frameworks */,
+				4D838A4D1953F90600E55DE7 /* libcurl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +221,8 @@
 		4D9EEE5D118A8C9600EC9352 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				4D838A4C1953F90600E55DE7 /* libcurl.a */,
+				4D838A4A1953F8D100E55DE7 /* libssh2.a */,
 				4D3884FD17FE6DDC00E1894F /* liboauth.a */,
 				4D76701E16CDC17A00010A75 /* libjansson.a */,
 				4DEB348716FA7A7B004AD91C /* libboost_date_time.a */,
@@ -327,6 +336,7 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D05C5F61954071700733B6F /* libldap.dylib */,
 				4D27C3851861160000E7F4A1 /* Cocoa.framework */,
 				4D27C383186115F300E7F4A1 /* libcrypto.dylib */,
 				4D27C381186115EB00E7F4A1 /* libssl.dylib */,
@@ -471,7 +481,10 @@
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../Libraries";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/../Libraries",
+					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
+				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
@@ -504,7 +517,10 @@
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../Libraries";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/../Libraries",
+					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
+				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
