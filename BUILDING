@@ -348,42 +348,30 @@ Download the source from
 and expand it into a directory on the Desktop.
 
 Open
-	vs\vc8\lib\vc8libcurl.vcproj
+	projects\Windows\VC10\curl.vcproj
 
-and set the following Configuration Properties:
+and set the following Configuration Properties in the "LIB Release - LIB OpenSSL" configuration for both Win32 and x64 platforms:
 
 	Project Defaults -> Character Set == Use Unicode Character Set
-	C/C++ -> Preprocessor -> Preprocessor Definitions ... add USE_SSLEAY
-	C/C++ -> Preprocessor -> Preprocessor Definitions ... add USE_OPENSSL
 	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
 
 
-In Visual Studio and select "Batch Build" and check the "Release" configuration and then "Build".
+In Visual Studio and select "Batch Build" and check the LIB Release - LIB OpenSSL" configuration for both Win32 and x64 platforms and then "Build".
 
 Copy the library from
 
-	curl-7.36.0\vs\vc8\lib\Release\libcurl.lib
+	curl-7.37.0\build\Win32\VC10\LIB Release - LIB OpenSSL\libcurl.lib
 
 into the Libraries directory and copy
 
-	curl-7.36.0\include\curl
+	curl-7.37.0\build\Win64\VC10\LIB Release - LIB OpenSSL\libcurl.lib
+
+into the Libraries\x64 directory and copy
+
+	curl-7.37.0\include\curl
 
 to the Headers directory.
-
-For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK".
-
-Set the following Configuration Property:
-
-	Librarian -> General -> Target Machine == MachineX64 (/MACHINE:X64)
-
-Select "Batch Build" and check the "Release" configuration for the "x64" platform and then "Build".
-
-Copy the library from
-
-	curl-7.36.0\vs\vc8\lib\Release\libcurl.lib
-
-into the Libraries\x64 directory.
 
 
 =======================================================================
