@@ -1326,13 +1326,17 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		vector<unsigned char> decoded = Base64_Decode ( text );
 		
 		std::vector<unsigned char>::iterator it = find ( decoded.begin(), decoded.end(), FILEMAKER_END_OF_LINE_CHAR );
-		
-		vector<unsigned char> input_vector ( decoded.begin(), it );
-		
-		decoded.erase ( decoded.begin(), it + 1 ); // remove the input vector from the input
-		
-		const vector<unsigned char> decrypted_data = Decrypt_AES ( key, decoded, input_vector );
-		SetResult ( decrypted_data, results );
+		if ( it != decoded.end() ) {
+			
+			const vector<unsigned char> input_vector ( decoded.begin(), it );
+			decoded.erase ( decoded.begin(), it + 1 ); // remove the input vector from the input
+			const vector<unsigned char> decrypted_data = Decrypt_AES ( key, decoded, input_vector );
+			
+			SetResult ( decrypted_data, results );
+			
+		} else {
+			error = kDecryptionInputVectorNotFound;
+		}
 		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();

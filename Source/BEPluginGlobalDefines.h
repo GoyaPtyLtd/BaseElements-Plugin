@@ -73,9 +73,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"2.3.0"
-#define	AUTO_UPDATE_VERSION L"02030000"
-#define VERSION_STRING "2.3"
+#define	VERSION_NUMBER_STRING L"2.3.1"
+#define	AUTO_UPDATE_VERSION L"02030001"
+#define VERSION_STRING "2.3b1"
 
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -199,7 +199,8 @@ enum errors {
 	kKeyEncodingError = 14000,
 	kEncryptionInitialisationFailed = 14001,
 	kEncryptionUpdateFailed = 14002,
-	kDecryptionUpdateFailed = 14003
+	kDecryptionUpdateFailed = 14003,
+	kDecryptionInputVectorNotFound = 14004
 };
 
 
