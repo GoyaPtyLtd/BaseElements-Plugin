@@ -39,16 +39,16 @@ BEWinCommonFileOpenDialog::BEWinCommonFileOpenDialog ( WStringAutoPtr dialog_pro
     file_dialog.lpstrFilter = (LPCWSTR)L"All Files (*.*)\0*.*\0";
 	file_dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT;
 
-	wcscpy_s ( cfg_prompt, MAX_PATH, dialog_prompt->c_str() );
+	wcscpy_s ( cfg_prompt, PATH_MAX, dialog_prompt->c_str() );
 	file_dialog.lpstrTitle = cfg_prompt;
 
-	wcscpy_s ( cfg_in_folder, MAX_PATH, start_in_folder->c_str() );
+	wcscpy_s ( cfg_in_folder, PATH_MAX, start_in_folder->c_str() );
 	file_dialog.lpstrInitialDir = cfg_in_folder;
 
 	path[0] = '\0';
 	file_dialog.lpstrFile = path;
 
-	file_dialog.nMaxFile = MAX_PATH;
+	file_dialog.nMaxFile = PATH_MAX;
 }
 
 

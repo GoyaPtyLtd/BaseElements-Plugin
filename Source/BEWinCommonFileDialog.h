@@ -33,10 +33,10 @@ public:
 protected:
 	
 		OPENFILENAME file_dialog;
-		wchar_t path[MAX_PATH];
+		wchar_t path[PATH_MAX];
 
-		wchar_t cfg_prompt[MAX_PATH];
-		wchar_t cfg_in_folder[MAX_PATH];
+		wchar_t cfg_prompt[PATH_MAX];
+		wchar_t cfg_in_folder[PATH_MAX];
 	
 };
 
