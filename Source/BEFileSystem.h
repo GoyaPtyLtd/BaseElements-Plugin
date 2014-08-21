@@ -20,7 +20,7 @@
 
 
 bool recursive_directory_copy ( const boost::filesystem::path & from, const boost::filesystem::path & to  );
-BEValueListStringAutoPtr list_files_in_directory ( const boost::filesystem::path & directory, const long file_type_wanted, const bool recurse );
+BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::path & directory, const long file_type_wanted, const bool recurse );
 
 
 #endif // BEFILESYSTEM_H

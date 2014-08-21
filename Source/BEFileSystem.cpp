@@ -56,10 +56,10 @@ bool recursive_directory_copy ( const path & from, const path & to  ) {
 } // recursive_directory_copy
 
 
-BEValueListStringAutoPtr list_files_in_directory ( const boost::filesystem::path & directory, const long file_type_wanted = kBE_FileType_ALL, const bool recurse = false )
+BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::path & directory, const long file_type_wanted = kBE_FileType_ALL, const bool recurse = false )
 {
 
-	BEValueListStringAutoPtr list_of_files ( new BEValueList<string> );
+	BEValueListWideStringAutoPtr list_of_files ( new BEValueList<wstring> );
 	
 	try {
 		
@@ -85,7 +85,7 @@ BEValueListStringAutoPtr list_files_in_directory ( const boost::filesystem::path
 					(file_type_wanted == kBE_FileType_ALL)
 					) {
 					
-					list_of_files->append ( itr->path().string().c_str() );
+					list_of_files->append ( itr->path().wstring() );
 
 				}
 				
