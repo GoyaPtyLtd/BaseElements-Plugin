@@ -664,7 +664,7 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 	 choice on OS X
 	 */
 
-	int button_clicked = MessageBox ( GetDesktopWindow(), message->c_str(), title->c_str(), type );
+	int button_clicked = MessageBox ( GetForegroundWindow(), message->c_str(), title->c_str(), type );
 
 	unsigned long response = 0;
 

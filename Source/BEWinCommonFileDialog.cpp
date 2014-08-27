@@ -35,7 +35,7 @@ BEWinCommonFileOpenDialog::BEWinCommonFileOpenDialog ( WStringAutoPtr dialog_pro
     ZeroMemory ( &file_dialog, sizeof ( file_dialog ) );
 
 	file_dialog.lStructSize = sizeof ( file_dialog ); 
-	file_dialog.hwndOwner = GetDesktopWindow();
+	file_dialog.hwndOwner = GetForegroundWindow();
     file_dialog.lpstrFilter = (LPCWSTR)L"All Files (*.*)\0*.*\0";
 	file_dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT;
 

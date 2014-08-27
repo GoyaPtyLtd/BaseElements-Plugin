@@ -91,7 +91,7 @@ WStringAutoPtr BEWinIFileOpenDialog::Show ( )
                     if ( SUCCEEDED ( hr ) ) {
 					
 						// Show the dialog
-						hr = file_dialog->Show ( NULL );
+						hr = file_dialog->Show ( GetForegroundWindow() );
 						if ( SUCCEEDED ( hr ) ) {
 							selected_files = GetSelection ( );					
 						} else {
@@ -217,7 +217,7 @@ WStringAutoPtr BEWinIFileSaveDialog::Show ( )
 						if ( SUCCEEDED ( hr ) ) {
 
 							// Show the dialog
-							hr = file_dialog->Show ( NULL );
+							hr = file_dialog->Show ( GetForegroundWindow() );
 							if ( SUCCEEDED ( hr ) ) {
 								selected_files = GetSelection ( );					
 							} else {
