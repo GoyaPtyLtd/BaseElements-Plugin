@@ -719,7 +719,7 @@ LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam )
 		// there may be other installed hooks
 		CallNextHookEx ( g_window_hook, nCode, wParam, lParam );
 	}
-	
+
 	return result;
 
 } // CBTProc
@@ -741,7 +741,7 @@ fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAu
 
 	progress_dialog_maximum = maximum;
 
-	HWND parent_window = GetDesktopWindow ( );
+	HWND parent_window = GetForegroundWindow();
 	HRESULT result = CoCreateInstance ( CLSID_ProgressDialog, NULL, CLSCTX_INPROC_SERVER, IID_IProgressDialog, (void**)&progress_dialog );
 
 	if ( result == S_OK ) {
