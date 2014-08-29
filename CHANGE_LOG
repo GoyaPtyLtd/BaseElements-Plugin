@@ -1,4 +1,18 @@
 ########################################################################
+Version 2.3.1
+########################################################################
+
+August 29, 2014
+
+Changes
+
+BE_Decrypt_AES: fix crash when supplied with data not encoded with BE_Encrypt_AES
+BE_ListFilesInFolder: correct a problem when listing Unicode file names
+
+Correct focus problems with dislog function on Windows.
+
+
+########################################################################
 Version 2.3
 ########################################################################
 
