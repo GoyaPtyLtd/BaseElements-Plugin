@@ -2269,21 +2269,16 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environme
 
 
 FMX_PROC(errcode) BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{	
+{
 	errcode error = NoError();
-		
+	
 	try {
 		
 		StringAutoPtr message = ParameterAsUTF8String ( parameters, 0 );
-		unsigned long type = ParameterAsLong( parameters, 1, kBE_MessageDigestType_SHA256 );
-
-		StringAutoPtr digest;
-
-		if ( type == kBE_MessageDigestType_MD5 ) {
-			digest = MD5 ( message );
-		} else { // the default is SHA256
-			digest = SHA256 ( message );
-		}
+		const unsigned long algorithm = ParameterAsLong( parameters, 1, kBE_MessageDigestAlgorithm_SHA256 );
+		const unsigned long output_type = ParameterAsLong( parameters, 2, kBE_Encoding_Hex );
+		
+		string digest = message_digest ( *message, algorithm, output_type );
 		
 		SetResult ( digest, results );
 		
@@ -2292,11 +2287,38 @@ FMX_PROC(errcode) BE_MessageDigest ( short /* funcId */, const ExprEnv& /* envir
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
-	}	
+	}
 	
 	return MapError ( error );
 	
-} // BE_FileMaker_TablesOrFields
+} // BE_MessageDigest
+
+
+FMX_PROC(errcode) BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr message = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr key = ParameterAsUTF8String ( parameters, 1 );
+		const unsigned long algorithm = ParameterAsLong( parameters, 2, kBE_MessageDigestAlgorithm_SHA1 );
+		const unsigned long output_type = ParameterAsLong( parameters, 3, kBE_Encoding_Hex );
+		
+		string digest = HMAC ( *message, algorithm, output_type, *key );
+		
+		SetResult ( digest, results );
+		
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_HMAC
 
 
 

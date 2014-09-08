@@ -102,6 +102,7 @@ FMX_PROC(fmx::errcode) BE_OpenFile ( short /*funcId*/, const fmx::ExprEnv& /* en
 FMX_PROC(fmx::errcode) BE_ExecuteScript ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_MessageDigest ( short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_HMAC ( short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 FMX_PROC(fmx::errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );

@@ -53,7 +53,7 @@
 "152" = "BE_GetURL ( url {; filename ; username ; password } )";
 "153" = "BE_GetLastError";
 
-"154" = "BE_MessageDigest ( text {; type } )";
+"154" = "BE_MessageDigest ( text {; algorithm ; encoding } )";
 
 "155" = "BE_GetLastDDLError";
 
@@ -122,6 +122,9 @@
 "501" = "BE_Decrypt_AES ( key ; text )";
 
 
+"550" = "BE_HMAC ( text ; key {; algorithm ; encoding } )";
+
+
 // replaces 120 BE_ExecuteShellCommand
 "1120" = "BE_ExecuteSystemCommand ( command { ; timeout } )";
 
@@ -131,13 +134,21 @@
 "1002" = "BE_CancelButton";
 "1003" = "BE_AlternateButton";
 
-"2001" = "BE_MessageDigestType_MD5";
-"2002" = "BE_MessageDigestType_SHA256";
+"2001" = "BE_MessageDigestAlgorithm_MD5";
+"2002" = "BE_MessageDigestAlgorithm_SHA256";
+//"2003" = "BE_MessageDigestAlgorithm_MD2";
+"2004" = "BE_MessageDigestAlgorithm_MDC2";
+//"2005" = "BE_MessageDigestAlgorithm_RMD160";
+"2006" = "BE_MessageDigestAlgorithm_SHA";
+"2007" = "BE_MessageDigestAlgorithm_SHA1";
+"2008" = "BE_MessageDigestAlgorithm_SHA224";
+"2009" = "BE_MessageDigestAlgorithm_SHA384";
+"2010" = "BE_MessageDigestAlgorithm_SHA512";
 
 "3000" = "BE_FileType_All";
 "3001" = "BE_FileType_File";
 "3002" = "BE_FileType_Folder";
 
-
-
-
+"4000" = "BE_Encoding_None";
+"4001" = "BE_Encoding_Hex";
+"4002" = "BE_Encoding_Base64";

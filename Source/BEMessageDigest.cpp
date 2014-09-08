@@ -2,7 +2,7 @@
  BEMessageDigest.cpp
  BaseElements Plug-In
  
- Copyright 2011 Goya. All rights reserved.
+ Copyright 2011-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -10,64 +10,126 @@
  */
 
 #include "BEMessageDigest.h"
-
+#include "BEBase64.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "openssl/evp.h"
 #include "openssl/sha.h"
+#include "openssl/hmac.h"
+
+#include <vector>
+
+#include "boost/algorithm/hex.hpp"
 
 
-StringAutoPtr MD5 ( StringAutoPtr message )
+using namespace std;
+
+
+EVP_MD message_digest_algorithm ( const unsigned long algorithm )
 {
-	unsigned char md5_hash [ EVP_MAX_MD_SIZE ];
-	EVP_MD_CTX md5_context;
-	unsigned int md5_length;
-	
-	EVP_DigestInit ( &md5_context, EVP_md5() );
-	EVP_DigestUpdate ( &md5_context, message->data(), message->size() );
-	EVP_DigestFinal_ex ( &md5_context, md5_hash, &md5_length );
-	EVP_MD_CTX_cleanup ( &md5_context );
-	
-	// convert the digest to hex
-	char output [ EVP_MAX_MD_SIZE ];
-	unsigned int i = 0;
-    for ( i = 0; i < md5_length; i++ ) {
-        sprintf ( output + (i * 2), "%02x", md5_hash[i] );
-    }
-    output[ 2 * md5_length ] = 0;
-	
+	EVP_MD type;
+	switch ( algorithm ) {
+			
+			//		case kBE_MessageDigestAlgorithm_MD2:
+			//			type = EVP_m;
+			//			break;
+			
+		case kBE_MessageDigestAlgorithm_MD5:
+			type = *EVP_md5();
+			break;
+			
+		case kBE_MessageDigestAlgorithm_MDC2:
+			type = *EVP_mdc2();
+			break;
+			
+			//		case kBE_MessageDigestAlgorithm_RMD160:
+			//			type = EVP_md;
+			//			break;
+			
+		case kBE_MessageDigestAlgorithm_SHA:
+			type = *EVP_sha();
+			break;
+			
+		case kBE_MessageDigestAlgorithm_SHA1:
+			type = *EVP_sha1();
+			break;
+			
+		case kBE_MessageDigestAlgorithm_SHA224:
+			type = *EVP_sha224();
+			break;
+			
+		case kBE_MessageDigestAlgorithm_SHA256:
+			type = *EVP_sha256();
+			break;
+			
+		case kBE_MessageDigestAlgorithm_SHA384:
+			type = *EVP_sha384();
+			break;
+			
+		case kBE_MessageDigestAlgorithm_SHA512:
+			type = *EVP_sha512();
+			break;
+			
+		default:
+			throw 1;
+			break;
+	}
 
-	StringAutoPtr digest ( new std::string ( output ) );
-	
-	return digest;
+	return type;
 	
 }
 
 
-StringAutoPtr SHA256 ( StringAutoPtr message )
+string encode_digest ( const unsigned char * message_digest, const unsigned int message_digest_length, const unsigned long output_encoding )
 {
-	unsigned char sha256_hash [ SHA256_DIGEST_LENGTH ];
-	SHA256_CTX sha256_context;
+	string digest;
 	
-	SHA256_Init ( &sha256_context );
-	SHA256_Update ( &sha256_context, message->data(), message->size() );
-	SHA256_Final ( sha256_hash, &sha256_context );
-
-	// convert the digest to hex
-	const int size = 2 * SHA256_DIGEST_LENGTH;
-	char output [ size + 1 ];
-	int i = 0;
-    for ( i = 0; i < SHA256_DIGEST_LENGTH; i++ ) {
-        sprintf ( output + (i * 2), "%02x", sha256_hash[i] );
-    }
-    output [ size ] = 0;
-	
-	
-	StringAutoPtr digest ( new std::string ( output ) );
+	if ( output_encoding == kBE_Encoding_Base64 ) {
+		std::vector<unsigned char> data ( *message_digest, message_digest_length );
+		digest = *Base64_Encode ( data );
+	} else {
+		boost::algorithm::hex ( message_digest, message_digest + message_digest_length, std::back_inserter ( digest ) );
+	}
 	
 	return digest;
 
-}
+} // encode_digest
 
+
+string message_digest ( const string message, const unsigned long algorithm, const unsigned long output_encoding )
+{
+	EVP_MD type = message_digest_algorithm ( algorithm );
+	EVP_MD_CTX context;
+	
+	EVP_DigestInit ( &context, &type );
+	EVP_DigestUpdate ( &context, message.data(), message.size() );
+	
+	unsigned char message_digest [ EVP_MAX_MD_SIZE ];
+	unsigned int message_digest_length;
+	EVP_DigestFinal ( &context, message_digest, &message_digest_length );
+	
+	string digest = encode_digest ( message_digest, message_digest_length, output_encoding );
+	
+	return digest;
+	
+} // message_digest
+
+
+string HMAC ( const string message, const unsigned long algorithm, const unsigned long output_encoding, const string key )
+{
+	unsigned char hmac [ HMAC_MAX_MD_CBLOCK ];
+	unsigned int hmac_length;
+	HMAC_CTX hmac_context;
+	
+	EVP_MD type = message_digest_algorithm ( algorithm );
+
+	HMAC_Init ( &hmac_context, key.data(), key.size(), &type );
+	HMAC_Update ( &hmac_context, (const unsigned char *)message.data(), message.size() );
+	HMAC_Final ( &hmac_context, hmac, &hmac_length );
+		
+	string digest = encode_digest ( hmac, hmac_length, output_encoding );
+	
+	return digest;
+	
+} // HMAC
 

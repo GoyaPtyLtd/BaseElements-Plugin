@@ -74,7 +74,7 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"2.4.0"
-#define	AUTO_UPDATE_VERSION L"02030150"
+#define	AUTO_UPDATE_VERSION L"02030151"
 #define VERSION_STRING "2.4a1"
 
 
@@ -171,6 +171,7 @@ enum functions {
 	kBE_Values_Sort = 353,
 	kBE_Encrypt_AES = 500,
 	kBE_Decrypt_AES = 501,
+	kBE_HMAC = 550,
 	kBE_ExecuteSystemCommand = 1120
 };
 
@@ -208,8 +209,9 @@ enum errors {
 enum {
 	kBE_NumericConstantOffset = 1000,
 	kBE_ButtonOffset = 1000,
-	kBE_MessageDigestTypeOffset = 2000,
+	kBE_MessageDigestAlgorithmOffset = 2000,
 	kBE_FileTypeOffset = 3000,
+	kBE_EncodingOffset = 4000,
 	kBE_GetStringMaxBufferSize = 4096
 };
 

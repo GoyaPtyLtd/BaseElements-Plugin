@@ -7,6 +7,7 @@ September 8, 2014
 New Functions
 
 BE_ExportFieldContents
+BE_HMAC
 
 
 ########################################################################
@@ -20,7 +21,7 @@ Changes
 BE_Decrypt_AES: fix crash when supplied with data not encoded with BE_Encrypt_AES
 BE_ListFilesInFolder: correct a problem when listing Unicode file names
 
-Correct focus problems with dislog function on Windows.
+Correct focus problems with dialog functions on Windows.
 
 
 ########################################################################
