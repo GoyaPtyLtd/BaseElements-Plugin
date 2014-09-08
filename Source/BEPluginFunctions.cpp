@@ -478,6 +478,34 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 } // BE_StripInvalidUTF16CharactersFromXMLFile
 
 
+FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		vector<char> field_contents = ParameterAsVectorChar ( parameters, 0 );
+		WStringAutoPtr output_path = ParameterAsWideString ( parameters, 1 );
+		
+		boost::filesystem::path destination = *output_path;
+		boost::filesystem::ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
+		output_file.write ( &field_contents.front(), field_contents.size() );
+		
+		//		SetResult ( "", results );
+		
+	} catch ( filesystem_error& e ) {
+		g_last_error = e.code().value();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_ExportFieldContents
+
+
 FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();

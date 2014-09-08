@@ -35,6 +35,7 @@ FMX_PROC(fmx::errcode) BE_FileSize ( short funcId, const fmx::ExprEnv& environme
 FMX_PROC(fmx::errcode) BE_ReadTextFromFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_WriteTextToFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ExportFieldContents ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
 FMX_PROC(fmx::errcode) BE_MoveFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_CopyFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );

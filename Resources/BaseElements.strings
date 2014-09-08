@@ -73,6 +73,7 @@
 "173" = "BE_Base64_Encode ( data )";
 "174" = "BE_SetTextEncoding ( { encoding } )";
 "175" = "BE_Base64_URL_Encode ( data )";
+"176" = "BE_ExportFieldContents ( field ; outputPath )";
 
 
 "180" = "BE_HTTP_POST ( url ; parameters {; username ; password } )";
