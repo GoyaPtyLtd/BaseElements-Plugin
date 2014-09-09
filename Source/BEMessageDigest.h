@@ -22,9 +22,7 @@
 enum message_digest_algorithm {
 	kBE_MessageDigestAlgorithm_MD5 = 1,
 	kBE_MessageDigestAlgorithm_SHA256 = 2,
-	kBE_MessageDigestAlgorithm_MD2 = 3,
 	kBE_MessageDigestAlgorithm_MDC2 = 4,
-	kBE_MessageDigestAlgorithm_RMD160 = 5,
 	kBE_MessageDigestAlgorithm_SHA = 6,
 	kBE_MessageDigestAlgorithm_SHA1 = 7,
 	kBE_MessageDigestAlgorithm_SHA224 = 8,
@@ -34,9 +32,13 @@ enum message_digest_algorithm {
 
 
 enum message_digest_output_encoding {
-	kBE_Encoding_None = 0,
 	kBE_Encoding_Hex = 1,
 	kBE_Encoding_Base64 = 2
+};
+
+
+enum message_digest_error {
+	kBE_UnknownAlgorith = 15000
 };
 
 

@@ -2282,7 +2282,8 @@ FMX_PROC(errcode) BE_MessageDigest ( short /* funcId */, const ExprEnv& /* envir
 		
 		SetResult ( digest, results );
 		
-		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2305,11 +2306,12 @@ FMX_PROC(errcode) BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */
 		const unsigned long algorithm = ParameterAsLong( parameters, 2, kBE_MessageDigestAlgorithm_SHA1 );
 		const unsigned long output_type = ParameterAsLong( parameters, 3, kBE_Encoding_Hex );
 		
-		string digest = HMAC ( *message, algorithm, output_type, *key );
+		string hmac = HMAC ( *message, algorithm, output_type, *key );
 		
-		SetResult ( digest, results );
+		SetResult ( hmac, results );
 		
-		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {

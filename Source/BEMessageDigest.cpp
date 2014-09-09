@@ -11,6 +11,7 @@
 
 #include "BEMessageDigest.h"
 #include "BEBase64.h"
+#include "BEPluginException.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -24,15 +25,24 @@
 
 using namespace std;
 
+#pragma mark -
+#pragma mark Prototypes
+#pragma mark -
+
+EVP_MD message_digest_algorithm ( const unsigned long algorithm );
+string encode_digest ( const unsigned char * message_digest, const unsigned int message_digest_length, const unsigned long output_encoding );
+
+
+#pragma mark -
+#pragma mark "Private" Functions
+#pragma mark -
+
+// kBE_MessageDigestAlgorithm_MD2 & kBE_MessageDigestAlgorithm_RMD160 are deliberately omitted
 
 EVP_MD message_digest_algorithm ( const unsigned long algorithm )
 {
 	EVP_MD type;
 	switch ( algorithm ) {
-			
-			//		case kBE_MessageDigestAlgorithm_MD2:
-			//			type = EVP_m;
-			//			break;
 			
 		case kBE_MessageDigestAlgorithm_MD5:
 			type = *EVP_md5();
@@ -41,10 +51,6 @@ EVP_MD message_digest_algorithm ( const unsigned long algorithm )
 		case kBE_MessageDigestAlgorithm_MDC2:
 			type = *EVP_mdc2();
 			break;
-			
-			//		case kBE_MessageDigestAlgorithm_RMD160:
-			//			type = EVP_md;
-			//			break;
 			
 		case kBE_MessageDigestAlgorithm_SHA:
 			type = *EVP_sha();
@@ -71,7 +77,7 @@ EVP_MD message_digest_algorithm ( const unsigned long algorithm )
 			break;
 			
 		default:
-			throw 1;
+			throw BEPlugin_Exception ( kBE_UnknownAlgorith );
 			break;
 	}
 
@@ -95,6 +101,10 @@ string encode_digest ( const unsigned char * message_digest, const unsigned int 
 
 } // encode_digest
 
+
+#pragma mark -
+#pragma mark "Public" Functions
+#pragma mark -
 
 string message_digest ( const string message, const unsigned long algorithm, const unsigned long output_encoding )
 {
@@ -123,7 +133,7 @@ string HMAC ( const string message, const unsigned long algorithm, const unsigne
 	
 	EVP_MD type = message_digest_algorithm ( algorithm );
 
-	HMAC_Init ( &hmac_context, key.data(), key.size(), &type );
+	HMAC_Init ( &hmac_context, key.data(), (int)key.size(), &type );
 	HMAC_Update ( &hmac_context, (const unsigned char *)message.data(), message.size() );
 	HMAC_Final ( &hmac_context, hmac, &hmac_length );
 		
