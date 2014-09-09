@@ -91,7 +91,7 @@ string encode_digest ( const unsigned char * message_digest, const unsigned int 
 	string digest;
 	
 	if ( output_encoding == kBE_Encoding_Base64 ) {
-		std::vector<unsigned char> data ( *message_digest, message_digest_length );
+		std::vector<unsigned char> data ( message_digest, message_digest + message_digest_length );
 		digest = *Base64_Encode ( data );
 	} else {
 		boost::algorithm::hex ( message_digest, message_digest + message_digest_length, std::back_inserter ( digest ) );
