@@ -487,14 +487,22 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 		vector<char> field_contents = ParameterAsVectorChar ( parameters, 0 );
 		WStringAutoPtr output_path = ParameterAsWideString ( parameters, 1 );
 		
-		boost::filesystem::path destination = *output_path;
-		boost::filesystem::ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
-		output_file.write ( &field_contents.front(), field_contents.size() );
-		
+		try {
+			
+			boost::filesystem::path destination = *output_path;
+			boost::filesystem::ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
+			output_file.exceptions ( boost::filesystem::ofstream::failbit | boost::filesystem::ofstream::badbit );
+			output_file.write ( &field_contents.front(), field_contents.size() );
+			output_file.close();
+
+		} catch ( boost::filesystem::ofstream::failure& /* e */ ) {
+			error = errno; // cannot write to the file
+		} catch ( boost::filesystem::filesystem_error& e ) {
+			error = e.code().value();
+		}
+
 		//		SetResult ( "", results );
 		
-	} catch ( filesystem_error& e ) {
-		g_last_error = e.code().value();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
