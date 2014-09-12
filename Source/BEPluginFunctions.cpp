@@ -492,7 +492,13 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 			boost::filesystem::path destination = *output_path;
 			boost::filesystem::ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
 			output_file.exceptions ( boost::filesystem::ofstream::failbit | boost::filesystem::ofstream::badbit );
-			output_file.write ( &field_contents.front(), field_contents.size() );
+
+			if ( !field_contents.empty() ) {
+				output_file.write ( &field_contents.front(), field_contents.size() );
+			} else {
+				output_file.flush();
+			}
+
 			output_file.close();
 
 		} catch ( boost::filesystem::ofstream::failure& /* e */ ) {
