@@ -64,6 +64,7 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 	try {
 		
 		path directory_path = directory;
+		directory_path.make_preferred(); // force the correct path separator for the platform
 		bool directory_exists = exists ( directory_path );
 		
 		if ( directory_exists ) {
@@ -72,7 +73,7 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 			directory_iterator itr ( directory_path );
 						
 			while ( itr != end_itr ) {
-				
+
 				bool is_folder = is_directory ( itr->status() );
 				
 				if ( is_folder && recurse ) {
