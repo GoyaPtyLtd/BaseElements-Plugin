@@ -106,44 +106,50 @@ const long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_direc
 	long error = kNoError;
 	
 	path archive_path = *archive;
-	archive_path.make_preferred();
-	
-	path output_path = *output_directory;
-	if ( output_directory->empty() ) {
-		output_path = archive_path.parent_path();
-	}
-	output_path.make_preferred();
-	
-	unzFile zip_file = unzOpen64 ( archive_path.string().c_str() );
-	
-	if ( zip_file != NULL ) {
+
+	if ( exists ( archive_path ) ) {
 		
-	    unz_global_info64 file_info;
-	    error = unzGetGlobalInfo64 ( zip_file, &file_info );
-	    if ( error == UNZ_OK ) {
+		archive_path.make_preferred();
+		
+		path output_path = *output_directory;
+		if ( output_directory->empty() ) {
+			output_path = archive_path.parent_path();
+		}
+		output_path.make_preferred();
+		
+		unzFile zip_file = unzOpen64 ( archive_path.string().c_str() );
+		
+		if ( zip_file != NULL ) {
 			
-			for ( FMX_UInt32 i = 0; i < file_info.number_entry; i++ ) {
+			unz_global_info64 file_info;
+			error = unzGetGlobalInfo64 ( zip_file, &file_info );
+			if ( error == UNZ_OK ) {
 				
-				error = ExtractCurrentFile ( output_path, zip_file );
-				if ( error == UNZ_OK ) {
+				for ( FMX_UInt32 i = 0; i < file_info.number_entry; i++ ) {
 					
-					if ( ( i + 1 ) < file_info.number_entry ) {
-						error = unzGoToNextFile ( zip_file );
+					error = ExtractCurrentFile ( output_path, zip_file );
+					if ( error == UNZ_OK ) {
+						
+						if ( ( i + 1 ) < file_info.number_entry ) {
+							error = unzGoToNextFile ( zip_file );
+						}
+						
 					}
 					
-				}
-				
-				if ( error != UNZ_OK ) {
-					break;
+					if ( error != UNZ_OK ) {
+						break;
+					}
 				}
 			}
+			
+			long close_error = unzClose ( zip_file );
+			if ( error == UNZ_OK ) {
+				error = close_error;
+			}
 		}
-		
-		long close_error = unzClose ( zip_file );
-		if ( error == UNZ_OK ) {
-			error = close_error;
-		}
-		
+	
+	} else {
+		error = kNoSuchFileOrDirectoryError;
 	}
 	
 	return error;
@@ -386,7 +392,7 @@ const long Zip ( const BEValueList<std::string> * filenames, const StringAutoPtr
 	const path file = filenames->first();
 	const path archive_path = *archive;
 	
-	if ( archive->empty() || exists ( archive_path.parent_path() ) ) {
+	if ( exists ( file ) && (archive->empty() || exists ( archive_path.parent_path() )) ) {
 		
 		if ( archive->empty() ) {
 			*archive = file.string() + ".zip";
