@@ -433,6 +433,17 @@ vector<unsigned char> ParameterAsVectorUnsignedChar ( const DataVect& parameters
 }
 
 
+boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which )
+{
+	
+	WStringAutoPtr file = ParameterAsWideString ( parameters, which );
+	boost::filesystem::path path = *file;
+	
+	return path;
+	
+}
+
+
 #pragma mark -
 #pragma mark Files
 #pragma mark -

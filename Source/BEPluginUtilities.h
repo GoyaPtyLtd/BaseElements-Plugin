@@ -16,6 +16,8 @@
 
 #include "BEPluginGlobalDefines.h"
 
+#include "boost/filesystem/path.hpp"
+
 #include <vector>
 #include <stdint.h>
 
@@ -48,6 +50,7 @@ WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, const FM
 void ParameterAsChar ( const fmx::DataVect& parameters, const FMX_UInt32 which, char ** char_data, FMX_UInt32& size );
 std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which );
 std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which );
+boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which );
 
 
 StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path );
