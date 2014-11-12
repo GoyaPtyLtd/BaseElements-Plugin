@@ -1,4 +1,4 @@
-/*
+﻿/*
  BEXMLTextReader.cpp
  BaseElements Plug-In
  
@@ -11,7 +11,6 @@
 
 #include "BEXMLTextReader.h"
 
-
 #include <algorithm>
 #include <string>
 #include <iostream>
@@ -19,23 +18,36 @@
 
 #include "boost/filesystem.hpp"
 
+#if defined ( FMX_WIN_TARGET )
+	#include <fcntl.h>
+	#include <stdio.h>
+	#include <io.h>
+#endif
 
 #pragma mark -
 #pragma mark Constructors
 #pragma mark -
 
-
-BEXMLTextReader::BEXMLTextReader ( const string path )
+BEXMLTextReader::BEXMLTextReader ( const boost::filesystem::path path )
 {
 	last_node = false;
 	error_report = "";
 	
-	boost::filesystem::path file = path;
+	file = path;
 	bool file_exists = boost::filesystem::exists ( file );
 
 	if ( file_exists ) {
 
+#if defined ( FMX_WIN_TARGET )
+
+		file_descriptor = _wopen ( file.c_str(), O_RDONLY | _O_WTEXT );
+		reader = xmlReaderForFd ( file_descriptor, NULL, NULL, XML_PARSE_HUGE );
+
+#else
+
 		reader = xmlReaderForFile ( path.c_str(), NULL, XML_PARSE_HUGE );
+		
+#endif
 
 		if ( reader != NULL ) {
 			xml_document = xmlTextReaderCurrentDoc ( reader );
@@ -53,9 +65,16 @@ BEXMLTextReader::BEXMLTextReader ( const string path )
 BEXMLTextReader::~BEXMLTextReader()
 {
 	xmlFreeTextReader ( reader );
+	
 	if ( xml_document ) {
 		xmlFreeDoc ( xml_document );
 	}
+	
+#if defined ( FMX_WIN_TARGET )
+	if ( file_descriptor ) {
+		_close ( file_descriptor );
+	}
+#endif
 	
 }
 
@@ -77,13 +96,24 @@ void BEXMLTextReader::read ( )
 }
 
 
-void BEXMLTextReader::error_reader (void * /* arg */, const char * msg, xmlParserSeverities /* severity */, xmlTextReaderLocatorPtr locator )
+void BEXMLTextReader::error_reader ( void * arg, const char * msg, xmlParserSeverities /* severity */, xmlTextReaderLocatorPtr locator )
 {
 	ostringstream error;
 
-	error << xmlTextReaderLocatorBaseURI ( locator ) << " at line ";
-	error << xmlTextReaderLocatorLineNumber ( locator ) << std::endl;
-	error << msg << std::endl;
+	xmlChar * uri = xmlTextReaderLocatorBaseURI ( locator );
+	if ( uri ) {
+		error << uri;
+		xmlFree ( uri );
+	} else {
+		boost::filesystem::path path = *((boost::filesystem::path *)arg);
+		error << path.string();
+	}
+
+	error << " at line ";
+	error << xmlTextReaderLocatorLineNumber ( locator );
+	error << " ";
+	error << msg;
+	error << std::endl;
 
 	error_report.append ( error.str() );
 }
@@ -92,7 +122,7 @@ void BEXMLTextReader::error_reader (void * /* arg */, const char * msg, xmlParse
 string BEXMLTextReader::parse ( )
 {
 		
-	xmlTextReaderSetErrorHandler ( reader, (xmlTextReaderErrorFunc) BEXMLTextReader::error_reader, 0 );
+	xmlTextReaderSetErrorHandler ( reader, (xmlTextReaderErrorFunc) BEXMLTextReader::error_reader, &file );
 	
 	int result = 1;
 
@@ -240,6 +270,7 @@ string BEXMLTextReader::raw_xml()
 			xmlBufferFree ( node_content );
 
 		} else {
+			string msg = xml_error->message;
 			throw BEXMLReaderInterface_Exception ( xml_error->code );
 		}
 

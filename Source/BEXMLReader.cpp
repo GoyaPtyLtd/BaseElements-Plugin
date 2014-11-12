@@ -14,10 +14,8 @@
 #include "BEXMLTextWriter.h"
 #include "BEFileTextReader.h"
 
-
 #include <algorithm>
 #include <string>
-
 
 #include "boost/filesystem.hpp"
 #include "boost/filesystem/fstream.hpp"
@@ -29,7 +27,7 @@ using namespace std;
 using namespace boost::filesystem;
 
 
-int StripXMLNodes ( const string input_file, const string output_file, const vector<string> node_names )
+int StripXMLNodes ( const path input_file, const path output_file, const vector<string> node_names )
 {
 
 	try {
@@ -97,6 +95,8 @@ int StripXMLNodes ( const string input_file, const string output_file, const vec
 			reader->read();
 		
 		}
+
+		writer->save();
 			
 	} catch ( BEXMLReaderInterface_Exception& e ) {
 		return e.code();

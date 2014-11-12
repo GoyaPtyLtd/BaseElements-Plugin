@@ -16,8 +16,9 @@
 
 #include "BEPluginUtilities.h"
 
+#include "boost/filesystem/path.hpp"
 
-int StripXMLNodes ( const std::string input_file, const std::string output_file, const std::vector<std::string> node_names );
+int StripXMLNodes ( const boost::filesystem::path input_file, const boost::filesystem::path output_file, const std::vector<std::string> node_names );
 int SplitBEXMLFiles ( const std::string input_file );
 
 

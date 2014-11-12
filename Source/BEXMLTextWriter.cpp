@@ -1,8 +1,8 @@
-/*
+﻿/*
  BEXMLTextWriter.cpp
  BaseElements Plug-In
  
- Copyright 2012 Goya. All rights reserved.
+ Copyright 2012-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -11,6 +11,8 @@
 
 #include "BEXMLTextWriter.h"
 
+#include "boost/filesystem.hpp"
+#include "boost/filesystem/fstream.hpp"
 
 #include <algorithm>
 #include <string>
@@ -23,12 +25,14 @@ using namespace std;
 #pragma mark Constructors
 #pragma mark -
 
-
-BEXMLTextWriter::BEXMLTextWriter ( const string path )
+BEXMLTextWriter::BEXMLTextWriter ( const boost::filesystem::path path )
 {
 
-	writer = xmlNewTextWriterFilename ( path.c_str(), 0 );
-	
+	file = path;
+
+	memory = xmlBufferCreate();
+	writer = xmlNewTextWriterMemory ( memory, 0 );
+
 	if ( writer == NULL ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -48,9 +52,10 @@ BEXMLTextWriter::BEXMLTextWriter ( const string path )
 
 BEXMLTextWriter::~BEXMLTextWriter()
 {
-//	return_code = xmlTextWriterEndDocument ( writer );
-	xmlTextWriterEndDocument ( writer );
+//	xmlTextWriterEndDocument ( writer );
 	xmlFreeTextWriter ( writer );
+	xmlBufferFree ( memory );
+
 }
 
 
@@ -111,4 +116,27 @@ void BEXMLTextWriter::write_raw ( const string to_write )
 	if ( return_code == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
+}
+
+
+void BEXMLTextWriter::save ( )
+{
+	
+	try {
+		
+		boost::filesystem::ofstream output_file ( file, ios_base::out | ios_base::binary );
+		output_file.exceptions ( boost::filesystem::ofstream::failbit | boost::filesystem::ofstream::badbit );
+		
+		xmlTextWriterEndDocument ( writer );
+		
+		output_file.write ( (const char *) memory->content, memory->use );
+		output_file.close();
+		
+	} catch ( boost::filesystem::ofstream::failure& /* e */ ) {
+		// cannot write to the file
+		throw BEXMLReaderInterface_Exception ( last_error ( errno ) );
+	} catch ( boost::filesystem::filesystem_error& e ) {
+		throw BEXMLReaderInterface_Exception ( last_error ( e.code().value() ) );
+	}
+
 }

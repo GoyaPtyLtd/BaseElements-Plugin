@@ -18,6 +18,7 @@
 #include "BEPluginUtilities.h"
 #include "BEXMLReaderInterface.h"
 
+#include "boost/filesystem/path.hpp"
 
 #include <libxml/xmlreader.h>
 
@@ -34,7 +35,7 @@ class BEXMLTextReader : public BEXMLReaderInterface {
 	
 public:
 	
-	BEXMLTextReader ( const string path );
+	BEXMLTextReader ( const boost::filesystem::path path );
 	~BEXMLTextReader();
 	
 	void read ( );
@@ -63,10 +64,11 @@ public:
 	
 protected:
 	
+	boost::filesystem::path file;
 	bool last_node;
 	xmlTextReaderPtr reader;
 	xmlDocPtr xml_document;
-	
+	int file_descriptor;
 };
 
 

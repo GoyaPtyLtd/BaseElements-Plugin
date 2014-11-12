@@ -29,7 +29,6 @@
 
 #include "BEPluginFunctions.h"
 
-
 #include "BEXSLT.h"
 #include "BEWStringVector.h"
 #include "BECurl.h"
@@ -48,7 +47,6 @@
 #include "BEBase64.h"
 #include "BEOpenSSLAES.h"
 #include "BEPluginException.h"
-
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -910,8 +908,8 @@ FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* envir
 	
 	try {
 		
-		StringAutoPtr input_file = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr output_file = ParameterAsUTF8String ( parameters, 1 );
+		path input_file = ParameterAsPath ( parameters, 0 );
+		path output_file = ParameterAsPath ( parameters, 1 );
 		StringAutoPtr node_names = ParameterAsUTF8String ( parameters, 2 );
 		
 		vector<string> node_names_vector;
@@ -920,7 +918,7 @@ FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* envir
 			node_names_vector.push_back ( *it );
 		}
 		
-		error = StripXMLNodes ( *input_file, *output_file, node_names_vector );
+		error = StripXMLNodes ( input_file, output_file, node_names_vector );
 		SetResult ( error, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
@@ -941,13 +939,10 @@ FMX_PROC(errcode) BE_XML_Parse ( short /* funcId */, const ExprEnv& /* environme
 	
 	try {
 		
-		StringAutoPtr input_file = ParameterAsUTF8String ( parameters, 0 );
+		path input_file = ParameterAsPath ( parameters, 0 );
 		
-		BEXMLTextReader * reader = new BEXMLTextReader ( *input_file );
-		
+		auto_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
 		string result = reader->parse();
-		
-		delete reader;
 		
 		SetResult ( result, results );
 		
