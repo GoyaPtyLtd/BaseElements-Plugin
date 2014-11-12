@@ -438,6 +438,7 @@ boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_
 	
 	WStringAutoPtr file = ParameterAsWideString ( parameters, which );
 	boost::filesystem::path path = *file;
+	path.make_preferred();
 	
 	return path;
 	
