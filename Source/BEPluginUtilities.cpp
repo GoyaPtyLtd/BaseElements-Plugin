@@ -174,7 +174,7 @@ void SetResult ( vector<unsigned char> data, Data& results )
 
 
 
-void SetResult ( const string filename, const vector<char> data, Data& results )
+void SetResult ( const std::string filename, const vector<char> data, Data& results )
 {
 	bool as_binary = !filename.empty();
 	
@@ -207,7 +207,7 @@ void SetResult ( const string filename, const vector<char> data, Data& results )
 } // SetBinaryDataResult
 
 
-void SetResult ( const string filename, const vector<unsigned char> data, Data& results )
+void SetResult ( const std::string filename, const vector<unsigned char> data, Data& results )
 {
 	vector<char> char_data ( data.begin(), data.end() );
 	return SetResult ( filename, char_data, results );
@@ -449,17 +449,15 @@ boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_
 #pragma mark Files
 #pragma mark -
 
-StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path )
+StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path )
 {
-	
-	boost::filesystem::path filesystem_path = *path;
 	
 	StringAutoPtr result ( new string );
 	
-	if ( exists ( filesystem_path ) ) {
-		size_t length = (size_t)file_size ( filesystem_path ); // boost::uintmax_t
+	if ( exists ( path ) ) {
+		size_t length = (size_t)file_size ( path ); // boost::uintmax_t
 		
-		boost::filesystem::ifstream inFile ( filesystem_path, ios_base::in | ios_base::binary | ios_base::ate );
+		boost::filesystem::ifstream inFile ( path, ios_base::in | ios_base::binary | ios_base::ate );
 		inFile.seekg ( 0, ios::beg );
 		
 		// slurp up the file contents

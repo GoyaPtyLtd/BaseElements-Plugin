@@ -19,6 +19,7 @@
 
 #if defined ( FMX_WIN_TARGET )
 	#include "BEWinFunctions.h"
+	#include <tchar.h>
 #endif
 
 #if defined ( FMX_MAC_TARGET )
@@ -246,7 +247,7 @@ BECurl::BECurl ( )
 }
 
 
-BECurl::BECurl ( const string download_this, const be_http_method method, const string to_file, const string _username, const string _password, const string post_parameters, const char * put_data, const size_t size )
+BECurl::BECurl ( const string download_this, const be_http_method method, const boost::filesystem::path to_file, const string _username, const string _password, const string post_parameters, const char * put_data, const size_t size )
 {
 
 	Init ();
@@ -381,7 +382,7 @@ vector<char> BECurl::download ( )
 			write_to_memory ( );		
 		} else {
 			
-			upload_file = fopen ( filename.c_str(), "wb" );
+			upload_file = FOPEN ( filename.c_str(), _TEXT ( "wb" ) );
 			
 			// curl will crash rather than fail with an error if outputFile is not open
 			
@@ -420,14 +421,13 @@ vector<char> BECurl::http_put ( )
 
 		} else {
 			
-			path path = filename;
-			
 			// no directories etc.
-			if ( exists ( path ) && is_regular_file ( path ) ) {
+			if ( exists ( filename ) && is_regular_file ( filename ) ) {
 				
-				upload_file = fopen ( filename.c_str(), "rb" );
+				upload_file = FOPEN ( filename.c_str(), _TEXT ( "rb" ) );
+
 				easy_setopt ( CURLOPT_READDATA, upload_file );
-				easy_setopt ( CURLOPT_INFILESIZE, (curl_off_t)file_size ( path ) );
+				easy_setopt ( CURLOPT_INFILESIZE, (curl_off_t)file_size ( filename ) );
 				
 			} else {
 				throw BECurl_Exception ( (CURLcode)kFileExistsError );

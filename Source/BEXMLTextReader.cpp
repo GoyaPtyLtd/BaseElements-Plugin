@@ -39,14 +39,10 @@ BEXMLTextReader::BEXMLTextReader ( const boost::filesystem::path path )
 	if ( file_exists ) {
 
 #if defined ( FMX_WIN_TARGET )
-
 		file_descriptor = _wopen ( file.c_str(), O_RDONLY | _O_WTEXT );
 		reader = xmlReaderForFd ( file_descriptor, NULL, NULL, XML_PARSE_HUGE );
-
 #else
-
-		reader = xmlReaderForFile ( path.c_str(), NULL, XML_PARSE_HUGE );
-		
+		reader = xmlReaderForFile ( file.c_str(), NULL, XML_PARSE_HUGE );
 #endif
 
 		if ( reader != NULL ) {

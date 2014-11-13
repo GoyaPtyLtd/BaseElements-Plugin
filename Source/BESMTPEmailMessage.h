@@ -41,8 +41,8 @@ public:
 	void set_bcc_addresses ( std::string email_addresses ) { bcc = BEValueList<std::string> ( email_addresses ); };
 	
 	void set_html_alternative ( std::string html_part );
-	void add_attachment ( std::string path_to_attachment );
-	void add_attachments ( BEValueList<std::string> attachment_list );
+	void add_attachment ( const boost::filesystem::path path_to_attachment );
+	void add_attachments ( BEValueList<std::wstring> attachment_list );
 	
 	std::string as_string ( );
 	

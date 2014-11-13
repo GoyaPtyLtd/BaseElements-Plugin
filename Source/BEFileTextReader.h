@@ -18,13 +18,14 @@
 #include "BEPluginUtilities.h"
 #include "BEXMLTextReader.h"
 
+#include "boost/filesystem/path.hpp"
 
 
 class BEFileTextReader : public BEXMLTextReader {
 	
 public:
 	
-	BEFileTextReader ( const std::string path ) : BEXMLTextReader ( path ) {}
+	BEFileTextReader ( const boost::filesystem::path path ) : BEXMLTextReader ( path ) {}
 
 	
 	std::string name();

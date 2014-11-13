@@ -48,7 +48,7 @@ void BESMTPEmailMessage::set_html_alternative ( std::string html_part )
 }
 
 
-void BESMTPEmailMessage::add_attachment ( std::string path_to_attachment )
+void BESMTPEmailMessage::add_attachment ( const boost::filesystem::path path_to_attachment )
 {
 	boost::filesystem::path attachment = path_to_attachment;
 	if ( exists ( attachment ) ) {
@@ -59,7 +59,9 @@ void BESMTPEmailMessage::add_attachment ( std::string path_to_attachment )
 }
 
 
-void BESMTPEmailMessage::add_attachments ( BEValueList<string> attachment_list )
+#pragma warning Should use boost::filesystem::path
+
+void BESMTPEmailMessage::add_attachments ( BEValueList<wstring> attachment_list )
 {
 		
 	for ( size_t i = 0 ; i < attachment_list.size() ; i++ ) {

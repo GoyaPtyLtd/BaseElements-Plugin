@@ -18,6 +18,7 @@
 #include "BECurlOption.h"
 
 #include "boost/shared_ptr.hpp"
+#include "boost/filesystem/path.hpp"
 
 #include <vector>
 #include <map>
@@ -88,7 +89,7 @@ public:
 	
 	BECurl ( );
 	
-	BECurl ( const std::string download_this, const be_http_method method = kBE_HTTP_METHOD_GET, const std::string to_file = "", const std::string username = "", const std::string password = "", const std::string post_parameters = "", const char * put_data = NULL, const size_t size = 0 );
+	BECurl ( const std::string download_this, const be_http_method method = kBE_HTTP_METHOD_GET, const boost::filesystem::path to_file = "", const std::string username = "", const std::string password = "", const std::string post_parameters = "", const char * put_data = NULL, const size_t size = 0 );
 	
 	~BECurl();
 	
@@ -125,7 +126,7 @@ protected:
 	
 	be_http_method http_method;
 
-	std::string filename;
+	boost::filesystem::path filename;
 	FILE * upload_file;
 	
 	char * upload_data;

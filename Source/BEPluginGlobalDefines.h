@@ -25,6 +25,10 @@
 	#undef __CONSTANT_CFSTRINGS__
 
 	#define USER_PREFERENCES_DOMAIN L"au.com.goya.baseelements.plugin-user"
+	#define FOPEN fopen
+
+	// tchar
+	#define _TEXT(x) x
 
 #elif defined( _MSC_VER )
 
@@ -33,6 +37,7 @@
 
 	#define FMX_WIN_TARGET	1
 	#define USER_PREFERENCES_DOMAIN L"Software\\Goya\\BaseElements\\PluginUser"
+	#define FOPEN _wfopen
 
 	#define PATH_MAX MAX_PATH
 
@@ -76,7 +81,7 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"3.0.0"
-#define	AUTO_UPDATE_VERSION L"02990015"
+#define	AUTO_UPDATE_VERSION L"02990016"
 #define VERSION_STRING "3.0a2"
 
 

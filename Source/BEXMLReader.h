@@ -2,7 +2,7 @@
  BEXMLReader.h
  BaseElements Plug-In
  
- Copyright 2012-2013 Goya. All rights reserved.
+ Copyright 2012-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -18,8 +18,9 @@
 
 #include "boost/filesystem/path.hpp"
 
+
 int StripXMLNodes ( const boost::filesystem::path input_file, const boost::filesystem::path output_file, const std::vector<std::string> node_names );
-int SplitBEXMLFiles ( const std::string input_file );
+int SplitBEXMLFiles ( const boost::filesystem::path input_file );
 
 
 

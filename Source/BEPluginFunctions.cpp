@@ -207,8 +207,7 @@ FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* enviro
 	
 	try {
 
-		WStringAutoPtr folder = ParameterAsWideString ( parameters, 0 );
-		path directory_path = *folder;
+		path directory_path = ParameterAsPath ( parameters, 0 );
 		
 		try {
 			create_directories ( directory_path );
@@ -235,8 +234,7 @@ FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environm
 	
 	try {
 		
-		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
-		path path = *file;
+		path path = ParameterAsPath ( parameters, 0 );
 		
 		try {
 			remove_all ( path ); // if path is a directory then path and all it's contents are deleted
@@ -263,9 +261,8 @@ FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environm
 	
 	try {
 		
-		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
+		path path = ParameterAsPath ( parameters, 0 );
 		
-		path path = *file;			
 		bool file_exists = exists ( path );
 
 		SetResult ( file_exists, results );
@@ -290,9 +287,8 @@ FMX_PROC(errcode) BE_FileSize ( short /* funcId */, const ExprEnv& /* environmen
 	
 	try {
 		
-		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
+		path path = ParameterAsPath ( parameters, 0 );
 		
-		path path = *file;			
 		uintmax_t size = file_size ( path );
 		
 		SetResult ( size, results );
@@ -317,7 +313,7 @@ FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* en
 	
 	try {
 
-		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
+		path file = ParameterAsPath ( parameters, 0 );
 		StringAutoPtr contents;
 		
 		try {
@@ -345,8 +341,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 		
 	try {
 		
-		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
-		path path = *file;
+		path path = ParameterAsPath ( parameters, 0 );
 		
 		// should the text be appended to the file or replace any existing contents
 		
@@ -363,8 +358,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 		
 		try {
 			
-			boost::filesystem::path filesystem_path ( path );
-			boost::filesystem::ofstream output_file ( filesystem_path, ios_base::out | mode );
+			boost::filesystem::ofstream output_file ( path, ios_base::out | mode );
 			output_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );			
 			
 			output_file.write ( &out[0], out.size() );
@@ -401,11 +395,10 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 	
 	try {
 		
-		WStringAutoPtr file = ParameterAsWideString ( parameters, 0 );
-		path source = *file;
+		path source = ParameterAsPath ( parameters, 0 );
 
-		wstring output_path = *file + TEMPORARY_FILE_SUFFIX;
-		path destination = output_path;
+		path destination = source;
+		destination += TEMPORARY_FILE_SUFFIX;
 		boost::uintmax_t length = file_size ( source ); // throws if the source does not exist
 		
 		boost::filesystem::ifstream input_file ( source, ios_base::in | ios_base::binary | ios_base::ate );
@@ -491,11 +484,10 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 	try {
 		
 		vector<char> field_contents = ParameterAsVectorChar ( parameters, 0 );
-		WStringAutoPtr output_path = ParameterAsWideString ( parameters, 1 );
+		path destination = ParameterAsPath ( parameters, 1 );
 		
 		try {
 			
-			boost::filesystem::path destination = *output_path;
 			boost::filesystem::ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
 			output_file.exceptions ( boost::filesystem::ofstream::failbit | boost::filesystem::ofstream::badbit );
 
@@ -534,15 +526,11 @@ FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environmen
 	
 	try {
 		
-		WStringAutoPtr from = ParameterAsWideString ( parameters, 0 );
-		WStringAutoPtr to = ParameterAsWideString ( parameters, 1 );
+		path from = ParameterAsPath ( parameters, 0 );
+		path to = ParameterAsPath ( parameters, 1 );
 
 		try {
-			
-			path from_path = *from;
-			path to_path = *to;
-			
-			rename ( from_path, to_path );			
+			rename ( from, to );
 		} catch ( filesystem_error& e ) {
 			g_last_error = e.code().value();
 		}
@@ -566,16 +554,11 @@ FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environmen
 	
 	try {
 		
-		WStringAutoPtr from = ParameterAsWideString ( parameters, 0 );
-		WStringAutoPtr to = ParameterAsWideString ( parameters, 1 );
+		path from = ParameterAsPath ( parameters, 0 );
+		path to = ParameterAsPath ( parameters, 1 );
 		
 		try {
-			
-			path from_path = *from;
-			path to_path = *to;
-			
-			recursive_directory_copy ( from_path, to_path );
-			
+			recursive_directory_copy ( from, to );
 		} catch ( filesystem_error& e ) {
 			g_last_error = e.code().value();
 		}
@@ -600,16 +583,16 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 	
 	try {
 		
-		const WStringAutoPtr directory = ParameterAsWideString ( parameters, 0 );
+		const path directory = ParameterAsPath ( parameters, 0 );
 		const long file_type_wanted = ParameterAsLong ( parameters, 1, kBE_FileType_File );
 		const bool include_subfolders = ParameterAsBoolean ( parameters, 2, false );
 		const bool use_full_path = ParameterAsBoolean ( parameters, 3, false );
 		
 		try {
 
-			BEValueListWideStringAutoPtr list_of_files ( list_files_in_directory ( *directory, file_type_wanted, include_subfolders ) );
+			BEValueListWideStringAutoPtr list_of_files ( list_files_in_directory ( directory, file_type_wanted, include_subfolders ) );
 			if ( ! use_full_path ) {
-				list_of_files->remove_prefix ( *directory );
+				list_of_files->remove_prefix ( directory.wstring() );
 			}
 			SetResult ( list_of_files->get_as_filemaker_string(), results );
 			
@@ -795,9 +778,9 @@ FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environme
 	
 	try {
 
-		StringAutoPtr xml_path = ParameterAsUTF8String ( parameters, 0 );
+		path xml_path = ParameterAsPath ( parameters, 0 );
 		StringAutoPtr xslt = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr csv_path = ParameterAsUTF8String ( parameters, 2 );
+		path csv_path = ParameterAsPath ( parameters, 2 );
 
 		results.SetAsText( *ApplyXSLT ( xml_path, xslt, csv_path ), parameters.At(0).GetLocale() );
 	
@@ -966,9 +949,9 @@ FMX_PROC(errcode) BE_SplitBEFileNodes ( short /* funcId */, const ExprEnv& /* en
 	
 	try {
 		
-		StringAutoPtr input_file = ParameterAsUTF8String ( parameters, 0 );
+		path input_file = ParameterAsPath ( parameters, 0 );
 		
-		int result = SplitBEXMLFiles ( *input_file );
+		int result = SplitBEXMLFiles ( input_file );
 				
 		SetResult ( result, results );
 		
@@ -1000,10 +983,10 @@ FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environmen
 	try {
 		
 		StringAutoPtr json = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr path = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr json_path_expression = ParameterAsUTF8String ( parameters, 1 );
 		
 		auto_ptr<BEJSON> json_document ( new BEJSON ( json ) );
-		json_document->json_path_query ( path, results );
+		json_document->json_path_query ( json_path_expression, results );
 		
 	} catch ( BEJSON_Exception& e ) {
 		error = e.code();
@@ -1181,6 +1164,8 @@ FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */,
 	
 	try {
 		
+		// minizip does not support wide filename (on windows) so no boost::filesystem::path
+		
 		StringAutoPtr archive = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
 		
@@ -1206,6 +1191,8 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 	
 	try {
 		
+		// minizip does not support wide filename (on windows) so no boost::filesystem::path
+
 		const BEValueList<string> * files  = new BEValueList<string> ( *ParameterAsUTF8String ( parameters, 0 ) );
 		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
 		
@@ -1441,11 +1428,11 @@ FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* envir
 	try {
 		
 		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
+		path filename = ParameterAsPath ( parameters, 1 );
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
 		
-		BECurl curl ( *url, kBE_HTTP_METHOD_GET, *filename, *username, *password );
+		BECurl curl ( *url, kBE_HTTP_METHOD_GET, filename, *username, *password );
 		vector<char> data = curl.perform_action ( );
 		error = g_last_error;
 		
@@ -1482,8 +1469,8 @@ FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environm
 		
 		} else if ( funcId == kBE_HTTP_PUT_File ) {
 
-			StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
-			BECurl curl ( *url, kBE_HTTP_METHOD_PUT, *filename, *username, *password );
+			path filename = ParameterAsPath ( parameters, 1 );
+			BECurl curl ( *url, kBE_HTTP_METHOD_PUT, filename, *username, *password );
 			response = curl.perform_action ( );
 			
 			
@@ -1786,7 +1773,7 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 		StringAutoPtr html = ParameterAsUTF8String ( parameters, 6 );
 		message->set_html_alternative ( *html );
 		
-		StringAutoPtr attachments = ParameterAsUTF8String ( parameters, 7 );
+		WStringAutoPtr attachments = ParameterAsWideString ( parameters, 7 );
 		message->add_attachments ( *attachments );
 
 		error = smtp->send ( message.get() );
@@ -2222,8 +2209,6 @@ FMX_PROC(errcode) BE_OpenURL ( short /* funcId */, const ExprEnv& /* environment
 {	
 	errcode error = NoError();
 	
-	TextAutoPtr expression;
-	
 	try {
 		
 		WStringAutoPtr url = ParameterAsWideString ( parameters, 0 );
@@ -2249,6 +2234,7 @@ FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment 
 	
 	try {
 		
+		// in this instance the string is a better choice than boost::filesystem::path
 		WStringAutoPtr path = ParameterAsWideString ( parameters, 0 );
 		
 		bool succeeded = OpenFile ( path );

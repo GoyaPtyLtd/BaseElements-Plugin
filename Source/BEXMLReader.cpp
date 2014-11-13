@@ -107,7 +107,7 @@ int StripXMLNodes ( const path input_file, const path output_file, const vector<
  }
 
 
-int SplitBEXMLFiles ( const string input_file )
+int SplitBEXMLFiles ( const path input_file )
 {
 	
 	try {

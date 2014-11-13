@@ -53,7 +53,7 @@ std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& 
 boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which );
 
 
-StringAutoPtr ReadFileAsUTF8 ( WStringAutoPtr path );
+StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path );
 std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from );
 StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const std::string& to, const std::string& from );
 StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from );
