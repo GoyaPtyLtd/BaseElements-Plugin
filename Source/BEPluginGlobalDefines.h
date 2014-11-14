@@ -32,7 +32,7 @@
 
 #elif defined( _MSC_VER )
 
-	#define NOMINMAX // boost 1.53 breaks without this defined before including windows.h
+	#define NOMINMAX // boost 1.53 and later break without this defined before including windows.h
 	#include <windows.h> // life comes to an end if this is not included before anything else
 
 	#define FMX_WIN_TARGET	1
