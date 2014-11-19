@@ -5,22 +5,22 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleGetInfoString</key>
-	<string>BaseElements Plugin version 3.0a2, Copyright 2010-2014 by Goya.  All rights reserved.</string>
+	<string>${PRODUCT_NAME} Plugin version ${VERSION_STRING}, Copyright 2010-2014 by Goya.  All rights reserved.</string>
 	<key>CFBundleIdentifier</key>
 	<string>au.com.goya.baseelements</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleExecutable</key>
-	<string>BaseElements</string>
+	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleName</key>
-	<string>BaseElements</string>
+	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>FMXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>BaseElements Plugin version 3.0a2</string>
+	<string>${PRODUCT_NAME} Plugin version ${VERSION_STRING}</string>
 	<key>CFBundleSignature</key>
 	<string>GyBE</string>
 	<key>CFBundleVersion</key>
-	<string>3.0a2</string>
+	<string>${VERSION_STRING}</string>
 </dict>
 </plist>

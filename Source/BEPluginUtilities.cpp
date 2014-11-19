@@ -757,7 +757,7 @@ unsigned long Sub_OSXLoadString(unsigned long stringID, FMX_Unichar* intoHere, l
 		CFStringRef 	strIdStr = CFStringCreateWithFormat( kCFAllocatorDefault, NULL, CFSTR("%ld"), stringID );
 		
 		// Note: The plug-in must be explicit about the bundle and file it wants to pull the string from.
-		CFStringRef 	osxStr = CFBundleCopyLocalizedString( reinterpret_cast<CFBundleRef>(gFMX_ExternCallPtr->instanceID), strIdStr, strIdStr, CFSTR( PLUGIN_NAME ) );
+		CFStringRef 	osxStr = CFBundleCopyLocalizedString( reinterpret_cast<CFBundleRef>(gFMX_ExternCallPtr->instanceID), strIdStr, strIdStr, CFSTR( BUNDLE_STRINGS_ID ) );
 		
 		if((osxStr != NULL) && (osxStr != strIdStr)) {
 			

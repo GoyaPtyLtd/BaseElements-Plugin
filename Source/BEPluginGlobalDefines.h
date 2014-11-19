@@ -74,19 +74,20 @@ extern fmx::errcode g_last_error;
 #endif // __cplusplus
 
 
-#define PRIVATE_VERSION 1
+#ifdef PRIVATE_VERSION
+	#define PLUGIN_NAME "Goya"
+#else
+	#define PLUGIN_NAME "BaseElements"
+#endif
 
-
-#define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
 #define	VERSION_NUMBER_STRING L"3.0.0"
-#define	AUTO_UPDATE_VERSION L"02990016"
+#define	AUTO_UPDATE_VERSION L"02990017"
 #define VERSION_STRING "3.0a2"
 
-
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
-#define BUNDLE_IDENTIFIER "au.com.goya.baseelements"
+#define BUNDLE_STRINGS_ID "BaseElements"
 
 
 #define	TEMPORARY_FILE_SUFFIX L".be4.tmp"
@@ -156,7 +157,9 @@ enum functions {
 	kBE_HTTP_Set_Proxy = 186,
 	kBE_Curl_Set_Option = 187,
 	kBE_HTTP_PUT_Data = 188,
+#ifdef PRIVATE_VERSION
 	kBE_FTP_Upload = 189,
+#endif
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,

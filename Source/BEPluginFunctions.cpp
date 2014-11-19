@@ -1678,6 +1678,8 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 } // BE_HTTP_Set_Custom_Header
 
 
+#ifdef PRIVATE_VERSION
+
 
 FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
@@ -1708,6 +1710,10 @@ FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environm
 	
 } // BE_FTP_Upload
 
+
+#endif
+
+#ifdef PRIVATE_VERSION
 
 
 #pragma mark -
@@ -1793,6 +1799,8 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 	
 } // BE_Email_Send
 
+
+#endif
 
 
 #pragma mark -

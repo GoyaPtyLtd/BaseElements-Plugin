@@ -76,6 +76,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 #ifdef FMX_WIN_TARGET
 	InitialiseWindows ( );
 #endif
+	
+//	string fyc = USER_AGENT_STRING;
 
 	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
 	g_be_plugin = new BEFileMakerPlugin ( plugin_id );
@@ -171,7 +173,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_HTTP_DELETE, BE_HTTP_DELETE, true, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_File, BE_HTTP_POST_OR_PUT, true, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_Data, BE_HTTP_POST_OR_PUT, true, 2, 4 );
-	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, true, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Code, BE_HTTP_Response_Code );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Headers, BE_HTTP_Response_Headers );
@@ -204,6 +205,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	
 	
 #ifdef PRIVATE_VERSION
+	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, true, 2, 4 );
+
 	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, true, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Server, BE_SMTP_Server, true, 1, 4 );
@@ -234,8 +237,6 @@ static void UnloadPlugin ( void ) {
 }
 
 
-#include <iostream>
-
 // main entry point
 // calls for plug-in functions go direct to the registered function
 
@@ -246,11 +247,22 @@ void FMX_ENTRYPT FMExternCallProc ( FMX_ExternCallPtr plugin_call ) {
 	switch ( plugin_call->whichCall ) 
 	{
 		case kFMXT_GetString:
-			Do_GetString (	plugin_call->parm1, 
-							plugin_call->parm2,
-							plugin_call->parm3, 
-							reinterpret_cast<FMX_Unichar*> ( plugin_call->result )
-						  );
+			
+			if ( plugin_call->parm1 == kFMXT_NameStr ) {
+				
+				TextAutoPtr plugin_name;
+				plugin_name->Assign ( PLUGIN_NAME );
+				plugin_name->GetUnicode ( reinterpret_cast<FMX_UInt16*> ( plugin_call->result ), 0, fmx::Text::kSize_End );
+
+			} else {
+				
+				Do_GetString (	plugin_call->parm1,
+							  plugin_call->parm2,
+							  plugin_call->parm3,
+							  reinterpret_cast<FMX_Unichar*> ( plugin_call->result )
+							  );
+
+			}
 			break;
 
 		case kFMXT_Init:
