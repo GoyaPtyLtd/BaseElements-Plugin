@@ -204,23 +204,18 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Values_Sort, BE_Values_Sort, 1 );
 	
 	
-#ifdef PRIVATE_VERSION
 	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, true, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, true, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Server, BE_SMTP_Server, true, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, true, 4, 8 );
-#endif
 	
 	// still alpha
 	
 	//	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestToken, BE_OAuth_RequestAccessToken, true, 3 );
-#ifdef PRIVATE_VERSION
-	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
-#else
+//	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
-#endif
 	//	g_be_plugin->RegisterFunction ( kBE_OAuth_ClearToken, BE_OAuth_RequestAccessToken, true );
 	
 	
@@ -248,21 +243,12 @@ void FMX_ENTRYPT FMExternCallProc ( FMX_ExternCallPtr plugin_call ) {
 	{
 		case kFMXT_GetString:
 			
-			if ( plugin_call->parm1 == kFMXT_NameStr ) {
-				
-				TextAutoPtr plugin_name;
-				plugin_name->Assign ( PLUGIN_NAME );
-				plugin_name->GetUnicode ( reinterpret_cast<FMX_UInt16*> ( plugin_call->result ), 0, fmx::Text::kSize_End );
+			Do_GetString (	plugin_call->parm1,
+							plugin_call->parm2,
+							plugin_call->parm3,
+							reinterpret_cast<FMX_Unichar*> ( plugin_call->result )
+							);
 
-			} else {
-				
-				Do_GetString (	plugin_call->parm1,
-							  plugin_call->parm2,
-							  plugin_call->parm3,
-							  reinterpret_cast<FMX_Unichar*> ( plugin_call->result )
-							  );
-
-			}
 			break;
 
 		case kFMXT_Init:

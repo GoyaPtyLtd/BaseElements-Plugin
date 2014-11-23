@@ -47,6 +47,8 @@
 #include "BEBase64.h"
 #include "BEOpenSSLAES.h"
 #include "BEPluginException.h"
+#include "BEXero.h"
+#include "BESMTP.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -64,12 +66,6 @@
 #include <openssl/evp.h>
 
 #include <iostream>
-
-
-#ifdef PRIVATE_VERSION
-#include "BEXero.h"
-#include "BESMTP.h"
-#endif
 
 
 using namespace std;
@@ -1678,9 +1674,6 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 } // BE_HTTP_Set_Custom_Header
 
 
-#ifdef PRIVATE_VERSION
-
-
 FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
@@ -1710,10 +1703,6 @@ FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environm
 	
 } // BE_FTP_Upload
 
-
-#endif
-
-#ifdef PRIVATE_VERSION
 
 
 #pragma mark -
@@ -1800,9 +1789,6 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 } // BE_Email_Send
 
 
-#endif
-
-
 #pragma mark -
 #pragma mark OAuth
 #pragma mark -
@@ -1869,8 +1855,6 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 } // BE_OAuth_RequestAccessToken
 
 
-#ifdef PRIVATE_VERSION
-
 #pragma mark -
 #pragma mark Xero
 #pragma mark -
@@ -1912,10 +1896,6 @@ FMX_PROC(errcode) BE_Xero_SetTokens ( short /* funcId */, const ExprEnv& /* envi
 	return MapError ( error );
 	
 } // BE_Xero_SetTokens
-
-
-
-#endif
 
 
 

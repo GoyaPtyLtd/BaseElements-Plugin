@@ -36,13 +36,7 @@
 "125" = "BE_OpenFile ( path )";
 "126" = "BE_FileSize ( path )";
 
-//#pragma warning need to swap between goya and be
-//#ifdef PRIVATE_VERSION
-//	"128" = "Goya";
-//#else
-	"128" = "BaseElements";
-//#endif
-
+"128" = "BaseElements";
 "129" = "Version: 3.0a2\n\nThis plug-in provides additional functionality for BaseElements from Goya";
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
@@ -109,11 +103,7 @@
 "321" = "BE_OAuth_RequestAccessToken ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )";
 
 
-//#ifdef PRIVATE_VERSION
-
 "330" = "BE_Xero_SetTokens ( consumer_key ; private_key )";
-
-//#endif
 
 
 "350" = "BE_Values_Unique ( listOfValues )";
@@ -122,12 +112,8 @@
 "353" = "BE_Values_Sort ( listOfValues )";
 
 
-//#ifdef PRIVATE_VERSION
-
 "400" = "BE_SMTP_Server ( server { ; port ; username ; password } )";
 "401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; html ; attachments } )";
-
-//#endif
 
 
 "500" = "BE_Encrypt_AES ( key ; text )";

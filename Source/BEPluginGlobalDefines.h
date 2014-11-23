@@ -74,20 +74,14 @@ extern fmx::errcode g_last_error;
 #endif // __cplusplus
 
 
-#ifdef PRIVATE_VERSION
-	#define PLUGIN_NAME "Goya"
-#else
-	#define PLUGIN_NAME "BaseElements"
-#endif
-
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
+#define BUNDLE_STRINGS_ID "BaseElements"
 
 #define	VERSION_NUMBER_STRING L"3.0.0"
-#define	AUTO_UPDATE_VERSION L"02990018"
+#define	AUTO_UPDATE_VERSION L"02990019"
 #define VERSION_STRING "3.0a2"
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
-#define BUNDLE_STRINGS_ID "BaseElements"
 
 
 #define	TEMPORARY_FILE_SUFFIX L".be4.tmp"
@@ -157,9 +151,7 @@ enum functions {
 	kBE_HTTP_Set_Proxy = 186,
 	kBE_Curl_Set_Option = 187,
 	kBE_HTTP_PUT_Data = 188,
-#ifdef PRIVATE_VERSION
 	kBE_FTP_Upload = 189,
-#endif
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,
@@ -177,16 +169,12 @@ enum functions {
 //	kBE_OAuth_RequestToken = 320,
 	kBE_OAuth_RequestAccessToken = 321,
 //	kBE_OAuth_SetToken = 322,
-#ifdef PRIVATE_VERSION
 	kBE_Xero_SetTokens = 330,
-#endif
 	kBE_Values_Unique = 350,
 	kBE_Values_FilterOut = 351,
 	kBE_Values_Sort = 353,
-#ifdef PRIVATE_VERSION
 	kBE_SMTP_Server = 400,
 	kBE_SMTP_Send = 401,
-#endif
 	kBE_Encrypt_AES = 500,
 	kBE_Decrypt_AES = 501,
 	kBE_HMAC = 550,

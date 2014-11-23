@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseElements", "BaseElements.vcxproj", "{646553B8-5F11-4EB7-8AFE-29B5AC598E93}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Goya", "Goya.vcxproj", "{8F6EC893-05FB-4818-8963-6ABD9C4940E9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,14 +19,6 @@ Global
 		{646553B8-5F11-4EB7-8AFE-29B5AC598E93}.Release|Win32.Build.0 = Release|Win32
 		{646553B8-5F11-4EB7-8AFE-29B5AC598E93}.Release|x64.ActiveCfg = Release|x64
 		{646553B8-5F11-4EB7-8AFE-29B5AC598E93}.Release|x64.Build.0 = Release|x64
-		{8F6EC893-05FB-4818-8963-6ABD9C4940E9}.Debug|Win32.ActiveCfg = Debug|Win32
-		{8F6EC893-05FB-4818-8963-6ABD9C4940E9}.Debug|Win32.Build.0 = Debug|Win32
-		{8F6EC893-05FB-4818-8963-6ABD9C4940E9}.Debug|x64.ActiveCfg = Debug|x64
-		{8F6EC893-05FB-4818-8963-6ABD9C4940E9}.Debug|x64.Build.0 = Debug|x64
-		{8F6EC893-05FB-4818-8963-6ABD9C4940E9}.Release|Win32.ActiveCfg = Release|Win32
-		{8F6EC893-05FB-4818-8963-6ABD9C4940E9}.Release|Win32.Build.0 = Release|Win32
-		{8F6EC893-05FB-4818-8963-6ABD9C4940E9}.Release|x64.ActiveCfg = Release|x64
-		{8F6EC893-05FB-4818-8963-6ABD9C4940E9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
