@@ -198,8 +198,7 @@ void SetResult ( const std::string filename, const vector<char> data, Data& resu
 		// filemaker will go into an infinite loop if non-utf8 data is set as utf8
 		// so try to convert it first
 		
-		const string data_string ( data.begin(), data.end() );
-		StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)data_string.c_str(), data_string.size(), g_text_encoding );
+		StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size(), g_text_encoding );
 		SetResult ( utf8, results );
 		
 	}
