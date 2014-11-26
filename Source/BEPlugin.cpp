@@ -77,7 +77,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	InitialiseWindows ( );
 #endif
 	
-//	string fyc = USER_AGENT_STRING;
 
 	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
 	g_be_plugin = new BEFileMakerPlugin ( plugin_id );

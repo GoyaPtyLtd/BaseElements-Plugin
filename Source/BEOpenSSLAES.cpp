@@ -21,7 +21,7 @@ using namespace std;
 using namespace fmx;
 
 
-void GenerateKeyAndInputVector ( const string password, string& key, vector<unsigned char>& input_vector )
+void GenerateKeyAndInputVector ( const string password, string& key, vector<char>& input_vector )
 {
 	const int key_length = 32;
 	const int rounds = 5;
@@ -44,13 +44,13 @@ void GenerateKeyAndInputVector ( const string password, string& key, vector<unsi
 //		http://www.openssl.org/docs/crypto/EVP_EncryptInit.html#
 
 
-const vector<unsigned char> Encrypt_AES ( const string key, const string text, const vector<unsigned char> input_vector )
+const vector<char> Encrypt_AES ( const string key, const string text, const vector<char> input_vector )
 {
-	vector<unsigned char> result;
+	vector<char> result;
 	
 	EVP_CIPHER_CTX context;
 	EVP_CIPHER_CTX_init ( &context );
-	int reply = EVP_EncryptInit_ex ( &context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), &input_vector[0] );
+	int reply = EVP_EncryptInit_ex ( &context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), (unsigned char *)&input_vector[0] );
 	
 	if ( reply ) {
 		
@@ -86,15 +86,15 @@ const vector<unsigned char> Encrypt_AES ( const string key, const string text, c
 } // Encrypt_AES
 
 
-const vector<unsigned char> Decrypt_AES ( const string key, const vector<unsigned char> encrypted_data, const vector<unsigned char> input_vector )
+const vector<char> Decrypt_AES ( const string key, const vector<char> encrypted_data, const vector<char> input_vector )
 {
-	vector<unsigned char> result;
+	vector<char> result;
 	
 	if ( !encrypted_data.empty() ) {
 		
 		EVP_CIPHER_CTX context;
 		EVP_CIPHER_CTX_init ( &context );
-		int reply = EVP_DecryptInit_ex ( &context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), &input_vector[0] );
+		int reply = EVP_DecryptInit_ex ( &context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), (unsigned char *)&input_vector[0] );
 		
 		if ( reply ) {
 			
@@ -108,7 +108,6 @@ const vector<unsigned char> Decrypt_AES ( const string key, const vector<unsigne
 			reply = EVP_DecryptUpdate ( &context, decrypted_data, &output_length, (unsigned char *)&encrypted_data[0], (int)input_size );
 			if ( reply ) {
 				
-				//				reply = EVP_DecryptFinal_ex ( &context, decrypted_data + output_length, &final_output_length );
 				EVP_DecryptFinal_ex ( &context, decrypted_data + output_length, &final_output_length );
 				
 			} else {

@@ -17,10 +17,9 @@
 #include <algorithm>
 #include <string>
 
-#include "boost/filesystem.hpp"
-#include "boost/filesystem/fstream.hpp"
-#include "boost/algorithm/string.hpp"
-#include "boost/scoped_ptr.hpp"
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
+#include <boost/algorithm/string.hpp>
 
 
 using namespace std;
@@ -32,8 +31,8 @@ int StripXMLNodes ( const path input_file, const path output_file, const vector<
 
 	try {
 		
-		boost::scoped_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
-		boost::scoped_ptr<BEXMLTextWriter> writer ( new BEXMLTextWriter ( output_file ) );
+		auto_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
+		auto_ptr<BEXMLTextWriter> writer ( new BEXMLTextWriter ( output_file ) );
 		
 		reader->read();
 		
@@ -112,7 +111,7 @@ int SplitBEXMLFiles ( const path input_file )
 	
 	try {
 		
-		boost::scoped_ptr<BEFileTextReader> reader ( new BEFileTextReader ( input_file ) );
+		auto_ptr<BEFileTextReader> reader ( new BEFileTextReader ( input_file ) );
 		
 		reader->read();
 		

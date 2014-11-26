@@ -89,7 +89,7 @@ public:
 	
 	BECurl ( );
 	
-	BECurl ( const std::string download_this, const be_http_method method = kBE_HTTP_METHOD_GET, const boost::filesystem::path to_file = "", const std::string username = "", const std::string password = "", const std::string post_parameters = "", const char * put_data = NULL, const size_t size = 0 );
+	BECurl ( const std::string download_this, const be_http_method method = kBE_HTTP_METHOD_GET, const boost::filesystem::path to_file = "", const std::string username = "", const std::string password = "", const std::string post_parameters = "", const std::vector<char> put_data = std::vector<char>() );
 	
 	~BECurl();
 	
@@ -129,8 +129,7 @@ protected:
 	boost::filesystem::path filename;
 	FILE * upload_file;
 	
-	char * upload_data;
-	size_t upload_data_size;
+	std::vector<char> upload_data;
 	struct MemoryStruct userdata;
 	
 	std::string parameters;

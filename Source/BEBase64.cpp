@@ -39,9 +39,9 @@ typedef transform_width<
 
 
 
-vector<unsigned char> Base64_Decode ( StringAutoPtr text )
+vector<char> Base64_Decode ( StringAutoPtr text )
 {
-	vector<unsigned char> out;
+	vector<char> out;
 	
 	try {
 		
@@ -69,7 +69,7 @@ vector<unsigned char> Base64_Decode ( StringAutoPtr text )
 		}
 		
 		// decode it...
-		vector<unsigned char> data ( base64_binary ( text->begin() ), base64_binary ( text->end() ) );
+		vector<char> data ( base64_binary ( text->begin() ), base64_binary ( text->end() ) );
 		out = data;
 		
 	} catch ( dataflow_exception& e ) { // invalid_base64_character
@@ -82,7 +82,7 @@ vector<unsigned char> Base64_Decode ( StringAutoPtr text )
 
 
 
-StringAutoPtr Base64_Encode ( vector<unsigned char> data, bool base64url )
+StringAutoPtr Base64_Encode ( vector<char> data, bool base64url )
 {
 	StringAutoPtr base64 ( new string ( base64_text(&data[0]), base64_text(&data[0] + data.size()) ) );
 		

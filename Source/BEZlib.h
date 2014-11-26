@@ -18,9 +18,13 @@
 #include "BEPluginUtilities.h"
 #include "BEValueList.h"
 
+#include <vector>
+
 
 const long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_directory );
 const long Zip ( const BEValueList<std::string> * filename, const StringAutoPtr archive );
+
+const std::vector<char> UncompressContainerStream ( const std::vector<char> compressed );
 
 
 #endif // BEZLIB_H

@@ -18,9 +18,9 @@
 #include "BEPluginUtilities.h"
 
 
-void GenerateKeyAndInputVector ( const std::string password, std::string& key, std::vector<unsigned char>& input_vector );
-const std::vector<unsigned char> Encrypt_AES ( const std::string key, const std::string text, const std::vector<unsigned char> input_vector );
-const std::vector<unsigned char> Decrypt_AES ( const std::string key, const std::vector<unsigned char> text, const std::vector<unsigned char> input_vector );
+void GenerateKeyAndInputVector ( const std::string password, std::string& key, std::vector<char>& input_vector );
+const std::vector<char> Encrypt_AES ( const std::string key, const std::string text, const std::vector<char> input_vector );
+const std::vector<char> Decrypt_AES ( const std::string key, const std::vector<char> text, const std::vector<char> input_vector );
 
 
 #endif /* defined(__BaseElements__BEOpenSSLAES__) */

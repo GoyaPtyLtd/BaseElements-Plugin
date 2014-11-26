@@ -21,8 +21,8 @@
 #include <vector>
 
 
-std::vector<unsigned char> Base64_Decode ( StringAutoPtr text );
-StringAutoPtr Base64_Encode ( std::vector<unsigned char> data, bool base64url = false );
+std::vector<char> Base64_Decode ( StringAutoPtr text );
+StringAutoPtr Base64_Encode ( std::vector<char> data, bool base64url = false );
 
 
 #endif /* defined(__BaseElements__BEBase64__) */

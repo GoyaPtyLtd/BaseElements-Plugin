@@ -22,11 +22,13 @@
 
 
 #include "BEPluginUtilities.h"
-
+#include "BEZlib.h"
 
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+
+#include <zlib.h>
 
 #include <sstream>
 #include <iostream>
@@ -309,127 +311,50 @@ WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, const FMX_UIn
 } // ParameterAsUnicodeString
 
 
-void ParameterAsChar ( const DataVect& parameters, const FMX_UInt32 which, char ** char_data, FMX_UInt32& size )
-{
-//	errcode error = NoError();
-	
-	// make sure there's a parameter to get
-	if ( parameters.Size() <= which ) {
-		*char_data = NULL;
-		size = 0;
-		return;
-	}
-	
-	BinaryDataAutoPtr data ( parameters.AtAsBinaryData ( which ) );
-	
-	size = 0;
-	char * buffer = NULL;
-		
-	int count = data->GetCount();
-		
-	if ( count > 0 ) {
-			
-		// when it's a file or a sound it's easy
-			
-// defeat: Returning null reference (within a call to 'operator*')
-// constructor for data_type is not null
-#ifndef __clang_analyzer__
-		QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' );
-		int which_type = data->GetIndex ( *data_type );
-#else
-		int which_type = 0;
-#endif
-		
-		if ( which_type == kBE_DataType_Not_Found ) {
-			QuadCharAutoPtr sound_type ( 's', 'n', 'd', ' ' );
-			which_type = data->GetIndex ( *sound_type );
-		}
-			
-		// try and guess which image format to try
-			
-		if ( which_type == kBE_DataType_Not_Found ) {
-				
-			// non-image data streams
-			QuadCharAutoPtr dpi__type ( 'D', 'P', 'I', '_' );
-			QuadCharAutoPtr fnam_type ( 'F', 'N', 'A', 'M' );
-			QuadCharAutoPtr size_type ( 'S', 'I', 'Z', 'E' );
-				
-			for ( int i = 0 ; i < count ; i++ ) {
-				QuadCharAutoPtr e_type;
-				data->GetType ( i, *e_type );
-				if ( *e_type != *dpi__type && *e_type != *fnam_type && *e_type != *size_type ) {
-					which_type = i;
-						
-					// don't overwrite another type with an fm generated jpeg preview
-					QuadCharAutoPtr jpeg_type ( 'J', 'P', 'E', 'G' );
-					if ( *e_type != *jpeg_type ) {
-						break;
-					}
-					
-				}
-			}
-			
-		}
-			
-			
-		if ( which_type != kBE_DataType_Not_Found ) {
-			size = data->GetSize ( which_type );
-			buffer = new char [ size ];
-			data->GetData ( which_type, 0, size, (void *)buffer );
-		} else {
-			g_last_error = kRequestedDataIsMissingError;
-		}
-			
-	} else {
-			
-		// if we don't have any streams try getting as text
-		// note: we also end up here for anything inserted as QuickTime, which is probably not what the user wants, but...
-			
-		StringAutoPtr text = ParameterAsUTF8String ( parameters, which );
-		size = (FMX_UInt32)text->size();
-		buffer = new char [ size ];
-		memcpy ( buffer, text->c_str(), size );
-		
-	}
-		
-		*char_data = buffer;
-		
-//		delete [] buffer;
-		
-	
-} // ParameterAsChar
-
-
 vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX_UInt32 which )
 {
-	char * char_data;
-	FMX_UInt32 size;
-	
-	ParameterAsChar ( parameters, which, &char_data, size );
-	
-	vector<char> out ( char_data, char_data + size );
 
-	delete[] char_data;
+	vector<char> output;
 	
-	return out;
+	// make sure there's a parameter to get
+	if ( parameters.Size() > which ) {
 
-}
+		const BinaryDataAutoPtr data ( parameters.AtAsBinaryData ( which ) );
+		int count = data->GetCount();
+		
+		if ( count > 0 ) {
+			
+			int which_type = PreferredContainerType ( *data );
 
+			// dig the data out of the container stream
+			
+			if ( which_type != kBE_DataType_Not_Found ) {
+				
+				output = DataAsVectorChar ( *data, which_type );
 
-vector<unsigned char> ParameterAsVectorUnsignedChar ( const DataVect& parameters, const FMX_UInt32 which )
-{
-	char * char_data;
-	FMX_UInt32 size;
+				if ( StreamIsCompressed ( *data ) ) {
+					output = UncompressContainerStream ( output );
+				}
+				
+			} else {
+				g_last_error = kRequestedDataIsMissingError;
+			}
+			
+		} else {
+			
+			// if we don't have any streams try getting as text
+			// note: we also end up here for anything inserted as QuickTime, which is probably not what the user wants, but...
+			
+			StringAutoPtr text = ParameterAsUTF8String ( parameters, which );
+			output.assign ( text->begin(), text->end() );
+			
+		}
+
+	}
 	
-	ParameterAsChar ( parameters, which, &char_data, size );
+	return output;
 	
-	vector<unsigned char> out ( char_data, char_data + size );
-	
-	delete[] char_data;
-	
-	return out;
-	
-}
+} // ParameterAsVectorChar
 
 
 boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which )
@@ -440,6 +365,112 @@ boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_
 	path.make_preferred();
 	
 	return path;
+	
+}
+
+
+
+#pragma mark -
+#pragma mark Containers
+#pragma mark -
+
+int PreferredContainerType ( const BinaryData& data )
+{
+
+	int which_type = IndexForStream ( data, 'F', 'I', 'L', 'E' );
+	
+	if ( which_type == kBE_DataType_Not_Found ) {
+
+		which_type = IndexForStream ( data, 'Z', 'L', 'I', 'B' );
+
+		// and then a sound
+		if ( which_type == kBE_DataType_Not_Found ) {
+			which_type = IndexForStream ( data, 's', 'n', 'd', ' ' );
+		}
+		
+	}
+	
+	// try and guess which image format to try
+	
+	if ( which_type == kBE_DataType_Not_Found ) {
+		
+		// non-image data streams
+		QuadCharAutoPtr dpi__type ( 'D', 'P', 'I', '_' );
+		QuadCharAutoPtr fnam_type ( 'F', 'N', 'A', 'M' );
+		QuadCharAutoPtr size_type ( 'S', 'I', 'Z', 'E' );
+		
+		int count = data.GetCount();
+
+		for ( int i = 0 ; i < count ; i++ ) {
+			QuadCharAutoPtr stream_type;
+			data.GetType ( i, *stream_type );
+			if ( *stream_type != *dpi__type && *stream_type != *fnam_type && *stream_type != *size_type ) {
+				which_type = i;
+				
+				// don't overwrite another type with an fm generated jpeg preview
+				QuadCharAutoPtr jpeg_type ( 'J', 'P', 'E', 'G' );
+				if ( *stream_type != *jpeg_type ) {
+					break;
+				}
+				
+			}
+		}
+		
+	}
+	
+	return which_type;
+
+} // PreferredContainerType
+
+
+#pragma mark -
+#pragma mark Data Streams
+#pragma mark -
+
+
+int IndexForStream ( const BinaryData& data, const char a, const char b, const char c, const char d )
+{
+	
+	// defeat: Returning null reference (within a call to 'operator*')
+	// constructor for file_type is not null
+	
+#ifndef __clang_analyzer__
+	QuadCharAutoPtr type ( a, b, c, d );
+	int stream_index = data.GetIndex ( *type );
+#else
+	int stream_index = kBE_DataType_Not_Found;
+#endif
+	
+	return stream_index;
+	
+}
+
+
+vector<char> DataAsVectorChar ( const BinaryData& data, const FMX_UInt32 which )
+{
+	uint32 size = data.GetSize ( which );
+	char * output_buffer = new char [ size ];
+	data.GetData ( which, 0, size, (void *)output_buffer );
+
+	vector<char> output ( output_buffer, output_buffer + size );
+
+	delete[] output_buffer;
+	
+	return output;
+}
+
+
+bool StreamIsCompressed ( const BinaryData& data )
+{
+	bool compressed = false;
+	
+	int which_type = IndexForStream ( data, 'Z', 'L', 'I', 'B' );
+	
+	if ( which_type != kBE_DataType_Not_Found ) {
+		compressed = true;
+	}
+	
+	return compressed;
 	
 }
 
@@ -673,6 +704,11 @@ bool AllowUserAbort ( const ExprEnv& environment )
 	command->Assign ( "Get ( AllowAbortState )" );
 	
 	DataAutoPtr reply;
+
+#ifdef __clang_analyzer__
+	reply->Clear(); // defeat: Returning null reference (within a call to 'operator*')
+#endif
+	
 	environment.Evaluate ( *command, *reply );
 	bool allow_abort = reply->GetAsBoolean();
 

@@ -1219,9 +1219,8 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
 		
-
 		// decode it...
-		vector<unsigned char> data = Base64_Decode ( text );
+		vector<char> data = Base64_Decode ( text );
 		if ( filename->empty() ) {
 			SetResult ( data, results );
 		} else {
@@ -1246,10 +1245,9 @@ FMX_PROC(errcode) BE_Base64_Encode ( short funcId, const ExprEnv& /* environment
 	
 	try {
 
-		vector<unsigned char> data = ParameterAsVectorUnsignedChar ( parameters, 0 );
+		vector<char> data = ParameterAsVectorChar ( parameters, 0 );
+		StringAutoPtr base64 = Base64_Encode ( data, funcId == kBE_Base64_URL_Encode );
 		
-		StringAutoPtr base64 ( new string ( *Base64_Encode( data, funcId == kBE_Base64_URL_Encode ) ) );
-	
 		SetResult ( base64, results );
 				
 	} catch ( bad_alloc& /* e */ ) {
@@ -1310,16 +1308,16 @@ FMX_PROC(errcode) BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
 		
 		string key;
-		vector<unsigned char> input_vector;
+		vector<char> input_vector;
 		GenerateKeyAndInputVector ( *password, key, input_vector );
 		
 		// escape the delimiter we use below
 		replace ( input_vector.begin(), input_vector.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
 		
-		vector<unsigned char> output_to_encode ( input_vector.begin(), input_vector.end() );
+		vector<char> output_to_encode ( input_vector.begin(), input_vector.end() );
 		output_to_encode.push_back ( FILEMAKER_END_OF_LINE_CHAR );
 		
-		vector<unsigned char> encrypted_data = Encrypt_AES ( key, *text, input_vector );
+		vector<char> encrypted_data = Encrypt_AES ( key, *text, input_vector );
 		output_to_encode.insert ( output_to_encode.end(), encrypted_data.begin(), encrypted_data.end() );
 		
 		StringAutoPtr base64 = Base64_Encode ( output_to_encode );
@@ -1350,17 +1348,17 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
 		
 		string key;
-		vector<unsigned char> unwanted;
+		vector<char> unwanted;
 		GenerateKeyAndInputVector ( *password, key, unwanted );
 		
-		vector<unsigned char> decoded = Base64_Decode ( text );
+		vector<char> decoded = Base64_Decode ( text );
 		
-		std::vector<unsigned char>::iterator it = find ( decoded.begin(), decoded.end(), FILEMAKER_END_OF_LINE_CHAR );
+		std::vector<char>::iterator it = find ( decoded.begin(), decoded.end(), FILEMAKER_END_OF_LINE_CHAR );
 		if ( it != decoded.end() ) {
 
-			const vector<unsigned char> input_vector ( decoded.begin(), it );
+			const vector<char> input_vector ( decoded.begin(), it );
 			decoded.erase ( decoded.begin(), it + 1 ); // remove the input vector from the input
-			const vector<unsigned char> decrypted_data = Decrypt_AES ( key, decoded, input_vector );
+			const vector<char> decrypted_data = Decrypt_AES ( key, decoded, input_vector );
 
 			SetResult ( decrypted_data, results );
 			
@@ -1472,13 +1470,9 @@ FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environm
 			
 		} else { // kBE_HTTP_PUT_DATA
 			
-			char * data = NULL;
-			FMX_UInt32 size = 0;
-			ParameterAsChar ( parameters, 1, &data, size );
-			BECurl curl ( *url, kBE_HTTP_METHOD_PUT, "", *username, *password, "", data, size );
+			vector<char> data = ParameterAsVectorChar ( parameters, 1 );
+			BECurl curl ( *url, kBE_HTTP_METHOD_PUT, "", *username, *password, "", data );
 			response = curl.perform_action ( );
-
-			delete [] data;
 			
 		}
 
@@ -1685,7 +1679,7 @@ FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environm
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
 		
-		BECurl curl ( *url, kBE_FTP_METHOD_UPLOAD, "", *username, *password, "", (char *)&data.front(), data.size() );
+		BECurl curl ( *url, kBE_FTP_METHOD_UPLOAD, "", *username, *password, "", data );
 		vector<char> response = curl.perform_action ( );
 			
 		error = g_last_error;

@@ -203,10 +203,6 @@ int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t 
 		if ( ! completed ) {
 			
 			WStringAutoPtr title ( new wstring ( direction + L"load Progress" ) );
-			
-			//			const fmx::ExprEnvAutoPtr environment;
-			//			FMX_SetToCurrentEnv ( &(*environment) );
-			
 			description->append ( L"Starting " + direction + L"load." );
 			
 			error = DisplayProgressDialog ( title, description, (unsigned long)total_bytes, false /* AllowUserAbort ( *environment ) */ );
@@ -247,7 +243,7 @@ BECurl::BECurl ( )
 }
 
 
-BECurl::BECurl ( const string download_this, const be_http_method method, const boost::filesystem::path to_file, const string _username, const string _password, const string post_parameters, const char * put_data, const size_t size )
+BECurl::BECurl ( const string download_this, const be_http_method method, const boost::filesystem::path to_file, const string _username, const string _password, const string post_parameters, const vector<char> put_data )
 {
 
 	Init ();
@@ -255,8 +251,7 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	url = download_this;
 	http_method = method;
 	filename = to_file;
-	upload_data = (char *)put_data;	// file_data is NOT copied
-	upload_data_size = size;
+	upload_data = put_data;
 	username = _username;
 	password = _password;
 	parameters = post_parameters;
@@ -747,15 +742,17 @@ void BECurl::prepare_data_upload ( )
 	easy_setopt ( CURLOPT_READFUNCTION, ReadMemoryCallback );
 	
 	userdata = InitalizeCallbackMemory ( );
-	userdata.memory = upload_data;
-	userdata.size = upload_data_size;
+
+	if ( ! upload_data.empty() ) {
+		userdata.memory = &upload_data[0];
+		userdata.size = upload_data.size();
+	}
+
 	easy_setopt ( CURLOPT_READDATA, &userdata );
 	easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
 	
-//	if ( http_method == kBE_HTTP_METHOD_PUT ) {
-		easy_setopt ( CURLOPT_SEEKFUNCTION, SeekFunction );
-		easy_setopt ( CURLOPT_SEEKDATA, &userdata );
-//	}
+	easy_setopt ( CURLOPT_SEEKFUNCTION, SeekFunction );
+	easy_setopt ( CURLOPT_SEEKDATA, &userdata );
 
 }
 

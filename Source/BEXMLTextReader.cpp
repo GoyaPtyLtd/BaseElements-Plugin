@@ -30,6 +30,8 @@
 
 BEXMLTextReader::BEXMLTextReader ( const boost::filesystem::path path )
 {
+	LIBXML_TEST_VERSION; // initialise libxml
+	
 	last_node = false;
 	error_report = "";
 	
@@ -60,6 +62,7 @@ BEXMLTextReader::BEXMLTextReader ( const boost::filesystem::path path )
 
 BEXMLTextReader::~BEXMLTextReader()
 {
+	xmlTextReaderClose ( reader );
 	xmlFreeTextReader ( reader );
 	
 	if ( xml_document ) {
@@ -71,6 +74,8 @@ BEXMLTextReader::~BEXMLTextReader()
 		_close ( file_descriptor );
 	}
 #endif
+	
+	xmlCleanupParser();
 	
 }
 

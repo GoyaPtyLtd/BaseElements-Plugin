@@ -47,11 +47,14 @@ bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 whic
 long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value );
 StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which );
 WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which );
-void ParameterAsChar ( const fmx::DataVect& parameters, const FMX_UInt32 which, char ** char_data, FMX_UInt32& size );
 std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which );
-std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which );
 boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which );
 
+int PreferredContainerType ( const fmx::BinaryData& data );
+
+int IndexForStream ( const fmx::BinaryData& data, const char a, const char b, const char c, const char d );
+std::vector<char> DataAsVectorChar ( const fmx::BinaryData& data, const FMX_UInt32 which );
+bool StreamIsCompressed ( const fmx::BinaryData& data );
 
 StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path );
 std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from );
@@ -67,7 +70,6 @@ double DataAsDouble ( const fmx::Data& data );
 
 fmx::errcode NoError ( void );
 fmx::errcode MapError ( const fmx::errcode error = kNoError, const bool map = false );
-
 
 bool AllowUserAbort ( const fmx::ExprEnv& environment );
 

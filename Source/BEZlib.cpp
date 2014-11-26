@@ -436,3 +436,48 @@ const long Zip ( const BEValueList<std::string> * filenames, const StringAutoPtr
 } // Zip
 
 
+const std::vector<char> UncompressContainerStream ( const std::vector<char> compressed )
+{
+	z_stream stream;
+	stream.next_in = (unsigned char *)&compressed[0];
+	stream.avail_in = (unsigned int)compressed.size();
+	stream.total_out = 0;
+	stream.zalloc = Z_NULL;
+	stream.zfree = Z_NULL;
+ 
+	std::vector<char> decompressed;
+ 
+	// inflateInit2 knows how to deal with gzip format
+	if ( inflateInit2 ( &stream, 15 + 32 ) != Z_OK ) {
+		return decompressed;
+	}
+ 
+	bool done = false;
+
+	while ( !done ) {
+		
+		unsigned char output_buffer [ WRITEBUFFERSIZE ];
+		stream.next_out = output_buffer;
+		stream.avail_out = WRITEBUFFERSIZE;
+		
+		// Inflate another chunk.
+		int status = inflate ( &stream, Z_SYNC_FLUSH );
+		
+		done = ( status == Z_STREAM_END );
+
+		if ( status == Z_OK || done ) {
+			decompressed.insert ( decompressed.end(), output_buffer, output_buffer + WRITEBUFFERSIZE - stream.avail_out );
+		} else {
+			break;
+		}
+	}
+ 
+	if ( inflateEnd ( &stream ) != Z_OK || !done ) {
+		decompressed.clear();
+		return decompressed;
+	}
+ 	
+	return decompressed;
+	
+} // UncompressContainerStream
+
