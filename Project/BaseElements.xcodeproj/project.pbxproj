@@ -113,9 +113,7 @@
 		4D4153A6120140AF00770E14 /* BEWStringVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEWStringVector.h; path = ../Source/BEWStringVector.h; sourceTree = SOURCE_ROOT; };
 		4D55C63815EE0F0A008F7FBA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
-		4D57DF7D193EE0F3006739BE /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../Libraries/libcrypto.a; sourceTree = "<group>"; };
 		4D57DF7E193EE0F3006739BE /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/libssh2.a; sourceTree = "<group>"; };
-		4D57DF7F193EE0F3006739BE /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../Libraries/libssl.a; sourceTree = "<group>"; };
 		4D57DF85193EE945006739BE /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/libcurl.a; sourceTree = "<group>"; };
 		4D57DF87193EE984006739BE /* ldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = ldap.dylib; path = usr/lib/samba/idmap/ldap.dylib; sourceTree = SDKROOT; };
 		4D57DF89193EEA9F006739BE /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = usr/lib/libldap.dylib; sourceTree = SDKROOT; };
@@ -357,9 +355,7 @@
 				4D57DF89193EEA9F006739BE /* libldap.dylib */,
 				4D57DF87193EE984006739BE /* ldap.dylib */,
 				4D57DF85193EE945006739BE /* libcurl.a */,
-				4D57DF7D193EE0F3006739BE /* libcrypto.a */,
 				4D57DF7E193EE0F3006739BE /* libssh2.a */,
-				4D57DF7F193EE0F3006739BE /* libssl.a */,
 				4D27C3851861160000E7F4A1 /* Cocoa.framework */,
 				4D27C383186115F300E7F4A1 /* libcrypto.dylib */,
 				4D27C381186115EB00E7F4A1 /* libssl.dylib */,
@@ -393,6 +389,7 @@
 				4DCD49671A195B0C00EFCF7F /* CopyFiles */,
 				4DCD49681A195B0C00EFCF7F /* Resources */,
 				4DCD496B1A195B0C00EFCF7F /* Frameworks */,
+				4D3D6A461A25954B006E2304 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -444,6 +441,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4D3D6A461A25954B006E2304 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/cp -R /Applications/FileMaker\\ Pro\\ 13\\ Advanced/Extensions/BaseElements.fmplugin /Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Build/Debug/BaseElements.fmplugin";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4DCD49451A195B0C00EFCF7F /* Sources */ = {
@@ -536,6 +549,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 13 Advanced/Extensions/";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
