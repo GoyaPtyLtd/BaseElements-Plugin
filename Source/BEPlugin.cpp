@@ -207,15 +207,15 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, true, 2 );
 
-	g_be_plugin->RegisterFunction ( kBE_SMTP_Server, BE_SMTP_Server, true, 1, 4 );
-	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, true, 4, 8 );
-	
 	// still alpha
 	
 	//	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestToken, BE_OAuth_RequestAccessToken, true, 3 );
 //	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
 	//	g_be_plugin->RegisterFunction ( kBE_OAuth_ClearToken, BE_OAuth_RequestAccessToken, true );
+	
+	g_be_plugin->RegisterHiddenFunction ( kBE_SMTP_Server, BE_SMTP_Server, true, 1, 4 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_SMTP_Send, BE_SMTP_Send, true, 4, 8 );
 	
 	
 	return kCurrentExtnVersion;	// enable the plug-in
