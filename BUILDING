@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 3.0 of the plug-in is built on Mac OS X 10.9.2 using Xcode 5.1.1 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
+Version 3.0 of the plug-in is built on Mac OS X 10.10 using Xcode 6.1 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -31,13 +31,13 @@ Boost is available from
 
 	http://www.boost.org/
 
-Note: v3 of the plug-in requires Boost 1.55_0 (or later).
+Note: v3 of the plug-in requires Boost 1.57_0 (or later).
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_55_0
+	cd boost_1_57_0
 	./bootstrap.sh
-	../b2 architecture=x86 address-model=32_64 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.6"
+	./b2 architecture=x86 address-model=32_64 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.6"
 
 See
 
@@ -56,8 +56,7 @@ Download the zlib source from
 
 	http://www.zlib.net/
 
-and extract the folder zlib-1.2.7 to the desktop. Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory.
-
+and extract the folder zlib-1.2.8 to the desktop. Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory and zip.h and zconf.h from the root directory of the distribution to the Headers directory.
 
 
 =======================================================================
@@ -87,7 +86,7 @@ and follow the supplied building instructions but with the following ./configure
 
 	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
 
-Copy liboauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a to Libraries.
+Copy oauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a to Libraries.
 
 
 =======================================================================
@@ -111,7 +110,7 @@ libssh2
 
 Download the source from
 
-	http://www.libssh2.org
+	http://www.libssh2.org/
 
 Unpack the archive and in the distribution directory
 
@@ -208,7 +207,7 @@ The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 
-Note: v3.0 of the plug-in requires Boost 1.55_0 (or later).
+Note: v3.0 of the plug-in requires Boost 1.57_0 (or later).
 
 See
 
@@ -216,7 +215,7 @@ See
 
 for instructions on compiling the Boost libraries. From the command prompt try
 
-	cd boost_1_55_0
+	cd boost_1_57_0
 	bootstrap.bat
 	b2 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex install --prefix=build
 
@@ -229,30 +228,62 @@ Copy the directory containing the boost headers from the build/include directory
 
 
 =======================================================================
-zlib
+zlib & minizip
 =======================================================================
 
 Building zlib is straightforward. Download the zlib source from
 
 	http://www.zlib.net/
 
-and extract the folder zlib-1.2.7 to the desktop.
+and extract the folder zlib-1.2.8 to the desktop.
 
-Open the solution file "contrib/vstudio/vc10/zlibvc.sln" and from the "Build Menu" select "Configuration Manager" and, once in the Configuration Manager, select "ReleaseWithoutAsm" as the "Active solution configuration".
+Open the solution file "contrib/vstudio/vc10/zlibvc.sln" and remove ZLIB_WINAPI from the list of preprocessor definitions for both the libzstat Win32 and x64 ReleaseWithoutAsmfi configurations. From the "Build Menu" select "Batch Build" and select the libzstat "ReleaseWithoutAsm" configuration for both Win32 and x64, and "Build".
 
-Remove ZLIB_WINAPI from the list of preprocessor definitions.
-
-Build the library and move
+Move
 
 	contrib/vstudio/vc10/x86/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
-in the Libraries directory and zlib.h in the Headers directory.
-
-For x64 builds set the "Active Solution Platform" in the "Configuration Manager" to x64, remove ZLIB_WINAPI from the list of preprocessor definitions and build the solution. Move
+in the Libraries directory and
 
 	contrib/vstudio/vc10/x64/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
-to the Libraries/x64 directory.
+Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory and zip.h and zconf.h from the root directory of the distribution to the Headers directory.
+
+
+=======================================================================
+Jansson
+=======================================================================
+
+Download the source from
+
+	https://github.com/rogerz/jansson/tree/json_path
+
+And
+
+1. Open the Visual Studio solution and add the file src/path.c to the Source files.
+2. Change the Configuration Properties->General->Configuration Type to "Static library (.lib)".
+3. Add the src directory to Configuration Properties->VC++ Directories->Include Directories.
+4. Change Configuration Properties->C/C++->Code Generation->Runtime Library to "Multi-threaded Debug (/MTd)" for the the debug configuration and "Multi-threaded (/MT)" for the release one.
+5. Add new configurations for x64 and change Configuration Properties->General->Output Directory to "Output\$(Configuration)\x64" for the x64 configurations.
+
+Finally, Build->Batch Build to build the two "Release" configurations.
+
+Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib  to Libraries and win32/vs2010/Output/Release/jansson.lib to Libraries\x64.
+
+
+=======================================================================
+liboauth
+=======================================================================
+
+Note: OpenSSL should be built first.
+
+Download the source from
+
+	http://liboauth.sourceforge.net/
+
+Unpack directory containing the Visual Studio solution files (from the BaseElements-Plugin Projects/Extras), open the Solution make sure the project can find the BaseElements plug-in Header and Libraries directories. Then, from Build->Batch Build build the two "Release" configurations.
+
+Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib  to Libraries and liboauth\Release\liboauth.lib to Libraries\x64.
 
 
 =======================================================================
@@ -290,10 +321,44 @@ Copy the directory containing the mimetic headers from the build/include directo
 
 
 =======================================================================
-minizip
+libssh2
 =======================================================================
 
-Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory.
+Download the source from
+
+	http://www.libssh2.org
+
+
+Open
+
+	win32\libssh2.vcproj
+
+and set the following Configuration Properties:
+
+	Project Defaults -> Character Set == Use Unicode Character Set
+	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
+	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
+
+From Batch Build select LIB Release.
+
+Copy the library from
+
+	win32\Release_lib\libssl2.lib
+
+into the Libraries directory and copy
+
+	include
+
+to the Headers directory and rename it libssh2.
+
+
+For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK".
+
+Copy the library from
+
+	win32\Release_lib\libssl2.lib
+
+into the Libraries\x64 directory.
 
 
 =======================================================================
@@ -459,46 +524,6 @@ Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\x64 and copy inc32\o
 
 
 =======================================================================
-libssh2
-=======================================================================
-
-Download the source from
-
-	http://www.libssh2.org
-
-
-Open
-
-	win32\libssh2.vcproj
-
-and set the following Configuration Properties:
-
-	Project Defaults -> Character Set == Use Unicode Character Set
-	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
-	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
-
-From Batch Build select LIB Release.
-
-Copy the library from
-
-	win32\Release_lib\libssl2.lib
-
-into the Libraries directory and copy
-
-	include
-
-to the Headers directory and rename it libssh2.
-
-
-For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK".
-
-Copy the library from
-
-	win32\Release_lib\libssl2.lib
-
-into the Libraries\x64 directory.
-
-=======================================================================
 libcurl
 =======================================================================
 
@@ -536,39 +561,6 @@ into the Libraries\x64 directory and copy
 
 to the Headers directory.
 
-
-=======================================================================
-Jansson
-=======================================================================
-
-Download the source from
-
-	https://github.com/rogerz/jansson/tree/json_path
-
-And
-
-1. Open the Visual Studio solution and add the file src/path.c to the Source files.
-2. Change the Configuration Properties->General->Configuration Type to "Static library (.lib)".
-3. Add the src directory to Configuration Properties->VC++ Directories->Include Directories.
-4. Change Configuration Properties->C/C++->Code Generation->Runtime Library to "Multi-threaded Debug (/MTd)" for the the debug configuration and "Multi-threaded (/MT)" for the release one.
-5. Add new configurations for x64 and change Configuration Properties->General->Output Directory to "Output\$(Configuration)\x64" for the x64 configurations.
-
-Finally, Build->Batch Build to build the two "Release" configurations.
-
-Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib  to Libraries and win32/vs2010/Output/Release/jansson.lib to Libraries\x64.
-
-
-=======================================================================
-liboauth
-=======================================================================
-
-Download the source from
-
-	http://liboauth.sourceforge.net/
-
-Unpack directory containing the Visual Studio solution files (from the BaseElements-Plugin Projects/Extras), open the Solution make sure the project can find the BaseElements plug-in Header and Libraries directories. Then, from Build->Batch Build build the two "Release" configurations.
-
-Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib  to Libraries and liboauth\Release\liboauth.lib to Libraries\x64.
 
 =======================================================================
 
