@@ -8,12 +8,13 @@ Notes:
 - these instructions apply to version 3.0 of the BaseElements Plugin
 - version 12.0.1.5 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
+- the location of the release builds needs to be changed to suit your environment
 
 =======================================================================
 Mac OS X
 =======================================================================
 
-Version 3.0 of the plug-in is built on Mac OS X 10.10 using Xcode 6.1 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
+Version 3.0 of the plug-in is built on Mac OS X 10.10.1 using Xcode 6.1 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -24,14 +25,12 @@ and place the FMWrapper.framework in the Libraries directory.
 On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built the Boost FileSystem, System and Thread libraries.
 
 =======================================================================
-Boost
+Boost - 1.57_0
 =======================================================================
 
 Boost is available from
 
 	http://www.boost.org/
-
-Note: v3 of the plug-in requires Boost 1.57_0 (or later).
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
@@ -49,7 +48,7 @@ Copy the directory containing the boost headers from the build/include directory
 
 
 =======================================================================
-minizip
+minizip - 1.2.8
 =======================================================================
 
 Download the zlib source from
@@ -60,7 +59,7 @@ and extract the folder zlib-1.2.8 to the desktop. Copy the minizip directory fro
 
 
 =======================================================================
-Jansson
+Jansson - 2.5
 =======================================================================
 
 Download the source from
@@ -75,7 +74,7 @@ Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and  ./
 
 
 =======================================================================
-liboauth
+liboauth - 1.0.3
 =======================================================================
 
 Download the source from
@@ -90,7 +89,7 @@ Copy oauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a to
 
 
 =======================================================================
-mimetic
+mimetic - 0.9.8
 =======================================================================
 
 Download the source from
@@ -105,7 +104,7 @@ Copy the directory containing the mimetic headers from the build/include directo
 
 
 =======================================================================
-libssh2
+libssh2 - 2.4.3
 =======================================================================
 
 Download the source from
@@ -130,7 +129,7 @@ to Headers/libssh2
 
 
 =======================================================================
-libcurl
+libcurl - 7.39
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -141,9 +140,9 @@ Download the source from
 
 and expand it into a directory on the Desktop. cd into the directory and run
 
-	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-L<path_to_be_plugin_libraries_directory>" --disable-dependency-tracking --with-ssl --with-libssh2=<path_to_libssh2> --disable-shared --with-libz --prefix=<path_to_intsall_libcurl>
+	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6 -I<path to /BaseElements-Plugin/Headers/libssh>" LDFLAGS="-L<path to /BaseElements-Plugin/Libraries>" --disable-dependency-tracking --with-ssl=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libssl.dylib  --disable-shared --with-libz --prefix=<install path> --with-libssh2
 
-(replacing <path_to_be_plugin_libraries_directory>, <path_to_libssh2> and <path_to_intsall_libcurl> as appropriate).
+(replacing the indicated paths as appropriate).
 
 Open the file
 
@@ -175,7 +174,6 @@ into the Libraries directory and
 
 into Headers.
 
-
 =======================================================================
 Windows
 =======================================================================
@@ -200,14 +198,12 @@ Another note: when doing both debug and release builds clean the project when sw
 
 
 =======================================================================
-Boost
+Boost - 1.57_0
 =======================================================================
 
 The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
-
-Note: v3.0 of the plug-in requires Boost 1.57_0 (or later).
 
 See
 
@@ -228,7 +224,7 @@ Copy the directory containing the boost headers from the build/include directory
 
 
 =======================================================================
-zlib & minizip
+zlib & minizip - 1.2.8
 =======================================================================
 
 Building zlib is straightforward. Download the zlib source from
@@ -251,7 +247,7 @@ Copy the minizip directory from the contrib directory in the zlib distribution t
 
 
 =======================================================================
-Jansson
+Jansson - 2.5
 =======================================================================
 
 Download the source from
@@ -272,7 +268,7 @@ Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win
 
 
 =======================================================================
-liboauth
+liboauth - 1.0.3
 =======================================================================
 
 Note: OpenSSL should be built first.
@@ -287,7 +283,7 @@ Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboau
 
 
 =======================================================================
-mimetic
+mimetic - 0.9.8
 =======================================================================
 
 Download the source from
@@ -321,12 +317,12 @@ Copy the directory containing the mimetic headers from the build/include directo
 
 
 =======================================================================
-libssh2
+libssh2 - 2.4.3
 =======================================================================
 
 Download the source from
 
-	http://www.libssh2.org
+	http://www.libssh2.org/
 
 
 Open
@@ -336,8 +332,8 @@ Open
 and set the following Configuration Properties:
 
 	Project Defaults -> Character Set == Use Unicode Character Set
-	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
+	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
 
 From Batch Build select LIB Release.
 
@@ -362,7 +358,99 @@ into the Libraries\x64 directory.
 
 
 =======================================================================
-libiconv & libxml2
+OpenSSL - 1.0.1j
+=======================================================================
+
+Building OpenSSL requires that perl is installed. The ActiveState perl (Community Edition) is a good
+place to start if you do not already have perl installed
+
+	http://www.activestate.com/activeperl
+
+
+Download the latest openssl source from
+
+	http://www.openssl.org/source/
+
+(openssl-1.0.1j.tar.gz at the time of writing).
+
+Unpack the archive onto the desktop and, using the "Visual Studio Command Prompt (2010)"
+
+	cd c:\Users\Mark\Desktop\openssl-1.0.1j
+	perl Configure VC-WIN32 enable-static-engine no-asm
+	ms\do_nt
+	nmake -f ms\nt.mak
+
+Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries and copy inc32\openssl to Headers.
+
+For x64 builds in a "Visual Studio x64 Cross Tools Command Prompt (2010)" use:
+
+	cd c:\Users\Mark\Desktop\openssl-1.0.1j
+	perl Configure VC-WIN64A enable-static-engine no-asm
+	ms\do_win64a
+	nmake -f ms\nt.mak
+
+Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\x64 and copy inc32\openssl to Headers.
+
+
+=======================================================================
+libcurl - 7.39
+=======================================================================
+
+Note: OpenSSL & libssh2 must be built before building libcurl.
+
+Download the source from
+
+	http://curl.haxx.se/download.html
+
+and expand it into a directory on the Desktop.
+
+Open
+
+	projects\Windows\VC10\curl.vcproj
+
+and set the following Configuration Properties for all projects/platforms:
+
+	Project Defaults -> Character Set == Use Unicode Character Set
+	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers/libssh directory
+	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
+	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
+
+Edit the file lib\ssh.c such that
+
+#ifdef WIN32
+#  undef  PATH_MAX
+#  define PATH_MAX MAX_PATH
+#endif
+
+becomes
+
+#ifdef WIN32
+#  undef  PATH_MAX
+#  define PATH_MAX MAX_PATH
+# ifndef R_OK
+# define R_OK 4
+# endif
+#endif
+
+In Visual Studio and select "Batch Build" and select both the x86 & x64 "LIB Release - LIB OpenSSL - LIB LibSSH2" configurations and then "Build".
+
+Copy the library from
+
+	build\Win32\VC10\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
+
+into the Libraries directory and copy
+
+	build\Win64\VC10\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
+
+into the Libraries\x64 directory and copy
+
+	include\curl
+
+to the Headers directory.
+
+
+=======================================================================
+libiconv - 1.14 & libxml2 - 2.9.2
 =======================================================================
 
 Download the libiconv source from
@@ -382,7 +470,6 @@ Then, in a terminal prompt
 	cd libiconv-1.14
 	patch.exe -p1 -i ..\libiconv-1.14.vc10.patch --binary
 
-
 Download the source for libxml2 from
 
 	http://xmlsoft.org/downloads.html
@@ -395,7 +482,7 @@ Rename the folder libiconv-1.14 to libiconv-1.14.vc10
 
 The Visual Studio solution file is in
 
-	libxml2-2.8.0\win32\VC10
+	libxml2-2.9.2\win32\VC10
 
 From the "Build" menu select "Confuration Manager" and then set "Active solution configuration" to Release and in the "Build" column, uncheck "runsuite".
 
@@ -405,8 +492,8 @@ In the Property Pages
 
 add paths to the following directories
 
-	libxml2-2.8.0\win32\VC10
-	libxml2-2.8.0\include
+	libxml2-2.9.2\win32\VC10
+	libxml2-2.9.2\include
 	libiconv-1.14.vc10\include
 
 and in
@@ -418,6 +505,11 @@ set
 	Configuration Type = Static Library (.lib)
 	Character Set = Use Unicode Character Set
 
+And also
+
+	... -> C++ -> Preprocessor -> Preprocessor Definitions = WIN32
+	... -> Linker -> Input -> Additional Dependencies = ws2_32.lib
+
 In the Property Pages of both libxml2 & iconv set
 
 	... -> Configuration Properties -> C/C++ -> Code Generation -> Runtime Library = Multi-threaded (/MT)
@@ -426,7 +518,7 @@ and then build the project.
 
 Copy Release\iconv.lib & Release\libxml2.lib to the BE Plugin Libraries folder and, finally, copy
 
-	libxml2-2.8.0\include\libxml
+	libxml2-2.9.2\include\libxml
 
 into the BE Plugin Headers folder and create a folder, iconv, in the BE Plugin Headers folder and copy
 
@@ -446,7 +538,7 @@ to the Libraries/x64 directory.
 
 
 =======================================================================
-libxslt & libexslt
+libxslt & libexslt - 1.1.28
 =======================================================================
 
 Download the source from
@@ -461,17 +553,17 @@ For Win32 builds use the "Visual Studio Command Prompt (2010)" and for x64 build
 
 Move to the win32 directory in the archive
 
-	cd Desktop\libxslt-1.1.26\win32
+	cd Desktop\libxslt-1.1.28\win32
 
 Run the commands (changing the include= & lib= paths as appropriate)
 
 32-bit
 
-	cscript configure.js static=yes debug=no cruntime=-MT include="\\VBOXSVR\BaseElements-Plugin\Headers;\\VBOXSVR\BaseElements-Plugin\Headers\iconv" lib="\\VBOXSVR\BaseElements-Plugin\Libraries"
+	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin\Libraries>"
 
 64-bit
 
-cscript configure.js static=yes debug=no cruntime=-MT include="\\VBOXSVR\BaseElements-Plugin\Headers;\\VBOXSVR\BaseElements-Plugin\Headers\iconv" lib="\\VBOXSVR\BaseElements-Plugin\Libraries\x64"
+	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin\Libraries\x64>"
 
 	nmake -f Makefile.msvc MFLAGS=-MT libxslta libexslta
 
@@ -479,88 +571,13 @@ to configure and build the source.
 
 Finally, place the headers from the directories
 
-	libxslt-1.1.26\include\libxslt & libxslt-1.1.26\include\libexslt
+	libxslt-1.1.28\libxslt & libxslt-1.1.28\libexslt
 
 into directories, libxslt & libexslt, in the Headers directory and copy the libraries
 
 	bin.msvc\libxslt_a.lib & bin.msvc\libexslt_a.lib
 
-into the Libraries directory.
-
-
-=======================================================================
-OpenSSL
-=======================================================================
-
-Building OpenSSL requires that perl is installed. The ActiveState perl (Community Edition) is a good
-place to start if you do not already have perl installed
-
-	http://www.activestate.com/activeperl
-
-
-Download the latest openssl source from
-
-	http://www.openssl.org/source/
-
-(openssl-1.0.1c.tar.gz at the time of writing).
-
-Unpack the archive onto the desktop and, using the "Visual Studio Command Prompt (2010)"
-
-	cd c:\Users\Mark\Desktop\openssl-1.0.1c
-	perl Configure VC-WIN32 enable-static-engine no-asm
-	ms\do_nt
-	nmake -f ms\nt.mak
-
-Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries and copy inc32\openssl to Headers.
-
-For x64 builds in a "Visual Studio x64 Cross Tools Command Prompt (2010)" use:
-
-	cd c:\Users\Mark\Desktop\openssl-1.0.1c
-	perl Configure VC-WIN64A enable-static-engine no-asm
-	ms\do_win64a
-	nmake -f ms\nt.mak
-
-Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\x64 and copy inc32\openssl to Headers.
-
-
-=======================================================================
-libcurl
-=======================================================================
-
-Note: OpenSSL & libssh2 must be built before building libcurl.
-
-Download the source from
-
-	http://curl.haxx.se/download.html
-
-and expand it into a directory on the Desktop.
-
-Open
-	projects\Windows\VC10\curl.vcproj
-
-and set the following Configuration Properties:
-
-	Project Defaults -> Character Set == Use Unicode Character Set
-	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
-	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
-
-
-In Visual Studio and select "Batch Build" and select both the x86 & x64 "LIB Release - LIB OpenSSL - LIB LibSSH2" configurations and then "Build".
-
-Copy the library from
-
-	build\Win32\VC10\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
-
-into the Libraries directory and copy
-
-	build\Win64\VC10\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
-
-into the Libraries\x64 directory and copy
-
-	include\curl
-
-to the Headers directory.
-
+into the Libraries (or Libraries\x64) directory.
 
 =======================================================================
 
