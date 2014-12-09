@@ -454,7 +454,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/cp -R /Applications/FileMaker\\ Pro\\ 13\\ Advanced/Extensions/BaseElements.fmplugin /Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Build/Debug/BaseElements.fmplugin";
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n\n/bin/cp -R /Applications/FileMaker\\ Pro\\ 13\\ Advanced/Extensions/BaseElements.fmplugin /Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Build/Debug/BaseElements.fmplugin\n\nfi\n\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n\nAUTO_UPDATE_VERSION=$(grep 'define.*AUTO_UPDATE_VERSION' ../Source/BEPluginGlobalDefines.h | awk -F '[^0-9]*' '{print $2}')\n\nVERSION_STRING=$(grep 'define VERSION_STRING' ../Source/BEPluginGlobalDefines.h | awk -F '[^0-9a-z.]*' '{print $3}')\n\n/usr/bin/touch \"${CONFIGURATION_BUILD_DIR}/Version ${VERSION_STRING} (${AUTO_UPDATE_VERSION})\"\n\nfi\n\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
