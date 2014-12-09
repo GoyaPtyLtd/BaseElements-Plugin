@@ -78,7 +78,7 @@ extern fmx::errcode g_last_error;
 #define BUNDLE_STRINGS_ID "BaseElements"
 
 #define	VERSION_NUMBER_STRING L"3.0.0"
-#define	AUTO_UPDATE_VERSION L"02990023"
+#define	AUTO_UPDATE_VERSION L"02990024"
 #define VERSION_STRING "3.0b1"
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -197,8 +197,10 @@ enum errors {
 	kLowMemoryError = 7,
 	kRequestedDataIsMissingError = 10,
 	kNameIsNotValid = 11,
+	kFileOrObjectIsInUse = 13,
 	kFileExistsError = 17,
 	kErrorParameterMissing = 102,
+	kWindowIsMissingError = 112,
 	kNotFoundError = 401,
 	kFileSystemError = 10000,
 	kDDLCommandQueued = 11000,

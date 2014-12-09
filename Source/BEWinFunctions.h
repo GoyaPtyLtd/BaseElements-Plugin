@@ -19,7 +19,7 @@
 #include <string>
 
 
-void InitialiseWindows ( void );
+void InitialiseForPlatform ( void );
 fmx::errcode GetLastErrorAsFMX ( void );
 
 WStringAutoPtr ClipboardFormats ( void );

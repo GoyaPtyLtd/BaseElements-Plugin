@@ -2,7 +2,7 @@
  BEMacFunctions.cpp
  BaseElements Plug-In
  
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -12,6 +12,7 @@
 #import "BEMacFunctions.h"
 #import "BEPluginGlobalDefines.h"
 #import "BEPluginUtilities.h"
+#import "ProgressDialogWindowController.h"
 
 #import <Cocoa/Cocoa.h>
 
@@ -34,6 +35,15 @@ WStringAutoPtr WStringAutoPtrFromNSString ( const NSString * text );
 
 
 WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder, bool choose_file );
+
+
+ProgressDialogWindowController* progressDialog;
+
+
+void InitialiseForPlatform ( )
+{
+	progressDialog = nil;
+}
 
 
 #pragma mark -
@@ -59,10 +69,9 @@ NSString * NSStringFromWStringAutoPtr ( const WStringAutoPtr text )
 	char * string_data = (char *)text->data();
 	unsigned long size = text->size() * sizeof ( wchar_t );
 	
-	NSString* new_string = [[[NSString alloc] initWithBytes: string_data
-													 length: size
-												   encoding: kEncoding_wchar_t] autorelease];
-	return new_string;
+	NSString* new_string = [[NSString alloc] initWithBytes: string_data length: size encoding: kEncoding_wchar_t];
+
+	return [new_string autorelease];
 }
 
 
@@ -286,46 +295,58 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 #pragma mark -
 
 
-#import "ProgressDialogWindowController.h"
-
-
-ProgressDialogWindowController* progressDialog;
-
-
 fmx::errcode DisplayProgressDialog ( WStringAutoPtr title, WStringAutoPtr description, const long maximum, const bool can_cancel )
 {
 	
-	if ( [progressDialog shouldRestart] ) {
-		[progressDialog dealloc];
-		progressDialog = nil;
+	fmx::errcode error = kNoError;
+
+	if ( (progressDialog != nil) && ([progressDialog closed] == YES) ) {
+			[progressDialog release];
+			progressDialog = nil;
 	}
 	
-	if (progressDialog == nil) {
-
+	if ( progressDialog == nil ) {
+		
 		progressDialog = [[ProgressDialogWindowController alloc] initWithWindowNibName: @"ProgressDialog"];
 
 		NSString * title_string = NSStringFromWStringAutoPtr ( title );
 		NSString * description_string = NSStringFromWStringAutoPtr ( description );
+	
 		[progressDialog show: title_string description: description_string maximumValue: maximum canCancel: can_cancel];
-		
-	}
 
-	return kNoError;
+	} else {
+		error = kFileOrObjectIsInUse;
+	}
+	
+	return error;
 }
 
 
 fmx::errcode UpdateProgressDialog ( const long value, WStringAutoPtr description )
 {
-	NSString * description_string;
+	fmx::errcode error = kNoError;
 	
-	if ( !description->empty() ) {
-		description_string = NSStringFromWStringAutoPtr ( description );
+	if ( progressDialog != nil ) {
+		
+		NSString * description_string;
+		
+		if ( !description->empty() ) {
+			description_string = NSStringFromWStringAutoPtr ( description );
+		} else {
+			description_string = NULL;
+		}
+		
+		error = [progressDialog update: value description: description_string];
+		
+		if ( [progressDialog closed] == YES ) {
+			[progressDialog release];
+			progressDialog = nil;
+		}
+		
 	} else {
-		description_string = NULL;
+		error = kWindowIsMissingError;
 	}
-
-	fmx::errcode error = [progressDialog update: value description: description_string];
-
+	
 	return error;
 }
 

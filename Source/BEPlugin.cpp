@@ -40,9 +40,15 @@
 #include "BEPluginUtilities.h"
 #include "BEFileMakerPlugin.h"
 #include "BESQLCommand.h"
-#include "BEWinfunctions.h"
 #include "BEMessageDigest.h"
 
+#ifdef FMX_MAC_TARGET
+	#include "BEMacfunctions.h"
+#endif
+
+#ifdef FMX_WIN_TARGET
+	#include "BEWinfunctions.h"
+#endif
 
 using namespace std;
 using namespace fmx;
@@ -73,10 +79,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	
 	SetTextEncoding ( "" );
 	
-#ifdef FMX_WIN_TARGET
-	InitialiseWindows ( );
-#endif
-	
+	InitialiseForPlatform ( );
 
 	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
 	g_be_plugin = new BEFileMakerPlugin ( plugin_id );

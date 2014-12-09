@@ -734,7 +734,7 @@ FMX_PROC(errcode) BE_ProgressDialog ( short /* funcId */, const ExprEnv& environ
 		error = kErrorUnknown;
 	}
 	
-	return MapError ( error );
+	return MapError ( error, true);
 	
 } // BE_ProgressDialog
 
@@ -758,7 +758,7 @@ FMX_PROC(errcode) BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& 
 		error = kErrorUnknown;
 	}
 	
-	return MapError ( error );
+	return MapError ( error, true );
 	
 } // BE_ProgressDialog_Update
 

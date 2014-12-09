@@ -2,7 +2,7 @@
  BEMacFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -18,6 +18,9 @@
 
 #include <string>
 
+
+
+void InitialiseForPlatform ( );
 
 WStringAutoPtr ClipboardFormats ( void );
 StringAutoPtr ClipboardData ( WStringAutoPtr atype );

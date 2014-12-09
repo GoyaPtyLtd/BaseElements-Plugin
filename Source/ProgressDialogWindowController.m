@@ -2,7 +2,7 @@
  ProgressDialogWindowController.m
  BaseElements Plug-In
  
- Copyright 2013 Goya. All rights reserved.
+ Copyright 2013~2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -21,12 +21,12 @@
 {
     self = [super initWithWindow:window];
     if ( self ) {
-		restart = NO;
 		userCancelled = NO;
     }
     
     return self;
 }
+
 
 - (void)windowDidLoad
 {
@@ -39,16 +39,16 @@
 }
 
 
--(bool) shouldRestart
+-(bool) closed;
 {
-	return restart;
+	return (self.window == nil);
 }
 
 
 -(void) closeWindow
 {
-	[self.window close];
-	restart = YES;
+	[self.window orderOut: nil];
+	self.window = nil;
 }
 
 
@@ -95,22 +95,22 @@
 	int error = kNoError;
 	
 	if ( userCancelled ) {
-		return kUserCancelledError;
-	}
-	
-	
-	if ( newValue <= [progressIndicator maxValue] ) {
-		
-		if ( ![progressIndicator isIndeterminate] ) {
-			[progressIndicator setDoubleValue: newValue];
-		}
-		
-		[self _update: _description];
-
+		error = kUserCancelledError;
 	} else {
-		
-		[self closeWindow];
 	
+	
+		if ( newValue <= [progressIndicator maxValue] ) {
+		
+			if ( ![progressIndicator isIndeterminate] ) {
+				[progressIndicator setDoubleValue: newValue];
+			}
+		
+			[self _update: _description];
+
+		} else {
+		
+			[self closeWindow];
+		}
 	}
 	
 	return error;

@@ -62,7 +62,7 @@ UINT BE_CF_FileNameW;
 UINT BE_CF_FileNameMapW;
 
 
-void InitialiseWindows ( void )
+void InitialiseForPlatform ( void )
 {
 	BE_CF_FileGroupDescriptorW = RegisterClipboardFormat ( CFSTR_FILEDESCRIPTORW );
 	BE_CF_FileNameW = RegisterClipboardFormat ( CFSTR_FILENAMEW );
@@ -730,36 +730,38 @@ LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam )
 
 fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAutoPtr description, const long maximum, const bool can_cancel )
 {
-	fmx::errcode error = kNoError;
+	HRESULT result = S_OK;
 
 	if ( progress_dialog ) {
-		return error;
-	}
+		result = kFileOrObjectIsInUse;
+	} else {
 
-	progress_dialog_maximum = maximum;
+		progress_dialog_maximum = maximum;
 
-	HWND parent_window = GetForegroundWindow();
-	HRESULT result = CoCreateInstance ( CLSID_ProgressDialog, NULL, CLSCTX_INPROC_SERVER, IID_IProgressDialog, (void**)&progress_dialog );
+		HWND parent_window = GetForegroundWindow();
+		result = CoCreateInstance ( CLSID_ProgressDialog, NULL, CLSCTX_INPROC_SERVER, IID_IProgressDialog, (void**)&progress_dialog );
 
-	if ( result == S_OK ) {
-		result = progress_dialog->SetTitle ( title->c_str () );
-	}
+		if ( result == S_OK ) {
+			result = progress_dialog->SetTitle ( title->c_str () );
+		}
 
-	if ( result == S_OK ) {
-		progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
-	}
+		if ( result == S_OK ) {
+			result = progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
+		}
 
-	DWORD flags = PROGDLG_NORMAL;
-	if ( !can_cancel ) {
-		flags |= PROGDLG_NOCANCEL;
-	}
+		DWORD flags = PROGDLG_NORMAL;
+		if ( !can_cancel ) {
+			flags |= PROGDLG_NOCANCEL;
+		}
 
-	if ( 0 == maximum ) {
-		flags |= PROGDLG_MARQUEEPROGRESS;
-	}
+		if ( 0 == maximum ) {
+			flags |= PROGDLG_MARQUEEPROGRESS;
+		}
 
-	if ( result == S_OK ) {
-		result = progress_dialog->StartProgressDialog ( parent_window, NULL, flags, NULL );
+		if ( result == S_OK ) {
+			result = progress_dialog->StartProgressDialog ( parent_window, NULL, flags, NULL );
+		}
+
 	}
 
 	return (fmx::errcode)result;
@@ -771,28 +773,35 @@ fmx::errcode UpdateProgressDialog ( const unsigned long value, const WStringAuto
 {
 	fmx::errcode error = kNoError;
 
-	BOOL user_cancelled = progress_dialog->HasUserCancelled();
+	if ( progress_dialog ) {
 
-	if ( (user_cancelled != 0) || (value > progress_dialog_maximum) ) {
+		BOOL user_cancelled = progress_dialog->HasUserCancelled();
 
-		progress_dialog->StopProgressDialog();
-		progress_dialog->Release();
-        progress_dialog = NULL;
+		if ( (user_cancelled != 0) || (value > progress_dialog_maximum) ) {
 
-		error = user_cancelled ? kUserCancelledError : error;
+			progress_dialog->StopProgressDialog();
+			progress_dialog->Release();
+		    progress_dialog = NULL;
+
+			error = user_cancelled ? kUserCancelledError : error;
+
+		} else {
+
+			HRESULT result;
+
+			if ( !description->empty () ) {
+				result = progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
+			}
+
+			if ( result == S_OK ) {
+				result = progress_dialog->SetProgress ( value, progress_dialog_maximum );
+				error = result == S_FALSE ? kNoError : (fmx::errcode)result;
+			}
+
+		}
 
 	} else {
-
-		HRESULT result;
-
-		if ( !description->empty () ) {
-			result = progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
-		}
-
-		if ( result == S_OK ) {
-			result = progress_dialog->SetProgress ( value, progress_dialog_maximum );
-			error = result == S_FALSE ? kNoError : (fmx::errcode)result;
-		}
+		error = kWindowIsMissingError;
 	}
 
 	return error;
