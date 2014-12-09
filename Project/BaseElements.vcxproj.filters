@@ -46,6 +46,10 @@
     <ClCompile Include="..\Source\BEBase64.cpp" />
     <ClCompile Include="..\Source\BEWinCommonFileDialog.cpp" />
     <ClCompile Include="..\Source\BEWinIFileDialog.cpp" />
+    <ClCompile Include="..\Source\duktape\duktape.c">
+      <Filter>duktape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\BEJavaScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -100,6 +104,10 @@
     <ClInclude Include="..\Source\BEPluginException.h" />
     <ClInclude Include="..\Source\BEWinCommonFileDialog.h" />
     <ClInclude Include="..\Source\BEWinIFileDialog.h" />
+    <ClInclude Include="..\Source\duktape\duktape.h">
+      <Filter>duktape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\BEJavaScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />
@@ -107,6 +115,9 @@
   <ItemGroup>
     <Filter Include="MiniZip">
       <UniqueIdentifier>{08bd3377-4dd4-4ca1-ad40-674b73fa7a04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="duktape">
+      <UniqueIdentifier>{b763443d-2571-43df-b0bf-f72d3f706a29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

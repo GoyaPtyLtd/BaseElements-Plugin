@@ -49,6 +49,7 @@
 #include "BEPluginException.h"
 #include "BEXero.h"
 #include "BESMTP.h"
+#include "BEJavaScript.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -1086,6 +1087,36 @@ FMX_PROC(errcode) BE_JSON_Encode ( short /* funcId */, const ExprEnv& /* environ
 	
 } // BE_JSON_Encode
 
+
+
+#pragma mark -
+#pragma mark JavaScript
+#pragma mark -
+
+// EXPERIMENTAL !!!
+// Use at your own risk
+
+FMX_PROC(fmx::errcode) BE_EvaluateJavaScript ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr javaScript = ParameterAsUTF8String ( parameters, 0 );
+		
+		StringAutoPtr jsResult = Evaluate_JavaScript ( javaScript );
+		
+		SetResult ( jsResult, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_SetPreference
 
 
 #pragma mark -

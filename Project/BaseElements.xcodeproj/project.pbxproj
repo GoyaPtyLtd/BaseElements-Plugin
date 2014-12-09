@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
+		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
@@ -118,6 +120,10 @@
 		4D57DF87193EE984006739BE /* ldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = ldap.dylib; path = usr/lib/samba/idmap/ldap.dylib; sourceTree = SDKROOT; };
 		4D57DF89193EEA9F006739BE /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = usr/lib/libldap.dylib; sourceTree = SDKROOT; };
 		4D59DAFA16F95E2400F87180 /* BEValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEValueList.h; path = ../Source/BEValueList.h; sourceTree = "<group>"; };
+		4D668AA31A36BC8900D14592 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
+		4D668AA41A36BC8900D14592 /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
+		4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEJavaScript.cpp; path = ../Source/BEJavaScript.cpp; sourceTree = "<group>"; };
+		4D668AA71A36BF0300D14592 /* BEJavaScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEJavaScript.h; path = ../Source/BEJavaScript.h; sourceTree = "<group>"; };
 		4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileSystem.cpp; path = ../Source/BEFileSystem.cpp; sourceTree = SOURCE_ROOT; };
 		4D70428713BAE5CA00DE4484 /* BEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileSystem.h; path = ../Source/BEFileSystem.h; sourceTree = SOURCE_ROOT; };
 		4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLTextReader.cpp; path = ../Source/BEXMLTextReader.cpp; sourceTree = "<group>"; };
@@ -228,6 +234,16 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
+		4D668AA21A36BC8900D14592 /* duktape */ = {
+			isa = PBXGroup;
+			children = (
+				4D668AA31A36BC8900D14592 /* duktape.c */,
+				4D668AA41A36BC8900D14592 /* duktape.h */,
+			);
+			name = duktape;
+			path = ../Source/duktape;
+			sourceTree = "<group>";
+		};
 		4D9EEE5D118A8C9600EC9352 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -262,6 +278,7 @@
 		C7DEDEE707E10BF3002283F3 = {
 			isa = PBXGroup;
 			children = (
+				4D668AA21A36BC8900D14592 /* duktape */,
 				4DC18336144D319D00E27CAA /* MiniZip */,
 				C7DEDEF607E10BF3002283F3 /* Sources */,
 				C7DEDEFC07E10BF3002283F3 /* Resources */,
@@ -335,6 +352,8 @@
 				4D3969CA18DA773900DFC47A /* BEBase64.h */,
 				4D3969C918DA773900DFC47A /* BEBase64.cpp */,
 				4D8E64181917561D00C9F2BE /* BEPluginException.h */,
+				4D668AA71A36BF0300D14592 /* BEJavaScript.h */,
+				4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -465,11 +484,13 @@
 			files = (
 				4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */,
 				4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */,
+				4D668AA51A36BC8900D14592 /* duktape.c in Sources */,
 				4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */,
 				4DCD49491A195B0C00EFCF7F /* BEXero.cpp in Sources */,
 				4DCD494A1A195B0C00EFCF7F /* BEOpenSSLAES.cpp in Sources */,
 				4DCD494B1A195B0C00EFCF7F /* BEPluginFunctions.cpp in Sources */,
 				4DCD494C1A195B0C00EFCF7F /* BEPluginUtilities.cpp in Sources */,
+				4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */,
 				4DCD494D1A195B0C00EFCF7F /* BEFileMakerPlugin.cpp in Sources */,
 				4DCD494E1A195B0C00EFCF7F /* BEXSLT.cpp in Sources */,
 				4DCD494F1A195B0C00EFCF7F /* BEWStringVector.cpp in Sources */,

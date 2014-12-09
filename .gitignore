@@ -33,6 +33,7 @@ xcuserdata
 *.pyc
 *~.nib/
 
+Source/duktape*
 Source/minizip*
 .com.apple.timemachine.supported
 Project/BaseElements.xcodeproj/xcuserdata/mark.xcuserdatad/xcschemes/xcschememanagement.plist

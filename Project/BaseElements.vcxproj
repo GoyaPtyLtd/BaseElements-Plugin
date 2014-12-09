@@ -290,6 +290,7 @@
     </ClCompile>
     <ClCompile Include="..\Source\BEFileSystem.cpp" />
     <ClCompile Include="..\Source\BEFileTextReader.cpp" />
+    <ClCompile Include="..\Source\BEJavaScript.cpp" />
     <ClCompile Include="..\Source\BEJSON.cpp" />
     <ClCompile Include="..\Source\BEMessageDigest.cpp" />
     <ClCompile Include="..\Source\BEOAuth.cpp" />
@@ -349,6 +350,7 @@
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEZlib.cpp" />
+    <ClCompile Include="..\Source\duktape\duktape.c" />
     <ClCompile Include="..\Source\minizip\ioapi.c" />
     <ClCompile Include="..\Source\minizip\iowin32.c" />
     <ClCompile Include="..\Source\minizip\mztools.c" />
@@ -364,6 +366,7 @@
     <ClInclude Include="..\Source\BEFileMakerPlugin.h" />
     <ClInclude Include="..\Source\BEFileSystem.h" />
     <ClInclude Include="..\Source\BEFileTextReader.h" />
+    <ClInclude Include="..\Source\BEJavaScript.h" />
     <ClInclude Include="..\Source\BEJSON.h" />
     <ClInclude Include="..\Source\BEMessageDigest.h" />
     <ClInclude Include="..\Source\BEOAuth.h" />
@@ -390,6 +393,7 @@
     <ClInclude Include="..\Source\BEXSLT.h" />
     <ClInclude Include="..\Source\BEZlib.h" />
     <ClInclude Include="..\Source\BE_Boost_FileSystem_Additions.hpp" />
+    <ClInclude Include="..\Source\duktape\duktape.h" />
     <ClInclude Include="..\Source\minizip\crypt.h" />
     <ClInclude Include="..\Source\minizip\ioapi.h" />
     <ClInclude Include="..\Source\minizip\iowin32.h" />

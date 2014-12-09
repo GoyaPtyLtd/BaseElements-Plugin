@@ -121,6 +121,8 @@
 
 "550" = "BE_HMAC ( text ; key {; algorithm ; encoding } )";
 
+"600" = "BE_EvaluateJavaScript ( javaScript )";
+
 
 // replaces 120 BE_ExecuteShellCommand
 "1120" = "BE_ExecuteSystemCommand ( command { ; timeout } )";

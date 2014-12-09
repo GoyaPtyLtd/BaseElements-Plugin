@@ -220,6 +220,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_SMTP_Server, BE_SMTP_Server, true, 1, 4 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_SMTP_Send, BE_SMTP_Send, true, 4, 8 );
 	
+	g_be_plugin->RegisterHiddenFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, true, 1 );
 	
 	return kCurrentExtnVersion;	// enable the plug-in
 	
