@@ -16,8 +16,8 @@
 #include "BEZlib.h"
 #include "BE_Boost_FileSystem_Additions.hpp"
 
-#include "boost/filesystem.hpp"
-#include "boost/filesystem/fstream.hpp"
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 #include <sys/stat.h>
 
@@ -66,6 +66,8 @@ long ExtractCurrentFile ( path parent, unzFile zip_file );
 
 void FileTime ( const path file, zip_fileinfo * file_info );
 bool IsLargeFile ( const path file );
+int WriteFileDataToArchive ( const path filename, zipFile zip_file );
+path RelativePath ( const path filename, const path base );
 int AddFileToArchive ( const path filename, zipFile zf, const path base );
 int AddToArchive ( const path directory_path, zipFile zf, const path base );
 
@@ -273,6 +275,61 @@ bool IsLargeFile ( const path file )
 }
 
 
+int WriteFileDataToArchive ( const path filename, zipFile zip_file )
+{
+	int error = kNoError;
+
+	char * buffer = new char [ WRITEBUFFERSIZE ];
+	
+	try {
+		
+		boost::filesystem::ifstream input_file ( filename, std::ios_base::in | std::ios_base::binary );
+		input_file.exceptions ( boost::filesystem::ifstream::badbit );
+		
+		std::streamsize size_read = 0;
+		
+		do {
+			
+			input_file.read ( buffer, WRITEBUFFERSIZE );
+			size_read = input_file.gcount();
+			
+			if ( size_read > 0 ) {
+				error = zipWriteInFileInZip ( zip_file, (void *)buffer, (unsigned int)size_read );
+			} else if ( size_read < 0 ) {
+				error = ZIP_ERRNO;
+			}
+			
+		} while ( (error == ZIP_OK) && (!input_file.eof()) );
+		
+		input_file.close();
+		
+	} catch ( filesystem_error& e ) {
+		error = e.code().value();
+	}
+	
+	delete [] buffer;
+	
+	return error;
+
+} // WriteFileDataToArchive
+
+
+path RelativePath ( const path filename, const path base )
+{
+	
+	path relative_path = NaiveUncomplete ( filename, base );
+	
+	if ( is_directory ( filename ) ) {
+		relative_path /= "/";
+	}
+
+	relative_path.make_preferred();
+	
+	return relative_path;
+	
+} // RelativePath
+
+
 int AddFileToArchive ( const path filename, zipFile zip_file, const path base )
 {
     int error = kNoError;
@@ -280,15 +337,19 @@ int AddFileToArchive ( const path filename, zipFile zip_file, const path base )
 	zip_fileinfo zip_info;
 	FileTime ( filename, &zip_info );
 	
-	std::string relative_path = NaiveUncomplete ( filename, base ).generic_string();
-	
 	int compression_level = Z_BEST_COMPRESSION;
 	const char* password = NULL;
 	unsigned long crc_file = 0;
-	bool zip64 = IsLargeFile ( filename );
+
+	bool zip64 = false;
+	if ( ! is_directory ( filename ) ) {
+		zip64 = IsLargeFile ( filename );
+	}
 	
+	path relative_path = RelativePath ( filename, base );
+
 	error = zipOpenNewFileInZip3_64 ( zip_file,
-									 relative_path.c_str(),
+									 relative_path.string().c_str(),
 									 &zip_info,
 									 NULL,
 									 0,
@@ -309,36 +370,10 @@ int AddFileToArchive ( const path filename, zipFile zip_file, const path base )
 	
 	if ( error == ZIP_OK ) {
 		
-		char * buffer = new char [ WRITEBUFFERSIZE ];
-		
-		try {
-			
-			boost::filesystem::ifstream input_file ( filename, std::ios_base::in | std::ios_base::binary );
-			input_file.exceptions ( boost::filesystem::ifstream::badbit );
-			
-			std::streamsize size_read = 0;
-			
-			do {
-				
-				input_file.read ( buffer, WRITEBUFFERSIZE );
-				size_read = input_file.gcount();
-				
-				if ( size_read > 0 ) {
-					error = zipWriteInFileInZip ( zip_file, (void *)buffer, (unsigned int)size_read );
-				} else if ( size_read < 0 ) {
-					error = ZIP_ERRNO;
-				}
-				
-			} while ( (error == ZIP_OK) && (!input_file.eof()) );//&& (size_read > 0) );
-			
-			input_file.close();
-			
-		} catch ( filesystem_error& e ) {
-			error = e.code().value();
+		if ( ! is_directory ( filename ) ) {
+			error = WriteFileDataToArchive ( filename, zip_file );
 		}
-		
-		delete [] buffer;
-		
+
 		// don't loose the error
 		int close_error = zipCloseFileInZip ( zip_file );
 		if ( error == ZIP_OK ) {
@@ -360,14 +395,16 @@ int AddToArchive ( const path directory_path, zipFile zip_file, const path base 
 	
 	try {
 		
-		if ( exists ( directory_path ) ) {
+		path canonical_path = canonical ( directory_path );
+		
+		if ( exists ( canonical_path ) ) {
 			
-			if ( ! is_directory ( directory_path ) ) {
-				error = AddFileToArchive ( directory_path, zip_file, base );
+			if ( ! is_directory ( canonical_path ) || is_empty ( canonical_path ) ) {
+				error = AddFileToArchive ( canonical_path, zip_file, base );
 			} else {
 				
 				directory_iterator end_itr; // default construction yields past-the-end
-				directory_iterator itr ( directory_path );
+				directory_iterator itr ( canonical_path );
 				
 				while ( itr != end_itr ) {
 					error = AddToArchive ( itr->path(), zip_file, base );
@@ -389,7 +426,7 @@ const long Zip ( const BEValueList<std::string> * filenames, const StringAutoPtr
 {
     long error = 0;
 	
-	const path file = filenames->first();
+	const path file = canonical ( filenames->first() );
 	const path archive_path = *archive;
 	
 	if ( exists ( file ) && (archive->empty() || exists ( archive_path.parent_path() )) ) {
