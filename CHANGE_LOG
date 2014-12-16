@@ -1,34 +1,8 @@
 ########################################################################
-Version 2.4a1
+Version 2.3b1
 ########################################################################
 
-September 8, 2014
-
-New Functions
-
-BE_ExportFieldContents
-BE_HMAC
-
-
-########################################################################
-Version 2.3.1
-########################################################################
-
-August 29, 2014
-
-Changes
-
-BE_Decrypt_AES: fix crash when supplied with data not encoded with BE_Encrypt_AES
-BE_ListFilesInFolder: correct a problem when listing Unicode file names
-
-Correct focus problems with dialog functions on Windows.
-
-
-########################################################################
-Version 2.3
-########################################################################
-
-June 23, 2014
+June 3, 2014
 
 New Functions
 
@@ -46,7 +20,7 @@ BE_ListFilesInFolder: option to return full, rather than relative paths
 BE_SaveURLToFile: optionally show a progress dialog
 BE_Zip: zip multiple files/folders
 
-Load correctly on XP (broken in 2.2)
+Load correctly on XP (broken in 2.1)
 
 
 ########################################################################

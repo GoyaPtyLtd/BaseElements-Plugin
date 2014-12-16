@@ -17,6 +17,11 @@
 #include "BEPluginUtilities.h"
 
 
+#include "oauth.h"
+#include "boost/algorithm/string.hpp"
+
+
+
 enum {
 	kBE_OAuth_TokensNotFoundError = 1,
 	kBE_OAuth_SignURLFailedError = 2,
@@ -29,10 +34,11 @@ class BEOAuth {
 
 	public:
 				
-	BEOAuth ( const std::string key, const std::string secret );
+		BEOAuth ( const std::string key, const std::string secret );
+		virtual ~BEOAuth ( );
 		
 		int oauth_request ( const std::string uri, std::string key = "", std::string secret = "" );
-		int sign_url ( std::string& url, std::string& post_arguments );
+		virtual int sign_url ( std::string& url, std::string& post_arguments, const std::string http_method );
 	
 		std::string get_request_key ( void ) { return request_key; }
 		std::string get_request_secret ( void ) { return request_secret; }

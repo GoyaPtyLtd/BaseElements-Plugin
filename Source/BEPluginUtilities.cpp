@@ -68,8 +68,7 @@ errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
 		TextAutoPtr result_text;
 		result_text->AssignWide ( text->c_str() );
 		
-		LocaleAutoPtr default_locale;
-		results.SetAsText ( *result_text, *default_locale );
+		SetResult ( *result_text, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error_result = kLowMemoryError;
@@ -118,8 +117,12 @@ void SetResultAsDouble ( const double number, Data& results )
 
 void SetResult ( const Text& text, Data& results )
 {
+// defeat: Returning null reference (within a call to 'operator*')
+// default constructor for default_locale gives the current locale
+#ifndef __clang_analyzer__
 	LocaleAutoPtr default_locale;
 	results.SetAsText ( text, *default_locale );
+#endif
 }
 
 
@@ -181,8 +184,13 @@ void SetResult ( const string filename, const vector<char> data, Data& results )
 		TextAutoPtr file;
 		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
 		resultBinary->AddFNAMData ( *file ); 
-		QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' ); 
+		
+// defeat: Returning null reference (within a call to 'operator*')
+// constructor for data_type is not null
+#ifndef __clang_analyzer__
+		QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' );
 		resultBinary->Add ( *data_type, (FMX_UInt32)data.size(), (void *)&data[0] );
+#endif
 		results.SetBinaryData ( *resultBinary, true ); 
 		
 	} else { // otherwise try sending back text
@@ -324,8 +332,15 @@ void ParameterAsChar ( const DataVect& parameters, const FMX_UInt32 which, char 
 			
 		// when it's a file or a sound it's easy
 			
+// defeat: Returning null reference (within a call to 'operator*')
+// constructor for data_type is not null
+#ifndef __clang_analyzer__
 		QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' );
 		int which_type = data->GetIndex ( *data_type );
+#else
+		int which_type = 0;
+#endif
+		
 		if ( which_type == kBE_DataType_Not_Found ) {
 			QuadCharAutoPtr sound_type ( 's', 'n', 'd', ' ' );
 			which_type = data->GetIndex ( *sound_type );

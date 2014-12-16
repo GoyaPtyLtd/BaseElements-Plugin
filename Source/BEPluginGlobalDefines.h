@@ -63,19 +63,21 @@
 
 #include "BECppUtilities.h"
 
-
 extern fmx::errcode g_last_error;
 
 
 #endif // __cplusplus
 
 
+#define PRIVATE_VERSION 1
+
+
 #define PLUGIN_NAME		"BaseElements"
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 
-#define	VERSION_NUMBER_STRING L"2.4.0"
-#define	AUTO_UPDATE_VERSION L"02030153"
-#define VERSION_STRING "2.4a1"
+#define	VERSION_NUMBER_STRING L"3.0.0"
+#define	AUTO_UPDATE_VERSION L"02990013"
+#define VERSION_STRING "3.0a2"
 
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -115,10 +117,10 @@ enum functions {
 	kBE_StripInvalidUTF16CharactersFromXMLFile = 117,
 	kBE_MoveFile = 118,
 	kBE_CopyFile = 119,
-	kBE_ExecuteShellCommand = 120, // depreciated
+//	kBE_ExecuteShellCommand = 120, // removed, do not use
 	kBE_ListFilesInFolder = 121,
-	kBE_FileMaker_Tables = 122, // depreciated
-	kBE_FileMaker_Fields = 123, // depreciated
+//	kBE_FileMaker_Tables = 122, // removed, do not use
+//	kBE_FileMaker_Fields = 123, // removed, do not use
 	kBE_OpenURL = 124,
 	kBE_OpenFile = 125,
 	kBE_FileSize = 126,
@@ -149,6 +151,7 @@ enum functions {
 	kBE_HTTP_Set_Proxy = 186,
 	kBE_Curl_Set_Option = 187,
 	kBE_HTTP_PUT_Data = 188,
+	kBE_FTP_Upload = 189,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,
@@ -166,9 +169,16 @@ enum functions {
 //	kBE_OAuth_RequestToken = 320,
 	kBE_OAuth_RequestAccessToken = 321,
 //	kBE_OAuth_SetToken = 322,
+#ifdef PRIVATE_VERSION
+	kBE_Xero_SetTokens = 330,
+#endif
 	kBE_Values_Unique = 350,
 	kBE_Values_FilterOut = 351,
 	kBE_Values_Sort = 353,
+#ifdef PRIVATE_VERSION
+	kBE_SMTP_Server = 400,
+	kBE_SMTP_Send = 401,
+#endif
 	kBE_Encrypt_AES = 500,
 	kBE_Decrypt_AES = 501,
 	kBE_HMAC = 550,
@@ -213,12 +223,6 @@ enum {
 	kBE_FileTypeOffset = 3000,
 	kBE_EncodingOffset = 4000,
 	kBE_GetStringMaxBufferSize = 4096
-};
-
-
-enum message_digest_type {
-	kBE_MessageDigestType_MD5 = 1,
-	kBE_MessageDigestType_SHA256 = 2
 };
 
 

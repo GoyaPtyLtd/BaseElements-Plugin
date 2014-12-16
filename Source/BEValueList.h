@@ -41,7 +41,7 @@ public:
 	
 	bool not_empty ( );
 	size_t size ( ) const;
-
+	
 	void append ( BEValueList to_append );
 	void append ( const T to_append );
 	

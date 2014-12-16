@@ -2,7 +2,7 @@
  BEOAuth.cpp
  BaseElements Plug-In
  
- Copyright 2013 Goya. All rights reserved.
+ Copyright 2013-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,7 +13,7 @@
 #include "BECurl.h"
 
 
-#include "oauth.h"
+#include "boost/scoped_ptr.hpp"
 
 
 using namespace std;
@@ -27,10 +27,15 @@ BEOAuth::BEOAuth ( const string key, const string secret ) {
 }
 
 
+
+BEOAuth::~BEOAuth ( ) {};
+
+
+
 int BEOAuth::parse_reply ( const string reply, string& key, string& secret ) {
-	
+
 	int error = kNoError;
-	
+
 	char **tokens = NULL;
 	
 	int number_of_parameters = oauth_split_url_parameters ( reply.c_str(), &tokens );
@@ -42,39 +47,46 @@ int BEOAuth::parse_reply ( const string reply, string& key, string& secret ) {
 	} else {
 		error = kBE_OAuth_TokensNotFoundError;
 	}
-	
+
 	be_free ( tokens );
-	
+
 	return error;
-	
+
 } // parse_reply
 
 
 
 string BEOAuth::http_request ( const string url, const string post_arguments ) {
-	
+
 	vector<char> response;
 	
 	try {
+
+//		boost::scoped_ptr<BECurl> curlx; // no viable overloaded '=' ???
+//		BECurl curl; // crash in the destructor if we do this
 		
 		if ( post_arguments.empty() ) { // no post arguments? make a GET request
-			response = GetURL ( url );
+			BECurl curl = BECurl ( url, kBE_HTTP_METHOD_GET );
+			response = curl.perform_action ( );
 		} else {
-			response = HTTP_POST ( url, post_arguments );
+			BECurl curl = BECurl ( url, kBE_HTTP_METHOD_POST, "", "", "", post_arguments );
+			response = curl.perform_action ( );
 		}
 		
+//		response = curl.perform_action ( );
+
 	} catch ( BECurl_Exception& /* e */ ) {
 		;// error = e.code(); // we return an empty string on error
 	}
 	
 	const string reply ( response.begin(), response.end() );
-	
+		
 	return reply;
-	
+
 } // http_request
 
 
-int BEOAuth::sign_url ( string& url, string& post_arguments ) {
+int BEOAuth::sign_url ( string& url, string& post_arguments, const std::string /* http_method */ ) {
 	
 	int error = kNoError;
 	
@@ -94,7 +106,7 @@ int BEOAuth::sign_url ( string& url, string& post_arguments ) {
 	}
 	
 	return error;
-
+	
 } // sign_url
 
 

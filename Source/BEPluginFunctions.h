@@ -2,7 +2,7 @@
  BEPluginFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -81,7 +81,6 @@ FMX_PROC(fmx::errcode) BE_SetTextEncoding ( short /*funcId*/, const fmx::ExprEnv
 FMX_PROC(fmx::errcode) BE_Encrypt_AES ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_Decrypt_AES ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
-
 FMX_PROC(fmx::errcode) BE_GetURL ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_SaveURLToFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_HTTP_POST_OR_PUT ( short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
@@ -91,6 +90,7 @@ FMX_PROC(fmx::errcode) BE_HTTP_Response_Headers ( short /* funcId */, const fmx:
 FMX_PROC(fmx::errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_FTP_Upload ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 FMX_PROC(fmx::errcode) BE_ExtractScriptVariables ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
@@ -107,14 +107,17 @@ FMX_PROC(fmx::errcode) BE_HMAC ( short funcId, const fmx::ExprEnv& /* environmen
 
 FMX_PROC(fmx::errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
+#ifdef PRIVATE_VERSION
+FMX_PROC(fmx::errcode) BE_Xero_SetTokens ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+
+FMX_PROC(fmx::errcode) BE_SMTP_Server ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+#endif
+
+
 FMX_PROC(fmx::errcode) BE_Values_Unique ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_Values_FilterOut ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_Values_Sort ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
-
-
-// DEPRECIATED as of FM12 (which has native functions) ... will be removed in plug-in version 3.0
-FMX_PROC(fmx::errcode) BE_ExecuteShellCommand ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
-FMX_PROC(fmx::errcode) BE_FileMaker_TablesOrFields ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
  
 #endif // BEPLUGINFUNCTIONS_H

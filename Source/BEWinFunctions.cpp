@@ -12,12 +12,9 @@
 
 #include <ShlObj.h>
 
-
 #include <sstream>
 
-
 #include <boost/algorithm/string.hpp>
-
 
 #include "BEWinFunctions.h"
 #include "BEWinIFileDialog.h"
@@ -579,7 +576,6 @@ WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 }	//	SelectFile
 
 
-
 static int CALLBACK SelectFolderCallback ( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData )
 {
 	// http://msdn.microsoft.com/en-us/library/windows/desktop/bb773205(v=vs.85).aspx
@@ -591,6 +587,7 @@ static int CALLBACK SelectFolderCallback ( HWND hwnd, UINT uMsg, LPARAM lParam, 
     }
  
     return 0; // should always return 0
+
 }
 
 
@@ -609,7 +606,7 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 	
 	// if the user hasn't cancelled the dialog get the path to the folder
 
-    wchar_t path[MAX_PATH] = L"";
+    wchar_t path[PATH_MAX] = L"";
 
 	if ( item_list != 0 ) {
 		SHGetPathFromIDList ( item_list, path );
@@ -669,7 +666,7 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 	unsigned long response = 0;
 
 	switch ( button_clicked ) {
-			
+
 		case IDOK:
 		case IDYES:
 			response = kBE_OKButton;
@@ -719,7 +716,7 @@ LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam )
 		// there may be other installed hooks
 		CallNextHookEx ( g_window_hook, nCode, wParam, lParam );
 	}
-
+	
 	return result;
 
 } // CBTProc

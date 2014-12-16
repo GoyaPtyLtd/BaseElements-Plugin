@@ -402,7 +402,7 @@ const long Zip ( const BEValueList<std::string> * filenames, const StringAutoPtr
 		} else {
 			
 			for ( size_t i = 0 ; i < filenames->size() ; i++ ) {
-
+				
 				path file_to_archive = filenames->at ( i );
 				
 				if ( exists ( file_to_archive ) ) {
@@ -411,7 +411,7 @@ const long Zip ( const BEValueList<std::string> * filenames, const StringAutoPtr
 					error = kNoSuchFileOrDirectoryError;
 					break;
 				}
-			
+				
 			}
 		}
 		

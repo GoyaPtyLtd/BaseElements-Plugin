@@ -39,10 +39,13 @@
     <ClCompile Include="..\Source\BECppUtilities.cpp" />
     <ClCompile Include="..\Source\BECurlOption.cpp" />
     <ClCompile Include="..\Source\BEFileTextReader.cpp" />
-    <ClCompile Include="..\Source\BEBase64.cpp" />
+    <ClCompile Include="..\Source\BEXero.cpp" />
+    <ClCompile Include="..\Source\BESMTP.cpp" />
+    <ClCompile Include="..\Source\BESMTPEmailMessage.cpp" />
     <ClCompile Include="..\Source\BEOpenSSLAES.cpp" />
-    <ClCompile Include="..\Source\BEWinIFileDialog.cpp" />
+    <ClCompile Include="..\Source\BEBase64.cpp" />
     <ClCompile Include="..\Source\BEWinCommonFileDialog.cpp" />
+    <ClCompile Include="..\Source\BEWinIFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -89,11 +92,14 @@
     <ClInclude Include="..\Source\BEValueList.h" />
     <ClInclude Include="..\Source\BECurlOption.h" />
     <ClInclude Include="..\Source\BEFileTextReader.h" />
-    <ClInclude Include="..\Source\BEBase64.h" />
+    <ClInclude Include="..\Source\BEXero.h" />
+    <ClInclude Include="..\Source\BESMTP.h" />
+    <ClInclude Include="..\Source\BESMTPEmailMessage.h" />
     <ClInclude Include="..\Source\BEOpenSSLAES.h" />
+    <ClInclude Include="..\Source\BEBase64.h" />
     <ClInclude Include="..\Source\BEPluginException.h" />
-    <ClInclude Include="..\Source\BEWinIFileDialog.h" />
     <ClInclude Include="..\Source\BEWinCommonFileDialog.h" />
+    <ClInclude Include="..\Source\BEWinIFileDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

@@ -13,71 +13,22 @@
 #include "BEPluginGlobalDefines.h"
 #include "BEShell.h"
 
-
 #include <errno.h>
-
 
 #include "boost/date_time/posix_time/posix_time.hpp"
 
-
-#if defined(FMX_WIN_TARGET)
-
-	#define POPEN _popen
-	#define PCLOSE _pclose
-
-#endif
-
-#if defined(FMX_MAC_TARGET)
-
-	#define POPEN popen
-	#define PCLOSE pclose
-
-#endif
 
 
 using namespace std;
 
 
-short ExecuteShellCommand ( const string command, string& result )
-{
-	
-	short error = kNoError;
-	
-	FILE * command_result = POPEN ( command.c_str(), "r" );
-	
-	if ( command_result ) {
-		
-		char reply[PATH_MAX];
-		
-		while ( fgets ( reply, PATH_MAX, command_result ) != NULL ) {
-			result.append ( reply );
-		}
-		
-		error = PCLOSE ( command_result );
-		
-		// both PCLOSE and execl set the error to -1 when setting errno
-		if ( error == -1 ) {
-			error = errno;
-		}
-		
-		
-	} else {
-		error = errno;
-	}
-	
-	return error;
-	
-} // ExecuteShellCommand
-
-
 
 #if defined(FMX_MAC_TARGET)
 
 
-
 short ExecuteSystemCommand ( const string command, string& result, const long command_timeout )
 {
-
+	
 	short error = kNoError;
 	
 	FILE * command_result = popen ( command.c_str(), "r" );
@@ -85,9 +36,9 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 	if ( command_result ) {
 		
 		char reply[PATH_MAX];
-
+		
 		struct timeval timeout;
-
+		
 		switch ( command_timeout ) {
 				
 			case kBE_Never:
@@ -103,17 +54,17 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 		} // switch
 		
 		boost::posix_time::ptime start = boost::posix_time::microsec_clock::universal_time();
-
+		
 		fd_set readfd;
 		FD_ZERO ( &readfd );
-
+		
 		while ( true ) {
-
+			
 			if ( (command_timeout) > kBE_Never && ( (boost::posix_time::microsec_clock::universal_time() - start).total_milliseconds() > command_timeout) ) {
 				error = kCommandTimeout;
 				break ;
 			}
-
+			
 			FD_SET ( fileno ( command_result ), &readfd );
 			
 			int select_response = 0;
@@ -123,7 +74,7 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 			} else {
 				select_response = select ( fileno ( command_result ) + 1, &readfd, NULL, NULL, NULL );
 			}
-
+			
 			if ( select_response < 0 ) {
 				return errno;
 			} else if ( select_response == 0 ) {
@@ -139,14 +90,14 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 						break;
 					}
 				} else {
-//					error = errno;
+					//					error = errno;
 					break;
 				}
-			
+				
 			} // if ( select_response < 0 )
-		
+			
 		} // while
-	
+		
 		short close_error = pclose ( command_result );
 		if ( error == kNoError ) { // don't overwrite an earlier error
 			
@@ -159,11 +110,11 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 		} else if ( error == 13 ) { // report an error on command timeout
 			error = kCommandTimeout;
 		}
-	
+		
 	} else {
 		error = errno;
 	}
-		
+	
 	return error;
 	
 } // ExecuteSystemCommand

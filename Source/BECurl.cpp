@@ -10,11 +10,12 @@
  */
 
 
-#include "BECurl.h"
 #include "BEPluginGlobalDefines.h"
+#include "BECurl.h"
 #include "BEOAuth.h"
-#include "BEPluginUtilities.h"
 #include "BEFileMakerPlugin.h"
+
+#include "BEPluginUtilities.h"
 
 #if defined ( FMX_WIN_TARGET )
 	#include "BEWinFunctions.h"
@@ -38,13 +39,6 @@ using namespace std;
 using namespace boost::filesystem;
 
 
-enum http_methods {
-	kBE_HTTP_METHOD_POST,
-	kBE_HTTP_METHOD_DELETE,
-	kBE_HTTP_METHOD_PUT
-};
-
-
 #pragma mark -
 #pragma mark Globals
 #pragma mark -
@@ -64,7 +58,19 @@ extern BEFileMakerPlugin * g_be_plugin;
 #pragma mark -
 
 
-static size_t WriteMemoryCallback (void *ptr, size_t size, size_t nmemb, void *data )
+size_t WriteMemoryCallback (void *ptr, size_t size, size_t nmemb, void *data );
+int SeekFunction ( void *instream, curl_off_t offset, int origin );
+MemoryStruct InitalizeCallbackMemory ( void );
+int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
+int old_progress_dialog ( void *p, double dltotal, double dlnow, double ultotal, double ulnow );
+
+
+#pragma mark -
+#pragma mark Callbacks
+#pragma mark -
+
+
+size_t WriteMemoryCallback (void *ptr, size_t size, size_t nmemb, void *data )
 {
 	size_t realsize = size * nmemb;
 	struct MemoryStruct *mem = (struct MemoryStruct *)data;
@@ -83,7 +89,7 @@ static size_t WriteMemoryCallback (void *ptr, size_t size, size_t nmemb, void *d
 }
 
 
-static size_t ReadMemoryCallback (void *ptr, size_t size, size_t nmemb, void *data )
+size_t ReadMemoryCallback (void *ptr, size_t size, size_t nmemb, void *data )
 {
 	
 	size_t curl_size = nmemb * size;
@@ -103,7 +109,7 @@ static size_t ReadMemoryCallback (void *ptr, size_t size, size_t nmemb, void *da
 
 // required when doing authenticated http put
 
-static int SeekFunction ( void *instream, curl_off_t offset, int origin )
+int SeekFunction ( void *instream, curl_off_t offset, int origin )
 {
 	int result = CURL_SEEKFUNC_OK;
 	
@@ -121,7 +127,7 @@ static int SeekFunction ( void *instream, curl_off_t offset, int origin )
 }
 
 
-static MemoryStruct InitalizeCallbackMemory ( void )
+MemoryStruct InitalizeCallbackMemory ( void )
 {
 	struct MemoryStruct data;
 
@@ -140,7 +146,12 @@ static MemoryStruct InitalizeCallbackMemory ( void )
 }
 
 
-static int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow )
+#pragma mark -
+#pragma mark Dialogs
+#pragma mark -
+
+
+int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow )
 {
 #pragma unused ( p )
 	
@@ -160,16 +171,16 @@ static int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl
 	const bool completed = dlnow == dltotal;
 	
 	static bool visible = false;
-
+	
 	if ( visible ) {
-
+		
 		boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
 		const boost::posix_time::time_duration msdiff = now - last;
 		
 		// only update 5 times a second... slows down too much otherwise
 		
 		const boost::posix_time::hours::tick_type how_long = msdiff.total_milliseconds();
-
+		
 		if ( how_long > 200 || completed ) {
 			
 			wstringstream d;
@@ -192,18 +203,18 @@ static int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl
 			
 			WStringAutoPtr title ( new wstring ( direction + L"load Progress" ) );
 			
-//			const fmx::ExprEnvAutoPtr environment;
-//			FMX_SetToCurrentEnv ( &(*environment) );
+			//			const fmx::ExprEnvAutoPtr environment;
+			//			FMX_SetToCurrentEnv ( &(*environment) );
 			
 			description->append ( L"Starting " + direction + L"load." );
 			
 			error = DisplayProgressDialog ( title, description, (unsigned long)total_bytes, false /* AllowUserAbort ( *environment ) */ );
-
+			
 		}
 	}
-
+	
 	visible = completed ? false : error == CURLE_OK;
-
+	
 	g_last_error = error;
 	
 	return error;
@@ -211,7 +222,7 @@ static int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl
 
 
 /* for libcurl older than 7.32.0 (CURLOPT_PROGRESSFUNCTION) */
-static int old_progress_dialog ( void *p, double dltotal, double dlnow, double ultotal, double ulnow )
+int old_progress_dialog ( void *p, double dltotal, double dlnow, double ultotal, double ulnow )
 {
 	int error = kNoError;
 	
@@ -223,144 +234,68 @@ static int old_progress_dialog ( void *p, double dltotal, double dlnow, double u
 }
 
 
-static vector<char> PerformAction ( BECurl * curl, int which = kBE_HTTP_METHOD_POST )
-{
-	curl->set_proxy ( g_http_proxy );
-	curl->set_custom_headers ( g_http_custom_headers );
-	
-	vector<char>data;
-	
-	switch ( which ) {
-		case kBE_HTTP_METHOD_DELETE:
-			data = curl->http_delete ( );
-			break;
-			
-		case kBE_HTTP_METHOD_PUT:
-			data = curl->http_put ( );
-			break;
-			
-		default:
-			data = curl->download ( );
-			break;
-	}
-	
-	g_last_error = curl->last_error();
-	g_http_response_code = curl->response_code();
-	g_http_response_headers = curl->response_headers();
-	g_http_custom_headers.clear();
-	
-	return data;
-	
-} // Perform
-
-
-
-vector<char> GetURL ( const string url, const string filename, const string username, const string password )
-{	
-	boost::scoped_ptr<BECurl> curl(new BECurl ( url, filename, username, password, "" ));
-	return PerformAction ( curl.get() );
-}
-
-
-vector<char> HTTP_POST ( const string url, const string parameters, const string username, const string password )
-{	
-	boost::scoped_ptr<BECurl> curl(new BECurl ( url, "", username, password, parameters ));
-	return PerformAction ( curl.get() );		
-}
-
-
-vector<char> HTTP_PUT ( const string url, const string filename, const string username, const string password )
-{
-	boost::scoped_ptr<BECurl> curl(new BECurl ( url, filename, username, password, "" ));
-	return PerformAction ( curl.get(), kBE_HTTP_METHOD_PUT );		
-}
-
-
-vector<char> HTTP_PUT_DATA ( const std::string url, const char * data, const size_t size, const std::string username , const std::string password )
-{
-	boost::scoped_ptr<BECurl> curl(new BECurl ( url, data, size, username, password ));
-	return PerformAction ( curl.get(), kBE_HTTP_METHOD_PUT );
-}
-
-
-vector<char> HTTP_DELETE ( const string url, const string username, const string password )
-{	
-	boost::scoped_ptr<BECurl> curl(new BECurl ( url, "", username, password, "" ));
-	return PerformAction ( curl.get(), kBE_HTTP_METHOD_DELETE );		
-}
-
-
 
 #pragma mark -
 #pragma mark Constructors
 #pragma mark -
 
 
-BECurl::BECurl ( const string download_this, const string to_file, const string username, const string password, const string post_parameters )
+BECurl::BECurl ( )
 {
-	Init ( download_this, to_file, username, password, post_parameters );
+	Init ();
 }
 
 
-// file_data is NOT copied
-
-BECurl::BECurl ( const string download_this, const char * file_data, const size_t size, const string username, const string password )
+BECurl::BECurl ( const string download_this, const be_http_method method, const string to_file, const string _username, const string _password, const string post_parameters, const char * put_data, const size_t size )
 {
-	Init ( download_this, "", username, password, "" );
-	upload_data = (char *)file_data;
-	upload_data_size = size;
-}
 
-
-// the real constructor
-
-void BECurl::Init ( const string download_this, const string to_file, const string username, const string password, const string post_parameters )
-{
+	Init ();
+	
 	url = download_this;
+	http_method = method;
 	filename = to_file;
-	upload_file = NULL; // must intialise, we crash otherwise
-	upload_data = NULL;
-	upload_data_size = 0;
-	
-	http_response_code = 0;
-	
-	// set up curl as much as we can
-	
-	error = curl_global_init ( CURL_GLOBAL_ALL );
-	if ( error != kNoError ) {
-		throw BECurl_Exception ( error );
-	}
-	
-	curl = curl_easy_init ();
-	
-	if ( !curl ) {
-		throw bad_alloc(); // curl_easy_init thinks all errors are memory errors
-	}
+	upload_data = (char *)put_data;	// file_data is NOT copied
+	upload_data_size = size;
+	username = _username;
+	password = _password;
+	parameters = post_parameters;
 	
 	if ( g_oauth ) {
 		
-		int oauth_error = g_oauth->sign_url ( url, parameters );
+		int oauth_error = g_oauth->sign_url ( url, parameters, http_method_as_string() );
 		if ( oauth_error != kNoError ) {
 			throw BECurl_Exception ( CURLE_LOGIN_DENIED );
 		}
-		
+	
 	} else {
-		set_username_and_password ( username, password );
-		
-		// curl doesn't make a copy of the post_args so we have to stop them being dealloced before they're used
-		parameters = post_parameters;
+		set_username_and_password ( );
 	}
+
+	// send all headers & data to these functions
+	
+	headers = InitalizeCallbackMemory();
+	easy_setopt ( CURLOPT_WRITEHEADER, (void *)&headers );
+	
+	data = InitalizeCallbackMemory();
+	easy_setopt ( CURLOPT_HEADERFUNCTION, WriteMemoryCallback );
+	
+	// any custom options, headers etc.
 	
 	set_parameters ( );
+	set_proxy ( g_http_proxy );
+	set_custom_headers ( g_http_custom_headers );
+	
+	configure_progress_dialog ( );
 	
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
 	easy_setopt ( CURLOPT_SSL_VERIFYPEER, 0L );
 	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
 	
-	configure_progress_dialog ( );
+	// allow the user to override anything we set
+	set_options ( g_curl_options );
 	
-} // Init
+}
 
 
 BECurl::~BECurl()
@@ -375,13 +310,71 @@ BECurl::~BECurl()
 #pragma mark -
 
 
+
+void BECurl::Init ( )
+{
+	upload_file = NULL; // must intialise, we crash otherwise
+	custom_headers = NULL; // must intialise, we crash otherwise
+	
+	http_response_code = 0;
+	
+	// set up curl as much as we can
+	
+	error = curl_global_init ( CURL_GLOBAL_ALL );
+	if ( error != kNoError ) {
+		throw BECurl_Exception ( error );
+	}
+	
+	curl = curl_easy_init (); // must be the first libcurl function called (afer curl_global_init)
+	if ( !curl ) {
+		throw bad_alloc(); // curl_easy_init thinks all errors are memory errors
+	}
+	
+}
+
+
+
+vector<char> BECurl::perform_action ( )
+{
+	vector<char>response;
+	
+	switch ( get_http_method() ) {
+			
+		case kBE_FTP_METHOD_UPLOAD:
+			response = ftp_upload ( );
+			break;
+			
+		case kBE_HTTP_METHOD_DELETE:
+			response = http_delete ( );
+			break;
+			
+		case kBE_HTTP_METHOD_PUT:
+			response = http_put ( );
+			break;
+			
+		default:
+			response = download ( );
+			break;
+	}
+	
+	cleanup ();
+	
+	g_last_error = last_error();
+	g_http_response_code = response_code();
+	g_http_response_headers = response_headers();
+	g_http_custom_headers.clear();
+	
+	return response;
+	
+} // perform_action
+
+
+
 vector<char> BECurl::download ( )
 {
 	
 	try {
-		
-		prepare ( );
-		
+				
 		// save the data to file or memory?
 		
 		if ( filename.empty() ) {
@@ -408,8 +401,6 @@ vector<char> BECurl::download ( )
 		error = e.code();
 	}
 	
-	cleanup ();
-	
 	return result;
 	
 }	//	download
@@ -421,22 +412,11 @@ vector<char> BECurl::http_put ( )
 	
 	try {
 		
-		prepare ( );
-		write_to_memory ( );		
-		easy_setopt ( CURLOPT_UPLOAD, 1L );
+		prepare_upload ( );
 		
 		if ( filename.empty() ) {
 			
-			easy_setopt ( CURLOPT_READFUNCTION, ReadMemoryCallback );
-			
-			struct MemoryStruct userdata = InitalizeCallbackMemory ( );
-			userdata.memory = upload_data;
-			userdata.size = upload_data_size;
-			easy_setopt ( CURLOPT_READDATA, &userdata );
-			easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
-
-			easy_setopt ( CURLOPT_SEEKFUNCTION, SeekFunction );
-			easy_setopt ( CURLOPT_SEEKDATA, &userdata );
+			prepare_data_upload ( );
 
 		} else {
 			
@@ -451,7 +431,6 @@ vector<char> BECurl::http_put ( )
 				
 			} else {
 				throw BECurl_Exception ( (CURLcode)kFileExistsError );
-//				error = (CURLcode)kFileSystemError;
 			}
 
 		}
@@ -469,11 +448,9 @@ vector<char> BECurl::http_put ( )
 		error = e.code();
 	}
 	
-	cleanup ();
-	
 	return result;
 	
-}	//	delete
+}	//	http_put
 
 
 
@@ -481,10 +458,9 @@ vector<char> BECurl::http_delete ( )
 {
 	try {
 		
-		prepare ( );
-		write_to_memory ( );		
+		write_to_memory ( );
 		
-		easy_setopt ( CURLOPT_CUSTOMREQUEST, "DELETE" );
+		easy_setopt ( CURLOPT_CUSTOMREQUEST, HTTP_METHOD_DELETE );
 		
 		// delete this
 		easy_setopt ( CURLOPT_URL, url.c_str() );
@@ -494,11 +470,34 @@ vector<char> BECurl::http_delete ( )
 		error = e.code();
 	}
 	
-	cleanup ();
-
 	return result;
 	
 }	//	delete
+
+
+
+vector<char> BECurl::ftp_upload ( )
+{
+	
+	try {
+		
+		prepare_upload ( );
+		prepare_data_upload ( );
+				
+		// upload this
+		easy_setopt ( CURLOPT_URL, url.c_str() );
+		
+		perform ( );
+		
+	} catch ( filesystem_error& e ) {
+		error = (CURLcode)e.code().value();
+	} catch ( BECurl_Exception& e ) {
+		error = e.code();
+	}
+	
+	return result;
+	
+}	//	ftp_upload
 
 
 
@@ -514,22 +513,40 @@ void BECurl::set_parameters ( )
 }	//	set_parameters
 
 
-void BECurl::set_username_and_password ( const string username, const string password )
+
+void BECurl::set_custom_headers ( CustomHeaders http_custom_headers )
+{
+
+	if ( custom_headers ) {
+		curl_slist_free_all ( custom_headers );
+		custom_headers = NULL;
+	}
+
+	// add any custom headers
+	CustomHeaders::const_iterator it = http_custom_headers.begin();
+	while ( it != http_custom_headers.end() ) {
+		string custom_header = join ( it->first, it->second, ": " );
+		custom_headers = curl_slist_append ( custom_headers, custom_header.c_str() );
+		++it;
+	}
+	
+	if ( custom_headers ) {
+		easy_setopt ( CURLOPT_HTTPHEADER, custom_headers );
+	}
+
+}
+
+
+
+void BECurl::set_username_and_password ( )
 {
 	
 	// set user name and password for the authentication
 	if ( !username.empty() ) {
 		
-		easy_setopt ( CURLOPT_HTTPAUTH, (long)CURLAUTH_ANY );
-		
-		string username_and_password = username;
-		
-		if ( !password.empty() ) {
-			username_and_password.append ( ":" );
-			username_and_password.append ( password );
-		}
-		
+		string username_and_password = join ( username, password );
 		easy_setopt ( CURLOPT_USERPWD, username_and_password.c_str() );
+		easy_setopt ( CURLOPT_HTTPAUTH, (long)CURLAUTH_ANY );
 		
 	}
 	
@@ -539,16 +556,19 @@ void BECurl::set_username_and_password ( const string username, const string pas
 
 void BECurl::set_proxy ( struct host_details proxy_server )
 {
-	proxy = proxy_server.host;
-	if ( !proxy_server.port.empty() ) {
-		proxy += ":" + proxy_server.port;
-	}
+
+	string proxy = join ( proxy_server.host, proxy_server.port );
+
+	if ( !proxy.empty() ) {
+		
+		string proxy_login = join ( proxy_server.username, proxy_server.password );
+		
+		easy_setopt ( CURLOPT_PROXY, proxy.c_str() );
+		easy_setopt ( CURLOPT_PROXYUSERPWD, proxy_login.c_str() );
+		easy_setopt ( CURLOPT_PROXYAUTH, CURLAUTH_ANY );
 	
-	proxy_login = proxy_server.username;
-	if ( !proxy_server.password.empty() ) {
-		proxy_login += ":" + proxy_server.password;
 	}
-	
+
 }	//	set_proxy
 
 
@@ -595,79 +615,6 @@ void BECurl::set_options ( BECurlOptionMap options )
 #pragma mark -
 
 
-void BECurl::prepare ( )
-{
-	
-	if ( !proxy.empty() ) {
-		easy_setopt ( CURLOPT_PROXY, proxy.c_str() );
-		easy_setopt ( CURLOPT_PROXYUSERPWD, proxy_login.c_str() );
-		easy_setopt ( CURLOPT_PROXYAUTH, CURLAUTH_ANY );
-	}
-
-	add_custom_headers ( );
-	
-	// send all headers & data to these functions
-	
-	headers = InitalizeCallbackMemory();
-	easy_setopt ( CURLOPT_WRITEHEADER, (void *)&headers );
-	
-	data = InitalizeCallbackMemory();
-	easy_setopt ( CURLOPT_HEADERFUNCTION, WriteMemoryCallback );
-	
-	// any custom options
-	set_options ( g_curl_options );
-	
-}	//	prepare
-
-
-void BECurl::add_custom_headers ( )
-{
-	
-	custom_headers = NULL;
-	
-	// add any custom headers
-	CustomHeaders::const_iterator it = http_custom_headers.begin();
-	while ( it != http_custom_headers.end() ) {
-		string custom_header = it->first;
-		custom_header.append ( ": " );
-		custom_header.append ( it->second );
-		custom_headers = curl_slist_append ( custom_headers, custom_header.c_str() );
-		++it;
-	}
-	
-	if ( custom_headers ) {
-		easy_setopt ( CURLOPT_HTTPHEADER, custom_headers );
-	}
-	
-}	//	add_custom_headers
-
-
-void BECurl::configure_progress_dialog ( )
-{
-	// libcurl uses CURLOPT_XFERINFOFUNCTION if it can and CURLOPT_PROGRESSFUNCTION when it cannot
-	
-	error = curl_easy_setopt ( curl, CURLOPT_PROGRESSFUNCTION, old_progress_dialog );
-	if ( error ) {
-		throw BECurl_Exception ( error );
-	}
-
-	// xferinfo was introduced in 7.32.0
-
-#if LIBCURL_VERSION_NUM >= 0x072000
-	
-	error = curl_easy_setopt ( curl, CURLOPT_XFERINFOFUNCTION, progress_dialog );
-	if ( error != CURLE_OK && error != CURLE_UNKNOWN_OPTION ) {
-		throw BECurl_Exception ( error );
-	}
-
-#endif
-
-	// and disable it... enabled by the user when required
-	easy_setopt ( CURLOPT_NOPROGRESS, 1L );
-
-} // configure_progress_dialog
-
-
 void BECurl::write_to_memory ( )
 {
 	// send all data to this function
@@ -678,7 +625,6 @@ void BECurl::write_to_memory ( )
 
 void BECurl::perform ( )
 {
-	
 	error = curl_easy_perform ( curl );
 	
 	if ( error == CURLE_OK ) {
@@ -719,10 +665,11 @@ void BECurl::cleanup ( )
 	be_free ( headers.memory );
 	be_free ( data.memory );
 	
-	if ( custom_headers ) { curl_slist_free_all ( custom_headers ); }	
+	if ( custom_headers ) {
+		curl_slist_free_all ( custom_headers );
+	}
 	
-}
-
+} // cleanup
 
 
 void BECurl::easy_setopt ( CURLoption option, ... )
@@ -735,4 +682,86 @@ void BECurl::easy_setopt ( CURLoption option, ... )
 		throw BECurl_Exception ( error );
 	}
 	
+} // easy_setopt
+
+
+void BECurl::configure_progress_dialog ( )
+{
+	// libcurl uses CURLOPT_XFERINFOFUNCTION if it can and CURLOPT_PROGRESSFUNCTION when it cannot
+	
+	error = curl_easy_setopt ( curl, CURLOPT_PROGRESSFUNCTION, old_progress_dialog );
+	if ( error ) {
+		throw BECurl_Exception ( error );
+	}
+	
+	// xferinfo was introduced in 7.32.0
+	
+#if LIBCURL_VERSION_NUM >= 0x072000
+	
+	error = curl_easy_setopt ( curl, CURLOPT_XFERINFOFUNCTION, progress_dialog );
+	if ( error != CURLE_OK && error != CURLE_UNKNOWN_OPTION ) {
+		throw BECurl_Exception ( error );
+	}
+	
+#endif
+	
+	// and disable it... enabled by the user when required
+	easy_setopt ( CURLOPT_NOPROGRESS, 1L );
+	
+} // configure_progress_dialog
+
+
+string BECurl::http_method_as_string ( )
+{
+	string method = "";
+	
+	switch ( http_method ) {
+			
+		case kBE_HTTP_METHOD_DELETE:
+			method = HTTP_METHOD_DELETE;
+			break;
+			
+		case kBE_HTTP_METHOD_GET:
+			method = HTTP_METHOD_GET;
+			break;
+			
+		case kBE_HTTP_METHOD_POST:
+			method = HTTP_METHOD_POST;
+			break;
+
+		case kBE_HTTP_METHOD_PUT:
+			method = HTTP_METHOD_PUT;
+			break;
+			
+		default:
+			break;
+	}
+	
+	return method;
+}
+
+
+void BECurl::prepare_data_upload ( )
+{
+	
+	easy_setopt ( CURLOPT_READFUNCTION, ReadMemoryCallback );
+	
+	userdata = InitalizeCallbackMemory ( );
+	userdata.memory = upload_data;
+	userdata.size = upload_data_size;
+	easy_setopt ( CURLOPT_READDATA, &userdata );
+	easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
+	
+//	if ( http_method == kBE_HTTP_METHOD_PUT ) {
+		easy_setopt ( CURLOPT_SEEKFUNCTION, SeekFunction );
+		easy_setopt ( CURLOPT_SEEKDATA, &userdata );
+//	}
+
+}
+
+
+void BECurl::prepare_upload ( )
+{
+	write_to_memory ( );
+	easy_setopt ( CURLOPT_UPLOAD, 1L );
 }

@@ -13,14 +13,14 @@
 #include "BEPluginGlobalDefines.h"
 
 
-#if defined( FMX_WIN_TARGET )
+#if defined ( FMX_WIN_TARGET )
 
 	#include <locale.h>
 	#include "BEWinFunctions.h"
 
 #endif
 
-#if defined( FMX_MAC_TARGET )
+#if defined ( FMX_MAC_TARGET )
 
 	#include "BEMacFunctions.h"
 
@@ -68,9 +68,16 @@
 #include <iostream>
 
 
+#ifdef PRIVATE_VERSION
+#include "BEXero.h"
+#include "BESMTP.h"
+#endif
+
+
 using namespace std;
 using namespace fmx;
 using namespace boost::filesystem;
+
 
 
 #pragma mark -
@@ -81,8 +88,8 @@ errcode g_last_error;
 errcode g_last_ddl_error;
 string g_text_encoding;
 string g_json_error_description;
-
 BEOAuth * g_oauth;
+struct host_details g_smtp_host;
 
 extern int g_http_response_code;
 extern string g_http_response_headers;
@@ -478,6 +485,7 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 } // BE_StripInvalidUTF16CharactersFromXMLFile
 
 
+
 FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
 {
 	errcode error = NoError();
@@ -498,15 +506,15 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 			} else {
 				output_file.flush();
 			}
-
+			
 			output_file.close();
-
+			
 		} catch ( boost::filesystem::ofstream::failure& /* e */ ) {
 			error = errno; // cannot write to the file
 		} catch ( boost::filesystem::filesystem_error& e ) {
 			error = e.code().value();
 		}
-
+		
 		//		SetResult ( "", results );
 		
 	} catch ( bad_alloc& /* e */ ) {
@@ -518,6 +526,8 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 	return MapError ( error );
 	
 } // BE_ExportFieldContents
+
+
 
 
 FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -596,7 +606,7 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 		const long file_type_wanted = ParameterAsLong ( parameters, 1, kBE_FileType_File );
 		const bool include_subfolders = ParameterAsBoolean ( parameters, 2, false );
 		const bool use_full_path = ParameterAsBoolean ( parameters, 3, false );
-
+		
 		try {
 
 			BEValueListWideStringAutoPtr list_of_files ( list_files_in_directory ( *directory, file_type_wanted, include_subfolders ) );
@@ -630,12 +640,12 @@ FMX_PROC(errcode) BE_SelectFile ( short /* funcId */, const ExprEnv& /* environm
 	errcode error = NoError();
 	
 	try {
-
+		
 		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
 		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 1 );
-
+		
 		WStringAutoPtr files ( SelectFile ( prompt, inFolder ) );
-
+		
 		SetResult ( files, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
@@ -654,7 +664,7 @@ FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* enviro
 	errcode error = NoError();
 	
 	try {
-
+		
 		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
 		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 1 );
 		
@@ -667,7 +677,7 @@ FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* enviro
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-
+	
 	return MapError ( error );
 	
 } // BE_SelectFolder
@@ -1203,7 +1213,7 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 		
 		const BEValueList<string> * files  = new BEValueList<string> ( *ParameterAsUTF8String ( parameters, 0 ) );
 		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
-				
+		
 		SetResult ( Zip ( files, output_directory ), results );
 		
 		delete files;
@@ -1231,7 +1241,7 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
 		
-		
+
 		// decode it...
 		vector<unsigned char> data = Base64_Decode ( text );
 		if ( filename->empty() ) {
@@ -1257,13 +1267,13 @@ FMX_PROC(errcode) BE_Base64_Encode ( short funcId, const ExprEnv& /* environment
 	errcode error = NoError();
 	
 	try {
-		
+
 		vector<unsigned char> data = ParameterAsVectorUnsignedChar ( parameters, 0 );
 		
 		StringAutoPtr base64 ( new string ( *Base64_Encode( data, funcId == kBE_Base64_URL_Encode ) ) );
-		
+	
 		SetResult ( base64, results );
-		
+				
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1369,11 +1379,11 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		
 		std::vector<unsigned char>::iterator it = find ( decoded.begin(), decoded.end(), FILEMAKER_END_OF_LINE_CHAR );
 		if ( it != decoded.end() ) {
-			
+
 			const vector<unsigned char> input_vector ( decoded.begin(), it );
 			decoded.erase ( decoded.begin(), it + 1 ); // remove the input vector from the input
 			const vector<unsigned char> decrypted_data = Decrypt_AES ( key, decoded, input_vector );
-			
+
 			SetResult ( decrypted_data, results );
 			
 		} else {
@@ -1393,7 +1403,6 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 } // BE_Decrypt_AES
 
 
-
 #pragma mark -
 #pragma mark HTTP / Curl
 #pragma mark -
@@ -1411,7 +1420,8 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment 
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
 		
 		// not saving to file so do not supply the filename here
-		vector<char> data = GetURL ( *url, "", *username, *password );
+		BECurl curl ( *url, kBE_HTTP_METHOD_GET, "", *username, *password );
+		vector<char> data = curl.perform_action ( );
 		error = g_last_error;
 		if ( error == kNoError ) {
 			SetResult ( *filename, data, results );
@@ -1440,7 +1450,8 @@ FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* envir
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
 		
-		vector<char> data = GetURL ( *url, *filename, *username, *password );
+		BECurl curl ( *url, kBE_HTTP_METHOD_GET, *filename, *username, *password );
+		vector<char> data = curl.perform_action ( );
 		error = g_last_error;
 		
 	} catch ( bad_alloc& /* e */ ) {
@@ -1470,21 +1481,25 @@ FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environm
 		if ( funcId == kBE_HTTP_POST ) {
 
 			StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
-			response = HTTP_POST ( *url, *post_parameters, *username, *password );
-
+			BECurl curl ( *url, kBE_HTTP_METHOD_POST, "", *username, *password, *post_parameters );
+			response =  curl.perform_action ( );
+		
+		
 		} else if ( funcId == kBE_HTTP_PUT_File ) {
 
-			StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
-			response = HTTP_PUT ( *url, *post_parameters, *username, *password );
-
+			StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
+			BECurl curl ( *url, kBE_HTTP_METHOD_PUT, *filename, *username, *password );
+			response = curl.perform_action ( );
+			
+			
 		} else { // kBE_HTTP_PUT_DATA
 			
 			char * data = NULL;
 			FMX_UInt32 size = 0;
 			ParameterAsChar ( parameters, 1, &data, size );
+			BECurl curl ( *url, kBE_HTTP_METHOD_PUT, "", *username, *password, "", data, size );
+			response = curl.perform_action ( );
 
-			response = HTTP_PUT_DATA ( *url, data, size, *username, *password );
-			
 			delete [] data;
 			
 		}
@@ -1516,7 +1531,8 @@ FMX_PROC(errcode) BE_HTTP_DELETE ( short /* funcId */, const ExprEnv& /* environ
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 1 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
 		
-		vector<char> data = HTTP_DELETE ( *url, *username, *password );
+		BECurl curl ( *url, kBE_HTTP_METHOD_DELETE, "", *username, *password );
+		vector<char> data = curl.perform_action ( );
 		error = g_last_error;
 		if ( error == kNoError ) {
 			SetResult ( data, results );
@@ -1680,6 +1696,123 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 } // BE_HTTP_Set_Custom_Header
 
 
+
+FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
+		vector<char> data = ParameterAsVectorChar ( parameters, 1 );
+		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
+		
+		BECurl curl ( *url, kBE_FTP_METHOD_UPLOAD, "", *username, *password, "", (char *)&data.front(), data.size() );
+		vector<char> response = curl.perform_action ( );
+			
+		error = g_last_error;
+		if ( error == kNoError ) {
+			SetResult ( response, results );
+		}
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_FTP_Upload
+
+
+
+#pragma mark -
+#pragma mark SMTP
+#pragma mark -
+
+
+FMX_PROC(fmx::errcode) BE_SMTP_Server ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr host = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr port = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
+
+		g_smtp_host.host = *host;
+		g_smtp_host.port = *port;
+		g_smtp_host.username = *username;
+		g_smtp_host.password = *password;
+		
+//		string do_nothing = "";
+//		SetResult ( do_nothing, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Email_SMTP_Server
+
+
+
+FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr from = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr to = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr subject = ParameterAsUTF8String ( parameters, 2 );
+		StringAutoPtr text = ParameterAsUTF8String ( parameters, 3 );
+		
+		auto_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
+		auto_ptr<BESMTPEmailMessage> message ( new BESMTPEmailMessage ( *from, *to, *subject, *text ) );
+		
+		StringAutoPtr cc = ParameterAsUTF8String ( parameters, 4 );
+		if ( !cc->empty() ) {
+			message->set_cc_addresses ( *cc );
+		}
+		
+		StringAutoPtr bcc = ParameterAsUTF8String ( parameters, 5 );
+		if ( !bcc->empty() ) {
+			message->set_bcc_addresses ( *bcc );
+		}
+		
+		StringAutoPtr html = ParameterAsUTF8String ( parameters, 6 );
+		message->set_html_alternative ( *html );
+		
+		StringAutoPtr attachments = ParameterAsUTF8String ( parameters, 7 );
+		message->add_attachments ( *attachments );
+
+		error = smtp->send ( message.get() );
+		
+		//		string do_nothing = "";
+		//		SetResult ( do_nothing, results );
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Email_Send
+
+
+
 #pragma mark -
 #pragma mark OAuth
 #pragma mark -
@@ -1744,6 +1877,55 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 	return MapError ( error );
 	
 } // BE_OAuth_RequestAccessToken
+
+
+#ifdef PRIVATE_VERSION
+
+#pragma mark -
+#pragma mark Xero
+#pragma mark -
+
+
+FMX_PROC(errcode) BE_Xero_SetTokens ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		if ( g_oauth ) {
+			delete g_oauth;
+			g_oauth = NULL;
+		}
+		
+		StringAutoPtr consumer_key = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr consumer_secret = ParameterAsUTF8String ( parameters, 1 );
+		
+		// if the consumer_key is empty then we are only clearing out any set oauth data
+		
+		if ( !consumer_key->empty() ) {
+			
+			boost::algorithm::replace_all ( *consumer_secret, FILEMAKER_END_OF_LINE, "\r\n" );
+
+			BEXero * xero = new BEXero ( *consumer_key, *consumer_secret );
+			g_oauth = xero; // must assign after the authorisation request otherwise BECurl will try and use g_oauth
+			
+		}
+		
+		SetResult ( "", results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Xero_SetTokens
+
+
+
+#endif
 
 
 
@@ -2004,47 +2186,6 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 } // BE_ExtractScriptVariables
 
 
-/*
- 
- DEPRECIATED as of v2.0 in favour of BE_ExecuteSystemCommand ... will be removed in plug-in version 3.0
-
- */
-
-FMX_PROC(errcode) BE_ExecuteShellCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-	
-	try {
-		
-		StringAutoPtr command = ParameterAsUTF8String ( parameters, 0 );
-		bool waitForResponse = ParameterAsBoolean ( parameters, 1 );
-		
-		StringAutoPtr response ( new string );
-		
-		if ( waitForResponse ) {
-			g_last_error = ExecuteShellCommand ( *command, *response );
-			SetResult ( response, results );
-		} else {
-
-			// minimum effort "fix" for depreciated function
-			// leaks, but at least it doesn't crash fm13
-			
-			boost::thread * dontWaitForThis = new boost::thread ( ExecuteShellCommand, *command, *response );
-//			dontWaitForThis->detach();
-						
-		}		
-		
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-	
-	return MapError ( error );
-	
-} // BE_ExecuteShellCommand
-
-
 
 FMX_PROC(errcode) BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
@@ -2078,61 +2219,6 @@ FMX_PROC(errcode) BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /
 	
 } // BE_ExecuteSystemCommand
 
-
-/*
- 
- DEPRECIATED as of FM12 (which has native functions) ... will be removed in plug-in version 3.0
- 
- a wrapper for the FileMaker SQL calls FileMaker_Tables and FileMaker_Fields
- 
- under FileMaker 11 & 12 the functions return
- 
- FileMaker_Tables - returns a list of TOs with associated information
-	table occurance name
-	table occurance id
-	table name
-	file name
-	schema modification count 
-
- FileMaker_Fields - returns a list of fields...
-	table occurance name
-	name
-	type
-	id
-	class
-	repitions
-	modification count 
-
- */
-
-FMX_PROC(errcode) BE_FileMaker_TablesOrFields ( short funcId, const ExprEnv& environment, const DataVect& /* parameters */, Data& results )
-{	
-	errcode error = NoError();
-	
-	try {
-
-		TextAutoPtr expression;
-		
-		if ( funcId == kBE_FileMaker_Tables ) {
-			expression->Assign ( "SELECT * FROM FileMaker_Tables" );
-		} else {
-			expression->Assign ( "SELECT * FROM FileMaker_Fields" );
-		}
-		
-		TextAutoPtr filename; // there isn't one
-		BESQLCommandAutoPtr sql ( new BESQLCommand ( expression, filename ) );
-		sql->execute ( environment );
-		SetResult ( *(sql->get_text_result()), results );
-
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}	
-	
-	return MapError ( error );
-	
-} // BE_FileMaker_TablesOrFields
 
 
 // open the supplied url in the user's default browser
@@ -2216,8 +2302,13 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 		// get the parameter, if present
 		
 		if ( number_of_paramters == 3 ) {
+
+// defeat: Returning null reference (within a call to 'operator*')
+// default constructor for default_locale gives the current locale
+#ifndef __clang_analyzer__
 			LocaleAutoPtr default_locale;
 			parameter->SetAsText ( parameters.AtAsText ( 2 ), *default_locale );
+#endif
 		}
 		
 		error = FMX_StartScript ( &(*file_name), &(*script_name), kFMXT_Pause, &(*parameter) );
@@ -2283,15 +2374,15 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environme
 
 
 FMX_PROC(errcode) BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
+{	
 	errcode error = NoError();
-	
+		
 	try {
 		
 		StringAutoPtr message = ParameterAsUTF8String ( parameters, 0 );
 		const unsigned long algorithm = ParameterAsLong( parameters, 1, kBE_MessageDigestAlgorithm_SHA256 );
 		const unsigned long output_type = ParameterAsLong( parameters, 2, kBE_Encoding_Hex );
-		
+
 		string digest = message_digest ( *message, algorithm, output_type );
 		
 		SetResult ( digest, results );
@@ -2302,11 +2393,12 @@ FMX_PROC(errcode) BE_MessageDigest ( short /* funcId */, const ExprEnv& /* envir
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
-	}
+	}	
 	
 	return MapError ( error );
 	
 } // BE_MessageDigest
+
 
 
 FMX_PROC(errcode) BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )

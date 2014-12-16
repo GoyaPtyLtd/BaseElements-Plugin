@@ -110,7 +110,7 @@
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;CURL_STATICLIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;WINVER=0x5000;CURL_STATICLIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -129,13 +129,12 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\Build\BaseElements.lib</ImportLibrary>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib;shell32.lib</IgnoreSpecificDefaultLibraries>
-      <DelayLoadDLLs>shell32.dll</DelayLoadDLLs>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -166,13 +165,12 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\Build\BaseElements.lib</ImportLibrary>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib;shell32.lib</IgnoreSpecificDefaultLibraries>
-      <DelayLoadDLLs>shell32.dll</DelayLoadDLLs>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -209,28 +207,24 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\Build\BaseElementsD.pdb</ProgramDatabaseFile>
       <ImportLibrary>..\Build\BaseElementsD.lib</ImportLibrary>
-      <IgnoreAllDefaultLibraries>
-      </IgnoreAllDefaultLibraries>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;msvcrt.lib;libcmt.lib;libcpmt.lib;shell32.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;nafxcwd.lib;msvcrt.lib;libcmt.lib;uafxcwd.lib;libcpmt.lib;libmimetic_mt.lib</IgnoreSpecificDefaultLibraries>
       <AssemblyLinkResource>
       </AssemblyLinkResource>
-      <DelayLoadDLLs>shell32.dll</DelayLoadDLLs>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
       <Profile>true</Profile>
       <EntryPointSymbol>
       </EntryPointSymbol>
-      <SupportNobindOfDelayLoadedDLL>false</SupportNobindOfDelayLoadedDLL>
     </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -264,7 +258,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -273,10 +267,11 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;msvcrt.lib;libcmt.lib;libcpmt.lib;shell32.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;msvcrt.lib;libcmt.lib;libcpmt.lib</IgnoreSpecificDefaultLibraries>
       <AssemblyLinkResource>
       </AssemblyLinkResource>
-      <DelayLoadDLLs>shell32.dll</DelayLoadDLLs>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
       <Profile>true</Profile>
       <EntryPointSymbol>
       </EntryPointSymbol>
@@ -324,6 +319,8 @@
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEShell.cpp" />
+    <ClCompile Include="..\Source\BESMTP.cpp" />
+    <ClCompile Include="..\Source\BESMTPEmailMessage.cpp" />
     <ClCompile Include="..\Source\BESQLCommand.cpp" />
     <ClCompile Include="..\Source\BETime.cpp" />
     <ClCompile Include="..\Source\BEWinCommonFileDialog.cpp" />
@@ -340,6 +337,7 @@
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Source\BEXero.cpp" />
     <ClCompile Include="..\Source\BEXMLReader.cpp" />
     <ClCompile Include="..\Source\BEXMLReaderInterface.cpp" />
     <ClCompile Include="..\Source\BEXMLTextReader.cpp" />
@@ -375,6 +373,8 @@
     <ClInclude Include="..\Source\BEPluginGlobalDefines.h" />
     <ClInclude Include="..\Source\BEPluginUtilities.h" />
     <ClInclude Include="..\Source\BEShell.h" />
+    <ClInclude Include="..\Source\BESMTP.h" />
+    <ClInclude Include="..\Source\BESMTPEmailMessage.h" />
     <ClInclude Include="..\Source\BESQLCommand.h" />
     <ClInclude Include="..\Source\BETime.h" />
     <ClInclude Include="..\Source\BEValueList.h" />
@@ -382,6 +382,7 @@
     <ClInclude Include="..\Source\BEWinFunctions.h" />
     <ClInclude Include="..\Source\BEWinIFileDialog.h" />
     <ClInclude Include="..\Source\BEWStringVector.h" />
+    <ClInclude Include="..\Source\BEXero.h" />
     <ClInclude Include="..\Source\BEXMLReader.h" />
     <ClInclude Include="..\Source\BEXMLReaderInterface.h" />
     <ClInclude Include="..\Source\BEXMLTextReader.h" />

@@ -5,7 +5,7 @@ Building
 The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
 Notes:
-- these instructions apply to version 2.3 of the BaseElements Plugin
+- these instructions apply to version 3.0 of the BaseElements Plugin
 - version 12.0.1.5 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 
@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-The plug-in is built on Mac OS X 10.9.2 using Xcode 5.1.1 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
+Version 3.0 of the plug-in is built on Mac OS X 10.9.2 using Xcode 5.1.1 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -31,7 +31,7 @@ Boost is available from
 
 	http://www.boost.org/
 
-Note: Boost 1.55_0 (or later) is required.
+Note: v3 of the plug-in requires Boost 1.55_0 (or later).
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
@@ -46,6 +46,7 @@ See
 for for further information on compiling the Boost libraries.
 
 Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the boost/lib directory to the Libraries directory.
+
 
 =======================================================================
 minizip
@@ -90,6 +91,93 @@ Copy liboauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a
 
 
 =======================================================================
+mimetic
+=======================================================================
+
+Download the source from
+
+	http://www.codesink.org/mimetic_mime_library.html#download
+
+Follow the supplied building instructions using this ./configure command (to build a universal binary)
+
+	./configure CXXFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking --prefix=build && make install
+
+Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the library in the boost/lib directory to the Libraries directory.
+
+
+=======================================================================
+libssh2
+=======================================================================
+
+Download the source from
+
+	http://www.libssh2.org
+
+Unpack the archive and in the distribution directory
+
+	CFLAGS="-arch x86_64 -arch i386  -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" ./configure --prefix=/usr --exec-prefix=/usr --with-openssl --with-libz --without-libgcrypt --prefix=<path_to_install_libssh2> -exec-prefix=<path_to_install_libssh2> && make install
+
+(replacing <path_to_install_libssh2> as appropriate).
+
+Copy
+
+	<path_to_install_libssh2>/lib/libssh2.a
+
+into the Libraries directory and copy
+
+	<path_to_install_libssh2>/include
+
+to Headers/libssh2
+
+
+=======================================================================
+libcurl
+=======================================================================
+
+Note: OpenSSL & libssh2 must be built before building libcurl.
+
+Download the source from
+
+	http://curl.haxx.se/download.html
+
+and expand it into a directory on the Desktop. cd into the directory and run
+
+	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-L<path_to_be_plugin_libraries_directory>" --disable-dependency-tracking --with-ssl --with-libssh2=<path_to_libssh2> --disable-shared --with-libz --prefix=<path_to_intsall_libcurl>
+
+(replacing <path_to_be_plugin_libraries_directory>, <path_to_libssh2> and <path_to_intsall_libcurl> as appropriate).
+
+Open the file
+
+	include/curl/curlbuid.h
+
+and replace the line
+
+	#define CURL_SIZEOF_LONG 8
+
+with
+
+	#ifdef __x86_64__
+		#define CURL_SIZEOF_LONG 8
+	#else
+		#define CURL_SIZEOF_LONG 4
+	#endif
+
+And then run
+
+	make install
+
+Copy
+
+	<path_to_intsall_libcurl>/lib/curl.a
+
+into the Libraries directory and
+
+	<path_to_intsall_libcurl>/inlcude/curl
+
+into Headers.
+
+
+=======================================================================
 Windows
 =======================================================================
 
@@ -120,7 +208,7 @@ The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 
-Note: Boost 1.55_0 (or later) is required.
+Note: v3.0 of the plug-in requires Boost 1.55_0 (or later).
 
 See
 
@@ -138,6 +226,7 @@ and for 64-bit support
 
 
 Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib and build64/lib directories to the Libraries directory.
+
 
 =======================================================================
 zlib
@@ -164,6 +253,40 @@ For x64 builds set the "Active Solution Platform" in the "Configuration Manager"
 	contrib/vstudio/vc10/x64/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
 to the Libraries/x64 directory.
+
+
+=======================================================================
+mimetic
+=======================================================================
+
+Download the source from
+
+	http://www.codesink.org/mimetic_mime_library.html#download
+
+In
+
+	Configuration Properties -> General -> Project Defaults
+
+set
+
+	Character Set = Use Unicode Character Set
+
+To create 64-bit configurations go to:
+
+Build -> Configuration Manager -> Active Solution Platform: -> <New>
+	-	Type or select the new platform: -> x64
+	-	Copy Settings from Win32
+
+In the Debug and Release x64 configuration set:
+
+	Configuration Properties -> Librarian -> General -> Output File -> .\.\x64\libmimetic_d.lib
+	Configuration Properties -> Librarian -> General -> Output File -> .\.\x64\libmimetic.lib
+
+repectively. To build both 32 and 64 bit libraries go to:
+
+	Build -> Batch Build ... select both Debug Release configurations and then "Build"
+
+Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib and libmimetic.lib from the win32 directory to the Libraries directory and from win32/x64 to Libraries/x64.
 
 
 =======================================================================
@@ -314,11 +437,11 @@ Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-(openssl-1.0.1g.tar.gz at the time of writing).
+(openssl-1.0.1c.tar.gz at the time of writing).
 
 Unpack the archive onto the desktop and, using the "Visual Studio Command Prompt (2010)"
 
-	cd c:\Users\Mark\Desktop\openssl-1.0.1g
+	cd c:\Users\Mark\Desktop\openssl-1.0.1c
 	perl Configure VC-WIN32 enable-static-engine no-asm
 	ms\do_nt
 	nmake -f ms\nt.mak
@@ -327,7 +450,7 @@ Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries and copy inc32\opens
 
 For x64 builds in a "Visual Studio x64 Cross Tools Command Prompt (2010)" use:
 
-	cd c:\Users\Mark\Desktop\openssl-1.0.1g
+	cd c:\Users\Mark\Desktop\openssl-1.0.1c
 	perl Configure VC-WIN64A enable-static-engine no-asm
 	ms\do_win64a
 	nmake -f ms\nt.mak
@@ -336,10 +459,50 @@ Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\x64 and copy inc32\o
 
 
 =======================================================================
+libssh2
+=======================================================================
+
+Download the source from
+
+	http://www.libssh2.org
+
+
+Open
+
+	win32\libssh2.vcproj
+
+and set the following Configuration Properties:
+
+	Project Defaults -> Character Set == Use Unicode Character Set
+	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
+	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
+
+From Batch Build select LIB Release.
+
+Copy the library from
+
+	win32\Release_lib\libssl2.lib
+
+into the Libraries directory and copy
+
+	include
+
+to the Headers directory and rename it libssh2.
+
+
+For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK".
+
+Copy the library from
+
+	win32\Release_lib\libssl2.lib
+
+into the Libraries\x64 directory.
+
+=======================================================================
 libcurl
 =======================================================================
 
-Note: OpenSSL must be built before building libcurl.
+Note: OpenSSL & libssh2 must be built before building libcurl.
 
 Download the source from
 
@@ -350,26 +513,26 @@ and expand it into a directory on the Desktop.
 Open
 	projects\Windows\VC10\curl.vcproj
 
-and set the following Configuration Properties in the "LIB Release - LIB OpenSSL" configuration for both Win32 and x64 platforms:
+and set the following Configuration Properties:
 
 	Project Defaults -> Character Set == Use Unicode Character Set
 	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
 
 
-In Visual Studio and select "Batch Build" and check the LIB Release - LIB OpenSSL" configuration for both Win32 and x64 platforms and then "Build".
+In Visual Studio and select "Batch Build" and select both the x86 & x64 "LIB Release - LIB OpenSSL - LIB LibSSH2" configurations and then "Build".
 
 Copy the library from
 
-	curl-7.37.0\build\Win32\VC10\LIB Release - LIB OpenSSL\libcurl.lib
+	build\Win32\VC10\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
 
 into the Libraries directory and copy
 
-	curl-7.37.0\build\Win64\VC10\LIB Release - LIB OpenSSL\libcurl.lib
+	build\Win64\VC10\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
 
 into the Libraries\x64 directory and copy
 
-	curl-7.37.0\include\curl
+	include\curl
 
 to the Headers directory.
 

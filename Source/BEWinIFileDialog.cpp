@@ -89,11 +89,11 @@ WStringAutoPtr BEWinIFileOpenDialog::Show ( )
 
 					hr = file_dialog->SetTitle ( prompt.c_str() );
                     if ( SUCCEEDED ( hr ) ) {
-					
+
 						// Show the dialog
 						hr = file_dialog->Show ( GetForegroundWindow() );
 						if ( SUCCEEDED ( hr ) ) {
-							selected_files = GetSelection ( );					
+							selected_files = GetSelection ( );
 						} else {
 							CheckIfUserCancelled ( );
 						}
@@ -104,7 +104,7 @@ WStringAutoPtr BEWinIFileOpenDialog::Show ( )
 	}
 
 	file_dialog->Release();
-	
+
 	g_last_error = (fmx::errcode)hr;
 
 	return selected_files;
@@ -209,7 +209,7 @@ WStringAutoPtr BEWinIFileSaveDialog::Show ( )
 
 					hr = file_dialog->SetTitle ( prompt.c_str() );
                     if ( SUCCEEDED ( hr ) ) {
-					
+
 						if ( ! file_name.empty() ) {
 							hr = file_dialog->SetFileName ( file_name.c_str() );
 						}
@@ -219,7 +219,7 @@ WStringAutoPtr BEWinIFileSaveDialog::Show ( )
 							// Show the dialog
 							hr = file_dialog->Show ( GetForegroundWindow() );
 							if ( SUCCEEDED ( hr ) ) {
-								selected_files = GetSelection ( );					
+								selected_files = GetSelection ( );
 							} else {
 								CheckIfUserCancelled ( );
 							}
@@ -231,7 +231,7 @@ WStringAutoPtr BEWinIFileSaveDialog::Show ( )
 	}
 
 	file_dialog->Release();
-	
+
 	g_last_error = (fmx::errcode)hr;
 
 	return selected_files;

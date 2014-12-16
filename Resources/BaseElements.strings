@@ -28,15 +28,8 @@
 "118" = "BE_MoveFile ( from ; to )";
 "119" = "BE_CopyFile ( from ; to )";
 
-// depreciated
-"120" = "BE_ExecuteShellCommand ( command {; waitForResponse } )";
-
 
 "121" = "BE_ListFilesInFolder ( path {; type ; includeSubdirectories ; useFullPath } )";
-
-// depreciated
-"122" = "BE_FileMaker_Tables";
-"123" = "BE_FileMaker_Fields";
 
 
 "124" = "BE_OpenURL ( url )";
@@ -45,7 +38,7 @@
 
 
 "128" = "BaseElements";
-"129" = "Version: 2.3.1\n\nThis plug-in provides additional functionality for BaseElements from Goya";
+"129" = "Version: 3.0a2\n\nThis plug-in provides additional functionality for BaseElements from Goya";
 
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
@@ -85,6 +78,7 @@
 "186" = "BE_HTTP_Set_Proxy ( proxy {; port ; username ; password } )";
 "187" = "BE_Curl_Set_Option ( option ; value )";
 "188" = "BE_HTTP_PUT_DATA ( url ; data {; username ; password } )";
+"189" = "BE_FTP_Upload ( url ; data {; username ; password } )";
 
 
 "200" = "BE_ApplyXSLTInMemory ( xml ; xslt )";
@@ -108,9 +102,15 @@
 "303" = "BE_JSON_Encode ( key {; value ; type } )";
 
 
-//"320" = "BE_OAuth_RequestToken ( url ; consumer_key ; consumer_secret )";
 "321" = "BE_OAuth_RequestAccessToken ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )";
-//"322" = "BE_OAuth_ClearToken";
+
+
+//#ifdef PRIVATE_VERSION
+
+"330" = "BE_Xero_SetTokens ( consumer_key ; private_key )";
+
+//#endif
+
 
 "350" = "BE_Values_Unique ( listOfValues )";
 "351" = "BE_Values_FilterOut ( textToFilter ; filterValues )";
@@ -118,9 +118,16 @@
 "353" = "BE_Values_Sort ( listOfValues )";
 
 
+//#ifdef PRIVATE_VERSION
+
+"400" = "BE_SMTP_Server ( server { ; port ; username ; password } )";
+"401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; html ; attachments } )";
+
+//#endif
+
+
 "500" = "BE_Encrypt_AES ( key ; text )";
 "501" = "BE_Decrypt_AES ( key ; text )";
-
 
 "550" = "BE_HMAC ( text ; key {; algorithm ; encoding } )";
 
@@ -136,9 +143,7 @@
 
 "2001" = "BE_MessageDigestAlgorithm_MD5";
 "2002" = "BE_MessageDigestAlgorithm_SHA256";
-//"2003" = "BE_MessageDigestAlgorithm_MD2";
 "2004" = "BE_MessageDigestAlgorithm_MDC2";
-//"2005" = "BE_MessageDigestAlgorithm_RMD160";
 "2006" = "BE_MessageDigestAlgorithm_SHA";
 "2007" = "BE_MessageDigestAlgorithm_SHA1";
 "2008" = "BE_MessageDigestAlgorithm_SHA224";
@@ -149,6 +154,9 @@
 "3001" = "BE_FileType_File";
 "3002" = "BE_FileType_Folder";
 
-"4000" = "BE_Encoding_None";
 "4001" = "BE_Encoding_Hex";
 "4002" = "BE_Encoding_Base64";
+
+
+
+

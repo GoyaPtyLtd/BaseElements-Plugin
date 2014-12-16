@@ -2,7 +2,7 @@
  BEPlugin.cpp
  BaseElements Plug-in
   
- Copyright 2010-2013 Goya. All rights reserved.
+ Copyright 2010-2014 Goya. All rights reserved.
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without 
@@ -71,16 +71,16 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 {
 #pragma unused ( plugin_call )
 	
-	SetTextEncoding ( UTF8 );
+	SetTextEncoding ( "" );
 	
 #ifdef FMX_WIN_TARGET
 	InitialiseWindows ( );
 #endif
-	
+
 	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
 	g_be_plugin = new BEFileMakerPlugin ( plugin_id );
 	g_be_plugin->set_fmx_application ( plugin_call->parm1 );
-
+	
 	g_be_plugin->RegisterFunction ( kBE_Version, BE_Version );
 	g_be_plugin->RegisterFunction ( kBE_VersionAutoUpdate, BE_VersionAutoUpdate );
 
@@ -99,7 +99,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_WriteTextToFile, BE_WriteTextToFile, true, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_StripInvalidUTF16CharactersFromXMLFile, BE_StripInvalidUTF16CharactersFromXMLFile, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ExportFieldContents, BE_ExportFieldContents, 2 );
-	
+
 	g_be_plugin->RegisterFunction ( kBE_MoveFile, BE_MoveFile, 2 );
 	g_be_plugin->RegisterFunction ( kBE_CopyFile, BE_CopyFile, 2 );
 	g_be_plugin->RegisterFunction ( kBE_ListFilesInFolder, BE_ListFilesInFolder, true, 1, 4 );
@@ -165,12 +165,13 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	
 	g_be_plugin->RegisterFunction ( kBE_Encrypt_AES, BE_Encrypt_AES, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Decrypt_AES, BE_Decrypt_AES, 2 );
-	
+
 	
 	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST_OR_PUT, true, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_DELETE, BE_HTTP_DELETE, true, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_File, BE_HTTP_POST_OR_PUT, true, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_Data, BE_HTTP_POST_OR_PUT, true, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, true, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Code, BE_HTTP_Response_Code );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Headers, BE_HTTP_Response_Headers );
@@ -188,7 +189,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_HMAC, BE_HMAC, true, 2, 4 );
-	
+
 	g_be_plugin->RegisterFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_Encoding_Base64 + kBE_EncodingOffset, BE_NumericConstants );
 
@@ -202,20 +203,24 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Values_Sort, BE_Values_Sort, 1 );
 	
 	
+#ifdef PRIVATE_VERSION
+	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, true, 2 );
+
+	g_be_plugin->RegisterFunction ( kBE_SMTP_Server, BE_SMTP_Server, true, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, true, 4, 8 );
+#endif
+	
 	// still alpha
 	
 	//	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestToken, BE_OAuth_RequestAccessToken, true, 3 );
+#ifdef PRIVATE_VERSION
+	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
+#else
 	g_be_plugin->RegisterHiddenFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
+#endif
 	//	g_be_plugin->RegisterFunction ( kBE_OAuth_ClearToken, BE_OAuth_RequestAccessToken, true );
 	
 	
-	// depreciated
-	
-	g_be_plugin->RegisterHiddenFunction ( kBE_ExecuteShellCommand, BE_ExecuteShellCommand, false, 1, 2 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_FileMaker_Tables, BE_FileMaker_TablesOrFields, true );
-	g_be_plugin->RegisterHiddenFunction ( kBE_FileMaker_Fields, BE_FileMaker_TablesOrFields, true );
-	
-
 	return kCurrentExtnVersion;	// enable the plug-in
 	
 } // LoadPlugin

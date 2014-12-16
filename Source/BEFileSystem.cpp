@@ -58,7 +58,7 @@ bool recursive_directory_copy ( const path & from, const path & to  ) {
 
 BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::path & directory, const long file_type_wanted = kBE_FileType_ALL, const bool recurse = false )
 {
-
+	
 	BEValueListWideStringAutoPtr list_of_files ( new BEValueList<wstring> );
 	
 	try {
@@ -71,7 +71,7 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 			
 			directory_iterator end_itr; // default construction yields past-the-end
 			directory_iterator itr ( directory_path );
-						
+			
 			while ( itr != end_itr ) {
 
 				bool is_folder = is_directory ( itr->status() );
@@ -79,7 +79,7 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 				if ( is_folder && recurse ) {
 					list_of_files->append ( *list_files_in_directory ( itr->path(), file_type_wanted, recurse ) );
 				}
-
+				
 				if (
 					(!is_folder && (file_type_wanted == kBE_FileType_File)) ||
 					(is_folder && (file_type_wanted == kBE_FileType_Folder)) ||
@@ -87,7 +87,7 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 					) {
 					
 					list_of_files->append ( itr->path().wstring() );
-
+					
 				}
 				
 				++itr;
@@ -103,6 +103,6 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 	}
 	
 	return list_of_files;
-
+	
 } // list_files_in_directory
 

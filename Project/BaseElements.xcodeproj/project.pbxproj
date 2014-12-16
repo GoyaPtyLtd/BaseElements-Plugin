@@ -9,20 +9,23 @@
 /* Begin PBXBuildFile section */
 		4D0023E413FDD64C00C0B57A /* BEShell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0023E213FDD64C00C0B57A /* BEShell.cpp */; };
 		4D00CC5A16D3279000160030 /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
-		4D05C5F71954071700733B6F /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05C5F61954071700733B6F /* libldap.dylib */; };
+		4D0BA9B218BEF74D00F8FD45 /* BESMTPEmailMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */; };
 		4D10AD951484202000814440 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4D13006816DADD8A0075FE0C /* BEOAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D13006616DADD8A0075FE0C /* BEOAuth.cpp */; };
 		4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
-		4D27C382186115EB00E7F4A1 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C381186115EB00E7F4A1 /* libssl.dylib */; };
-		4D27C384186115F300E7F4A1 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C383186115F300E7F4A1 /* libcrypto.dylib */; };
 		4D27C3861861160000E7F4A1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4D35117C17E1314A00AEDF01 /* BEFileTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D35117A17E1314A00AEDF01 /* BEFileTextReader.cpp */; };
 		4D37E0B51339CF080084730B /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4D3884FE17FE6DDC00E1894F /* liboauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3884FD17FE6DDC00E1894F /* liboauth.a */; };
+		4D3969C818DA54CA00DFC47A /* BEOpenSSLAES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */; };
+		4D3969CB18DA773900DFC47A /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C918DA773900DFC47A /* BEBase64.cpp */; };
 		4D3BA85215A3FE3F008AC145 /* BEXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */; };
 		4D4153A7120140AF00770E14 /* BEWStringVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4153A5120140AF00770E14 /* BEWStringVector.cpp */; };
-		4D54F7CD18DAB8E100F9ACB5 /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D54F7C918DAB8E100F9ACB5 /* BEBase64.cpp */; };
-		4D54F7CE18DAB8E100F9ACB5 /* BEOpenSSLAES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D54F7CB18DAB8E100F9ACB5 /* BEOpenSSLAES.cpp */; };
+		4D57DF81193EE0F3006739BE /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF7E193EE0F3006739BE /* libssh2.a */; };
+		4D57DF83193EE92C006739BE /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */; };
+		4D57DF84193EE934006739BE /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3618015EDE782003A0CB9 /* libssl.dylib */; };
+		4D57DF86193EE945006739BE /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF85193EE945006739BE /* libcurl.a */; };
+		4D57DF8A193EEA9F006739BE /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF89193EEA9F006739BE /* libldap.dylib */; };
 		4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
 		4D760F7915AD50E2001A0BAF /* BEXMLTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */; };
 		4D760F7D15AD52C7001A0BAF /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
@@ -30,11 +33,14 @@
 		4D76701F16CDC17A00010A75 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76701E16CDC17A00010A75 /* libjansson.a */; };
 		4D8824E711E93F6000F94475 /* BEPluginUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */; };
 		4D8BA595134579BD003A90B5 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8BA594134579BD003A90B5 /* libboost_thread.a */; };
+		4D9BAA0A18C0009000831FF0 /* libmimetic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9BAA0918C0009000831FF0 /* libmimetic.a */; };
+		4D9BAA0C18C0169000831FF0 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9BAA0B18C0169000831FF0 /* libboost_regex.a */; };
 		4D9E2B0C118A9F4A00EC9352 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */; };
 		4D9EEE80118A8E9C00EC9352 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9EEE7F118A8E9C00EC9352 /* libboost_filesystem.a */; };
 		4D9F2DDE11E934BC003D75BB /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4D9F2DDF11E934BC003D75BB /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
 		4D9F2DE011E934BC003D75BB /* BEPluginFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */; };
+		4DAC555518BDA41E00F365F5 /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DC182CA144CEC0900E27CAA /* BEZlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DC182C9144CEC0900E27CAA /* BEZlib.cpp */; };
 		4DC18342144D31C800E27CAA /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC18338144D31C800E27CAA /* ioapi.c */; };
 		4DC18344144D31C800E27CAA /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC1833C144D31C800E27CAA /* mztools.c */; };
@@ -48,9 +54,6 @@
 		4DD7824B11FFF57400CFC8B4 /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4DD78320120005AE00CFC8B4 /* BEXSLT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */; };
 		4DDA52E216D355A300E10827 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52D916D3551400E10827 /* libz.dylib */; };
-		4DDA52E316D355AC00E10827 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */; };
-		4DDA52E416D355B200E10827 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3618015EDE782003A0CB9 /* libssl.dylib */; };
-		4DDA52E516D355B700E10827 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3617C15EDE761003A0CB9 /* libcurl.dylib */; };
 		4DDA52E716D355C100E10827 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E616D355C100E10827 /* libiconv.dylib */; };
 		4DDA52E816D355C800E10827 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52DC16D3552500E10827 /* libxml2.dylib */; };
 		4DDA52E916D355D200E10827 /* libxslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52DE16D3552D00E10827 /* libxslt.dylib */; };
@@ -58,6 +61,7 @@
 		4DDA52EC16D355F100E10827 /* libcharset.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52EB16D355F100E10827 /* libcharset.dylib */; };
 		4DDBA8B7164386A900CC6FD7 /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
 		4DEB348816FA7A7B004AD91C /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB348716FA7A7B004AD91C /* libboost_date_time.a */; };
+		4DFFF8B31884A0390015B531 /* BEXero.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFF8B11884A0390015B531 /* BEXero.cpp */; };
 		C7DEDF3807E10CBC002283F3 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */; };
 /* End PBXBuildFile section */
 
@@ -82,7 +86,8 @@
 		4D00CC6516D3357C00160030 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		4D00CC6616D3357C00160030 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		4D00CC6716D3357C00160030 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		4D05C5F61954071700733B6F /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = usr/lib/libldap.dylib; sourceTree = SDKROOT; };
+		4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPEmailMessage.cpp; path = ../Source/BESMTPEmailMessage.cpp; sourceTree = "<group>"; };
+		4D0BA9B118BEF74D00F8FD45 /* BESMTPEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTPEmailMessage.h; path = ../Source/BESMTPEmailMessage.h; sourceTree = "<group>"; };
 		4D10AD931484202000814440 /* BESQLCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESQLCommand.cpp; path = ../Source/BESQLCommand.cpp; sourceTree = SOURCE_ROOT; };
 		4D10AD941484202000814440 /* BESQLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESQLCommand.h; path = ../Source/BESQLCommand.h; sourceTree = SOURCE_ROOT; };
 		4D13006616DADD8A0075FE0C /* BEOAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEOAuth.cpp; path = ../Source/BEOAuth.cpp; sourceTree = "<group>"; };
@@ -98,16 +103,22 @@
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B21339CF080084730B /* BECurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECurl.h; path = ../Source/BECurl.h; sourceTree = SOURCE_ROOT; };
 		4D3884FD17FE6DDC00E1894F /* liboauth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liboauth.a; path = ../Libraries/liboauth.a; sourceTree = "<group>"; };
+		4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEOpenSSLAES.cpp; path = ../Source/BEOpenSSLAES.cpp; sourceTree = "<group>"; };
+		4D3969C718DA54CA00DFC47A /* BEOpenSSLAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEOpenSSLAES.h; path = ../Source/BEOpenSSLAES.h; sourceTree = "<group>"; };
+		4D3969C918DA773900DFC47A /* BEBase64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEBase64.cpp; path = ../Source/BEBase64.cpp; sourceTree = "<group>"; };
+		4D3969CA18DA773900DFC47A /* BEBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEBase64.h; path = ../Source/BEBase64.h; sourceTree = "<group>"; };
 		4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLReader.cpp; path = ../Source/BEXMLReader.cpp; sourceTree = "<group>"; };
 		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
 		4D4153A5120140AF00770E14 /* BEWStringVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEWStringVector.cpp; path = ../Source/BEWStringVector.cpp; sourceTree = SOURCE_ROOT; };
 		4D4153A6120140AF00770E14 /* BEWStringVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEWStringVector.h; path = ../Source/BEWStringVector.h; sourceTree = SOURCE_ROOT; };
-		4D54F7C918DAB8E100F9ACB5 /* BEBase64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEBase64.cpp; path = ../Source/BEBase64.cpp; sourceTree = "<group>"; };
-		4D54F7CA18DAB8E100F9ACB5 /* BEBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEBase64.h; path = ../Source/BEBase64.h; sourceTree = "<group>"; };
-		4D54F7CB18DAB8E100F9ACB5 /* BEOpenSSLAES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEOpenSSLAES.cpp; path = ../Source/BEOpenSSLAES.cpp; sourceTree = "<group>"; };
-		4D54F7CC18DAB8E100F9ACB5 /* BEOpenSSLAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEOpenSSLAES.h; path = ../Source/BEOpenSSLAES.h; sourceTree = "<group>"; };
 		4D55C63815EE0F0A008F7FBA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
+		4D57DF7D193EE0F3006739BE /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../Libraries/libcrypto.a; sourceTree = "<group>"; };
+		4D57DF7E193EE0F3006739BE /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/libssh2.a; sourceTree = "<group>"; };
+		4D57DF7F193EE0F3006739BE /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../Libraries/libssl.a; sourceTree = "<group>"; };
+		4D57DF85193EE945006739BE /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/libcurl.a; sourceTree = "<group>"; };
+		4D57DF87193EE984006739BE /* ldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = ldap.dylib; path = usr/lib/samba/idmap/ldap.dylib; sourceTree = SDKROOT; };
+		4D57DF89193EEA9F006739BE /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = usr/lib/libldap.dylib; sourceTree = SDKROOT; };
 		4D59DAFA16F95E2400F87180 /* BEValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEValueList.h; path = ../Source/BEValueList.h; sourceTree = "<group>"; };
 		4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileSystem.cpp; path = ../Source/BEFileSystem.cpp; sourceTree = SOURCE_ROOT; };
 		4D70428713BAE5CA00DE4484 /* BEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileSystem.h; path = ../Source/BEFileSystem.h; sourceTree = SOURCE_ROOT; };
@@ -123,6 +134,9 @@
 		4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginUtilities.cpp; path = ../Source/BEPluginUtilities.cpp; sourceTree = SOURCE_ROOT; };
 		4D8824E611E93F6000F94475 /* BEPluginUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginUtilities.h; path = ../Source/BEPluginUtilities.h; sourceTree = SOURCE_ROOT; };
 		4D8BA594134579BD003A90B5 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../Libraries/libboost_thread.a; sourceTree = SOURCE_ROOT; };
+		4D8E64181917561D00C9F2BE /* BEPluginException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginException.h; path = ../Source/BEPluginException.h; sourceTree = "<group>"; };
+		4D9BAA0918C0009000831FF0 /* libmimetic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmimetic.a; path = ../Libraries/libmimetic.a; sourceTree = "<group>"; };
+		4D9BAA0B18C0169000831FF0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../Libraries/libboost_regex.a; sourceTree = "<group>"; };
 		4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../Libraries/libboost_system.a; sourceTree = SOURCE_ROOT; };
 		4D9EEE7F118A8E9C00EC9352 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../Libraries/libboost_filesystem.a; sourceTree = SOURCE_ROOT; };
 		4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMacFunctions.h; path = ../Source/BEMacFunctions.h; sourceTree = SOURCE_ROOT; };
@@ -131,7 +145,8 @@
 		4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginFunctions.cpp; path = ../Source/BEPluginFunctions.cpp; sourceTree = SOURCE_ROOT; };
 		4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginFunctions.h; path = ../Source/BEPluginFunctions.h; sourceTree = SOURCE_ROOT; };
 		4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginGlobalDefines.h; path = ../Source/BEPluginGlobalDefines.h; sourceTree = SOURCE_ROOT; };
-		4DAD27FA18EB8999005D82B3 /* BEPluginException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEPluginException.h; path = ../Source/BEPluginException.h; sourceTree = "<group>"; };
+		4DAC555318BDA41E00F365F5 /* BESMTP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTP.cpp; path = ../Source/BESMTP.cpp; sourceTree = "<group>"; };
+		4DAC555418BDA41E00F365F5 /* BESMTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTP.h; path = ../Source/BESMTP.h; sourceTree = "<group>"; };
 		4DC182C8144CEC0900E27CAA /* BEZlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEZlib.h; path = ../Source/BEZlib.h; sourceTree = SOURCE_ROOT; };
 		4DC182C9144CEC0900E27CAA /* BEZlib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEZlib.cpp; path = ../Source/BEZlib.cpp; sourceTree = SOURCE_ROOT; };
 		4DC18337144D31C800E27CAA /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = ../Source/minizip/crypt.h; sourceTree = SOURCE_ROOT; };
@@ -167,6 +182,8 @@
 		4DF3617C15EDE761003A0CB9 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcurl.dylib; sourceTree = DEVELOPER_DIR; };
 		4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcrypto.dylib; sourceTree = DEVELOPER_DIR; };
 		4DF3618015EDE782003A0CB9 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libssl.dylib; sourceTree = DEVELOPER_DIR; };
+		4DFFF8B11884A0390015B531 /* BEXero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXero.cpp; path = ../Source/BEXero.cpp; sourceTree = "<group>"; };
+		4DFFF8B21884A0390015B531 /* BEXero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXero.h; path = ../Source/BEXero.h; sourceTree = "<group>"; };
 		C77AF38407E11A7C00897241 /* BaseElements.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaseElements.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/FMWrapper.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -176,20 +193,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DDA52E516D355B700E10827 /* libcurl.dylib in Frameworks */,
-				4D05C5F71954071700733B6F /* libldap.dylib in Frameworks */,
+				4D57DF8A193EEA9F006739BE /* libldap.dylib in Frameworks */,
+				4D57DF86193EE945006739BE /* libcurl.a in Frameworks */,
+				4D57DF84193EE934006739BE /* libssl.dylib in Frameworks */,
+				4D57DF83193EE92C006739BE /* libcrypto.dylib in Frameworks */,
+				4D57DF81193EE0F3006739BE /* libssh2.a in Frameworks */,
 				4D27C3861861160000E7F4A1 /* Cocoa.framework in Frameworks */,
 				4DDA52E216D355A300E10827 /* libz.dylib in Frameworks */,
-				4D27C384186115F300E7F4A1 /* libcrypto.dylib in Frameworks */,
-				4D27C382186115EB00E7F4A1 /* libssl.dylib in Frameworks */,
 				4DDA52E716D355C100E10827 /* libiconv.dylib in Frameworks */,
+				4D9BAA0A18C0009000831FF0 /* libmimetic.a in Frameworks */,
 				4DDA52E816D355C800E10827 /* libxml2.dylib in Frameworks */,
 				4DDA52E916D355D200E10827 /* libxslt.dylib in Frameworks */,
 				4DDA52EC16D355F100E10827 /* libcharset.dylib in Frameworks */,
 				4DDA52EA16D355DA00E10827 /* libexslt.dylib in Frameworks */,
-				4DDA52E416D355B200E10827 /* libssl.dylib in Frameworks */,
-				4DDA52E316D355AC00E10827 /* libcrypto.dylib in Frameworks */,
 				4D76701F16CDC17A00010A75 /* libjansson.a in Frameworks */,
+				4D9BAA0C18C0169000831FF0 /* libboost_regex.a in Frameworks */,
 				4D3884FE17FE6DDC00E1894F /* liboauth.a in Frameworks */,
 				C7DEDF3807E10CBC002283F3 /* FMWrapper.framework in Frameworks */,
 				4D9EEE80118A8E9C00EC9352 /* libboost_filesystem.a in Frameworks */,
@@ -221,6 +239,8 @@
 				4D9EEE7F118A8E9C00EC9352 /* libboost_filesystem.a */,
 				4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */,
 				4D8BA594134579BD003A90B5 /* libboost_thread.a */,
+				4D9BAA0B18C0169000831FF0 /* libboost_regex.a */,
+				4D9BAA0918C0009000831FF0 /* libmimetic.a */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -260,6 +280,10 @@
 				4D10AD931484202000814440 /* BESQLCommand.cpp */,
 				4D37E0B21339CF080084730B /* BECurl.h */,
 				4D37E0B11339CF080084730B /* BECurl.cpp */,
+				4DAC555418BDA41E00F365F5 /* BESMTP.h */,
+				4DAC555318BDA41E00F365F5 /* BESMTP.cpp */,
+				4D0BA9B118BEF74D00F8FD45 /* BESMTPEmailMessage.h */,
+				4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */,
 				4DCCE05D170BC61D00835D21 /* BECurlOption.h */,
 				4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */,
 				4D8824E611E93F6000F94475 /* BEPluginUtilities.h */,
@@ -301,16 +325,18 @@
 				4D00CC5816D3279000160030 /* BEJSON.cpp */,
 				4D13006716DADD8A0075FE0C /* BEOAuth.h */,
 				4D13006616DADD8A0075FE0C /* BEOAuth.cpp */,
+				4DFFF8B21884A0390015B531 /* BEXero.h */,
+				4DFFF8B11884A0390015B531 /* BEXero.cpp */,
 				4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */,
 				4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */,
 				4D59DAFA16F95E2400F87180 /* BEValueList.h */,
 				4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */,
 				4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */,
-				4D54F7CC18DAB8E100F9ACB5 /* BEOpenSSLAES.h */,
-				4D54F7CB18DAB8E100F9ACB5 /* BEOpenSSLAES.cpp */,
-				4D54F7CA18DAB8E100F9ACB5 /* BEBase64.h */,
-				4D54F7C918DAB8E100F9ACB5 /* BEBase64.cpp */,
-				4DAD27FA18EB8999005D82B3 /* BEPluginException.h */,
+				4D3969C718DA54CA00DFC47A /* BEOpenSSLAES.h */,
+				4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */,
+				4D3969CA18DA773900DFC47A /* BEBase64.h */,
+				4D3969C918DA773900DFC47A /* BEBase64.cpp */,
+				4D8E64181917561D00C9F2BE /* BEPluginException.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -328,7 +354,12 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4D05C5F61954071700733B6F /* libldap.dylib */,
+				4D57DF89193EEA9F006739BE /* libldap.dylib */,
+				4D57DF87193EE984006739BE /* ldap.dylib */,
+				4D57DF85193EE945006739BE /* libcurl.a */,
+				4D57DF7D193EE0F3006739BE /* libcrypto.a */,
+				4D57DF7E193EE0F3006739BE /* libssh2.a */,
+				4D57DF7F193EE0F3006739BE /* libssl.a */,
 				4D27C3851861160000E7F4A1 /* Cocoa.framework */,
 				4D27C383186115F300E7F4A1 /* libcrypto.dylib */,
 				4D27C381186115EB00E7F4A1 /* libssl.dylib */,
@@ -378,7 +409,7 @@
 		C7DEDEEB07E10BF3002283F3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Goya;
 			};
 			buildConfigurationList = 6FD50587097C3165009399BF /* Build configuration list for PBXProject "BaseElements" */;
@@ -419,8 +450,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DAC555518BDA41E00F365F5 /* BESMTP.cpp in Sources */,
 				4D9F2DDE11E934BC003D75BB /* BEMacFunctions.mm in Sources */,
 				4D9F2DDF11E934BC003D75BB /* BEPlugin.cpp in Sources */,
+				4DFFF8B31884A0390015B531 /* BEXero.cpp in Sources */,
+				4D3969C818DA54CA00DFC47A /* BEOpenSSLAES.cpp in Sources */,
 				4D9F2DE011E934BC003D75BB /* BEPluginFunctions.cpp in Sources */,
 				4D8824E711E93F6000F94475 /* BEPluginUtilities.cpp in Sources */,
 				4DD780D911FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp in Sources */,
@@ -429,7 +463,6 @@
 				4D37E0B51339CF080084730B /* BECurl.cpp in Sources */,
 				4D156AE3135D8BC2001A249B /* BEMessageDigest.cpp in Sources */,
 				4D70428813BAE5CA00DE4484 /* BEFileSystem.cpp in Sources */,
-				4D54F7CE18DAB8E100F9ACB5 /* BEOpenSSLAES.cpp in Sources */,
 				4D0023E413FDD64C00C0B57A /* BEShell.cpp in Sources */,
 				4DC182CA144CEC0900E27CAA /* BEZlib.cpp in Sources */,
 				4DC18342144D31C800E27CAA /* ioapi.c in Sources */,
@@ -443,12 +476,13 @@
 				4D760F8015AD648F001A0BAF /* BEXMLReaderInterface.cpp in Sources */,
 				4DDBA8B7164386A900CC6FD7 /* BETime.cpp in Sources */,
 				4D00CC5A16D3279000160030 /* BEJSON.cpp in Sources */,
-				4D54F7CD18DAB8E100F9ACB5 /* BEBase64.cpp in Sources */,
 				4D13006816DADD8A0075FE0C /* BEOAuth.cpp in Sources */,
 				4DD3E8FD16DD6DA300DC0070 /* BECppUtilities.cpp in Sources */,
 				4DD613F316FBBACF00C25A3E /* ProgressDialogWindowController.m in Sources */,
 				4DCCE05E170BC61D00835D21 /* BECurlOption.cpp in Sources */,
 				4D35117C17E1314A00AEDF01 /* BEFileTextReader.cpp in Sources */,
+				4D0BA9B218BEF74D00F8FD45 /* BESMTPEmailMessage.cpp in Sources */,
+				4D3969CB18DA773900DFC47A /* BEBase64.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +510,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../Libraries",
 					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
+					"$(SDKROOT)/usr/lib/samba/idmap",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -512,6 +547,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../Libraries",
 					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
+					"$(SDKROOT)/usr/lib/samba/idmap",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;

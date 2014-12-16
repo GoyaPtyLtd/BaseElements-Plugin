@@ -17,7 +17,6 @@
 #include "BEPluginUtilities.h"
 
 
-short ExecuteShellCommand ( const std::string command, std::string& result ); // depreciated in v2.0
 short ExecuteSystemCommand ( const std::string command, std::string& result, const long command_timeout );
 
 
