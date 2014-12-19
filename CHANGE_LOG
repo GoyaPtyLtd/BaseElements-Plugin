@@ -1,8 +1,58 @@
 ########################################################################
-Version 2.3b1
+Version 3.0
 ########################################################################
 
-June 3, 2014
+December 19, 2014
+
+New Functions
+
+BE_ExportFieldContents
+BE_FTP_Upload
+BE_HMAC
+BE_Xero_SetTokens
+
+Experimental (Hidden) Functions
+
+BE_EvaluateJavaScript
+BE_SMTP_Server
+BE_SMTP_Send
+
+Removed
+
+BE_ExecuteShellCommand
+BE_FileMaker_Tables
+BE_FileMaker_Fields
+
+Changes
+
+BE_ProgressDialog, BE_ProgressDialog_Update: improved error handling
+BE_ListFilesInFolder: force the use of the correct path separator for the platform
+BE_MessageDigest: return an error when an invalid algorithm is supplied
+BE_Zip, BE_Unzip: improved error handling, create empty directories in archives
+
+Improved handling of file paths containing unicode characters on Windows
+Transparently handle compressed file streams in container fields
+
+
+########################################################################
+Version 2.3.1
+########################################################################
+
+August 29, 2014
+
+Changes
+
+BE_Decrypt_AES: fix a crash when attempting to decrypt data not encrypted with the plug-in
+BE_ListFilesInFolder: improved unicode support
+
+Correct a focus problem with dialog boxes on Windows
+
+
+########################################################################
+Version 2.3
+########################################################################
+
+June 23, 2014
 
 New Functions
 
