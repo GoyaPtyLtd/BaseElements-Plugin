@@ -2,7 +2,7 @@
  BEPlugin.cpp
  BaseElements Plug-in
   
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2015 Goya. All rights reserved.
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without 
