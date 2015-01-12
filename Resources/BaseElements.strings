@@ -106,8 +106,8 @@
 "330" = "BE_Xero_SetTokens ( consumer_key ; private_key )";
 
 
-"350" = "BE_Values_Unique ( listOfValues )";
-"351" = "BE_Values_FilterOut ( textToFilter ; filterValues )";
+"350" = "BE_Values_Unique ( listOfValues {; caseSensitive } )";
+"351" = "BE_Values_FilterOut ( textToFilter ; filterValues {; caseSensitive } )";
 
 "353" = "BE_Values_Sort ( listOfValues )";
 

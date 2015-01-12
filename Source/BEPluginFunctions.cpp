@@ -1936,8 +1936,9 @@ FMX_PROC(errcode) BE_Values_Unique ( short /* funcId */, const ExprEnv& /* envir
 	try {
 		
 		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
+		bool case_sensitive = ParameterAsBoolean ( parameters, 1 );
 
-		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
+		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list, case_sensitive ) );
 		string unique_values = values->unique();
 		
 		SetResult ( unique_values, results );
@@ -1962,9 +1963,10 @@ FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* en
 		
 		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr filter_out = ParameterAsUTF8String ( parameters, 1 );
+		bool case_sensitive = ParameterAsBoolean ( parameters, 2 );
 		
-		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
-		auto_ptr< BEValueList<string> > filter ( new BEValueList<string> ( *filter_out ) );
+		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list, case_sensitive ) );
+		auto_ptr< BEValueList<string> > filter ( new BEValueList<string> ( *filter_out, case_sensitive ) );
 		string filtered_values = values->filter_out ( filter );
 				
 		SetResult ( filtered_values, results );

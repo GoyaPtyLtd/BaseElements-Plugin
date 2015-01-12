@@ -1,4 +1,18 @@
 ########################################################################
+Version 3.1a1
+########################################################################
+
+January 13, 2014
+
+New Functions
+
+Changes
+
+BE_Curl_Set_Option: label function parameters as optional
+BE_Values_Unique, BE_Values_FilterOut: add option to be case insensitive
+
+
+########################################################################
 Version 3.0
 ########################################################################
 

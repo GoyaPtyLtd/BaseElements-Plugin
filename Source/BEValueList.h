@@ -22,10 +22,7 @@
 #include <set>
 #include <algorithm>
 
-#include <boost/algorithm/string/split.hpp>
-#include <boost/algorithm/string/join.hpp>
-#include <boost/algorithm/string/classification.hpp>
-
+#include <boost/algorithm/string.hpp>
 
 
 template <typename T>
@@ -36,8 +33,8 @@ class BEValueList {
 public:
 	
 	BEValueList ( void );
-	BEValueList ( const T value_list );
-	BEValueList ( const std::vector<T> value_list );
+	BEValueList ( const T value_list, bool is_case_sensitive = true );
+	BEValueList ( const std::vector<T> value_list, bool is_case_sensitive = true );
 	
 	bool not_empty ( );
 	size_t size ( ) const;
@@ -60,7 +57,10 @@ public:
 protected:
 	
 	std::vector<T> values;
+	bool case_sensitive;
 	
+	bool inserted ( T value, typename std::set<T>& values_wanted );
+
 };
 
 
@@ -78,16 +78,18 @@ BEValueList<T>::BEValueList ( void )
 
 
 template <typename T>
-BEValueList<T>::BEValueList ( const T value_list )
+BEValueList<T>::BEValueList ( const T value_list, bool is_case_sensitive )
 {
 	boost::split ( values, value_list, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
+	case_sensitive = is_case_sensitive;
 }
 
 
 template <typename T>
-BEValueList<T>::BEValueList ( const std::vector<T> value_list )
+BEValueList<T>::BEValueList ( const std::vector<T> value_list, bool is_case_sensitive )
 {
 	values = value_list;
+	case_sensitive = is_case_sensitive;
 }
 
 
@@ -143,9 +145,9 @@ T BEValueList<T>::unique ( )
 	
 	for ( typename std::vector<T>::iterator it = values.begin() ; it != values.end(); ++it ) {
 		
-		std::pair<typename std::set<T>::iterator, bool> inserted = unique.insert ( *it );
-		
-		if ( inserted.second == true ) {
+		bool value_inserted = inserted ( *it, unique );
+
+		if ( value_inserted == true ) {
 			
 			if ( text.rdbuf()->in_avail() > 0 ) {
 				text << FILEMAKER_END_OF_LINE;
@@ -164,20 +166,28 @@ template <typename T>
 T BEValueList<T>::filter_out ( std::auto_ptr<BEValueList> filter_out )
 {
 	
-	const std::vector<T> to_filter = filter_out->get_values();
+	std::vector<T> to_filter = filter_out->get_values();
+	
+	if ( ! case_sensitive ) {
+		for ( typename std::vector<T>::iterator it = to_filter.begin() ; it != to_filter.end(); ++it ) {
+			boost::to_lower ( *it );
+		}
+	}
+	
 	std::set<T> filter_set ( to_filter.begin(), to_filter.end() );
 	
 	std::stringstream text;
 	
 	for ( typename std::vector<T>::iterator it = values.begin() ; it != values.end(); ++it ) {
 		
-		std::pair<typename std::set<T>::iterator, bool> inserted = filter_set.insert ( *it );
+		bool value_inserted = inserted ( *it, filter_set );
 		
-		if ( inserted.second == true ) {
+		if ( value_inserted == true ) {
 			
 			if ( text.rdbuf()->in_avail() > 0 ) {
 				text << FILEMAKER_END_OF_LINE;
 			}
+			
 			text << *it;
 			filter_set.erase ( *it );
 		}
@@ -236,6 +246,25 @@ template <typename T>
 T BEValueList<T>::get_as_filemaker_string ( void )
 {
 	return boost::algorithm::join ( values, FILEMAKER_END_OF_LINE );
+}
+
+
+#pragma mark -
+#pragma mark Protected
+#pragma mark
+
+template<typename T>
+bool BEValueList<T>::inserted ( T value, typename std::set<T>& values_wanted )
+{
+	
+	if ( ! case_sensitive ) {
+		boost::to_lower ( value );
+	}
+	
+	std::pair<typename std::set<T>::iterator, bool> was_inserted = values_wanted.insert ( value );
+	
+	return was_inserted.second;
+	
 }
 
 

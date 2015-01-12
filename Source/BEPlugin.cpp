@@ -201,8 +201,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_TimeZoneOffset, BE_TimeFunctions );
 	
 	
-	g_be_plugin->RegisterFunction ( kBE_Values_Unique, BE_Values_Unique, 1 );
-	g_be_plugin->RegisterFunction ( kBE_Values_FilterOut, BE_Values_FilterOut, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Values_Unique, BE_Values_Unique, true, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Values_FilterOut, BE_Values_FilterOut, true, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_Values_Sort, BE_Values_Sort, 1 );
 	
 	
