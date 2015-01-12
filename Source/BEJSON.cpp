@@ -2,7 +2,7 @@
  BEJSON.cpp
  BaseElements Plug-In
  
- Copyright 2013 Goya. All rights reserved.
+ Copyright 2013-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -125,18 +125,18 @@ StringAutoPtr BEJSON::encode ( const StringAutoPtr key, const fmx::Data& value, 
 		// integer or real value ?
 		fmx::TextAutoPtr fmx_text;
 		fmx_text->SetText ( value.GetAsText( ) );
+
 		fmx::TextAutoPtr decimal_point;
 		decimal_point->Assign ( "." );
-		bool integer = fmx_text->Find ( *decimal_point, 1 ) == fmx::Text::kSize_End;
+		
+		bool integer = fmx_text->Find ( *decimal_point, 0 ) == fmx::Text::kSize_End;
 		
 		if ( integer ) {
 			json_value = json_integer ( number->AsFloat ( ) ); // AsLong returns an int (which overflows)
 		} else {
-//			json_value = json_real ( number->AsFloat ( ) ); // has rounding problems
-			std::string json_text = TextAsUTF8String ( *fmx_text );
-//			double real_value = atof ( json_text.c_str() );
-//			json_value = json_real ( real_value ); // better (why?) but still has rounding problems
-			
+
+			std::string json_text = TextAsNumberString ( *fmx_text );
+
 			// put it in as string and rip out the unwanted quotes below
 			json_value = json_string ( json_text.c_str() );
 			is_real = true;

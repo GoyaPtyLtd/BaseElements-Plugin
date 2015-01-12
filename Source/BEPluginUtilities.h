@@ -2,7 +2,7 @@
  BEPluginUtilities.h
  BaseElements Plug-In
 	
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -63,6 +63,7 @@ StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::str
 
 void SetTextEncoding ( const std::string& encoding );
 std::string TextAsUTF8String ( const fmx::Text& fmx_text );
+std::string TextAsNumberString ( const fmx::Text& fmx_text );
 std::string DataAsUTF8String ( const fmx::Data& data );
 long DataAsLong ( const fmx::Data& data );
 double DataAsDouble ( const fmx::Data& data );

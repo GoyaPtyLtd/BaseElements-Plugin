@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
  
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -616,6 +616,21 @@ string TextAsUTF8String ( const Text& fmx_text )
 	
 } // TextAsString
 
+
+
+string TextAsNumberString ( const Text& fmx_text )
+{
+	std::string number_string = TextAsUTF8String ( fmx_text );
+	
+	// bug in fm text to float conversion removes a leading 0
+	std::string decimal_point = ".";
+	auto found = std::mismatch ( decimal_point.begin(), decimal_point.end(), number_string.begin() );
+	if ( found.first == decimal_point.end()) {
+		number_string = "0" + number_string;
+	}
+
+	return number_string;
+}
 
 
 string DataAsUTF8String ( const Data& data )
