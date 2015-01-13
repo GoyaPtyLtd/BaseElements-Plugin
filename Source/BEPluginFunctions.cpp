@@ -1000,9 +1000,11 @@ FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environmen
 
 
 
+// do not set the global last error
+
 FMX_PROC(errcode) BE_JSON_Error_Description ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
 {
-	errcode error = NoError();
+	errcode error = kNoError;
 	
 	try {
 
@@ -1014,7 +1016,7 @@ FMX_PROC(errcode) BE_JSON_Error_Description ( short /* funcId */, const ExprEnv&
 		error = kErrorUnknown;
 	}
 	
-	return MapError ( error );
+	return error;
 	
 } // BE_JSON_Error_Description
 
