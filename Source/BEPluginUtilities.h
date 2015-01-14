@@ -69,6 +69,9 @@ long DataAsLong ( const fmx::Data& data );
 double DataAsDouble ( const fmx::Data& data );
 
 
+fmx::errcode ExecuteScript ( const fmx::Text& script_name, const fmx::Text& file_name, const fmx::Data& parameter, const fmx::ExprEnv& environment );
+
+
 fmx::errcode NoError ( void );
 fmx::errcode MapError ( const fmx::errcode error = kNoError, const bool map = false );
 

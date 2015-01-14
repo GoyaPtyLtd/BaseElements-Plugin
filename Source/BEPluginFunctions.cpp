@@ -2278,38 +2278,27 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 		TextAutoPtr script_name;
 		script_name->SetText ( parameters.AtAsText ( 0 ) );
 
-		
-		// use the current file when a file name is not provided
-		
-		TextAutoPtr file_name;
-		DataAutoPtr parameter;
-
 		FMX_UInt32 number_of_paramters = parameters.Size();
 		
+		TextAutoPtr file_name;
 		if ( number_of_paramters >= 2 ) {
 			file_name->SetText ( parameters.AtAsText ( 1 ) );
-		} else {
-			TextAutoPtr command;
-			command->Assign ( "Get ( FileName )" );
-
-			DataAutoPtr name;
-			environment.Evaluate ( *command, *name );
-			file_name->SetText ( name->GetAsText() );
 		}
 
-		// get the parameter, if present
-		
+		// get the parameter, if present		
+		DataAutoPtr parameter;
 		if ( number_of_paramters == 3 ) {
 
-// defeat: Returning null reference (within a call to 'operator*')
-// default constructor for default_locale gives the current locale
+			// defeat: Returning null reference (within a call to 'operator*')
+			// default constructor for default_locale gives the current locale
 #ifndef __clang_analyzer__
 			LocaleAutoPtr default_locale;
 			parameter->SetAsText ( parameters.AtAsText ( 2 ), *default_locale );
 #endif
+
 		}
 		
-		error = FMX_StartScript ( &(*file_name), &(*script_name), kFMXT_Pause, &(*parameter) );
+		error = ExecuteScript ( *script_name, *file_name, *parameter, environment );
 		
 		SetResult ( error, results );
 

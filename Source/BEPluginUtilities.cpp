@@ -249,11 +249,7 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt
 		TextAutoPtr raw_data;
 		raw_data->SetText ( parameters.AtAsText ( which ) );
 		
-		FMX_UInt32 text_size = (4*(raw_data->GetSize())) + 1;
-		char * text = new char [ text_size ]();
-		raw_data->GetBytes ( text, text_size, 0, (FMX_UInt32)Text::kSize_End, Text::kEncoding_UTF8 );
-		result->assign ( text );
-		delete [] text;
+		result->assign ( TextAsUTF8String ( *raw_data ) );
 		
 	} catch ( exception& /* e */ ) {
 		;	// return an empty string
@@ -367,7 +363,6 @@ boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_
 	return path;
 	
 }
-
 
 
 #pragma mark -
@@ -658,6 +653,44 @@ double DataAsDouble ( const Data& data )
 	
 	return ( number->AsFloat() );
 }
+
+
+#pragma mark -
+#pragma mark FMX
+#pragma mark -
+
+errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Data& parameter, const ExprEnv& environment )
+{
+	errcode error = kNoError;
+	
+	try {
+		
+		TextAutoPtr database;
+	
+		if ( file_name.GetSize() != 0 ) {
+			database->SetText ( file_name );
+		} else {
+
+			TextAutoPtr command;
+			command->Assign ( "Get ( FileName )" );
+			
+			DataAutoPtr name;
+			environment.Evaluate ( *command, *name );
+			database->SetText ( name->GetAsText() );
+			
+		}
+		
+		error = FMX_StartScript ( &(*database), &script_name, kFMXT_Pause, &parameter );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return error;
+	
+} // ExecuteScript
 
 
 #pragma mark -
