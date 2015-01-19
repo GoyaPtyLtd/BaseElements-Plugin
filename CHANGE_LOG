@@ -2,13 +2,14 @@
 Version 3.1a1
 ########################################################################
 
-January 13, 2015
+January 20, 2015
 
 New Functions
 
 Changes
 
 BE_Curl_Set_Option: label function parameters as optional
+BE_HTTP_POST: allow post args to specify file paths using the @ syntax
 BE_JSON_Encode: correctly handle leading 0 for reals
 BE_JSON_Error_Description: do not change the value of BE_GetLastError
 BE_Values_Unique, BE_Values_FilterOut: add option to be case insensitive
