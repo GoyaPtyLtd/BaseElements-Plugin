@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
  
- Copyright 2011-2014 Goya. All rights reserved.
+ Copyright 2011-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -30,10 +30,11 @@
 #include <sstream>
 #include <errno.h>
 
+#include <boost/algorithm/string.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/scoped_ptr.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 
 
 using namespace std;
@@ -256,6 +257,8 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	password = _password;
 	parameters = post_parameters;
 	
+	post_data = NULL;
+
 	if ( g_oauth ) {
 		
 		int oauth_error = g_oauth->sign_url ( url, parameters, http_method_as_string() );
@@ -296,7 +299,8 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 
 BECurl::~BECurl()
 {
-	if ( curl ) { curl_easy_cleanup ( curl ); }
+	curl_easy_cleanup ( curl );
+	curl_formfree ( post_data );
 	curl_global_cleanup();
 }
 
@@ -498,12 +502,35 @@ vector<char> BECurl::ftp_upload ( )
 
 void BECurl::set_parameters ( )
 {
-	
-	// add the parameters to the form
+
 	if ( !parameters.empty() ) {
-		easy_setopt ( CURLOPT_POSTFIELDS, parameters.c_str() );
-		easy_setopt ( CURLOPT_POSTFIELDSIZE, parameters.length() );
-	}
+		
+		vector<string> fields;
+		boost::split ( fields, parameters, boost::is_any_of ( "&" ) );
+		 
+		struct curl_httppost *last_form_field = NULL;
+
+		for ( vector<string>::iterator it = fields.begin() ; it != fields.end(); ++it ) {
+			
+			vector<string> key_value_pair;
+			boost::split ( key_value_pair, *it, boost::is_any_of ( "=" ) );
+				
+			// get rid of @ sign that marks that it's a file path
+			int value_type = CURLFORM_COPYCONTENTS;
+			string value = key_value_pair[1];
+			if ( !value.empty() && value[0] == '@' ) {
+				value.erase ( value.begin() );
+				value_type = CURLFORM_FILE;
+			}
+				
+			// add the field
+			curl_formadd ( &post_data, &last_form_field, CURLFORM_COPYNAME, key_value_pair[0].c_str(), value_type, value.c_str(), CURLFORM_END );
+	
+		} // for
+		
+		easy_setopt ( CURLOPT_HTTPPOST, post_data );
+
+	} // if ( !parameters.empty() )
 	
 }	//	set_parameters
 
