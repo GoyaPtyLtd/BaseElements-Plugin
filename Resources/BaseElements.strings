@@ -94,6 +94,8 @@
 
 "230" = "BE_SaveFileDialog ( prompt {; fileName ; inFolder } )";
 
+"250" = "BE_ContainerIsCompressed ( containerField )";
+
 "300" = "BE_JSONPath ( json ; path )";
 "301" = "BE_JSON_Error_Description";
 "302" = "BE_JSON_ArraySize ( json )";

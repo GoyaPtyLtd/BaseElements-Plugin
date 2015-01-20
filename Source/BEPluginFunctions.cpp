@@ -1325,6 +1325,32 @@ FMX_PROC(errcode) BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* envir
 } // BE_SetTextEncoding
 
 
+FMX_PROC(errcode) BE_ContainerIsCompressed ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		if ( (parameters.At(0)).GetNativeType() == fmx::Data::kDTBinary ) {
+			
+			const BinaryDataAutoPtr data_stream ( parameters.AtAsBinaryData ( 0 ) );
+			bool compressed = StreamIsCompressed ( *data_stream );
+			SetResult ( compressed, results );
+			
+		} else {
+			error = kInvalidFieldType;
+		}
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_SetTextEncoding
+
 
 #pragma mark -
 #pragma mark Encryption

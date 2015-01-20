@@ -61,6 +61,8 @@ FMX_PROC(fmx::errcode) BE_XML_Parse ( short /* funcId */, const fmx::ExprEnv& /*
 FMX_PROC(fmx::errcode) BE_SplitBEFileNodes ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
+FMX_PROC(fmx::errcode) BE_ContainerIsCompressed ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+
 FMX_PROC(fmx::errcode) BE_JSONPath ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_JSON_Error_Description ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* parameters */, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_JSON_ArraySize ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );

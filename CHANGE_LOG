@@ -6,6 +6,9 @@ January 20, 2015
 
 New Functions
 
+BE_ContainerIsCompressed
+
+
 Changes
 
 BE_Curl_Set_Option: label function parameters as optional
