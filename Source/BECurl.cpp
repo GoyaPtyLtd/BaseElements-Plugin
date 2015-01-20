@@ -610,6 +610,7 @@ void BECurl::set_options ( BECurlOptionMap options )
 				break;
 				
 			case BECurlOption::type_long:
+			case BECurlOption::type_named_constant:
 				easy_setopt ( curl_option->option(), curl_option->as_long() );
 				break;
 				
