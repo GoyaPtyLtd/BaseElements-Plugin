@@ -1349,7 +1349,7 @@ FMX_PROC(errcode) BE_ContainerIsCompressed ( short /*funcId*/, const ExprEnv& /*
 	
 	return MapError ( error );
 	
-} // BE_SetTextEncoding
+} // BE_ContainerIsCompressed
 
 
 #pragma mark -
