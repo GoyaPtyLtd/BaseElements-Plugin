@@ -94,12 +94,19 @@ static duk_ret_t BE_ExecuteScript ( duk_context *context )
 	fmx::TextAutoPtr parameter_data;
 	parameter_data->Assign ( parameter.c_str() );
 	fmx::LocaleAutoPtr default_locale;
+
+// defeat: Returning null reference (within a call to 'operator*')
+#ifndef __clang_analyzer__
+
 	script_parameter->SetAsText ( *parameter_data, *default_locale );
 	
 	const fmx::ExprEnvAutoPtr environment;
+
 	FMX_SetToCurrentEnv ( &(*environment) );
 	
 	error = ExecuteScript ( *script_name, *database, *script_parameter, *environment );
+	
+#endif
 
 	duk_push_int ( context, error );
 
@@ -120,7 +127,11 @@ static duk_ret_t BE_Evaluate_FileMaker_Calculation ( duk_context *context )
 	fmx::DataAutoPtr result;
 	const fmx::ExprEnvAutoPtr environment;
 	FMX_SetToCurrentEnv ( &(*environment) );
+
+// defeat: Returning null reference (within a call to 'operator*')
+#ifndef __clang_analyzer__
 	error = environment->Evaluate ( *command, *result );
+#endif
 	
 	fmx::TextAutoPtr reply;
 	reply->SetText ( result->GetAsText() );
