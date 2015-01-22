@@ -176,42 +176,61 @@ void SetResult ( vector<unsigned char> data, Data& results )
 
 
 
-void SetResult ( const std::string filename, const vector<char> data, Data& results )
+void SetResult ( const std::string filename, const vector<char> data, Data& results, bool compress )
 {
 	bool as_binary = !filename.empty();
 	
+	vector<char> output = data;
+
 	if ( as_binary ) {	// if a file name is supplied send back a file
 		
 		BinaryDataAutoPtr resultBinary;
 		TextAutoPtr file;
 		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
-		resultBinary->AddFNAMData ( *file ); 
+		resultBinary->AddFNAMData ( *file );
 		
 // defeat: Returning null reference (within a call to 'operator*')
 // constructor for data_type is not null
 #ifndef __clang_analyzer__
 		QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' );
-		resultBinary->Add ( *data_type, (FMX_UInt32)data.size(), (void *)&data[0] );
+		if ( compress ) {
+			QuadCharAutoPtr zlib_type ( 'Z', 'L', 'I', 'B' );
+			data_type = zlib_type;
+			output = CompressContainerStream ( data );
+		}
+		resultBinary->Add ( *data_type, (FMX_UInt32)output.size(), (void *)&output[0] );
 #endif
-		results.SetBinaryData ( *resultBinary, true ); 
+		results.SetBinaryData ( *resultBinary, true );
 		
 	} else { // otherwise try sending back text
 
-		// filemaker will go into an infinite loop if non-utf8 data is set as utf8
-		// so try to convert it first
+		if ( data.size() > 0 ) {
+
+			// filemaker will go into an infinite loop if non-utf8 data is set as utf8
+			// so try to convert it first
 		
-		StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size(), g_text_encoding );
-		SetResult ( utf8, results );
+			StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size(), g_text_encoding );
+
+			if ( compress ) {
+				vector<char> utf8_text ( utf8->begin(), utf8->end() );
+				output = CompressContainerStream ( utf8_text );
+			} else {
+				output.assign ( utf8->begin(), utf8->end() );
+			}
+
+		}
+
+		SetResult ( output, results );
 		
 	}
 	
 } // SetBinaryDataResult
 
 
-void SetResult ( const std::string filename, const vector<unsigned char> data, Data& results )
+void SetResult ( const std::string filename, const vector<unsigned char> data, Data& results, bool compress )
 {
 	vector<char> char_data ( data.begin(), data.end() );
-	return SetResult ( filename, char_data, results );
+	return SetResult ( filename, char_data, results, compress );
 }
 
 
@@ -258,8 +277,6 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt
 	return result;
 	
 } // ParameterAsUTF8String
-
-
 
 
 WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which )
@@ -398,7 +415,12 @@ int PreferredContainerType ( const BinaryData& data )
 
 		for ( int i = 0 ; i < count ; i++ ) {
 			QuadCharAutoPtr stream_type;
+
+// defeat: Returning null reference (within a call to 'operator*')
+#ifndef __clang_analyzer__
+			
 			data.GetType ( i, *stream_type );
+
 			if ( *stream_type != *dpi__type && *stream_type != *fnam_type && *stream_type != *size_type ) {
 				which_type = i;
 				
@@ -409,7 +431,9 @@ int PreferredContainerType ( const BinaryData& data )
 				}
 				
 			}
-		}
+			
+#endif
+		} // for
 		
 	}
 	
@@ -426,9 +450,7 @@ int PreferredContainerType ( const BinaryData& data )
 int IndexForStream ( const BinaryData& data, const char a, const char b, const char c, const char d )
 {
 	
-	// defeat: Returning null reference (within a call to 'operator*')
-	// constructor for file_type is not null
-	
+// defeat: Returning null reference (within a call to 'operator*')
 #ifndef __clang_analyzer__
 	QuadCharAutoPtr type ( a, b, c, d );
 	int stream_index = data.GetIndex ( *type );
@@ -675,7 +697,12 @@ errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Da
 			command->Assign ( "Get ( FileName )" );
 			
 			DataAutoPtr name;
+
+// defeat: Returning null reference (within a call to 'operator*')
+#ifndef __clang_analyzer__
 			environment.Evaluate ( *command, *name );
+#endif
+			
 			database->SetText ( name->GetAsText() );
 			
 		}

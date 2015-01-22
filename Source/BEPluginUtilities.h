@@ -40,8 +40,8 @@ void SetResult ( const StringAutoPtr text, fmx::Data& results );
 void SetResult ( const WStringAutoPtr text, fmx::Data& results );
 void SetResult ( std::vector<char> data, fmx::Data& results );
 void SetResult ( std::vector<unsigned char> data, fmx::Data& results );
-void SetResult ( const std::string filename, const std::vector<char> data, fmx::Data& results );
-void SetResult ( const std::string filename, const std::vector<unsigned char> data, fmx::Data& results );
+void SetResult ( const std::string filename, const std::vector<char> data, fmx::Data& results, bool compress = false );
+void SetResult ( const std::string filename, const std::vector<unsigned char> data, fmx::Data& results, bool compress = false );
 
 bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which, const bool default_value = true );
 long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value );

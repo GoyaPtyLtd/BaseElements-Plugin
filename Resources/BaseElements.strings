@@ -65,6 +65,7 @@
 "174" = "BE_SetTextEncoding ( { encoding } )";
 "175" = "BE_Base64_URL_Encode ( data )";
 "176" = "BE_ExportFieldContents ( field ; outputPath )";
+"177" = "BE_ImportFile ( path {; compress } )";
 
 
 "180" = "BE_HTTP_POST ( url ; parameters {; username ; password } )";
@@ -95,6 +96,8 @@
 "230" = "BE_SaveFileDialog ( prompt {; fileName ; inFolder } )";
 
 "250" = "BE_ContainerIsCompressed ( containerField )";
+"251" = "BE_Gzip ( data {; filename } )";
+"252" = "BE_UnGzip ( gzip_data {; filename } )";
 
 "300" = "BE_JSONPath ( json ; path )";
 "301" = "BE_JSON_Error_Description";

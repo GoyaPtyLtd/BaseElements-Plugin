@@ -515,6 +515,36 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 } // BE_ExportFieldContents
 
 
+FMX_PROC(errcode) BE_ImportFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		path from = ParameterAsPath ( parameters, 0 );
+		bool compress = ParameterAsBoolean ( parameters, 1, false );
+		
+		// slurp up the file contents
+		boost::filesystem::ifstream input_file ( from, ios_base::in | ios_base::binary | ios_base::ate );
+		input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );			
+		input_file.seekg ( 0, ios::beg );
+		vector<char> file_data ( (std::istreambuf_iterator<char> ( input_file ) ), std::istreambuf_iterator<char>() );
+		
+		SetResult ( from.filename().string(), file_data, results, compress );
+		
+	} catch ( boost::filesystem::ifstream::failure& /* e */ ) {
+		error = errno; // cannot read the file
+	} catch ( boost::filesystem::filesystem_error& e ) {
+		error = e.code().value();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_ImportFile
 
 
 FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -1334,7 +1364,14 @@ FMX_PROC(errcode) BE_ContainerIsCompressed ( short /*funcId*/, const ExprEnv& /*
 		if ( (parameters.At(0)).GetNativeType() == fmx::Data::kDTBinary ) {
 			
 			const BinaryDataAutoPtr data_stream ( parameters.AtAsBinaryData ( 0 ) );
+
+// defeat: Returning null reference (within a call to 'operator*')
+#ifndef __clang_analyzer__
 			bool compressed = StreamIsCompressed ( *data_stream );
+#else
+			bool compressed = false;
+#endif
+			
 			SetResult ( compressed, results );
 			
 		} else {
@@ -1350,6 +1387,50 @@ FMX_PROC(errcode) BE_ContainerIsCompressed ( short /*funcId*/, const ExprEnv& /*
 	return MapError ( error );
 	
 } // BE_ContainerIsCompressed
+
+
+FMX_PROC(errcode) BE_Gzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		vector<char> to_compress = ParameterAsVectorChar ( parameters, 0 );
+		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
+
+		SetResult ( *filename, to_compress, results, true );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Gzip
+
+
+FMX_PROC(errcode) BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		vector<char> gzipped = ParameterAsVectorChar ( parameters, 0 );
+		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
+
+		SetResult ( *filename, gzipped, results, false );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_UnGzip
 
 
 #pragma mark -
@@ -2320,11 +2401,11 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 #ifndef __clang_analyzer__
 			LocaleAutoPtr default_locale;
 			parameter->SetAsText ( parameters.AtAsText ( 2 ), *default_locale );
+
+			error = ExecuteScript ( *script_name, *file_name, *parameter, environment );
 #endif
 
 		}
-		
-		error = ExecuteScript ( *script_name, *file_name, *parameter, environment );
 		
 		SetResult ( error, results );
 

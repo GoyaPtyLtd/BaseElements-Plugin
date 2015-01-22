@@ -2,7 +2,7 @@
  BEZlib.cpp
  BaseElements Plug-In
  
- Copyright 2011-2014 Goya. All rights reserved.
+ Copyright 2011-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -473,47 +473,146 @@ const long Zip ( const BEValueList<std::string> * filenames, const StringAutoPtr
 } // Zip
 
 
-const std::vector<char> UncompressContainerStream ( const std::vector<char> compressed )
+#pragma mark -
+#pragma mark [Un]Gzip
+#pragma mark -
+
+const std::vector<char> CompressUncompressContainerStream ( const std::vector<char> data, bool compress )
 {
 	z_stream stream;
-	stream.next_in = (unsigned char *)&compressed[0];
-	stream.avail_in = (unsigned int)compressed.size();
+	stream.next_in = (unsigned char *)&data[0];
+	stream.avail_in = (unsigned int)data.size();
 	stream.total_out = 0;
+	stream.opaque = Z_NULL; // updated to use default allocation functions.
 	stream.zalloc = Z_NULL;
 	stream.zfree = Z_NULL;
  
-	std::vector<char> decompressed;
- 
-	// inflateInit2 knows how to deal with gzip format
-	if ( inflateInit2 ( &stream, 15 + 32 ) != Z_OK ) {
-		return decompressed;
+	std::vector<char> output;
+	
+	int status = Z_OK;
+	if ( compress ) {
+		status = deflateInit2 ( &stream, Z_BEST_COMPRESSION, Z_DEFLATED, 15 + 16, 8, Z_DEFAULT_STRATEGY );
+	} else {
+		status = inflateInit2 ( &stream, 15 + 32 );
 	}
  
 	bool done = false;
-
-	while ( !done ) {
+	
+	while ( status == Z_OK && !done && stream.avail_in != 0 ) {
 		
 		unsigned char output_buffer [ WRITEBUFFERSIZE ];
 		stream.next_out = output_buffer;
 		stream.avail_out = WRITEBUFFERSIZE;
 		
 		// Inflate another chunk.
-		int status = inflate ( &stream, Z_SYNC_FLUSH );
+		if ( compress ) {
+			status = deflate ( &stream, Z_SYNC_FLUSH );
+		} else {
+			status = inflate ( &stream, Z_SYNC_FLUSH );
+		}
 		
 		done = ( status == Z_STREAM_END );
-
+		
 		if ( status == Z_OK || done ) {
-			decompressed.insert ( decompressed.end(), output_buffer, output_buffer + WRITEBUFFERSIZE - stream.avail_out );
-		} else {
-			break;
+			output.insert ( output.end(), output_buffer, output_buffer + WRITEBUFFERSIZE - stream.avail_out );
 		}
 	}
  
-	if ( inflateEnd ( &stream ) != Z_OK || !done ) {
-		decompressed.clear();
-		return decompressed;
+	if ( compress ) {
+		status = deflateEnd ( &stream );
+	} else {
+		status = inflateEnd ( &stream );
 	}
- 	
+	
+	if ( status != Z_OK || !done ) {
+		output.clear();
+	}
+	
+	return output;
+	
+} // CompressUncompressContainerStream
+
+
+const std::vector<char> CompressContainerStream ( const std::vector<char> data )
+{
+	size_t size_required = compressBound ( data.size() );
+
+	z_stream stream;
+	stream.next_in = (unsigned char *)&data[0];
+	stream.avail_in = (unsigned int)data.size();
+	stream.total_out = 0;
+	stream.opaque = Z_NULL; // updated to use default allocation functions.
+	stream.zalloc = Z_NULL;
+	stream.zfree = Z_NULL;
+
+	std::vector<char> compressed;
+	
+	int status = deflateInit2 ( &stream, Z_BEST_COMPRESSION, Z_DEFLATED, 15 + 16, 8, Z_DEFAULT_STRATEGY );
+	if ( status == Z_OK ) {
+
+		unsigned char * output_buffer = new unsigned char [ size_required ];
+		
+		stream.next_out = output_buffer;
+		stream.avail_out = (unsigned int)size_required;
+
+		status = deflate ( &stream, Z_FINISH );
+		if ( status == Z_STREAM_END || status == Z_OK ) {
+
+			status = deflateEnd ( &stream );
+			if ( status == Z_OK ) {
+				compressed.assign ( output_buffer, output_buffer + stream.total_out );
+			}
+		
+		}
+		
+	}
+	
+	g_last_error = status;
+	
+	return compressed;
+	
+} // CompressContainerStream
+
+
+const std::vector<char> UncompressContainerStream ( const std::vector<char> data )
+{
+	z_stream stream;
+	stream.next_in = (unsigned char *)&data[0];
+	stream.avail_in = (unsigned int)data.size();
+	stream.total_out = 0;
+	stream.opaque = Z_NULL; // updated to use default allocation functions.
+	stream.zalloc = Z_NULL;
+	stream.zfree = Z_NULL;
+
+	std::vector<char> decompressed;
+ 
+	int status = inflateInit2 ( &stream, 15 + 32 );
+	if ( status == Z_OK ) {
+
+		while ( status == Z_OK && stream.avail_in > 0 ) {
+			
+			unsigned char output_buffer [ WRITEBUFFERSIZE ];
+			stream.next_out = output_buffer;
+			stream.avail_out = WRITEBUFFERSIZE;
+			
+			status = inflate ( &stream, Z_SYNC_FLUSH );
+			if ( status == Z_OK || status == Z_STREAM_END ) {
+				decompressed.insert ( decompressed.end(), output_buffer, output_buffer + WRITEBUFFERSIZE - stream.avail_out );
+			}
+		}
+		
+		int close_status = inflateEnd ( &stream );
+		
+		if ( status == Z_OK || status == Z_STREAM_END ) {
+			status = close_status;
+		} else {
+			decompressed.clear();
+		}
+		
+	}
+ 
+	g_last_error = status;
+
 	return decompressed;
 	
 } // UncompressContainerStream

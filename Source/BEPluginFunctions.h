@@ -36,6 +36,7 @@ FMX_PROC(fmx::errcode) BE_ReadTextFromFile ( short funcId, const fmx::ExprEnv& e
 FMX_PROC(fmx::errcode) BE_WriteTextToFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_ExportFieldContents ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ImportFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
 FMX_PROC(fmx::errcode) BE_MoveFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_CopyFile ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& data_vect, fmx::Data& results );
@@ -62,6 +63,9 @@ FMX_PROC(fmx::errcode) BE_SplitBEFileNodes ( short /* funcId */, const fmx::Expr
 
 
 FMX_PROC(fmx::errcode) BE_ContainerIsCompressed ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_Gzip ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_UnGzip ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+
 
 FMX_PROC(fmx::errcode) BE_JSONPath ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_JSON_Error_Description ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* parameters */, fmx::Data& results );
