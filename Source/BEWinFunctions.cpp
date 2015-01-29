@@ -2,7 +2,7 @@
  BEWinFunctions.cpp
  BaseElements Plug-in
 	
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -12,6 +12,7 @@
 
 #include <ShlObj.h>
 
+#include <fcntl.h>
 #include <sstream>
 
 #include <boost/algorithm/string.hpp>
@@ -64,6 +65,8 @@ UINT BE_CF_FileNameMapW;
 
 void InitialiseForPlatform ( void )
 {
+	_set_fmode ( O_RDONLY | O_BINARY ); // open files as binary by default
+
 	BE_CF_FileGroupDescriptorW = RegisterClipboardFormat ( CFSTR_FILEDESCRIPTORW );
 	BE_CF_FileNameW = RegisterClipboardFormat ( CFSTR_FILENAMEW );
 	BE_CF_FileNameMapW = RegisterClipboardFormat ( CFSTR_FILEDESCRIPTORW );
