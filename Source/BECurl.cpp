@@ -257,8 +257,6 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	password = _password;
 	parameters = post_parameters;
 	
-	post_data = NULL;
-
 	if ( g_oauth ) {
 		
 		int oauth_error = g_oauth->sign_url ( url, parameters, http_method_as_string() );
@@ -313,9 +311,12 @@ BECurl::~BECurl()
 
 void BECurl::Init ( )
 {
-	upload_file = NULL; // must intialise, we crash otherwise
-	custom_headers = NULL; // must intialise, we crash otherwise
+	// must intialise, we crash otherwise
+	upload_file = NULL;
+	custom_headers = NULL;
+	post_data = NULL;
 	
+	//
 	http_response_code = 0;
 	
 	// set up curl as much as we can
