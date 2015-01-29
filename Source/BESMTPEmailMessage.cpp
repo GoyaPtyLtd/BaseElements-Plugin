@@ -2,7 +2,7 @@
  BESMTPEmailMessage.cpp
  BaseElements Plug-In
  
- Copyright 2014 Goya. All rights reserved.
+ Copyright 2014-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -30,8 +30,10 @@ BESMTPEmailMessage::BESMTPEmailMessage ( std::string _from, std::string _to, std
 	from = _from;
 	to = BEValueList<string> ( _to );
 	subject = _subject;
-	text.body().assign ( _text );
-	text.header().contentType() = "text/plain";
+
+	text = new mimetic::MimeEntity;
+	text->body().assign ( _text );
+	text->header().contentType() = "text/plain";
 	
 }
 
@@ -43,8 +45,9 @@ BESMTPEmailMessage::BESMTPEmailMessage ( std::string _from, std::string _to, std
 
 void BESMTPEmailMessage::set_html_alternative ( std::string html_part )
 {
-	html.body().assign ( html_part );
-	html.header().contentType() = "text/html";
+	html = new mimetic::MimeEntity;
+	html->body().assign ( html_part );
+	html->header().contentType() = "text/html";
 }
 
 
@@ -93,8 +96,8 @@ string BESMTPEmailMessage::as_string()
 void BESMTPEmailMessage::build_message ( )
 {
 	
-	mimetic::MimeEntity * message = new mimetic::MultipartMixed;
-	
+	auto_ptr<mimetic::MimeEntity> message ( new mimetic::MultipartMixed );
+
 	if ( cc.not_empty() ) {
 		message->header().cc ( cc.get_as_comma_separated() );
 	}
@@ -104,17 +107,17 @@ void BESMTPEmailMessage::build_message ( )
 	}
 	
 
-	if ( !text.body().empty() && !html.body().empty() ) {
+	if ( !text->body().empty() && !html->body().empty() ) {
 
 		mimetic::MultipartAlternative * multipart_alternative = new mimetic::MultipartAlternative;
-		multipart_alternative->body().parts().push_back ( &text );
-		multipart_alternative->body().parts().push_back ( &html );
+		multipart_alternative->body().parts().push_back ( text );
+		multipart_alternative->body().parts().push_back ( html );
 		message->body().parts().push_back ( multipart_alternative );
 
-	} else if ( !text.body().empty() ) {
-		message->body().parts().push_back ( &text );
-	} else if ( !html.body().empty() ) {
-		message->body().parts().push_back ( &html );
+	} else if ( !text->body().empty() ) {
+		message->body().parts().push_back ( text );
+	} else if ( !html->body().empty() ) {
+		message->body().parts().push_back ( html );
 	}
 	
 	for ( size_t i = 0 ; i < attachments.size() ; i++ ) {

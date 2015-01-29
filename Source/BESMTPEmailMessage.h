@@ -2,7 +2,7 @@
  BESMTPEmailMessage.h
  BaseElements Plug-In
  
- Copyright 2014 Goya. All rights reserved.
+ Copyright 2014-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -57,8 +57,8 @@ protected:
 	BEValueList<std::string> cc;
 	BEValueList<std::string> bcc;
 	
-	mimetic::MimeEntity text;
-	mimetic::MimeEntity html;
+	mimetic::MimeEntity * text;
+	mimetic::MimeEntity * html;
 
 	BEValueList<boost::filesystem::path> attachments;
 	
