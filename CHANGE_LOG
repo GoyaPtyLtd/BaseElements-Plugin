@@ -2,7 +2,7 @@
 Version 3.1a1
 ########################################################################
 
-January 22, 2015
+January 29, 2015
 
 New Functions
 
@@ -16,9 +16,11 @@ Changes
 
 BE_Curl_Set_Option: label function parameters as optional
 BE_Curl_Set_Option: the options CURLOPT_HTTPAUTH & CURLOPT_PROXYAUTH take named constants
+BE_EvaluateJavaScript: add the ability to call FM scripts and evaluate FM calculations from JavaScript
 BE_HTTP_POST: allow post args to specify file paths using the @ syntax
 BE_JSON_Encode: correctly handle leading 0 for real numbers
 BE_JSON_Error_Description: do not change the value of BE_GetLastError
+BE_SMTP_Server, BE_SMTP_Send: functions now visible
 BE_Values_Unique, BE_Values_FilterOut: add option to be case insensitive
 
 

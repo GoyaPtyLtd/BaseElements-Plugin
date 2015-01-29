@@ -1916,7 +1916,7 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 	
 	return MapError ( error );
 	
-} // BE_Email_Send
+} // BE_SMTP_Send
 
 
 #pragma mark -
