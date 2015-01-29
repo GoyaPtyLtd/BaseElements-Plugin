@@ -74,13 +74,19 @@ template <typename T>
 BEValueList<T>::BEValueList ( void )
 {
 	values.clear();
+	case_sensitive = true;
 }
 
 
 template <typename T>
 BEValueList<T>::BEValueList ( const T value_list, bool is_case_sensitive )
 {
-	boost::split ( values, value_list, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
+	if ( !value_list.empty() ) {
+		boost::split ( values, value_list, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
+	} else {
+		BEValueList<T> ( );
+	}
+
 	case_sensitive = is_case_sensitive;
 }
 
