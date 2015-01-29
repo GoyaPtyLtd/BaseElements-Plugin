@@ -1886,25 +1886,29 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 		StringAutoPtr subject = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 3 );
 		
+		auto_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
 		auto_ptr<BESMTPEmailMessage> message ( new BESMTPEmailMessage ( *from, *to, *subject, *text ) );
 		
 		StringAutoPtr cc = ParameterAsUTF8String ( parameters, 4 );
-		message->set_cc_addresses ( *cc );
+		if ( !cc->empty() ) {
+			message->set_cc_addresses ( *cc );
+		}
 		
 		StringAutoPtr bcc = ParameterAsUTF8String ( parameters, 5 );
-		message->set_bcc_addresses ( *bcc );
+		if ( !bcc->empty() ) {
+			message->set_bcc_addresses ( *bcc );
+		}
 		
 		StringAutoPtr html = ParameterAsUTF8String ( parameters, 6 );
 		message->set_html_alternative ( *html );
-				
+		
 		WStringAutoPtr attachments = ParameterAsWideString ( parameters, 7 );
 		message->add_attachments ( *attachments );
 
-		auto_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
 		error = smtp->send ( message.get() );
-
-//		string do_nothing = "";
-//		SetResult ( do_nothing, results );
+		
+		//		string do_nothing = "";
+		//		SetResult ( do_nothing, results );
 		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
