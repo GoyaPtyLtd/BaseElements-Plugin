@@ -477,61 +477,6 @@ const long Zip ( const BEValueList<std::string> * filenames, const StringAutoPtr
 #pragma mark [Un]Gzip
 #pragma mark -
 
-const std::vector<char> CompressUncompressContainerStream ( const std::vector<char> data, bool compress )
-{
-	z_stream stream;
-	stream.next_in = (unsigned char *)&data[0];
-	stream.avail_in = (unsigned int)data.size();
-	stream.total_out = 0;
-	stream.opaque = Z_NULL; // updated to use default allocation functions.
-	stream.zalloc = Z_NULL;
-	stream.zfree = Z_NULL;
- 
-	std::vector<char> output;
-	
-	int status = Z_OK;
-	if ( compress ) {
-		status = deflateInit2 ( &stream, Z_BEST_COMPRESSION, Z_DEFLATED, 15 + 16, 8, Z_DEFAULT_STRATEGY );
-	} else {
-		status = inflateInit2 ( &stream, 15 + 32 );
-	}
- 
-	bool done = false;
-	
-	while ( status == Z_OK && !done && stream.avail_in != 0 ) {
-		
-		unsigned char output_buffer [ WRITEBUFFERSIZE ];
-		stream.next_out = output_buffer;
-		stream.avail_out = WRITEBUFFERSIZE;
-		
-		// Inflate another chunk.
-		if ( compress ) {
-			status = deflate ( &stream, Z_SYNC_FLUSH );
-		} else {
-			status = inflate ( &stream, Z_SYNC_FLUSH );
-		}
-		
-		done = ( status == Z_STREAM_END );
-		
-		if ( status == Z_OK || done ) {
-			output.insert ( output.end(), output_buffer, output_buffer + WRITEBUFFERSIZE - stream.avail_out );
-		}
-	}
- 
-	if ( compress ) {
-		status = deflateEnd ( &stream );
-	} else {
-		status = inflateEnd ( &stream );
-	}
-	
-	if ( status != Z_OK || !done ) {
-		output.clear();
-	}
-	
-	return output;
-	
-} // CompressUncompressContainerStream
-
 
 const std::vector<char> CompressContainerStream ( const std::vector<char> data )
 {
