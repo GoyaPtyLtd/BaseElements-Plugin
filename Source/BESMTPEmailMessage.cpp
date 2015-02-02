@@ -62,8 +62,6 @@ void BESMTPEmailMessage::add_attachment ( const boost::filesystem::path path_to_
 }
 
 
-#pragma warning Should use boost::filesystem::path
-
 void BESMTPEmailMessage::add_attachments ( BEValueList<wstring> attachment_list )
 {
 		
