@@ -1894,10 +1894,13 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 		StringAutoPtr bcc = ParameterAsUTF8String ( parameters, 5 );
 		message->set_bcc_addresses ( *bcc );
 		
-		StringAutoPtr html = ParameterAsUTF8String ( parameters, 6 );
+		StringAutoPtr reply_to = ParameterAsUTF8String ( parameters, 6 );
+		message->set_reply_to ( *reply_to );
+
+		StringAutoPtr html = ParameterAsUTF8String ( parameters, 7 );
 		message->set_html_alternative ( *html );
 		
-		WStringAutoPtr attachments = ParameterAsWideString ( parameters, 7 );
+		WStringAutoPtr attachments = ParameterAsWideString ( parameters, 8 );
 		message->add_attachments ( *attachments );
 
 		auto_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
@@ -2072,7 +2075,7 @@ FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* en
 		
 		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list, case_sensitive ) );
 		auto_ptr< BEValueList<string> > filter ( new BEValueList<string> ( *filter_out, case_sensitive ) );
-		string filtered_values = values->filter_out ( filter );
+		string filtered_values = values->filter_out ( *filter );
 				
 		SetResult ( filtered_values, results );
 		

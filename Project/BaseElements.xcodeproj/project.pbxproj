@@ -546,7 +546,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../Libraries",
 					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
-					"$(SDKROOT)/usr/lib/samba/idmap",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -587,7 +586,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../Libraries",
 					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
-					"$(SDKROOT)/usr/lib/samba/idmap",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;

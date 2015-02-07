@@ -13,6 +13,10 @@
 #include "BESMTP.h"
 
 
+extern BECurlOptionMap g_curl_options;
+extern CustomHeaders g_http_custom_headers;
+
+
 using namespace std;
 
 
@@ -40,7 +44,11 @@ BESMTP::BESMTP ( const std::string _host, const std::string _port, const std::st
 	string url = scheme + "://" + join ( _host, _port, ":" );
 	easy_setopt ( CURLOPT_URL, url.c_str() );
 
+	// allow the user to override anything we set
+	set_options ( g_curl_options );
 	
+	set_custom_headers ( g_http_custom_headers );
+
 }
 
 
@@ -59,8 +67,8 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 	
 	struct curl_slist *recipients = NULL;
 	BEValueList<string> send_to = message->to_address();
-	send_to.append ( message->cc_addresses() );
-	send_to.append ( message->bcc_addresses() );
+	send_to.append ( *(message->cc_addresses()) );
+	send_to.append ( *(message->bcc_addresses()) );
 	
 	vector<string> addresses = send_to.get_values();
 	for ( vector<string>::iterator it = addresses.begin() ; it != addresses.end() ; ++it ) {
@@ -81,7 +89,6 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 		easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
 		easy_setopt ( CURLOPT_UPLOAD, 1L );
 
-		
 		// send it
 		result = curl_easy_perform ( curl );
 		error = result;
@@ -89,7 +96,9 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 		// clean up
 		curl_slist_free_all ( recipients );
 	}
-	
+
+	cleanup();
+
 	return (fmx::errcode)result;
 	
 } // send

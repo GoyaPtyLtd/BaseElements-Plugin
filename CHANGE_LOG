@@ -1,4 +1,20 @@
 ########################################################################
+Version 3.1a2
+########################################################################
+
+Februar 6, 2015
+
+New Functions
+
+
+Changes
+
+BE_SMTP_Send: now works with self signed SSL certificates by default
+BE_SMTP_Send: replyTo parameter added
+BE_SMTP_Send: allow the use of custom curl options and headers
+
+
+########################################################################
 Version 3.1a1
 ########################################################################
 

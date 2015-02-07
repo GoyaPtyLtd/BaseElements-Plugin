@@ -213,7 +213,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, true, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Server, BE_SMTP_Server, true, 1, 4 );
-	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, true, 4, 8 );
+	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, true, 4, 9 );
 	
 	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, true, 2 );
 

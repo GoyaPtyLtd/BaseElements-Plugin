@@ -270,10 +270,7 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 
 	// send all headers & data to these functions
 	
-	headers = InitalizeCallbackMemory();
 	easy_setopt ( CURLOPT_WRITEHEADER, (void *)&headers );
-	
-	data = InitalizeCallbackMemory();
 	easy_setopt ( CURLOPT_HEADERFUNCTION, WriteMemoryCallback );
 	
 	// any custom options, headers etc.
@@ -285,8 +282,6 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	configure_progress_dialog ( );
 	
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
-	easy_setopt ( CURLOPT_SSL_VERIFYPEER, 0L );
-	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
 	
 	// allow the user to override anything we set
@@ -331,6 +326,13 @@ void BECurl::Init ( )
 		throw bad_alloc(); // curl_easy_init thinks all errors are memory errors
 	}
 	
+	easy_setopt ( CURLOPT_SSL_VERIFYPEER, 0L );
+	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
+
+	headers = InitalizeCallbackMemory();
+	data = InitalizeCallbackMemory();
+
+
 }
 
 
@@ -359,11 +361,6 @@ vector<char> BECurl::perform_action ( )
 	}
 	
 	cleanup ();
-	
-	g_last_error = last_error();
-	g_http_response_code = response_code();
-	g_http_response_headers = response_headers();
-	g_http_custom_headers.clear();
 	
 	return response;
 	
@@ -693,6 +690,11 @@ void BECurl::cleanup ( )
 		curl_slist_free_all ( custom_headers );
 	}
 	
+	g_last_error = last_error();
+	g_http_response_code = response_code();
+	g_http_response_headers = response_headers();
+	g_http_custom_headers.clear();
+
 } // cleanup
 
 
