@@ -33,26 +33,27 @@ class BEValueList {
 public:
 	
 	BEValueList ( void );
-	BEValueList ( const T value_list, bool is_case_sensitive = true );
-	BEValueList ( const std::vector<T> value_list, bool is_case_sensitive = true );
-	
+	BEValueList ( const T& value_list, bool is_case_sensitive = true );
+	BEValueList ( const std::vector<T>& value_list, bool is_case_sensitive = true );
+	BEValueList ( const T& value_list, const T& delimiter, const bool is_case_sensitive );
+
 	bool not_empty ( );
 	size_t size ( ) const;
 	
-	void append ( BEValueList to_append );
-	void append ( const T to_append );
+	void append ( BEValueList& to_append );
+	void append ( const T& to_append );
 	
 	T first ( ) const;
 	T at ( const size_t which ) const;
 	
 	T unique ( );
-	T filter_out ( std::auto_ptr<BEValueList> filter_out );
-	T sort ( );
-	void remove_prefix ( const T prefix );
+	T filter_out ( BEValueList& filter_out );
+	T sort ( ) const;
+	void remove_prefix ( const T& prefix );
 	
-	std::vector<T> get_values ( void ) { return values; }
-	T get_as_comma_separated ( void );
-	T get_as_filemaker_string ( void );
+	std::vector<T> get_values ( void ) const { return values; }
+	T get_as_comma_separated ( void ) const;
+	T get_as_filemaker_string ( void ) const;
 	
 protected:
 	
@@ -79,8 +80,24 @@ BEValueList<T>::BEValueList ( void )
 
 
 template <typename T>
-BEValueList<T>::BEValueList ( const T value_list, bool is_case_sensitive )
+BEValueList<T>::BEValueList ( const T& value_list, const T& delimiter, const bool is_case_sensitive )
 {
+	if ( !value_list.empty() ) {
+		boost::split ( values, value_list, boost::is_any_of ( delimiter ), boost::token_compress_on );
+	} else {
+		BEValueList<T> ( );
+	}
+
+	case_sensitive = is_case_sensitive;
+}
+
+
+template <typename T>
+BEValueList<T>::BEValueList ( const T& value_list, const bool is_case_sensitive )
+{
+// should be
+//	BEValueList<T> ( value_list, FILEMAKER_END_OF_LINE, is_case_sensitive );
+
 	if ( !value_list.empty() ) {
 		boost::split ( values, value_list, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
 	} else {
@@ -92,7 +109,7 @@ BEValueList<T>::BEValueList ( const T value_list, bool is_case_sensitive )
 
 
 template <typename T>
-BEValueList<T>::BEValueList ( const std::vector<T> value_list, bool is_case_sensitive )
+BEValueList<T>::BEValueList ( const std::vector<T>& value_list, bool is_case_sensitive )
 {
 	values = value_list;
 	case_sensitive = is_case_sensitive;
@@ -114,7 +131,7 @@ size_t BEValueList<T>::size ( ) const
 
 
 template <typename T>
-void BEValueList<T>::append ( BEValueList<T> to_append )
+void BEValueList<T>::append ( BEValueList<T>& to_append )
 {
 	const std::vector<T> new_values = to_append.get_values();
 	values.insert ( values.end(), new_values.begin(), new_values.end() );
@@ -122,7 +139,7 @@ void BEValueList<T>::append ( BEValueList<T> to_append )
 
 
 template <typename T>
-void BEValueList<T>::append ( const T to_append )
+void BEValueList<T>::append ( const T& to_append )
 {
 	values.push_back ( to_append );
 }
@@ -169,10 +186,10 @@ T BEValueList<T>::unique ( )
 
 
 template <typename T>
-T BEValueList<T>::filter_out ( std::auto_ptr<BEValueList> filter_out )
+T BEValueList<T>::filter_out ( BEValueList& filter_out )
 {
 	
-	std::vector<T> to_filter = filter_out->get_values();
+	std::vector<T> to_filter = filter_out.get_values();
 	
 	if ( ! case_sensitive ) {
 		for ( typename std::vector<T>::iterator it = to_filter.begin() ; it != to_filter.end(); ++it ) {
@@ -206,7 +223,8 @@ T BEValueList<T>::filter_out ( std::auto_ptr<BEValueList> filter_out )
 
 
 template <typename T>
-T BEValueList<T>::sort ( ) {
+T BEValueList<T>::sort ( ) const
+{
 	
 	std::vector<T> sorted ( values.begin(), values.end() );
 	std::sort ( sorted.begin(), sorted.end() );
@@ -228,7 +246,8 @@ T BEValueList<T>::sort ( ) {
 
 
 template <typename T>
-void BEValueList<T>::remove_prefix ( const T prefix ) {
+void BEValueList<T>::remove_prefix ( const T& prefix )
+{
 	
 	for ( typename std::vector<T>::iterator it = values.begin() ; it != values.end(); ++it ) {
 		
@@ -242,14 +261,14 @@ void BEValueList<T>::remove_prefix ( const T prefix ) {
 
 
 template <typename T>
-T BEValueList<T>::get_as_comma_separated ( void )
+T BEValueList<T>::get_as_comma_separated ( void ) const
 {
 	return boost::algorithm::join ( values, "," );
 }
 
 
 template <typename T>
-T BEValueList<T>::get_as_filemaker_string ( void )
+T BEValueList<T>::get_as_filemaker_string ( void ) const
 {
 	return boost::algorithm::join ( values, FILEMAKER_END_OF_LINE );
 }
