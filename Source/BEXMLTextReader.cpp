@@ -2,7 +2,7 @@
  BEXMLTextReader.cpp
  BaseElements Plug-In
  
- Copyright 2012-2014 Goya. All rights reserved.
+ Copyright 2012-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -87,7 +87,7 @@ BEXMLTextReader::~BEXMLTextReader()
 
 void BEXMLTextReader::read ( )
 {
-	int ok = xmlTextReaderRead ( reader );
+	const int ok = xmlTextReaderRead ( reader );
 	if ( ok == 0 ) {
 		last_node = true;
 	} else if ( ok == kBE_XMLReaderError ) {
@@ -101,10 +101,10 @@ void BEXMLTextReader::error_reader ( void * arg, const char * msg, xmlParserSeve
 {
 	ostringstream error;
 
-	xmlChar * uri = xmlTextReaderLocatorBaseURI ( locator );
+	const xmlChar * uri = xmlTextReaderLocatorBaseURI ( locator );
 	if ( uri ) {
 		error << uri;
-		xmlFree ( uri );
+		xmlFree ( (void *)uri );
 	} else {
 		boost::filesystem::path path = *((boost::filesystem::path *)arg);
 		error << path.string();
@@ -154,7 +154,7 @@ string BEXMLTextReader::name()
 
 int BEXMLTextReader::node_type()
 {
-	int node_type = xmlTextReaderNodeType ( reader );
+	const int node_type = xmlTextReaderNodeType ( reader );
 	if ( node_type == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -164,7 +164,7 @@ int BEXMLTextReader::node_type()
 
 int BEXMLTextReader::depth()
 {
-	int depth = xmlTextReaderDepth ( reader );
+	const int depth = xmlTextReaderDepth ( reader );
 	if ( depth == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -174,7 +174,7 @@ int BEXMLTextReader::depth()
 
 bool BEXMLTextReader::has_attributes()
 {
-	int has_attributes = xmlTextReaderHasAttributes ( reader );
+	const int has_attributes = xmlTextReaderHasAttributes ( reader );
 	if ( has_attributes == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -184,7 +184,7 @@ bool BEXMLTextReader::has_attributes()
 
 int BEXMLTextReader::number_of_attributes()
 {
-	int count = xmlTextReaderAttributeCount ( reader );
+	const int count = xmlTextReaderAttributeCount ( reader );
 	if ( count == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -194,7 +194,7 @@ int BEXMLTextReader::number_of_attributes()
 
 void BEXMLTextReader::move_to_element()
 {
-	int return_code = xmlTextReaderMoveToElement ( reader );
+	const int return_code = xmlTextReaderMoveToElement ( reader );
 	if ( return_code == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -204,7 +204,7 @@ void BEXMLTextReader::move_to_element()
 string BEXMLTextReader::get_attribute ( const string attribute_name )
 {
 	const xmlChar * attribute_value = xmlTextReaderGetAttribute ( reader, (xmlChar *)attribute_name.c_str() );
-	string value = "";
+	string value;
 	if ( attribute_value ) {
 		value = (const char *)attribute_value;
 		xmlFree ( (xmlChar *)attribute_value );
@@ -219,7 +219,7 @@ string BEXMLTextReader::get_attribute ( const string attribute_name )
 
 void BEXMLTextReader::move_to_attribute ( const int attribute_number )
 {
-	int return_code = xmlTextReaderMoveToAttributeNo ( reader, attribute_number );
+	const int return_code = xmlTextReaderMoveToAttributeNo ( reader, attribute_number );
 	if ( return_code == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	} else if ( return_code == 0 ) {
@@ -230,7 +230,7 @@ void BEXMLTextReader::move_to_attribute ( const int attribute_number )
 
 bool BEXMLTextReader::empty()
 {
-	int empty = xmlTextReaderIsEmptyElement ( reader );
+	const int empty = xmlTextReaderIsEmptyElement ( reader );
 	if ( empty == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -253,68 +253,30 @@ string BEXMLTextReader::value()
 }
 
 
-string BEXMLTextReader::raw_xml()
-{
-	string xml_result;
-	
-	xmlBufferPtr node_content = xmlBufferCreate();
-		
-	if ( node_content ) {
-	
-		int xml_buffer_length = xmlNodeDump ( node_content, xml_document, xmlTextReaderCurrentNode ( reader ), 0, true );
-						
-		xmlErrorPtr	xml_error = xmlGetLastError();
-		if ( xml_error == NULL ) {
-
-			const xmlChar * xml_data = xmlBufferContent ( (xmlBufferPtr)node_content );
-			xml_result.assign ( (char *)xml_data, xml_buffer_length );
-			xmlBufferFree ( node_content );
-
-		} else {
-			string msg = xml_error->message;
-			throw BEXMLReaderInterface_Exception ( xml_error->code );
-		}
-
-	} else {
-
-		xmlErrorPtr	xml_error = xmlGetLastError();
-		if ( xml_error ) {
-			throw BEXMLReaderInterface_Exception ( xml_error->code );
-		}
-	}
-	
-	return xml_result;
-	
-} // raw_xml
-
-
-string BEXMLTextReader::inner_raw_xml()
+string BEXMLTextReader::inner_xml()
 {
 	string inner_xml;
-	
-	const int depth = this->depth();
-	do {
-		this->read();
-		inner_xml.append ( this->raw_xml() );
-	} while ( this->depth() != depth );
-	
-	// consume the element's end tag
-	
-	if ( this->node_type() == XML_READER_TYPE_END_ELEMENT ) {
-		this->read();
+
+	const xmlChar * raw_xml = xmlTextReaderReadInnerXml ( reader );
+	const xmlErrorPtr xml_error = xmlGetLastError();
+	if ( NULL == xml_error ) {
+		inner_xml = (char *)raw_xml;
+		xmlFree ( (void *)raw_xml );
+	} else {
+		throw BEXMLReaderInterface_Exception ( xml_error->code );
 	}
 
 	return inner_xml;
 	
-} // rinner_aw_xml
+} // inner_xml
 
 
 string BEXMLTextReader::content()
 {
 	const xmlChar * xml_data = xmlNodeGetContent ( xmlTextReaderCurrentNode ( reader ) );
-	string xml_result ( (char *)xml_data, xmlStrlen ( xml_data ) );
+	const string xml_result ( (char *)xml_data, xmlStrlen ( xml_data ) );
 	xmlFree ( (xmlChar *)xml_data );
-	
+
 	return xml_result;
 } // content
 
@@ -322,8 +284,9 @@ string BEXMLTextReader::content()
 string BEXMLTextReader::as_string()
 {
 	const xmlChar * reader_value = xmlTextReaderReadString ( reader );
-	string value = (const char *)reader_value;
+	const string value = (const char *)reader_value;
 	xmlFree ( (void *)reader_value );
+
 	return value;
 } // as_string
 
