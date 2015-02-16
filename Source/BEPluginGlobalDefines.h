@@ -78,7 +78,7 @@ extern fmx::errcode g_last_error;
 #define BUNDLE_STRINGS_ID "BaseElements"
 
 #define	VERSION_NUMBER_STRING L"3.1.0"
-#define	AUTO_UPDATE_VERSION L"03009001"
+#define	AUTO_UPDATE_VERSION L"03009002"
 #define VERSION_STRING "3.1"
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING

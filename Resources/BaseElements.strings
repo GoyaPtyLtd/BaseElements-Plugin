@@ -37,7 +37,7 @@
 "126" = "BE_FileSize ( path )";
 
 "128" = "BaseElements";
-"129" = "Version: 3.1a1\n\nThis plug-in provides additional functionality for BaseElements from Goya";
+"129" = "Version: 3.1a2\n\nThis plug-in provides additional functionality for BaseElements from Goya";
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
 "151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )";

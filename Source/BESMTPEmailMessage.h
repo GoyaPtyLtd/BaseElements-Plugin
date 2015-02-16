@@ -33,7 +33,7 @@ public:
 	BESMTPEmailMessage ( const std::string& from, const std::string& to, const std::string& subject, const std::string& message_body );
 	~BESMTPEmailMessage ( );
 	
-	BEValueList<std::string> to_address ( ) { return message->header().to().str(); };
+	std::auto_ptr< BEValueList<std::string> > to_address ( ) { return get_address_list ( message->header().to().str() ); };
 	std::string from_address ( ) { return message->header().from().str(); };
 
 	std::auto_ptr< BEValueList<std::string> > cc_addresses ( ) { return get_address_list ( message->header().cc().str() ); };

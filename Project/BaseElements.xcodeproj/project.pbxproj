@@ -677,7 +677,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.1a1;
+				VERSION_STRING = 3.1a2;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -759,7 +759,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.1a1;
+				VERSION_STRING = 3.1a2;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
