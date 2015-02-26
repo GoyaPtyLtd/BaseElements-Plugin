@@ -1,17 +1,29 @@
 ########################################################################
-Version 3.1a2
+Version 3.1a3
 ########################################################################
 
-Februar 6, 2015
+February 27, 2015
 
 New Functions
 
+BE_JPEG_Recompress
+
+
+Changes
+
+
+########################################################################
+Version 3.1a2
+########################################################################
+
+February 18, 2015
 
 Changes
 
 BE_SMTP_Send: now works with self signed SSL certificates by default
 BE_SMTP_Send: replyTo parameter added
 BE_SMTP_Send: allow the use of custom curl options and headers
+BE_SplitBEXMLFiles: correct a problem with accessing xml nodes
 
 
 ########################################################################

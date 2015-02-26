@@ -170,6 +170,9 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, true, 0, 1 );
 	g_be_plugin->RegisterFunction ( kBE_Base64_URL_Encode, BE_Base64_Encode, 1 );
 
+
+	g_be_plugin->RegisterFunction ( kBE_JPEG_Recompress, BE_JPEG_Recompress, true, 1, 4 );
+
 	
 	g_be_plugin->RegisterFunction ( kBE_Encrypt_AES, BE_Encrypt_AES, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Decrypt_AES, BE_Decrypt_AES, 2 );

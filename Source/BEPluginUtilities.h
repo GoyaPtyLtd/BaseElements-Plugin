@@ -15,6 +15,7 @@
 
 
 #include "BEPluginGlobalDefines.h"
+#include "Images/BEImage.h"
 
 #include "boost/filesystem/path.hpp"
 
@@ -33,22 +34,28 @@ void SetResult ( const intmax_t number, fmx::Data& results );
 void SetResultAsDouble ( const double number, fmx::Data& results );
 void SetResult ( const fmx::Text& text, fmx::Data& results );
 
-void SetResult ( const std::string text, fmx::Data& results );
-void SetResult ( const std::wstring text, fmx::Data& results );
+void SetResult ( const std::string& text, fmx::Data& results );
+void SetResult ( const std::wstring& text, fmx::Data& results );
 
 void SetResult ( const StringAutoPtr text, fmx::Data& results );
 void SetResult ( const WStringAutoPtr text, fmx::Data& results );
-void SetResult ( std::vector<char> data, fmx::Data& results );
-void SetResult ( std::vector<unsigned char> data, fmx::Data& results );
-void SetResult ( const std::string filename, const std::vector<char> data, fmx::Data& results, bool compress = false );
-void SetResult ( const std::string filename, const std::vector<unsigned char> data, fmx::Data& results, bool compress = false );
+void SetResult ( std::vector<char>& data, fmx::Data& results );
+void SetResult ( const std::vector<unsigned char>& data, fmx::Data& results );
+void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results, bool compress = false );
+void SetResult ( const std::string& filename, const std::vector<unsigned char>& data, fmx::Data& results, bool compress = false );
 
-bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which, const bool default_value = true );
-long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value );
-StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which );
-WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which );
-std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which );
-boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which );
+void SetResult ( const std::string& filename, const std::vector<char>& data, const std::vector<char>& type, const bool compress, const short width, const short height, fmx::Data& results );
+
+void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results );
+
+bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool default_value = true );
+long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const unsigned long default_value = 0 );
+StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+StringAutoPtr ParameterFileName ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 
 int PreferredContainerType ( const fmx::BinaryData& data );
 

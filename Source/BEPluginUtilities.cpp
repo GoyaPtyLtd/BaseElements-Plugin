@@ -108,7 +108,7 @@ void SetResultAsDouble ( const double number, Data& results )
 
 //	const std::string as_string = boost::lexical_cast<std::string>( number );
 	
-	// do this the c++ vay due to avoid rounding errors
+	// do this the c++ vay to avoid rounding errors
 	ostringstream stream;
 	stream << number;
 	StringAutoPtr result ( new string );
@@ -128,7 +128,7 @@ void SetResult ( const Text& text, Data& results )
 }
 
 
-void SetResult ( const string text, Data& results )
+void SetResult ( const string& text, Data& results )
 {
 	TextAutoPtr result_text;
 	result_text->Assign ( text.c_str(), Text::kEncoding_UTF8 );
@@ -136,7 +136,7 @@ void SetResult ( const string text, Data& results )
 }
 
 
-void SetResult ( const wstring text, Data& results )
+void SetResult ( const wstring& text, Data& results )
 {
 	TextAutoPtr result_text;
 	result_text->AssignWide ( text.c_str() );
@@ -159,24 +159,47 @@ void SetResult ( const WStringAutoPtr text, Data& results )
 	SetResult ( *result_text, results );
 }
 
-void SetResult ( vector<char> data, Data& results )
+void SetResult ( vector<char>& data, Data& results )
 {
 	data.push_back ( '\0' );
-	StringAutoPtr data_string ( new string ( &data[0] ) );
+	StringAutoPtr data_string ( new string ( &data[0], data.size() ) );
 	SetResult ( data_string, results );
-	
+
+//	SetResult ( "", data, results );
+
 }
 
-void SetResult ( vector<unsigned char> data, Data& results )
+void SetResult ( const vector<unsigned char>& data, Data& results )
 {
 	vector<char> char_data ( data.begin(), data.end() );
 	SetResult ( char_data, results );
-	
 }
 
 
 
-void SetResult ( const std::string filename, const vector<char> data, Data& results, bool compress )
+void SetResult ( const std::string& filename, const vector<char>& data, Data& results, bool compress )
+{
+	std::vector<char> data_type ( 4 );
+	data_type[0] = 'F';
+	data_type[1] = 'I';
+	data_type[2] = 'L';
+	data_type[3] = 'E';
+
+	const short width = 0;
+	const short height = 0;
+
+	return SetResult ( filename, data, data_type, compress, width, height, results );
+}
+
+
+void SetResult ( const std::string& filename, const vector<unsigned char>& data, Data& results, bool compress )
+{
+	vector<char> char_data ( data.begin(), data.end() );
+	return SetResult ( filename, char_data, results, compress );
+}
+
+
+void SetResult ( const std::string& filename, const vector<char>& data, const std::vector<char>& type, const bool compress, const short width, const short height, Data& results )
 {
 	bool as_binary = !filename.empty();
 	
@@ -187,18 +210,25 @@ void SetResult ( const std::string filename, const vector<char> data, Data& resu
 		BinaryDataAutoPtr resultBinary;
 		TextAutoPtr file;
 		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
-		resultBinary->AddFNAMData ( *file );
-		
-// defeat: Returning null reference (within a call to 'operator*')
-// constructor for data_type is not null
+		resultBinary->AddFNAMData ( *file ); // error =
+
+		// defeat: Returning null reference (within a call to 'operator*')
+		// constructor for data_type is not null
 #ifndef __clang_analyzer__
-		QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' );
+
+		const fmx::QuadCharAutoPtr jpeg_type ( 'J', 'P', 'E', 'G' );
+		QuadCharAutoPtr data_type ( type[0], type[1], type[2], type[3] );
+
+		if ( *data_type == *jpeg_type ) {
+			resultBinary->AddSIZEData ( width, height ); // error =
+		}
+		
 		if ( compress ) {
 			QuadCharAutoPtr zlib_type ( 'Z', 'L', 'I', 'B' );
 			data_type = zlib_type;
 			output = CompressContainerStream ( data );
 		}
-		resultBinary->Add ( *data_type, (FMX_UInt32)output.size(), (void *)&output[0] );
+		resultBinary->Add ( *data_type, (FMX_UInt32)output.size(), (void *)&output[0] ); // error =
 #endif
 		results.SetBinaryData ( *resultBinary, true );
 		
@@ -224,14 +254,19 @@ void SetResult ( const std::string filename, const vector<char> data, Data& resu
 		
 	}
 	
-} // SetBinaryDataResult
+} // SetResult
 
 
-void SetResult ( const std::string filename, const vector<unsigned char> data, Data& results, bool compress )
+void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results )
 {
-	vector<char> char_data ( data.begin(), data.end() );
-	return SetResult ( filename, char_data, results, compress );
-}
+	
+	const vector<unsigned char> unsigned_char_data = image.get_data();
+	vector<char> char_data ( unsigned_char_data.begin(), unsigned_char_data.end() );
+	bool compress = false;
+
+	return SetResult ( filename, char_data, image.get_type(), compress, (short)image.get_width(), (short)image.get_height(), results );
+
+} // SetResult
 
 
 #pragma mark -
@@ -370,6 +405,17 @@ vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX_UInt3
 } // ParameterAsVectorChar
 
 
+vector<unsigned char> ParameterAsVectorUnsignedChar ( const DataVect& parameters, const FMX_UInt32 which )
+{
+
+	vector<char> data = ParameterAsVectorChar ( parameters, which );
+	vector<unsigned char> output (data.begin(), data.end() );
+
+	return output;
+
+} // ParameterAsVectorUnsignedChar
+
+
 boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which )
 {
 	
@@ -380,6 +426,29 @@ boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_
 	return path;
 	
 }
+
+
+StringAutoPtr ParameterFileName ( const DataVect& parameters, const FMX_UInt32 which )
+{
+
+	StringAutoPtr file_name ( new string );
+
+	// make sure there's a parameter to get
+	if ( parameters.Size() > which ) {
+
+		const BinaryDataAutoPtr data ( parameters.AtAsBinaryData ( which ) );
+
+		fmx::TextAutoPtr name_as_fmx_text;
+		name_as_fmx_text->Assign ( "" ); // defeat clang: Returning null reference (within a call to 'operator*')
+		data->GetFNAMData ( *name_as_fmx_text );
+		std::string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
+		file_name->assign ( name_as_string );
+
+	}
+
+	return file_name;
+
+} // ParameterFileName
 
 
 #pragma mark -

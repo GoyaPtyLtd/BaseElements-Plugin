@@ -50,6 +50,12 @@
       <Filter>duktape</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\BEJavaScript.cpp" />
+    <ClCompile Include="..\Source\Images\BEJPEG.cpp">
+      <Filter>Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Images\BEImage.cpp">
+      <Filter>Images</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -108,6 +114,12 @@
       <Filter>duktape</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\BEJavaScript.h" />
+    <ClInclude Include="..\Source\Images\BEJPEG.h">
+      <Filter>Images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Images\BEImage.h">
+      <Filter>Images</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />
@@ -118,6 +130,9 @@
     </Filter>
     <Filter Include="duktape">
       <UniqueIdentifier>{b763443d-2571-43df-b0bf-f72d3f706a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Images">
+      <UniqueIdentifier>{5ef93802-e1b3-4ede-ab8e-51882ff81875}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

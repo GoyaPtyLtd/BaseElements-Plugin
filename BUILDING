@@ -187,6 +187,34 @@ and extract the archive to the desktop and copy the src directory to the Source 
 
 
 =======================================================================
+libjpeg-turbo - 1.4
+=======================================================================
+
+Download the source from
+
+	http://www.libjpeg-turbo.org/
+
+and extract the archive to the desktop and then, from that directory
+
+	nasm -v
+
+if the version is < 2.11.06 then get a new version of nasm (http://www.nasm.us/)... note: depending on how this is installed (from source, macports etc.) you may need to change the NASM path below. Then
+
+	autoreconf -fiv
+	./configure --host i686-apple-darwin CFLAGS='-O3 -m32' LDFLAGS=-m32
+	make install prefix=~/Desktop/build
+
+Rename ~/Desktop/build/lib/libturbojpeg.a to libturbojpeg_32.a then
+
+	make distclean
+	./configure --host x86_64-apple-darwin NASM=/opt/local/bin/nasm
+	make install prefix=~/Desktop/build
+	lipo -create ~/Desktop/build/lib/libturbojpeg.a ~/Desktop/build/lib/libturbojpeg_32.a -output ~/Desktop/build/libturbojpeg.a
+
+Then copy ~/Desktop/build/libturbojpeg.a to Libraries directory and rename ~/Desktop/build/include to ~/Desktop/build/libturbojpeg and copy the directory into Headers.
+
+
+=======================================================================
 Windows
 =======================================================================
 
@@ -601,6 +629,51 @@ Download the source from
 	http://duktape.org/
 
 and extract the archive to the desktop and copy the src directory to the Source directory and rename it to duktape.
+
+
+=======================================================================
+libjpeg-turbo - 1.4
+=======================================================================
+
+Download the source from
+
+	http://www.libjpeg-turbo.org/
+
+and extract the archive to the desktop and then, from that directory, in a terminal window
+
+	cmake -G "Visual Studio 10"
+
+Open the project
+
+	turbojpeg-static
+
+and in
+
+	libxml2 -> Configuration Properties -> General -> Project Defaults
+
+set
+
+	Character Set = Use Unicode Character Set
+
+and build the Release configuration. Copy turbojpeg-static.lib to the Liraries directory. For 64-bit builds either start with fresh copy of the source or clean the 32-bit Release configuration and delete the file
+
+	CMakeCahche.txt
+
+and then, in a terminal
+
+	cmake -G "Visual Studio 10 Win64"
+
+etc. and copy turbojpeg-static.lib to the Liraries/x64 directory.
+
+Create a directory libturbojpeg in the Headers directory and copy
+
+	jconfig.h
+	jerror.j
+	jmorecfg.h
+	jpeglib.h
+	turbo.jpg.h
+
+into that from the source directory.
 
 
 =======================================================================

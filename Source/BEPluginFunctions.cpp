@@ -50,6 +50,7 @@
 #include "BEXero.h"
 #include "BESMTP.h"
 #include "BEJavaScript.h"
+#include "Images/BEJPEG.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -1498,7 +1499,7 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 
 			const vector<char> input_vector ( decoded.begin(), it );
 			decoded.erase ( decoded.begin(), it + 1 ); // remove the input vector from the input
-			const vector<char> decrypted_data = Decrypt_AES ( key, decoded, input_vector );
+			vector<char> decrypted_data = Decrypt_AES ( key, decoded, input_vector );
 
 			SetResult ( decrypted_data, results );
 			
@@ -2520,6 +2521,39 @@ FMX_PROC(errcode) BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */
 	return MapError ( error );
 	
 } // BE_HMAC
+
+
+FMX_PROC(errcode) BE_JPEG_Recompress ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		vector<unsigned char> original_jpeg = ParameterAsVectorUnsignedChar ( parameters );
+
+		const int width = (const int)ParameterAsLong ( parameters, 2, 0 );
+		const int height = (const int)ParameterAsLong ( parameters, 3, 0 );
+
+		auto_ptr<BEJPEG> jpeg ( new BEJPEG ( original_jpeg, width, height ) );
+
+		const int quality = (const int)ParameterAsLong ( parameters, 1, 75 ); // percent
+		jpeg->set_compression_level ( quality );
+		jpeg->recompress ( );
+
+		const StringAutoPtr image_name = ParameterFileName ( parameters );
+		SetResult ( *image_name, *jpeg, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_JPEG_Recompress
 
 
 

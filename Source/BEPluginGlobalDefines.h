@@ -78,7 +78,7 @@ extern fmx::errcode g_last_error;
 #define BUNDLE_STRINGS_ID "BaseElements"
 
 #define	VERSION_NUMBER_STRING L"3.1.0"
-#define	AUTO_UPDATE_VERSION L"03009002"
+#define	AUTO_UPDATE_VERSION L"03009003"
 #define VERSION_STRING "3.1"
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -166,6 +166,7 @@ enum functions {
 	kBE_ContainerIsCompressed = 250,
 	kBE_Gzip = 251,
 	kBE_UnGzip = 252,
+	kBE_JPEG_Recompress = 270,
 	kBE_JSONPath = 300,
 	kBE_JSON_Error_Description = 301,
 	kBE_JSON_ArraySize = 302,
@@ -216,7 +217,12 @@ enum errors {
 	kEncryptionInitialisationFailed = 14001,
 	kEncryptionUpdateFailed = 14002,
 	kDecryptionUpdateFailed = 14003,
-	kDecryptionInputVectorNotFound = 14004
+	kDecryptionInputVectorNotFound = 14004,
+	kJPEGReadHeaderError = 15000,
+	kJPEGInitDecompressorError = 15001,
+	kJPEGDecompressionError = 15002,
+	kJPEGCompressionError = 15003,
+	kJPEGInitCcompressorError = 15004
 };
 
 
