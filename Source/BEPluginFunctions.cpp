@@ -1902,7 +1902,7 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 		message->set_html_alternative ( *html );
 		
 		WStringAutoPtr attachments = ParameterAsWideString ( parameters, 8 );
-		message->add_attachments ( *attachments );
+		message->set_attachments ( *attachments );
 
 		auto_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
 		error = smtp->send ( message.get() );

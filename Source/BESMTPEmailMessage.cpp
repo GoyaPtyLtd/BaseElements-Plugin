@@ -37,7 +37,7 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	message->header().subject ( subject );
 
 	text = new mimetic::MimeEntity;
-	text->body().assign ( message_body );
+	text->body().assign ( message_body + "\n\n" );
 	text->header().contentType() = "text/plain";
 
 }
@@ -108,14 +108,20 @@ void BESMTPEmailMessage::add_attachment ( const boost::filesystem::path path_to_
 }
 
 
-void BESMTPEmailMessage::add_attachments ( const BEValueList<wstring>& attachment_list )
+void BESMTPEmailMessage::add_attachments ( void )
 {
 		
-	for ( size_t i = 0 ; i < attachment_list.size() ; i++ ) {
-		boost::filesystem::path attachment = attachment_list.at ( i );
+	for ( size_t i = 0 ; i < attachments.size() ; i++ ) {
+		boost::filesystem::path attachment = attachments.at ( i );
 		add_attachment ( attachment );
 	}
 
+}
+
+
+void BESMTPEmailMessage::set_attachments ( const BEValueList<std::wstring>& attachment_list )
+{
+	attachments = attachment_list;
 }
 
 
@@ -150,6 +156,9 @@ void BESMTPEmailMessage::build_message ( )
 	} else if ( !html->body().empty() ) {
 		message->body().parts().push_back ( html );
 	}
+
+	add_attachments();
 	
-} // build_payload
+} // build_message
+
 
