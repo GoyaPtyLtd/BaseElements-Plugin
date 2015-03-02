@@ -100,8 +100,17 @@ void BESMTPEmailMessage::set_html_alternative ( const std::string& html_part )
 void BESMTPEmailMessage::add_attachment ( const boost::filesystem::path path_to_attachment )
 {
 	if ( exists ( path_to_attachment ) ) {
-		mimetic::Attachment * attach_this = new mimetic::Attachment ( path_to_attachment.string() );
+
+		boost::filesystem::path attachment = path_to_attachment;
+		attachment.make_preferred();
+
+		mimetic::Attachment * attach_this = new mimetic::Attachment (
+																	 attachment.string(),
+																	 mimetic::ContentType ( "application", "octet-stream" ),
+																	 mimetic::Base64::Encoder()
+																	 );
 		message->body().parts().push_back ( attach_this );
+		
 	} else {
 		throw BEPlugin_Exception ( kNoSuchFileOrDirectoryError );
 	}
