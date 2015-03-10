@@ -512,17 +512,22 @@ void BECurl::set_parameters ( )
 			
 			vector<string> key_value_pair;
 			boost::split ( key_value_pair, *it, boost::is_any_of ( "=" ) );
+			if ( 1 == key_value_pair.size() ) {
+				key_value_pair.push_back ( "" );
+			} else if ( 0 == key_value_pair.size() ) {
+				break;
+			}
 				
 			// get rid of @ sign that marks that it's a file path
 			int value_type = CURLFORM_COPYCONTENTS;
-			string value = key_value_pair[1];
+			string value = key_value_pair.at ( 1 );
 			if ( !value.empty() && value[0] == '@' ) {
 				value.erase ( value.begin() );
 				value_type = CURLFORM_FILE;
 			}
 				
 			// add the field
-			curl_formadd ( &post_data, &last_form_field, CURLFORM_COPYNAME, key_value_pair[0].c_str(), value_type, value.c_str(), CURLFORM_END );
+			curl_formadd ( &post_data, &last_form_field, CURLFORM_COPYNAME, key_value_pair.at ( 0 ).c_str(), value_type, value.c_str(), CURLFORM_END );
 	
 		} // for
 		
