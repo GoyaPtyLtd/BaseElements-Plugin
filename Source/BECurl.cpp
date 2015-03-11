@@ -502,36 +502,45 @@ void BECurl::set_parameters ( )
 {
 
 	if ( !parameters.empty() ) {
-		
-		vector<string> fields;
-		boost::split ( fields, parameters, boost::is_any_of ( "&" ) );
-		 
-		struct curl_httppost *last_form_field = NULL;
 
-		for ( vector<string>::iterator it = fields.begin() ; it != fields.end(); ++it ) {
-			
-			vector<string> key_value_pair;
-			boost::split ( key_value_pair, *it, boost::is_any_of ( "=" ) );
-			if ( 1 == key_value_pair.size() ) {
-				key_value_pair.push_back ( "" );
-			} else if ( 0 == key_value_pair.size() ) {
-				break;
-			}
-				
-			// get rid of @ sign that marks that it's a file path
-			int value_type = CURLFORM_COPYCONTENTS;
-			string value = key_value_pair.at ( 1 );
-			if ( !value.empty() && value[0] == '@' ) {
-				value.erase ( value.begin() );
-				value_type = CURLFORM_FILE;
-			}
-				
-			// add the field
-			curl_formadd ( &post_data, &last_form_field, CURLFORM_COPYNAME, key_value_pair.at ( 0 ).c_str(), value_type, value.c_str(), CURLFORM_END );
-	
-		} // for
-		
-		easy_setopt ( CURLOPT_HTTPPOST, post_data );
+		if ( std::string::npos == parameters.find ( "=@" ) ) { // let curl do the work unless there's a file path
+
+			easy_setopt ( CURLOPT_POSTFIELDS, parameters.c_str() );
+			easy_setopt ( CURLOPT_POSTFIELDSIZE, parameters.length() );
+
+		} else {
+
+			vector<string> fields;
+			boost::split ( fields, parameters, boost::is_any_of ( "&" ) );
+
+			struct curl_httppost *last_form_field = NULL;
+
+			for ( vector<string>::iterator it = fields.begin() ; it != fields.end(); ++it ) {
+
+				vector<string> key_value_pair;
+				boost::split ( key_value_pair, *it, boost::is_any_of ( "=" ) );
+				if ( 1 == key_value_pair.size() ) {
+					key_value_pair.push_back ( "" );
+				} else if ( 0 == key_value_pair.size() ) {
+					break;
+				}
+
+				// get rid of @ sign that marks that it's a file path
+				int value_type = CURLFORM_COPYCONTENTS;
+				string value = key_value_pair.at ( 1 );
+				if ( !value.empty() && value[0] == '@' ) {
+					value.erase ( value.begin() );
+					value_type = CURLFORM_FILE;
+				}
+
+				// add the field
+				curl_formadd ( &post_data, &last_form_field, CURLFORM_COPYNAME, key_value_pair.at ( 0 ).c_str(), value_type, value.c_str(), CURLFORM_END );
+
+			} // for
+
+			easy_setopt ( CURLOPT_HTTPPOST, post_data );
+
+		} // if ( std::string::npos == parameters.find ( "=@" ) )fi
 
 	} // if ( !parameters.empty() )
 	
