@@ -21,12 +21,15 @@
 #endif 
 
 
+#include "BEPluginException.h"
 #include "BEPluginUtilities.h"
 #include "BEZlib.h"
 
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+
+#include <utf8.h>
 
 #include <zlib.h>
 
@@ -40,7 +43,6 @@ using namespace fmx;
 using namespace boost::filesystem;
 
 
-extern string g_text_encoding;
 extern errcode g_last_ddl_error;
 
 
@@ -146,6 +148,10 @@ void SetResult ( const wstring& text, Data& results )
 
 void SetResult ( const StringAutoPtr text, Data& results )
 {
+	if ( ! utf8::is_valid ( text->begin(), text->end() ) ) {
+		throw BEPlugin_Exception ( kInvalidUTF8 );
+	}
+
 	TextAutoPtr result_text;
 	result_text->Assign ( text->c_str(), Text::kEncoding_UTF8 );			
 	SetResult ( *result_text, results );
@@ -239,7 +245,7 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 			// filemaker will go into an infinite loop if non-utf8 data is set as utf8
 			// so try to convert it first
 		
-			StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size(), g_text_encoding );
+			StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size() );
 
 			if ( compress ) {
 				vector<char> utf8_text ( utf8->begin(), utf8->end() );
@@ -577,16 +583,16 @@ StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path )
 		inFile.seekg ( 0, ios::beg );
 		
 		// slurp up the file contents
-		char * buffer = new char [length];
-		inFile.read ( buffer, length );
+		std::vector<char> buffer ( length );
+		inFile.read ( &buffer[0], length );
 		inFile.close ();
 				
 		// convert the text in the file to utf-8 if possible
-		result = ConvertTextToUTF8 ( buffer, length, g_text_encoding );
+		result = ConvertTextToUTF8 ( &buffer[0], length );
 		if ( result->length() == 0 ) {
-			result->assign ( buffer );
+			result->assign ( &buffer[0] );
 		}
-		delete [] buffer;
+
 	} else {
 		g_last_error = kNoSuchFileOrDirectoryError;
 	}
@@ -603,9 +609,6 @@ StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path )
 
 vector<char> ConvertTextEncoding ( char * in, const size_t length, const string& to, const string& from )
 {
-	size_t available = (length * 4) + 1;	// worst case for utf-32 to utf-8 ?
-	char * encoded = new char [available]();	// value-initialization (to zero)… we crash otherwise
-	
 	vector<string> codesets;
 	if ( from != UTF8 ) {
 		codesets.push_back ( from );
@@ -621,30 +624,36 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 	const size_t kIconvError = -1;
 	size_t error_result = kIconvError;
 	vector<string>::iterator it = codesets.begin();
-	size_t remaining = available;
-	
+
+	vector<char> out;
+
 	while ( error_result == kIconvError && it != codesets.end() ) {
 		
 		char * start = in;
 		size_t start_length = length;
-		char * encoded_start = encoded;
-		
+
+		size_t available = (length * 4) + 1;	// worst case for utf-32 to utf-8 ?
+		std::vector<char> encoded ( available );
+		char * encoded_start = &encoded[0];
+		size_t remaining = available;
+
 		iconv_t conversion = iconv_open ( to.c_str(), it->c_str() );
 		if ( conversion != (iconv_t)kIconvError ) {
 			error_result = iconv ( conversion, &start, &start_length, &encoded_start, &remaining );
-			iconv_close ( conversion );
+			if ( error_result != kIconvError ) {
+				iconv_close ( conversion );
+				out.assign ( &encoded[0], &encoded[0] + available - remaining );
+			} else {
+				throw BEPlugin_Exception ( errno );
+			}
+
 		} else {
-			error_result = errno;
+			throw BEPlugin_Exception ( errno );
 		}
 
 		++it;
 	}
 
-	g_last_error = (fmx::errcode)error_result;
-
-	vector<char> out ( encoded, encoded + available - remaining );
-	delete[] encoded;
-	
 	return out;
 	
 } // ConvertTextEncoding
@@ -665,8 +674,13 @@ StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const string& to, const st
 StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from )
 {
 	vector<char> text = ConvertTextEncoding ( in, length, UTF8, from );
+	if ( ! utf8::is_valid ( text.begin(), text.end() ) ) {
+		throw BEPlugin_Exception ( kInvalidUTF8 );
+	}
+
 	StringAutoPtr out ( new string ( text.begin(), text.end() ) );
 	return out;
+
 } // ConvertToUTF8
 
 

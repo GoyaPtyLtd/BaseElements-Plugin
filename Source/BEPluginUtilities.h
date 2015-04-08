@@ -23,6 +23,9 @@
 #include <stdint.h>
 
 
+extern std::string g_text_encoding;
+
+
 typedef std::auto_ptr<std::string> StringAutoPtr;
 typedef std::auto_ptr<std::wstring> WStringAutoPtr;
 
@@ -64,9 +67,9 @@ std::vector<char> DataAsVectorChar ( const fmx::BinaryData& data, const FMX_UInt
 bool StreamIsCompressed ( const fmx::BinaryData& data );
 
 StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path );
-std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from );
-StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const std::string& to, const std::string& from );
-StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from );
+std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from = g_text_encoding );
+StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const std::string& to, const std::string& from = g_text_encoding );
+StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from = g_text_encoding );
 
 void SetTextEncoding ( const std::string& encoding );
 std::string TextAsUTF8String ( const fmx::Text& fmx_text );

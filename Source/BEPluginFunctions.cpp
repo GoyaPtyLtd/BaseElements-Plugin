@@ -308,28 +308,26 @@ FMX_PROC(errcode) BE_FileSize ( short /* funcId */, const ExprEnv& /* environmen
 FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
-	
+
 	try {
 
 		path file = ParameterAsPath ( parameters, 0 );
-		StringAutoPtr contents;
-		
-		try {
-			contents = ReadFileAsUTF8 ( file );
-		} catch ( filesystem_error& e ) {
-			g_last_error = e.code().value();
-		}
-		
+		StringAutoPtr contents = ReadFileAsUTF8 ( file );
+
 		SetResult ( contents, results );
 
+	} catch ( filesystem_error& e ) {
+		g_last_error = e.code().value();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return MapError ( error );
-	
+
 } // BE_ReadTextFromFile
 
 
@@ -370,6 +368,8 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 		
 		SetResult ( g_last_error, results );
 		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {

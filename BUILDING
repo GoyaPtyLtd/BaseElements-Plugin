@@ -215,6 +215,17 @@ Then copy ~/Desktop/build/libturbojpeg.a to Libraries directory and rename ~/Des
 
 
 =======================================================================
+utf8-cpp
+=======================================================================
+
+Download from
+
+	http://utfcpp.sourceforge.net/
+
+and place the source/utf8.h file and source/utf8 directory in the project Headers directory.
+
+
+=======================================================================
 Windows
 =======================================================================
 
@@ -675,6 +686,16 @@ Create a directory libturbojpeg in the Headers directory and copy
 
 into that from the source directory.
 
+
+=======================================================================
+utf8-cpp
+=======================================================================
+
+Download from
+
+	http://utfcpp.sourceforge.net/
+
+and place the source/utf8.h file and source/utf8 directory in the project Headers directory.
 
 =======================================================================
 

@@ -78,7 +78,7 @@ extern fmx::errcode g_last_error;
 #define BUNDLE_STRINGS_ID "BaseElements"
 
 #define	VERSION_NUMBER_STRING L"3.1.0"
-#define	AUTO_UPDATE_VERSION L"03009007"
+#define	AUTO_UPDATE_VERSION L"03009008"
 #define VERSION_STRING "3.1"
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
@@ -210,6 +210,7 @@ enum errors {
 	kNotFoundError = 401,
 	kInvalidFieldType = 413,
 	kFileSystemError = 10000,
+	kInvalidUTF8 = 10100,
 	kDDLCommandQueued = 11000,
 	kCommandTimeout = 12000,
 	kNotImplemented = 13000,
