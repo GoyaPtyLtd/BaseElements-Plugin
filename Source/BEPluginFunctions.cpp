@@ -1224,12 +1224,11 @@ FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */,
 	
 	try {
 		
-		// minizip does not support wide filename (on windows) so no boost::filesystem::path
-		
 		StringAutoPtr archive = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
-		
-		SetResult ( UnZip ( archive, output_directory ), results );
+
+		error = (fmx::errcode)UnZip ( archive, output_directory );
+		SetResult ( error, results );
 		
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -1251,12 +1250,11 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 	
 	try {
 		
-		// minizip does not support wide filename (on windows) so no boost::filesystem::path
-
 		const BEValueList<string> * files  = new BEValueList<string> ( *ParameterAsUTF8String ( parameters, 0 ) );
 		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
-		
-		SetResult ( Zip ( files, output_directory ), results );
+
+		error = (fmx::errcode)Zip ( files, output_directory );
+		SetResult ( error, results );
 		
 		delete files;
 		

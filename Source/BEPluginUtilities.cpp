@@ -95,7 +95,7 @@ errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
 void SetResult ( const intmax_t number, Data& results )
 {
 	FixPtAutoPtr numeric_result;
-	numeric_result->AssignDouble ( number );
+	numeric_result->AssignDouble ( (double)number );
 	results.SetAsNumber ( *numeric_result );
 }
 

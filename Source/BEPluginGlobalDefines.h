@@ -78,8 +78,8 @@ extern fmx::errcode g_last_error;
 #define BUNDLE_STRINGS_ID "BaseElements"
 
 #define	VERSION_NUMBER_STRING L"3.1.0"
-#define	AUTO_UPDATE_VERSION L"03009008"
-#define VERSION_STRING "3.1"
+#define	AUTO_UPDATE_VERSION L"03009009"
+#define VERSION_STRING "3.1a3" // also in xcode project build settings
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
 
@@ -211,6 +211,7 @@ enum errors {
 	kInvalidFieldType = 413,
 	kFileSystemError = 10000,
 	kInvalidUTF8 = 10100,
+	kZipError = 10200,
 	kDDLCommandQueued = 11000,
 	kCommandTimeout = 12000,
 	kNotImplemented = 13000,

@@ -48,17 +48,6 @@ Copy the directory containing the boost headers from the build/include directory
 
 
 =======================================================================
-minizip - 1.2.8
-=======================================================================
-
-Download the zlib source from
-
-	http://www.zlib.net/
-
-and extract the folder zlib-1.2.8 to the desktop. Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory and zip.h and zconf.h from the root directory of the distribution to the Headers directory.
-
-
-=======================================================================
 Jansson - 2.5
 =======================================================================
 
@@ -226,6 +215,33 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
+Poco
+=======================================================================
+
+Download the Poco Complete Edition from
+
+	http://pocoproject.org/download/index.html
+
+Then, after extracting the archive
+
+	cd poco-1.6.0-all
+
+	export MACOSX_DEPLOYMENT_TARGET=10.6
+
+	./configure --config=Darwin32 --static --no-tests --no-samples --omit=Data,MongoDB && make
+	find . -name "*.o" -type f -delete
+	./configure --config=Darwin64 --static --no-tests --no-samples --omit=Data,MongoDB && make
+	make install DESTDIR=./Poco
+
+	cd lib/Darwin
+
+	lipo -create i386/libPocoFoundation.a x86_64/libPocoFoundation.a -output libPocoFoundation.a
+	lipo -create i386/libPocoZip.a x86_64/libPocoZip.a -output libPocoZip.a
+
+Copy the poco libraries to the Libraries directory and copy the Poco/usr/local/include/Poco to Headers.
+
+
+=======================================================================
 Windows
 =======================================================================
 
@@ -275,7 +291,7 @@ Copy the directory containing the boost headers from the build/include directory
 
 
 =======================================================================
-zlib & minizip - 1.2.8
+zlib
 =======================================================================
 
 Building zlib is straightforward. Download the zlib source from
@@ -294,7 +310,7 @@ in the Libraries directory and
 
 	contrib/vstudio/vc10/x64/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
-Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory and zip.h and zconf.h from the root directory of the distribution to the Headers directory.
+Copy zip.h and zconf.h from the root directory of the distribution to the Headers directory.
 
 
 =======================================================================
@@ -696,6 +712,26 @@ Download from
 	http://utfcpp.sourceforge.net/
 
 and place the source/utf8.h file and source/utf8 directory in the project Headers directory.
+
+
+=======================================================================
+Poco
+=======================================================================
+
+Download poco from
+
+	http://pocoproject.org/download/index.html
+
+Then, after extracting the archive
+
+	Build the Zip and Foundation libraries using the projects in the respective directories. Before building set
+
+	Configuration Properties -> General -> Project Defaults -> Character Set = Use Unicode Character Set
+
+for all configurations.
+
+Copy PocoFoundationmt.lib & PocoZipmt.lib libraries from the lib and lib64 driectories into the Libraries and Libraries/x64 directories and copy the include/Poco directory to Headers.
+
 
 =======================================================================
 

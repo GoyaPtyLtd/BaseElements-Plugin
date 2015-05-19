@@ -217,7 +217,7 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;nafxcwd.lib;msvcrt.lib;libcmt.lib;uafxcwd.lib;libcpmt.lib;libmimetic_mt.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;nafxcwd.lib;msvcrt.lib;libcmt.lib;uafxcwd.lib</IgnoreSpecificDefaultLibraries>
       <AssemblyLinkResource>
       </AssemblyLinkResource>
       <DelayLoadDLLs>
@@ -353,11 +353,6 @@
     <ClCompile Include="..\Source\duktape\duktape.c" />
     <ClCompile Include="..\Source\Images\BEImage.cpp" />
     <ClCompile Include="..\Source\Images\BEJPEG.cpp" />
-    <ClCompile Include="..\Source\minizip\ioapi.c" />
-    <ClCompile Include="..\Source\minizip\iowin32.c" />
-    <ClCompile Include="..\Source\minizip\mztools.c" />
-    <ClCompile Include="..\Source\minizip\unzip.c" />
-    <ClCompile Include="..\Source\minizip\zip.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -398,12 +393,6 @@
     <ClInclude Include="..\Source\duktape\duktape.h" />
     <ClInclude Include="..\Source\Images\BEImage.h" />
     <ClInclude Include="..\Source\Images\BEJPEG.h" />
-    <ClInclude Include="..\Source\minizip\crypt.h" />
-    <ClInclude Include="..\Source\minizip\ioapi.h" />
-    <ClInclude Include="..\Source\minizip\iowin32.h" />
-    <ClInclude Include="..\Source\minizip\mztools.h" />
-    <ClInclude Include="..\Source\minizip\unzip.h" />
-    <ClInclude Include="..\Source\minizip\zip.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />
