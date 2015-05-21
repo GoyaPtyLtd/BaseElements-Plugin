@@ -2399,12 +2399,14 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 #ifndef __clang_analyzer__
 			LocaleAutoPtr default_locale;
 			parameter->SetAsText ( parameters.AtAsText ( 2 ), *default_locale );
-
-			error = ExecuteScript ( *script_name, *file_name, *parameter, environment );
 #endif
 
 		}
-		
+
+#ifndef __clang_analyzer__
+		error = ExecuteScript ( *script_name, *file_name, *parameter, environment );
+#endif
+
 		SetResult ( error, results );
 
 	} catch ( bad_alloc& /* e */ ) {
