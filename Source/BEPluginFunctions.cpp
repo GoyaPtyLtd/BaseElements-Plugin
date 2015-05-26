@@ -488,6 +488,7 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 			
 			boost::filesystem::ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
 			output_file.exceptions ( boost::filesystem::ofstream::failbit | boost::filesystem::ofstream::badbit );
+			output_file.rdbuf()->pubsetbuf ( 0, 0 ); // disable output buffering
 
 			if ( !field_contents.empty() ) {
 				output_file.write ( &field_contents.front(), field_contents.size() );
