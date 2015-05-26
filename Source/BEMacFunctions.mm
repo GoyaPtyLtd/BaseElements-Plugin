@@ -307,7 +307,7 @@ fmx::errcode DisplayProgressDialog ( WStringAutoPtr title, WStringAutoPtr descri
 	
 	if ( progressDialog == nil ) {
 		
-		progressDialog = [[ProgressDialogWindowController alloc] initWithWindowNibName: @"ProgressDialog"];
+		progressDialog = [[ProgressDialogWindowController alloc] initWithWindowNibName: @"BEProgressDialog"];
 
 		if ( progressDialog != nil ) {
 
