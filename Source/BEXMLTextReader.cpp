@@ -257,7 +257,7 @@ string BEXMLTextReader::inner_xml()
 {
 	string inner_xml;
 
-	const xmlChar * raw_xml = xmlTextReaderReadInnerXml ( reader );
+	const xmlChar * raw_xml = xmlTextReaderReadOuterXml ( reader );
 	const xmlErrorPtr xml_error = xmlGetLastError();
 	if ( NULL == xml_error ) {
 		inner_xml = (char *)raw_xml;
