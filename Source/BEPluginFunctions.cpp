@@ -90,6 +90,7 @@ struct host_details g_smtp_host;
 extern int g_http_response_code;
 extern string g_http_response_headers;
 extern CustomHeaders g_http_custom_headers;
+extern std::stringstream g_curl_trace;
 extern struct host_details g_http_proxy;
 extern BECurlOptionMap g_curl_options;
 
@@ -1806,6 +1807,27 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 	return MapError ( error );
 	
 } // BE_HTTP_Set_Custom_Header
+
+
+FMX_PROC(fmx::errcode) BE_Curl_Trace ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* parameters */, fmx::Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		SetResult ( g_curl_trace.str(), results );
+
+	} catch ( BECurlOption_Exception& e ) { // we don't handle it
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_Curl_Trace
 
 
 FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )

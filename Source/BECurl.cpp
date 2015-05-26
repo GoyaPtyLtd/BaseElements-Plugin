@@ -47,6 +47,7 @@ using namespace boost::filesystem;
 
 int g_http_response_code;
 string g_http_response_headers;
+std::stringstream g_curl_trace;
 CustomHeaders g_http_custom_headers;
 struct host_details g_http_proxy;
 BECurlOptionMap g_curl_options;
@@ -63,6 +64,8 @@ extern BEFileMakerPlugin * g_be_plugin;
 size_t WriteMemoryCallback (void *ptr, size_t size, size_t nmemb, void *data );
 int SeekFunction ( void *instream, curl_off_t offset, int origin );
 MemoryStruct InitalizeCallbackMemory ( void );
+static void dump_trace_data ( const unsigned char *ptr, const size_t size );
+static int trace_callback ( CURL * /* curl */, curl_infotype type, char * data, size_t size, void * /* userp */ );
 int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
 int old_progress_dialog ( void *p, double dltotal, double dlnow, double ultotal, double ulnow );
 
@@ -146,6 +149,89 @@ MemoryStruct InitalizeCallbackMemory ( void )
 #endif
 	
 }
+
+
+// originally based on https://raw.githubusercontent.com/bagder/curl/master/docs/examples/debug.c
+
+static void dump_trace_data ( const unsigned char *ptr, const size_t size )
+{
+	const unsigned long width = 0x40;
+
+	g_curl_trace << ", " << size << " bytes (" << std::showbase << setw ( 2 ) << setfill ( '0' ) << std::hex << size << ")" << FILEMAKER_END_OF_LINE;
+
+	for ( size_t i = 0; i < size; i += width ) {
+
+		g_curl_trace  << setw ( 4 ) << setfill ( '0' )  << std::hex << i << ": ";
+
+		for ( size_t c = 0; (c < width) && (i+c < size); c++ ) {
+
+			// check for 0D0A; if found, skip past and start a new line
+			if ( (i+c+1 < size) && ptr[i+c]==0x0D && ptr[i+c+1]==0x0A ) {
+				i += c + 2 - width;
+				break;
+			}
+
+			g_curl_trace << static_cast<char>((ptr[i+c]>=0x20) && (ptr[i+c]<0x80)?ptr[i+c]:'.');
+
+			// check again for 0D0A, to avoid an extra \n if it's at width
+			if ( (i+c+2 < size) && ptr[i+c+1]==0x0D && ptr[i+c+2]==0x0A ) {
+				i += c + 3 - width;
+				break;
+			}
+
+		}
+
+		g_curl_trace << FILEMAKER_END_OF_LINE;
+
+	}
+
+}
+
+
+static int trace_callback ( CURL * /* curl */, curl_infotype type, char * data, size_t size, void * /* userp */ )
+{
+
+	switch ( type ) {
+
+		case CURLINFO_HEADER_OUT:
+			g_curl_trace << "=> Send header";
+			break;
+
+		case CURLINFO_DATA_OUT:
+			g_curl_trace << "=> Send data";
+			break;
+
+		case CURLINFO_SSL_DATA_OUT:
+			g_curl_trace << "=> Send SSL data";
+			break;
+
+		case CURLINFO_HEADER_IN:
+			g_curl_trace << "<= Recv header";
+			break;
+
+		case CURLINFO_DATA_IN:
+			g_curl_trace << "<= Recv data";
+			break;
+
+		case CURLINFO_SSL_DATA_IN:
+			g_curl_trace << "<= Recv SSL data";
+			break;
+
+		case CURLINFO_TEXT:
+			g_curl_trace << "== Info: ";
+			g_curl_trace << data;
+			// falling through
+
+		default: /* in case a new one is introduced to shock us */
+			return kNoError;
+
+	}
+
+	dump_trace_data ( (unsigned char *)data, size );
+
+	return kNoError;
+
+} // trace_callback
 
 
 #pragma mark -
@@ -283,6 +369,12 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
+
+	// debug trace
+	easy_setopt ( CURLOPT_DEBUGFUNCTION, trace_callback );
+	//	easy_setopt ( CURLOPT_DEBUGDATA, &config );
+	easy_setopt ( CURLOPT_VERBOSE, 1L ); // DEBUGFUNCTION has no effect unless enabled
+	g_curl_trace.clear();
 	
 	// allow the user to override anything we set
 	set_options ( g_curl_options );
@@ -331,7 +423,6 @@ void BECurl::Init ( )
 
 	headers = InitalizeCallbackMemory();
 	data = InitalizeCallbackMemory();
-
 
 }
 

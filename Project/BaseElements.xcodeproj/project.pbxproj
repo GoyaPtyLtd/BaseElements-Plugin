@@ -20,7 +20,7 @@
 		4D72E41C1A95632F00939DF9 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D72E41B1A95632F00939DF9 /* libturbojpeg.a */; };
 		4D807F001A9C255000E27E38 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4D807F041A9C27AB00E27E38 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
-		4D9CFD6F1A3FED7E008D72D1 /* ProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* ProgressDialog.xib */; };
+		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
@@ -178,7 +178,7 @@
 		4DCD49841A195B0C00EFCF7F /* BaseElements.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaseElements.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECppUtilities.cpp; path = ../Source/BECppUtilities.cpp; sourceTree = "<group>"; };
 		4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECppUtilities.h; path = ../Source/BECppUtilities.h; sourceTree = "<group>"; };
-		4DD613EE16FBAB7C00C25A3E /* ProgressDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProgressDialog.xib; path = ../Resources/ProgressDialog.xib; sourceTree = "<group>"; };
+		4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BEProgressDialog.xib; path = ../Resources/BEProgressDialog.xib; sourceTree = "<group>"; };
 		4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressDialogWindowController.h; path = ../Source/ProgressDialogWindowController.h; sourceTree = "<group>"; };
 		4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressDialogWindowController.m; path = ../Source/ProgressDialogWindowController.m; sourceTree = "<group>"; };
 		4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileMakerPlugin.h; path = ../Source/BEFileMakerPlugin.h; sourceTree = "<group>"; };
@@ -278,6 +278,14 @@
 		4D9EEE5D118A8C9600EC9352 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				4D6A7B341B01CB64003EB38C /* libPocoCrypto.a */,
+				4D6A7B351B01CB64003EB38C /* libPocoNetSSL.a */,
+				4D6A7B361B01CB64003EB38C /* libPocoZip.a */,
+				4D6A7B2A1B01AD14003EB38C /* libPocoFoundation.a */,
+				4D6A7B2B1B01AD14003EB38C /* libPocoJSON.a */,
+				4D6A7B2C1B01AD14003EB38C /* libPocoNet.a */,
+				4D6A7B2D1B01AD14003EB38C /* libPocoUtil.a */,
+				4D6A7B2E1B01AD14003EB38C /* libPocoXML.a */,
 				4D57DF85193EE945006739BE /* libcurl.a */,
 				4D57DF7E193EE0F3006739BE /* libssh2.a */,
 				4D72E41B1A95632F00939DF9 /* libturbojpeg.a */,
@@ -381,7 +389,7 @@
 			children = (
 				4D7FCA5C11E9308B0047A453 /* BaseElements.strings */,
 				4D7FCA5E11E9308B0047A453 /* Info.plist */,
-				4DD613EE16FBAB7C00C25A3E /* ProgressDialog.xib */,
+				4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -389,14 +397,6 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4D6A7B341B01CB64003EB38C /* libPocoCrypto.a */,
-				4D6A7B351B01CB64003EB38C /* libPocoNetSSL.a */,
-				4D6A7B361B01CB64003EB38C /* libPocoZip.a */,
-				4D6A7B2A1B01AD14003EB38C /* libPocoFoundation.a */,
-				4D6A7B2B1B01AD14003EB38C /* libPocoJSON.a */,
-				4D6A7B2C1B01AD14003EB38C /* libPocoNet.a */,
-				4D6A7B2D1B01AD14003EB38C /* libPocoUtil.a */,
-				4D6A7B2E1B01AD14003EB38C /* libPocoXML.a */,
 				4D57DF89193EEA9F006739BE /* libldap.dylib */,
 				4D57DF87193EE984006739BE /* ldap.dylib */,
 				4D27C3851861160000E7F4A1 /* Cocoa.framework */,
@@ -449,7 +449,7 @@
 		C7DEDEEB07E10BF3002283F3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Goya;
 			};
 			buildConfigurationList = 6FD50587097C3165009399BF /* Build configuration list for PBXProject "BaseElements" */;
@@ -479,7 +479,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DCD49691A195B0C00EFCF7F /* BaseElements.strings in Resources */,
-				4D9CFD6F1A3FED7E008D72D1 /* ProgressDialog.xib in Resources */,
+				4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -693,7 +693,7 @@
 				PRODUCT_NAME = BaseElements;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				SEPARATE_STRIP = YES;
 				STRIP_STYLE = "non-global";
 				SYMROOT = ../Build;
@@ -775,7 +775,7 @@
 				PRODUCT_NAME = BaseElements;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				SEPARATE_STRIP = NO;
 				STRIP_STYLE = "non-global";
 				SYMROOT = ../Build;
