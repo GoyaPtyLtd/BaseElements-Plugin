@@ -14,6 +14,7 @@
 
 #include "BEPluginException.h"
 #include "BEPluginGlobalDefines.h"
+#include "BEQuadChar.h"
 
 #include <cmath> // round
 #include <iostream>
@@ -51,16 +52,9 @@ void BEJPEG::set_compression_level ( const int level )
 }
 
 
-const std::vector<char> BEJPEG::get_type ( void )
+const std::string BEJPEG::get_type ( void )
 {
-	std::vector<char> jpeg_type ( 4 );
-
-	jpeg_type[0] = 'J';
-	jpeg_type[1] = 'P';
-	jpeg_type[2] = 'E';
-	jpeg_type[3] = 'G';
-
-	return jpeg_type;
+	return JPEG_CONTAINER_TYPE;
 }
 
 

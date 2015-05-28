@@ -23,6 +23,7 @@
 
 #include "BEPluginException.h"
 #include "BEPluginUtilities.h"
+#include "BEQuadChar.h"
 #include "BEZlib.h"
 
 #include <boost/format.hpp>
@@ -183,33 +184,30 @@ void SetResult ( const vector<unsigned char>& data, Data& results )
 
 
 
-void SetResult ( const std::string& filename, const vector<char>& data, Data& results, bool compress )
+void SetResult ( const std::string& filename, const vector<char>& data, Data& results, std::string data_type )
 {
-	std::vector<char> data_type ( 4 );
-	data_type[0] = 'F';
-	data_type[1] = 'I';
-	data_type[2] = 'L';
-	data_type[3] = 'E';
-
 	const short width = 0;
 	const short height = 0;
 
-	return SetResult ( filename, data, data_type, compress, width, height, results );
+	return SetResult ( filename, data, data_type, width, height, results );
 }
 
 
-void SetResult ( const std::string& filename, const vector<unsigned char>& data, Data& results, bool compress )
+void SetResult ( const std::string& filename, const vector<unsigned char>& data, Data& results, std::string data_type )
 {
 	vector<char> char_data ( data.begin(), data.end() );
-	return SetResult ( filename, char_data, results, compress );
+	return SetResult ( filename, char_data, results, data_type );
 }
 
 
-void SetResult ( const std::string& filename, const vector<char>& data, const std::vector<char>& type, const bool compress, const short width, const short height, Data& results )
+void SetResult ( const std::string& filename, const vector<char>& data, const std::string& type, const short width, const short height, Data& results )
 {
 	bool as_binary = !filename.empty();
 	
 	vector<char> output = data;
+
+	BEQuadChar data_type ( type );
+	bool compress = data_type.is_zlib();
 
 	if ( as_binary ) {	// if a file name is supplied send back a file
 		
@@ -218,24 +216,16 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
 		resultBinary->AddFNAMData ( *file ); // error =
 
-		// defeat: Returning null reference (within a call to 'operator*')
-		// constructor for data_type is not null
-#ifndef __clang_analyzer__
+		//          { "snd " }
 
-		const fmx::QuadCharAutoPtr jpeg_type ( 'J', 'P', 'E', 'G' );
-		QuadCharAutoPtr data_type ( type[0], type[1], type[2], type[3] );
-
-		if ( *data_type == *jpeg_type ) {
+		if ( data_type.is_image() && (width != kErrorUnknown && height != kErrorUnknown ) ) {
 			resultBinary->AddSIZEData ( width, height ); // error =
 		}
-		
+
 		if ( compress ) {
-			QuadCharAutoPtr zlib_type ( 'Z', 'L', 'I', 'B' );
-			data_type = zlib_type;
 			output = CompressContainerStream ( data );
 		}
-		resultBinary->Add ( *data_type, (FMX_UInt32)output.size(), (void *)&output[0] ); // error =
-#endif
+		resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)&output[0] ); // error =
 		results.SetBinaryData ( *resultBinary, true );
 		
 	} else { // otherwise try sending back text
@@ -268,11 +258,17 @@ void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results
 	
 	const vector<unsigned char> unsigned_char_data = image.get_data();
 	vector<char> char_data ( unsigned_char_data.begin(), unsigned_char_data.end() );
-	bool compress = false;
 
-	return SetResult ( filename, char_data, image.get_type(), compress, (short)image.get_width(), (short)image.get_height(), results );
+	return SetResult ( filename, char_data, image.get_type(), (short)image.get_width(), (short)image.get_height(), results );
 
 } // SetResult
+
+
+void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results )
+{
+	return SetResult ( filename, data, FILE_CONTAINER_TYPE, 0, 0, results );
+}
+
 
 
 #pragma mark -
@@ -299,10 +295,10 @@ long ParameterAsLong ( const DataVect& parameters, const FMX_UInt32 which, const
 }
 
 
-StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which )
+StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which, const std::string default_value )
 {	
 	
-	StringAutoPtr result ( new string );
+	StringAutoPtr result ( new string ( default_value ) );
 	
 	try {
 		
@@ -312,7 +308,7 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt
 		result->assign ( TextAsUTF8String ( *raw_data ) );
 		
 	} catch ( exception& /* e */ ) {
-		;	// return an empty string
+		;	// return the default
 	}
 	
 	return result;
@@ -464,54 +460,49 @@ StringAutoPtr ParameterFileName ( const DataVect& parameters, const FMX_UInt32 w
 int PreferredContainerType ( const BinaryData& data )
 {
 
-	int which_type = IndexForStream ( data, 'F', 'I', 'L', 'E' );
-	
+	fmx::int32 which_type = IndexForStream ( data, MAIN_CONTAINER_TYPE );
 	if ( which_type == kBE_DataType_Not_Found ) {
 
-		which_type = IndexForStream ( data, 'Z', 'L', 'I', 'B' );
-
-		// and then a sound
+		which_type = IndexForStream ( data, FILE_CONTAINER_TYPE );
+	
 		if ( which_type == kBE_DataType_Not_Found ) {
-			which_type = IndexForStream ( data, 's', 'n', 'd', ' ' );
-		}
-		
-	}
-	
-	// try and guess which image format to try
-	
-	if ( which_type == kBE_DataType_Not_Found ) {
-		
-		// non-image data streams
-		QuadCharAutoPtr dpi__type ( 'D', 'P', 'I', '_' );
-		QuadCharAutoPtr fnam_type ( 'F', 'N', 'A', 'M' );
-		QuadCharAutoPtr size_type ( 'S', 'I', 'Z', 'E' );
-		
-		int count = data.GetCount();
 
-		for ( int i = 0 ; i < count ; i++ ) {
-			QuadCharAutoPtr stream_type;
+			which_type = IndexForStream ( data, COMPRESSED_CONTAINER_TYPE );
 
-// defeat: Returning null reference (within a call to 'operator*')
-#ifndef __clang_analyzer__
-			
-			data.GetType ( i, *stream_type );
-
-			if ( *stream_type != *dpi__type && *stream_type != *fnam_type && *stream_type != *size_type ) {
-				which_type = i;
-				
-				// don't overwrite another type with an fm generated jpeg preview
-				QuadCharAutoPtr jpeg_type ( 'J', 'P', 'E', 'G' );
-				if ( *stream_type != *jpeg_type ) {
-					break;
-				}
-				
+			// and then a sound
+			if ( which_type == kBE_DataType_Not_Found ) {
+				which_type = IndexForStream ( data, SOUND_CONTAINER_TYPE );
 			}
-			
-#endif
-		} // for
 		
-	}
+		}
 	
+		// try and guess which image format to try
+	
+		if ( which_type == kBE_DataType_Not_Found ) {
+		
+			fmx::int32 count = data.GetCount();
+
+			for ( fmx::int32 i = 0 ; i < count ; i++ ) {
+
+				BEQuadChar stream_type ( data, i );
+
+				if ( !stream_type.is_image_attribute() ) {
+
+					which_type = i;
+				
+					// don't overwrite another type with an fm generated jpeg preview
+					if ( !stream_type.is_jpeg() ) {
+						break;
+					}
+				
+				}
+			
+			} // for
+		
+		}
+
+	} // if MAIN_CONTAINER_TYPE
+
 	return which_type;
 
 } // PreferredContainerType
@@ -522,19 +513,38 @@ int PreferredContainerType ( const BinaryData& data )
 #pragma mark -
 
 
-int IndexForStream ( const BinaryData& data, const char a, const char b, const char c, const char d )
+const fmx::int32 StreamIndex ( const BinaryData& data, const std::string stream_type )
 {
-	
+
+	QuadCharAutoPtr type ( stream_type[0], stream_type[1], stream_type[2], stream_type[3] );
+
 // defeat: Returning null reference (within a call to 'operator*')
 #ifndef __clang_analyzer__
-	QuadCharAutoPtr type ( a, b, c, d );
-	int stream_index = data.GetIndex ( *type );
+	fmx::int32 stream_index = data.GetIndex ( *type );
 #else
-	int stream_index = kBE_DataType_Not_Found;
+	fmx::int32 stream_index = kBE_DataType_Not_Found;
 #endif
-	
+
 	return stream_index;
-	
+
+}
+
+
+const fmx::int32 IndexForStream ( const BinaryData& data, const std::string stream_type )
+{
+
+	fmx::int32 stream_index = StreamIndex ( data, stream_type );
+
+	if ( stream_index != kErrorUnknown && stream_type == MAIN_CONTAINER_TYPE ) {
+
+		char quad_char[4] = {};
+		data.GetData ( stream_index, 0, 4, quad_char ); // error =
+		stream_index = StreamIndex ( data, quad_char );
+
+	}
+
+	return stream_index;
+
 }
 
 
@@ -556,7 +566,7 @@ bool StreamIsCompressed ( const BinaryData& data )
 {
 	bool compressed = false;
 	
-	int which_type = IndexForStream ( data, 'Z', 'L', 'I', 'B' );
+	int which_type = IndexForStream ( data, COMPRESSED_CONTAINER_TYPE );
 	
 	if ( which_type != kBE_DataType_Not_Found ) {
 		compressed = true;

@@ -31,7 +31,7 @@ public:
 
 	const size_t size ( void ) { return data.size(); }
 
-	virtual const std::vector<char> get_type ( void ) { return type; }
+	virtual const std::string get_type ( void ) { return type; }
 	const int get_width ( void ) { return width; }
 	const int get_height ( void ) { return height; }
 	std::vector<unsigned char> get_data ( void ) const { return data; }
@@ -40,7 +40,7 @@ public:
 protected:
 
 	std::vector<unsigned char> data;
-	std::vector<char> type;
+	std::string type;
 	int width;
 	int height;
 

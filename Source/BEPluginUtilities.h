@@ -44,16 +44,17 @@ void SetResult ( const StringAutoPtr text, fmx::Data& results );
 void SetResult ( const WStringAutoPtr text, fmx::Data& results );
 void SetResult ( std::vector<char>& data, fmx::Data& results );
 void SetResult ( const std::vector<unsigned char>& data, fmx::Data& results );
-void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results, bool compress = false );
-void SetResult ( const std::string& filename, const std::vector<unsigned char>& data, fmx::Data& results, bool compress = false );
+void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results, const std::string data_type );
+void SetResult ( const std::string& filename, const std::vector<unsigned char>& data, fmx::Data& results, const std::string data_type );
 
-void SetResult ( const std::string& filename, const std::vector<char>& data, const std::vector<char>& type, const bool compress, const short width, const short height, fmx::Data& results );
+void SetResult ( const std::string& filename, const std::vector<char>& data, const std::string& data_type, const short width, const short height, fmx::Data& results );
 
 void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results );
+void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results );
 
 bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool default_value = true );
 long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const unsigned long default_value = 0 );
-StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const std::string default_value = "" );
 WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
@@ -62,7 +63,8 @@ StringAutoPtr ParameterFileName ( const fmx::DataVect& parameters, const FMX_UIn
 
 int PreferredContainerType ( const fmx::BinaryData& data );
 
-int IndexForStream ( const fmx::BinaryData& data, const char a, const char b, const char c, const char d );
+const fmx::int32 StreamIndex ( const fmx::BinaryData& data, const std::string stream_type );
+const fmx::int32 IndexForStream ( const fmx::BinaryData& data, const std::string stream_type );
 std::vector<char> DataAsVectorChar ( const fmx::BinaryData& data, const FMX_UInt32 which );
 bool StreamIsCompressed ( const fmx::BinaryData& data );
 

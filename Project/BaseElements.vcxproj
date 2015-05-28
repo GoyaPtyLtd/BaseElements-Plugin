@@ -319,6 +319,7 @@
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Source\BEQuadChar.cpp" />
     <ClCompile Include="..\Source\BEShell.cpp" />
     <ClCompile Include="..\Source\BESMTP.cpp" />
     <ClCompile Include="..\Source\BESMTPEmailMessage.cpp" />
@@ -372,6 +373,7 @@
     <ClInclude Include="..\Source\BEPluginFunctions.h" />
     <ClInclude Include="..\Source\BEPluginGlobalDefines.h" />
     <ClInclude Include="..\Source\BEPluginUtilities.h" />
+    <ClInclude Include="..\Source\BEQuadChar.h" />
     <ClInclude Include="..\Source\BEShell.h" />
     <ClInclude Include="..\Source\BESMTP.h" />
     <ClInclude Include="..\Source\BESMTPEmailMessage.h" />

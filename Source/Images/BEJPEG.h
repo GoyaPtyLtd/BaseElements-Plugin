@@ -31,7 +31,7 @@ public:
 	void set_compression_level ( const int level );
 	void recompress ( void  );
 
-	virtual const std::vector<char> get_type ( void );
+	virtual const std::string get_type ( void );
 
 protected:
 

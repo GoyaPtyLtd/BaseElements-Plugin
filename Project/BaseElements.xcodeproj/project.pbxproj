@@ -20,6 +20,7 @@
 		4D72E41C1A95632F00939DF9 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D72E41B1A95632F00939DF9 /* libturbojpeg.a */; };
 		4D807F001A9C255000E27E38 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4D807F041A9C27AB00E27E38 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
+		4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
@@ -158,6 +159,8 @@
 		4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginUtilities.cpp; path = ../Source/BEPluginUtilities.cpp; sourceTree = SOURCE_ROOT; };
 		4D8824E611E93F6000F94475 /* BEPluginUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginUtilities.h; path = ../Source/BEPluginUtilities.h; sourceTree = SOURCE_ROOT; };
 		4D8BA594134579BD003A90B5 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../Libraries/libboost_thread.a; sourceTree = SOURCE_ROOT; };
+		4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEQuadChar.cpp; path = ../Source/BEQuadChar.cpp; sourceTree = "<group>"; };
+		4D8D8E151B167A2C005FEBD3 /* BEQuadChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEQuadChar.h; path = ../Source/BEQuadChar.h; sourceTree = "<group>"; };
 		4D8E64181917561D00C9F2BE /* BEPluginException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginException.h; path = ../Source/BEPluginException.h; sourceTree = "<group>"; };
 		4D9BAA0918C0009000831FF0 /* libmimetic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmimetic.a; path = ../Libraries/libmimetic.a; sourceTree = "<group>"; };
 		4D9BAA0B18C0169000831FF0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../Libraries/libboost_regex.a; sourceTree = "<group>"; };
@@ -380,6 +383,8 @@
 				4D668AA71A36BF0300D14592 /* BEJavaScript.h */,
 				4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */,
 				4D807F011A9C256100E27E38 /* Images */,
+				4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */,
+				4D8D8E151B167A2C005FEBD3 /* BEQuadChar.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -519,6 +524,7 @@
 				4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */,
 				4DCD494D1A195B0C00EFCF7F /* BEFileMakerPlugin.cpp in Sources */,
 				4DCD494E1A195B0C00EFCF7F /* BEXSLT.cpp in Sources */,
+				4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */,
 				4DCD494F1A195B0C00EFCF7F /* BEWStringVector.cpp in Sources */,
 				4DCD49501A195B0C00EFCF7F /* BECurl.cpp in Sources */,
 				4DCD49511A195B0C00EFCF7F /* BEMessageDigest.cpp in Sources */,

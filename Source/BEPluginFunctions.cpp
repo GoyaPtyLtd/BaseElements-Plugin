@@ -47,6 +47,7 @@
 #include "BEBase64.h"
 #include "BEOpenSSLAES.h"
 #include "BEPluginException.h"
+#include "BEQuadChar.h"
 #include "BEXero.h"
 #include "BESMTP.h"
 #include "BEJavaScript.h"
@@ -526,6 +527,10 @@ FMX_PROC(errcode) BE_ImportFile ( short /* funcId */, const ExprEnv& /* environm
 		
 		path from = ParameterAsPath ( parameters, 0 );
 		bool compress = ParameterAsBoolean ( parameters, 1, false );
+		std::string data_type = FILE_CONTAINER_TYPE;
+		if ( compress ) {
+			data_type = COMPRESSED_CONTAINER_TYPE;
+		}
 		
 		// slurp up the file contents
 		boost::filesystem::ifstream input_file ( from, ios_base::in | ios_base::binary | ios_base::ate );
@@ -533,7 +538,7 @@ FMX_PROC(errcode) BE_ImportFile ( short /* funcId */, const ExprEnv& /* environm
 		input_file.seekg ( 0, ios::beg );
 		vector<char> file_data ( (std::istreambuf_iterator<char> ( input_file ) ), std::istreambuf_iterator<char>() );
 		
-		SetResult ( from.filename().string(), file_data, results, compress );
+		SetResult ( from.filename().string(), file_data, results, data_type );
 		
 	} catch ( boost::filesystem::ifstream::failure& /* e */ ) {
 		error = errno; // cannot read the file
@@ -1399,7 +1404,7 @@ FMX_PROC(errcode) BE_Gzip ( short /*funcId*/, const ExprEnv& /* environment */, 
 		vector<char> to_compress = ParameterAsVectorChar ( parameters, 0 );
 		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
 
-		SetResult ( *filename, to_compress, results, true );
+		SetResult ( *filename, to_compress, results, COMPRESSED_CONTAINER_TYPE );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
@@ -1421,7 +1426,7 @@ FMX_PROC(errcode) BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */
 		vector<char> gzipped = ParameterAsVectorChar ( parameters, 0 );
 		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
 
-		SetResult ( *filename, gzipped, results, false );
+		SetResult ( *filename, gzipped, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
@@ -2579,4 +2584,38 @@ FMX_PROC(errcode) BE_JPEG_Recompress ( short /* funcId */, const ExprEnv& /* env
 } // BE_JPEG_Recompress
 
 
+FMX_PROC(errcode) BE_ConvertContainer ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		const BinaryDataAutoPtr data ( parameters.AtAsBinaryData ( 0 ) );
+		if ( data->GetCount() > 0 ) {
+
+			vector<char> container_data = ParameterAsVectorChar ( parameters );
+			StringAutoPtr filename = ParameterFileName ( parameters );
+
+			StringAutoPtr type = ParameterAsUTF8String ( parameters, 1, FILE_CONTAINER_TYPE );
+
+			const unsigned long width = ParameterAsLong ( parameters, 2, kErrorUnknown );
+			const unsigned long height = ParameterAsLong ( parameters, 3, kErrorUnknown );
+
+			SetResult ( *filename, container_data, *type, width, height, results );
+
+		} else {
+			error = kInvalidFieldType;
+		}
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_ConvertContainer
 

@@ -112,7 +112,9 @@ FMX_PROC(fmx::errcode) BE_ExecuteScript ( short /* funcId */, const fmx::ExprEnv
 FMX_PROC(fmx::errcode) BE_FileMakerSQL ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_MessageDigest ( short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_HMAC ( short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+
 FMX_PROC(fmx::errcode) BE_JPEG_Recompress ( short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ConvertContainer ( short funcId, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 FMX_PROC(fmx::errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
