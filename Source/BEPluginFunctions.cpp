@@ -65,16 +65,12 @@
 
 #include <iconv.h>
 
-#include <openssl/rand.h>
-#include <openssl/evp.h>
-
 #include <iostream>
 
 
 using namespace std;
 using namespace fmx;
 using namespace boost::filesystem;
-
 
 
 #pragma mark -
@@ -2056,6 +2052,27 @@ FMX_PROC(errcode) BE_Xero_SetTokens ( short /* funcId */, const ExprEnv& /* envi
 	return MapError ( error );
 	
 } // BE_Xero_SetTokens
+
+
+FMX_PROC(errcode) BE_Xero_GenerateKeys ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+
+		SetResult ( xero_generate_key_pair ( ), results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Xero_GenerateKeys
 
 
 

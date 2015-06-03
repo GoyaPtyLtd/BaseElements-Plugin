@@ -176,6 +176,7 @@ enum functions {
 	kBE_OAuth_RequestAccessToken = 321,
 //	kBE_OAuth_SetToken = 322,
 	kBE_Xero_SetTokens = 330,
+	kBE_Xero_GenerateKeys = 331,
 	kBE_Values_Unique = 350,
 	kBE_Values_FilterOut = 351,
 	kBE_Values_Sort = 353,

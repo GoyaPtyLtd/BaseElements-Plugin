@@ -111,6 +111,7 @@
 
 
 "330" = "BE_Xero_SetTokens ( consumer_key ; private_key )";
+"331" = "BE_Xero_GenerateKeys";
 
 
 "350" = "BE_Values_Unique ( listOfValues {; caseSensitive } )";
