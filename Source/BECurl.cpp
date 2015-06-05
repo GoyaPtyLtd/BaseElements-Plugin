@@ -370,12 +370,6 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
 
-	// debug trace
-	easy_setopt ( CURLOPT_DEBUGFUNCTION, trace_callback );
-	//	easy_setopt ( CURLOPT_DEBUGDATA, &config );
-	easy_setopt ( CURLOPT_VERBOSE, 1L ); // DEBUGFUNCTION has no effect unless enabled
-	g_curl_trace.clear();
-	
 	// allow the user to override anything we set
 	set_options ( g_curl_options );
 	
@@ -420,6 +414,12 @@ void BECurl::Init ( )
 	
 	easy_setopt ( CURLOPT_SSL_VERIFYPEER, 0L );
 	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
+
+	// debug trace
+	easy_setopt ( CURLOPT_DEBUGFUNCTION, trace_callback );
+	//	easy_setopt ( CURLOPT_DEBUGDATA, &config );
+	easy_setopt ( CURLOPT_VERBOSE, 1L ); // DEBUGFUNCTION has no effect unless enabled
+	g_curl_trace.clear();
 
 	headers = InitalizeCallbackMemory();
 	data = InitalizeCallbackMemory();
