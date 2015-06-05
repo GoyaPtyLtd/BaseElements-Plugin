@@ -1812,7 +1812,7 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 
 FMX_PROC(fmx::errcode) BE_Curl_Trace ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* parameters */, fmx::Data& results )
 {
-	errcode error = NoError();
+	errcode error = kNoError; // do not set the global last error
 
 	try {
 
@@ -1826,7 +1826,7 @@ FMX_PROC(fmx::errcode) BE_Curl_Trace ( short /* funcId */, const fmx::ExprEnv& /
 		error = kErrorUnknown;
 	}
 
-	return MapError ( error );
+	return error;
 
 } // BE_Curl_Trace
 
