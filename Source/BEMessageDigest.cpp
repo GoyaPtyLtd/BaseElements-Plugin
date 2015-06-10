@@ -13,8 +13,8 @@
 #include "BEBase64.h"
 #include "BEPluginException.h"
 
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 #include <openssl/engine.h>
 #include <openssl/hmac.h>
@@ -22,7 +22,7 @@
 
 #include <vector>
 
-#include "boost/algorithm/hex.hpp"
+#include <boost/algorithm/hex.hpp>
 
 
 using namespace std;
@@ -143,6 +143,16 @@ string HMAC ( const string message, const unsigned long algorithm, const unsigne
 		HMAC_Init_ex ( &hmac_context, &decoded_key[0], (int)decoded_key.size(), &type, NULL );
 
 		const std::vector<char> decoded_message = Base64_Decode ( message );
+		HMAC_Update ( &hmac_context, (const unsigned char *)&decoded_message[0], decoded_message.size() );
+
+	} else if ( input_encoding == kBE_Encoding_Hex ) {
+
+		std::vector<char> decoded_key;
+		boost::algorithm::unhex ( key, std::back_inserter ( decoded_key ) );
+		HMAC_Init_ex ( &hmac_context, &decoded_key[0], (int)decoded_key.size(), &type, NULL );
+
+		std::vector<char> decoded_message;
+		boost::algorithm::unhex ( message, std::back_inserter ( decoded_message ) );
 		HMAC_Update ( &hmac_context, (const unsigned char *)&decoded_message[0], decoded_message.size() );
 
 	} else {
