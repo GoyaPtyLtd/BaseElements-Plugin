@@ -31,19 +31,20 @@ enum message_digest_algorithm {
 };
 
 
-enum message_digest_output_encoding {
+enum message_digest_encoding {
+	kBE_Encoding_None = 0,
 	kBE_Encoding_Hex = 1,
 	kBE_Encoding_Base64 = 2
 };
 
 
 enum message_digest_error {
-	kBE_UnknownAlgorith = 15000
+	kBE_UnknownAlgorithm = 15000
 };
 
 
 std::string message_digest ( const std::string message, const unsigned long algorithm = kBE_MessageDigestAlgorithm_SHA256, const unsigned long output_encoding = kBE_Encoding_Hex );
-std::string HMAC ( const std::string message, const unsigned long algorithm = kBE_MessageDigestAlgorithm_SHA1, const unsigned long output_encoding = kBE_Encoding_Hex, const std::string key = "" );
+std::string HMAC ( const std::string message, const unsigned long algorithm = kBE_MessageDigestAlgorithm_SHA1, const unsigned long output_encoding = kBE_Encoding_Hex, const std::string key = "", const unsigned long input_encoding = kBE_Encoding_None );
 
 
 #endif // BEMESSAGEDIGEST_H

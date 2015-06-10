@@ -2553,6 +2553,12 @@ FMX_PROC(errcode) BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */
 		
 		string hmac = HMAC ( *message, algorithm, output_type, *key );
 		
+		const unsigned long algorithm = ParameterAsLong ( parameters, 2, kBE_MessageDigestAlgorithm_SHA1 );
+		const unsigned long output_type = ParameterAsLong ( parameters, 3, kBE_Encoding_Hex );
+		const unsigned long input_type = ParameterAsLong ( parameters, 4, kBE_Encoding_None );
+
+		string hmac = HMAC ( *message, algorithm, output_type, *key, input_type );
+
 		SetResult ( hmac, results );
 		
 	} catch ( BEPlugin_Exception& e ) {

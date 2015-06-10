@@ -2,7 +2,7 @@
  BEBase64.cpp
  BaseElements Plug-In
  
- Copyright 2014 Goya. All rights reserved.
+ Copyright 2014-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -81,8 +81,15 @@ vector<char> Base64_Decode ( StringAutoPtr text )
 } // Base64_Decode
 
 
+vector<char> Base64_Decode ( const std::string& text )
+{
+	StringAutoPtr to_decode ( new string ( text ) );
+	return Base64_Decode ( to_decode );
+}
 
-StringAutoPtr Base64_Encode ( vector<char> data, bool base64url )
+
+
+StringAutoPtr Base64_Encode ( const vector<char> data, const bool base64url )
 {
 	StringAutoPtr base64 ( new string ( base64_text(&data[0]), base64_text(&data[0] + data.size()) ) );
 		

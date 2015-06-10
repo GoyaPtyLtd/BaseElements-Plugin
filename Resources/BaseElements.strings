@@ -128,6 +128,7 @@
 "501" = "BE_Decrypt_AES ( key ; text )";
 
 "550" = "BE_HMAC ( text ; key {; algorithm ; encoding } )";
+"550" = "BE_HMAC ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
 
 "600" = "BE_EvaluateJavaScript ( javaScript )";
 
