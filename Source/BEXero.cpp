@@ -13,77 +13,41 @@
 #include "BEXero.h"
 #include "BECurl.h"
 #include "BEPluginException.h"
+#include "Crypto/BEBio.h"
+#include "Crypto/BEX509.h"
 
 #include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/pem.h>
-#include <openssl/x509.h>
 
 
 using namespace std;
 
 
-const std::string xero_generate_key ( RSA * rsa_key_pair, const bool generate_private_key );
-
-
-const std::string xero_generate_key ( RSA * rsa_key_pair, const bool generate_private_key )
-{
-	string out;
-
-	int result = 0;
-	BIO * key = BIO_new ( BIO_s_mem() );
-
-	if ( key ) {
-
-		if ( generate_private_key ) {
-			result = PEM_write_bio_RSAPrivateKey ( key, rsa_key_pair, NULL, NULL, 0, NULL, NULL );
-		} else {
-			result = PEM_write_bio_RSAPublicKey ( key, rsa_key_pair );
-		}
-
-		if ( result ) {
-
-			const int key_length = BIO_pending ( key );
-
-			vector<char> new_key ( key_length );
-			result = BIO_read ( key, &new_key[0], key_length );
-
-			if ( result > 0 ) {
-				out.assign ( new_key.begin(), new_key.end() );
-			}
-
-		}
-
-		BIO_free ( key );
-
-	}
-
-	if ( key == NULL || result <= 0 ) {
-		throw BEPlugin_Exception ( ERR_get_error() );
-	}
-	
-	return out;
-	
-} // xero_generate_key
-
-
-const std::string xero_generate_key_pair ( )
+const std::string xero_generate_key_pair ( BEX509 * x509 )
 {
 	std::string generated_key;
 
 	RSA * rsa_key_pair = RSA_generate_key ( 1024, RSA_3, NULL, NULL );
+
 	if ( rsa_key_pair ) {
 
-		try {
+		EVP_PKEY * private_key = EVP_PKEY_new();
 
-			generated_key = xero_generate_key ( rsa_key_pair, true );
-			generated_key.append ( xero_generate_key ( rsa_key_pair, false ) );
+		if ( private_key ) {
 
-			RSA_free ( rsa_key_pair );
+			EVP_PKEY_assign_RSA ( private_key, rsa_key_pair );
 
-		} catch ( BEPlugin_Exception& e ) {
-			RSA_free ( rsa_key_pair );
-			throw;
+			x509->set_private_key ( private_key );
+
+			std::auto_ptr<BEBio> bio ( new BEBio );
+			generated_key = bio->extract( private_key );
+			generated_key.append ( x509->generate() );
+
+			EVP_PKEY_free ( private_key );
+
+		} else {
+			throw BEPlugin_Exception ( ERR_get_error() );
 		}
 
 	} else {

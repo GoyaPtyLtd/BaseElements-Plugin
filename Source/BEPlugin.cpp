@@ -40,7 +40,7 @@
 #include "BEPluginUtilities.h"
 #include "BEFileMakerPlugin.h"
 #include "BESQLCommand.h"
-#include "BEMessageDigest.h"
+#include "Crypto/BEMessageDigest.h"
 
 #ifdef FMX_MAC_TARGET
 	#include "BEMacfunctions.h"
@@ -199,7 +199,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA224 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_HMAC, BE_HMAC, true, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_HMAC, BE_HMAC, true, 2, 5 );
 
 	g_be_plugin->RegisterFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
@@ -221,14 +220,14 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, true, 4, 9 );
 	
 	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, true, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Xero_GenerateKeys, BE_Xero_GenerateKeys );
+	g_be_plugin->RegisterFunction ( kBE_Xero_GenerateKeys, BE_Xero_GenerateKeys, true, 1, 7 );
 
 	// still alpha
 	
-	//	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestToken, BE_OAuth_RequestAccessToken, true, 3 );
+//	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestToken, BE_OAuth_RequestAccessToken, true, 3 );
 //	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
-	//	g_be_plugin->RegisterFunction ( kBE_OAuth_ClearToken, BE_OAuth_RequestAccessToken, true );
+//	g_be_plugin->RegisterFunction ( kBE_OAuth_ClearToken, BE_OAuth_RequestAccessToken, true );
 	
 	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, true, 1 );
 

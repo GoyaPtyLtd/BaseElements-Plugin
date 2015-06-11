@@ -32,7 +32,6 @@
 #include "BEXSLT.h"
 #include "BEWStringVector.h"
 #include "BECurl.h"
-#include "BEMessageDigest.h"
 #include "BEFileSystem.h"
 #include "BEShell.h"
 #include "BEZlib.h"
@@ -45,7 +44,9 @@
 #include "BECurlOption.h"
 #include "BEXMLTextReader.h"
 #include "BEBase64.h"
-#include "BEOpenSSLAES.h"
+#include "Crypto/BEMessageDigest.h"
+#include "Crypto/BEOpenSSLAES.h"
+#include "Crypto/BEX509.h"
 #include "BEPluginException.h"
 #include "BEQuadChar.h"
 #include "BEXero.h"
@@ -479,14 +480,13 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 	
 	try {
 		
-		vector<char> field_contents = ParameterAsVectorChar ( parameters, 0 );
+		vector<char> field_contents = ParameterAsVectorChar ( parameters );
 		path destination = ParameterAsPath ( parameters, 1 );
 		
 		try {
 			
 			boost::filesystem::ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
 			output_file.exceptions ( boost::filesystem::ofstream::failbit | boost::filesystem::ofstream::badbit );
-			output_file.rdbuf()->pubsetbuf ( 0, 0 ); // disable output buffering
 
 			if ( !field_contents.empty() ) {
 				output_file.write ( &field_contents.front(), field_contents.size() );
@@ -2060,7 +2060,25 @@ FMX_PROC(errcode) BE_Xero_GenerateKeys ( short /* funcId */, const ExprEnv& /* e
 	
 	try {
 
-		SetResult ( xero_generate_key_pair ( ), results );
+		StringAutoPtr organisation = ParameterAsUTF8String ( parameters );
+		StringAutoPtr organisational_unit = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr country = ParameterAsUTF8String ( parameters, 2 );
+		StringAutoPtr state = ParameterAsUTF8String ( parameters, 3 );
+		StringAutoPtr suburb = ParameterAsUTF8String ( parameters, 4 );
+		StringAutoPtr domain = ParameterAsUTF8String ( parameters, 5 );
+		StringAutoPtr email = ParameterAsUTF8String ( parameters, 6 );
+
+		auto_ptr<BEX509> x509 ( new BEX509 );
+
+		x509->add_name_entry ( "O", *organisation );
+		x509->add_name_entry ( "OU", *organisational_unit );
+		x509->add_name_entry ( "C", *country );
+		x509->add_name_entry ( "ST", *state );
+		x509->add_name_entry ( "L", *suburb );
+		x509->add_name_entry ( "CN", *domain );
+		x509->add_name_entry ( "emailAddress", *email );
+
+		SetResult ( xero_generate_key_pair ( x509.get() ), results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -2548,11 +2566,6 @@ FMX_PROC(errcode) BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */
 		
 		StringAutoPtr message = ParameterAsUTF8String ( parameters, 0 );
 		StringAutoPtr key = ParameterAsUTF8String ( parameters, 1 );
-		const unsigned long algorithm = ParameterAsLong( parameters, 2, kBE_MessageDigestAlgorithm_SHA1 );
-		const unsigned long output_type = ParameterAsLong( parameters, 3, kBE_Encoding_Hex );
-		
-		string hmac = HMAC ( *message, algorithm, output_type, *key );
-		
 		const unsigned long algorithm = ParameterAsLong ( parameters, 2, kBE_MessageDigestAlgorithm_SHA1 );
 		const unsigned long output_type = ParameterAsLong ( parameters, 3, kBE_Encoding_Hex );
 		const unsigned long input_type = ParameterAsLong ( parameters, 4, kBE_Encoding_None );

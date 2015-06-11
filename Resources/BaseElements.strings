@@ -111,7 +111,7 @@
 
 
 "330" = "BE_Xero_SetTokens ( consumer_key ; private_key )";
-"331" = "BE_Xero_GenerateKeys";
+"331" = "BE_Xero_GenerateKeys ( organisation {; organisationalUnit ; country ; state ; suburb ; domain ; emailAddress } )";
 
 
 "350" = "BE_Values_Unique ( listOfValues {; caseSensitive } )";
@@ -127,7 +127,6 @@
 "500" = "BE_Encrypt_AES ( key ; text )";
 "501" = "BE_Decrypt_AES ( key ; text )";
 
-"550" = "BE_HMAC ( text ; key {; algorithm ; encoding } )";
 "550" = "BE_HMAC ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
 
 "600" = "BE_EvaluateJavaScript ( javaScript )";

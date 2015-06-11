@@ -14,11 +14,10 @@
 #define __BaseElements__BE_Xero__
 
 #include "BEOAuth.h"
+#include "Crypto/BEX509.h"
 
-#include <openssl/rsa.h>
 
-
-const std::string xero_generate_key_pair ( );
+const std::string xero_generate_key_pair ( BEX509 * x509 );
 
 
 class BEXero : public BEOAuth {
