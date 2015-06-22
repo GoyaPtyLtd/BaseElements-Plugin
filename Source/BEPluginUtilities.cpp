@@ -696,11 +696,7 @@ StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::str
 
 void SetTextEncoding ( const string& encoding )
 {
-	if ( encoding.empty() ) {
-		g_text_encoding = UTF8;
-	} else {
-		g_text_encoding = encoding;
-	}
+	g_text_encoding = encoding;
 }
 
 
