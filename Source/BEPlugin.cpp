@@ -78,6 +78,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 #pragma unused ( plugin_call )
 	
 	SetTextEncoding ( "" );
+	SetTextEncoding ( );
 	
 	InitialiseForPlatform ( );
 

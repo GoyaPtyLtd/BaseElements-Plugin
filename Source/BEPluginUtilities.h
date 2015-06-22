@@ -74,6 +74,7 @@ StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const std::string& to, con
 StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from = g_text_encoding );
 
 void SetTextEncoding ( const std::string& encoding );
+void SetTextEncoding ( const std::string& encoding = UTF8 );
 std::string TextAsUTF8String ( const fmx::Text& fmx_text );
 std::string TextAsNumberString ( const fmx::Text& fmx_text );
 std::string DataAsUTF8String ( const fmx::Data& data );
