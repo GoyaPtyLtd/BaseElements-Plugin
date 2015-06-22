@@ -77,18 +77,6 @@
 		4DCD49801A195B0C00EFCF7F /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB348716FA7A7B004AD91C /* libboost_date_time.a */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		4DCD49671A195B0C00EFCF7F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		4D0023E213FDD64C00C0B57A /* BEShell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEShell.cpp; path = ../Source/BEShell.cpp; sourceTree = SOURCE_ROOT; };
 		4D0023E313FDD64C00C0B57A /* BEShell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEShell.h; path = ../Source/BEShell.h; sourceTree = SOURCE_ROOT; };
@@ -452,8 +440,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4DCD49811A195B0C00EFCF7F /* Build configuration list for PBXNativeTarget "BaseElements" */;
 			buildPhases = (
+				4DC7C43B1B2E7DFE00B7B142 /* ShellScript */,
 				4DCD49451A195B0C00EFCF7F /* Sources */,
-				4DCD49671A195B0C00EFCF7F /* CopyFiles */,
 				4DCD49681A195B0C00EFCF7F /* Resources */,
 				4DCD496B1A195B0C00EFCF7F /* Frameworks */,
 				4D3D6A461A25954B006E2304 /* ShellScript */,
@@ -521,7 +509,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n\n#/bin/cp -R /Applications/FileMaker\\ Pro\\ 13\\ Advanced/Extensions/BaseElements.fmplugin /Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Build/Debug/BaseElements.fmplugin\n\nexit 0;\n\n\nfi\n\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n\nAUTO_UPDATE_VERSION=$(grep 'define.*AUTO_UPDATE_VERSION' ../Source/BEPluginGlobalDefines.h | awk -F '[^0-9]*' '{print $2}')\n\nVERSION_STRING=$(grep 'define VERSION_STRING' ../Source/BEPluginGlobalDefines.h | awk -F '[^0-9a-z.]*' '{print $3}')\n\n/usr/bin/touch \"${CONFIGURATION_BUILD_DIR}/Version ${VERSION_STRING} (${AUTO_UPDATE_VERSION})\"\n\nfi\n\n\n";
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n\n#/bin/cp -R /Applications/FileMaker\\ Pro\\ 13\\ Advanced/Extensions/BaseElements.fmplugin /Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Build/Debug/BaseElements.fmplugin\n\nexit 0;\n\n\nfi\n\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n\nAUTO_UPDATE_VERSION=$(grep 'define.*AUTO_UPDATE_VERSION' ../Source/BEPluginGlobalDefines.h | awk -F '[^0-9]*' '{print $2}')\n\nVERSION_STRING=$(grep 'define VERSION_STRING' ../Source/BEPluginGlobalDefines.h | awk -F '[^0-9a-z.]*' '{print $3}')\n\nrm \"${CONFIGURATION_BUILD_DIR}/Vers\"*\n/usr/bin/touch \"${CONFIGURATION_BUILD_DIR}/Version ${VERSION_STRING} (${AUTO_UPDATE_VERSION})\"\n\ncd \"${CONFIGURATION_BUILD_DIR}\"\n/usr/bin/zip -ry \"${PRODUCT_NAME}.fmplugin.zip\" \"${PRODUCT_NAME}.fmplugin/\"\n/usr/bin/setfile -a B \"${PRODUCT_NAME}.fmplugin/\"\n\nfi\n\n\n";
+		};
+		4DC7C43B1B2E7DFE00B7B142 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n\nrm -rf \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.fmplugin\"\n\nfi\n\nexit 0\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -606,7 +607,7 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				TEST_AFTER_BUILD = NO;
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
+				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Release;
@@ -647,7 +648,7 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				TEST_AFTER_BUILD = NO;
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
+				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Debug;
@@ -724,7 +725,7 @@
 				SEPARATE_STRIP = YES;
 				STRIP_STYLE = "non-global";
 				SYMROOT = ../Build;
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
+				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
 				VERSION_STRING = 3.1a3;
 				WARNING_CFLAGS = (
@@ -806,7 +807,7 @@
 				SEPARATE_STRIP = NO;
 				STRIP_STYLE = "non-global";
 				SYMROOT = ../Build;
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
+				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
 				VERSION_STRING = 3.1a3;
 				WARNING_CFLAGS = (
