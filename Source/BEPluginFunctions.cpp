@@ -2189,13 +2189,13 @@ FMX_PROC(fmx::errcode) BE_XOR ( short /* funcId */, const fmx::ExprEnv& /* envir
 	try {
 
 		const StringAutoPtr text = ParameterAsUTF8String ( parameters );
-		const unsigned long xorWith = ParameterAsLong ( parameters, 1 );
+		const uint8_t xorWith = ParameterAsLong ( parameters, 1 );
 
 		std::stringstream xord_text;
 
 		for ( std::string::iterator it = text->begin() ; it != text->end() ; ++it ) {
-			const unsigned long xord = *it ^ xorWith;
-			xord_text << std::hex << xord;
+			const uint8_t xord = *it ^ xorWith;
+			xord_text << std::setfill ( '0' ) << std::setw ( 2 ) << std::hex << (const unsigned int)xord;
 		}
 
 		SetResult ( xord_text.str(), results );

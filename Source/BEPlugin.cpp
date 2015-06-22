@@ -233,7 +233,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterHiddenFunction ( kBE_ConvertContainer, BE_ConvertContainer, true, 1, 4 );
 
-	g_be_plugin->RegisterFunction ( kBE_XOR, BE_XOR, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_XOR, BE_XOR, true, 2, 2 );
 
 	return kCurrentExtnVersion;	// enable the plug-in
 	
