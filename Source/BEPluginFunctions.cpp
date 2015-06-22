@@ -2176,6 +2176,41 @@ FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environ
 } // BE_Values_Sort
 
 
+
+#pragma mark -
+#pragma mark Bitwise
+#pragma mark -
+
+
+FMX_PROC(fmx::errcode) BE_XOR ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		const StringAutoPtr text = ParameterAsUTF8String ( parameters );
+		const unsigned long xorWith = ParameterAsLong ( parameters, 1 );
+
+		std::stringstream xord_text;
+
+		for ( std::string::iterator it = text->begin() ; it != text->end() ; ++it ) {
+			const unsigned long xord = *it ^ xorWith;
+			xord_text << std::hex << xord;
+		}
+
+		SetResult ( xord_text.str(), results );
+
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_XOR
+
+
 #pragma mark -
 #pragma mark Other / Ungrouped
 #pragma mark -

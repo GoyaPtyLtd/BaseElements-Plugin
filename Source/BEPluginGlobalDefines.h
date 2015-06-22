@@ -187,6 +187,7 @@ enum functions {
 	kBE_HMAC = 550,
 	kBE_EvaluateJavaScript = 600,
 	kBE_ConvertContainer = 700,
+	kBE_XOR = 800,
 	kBE_ExecuteSystemCommand = 1120
 };
 

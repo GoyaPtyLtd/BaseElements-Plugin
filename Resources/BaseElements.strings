@@ -133,6 +133,8 @@
 
 "700" = "BE_ConvertContainer ( field {; type ; width ; height } )";
 
+"800" = "BE_XOR ( text ; xorWith )";
+
 
 // replaces 120 BE_ExecuteShellCommand
 "1120" = "BE_ExecuteSystemCommand ( command { ; timeout } )";

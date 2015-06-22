@@ -131,4 +131,7 @@ FMX_PROC(fmx::errcode) BE_Values_FilterOut ( short /* funcId */, const fmx::Expr
 FMX_PROC(fmx::errcode) BE_Values_Sort ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
+FMX_PROC(fmx::errcode) BE_XOR ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+
+
 #endif // BEPLUGINFUNCTIONS_H
