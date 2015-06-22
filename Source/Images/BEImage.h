@@ -18,13 +18,18 @@
 #include <vector>
 
 
+enum {
+	kImageSizeUnknown = -1
+};
+
+
 class BEImage {
 
 
 public:
 
 	BEImage ( ) {};
-	BEImage ( const std::vector<unsigned char>& image_data, const int image_width = 0, const int image_height = 0 );
+	BEImage ( const std::vector<unsigned char>& image_data, const int image_width = kImageSizeUnknown, const int image_height = kImageSizeUnknown );
 
 	virtual ~BEImage() {};
 
@@ -36,6 +41,7 @@ public:
 	const int get_height ( void ) { return height; }
 	std::vector<unsigned char> get_data ( void ) const { return data; }
 
+	void set_type ( const std::string new_type ) { type = new_type; }
 
 protected:
 

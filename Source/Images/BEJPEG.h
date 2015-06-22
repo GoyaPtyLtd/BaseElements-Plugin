@@ -25,7 +25,7 @@ class BEJPEG : public BEImage {
 public:
 
 	BEJPEG ( );
-	explicit BEJPEG ( const std::vector<unsigned char>& image_data, const int image_width = 0, const int image_height = 0 ) : BEImage ( image_data, image_width, image_height ) { BEJPEG (); }
+	explicit BEJPEG ( const std::vector<unsigned char>& image_data, const int image_width = kImageSizeUnknown, const int image_height = kImageSizeUnknown ) : BEImage ( image_data, image_width, image_height ) { BEJPEG (); }
 
 
 	void set_compression_level ( const int level );

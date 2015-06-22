@@ -15,7 +15,7 @@
 
 BEQuadChar::BEQuadChar ( const std::string new_type )
 {
-	if ( new_type.length() != 4) {
+	if ( new_type.length() != 4 ) {
 		throw std::out_of_range ( "Type must be exactly 4 characters long" );
 	}
 
