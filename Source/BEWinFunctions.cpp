@@ -25,7 +25,6 @@ using namespace std;
 
 
 const bool IsUnicodeFormat ( const UINT format_id );
-bool IsWindowsVistaOrLater ( );
 wstring ClipboardFormatNameForID ( const UINT format_id );
 UINT ClipboardFormatIDForName ( const wstring format_name );
 bool SafeOpenClipboard ( void );
@@ -78,20 +77,6 @@ void InitialiseForPlatform ( void )
 fmx::errcode GetLastErrorAsFMX ( void )
 {
 	return (fmx::errcode)GetLastError();
-}
-
-
-bool IsWindowsVistaOrLater ( )
-{
-    OSVERSIONINFO os_version;
-    ZeroMemory ( &os_version, sizeof(OSVERSIONINFO) );
-    os_version.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-
-    GetVersionEx ( &os_version );
-
-    BOOL isWindowsVistaOrLater = os_version.dwMajorVersion >= 6;
-
-	return isWindowsVistaOrLater != 0;
 }
 
 
@@ -564,14 +549,7 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 
 WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 {
-	BEWinCommonFileOpenDialogAutoPtr file_dialog;
-
-	if ( IsWindowsVistaOrLater( ) ) {
-		file_dialog.reset ( new BEWinIFileOpenDialog ( prompt, in_folder ) );
-	} else {
-		file_dialog.reset ( new BEWinCommonFileOpenDialog ( prompt, in_folder ) );
-	}
-
+	BEWinIFileOpenDialogAutoPtr file_dialog ( new BEWinIFileOpenDialog ( prompt, in_folder ) );
 	WStringAutoPtr selected_files ( file_dialog->Show ( ) );
 
 	return selected_files;
@@ -622,14 +600,7 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 
 WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr file_name, WStringAutoPtr in_folder )
 {
-	BEWinCommonFileSaveDialogAutoPtr file_dialog;
-
-	if ( IsWindowsVistaOrLater( ) ) {
-		file_dialog.reset ( new BEWinIFileSaveDialog ( prompt, file_name, in_folder ) );
-	} else {
-		file_dialog.reset ( new BEWinCommonFileSaveDialog ( prompt, file_name, in_folder ) );
-	}
-
+	BEWinIFileSaveDialogAutoPtr file_dialog ( new BEWinIFileSaveDialog ( prompt, file_name, in_folder ) );
 	WStringAutoPtr save_file_as ( file_dialog->Show ( ) );
 
 	return save_file_as;

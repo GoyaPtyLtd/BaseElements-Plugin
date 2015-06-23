@@ -16,13 +16,12 @@
 
 #include "BEPluginGlobalDefines.h"
 #include "BEPluginUtilities.h"
-#include "BEWinCommonFileDialog.h"
 #include "BEValueList.h"
 
 #include <ShObjIdl.h>
 
 
-class BEWinIFileOpenDialog : public BEWinCommonFileSaveDialog
+class BEWinIFileOpenDialog
 {
 	
 public:
@@ -54,7 +53,7 @@ protected:
 typedef std::auto_ptr<BEWinIFileOpenDialog> BEWinIFileOpenDialogAutoPtr;
 
 
-class BEWinIFileSaveDialog : /*public BEWinCommonFileSaveDialog,*/ public BEWinIFileOpenDialog
+class BEWinIFileSaveDialog : public BEWinIFileOpenDialog
 {
 	
 public:
