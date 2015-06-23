@@ -24,6 +24,8 @@
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
+		4DB753AC1B38DA2000E89C6A /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C383186115F300E7F4A1 /* libcrypto.dylib */; };
+		4DB753AD1B38DA3000E89C6A /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C381186115EB00E7F4A1 /* libssl.dylib */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
@@ -56,8 +58,6 @@
 		4DCD49691A195B0C00EFCF7F /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4DCD496C1A195B0C00EFCF7F /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF89193EEA9F006739BE /* libldap.dylib */; };
 		4DCD496D1A195B0C00EFCF7F /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF85193EE945006739BE /* libcurl.a */; };
-		4DCD496E1A195B0C00EFCF7F /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3618015EDE782003A0CB9 /* libssl.dylib */; };
-		4DCD496F1A195B0C00EFCF7F /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */; };
 		4DCD49701A195B0C00EFCF7F /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF7E193EE0F3006739BE /* libssh2.a */; };
 		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4DCD49721A195B0C00EFCF7F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52D916D3551400E10827 /* libz.dylib */; };
@@ -115,7 +115,6 @@
 		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
 		4D57DF7E193EE0F3006739BE /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/libssh2.a; sourceTree = "<group>"; };
 		4D57DF85193EE945006739BE /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/libcurl.a; sourceTree = "<group>"; };
-		4D57DF87193EE984006739BE /* ldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = ldap.dylib; path = usr/lib/samba/idmap/ldap.dylib; sourceTree = SDKROOT; };
 		4D57DF89193EEA9F006739BE /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = usr/lib/libldap.dylib; sourceTree = SDKROOT; };
 		4D59DAFA16F95E2400F87180 /* BEValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEValueList.h; path = ../Source/BEValueList.h; sourceTree = "<group>"; };
 		4D668AA31A36BC8900D14592 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
@@ -191,10 +190,6 @@
 		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
 		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
 		4DEB348716FA7A7B004AD91C /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../Libraries/libboost_date_time.a; sourceTree = "<group>"; };
-		4DF3617A15EDE74F003A0CB9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		4DF3617C15EDE761003A0CB9 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcurl.dylib; sourceTree = DEVELOPER_DIR; };
-		4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcrypto.dylib; sourceTree = DEVELOPER_DIR; };
-		4DF3618015EDE782003A0CB9 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libssl.dylib; sourceTree = DEVELOPER_DIR; };
 		4DFFF8B11884A0390015B531 /* BEXero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXero.cpp; path = ../Source/BEXero.cpp; sourceTree = "<group>"; };
 		4DFFF8B21884A0390015B531 /* BEXero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXero.h; path = ../Source/BEXero.h; sourceTree = "<group>"; };
 		C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/FMWrapper.framework; sourceTree = SOURCE_ROOT; };
@@ -205,6 +200,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DB753AD1B38DA3000E89C6A /* libssl.dylib in Frameworks */,
+				4DB753AC1B38DA2000E89C6A /* libcrypto.dylib in Frameworks */,
 				4D6A7B371B01CB64003EB38C /* libPocoCrypto.a in Frameworks */,
 				4D6A7B381B01CB64003EB38C /* libPocoNetSSL.a in Frameworks */,
 				4D6A7B391B01CB64003EB38C /* libPocoZip.a in Frameworks */,
@@ -216,8 +213,6 @@
 				4D72E41C1A95632F00939DF9 /* libturbojpeg.a in Frameworks */,
 				4DCD496C1A195B0C00EFCF7F /* libldap.dylib in Frameworks */,
 				4DCD496D1A195B0C00EFCF7F /* libcurl.a in Frameworks */,
-				4DCD496E1A195B0C00EFCF7F /* libssl.dylib in Frameworks */,
-				4DCD496F1A195B0C00EFCF7F /* libcrypto.dylib in Frameworks */,
 				4DCD49701A195B0C00EFCF7F /* libssh2.a in Frameworks */,
 				4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */,
 				4DCD49721A195B0C00EFCF7F /* libz.dylib in Frameworks */,
@@ -410,16 +405,11 @@
 			isa = PBXGroup;
 			children = (
 				4D57DF89193EEA9F006739BE /* libldap.dylib */,
-				4D57DF87193EE984006739BE /* ldap.dylib */,
 				4D27C3851861160000E7F4A1 /* Cocoa.framework */,
 				4D27C383186115F300E7F4A1 /* libcrypto.dylib */,
 				4D27C381186115EB00E7F4A1 /* libssl.dylib */,
 				4D27C37F186115E300E7F4A1 /* libcurl.dylib */,
 				4D55C63815EE0F0A008F7FBA /* Carbon.framework */,
-				4DF3617A15EDE74F003A0CB9 /* Cocoa.framework */,
-				4DF3618015EDE782003A0CB9 /* libssl.dylib */,
-				4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */,
-				4DF3617C15EDE761003A0CB9 /* libcurl.dylib */,
 				4DDA52EB16D355F100E10827 /* libcharset.dylib */,
 				4DDA52E616D355C100E10827 /* libiconv.dylib */,
 				4DDA52E016D3553200E10827 /* libexslt.dylib */,
