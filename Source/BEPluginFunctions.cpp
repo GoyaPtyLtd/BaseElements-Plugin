@@ -2189,7 +2189,7 @@ FMX_PROC(fmx::errcode) BE_XOR ( short /* funcId */, const fmx::ExprEnv& /* envir
 	try {
 
 		const StringAutoPtr text = ParameterAsUTF8String ( parameters );
-		const uint8_t xorWith = ParameterAsLong ( parameters, 1 );
+		const uint8_t xorWith = (uint8_t)ParameterAsLong ( parameters, 1 );
 
 		std::stringstream xord_text;
 

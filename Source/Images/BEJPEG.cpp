@@ -24,15 +24,6 @@
 #include <libturbojpeg/turbojpeg.h>
 
 
-#ifdef FMX_WIN_TARGET
-
-int round ( double number )
-{
-  return (int)floor ( number + 0.5 );
-}
-
-#endif
-
 
 BEJPEG::BEJPEG ( )
 {

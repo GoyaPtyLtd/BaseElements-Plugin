@@ -5,10 +5,14 @@ Build/*
 Headers/*
 !Headers/README
 
-Libraries/*
-!Libraries/README
+# Libraries
 
-# Ignore generated VC2010 files
+*.a
+*.dylib
+*.framework
+*.lib
+
+# Ignore generated Visual Studio files
 
 Project/BaseElements.sdf
 Project/BaseElements.suo
@@ -34,9 +38,10 @@ xcuserdata
 *~.nib/
 
 Source/duktape*
-Source/minizip*
 .com.apple.timemachine.supported
 Project/BaseElements.xcodeproj/xcuserdata/mark.xcuserdatad/xcschemes/xcschememanagement.plist
 Project/BaseElements.xcodeproj/project.xcworkspace/xcshareddata/BaseElements.xccheckout
 Project/BaseElements.xcodeproj/xcuserdata/mark.xcuserdatad/xcschemes/xcschememanagement.plist
 Project/BaseElements.vcxproj.filters
+Project/.vs/BaseElements/v14/.suo
+Project/BaseElements.opensdf

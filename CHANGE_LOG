@@ -1,4 +1,34 @@
 ########################################################################
+Version 3.1b1
+########################################################################
+
+June 23, 2015
+
+New Functions
+
+BE_ConvertContainer
+BE_Curl_Trace
+BE_Xero_GenerateKeys
+
+Experimental (Hidden) Functions
+
+BE_XOR
+
+
+Changes
+
+BE_EvaluateJavaScript: now visible in calculation dialogs
+BE_HMAC: add a parameter to allow and input encoding for Base64 and Hex
+BE_HTTP_POST: do not crash when a http post contains a parameter that is not a key=value pair
+BE_SMTP_Server: now visible in calculation dialogs
+BE_SMTP_Send: now visible in calculation dialogs
+BE_SMTP_Send: force attachments to the end of the message
+
+Ensure that Get ( InstalledFMPlugins ) returns the same value on both OS X and Windows
+Remove support for Windows XP
+
+
+########################################################################
 Version 3.1a3
 ########################################################################
 

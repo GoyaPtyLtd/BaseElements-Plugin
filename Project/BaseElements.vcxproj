@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -20,6 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{646553B8-5F11-4EB7-8AFE-29B5AC598E93}</ProjectGuid>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -27,22 +28,26 @@
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfAtl>false</UseOfAtl>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfAtl>false</UseOfAtl>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -76,26 +81,26 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.fmx</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.fmx64</TargetExt>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Libraries;$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Libraries\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Libraries\$(Platform);$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Libraries\$(Platform);$(LibraryPath)</LibraryPath>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.fmx</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.fmx64</TargetExt>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">\\VBOXSVR\BaseElementsPlugin\Libraries;$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Libraries\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Libraries\$(Platform);$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Libraries\$(Platform);$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;../Source/minizip;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;../Source/minizip;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
-    <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\libxslt\libxslt;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\Support;$(SourcePath)</SourcePath>
-    <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\libxslt\libxslt;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\Support;$(SourcePath)</SourcePath>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration).intermediate\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration).intermediate\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Mark\Documents\My Dropbox\Goya\BaseElemetns PlugIn\$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Mark\Documents\My Dropbox\Goya\BaseElemetns PlugIn\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Build\$(Configuration).intermediate\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Build\$(Configuration).intermediate\</IntDir>
+    <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(VC_SourcePath);$(UniversalCRT_SourcePath);</SourcePath>
+    <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(VC_SourcePath);$(UniversalCRT_SourcePath);</SourcePath>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\$(Platform)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Z:\Dropbox\Goya\BaseElemetns PlugIn\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Z:\Dropbox\Goya\BaseElemetns PlugIn\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)</TargetName>
   </PropertyGroup>
@@ -136,6 +141,7 @@
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\Build\$(Configuration).intermediate\$(ProjectName).lib</ImportLibrary>
       <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -173,6 +179,7 @@
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\Build\$(Configuration).intermediate\$(ProjectName).lib</ImportLibrary>
       <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

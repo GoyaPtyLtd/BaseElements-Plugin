@@ -7,17 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D0579331B3B83550000585F /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
+		4D0579341B3B83550000585F /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792D1B3B83550000585F /* libcurl.a */; };
+		4D0579351B3B83550000585F /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792E1B3B83550000585F /* libjansson.a */; };
+		4D0579361B3B83550000585F /* libmimetic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792F1B3B83550000585F /* libmimetic.a */; };
+		4D0579371B3B83550000585F /* liboauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0579301B3B83550000585F /* liboauth.a */; };
+		4D0579381B3B83550000585F /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0579311B3B83550000585F /* libssh2.a */; };
+		4D0579391B3B83550000585F /* libxerces-c.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0579321B3B83550000585F /* libxerces-c.a */; };
+		4D0E296A1B3A6C1000A35298 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29621B3A6C1000A35298 /* libboost_date_time.a */; };
+		4D0E296B1B3A6C1000A35298 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29631B3A6C1000A35298 /* libboost_filesystem.a */; };
+		4D0E296C1B3A6C1000A35298 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29641B3A6C1000A35298 /* libboost_regex.a */; };
+		4D0E296D1B3A6C1000A35298 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29651B3A6C1000A35298 /* libboost_system.a */; };
+		4D0E296E1B3A6C1000A35298 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29661B3A6C1000A35298 /* libboost_thread.a */; };
+		4D0E296F1B3A6C1000A35298 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29671B3A6C1000A35298 /* libPocoFoundation.a */; };
+		4D0E29701B3A6C1000A35298 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29681B3A6C1000A35298 /* libPocoZip.a */; };
+		4D0E29711B3A6C1000A35298 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29691B3A6C1000A35298 /* libturbojpeg.a */; };
 		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
 		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
-		4D6A7B2F1B01AD14003EB38C /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6A7B2A1B01AD14003EB38C /* libPocoFoundation.a */; };
-		4D6A7B301B01AD14003EB38C /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6A7B2B1B01AD14003EB38C /* libPocoJSON.a */; };
-		4D6A7B311B01AD14003EB38C /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6A7B2C1B01AD14003EB38C /* libPocoNet.a */; };
-		4D6A7B321B01AD14003EB38C /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6A7B2D1B01AD14003EB38C /* libPocoUtil.a */; };
-		4D6A7B331B01AD14003EB38C /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6A7B2E1B01AD14003EB38C /* libPocoXML.a */; };
-		4D6A7B371B01CB64003EB38C /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6A7B341B01CB64003EB38C /* libPocoCrypto.a */; };
-		4D6A7B381B01CB64003EB38C /* libPocoNetSSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6A7B351B01CB64003EB38C /* libPocoNetSSL.a */; };
-		4D6A7B391B01CB64003EB38C /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D6A7B361B01CB64003EB38C /* libPocoZip.a */; };
-		4D72E41C1A95632F00939DF9 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D72E41B1A95632F00939DF9 /* libturbojpeg.a */; };
 		4D807F001A9C255000E27E38 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4D807F041A9C27AB00E27E38 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
 		4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
@@ -57,24 +63,14 @@
 		4DCD49661A195B0C00EFCF7F /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C918DA773900DFC47A /* BEBase64.cpp */; };
 		4DCD49691A195B0C00EFCF7F /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4DCD496C1A195B0C00EFCF7F /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF89193EEA9F006739BE /* libldap.dylib */; };
-		4DCD496D1A195B0C00EFCF7F /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF85193EE945006739BE /* libcurl.a */; };
-		4DCD49701A195B0C00EFCF7F /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF7E193EE0F3006739BE /* libssh2.a */; };
 		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4DCD49721A195B0C00EFCF7F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52D916D3551400E10827 /* libz.dylib */; };
 		4DCD49731A195B0C00EFCF7F /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E616D355C100E10827 /* libiconv.dylib */; };
-		4DCD49741A195B0C00EFCF7F /* libmimetic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9BAA0918C0009000831FF0 /* libmimetic.a */; };
 		4DCD49751A195B0C00EFCF7F /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52DC16D3552500E10827 /* libxml2.dylib */; };
 		4DCD49761A195B0C00EFCF7F /* libxslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52DE16D3552D00E10827 /* libxslt.dylib */; };
 		4DCD49771A195B0C00EFCF7F /* libcharset.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52EB16D355F100E10827 /* libcharset.dylib */; };
 		4DCD49781A195B0C00EFCF7F /* libexslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E016D3553200E10827 /* libexslt.dylib */; };
-		4DCD49791A195B0C00EFCF7F /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76701E16CDC17A00010A75 /* libjansson.a */; };
-		4DCD497A1A195B0C00EFCF7F /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9BAA0B18C0169000831FF0 /* libboost_regex.a */; };
-		4DCD497B1A195B0C00EFCF7F /* liboauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3884FD17FE6DDC00E1894F /* liboauth.a */; };
 		4DCD497C1A195B0C00EFCF7F /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */; };
-		4DCD497D1A195B0C00EFCF7F /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9EEE7F118A8E9C00EC9352 /* libboost_filesystem.a */; };
-		4DCD497E1A195B0C00EFCF7F /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */; };
-		4DCD497F1A195B0C00EFCF7F /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8BA594134579BD003A90B5 /* libboost_thread.a */; };
-		4DCD49801A195B0C00EFCF7F /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB348716FA7A7B004AD91C /* libboost_date_time.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,8 +82,23 @@
 		4D00CC6516D3357C00160030 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		4D00CC6616D3357C00160030 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		4D00CC6716D3357C00160030 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		4D05792C1B3B83550000585F /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/osx/FMWrapper.framework; sourceTree = "<group>"; };
+		4D05792D1B3B83550000585F /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/osx/libcurl.a; sourceTree = "<group>"; };
+		4D05792E1B3B83550000585F /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/osx/libjansson.a; sourceTree = "<group>"; };
+		4D05792F1B3B83550000585F /* libmimetic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmimetic.a; path = ../Libraries/osx/libmimetic.a; sourceTree = "<group>"; };
+		4D0579301B3B83550000585F /* liboauth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liboauth.a; path = ../Libraries/osx/liboauth.a; sourceTree = "<group>"; };
+		4D0579311B3B83550000585F /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/osx/libssh2.a; sourceTree = "<group>"; };
+		4D0579321B3B83550000585F /* libxerces-c.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libxerces-c.a"; path = "../Libraries/osx/libxerces-c.a"; sourceTree = "<group>"; };
 		4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPEmailMessage.cpp; path = ../Source/BESMTPEmailMessage.cpp; sourceTree = "<group>"; };
 		4D0BA9B118BEF74D00F8FD45 /* BESMTPEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTPEmailMessage.h; path = ../Source/BESMTPEmailMessage.h; sourceTree = "<group>"; };
+		4D0E29621B3A6C1000A35298 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../Libraries/osx/libboost_date_time.a; sourceTree = "<group>"; };
+		4D0E29631B3A6C1000A35298 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../Libraries/osx/libboost_filesystem.a; sourceTree = "<group>"; };
+		4D0E29641B3A6C1000A35298 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../Libraries/osx/libboost_regex.a; sourceTree = "<group>"; };
+		4D0E29651B3A6C1000A35298 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../Libraries/osx/libboost_system.a; sourceTree = "<group>"; };
+		4D0E29661B3A6C1000A35298 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../Libraries/osx/libboost_thread.a; sourceTree = "<group>"; };
+		4D0E29671B3A6C1000A35298 /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = ../Libraries/osx/libPocoFoundation.a; sourceTree = "<group>"; };
+		4D0E29681B3A6C1000A35298 /* libPocoZip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZip.a; path = ../Libraries/osx/libPocoZip.a; sourceTree = "<group>"; };
+		4D0E29691B3A6C1000A35298 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = ../Libraries/osx/libturbojpeg.a; sourceTree = "<group>"; };
 		4D10AD931484202000814440 /* BESQLCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESQLCommand.cpp; path = ../Source/BESQLCommand.cpp; sourceTree = SOURCE_ROOT; };
 		4D10AD941484202000814440 /* BESQLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESQLCommand.h; path = ../Source/BESQLCommand.h; sourceTree = SOURCE_ROOT; };
 		4D13006616DADD8A0075FE0C /* BEOAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEOAuth.cpp; path = ../Source/BEOAuth.cpp; sourceTree = "<group>"; };
@@ -121,17 +132,8 @@
 		4D668AA41A36BC8900D14592 /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
 		4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEJavaScript.cpp; path = ../Source/BEJavaScript.cpp; sourceTree = "<group>"; };
 		4D668AA71A36BF0300D14592 /* BEJavaScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEJavaScript.h; path = ../Source/BEJavaScript.h; sourceTree = "<group>"; };
-		4D6A7B2A1B01AD14003EB38C /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = ../Libraries/libPocoFoundation.a; sourceTree = "<group>"; };
-		4D6A7B2B1B01AD14003EB38C /* libPocoJSON.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoJSON.a; path = ../Libraries/libPocoJSON.a; sourceTree = "<group>"; };
-		4D6A7B2C1B01AD14003EB38C /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = ../Libraries/libPocoNet.a; sourceTree = "<group>"; };
-		4D6A7B2D1B01AD14003EB38C /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = ../Libraries/libPocoUtil.a; sourceTree = "<group>"; };
-		4D6A7B2E1B01AD14003EB38C /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = ../Libraries/libPocoXML.a; sourceTree = "<group>"; };
-		4D6A7B341B01CB64003EB38C /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = ../Libraries/libPocoCrypto.a; sourceTree = "<group>"; };
-		4D6A7B351B01CB64003EB38C /* libPocoNetSSL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNetSSL.a; path = ../Libraries/libPocoNetSSL.a; sourceTree = "<group>"; };
-		4D6A7B361B01CB64003EB38C /* libPocoZip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZip.a; path = ../Libraries/libPocoZip.a; sourceTree = "<group>"; };
 		4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileSystem.cpp; path = ../Source/BEFileSystem.cpp; sourceTree = SOURCE_ROOT; };
 		4D70428713BAE5CA00DE4484 /* BEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileSystem.h; path = ../Source/BEFileSystem.h; sourceTree = SOURCE_ROOT; };
-		4D72E41B1A95632F00939DF9 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = ../Libraries/libturbojpeg.a; sourceTree = "<group>"; };
 		4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLTextReader.cpp; path = ../Source/BEXMLTextReader.cpp; sourceTree = "<group>"; };
 		4D760F7A15AD50F8001A0BAF /* BEXMLTextReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLTextReader.h; path = ../Source/BEXMLTextReader.h; sourceTree = "<group>"; };
 		4D760F7B15AD5265001A0BAF /* BEXMLTextWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLTextWriter.h; path = ../Source/BEXMLTextWriter.h; sourceTree = "<group>"; };
@@ -147,18 +149,14 @@
 		4D807F031A9C27AB00E27E38 /* BEJPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEJPEG.h; path = ../Source/Images/BEJPEG.h; sourceTree = "<group>"; };
 		4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginUtilities.cpp; path = ../Source/BEPluginUtilities.cpp; sourceTree = SOURCE_ROOT; };
 		4D8824E611E93F6000F94475 /* BEPluginUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginUtilities.h; path = ../Source/BEPluginUtilities.h; sourceTree = SOURCE_ROOT; };
-		4D8BA594134579BD003A90B5 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../Libraries/libboost_thread.a; sourceTree = SOURCE_ROOT; };
 		4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEQuadChar.cpp; path = ../Source/BEQuadChar.cpp; sourceTree = "<group>"; };
 		4D8D8E151B167A2C005FEBD3 /* BEQuadChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEQuadChar.h; path = ../Source/BEQuadChar.h; sourceTree = "<group>"; };
 		4D8E64181917561D00C9F2BE /* BEPluginException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginException.h; path = ../Source/BEPluginException.h; sourceTree = "<group>"; };
 		4D9BAA0918C0009000831FF0 /* libmimetic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmimetic.a; path = ../Libraries/libmimetic.a; sourceTree = "<group>"; };
-		4D9BAA0B18C0169000831FF0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../Libraries/libboost_regex.a; sourceTree = "<group>"; };
 		4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEX509.cpp; sourceTree = "<group>"; };
 		4D9E26CF1B29069B002F7DD3 /* BEX509.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEX509.h; sourceTree = "<group>"; };
 		4D9E26D11B292032002F7DD3 /* BEBio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBio.cpp; sourceTree = "<group>"; };
 		4D9E26D21B292032002F7DD3 /* BEBio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBio.h; sourceTree = "<group>"; };
-		4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../Libraries/libboost_system.a; sourceTree = SOURCE_ROOT; };
-		4D9EEE7F118A8E9C00EC9352 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../Libraries/libboost_filesystem.a; sourceTree = SOURCE_ROOT; };
 		4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMacFunctions.h; path = ../Source/BEMacFunctions.h; sourceTree = SOURCE_ROOT; };
 		4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEMacFunctions.mm; path = ../Source/BEMacFunctions.mm; sourceTree = SOURCE_ROOT; };
 		4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPlugin.cpp; path = ../Source/BEPlugin.cpp; sourceTree = SOURCE_ROOT; };
@@ -189,7 +187,6 @@
 		4DDA52EB16D355F100E10827 /* libcharset.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcharset.dylib; path = usr/lib/libcharset.dylib; sourceTree = SDKROOT; };
 		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
 		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
-		4DEB348716FA7A7B004AD91C /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../Libraries/libboost_date_time.a; sourceTree = "<group>"; };
 		4DFFF8B11884A0390015B531 /* BEXero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXero.cpp; path = ../Source/BEXero.cpp; sourceTree = "<group>"; };
 		4DFFF8B21884A0390015B531 /* BEXero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXero.h; path = ../Source/BEXero.h; sourceTree = "<group>"; };
 		C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/FMWrapper.framework; sourceTree = SOURCE_ROOT; };
@@ -200,36 +197,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D0579331B3B83550000585F /* FMWrapper.framework in Frameworks */,
+				4D0579341B3B83550000585F /* libcurl.a in Frameworks */,
+				4D0579351B3B83550000585F /* libjansson.a in Frameworks */,
+				4D0579361B3B83550000585F /* libmimetic.a in Frameworks */,
+				4D0579371B3B83550000585F /* liboauth.a in Frameworks */,
+				4D0579381B3B83550000585F /* libssh2.a in Frameworks */,
+				4D0579391B3B83550000585F /* libxerces-c.a in Frameworks */,
+				4D0E296A1B3A6C1000A35298 /* libboost_date_time.a in Frameworks */,
+				4D0E296B1B3A6C1000A35298 /* libboost_filesystem.a in Frameworks */,
+				4D0E296C1B3A6C1000A35298 /* libboost_regex.a in Frameworks */,
+				4D0E296D1B3A6C1000A35298 /* libboost_system.a in Frameworks */,
+				4D0E296E1B3A6C1000A35298 /* libboost_thread.a in Frameworks */,
+				4D0E296F1B3A6C1000A35298 /* libPocoFoundation.a in Frameworks */,
+				4D0E29701B3A6C1000A35298 /* libPocoZip.a in Frameworks */,
+				4D0E29711B3A6C1000A35298 /* libturbojpeg.a in Frameworks */,
 				4DB753AD1B38DA3000E89C6A /* libssl.dylib in Frameworks */,
 				4DB753AC1B38DA2000E89C6A /* libcrypto.dylib in Frameworks */,
-				4D6A7B371B01CB64003EB38C /* libPocoCrypto.a in Frameworks */,
-				4D6A7B381B01CB64003EB38C /* libPocoNetSSL.a in Frameworks */,
-				4D6A7B391B01CB64003EB38C /* libPocoZip.a in Frameworks */,
-				4D6A7B2F1B01AD14003EB38C /* libPocoFoundation.a in Frameworks */,
-				4D6A7B301B01AD14003EB38C /* libPocoJSON.a in Frameworks */,
-				4D6A7B311B01AD14003EB38C /* libPocoNet.a in Frameworks */,
-				4D6A7B321B01AD14003EB38C /* libPocoUtil.a in Frameworks */,
-				4D6A7B331B01AD14003EB38C /* libPocoXML.a in Frameworks */,
-				4D72E41C1A95632F00939DF9 /* libturbojpeg.a in Frameworks */,
 				4DCD496C1A195B0C00EFCF7F /* libldap.dylib in Frameworks */,
-				4DCD496D1A195B0C00EFCF7F /* libcurl.a in Frameworks */,
-				4DCD49701A195B0C00EFCF7F /* libssh2.a in Frameworks */,
 				4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */,
 				4DCD49721A195B0C00EFCF7F /* libz.dylib in Frameworks */,
 				4DCD49731A195B0C00EFCF7F /* libiconv.dylib in Frameworks */,
-				4DCD49741A195B0C00EFCF7F /* libmimetic.a in Frameworks */,
 				4DCD49751A195B0C00EFCF7F /* libxml2.dylib in Frameworks */,
 				4DCD49761A195B0C00EFCF7F /* libxslt.dylib in Frameworks */,
 				4DCD49771A195B0C00EFCF7F /* libcharset.dylib in Frameworks */,
 				4DCD49781A195B0C00EFCF7F /* libexslt.dylib in Frameworks */,
-				4DCD49791A195B0C00EFCF7F /* libjansson.a in Frameworks */,
-				4DCD497A1A195B0C00EFCF7F /* libboost_regex.a in Frameworks */,
-				4DCD497B1A195B0C00EFCF7F /* liboauth.a in Frameworks */,
 				4DCD497C1A195B0C00EFCF7F /* FMWrapper.framework in Frameworks */,
-				4DCD497D1A195B0C00EFCF7F /* libboost_filesystem.a in Frameworks */,
-				4DCD497E1A195B0C00EFCF7F /* libboost_system.a in Frameworks */,
-				4DCD497F1A195B0C00EFCF7F /* libboost_thread.a in Frameworks */,
-				4DCD49801A195B0C00EFCF7F /* libboost_date_time.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,24 +279,10 @@
 		4D9EEE5D118A8C9600EC9352 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				4D6A7B341B01CB64003EB38C /* libPocoCrypto.a */,
-				4D6A7B351B01CB64003EB38C /* libPocoNetSSL.a */,
-				4D6A7B361B01CB64003EB38C /* libPocoZip.a */,
-				4D6A7B2A1B01AD14003EB38C /* libPocoFoundation.a */,
-				4D6A7B2B1B01AD14003EB38C /* libPocoJSON.a */,
-				4D6A7B2C1B01AD14003EB38C /* libPocoNet.a */,
-				4D6A7B2D1B01AD14003EB38C /* libPocoUtil.a */,
-				4D6A7B2E1B01AD14003EB38C /* libPocoXML.a */,
 				4D57DF85193EE945006739BE /* libcurl.a */,
 				4D57DF7E193EE0F3006739BE /* libssh2.a */,
-				4D72E41B1A95632F00939DF9 /* libturbojpeg.a */,
 				4D3884FD17FE6DDC00E1894F /* liboauth.a */,
 				4D76701E16CDC17A00010A75 /* libjansson.a */,
-				4DEB348716FA7A7B004AD91C /* libboost_date_time.a */,
-				4D9EEE7F118A8E9C00EC9352 /* libboost_filesystem.a */,
-				4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */,
-				4D8BA594134579BD003A90B5 /* libboost_thread.a */,
-				4D9BAA0B18C0169000831FF0 /* libboost_regex.a */,
 				4D9BAA0918C0009000831FF0 /* libmimetic.a */,
 			);
 			name = Libraries;
@@ -404,6 +383,21 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D05792C1B3B83550000585F /* FMWrapper.framework */,
+				4D05792D1B3B83550000585F /* libcurl.a */,
+				4D05792E1B3B83550000585F /* libjansson.a */,
+				4D05792F1B3B83550000585F /* libmimetic.a */,
+				4D0579301B3B83550000585F /* liboauth.a */,
+				4D0579311B3B83550000585F /* libssh2.a */,
+				4D0579321B3B83550000585F /* libxerces-c.a */,
+				4D0E29621B3A6C1000A35298 /* libboost_date_time.a */,
+				4D0E29631B3A6C1000A35298 /* libboost_filesystem.a */,
+				4D0E29641B3A6C1000A35298 /* libboost_regex.a */,
+				4D0E29651B3A6C1000A35298 /* libboost_system.a */,
+				4D0E29661B3A6C1000A35298 /* libboost_thread.a */,
+				4D0E29671B3A6C1000A35298 /* libPocoFoundation.a */,
+				4D0E29681B3A6C1000A35298 /* libPocoZip.a */,
+				4D0E29691B3A6C1000A35298 /* libturbojpeg.a */,
 				4D57DF89193EEA9F006739BE /* libldap.dylib */,
 				4D27C3851861160000E7F4A1 /* Cocoa.framework */,
 				4D27C383186115F300E7F4A1 /* libcrypto.dylib */,
@@ -575,7 +569,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../Libraries\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
@@ -585,7 +580,8 @@
 				INFOPLIST_FILE = ../Resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../Libraries",
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
+					../Libraries/osx,
+					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -615,7 +611,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../Libraries\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
@@ -625,7 +622,8 @@
 				INFOPLIST_FILE = ../Resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../Libraries",
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
+					../Libraries/osx,
+					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -655,7 +653,10 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = "../Build/$(PROJECT_NAME).dst";
-				FRAMEWORK_SEARCH_PATHS = ../Libraries;
+				FRAMEWORK_SEARCH_PATHS = (
+					../Libraries,
+					../Libraries/osx,
+				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_MODEL_TUNING = "";
@@ -694,7 +695,10 @@
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
-				LIBRARY_SEARCH_PATHS = ../Libraries;
+				LIBRARY_SEARCH_PATHS = (
+					../Libraries,
+					../Libraries/osx,
+				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
@@ -717,7 +721,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.1a3;
+				VERSION_STRING = 3.1b1;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -737,7 +741,10 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DSTROOT = "../Build/$(PROJECT_NAME).dst";
-				FRAMEWORK_SEARCH_PATHS = ../Libraries;
+				FRAMEWORK_SEARCH_PATHS = (
+					../Libraries,
+					../Libraries/osx,
+				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_MODEL_TUNING = "";
@@ -776,7 +783,10 @@
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
-				LIBRARY_SEARCH_PATHS = ../Libraries;
+				LIBRARY_SEARCH_PATHS = (
+					../Libraries,
+					../Libraries/osx,
+				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
@@ -799,7 +809,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.1a3;
+				VERSION_STRING = 3.1b1;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
