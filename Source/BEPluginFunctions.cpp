@@ -54,6 +54,14 @@
 #include "BEJavaScript.h"
 #include "Images/BEJPEG.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wall"
+#pragma clang diagnostic ignored "-pedantic"
+#pragma clang diagnostic ignored "-Wdocumentation"
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wunused-parameter"
+#pragma clang diagnostic ignored "-Wshadow"
+
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/thread.hpp>
@@ -63,6 +71,8 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
+
+#pragma clang diagnostic pop
 
 #include <Poco/Exception.h>
 #include <Poco/RegularExpression.h>

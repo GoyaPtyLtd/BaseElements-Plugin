@@ -15,8 +15,15 @@
 
 #include <errno.h>
 
-#include "boost/date_time/posix_time/posix_time.hpp"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wall"
+#pragma clang diagnostic ignored "-pedantic"
+#pragma clang diagnostic ignored "-Wdocumentation"
+#pragma clang diagnostic ignored "-Wconversion"
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+#pragma clang diagnostic pop
 
 
 using namespace std;
