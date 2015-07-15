@@ -1,13 +1,18 @@
 ########################################################################
-Version 3.1b1
+Version 3.1
 ########################################################################
 
-June 23, 2015
+July 15, 2015
 
 New Functions
 
+BE_ContainerIsCompressed
 BE_ConvertContainer
 BE_Curl_Trace
+BE_Gzip
+BE_ImportFile
+BE_JPEG_Recompress
+BE_UnGzip
 BE_Xero_GenerateKeys
 
 Experimental (Hidden) Functions
@@ -17,69 +22,26 @@ BE_XOR
 
 Changes
 
-BE_EvaluateJavaScript: now visible in calculation dialogs
-BE_HMAC: add a parameter to allow and input encoding for Base64 and Hex
-BE_HTTP_POST: do not crash when a http post contains a parameter that is not a key=value pair
-BE_SMTP_Server: now visible in calculation dialogs
-BE_SMTP_Send: now visible in calculation dialogs
-BE_SMTP_Send: force attachments to the end of the message
-
-Ensure that Get ( InstalledFMPlugins ) returns the same value on both OS X and Windows
-Remove support for Windows XP
-
-
-########################################################################
-Version 3.1a3
-########################################################################
-
-February 27, 2015
-
-New Functions
-
-BE_JPEG_Recompress
-
-
-Changes
-
-
-########################################################################
-Version 3.1a2
-########################################################################
-
-February 18, 2015
-
-Changes
-
-BE_SMTP_Send: now works with self signed SSL certificates by default
-BE_SMTP_Send: replyTo parameter added
-BE_SMTP_Send: allow the use of custom curl options and headers
-BE_SplitBEXMLFiles: correct a problem with accessing xml nodes
-
-
-########################################################################
-Version 3.1a1
-########################################################################
-
-January 29, 2015
-
-New Functions
-
-BE_ContainerIsCompressed
-BE_Gzip
-BE_ImportFile
-BE_UnGzip
-
-
-Changes
-
 BE_Curl_Set_Option: label function parameters as optional
 BE_Curl_Set_Option: the options CURLOPT_HTTPAUTH & CURLOPT_PROXYAUTH take named constants
 BE_EvaluateJavaScript: add the ability to call FM scripts and evaluate FM calculations from JavaScript
+BE_EvaluateJavaScript: now visible in calculation dialogs
+BE_HMAC: add a parameter to allow and input encoding for Base64 and Hex
 BE_HTTP_POST: allow post args to specify file paths using the @ syntax
+BE_HTTP_POST: do not crash when a http post contains a parameter that is not a key=value pair
 BE_JSON_Encode: correctly handle leading 0 for real numbers
 BE_JSON_Error_Description: do not change the value of BE_GetLastError
-BE_SMTP_Server, BE_SMTP_Send: functions now visible
+BE_SMTP_Send: allow the use of custom curl options and headers
+BE_SMTP_Send: force attachments to the end of the message
+BE_SMTP_Send: now visible in calculation dialogs
+BE_SMTP_Send: now works with self signed SSL certificates by default
+BE_SMTP_Send: replyTo parameter added
+BE_SMTP_Server: now visible in calculation dialogs
+BE_SplitBEXMLFiles: correct a problem with accessing xml nodes
 BE_Values_Unique, BE_Values_FilterOut: add option to be case insensitive
+
+Ensure that Get ( InstalledFMPlugins ) returns the same value on both OS X and Windows
+Remove support for Windows XP
 
 
 ########################################################################

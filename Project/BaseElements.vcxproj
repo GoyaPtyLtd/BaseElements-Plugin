@@ -197,16 +197,17 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeaderOutputFile>..\Build\$(Configuration).intermediate\$(ProjectName).pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\Build\</AssemblerListingLocation>
-      <ObjectFileName>..\Build\</ObjectFileName>
-      <ProgramDataBaseFileName>..\Build\</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\Build\$(Platform)\</AssemblerListingLocation>
+      <ObjectFileName>..\Build\$(Platform)\</ObjectFileName>
+      <ProgramDataBaseFileName>..\Build\$(Platform)\</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <DisableSpecificWarnings>4068;4005;4996</DisableSpecificWarnings>
-      <UndefinePreprocessorDefinitions>PRIVATE_VERSION</UndefinePreprocessorDefinitions>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <ResourceCompile>
@@ -219,8 +220,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\Build\$(Configuration).intermediate\$(ProjectName)D.pdb</ProgramDatabaseFile>
-      <ImportLibrary>..\Build\$(Configuration).intermediate\$(ProjectName)D.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName)D.pdb</ProgramDatabaseFile>
+      <ImportLibrary>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName)D.lib</ImportLibrary>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
@@ -248,16 +249,17 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeaderOutputFile>..\Build\$(Configuration).intermediate\$(ProjectName).pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\Build\</AssemblerListingLocation>
-      <ObjectFileName>..\Build\</ObjectFileName>
-      <ProgramDataBaseFileName>..\Build\</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\Build\$(Platform)\</AssemblerListingLocation>
+      <ObjectFileName>..\Build\$(Platform)\</ObjectFileName>
+      <ProgramDataBaseFileName>..\Build\$(Platform)\</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <DisableSpecificWarnings>4068;4005;4996</DisableSpecificWarnings>
-      <UndefinePreprocessorDefinitions>PRIVATE_VERSION</UndefinePreprocessorDefinitions>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <ResourceCompile>
@@ -269,8 +271,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\Build\$(Configuration).intermediate\$(ProjectName)D.pdb</ProgramDatabaseFile>
-      <ImportLibrary>..\Build\$(Configuration).intermediate\$(ProjectName)D.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName)D.pdb</ProgramDatabaseFile>
+      <ImportLibrary>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName)D.lib</ImportLibrary>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>

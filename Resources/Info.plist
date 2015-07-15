@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleGetInfoString</key>
-	<string>${PRODUCT_NAME} Plugin version ${VERSION_STRING}, Copyright 2010-2014 by Goya.  All rights reserved.</string>
+	<string>${PRODUCT_NAME} Plugin version ${VERSION_STRING}, Copyright 2010-2015 by Goya.  All rights reserved.</string>
 	<key>CFBundleIdentifier</key>
 	<string>au.com.goya.baseelements</string>
 	<key>CFBundleInfoDictionaryVersion</key>

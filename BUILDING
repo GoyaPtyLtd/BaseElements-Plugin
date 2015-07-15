@@ -5,7 +5,7 @@ Building
 The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
 Notes:
-- these instructions apply to version 3.0 of the BaseElements Plugin
+- these instructions apply to version 3.1 of the BaseElements Plugin
 - version 14.0.1.175 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 - the location of the release builds needs to be changed to suit your environment
@@ -14,7 +14,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 3.1 of the plug-in is built on Mac OS X 10.10.3 using Xcode 6.3.2. The Xcode Command Line Tools are also needed.
+Version 3.1 of the plug-in is built on Mac OS X 10.10.4 using Xcode 6.4. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
