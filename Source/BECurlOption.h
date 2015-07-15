@@ -2,7 +2,7 @@
  BECurlOptions.h
  BaseElements Plug-In
  
- Copyright 2014 Goya. All rights reserved.
+ Copyright 2013~2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -49,7 +49,8 @@ public:
 		type_string = 1,
 		type_long = 2,
 		type_curl_off_t = 3,
-		type_void_at = 4
+		type_void_at = 4,
+		type_named_constant = 5
 	};
 	
 	BECurlOption ( const std::string option_name, const fmx::Data& option_value );
@@ -73,7 +74,9 @@ protected:
 	std::string string_value;
 	curl_off_t curl_off_t_value;
 	void * void_at_value;
-	
+
+	const long named_constants ( const std::string constant_name );
+
 };
 
 

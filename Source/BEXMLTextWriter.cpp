@@ -2,7 +2,7 @@
  BEXMLTextWriter.cpp
  BaseElements Plug-In
  
- Copyright 2012-2014 Goya. All rights reserved.
+ Copyright 2012-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -66,7 +66,7 @@ BEXMLTextWriter::~BEXMLTextWriter()
 
 void BEXMLTextWriter::start_element( const string name )
 {
-	int return_code = xmlTextWriterStartElement	( writer, (xmlChar *)name.c_str() );
+	const int return_code = xmlTextWriterStartElement	( writer, (xmlChar *)name.c_str() );
 	if ( return_code == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -76,7 +76,7 @@ void BEXMLTextWriter::start_element( const string name )
 
 void BEXMLTextWriter::attribute ( const string name, const string value )
 {
-	int return_code = xmlTextWriterWriteAttribute ( writer, (xmlChar *)name.c_str(), (xmlChar *)value.c_str() );
+	const int return_code = xmlTextWriterWriteAttribute ( writer, (xmlChar *)name.c_str(), (xmlChar *)value.c_str() );
 	if ( return_code == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -85,7 +85,7 @@ void BEXMLTextWriter::attribute ( const string name, const string value )
 
 void BEXMLTextWriter::end_element()
 {
-	int return_code = xmlTextWriterEndElement ( writer );
+	const int return_code = xmlTextWriterEndElement ( writer );
 	if ( return_code == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -94,7 +94,7 @@ void BEXMLTextWriter::end_element()
 
 void BEXMLTextWriter::write_string ( const string to_write )
 {
-	int return_code = xmlTextWriterWriteString ( writer, (xmlChar *)to_write.c_str() );
+	const int return_code = xmlTextWriterWriteString ( writer, (xmlChar *)to_write.c_str() );
 	if ( return_code == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
@@ -112,7 +112,7 @@ void BEXMLTextWriter::write_cdata ( const string to_write )
 
 void BEXMLTextWriter::write_raw ( const string to_write )
 {
-	int return_code = xmlTextWriterWriteRaw ( writer, (xmlChar *)to_write.c_str() );
+	const int return_code = xmlTextWriterWriteRaw ( writer, (xmlChar *)to_write.c_str() );
 	if ( return_code == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}

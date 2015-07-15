@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -20,6 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{646553B8-5F11-4EB7-8AFE-29B5AC598E93}</ProjectGuid>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -27,22 +28,26 @@
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfAtl>false</UseOfAtl>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfAtl>false</UseOfAtl>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -76,26 +81,26 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.fmx</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.fmx64</TargetExt>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Libraries;$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Libraries\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Libraries\$(Platform);$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Libraries\$(Platform);$(LibraryPath)</LibraryPath>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.fmx</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.fmx64</TargetExt>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">\\VBOXSVR\BaseElementsPlugin\Libraries;$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Libraries\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Libraries\$(Platform);$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Libraries\$(Platform);$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;../Source/minizip;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;../Source/minizip;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
-    <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\libxslt\libxslt;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\Support;$(SourcePath)</SourcePath>
-    <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\libxslt\libxslt;C:\Users\Mark\Documents\Visual Studio 2010\Projects\BaseElements\Source\Support;$(SourcePath)</SourcePath>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration).intermediate\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration).intermediate\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Mark\Documents\My Dropbox\Goya\BaseElemetns PlugIn\$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Mark\Documents\My Dropbox\Goya\BaseElemetns PlugIn\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Build\$(Configuration).intermediate\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Build\$(Configuration).intermediate\</IntDir>
+    <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(VC_SourcePath);$(UniversalCRT_SourcePath);</SourcePath>
+    <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(VC_SourcePath);$(UniversalCRT_SourcePath);</SourcePath>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\$(Platform)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Z:\Dropbox\Goya\BaseElemetns PlugIn\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Z:\Dropbox\Goya\BaseElemetns PlugIn\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)</TargetName>
   </PropertyGroup>
@@ -130,12 +135,13 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\Build\$(Configuration).intermediate\$(ProjectName).lib</ImportLibrary>
       <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,12 +173,13 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\Build\$(Configuration).intermediate\$(ProjectName).lib</ImportLibrary>
       <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib;msvcrtd.lib</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -190,16 +197,17 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeaderOutputFile>..\Build\$(Configuration).intermediate\$(ProjectName).pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\Build\</AssemblerListingLocation>
-      <ObjectFileName>..\Build\</ObjectFileName>
-      <ProgramDataBaseFileName>..\Build\</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\Build\$(Platform)\</AssemblerListingLocation>
+      <ObjectFileName>..\Build\$(Platform)\</ObjectFileName>
+      <ProgramDataBaseFileName>..\Build\$(Platform)\</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <DisableSpecificWarnings>4068;4005;4996</DisableSpecificWarnings>
-      <UndefinePreprocessorDefinitions>PRIVATE_VERSION</UndefinePreprocessorDefinitions>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <ResourceCompile>
@@ -208,16 +216,16 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\Build\$(Configuration).intermediate\$(ProjectName)D.pdb</ProgramDatabaseFile>
-      <ImportLibrary>..\Build\$(Configuration).intermediate\$(ProjectName)D.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName)D.pdb</ProgramDatabaseFile>
+      <ImportLibrary>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName)D.lib</ImportLibrary>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;nafxcwd.lib;msvcrt.lib;libcmt.lib;uafxcwd.lib;libcpmt.lib;libmimetic_mt.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;nafxcwd.lib;msvcrt.lib;libcmt.lib;uafxcwd.lib</IgnoreSpecificDefaultLibraries>
       <AssemblyLinkResource>
       </AssemblyLinkResource>
       <DelayLoadDLLs>
@@ -241,16 +249,17 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeaderOutputFile>..\Build\$(Configuration).intermediate\$(ProjectName).pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\Build\</AssemblerListingLocation>
-      <ObjectFileName>..\Build\</ObjectFileName>
-      <ProgramDataBaseFileName>..\Build\</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\Build\$(Platform)\</AssemblerListingLocation>
+      <ObjectFileName>..\Build\$(Platform)\</ObjectFileName>
+      <ProgramDataBaseFileName>..\Build\$(Platform)\</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <DisableSpecificWarnings>4068;4005;4996</DisableSpecificWarnings>
-      <UndefinePreprocessorDefinitions>PRIVATE_VERSION</UndefinePreprocessorDefinitions>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <ResourceCompile>
@@ -258,12 +267,12 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\Build\$(Configuration).intermediate\$(ProjectName)D.pdb</ProgramDatabaseFile>
-      <ImportLibrary>..\Build\$(Configuration).intermediate\$(ProjectName)D.lib</ImportLibrary>
+      <ProgramDatabaseFile>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName)D.pdb</ProgramDatabaseFile>
+      <ImportLibrary>..\Build\$(Configuration)\$(Platform).intermediate\$(ProjectName)D.lib</ImportLibrary>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
@@ -292,9 +301,12 @@
     <ClCompile Include="..\Source\BEFileTextReader.cpp" />
     <ClCompile Include="..\Source\BEJavaScript.cpp" />
     <ClCompile Include="..\Source\BEJSON.cpp" />
-    <ClCompile Include="..\Source\BEMessageDigest.cpp" />
+    <ClCompile Include="..\Source\Crypto\BEBio.cpp" />
+    <ClCompile Include="..\Source\Crypto\BEMessageDigest.cpp">
+      <DeploymentContent>false</DeploymentContent>
+    </ClCompile>
     <ClCompile Include="..\Source\BEOAuth.cpp" />
-    <ClCompile Include="..\Source\BEOpenSSLAES.cpp" />
+    <ClCompile Include="..\Source\Crypto\BEOpenSSLAES.cpp" />
     <ClCompile Include="..\Source\BEPlugin.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
@@ -319,12 +331,12 @@
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </UndefinePreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Source\BEQuadChar.cpp" />
     <ClCompile Include="..\Source\BEShell.cpp" />
     <ClCompile Include="..\Source\BESMTP.cpp" />
     <ClCompile Include="..\Source\BESMTPEmailMessage.cpp" />
     <ClCompile Include="..\Source\BESQLCommand.cpp" />
     <ClCompile Include="..\Source\BETime.cpp" />
-    <ClCompile Include="..\Source\BEWinCommonFileDialog.cpp" />
     <ClCompile Include="..\Source\BEWinFunctions.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </UndefinePreprocessorDefinitions>
@@ -350,12 +362,10 @@
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEZlib.cpp" />
+    <ClCompile Include="..\Source\Crypto\BEX509.cpp" />
     <ClCompile Include="..\Source\duktape\duktape.c" />
-    <ClCompile Include="..\Source\minizip\ioapi.c" />
-    <ClCompile Include="..\Source\minizip\iowin32.c" />
-    <ClCompile Include="..\Source\minizip\mztools.c" />
-    <ClCompile Include="..\Source\minizip\unzip.c" />
-    <ClCompile Include="..\Source\minizip\zip.c" />
+    <ClCompile Include="..\Source\Images\BEImage.cpp" />
+    <ClCompile Include="..\Source\Images\BEJPEG.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\Resource.h" />
@@ -368,20 +378,21 @@
     <ClInclude Include="..\Source\BEFileTextReader.h" />
     <ClInclude Include="..\Source\BEJavaScript.h" />
     <ClInclude Include="..\Source\BEJSON.h" />
-    <ClInclude Include="..\Source\BEMessageDigest.h" />
+    <ClInclude Include="..\Source\Crypto\BEBio.h" />
+    <ClInclude Include="..\Source\Crypto\BEMessageDigest.h" />
     <ClInclude Include="..\Source\BEOAuth.h" />
-    <ClInclude Include="..\Source\BEOpenSSLAES.h" />
+    <ClInclude Include="..\Source\Crypto\BEOpenSSLAES.h" />
     <ClInclude Include="..\Source\BEPluginException.h" />
     <ClInclude Include="..\Source\BEPluginFunctions.h" />
     <ClInclude Include="..\Source\BEPluginGlobalDefines.h" />
     <ClInclude Include="..\Source\BEPluginUtilities.h" />
+    <ClInclude Include="..\Source\BEQuadChar.h" />
     <ClInclude Include="..\Source\BEShell.h" />
     <ClInclude Include="..\Source\BESMTP.h" />
     <ClInclude Include="..\Source\BESMTPEmailMessage.h" />
     <ClInclude Include="..\Source\BESQLCommand.h" />
     <ClInclude Include="..\Source\BETime.h" />
     <ClInclude Include="..\Source\BEValueList.h" />
-    <ClInclude Include="..\Source\BEWinCommonFileDialog.h" />
     <ClInclude Include="..\Source\BEWinFunctions.h" />
     <ClInclude Include="..\Source\BEWinIFileDialog.h" />
     <ClInclude Include="..\Source\BEWStringVector.h" />
@@ -393,13 +404,10 @@
     <ClInclude Include="..\Source\BEXSLT.h" />
     <ClInclude Include="..\Source\BEZlib.h" />
     <ClInclude Include="..\Source\BE_Boost_FileSystem_Additions.hpp" />
+    <ClInclude Include="..\Source\Crypto\BEX509.h" />
     <ClInclude Include="..\Source\duktape\duktape.h" />
-    <ClInclude Include="..\Source\minizip\crypt.h" />
-    <ClInclude Include="..\Source\minizip\ioapi.h" />
-    <ClInclude Include="..\Source\minizip\iowin32.h" />
-    <ClInclude Include="..\Source\minizip\mztools.h" />
-    <ClInclude Include="..\Source\minizip\unzip.h" />
-    <ClInclude Include="..\Source\minizip\zip.h" />
+    <ClInclude Include="..\Source\Images\BEImage.h" />
+    <ClInclude Include="..\Source\Images\BEJPEG.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

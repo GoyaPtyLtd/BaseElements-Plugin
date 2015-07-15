@@ -55,12 +55,11 @@ public:
 	bool empty();
 	string value();
 	string as_string();
-	string raw_xml();
-	string inner_raw_xml();
+	string inner_xml();
 	string content();
 	void skip_unwanted_nodes();
 		
-	static void error_reader (void * arg, const char * msg, xmlParserSeverities severity, xmlTextReaderLocatorPtr locator );
+	static void error_reader ( void * arg, const char * msg, xmlParserSeverities severity, xmlTextReaderLocatorPtr locator );
 	
 protected:
 	

@@ -2,7 +2,7 @@
  BECurl.h
  BaseElements Plug-In
  
- Copyright 2011-2014 Goya. All rights reserved.
+ Copyright 2011-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -131,7 +131,8 @@ protected:
 	
 	std::vector<char> upload_data;
 	struct MemoryStruct userdata;
-	
+	struct curl_httppost *post_data;
+
 	std::string parameters;
 	
 	struct curl_slist * custom_headers;

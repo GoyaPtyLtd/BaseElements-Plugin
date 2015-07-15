@@ -14,7 +14,6 @@
 
 #include "BEPluginGlobalDefines.h"
 #include "BEPluginUtilities.h"
-#include "BEFileMakerPlugin.h"
 
 #include <iostream>
 #include <vector>

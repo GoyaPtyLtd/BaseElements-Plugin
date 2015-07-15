@@ -2,7 +2,7 @@
  BESMTPEmailMessage.cpp
  BaseElements Plug-In
  
- Copyright 2014 Goya. All rights reserved.
+ Copyright 2014-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -12,6 +12,7 @@
 
 #include "BESMTPEmailMessage.h"
 #include "BEPluginException.h"
+#include "BECurl.h"
 
 #include <sstream>
 
@@ -24,15 +25,27 @@ using namespace std;
 #pragma mark -
 
 
-BESMTPEmailMessage::BESMTPEmailMessage ( std::string _from, std::string _to, std::string _subject, std::string _text )
+BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::string& to, const std::string& subject, const std::string& message_body )
 {
 	
-	from = _from;
-	to = BEValueList<string> ( _to );
-	subject = _subject;
-	text.body().assign ( _text );
-	text.header().contentType() = "text/plain";
-	
+	message = new mimetic::MultipartMixed;
+
+	auto_ptr< BEValueList<string> > mail_to ( new BEValueList<string> ( to ) );
+	message->header().to ( mail_to->get_as_comma_separated() );
+
+	message->header().from ( from );
+	message->header().subject ( subject );
+
+	text = new mimetic::MimeEntity;
+	text->body().assign ( message_body + "\n\n" );
+	text->header().contentType() = "text/plain";
+
+}
+
+
+BESMTPEmailMessage::~BESMTPEmailMessage ( )
+{
+	delete message;
 }
 
 
@@ -41,47 +54,94 @@ BESMTPEmailMessage::BESMTPEmailMessage ( std::string _from, std::string _to, std
 #pragma mark -
 
 
-void BESMTPEmailMessage::set_html_alternative ( std::string html_part )
+std::auto_ptr< BEValueList<std::string> > BESMTPEmailMessage::get_address_list ( const std::string& addresses )
 {
-	html.body().assign ( html_part );
-	html.header().contentType() = "text/html";
+	std::auto_ptr< BEValueList<std::string> > addresses_list ( new BEValueList<string> ( addresses, ", ", true ) );
+	return addresses_list;
+};
+
+
+void BESMTPEmailMessage::set_cc_addresses ( const std::string& email_addresses )
+{
+	auto_ptr< BEValueList<string> > cc ( new BEValueList<string> ( email_addresses ) );
+	if ( cc->not_empty() ) {
+		message->header().cc ( cc->get_as_comma_separated() );
+	}
+}
+
+
+void BESMTPEmailMessage::set_bcc_addresses ( const std::string& email_addresses )
+{
+	auto_ptr< BEValueList<string> > bcc ( new BEValueList<string> ( email_addresses ) );
+	if ( bcc->not_empty() ) {
+		message->header().bcc ( bcc->get_as_comma_separated() );
+	}
+
+}
+
+
+void BESMTPEmailMessage::set_reply_to ( const std::string& reply_to_address )
+{
+	if ( ! reply_to_address.empty() ) {
+		message->header().replyto ( reply_to_address );
+	}
+
+}
+
+
+void BESMTPEmailMessage::set_html_alternative ( const std::string& html_part )
+{
+	html = new mimetic::MimeEntity;
+	html->body().assign ( html_part );
+	html->header().contentType() = "text/html";
 }
 
 
 void BESMTPEmailMessage::add_attachment ( const boost::filesystem::path path_to_attachment )
 {
-	boost::filesystem::path attachment = path_to_attachment;
-	if ( exists ( attachment ) ) {
-		attachments.append ( attachment.string() );
+	if ( exists ( path_to_attachment ) ) {
+
+		boost::filesystem::path attachment = path_to_attachment;
+		attachment.make_preferred();
+
+		mimetic::Attachment * attach_this = new mimetic::Attachment (
+																	 attachment.string(),
+																	 mimetic::ContentType ( "application", "octet-stream" ),
+																	 mimetic::Base64::Encoder()
+																	 );
+		message->body().parts().push_back ( attach_this );
+		
 	} else {
 		throw BEPlugin_Exception ( kNoSuchFileOrDirectoryError );
 	}
 }
 
 
-#pragma warning Should use boost::filesystem::path
-
-void BESMTPEmailMessage::add_attachments ( BEValueList<wstring> attachment_list )
+void BESMTPEmailMessage::add_attachments ( void )
 {
 		
-	for ( size_t i = 0 ; i < attachment_list.size() ; i++ ) {
-		
-		boost::filesystem::path attachment = attachment_list.at ( i );
-		if ( exists ( attachment ) ) {
-			attachments.append ( attachment.string() );
-		} else {
-			throw BEPlugin_Exception ( kNoSuchFileOrDirectoryError );
-		}
-
+	for ( size_t i = 0 ; i < attachments.size() ; i++ ) {
+		boost::filesystem::path attachment = attachments.at ( i );
+		add_attachment ( attachment );
 	}
 
+}
+
+
+void BESMTPEmailMessage::set_attachments ( const BEValueList<std::wstring>& attachment_list )
+{
+	attachments = attachment_list;
 }
 
 
 string BESMTPEmailMessage::as_string()
 {
 	build_message();
-	return body;
+
+	ostringstream meassage_stream;
+	meassage_stream << *message << endl;
+	return meassage_stream.str();
+
 }
 
 
@@ -93,49 +153,21 @@ string BESMTPEmailMessage::as_string()
 void BESMTPEmailMessage::build_message ( )
 {
 	
-	mimetic::MimeEntity * message = new mimetic::MultipartMixed;
-	
-	if ( cc.not_empty() ) {
-		message->header().cc ( cc.get_as_comma_separated() );
-	}
-	
-	if ( bcc.not_empty() ) {
-		message->header().bcc ( bcc.get_as_comma_separated() );
-	}
-	
-
-	if ( !text.body().empty() && !html.body().empty() ) {
+	if ( !text->body().empty() && !html->body().empty() ) {
 
 		mimetic::MultipartAlternative * multipart_alternative = new mimetic::MultipartAlternative;
-		multipart_alternative->body().parts().push_back ( &text );
-		multipart_alternative->body().parts().push_back ( &html );
+		multipart_alternative->body().parts().push_back ( text );
+		multipart_alternative->body().parts().push_back ( html );
 		message->body().parts().push_back ( multipart_alternative );
 
-	} else if ( !text.body().empty() ) {
-		message->body().parts().push_back ( &text );
-	} else if ( !html.body().empty() ) {
-		message->body().parts().push_back ( &html );
-	}
-	
-	for ( size_t i = 0 ; i < attachments.size() ; i++ ) {
-		
-		string file = attachments.at ( i ).string();
-		mimetic::Attachment * attach_this = new mimetic::Attachment ( file );
-		message->body().parts().push_back ( attach_this );
-
+	} else if ( !text->body().empty() ) {
+		message->body().parts().push_back ( text );
+	} else if ( !html->body().empty() ) {
+		message->body().parts().push_back ( html );
 	}
 
-	message->header().from ( from );
-	message->header().subject ( subject );
-	message->header().to ( to.get_as_comma_separated() );
+	add_attachments();
 	
-	ostringstream meassage_stream;
-	meassage_stream << *message << endl;
-	body = meassage_stream.str();
-
-//	delete message;
-
-} // build_payload
-
+} // build_message
 
 

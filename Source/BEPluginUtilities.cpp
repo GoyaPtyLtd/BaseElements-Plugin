@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
  
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -21,12 +21,16 @@
 #endif 
 
 
+#include "BEPluginException.h"
 #include "BEPluginUtilities.h"
+#include "BEQuadChar.h"
 #include "BEZlib.h"
 
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+
+#include <utf8.h>
 
 #include <zlib.h>
 
@@ -40,7 +44,6 @@ using namespace fmx;
 using namespace boost::filesystem;
 
 
-extern string g_text_encoding;
 extern errcode g_last_ddl_error;
 
 
@@ -93,7 +96,7 @@ errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
 void SetResult ( const intmax_t number, Data& results )
 {
 	FixPtAutoPtr numeric_result;
-	numeric_result->AssignDouble ( number );
+	numeric_result->AssignDouble ( (double)number );
 	results.SetAsNumber ( *numeric_result );
 }
 
@@ -108,7 +111,7 @@ void SetResultAsDouble ( const double number, Data& results )
 
 //	const std::string as_string = boost::lexical_cast<std::string>( number );
 	
-	// do this the c++ vay due to avoid rounding errors
+	// do this the c++ vay to avoid rounding errors
 	ostringstream stream;
 	stream << number;
 	StringAutoPtr result ( new string );
@@ -128,7 +131,7 @@ void SetResult ( const Text& text, Data& results )
 }
 
 
-void SetResult ( const string text, Data& results )
+void SetResult ( const string& text, Data& results )
 {
 	TextAutoPtr result_text;
 	result_text->Assign ( text.c_str(), Text::kEncoding_UTF8 );
@@ -136,7 +139,7 @@ void SetResult ( const string text, Data& results )
 }
 
 
-void SetResult ( const wstring text, Data& results )
+void SetResult ( const wstring& text, Data& results )
 {
 	TextAutoPtr result_text;
 	result_text->AssignWide ( text.c_str() );
@@ -146,6 +149,10 @@ void SetResult ( const wstring text, Data& results )
 
 void SetResult ( const StringAutoPtr text, Data& results )
 {
+	if ( ! utf8::is_valid ( text->begin(), text->end() ) ) {
+		throw BEPlugin_Exception ( kInvalidUTF8 );
+	}
+
 	TextAutoPtr result_text;
 	result_text->Assign ( text->c_str(), Text::kEncoding_UTF8 );			
 	SetResult ( *result_text, results );
@@ -159,60 +166,109 @@ void SetResult ( const WStringAutoPtr text, Data& results )
 	SetResult ( *result_text, results );
 }
 
-void SetResult ( vector<char> data, Data& results )
+void SetResult ( vector<char>& data, Data& results )
 {
 	data.push_back ( '\0' );
-	StringAutoPtr data_string ( new string ( &data[0] ) );
+	StringAutoPtr data_string ( new string ( &data[0], data.size() ) );
 	SetResult ( data_string, results );
-	
+
+//	SetResult ( "", data, results );
+
 }
 
-void SetResult ( vector<unsigned char> data, Data& results )
+void SetResult ( const vector<unsigned char>& data, Data& results )
 {
 	vector<char> char_data ( data.begin(), data.end() );
 	SetResult ( char_data, results );
-	
 }
 
 
 
-void SetResult ( const std::string filename, const vector<char> data, Data& results )
+void SetResult ( const std::string& filename, const vector<char>& data, Data& results, std::string data_type )
+{
+	const short width = 0;
+	const short height = 0;
+
+	return SetResult ( filename, data, data_type, width, height, results );
+}
+
+
+void SetResult ( const std::string& filename, const vector<unsigned char>& data, Data& results, std::string data_type )
+{
+	vector<char> char_data ( data.begin(), data.end() );
+	return SetResult ( filename, char_data, results, data_type );
+}
+
+
+void SetResult ( const std::string& filename, const vector<char>& data, const std::string& type, const short width, const short height, Data& results )
 {
 	bool as_binary = !filename.empty();
 	
+	vector<char> output = data;
+
+	BEQuadChar data_type ( type );
+	bool compress = data_type.is_zlib();
+
 	if ( as_binary ) {	// if a file name is supplied send back a file
 		
 		BinaryDataAutoPtr resultBinary;
 		TextAutoPtr file;
 		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
-		resultBinary->AddFNAMData ( *file ); 
-		
-// defeat: Returning null reference (within a call to 'operator*')
-// constructor for data_type is not null
-#ifndef __clang_analyzer__
-		QuadCharAutoPtr data_type ( 'F', 'I', 'L', 'E' );
-		resultBinary->Add ( *data_type, (FMX_UInt32)data.size(), (void *)&data[0] );
-#endif
-		results.SetBinaryData ( *resultBinary, true ); 
+		resultBinary->AddFNAMData ( *file ); // error =
+
+		//          { "snd " }
+
+		if ( data_type.is_image() && (width != kErrorUnknown && height != kErrorUnknown ) ) {
+			resultBinary->AddSIZEData ( width, height ); // error =
+		}
+
+		if ( compress ) {
+			output = CompressContainerStream ( data );
+		}
+		resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)&output[0] ); // error =
+		results.SetBinaryData ( *resultBinary, true );
 		
 	} else { // otherwise try sending back text
 
-		// filemaker will go into an infinite loop if non-utf8 data is set as utf8
-		// so try to convert it first
+		if ( data.size() > 0 ) {
+
+			// filemaker will go into an infinite loop if non-utf8 data is set as utf8
+			// so try to convert it first
 		
-		StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size(), g_text_encoding );
-		SetResult ( utf8, results );
+			StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size() );
+
+			if ( compress ) {
+				vector<char> utf8_text ( utf8->begin(), utf8->end() );
+				output = CompressContainerStream ( utf8_text );
+			} else {
+				output.assign ( utf8->begin(), utf8->end() );
+			}
+
+		}
+
+		SetResult ( output, results );
 		
 	}
 	
-} // SetBinaryDataResult
+} // SetResult
 
 
-void SetResult ( const std::string filename, const vector<unsigned char> data, Data& results )
+void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results )
 {
-	vector<char> char_data ( data.begin(), data.end() );
-	return SetResult ( filename, char_data, results );
+	
+	const vector<unsigned char> unsigned_char_data = image.get_data();
+	vector<char> char_data ( unsigned_char_data.begin(), unsigned_char_data.end() );
+
+	return SetResult ( filename, char_data, image.get_type(), (short)image.get_width(), (short)image.get_height(), results );
+
+} // SetResult
+
+
+void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results )
+{
+	return SetResult ( filename, data, FILE_CONTAINER_TYPE, 0, 0, results );
 }
+
 
 
 #pragma mark -
@@ -239,31 +295,25 @@ long ParameterAsLong ( const DataVect& parameters, const FMX_UInt32 which, const
 }
 
 
-StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which )
+StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which, const std::string default_value )
 {	
 	
-	StringAutoPtr result ( new string );
+	StringAutoPtr result ( new string ( default_value ) );
 	
 	try {
 		
 		TextAutoPtr raw_data;
 		raw_data->SetText ( parameters.AtAsText ( which ) );
 		
-		FMX_UInt32 text_size = (4*(raw_data->GetSize())) + 1;
-		char * text = new char [ text_size ]();
-		raw_data->GetBytes ( text, text_size, 0, (FMX_UInt32)Text::kSize_End, Text::kEncoding_UTF8 );
-		result->assign ( text );
-		delete [] text;
+		result->assign ( TextAsUTF8String ( *raw_data ) );
 		
 	} catch ( exception& /* e */ ) {
-		;	// return an empty string
+		;	// return the default
 	}
 	
 	return result;
 	
 } // ParameterAsUTF8String
-
-
 
 
 WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which )
@@ -357,6 +407,17 @@ vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX_UInt3
 } // ParameterAsVectorChar
 
 
+vector<unsigned char> ParameterAsVectorUnsignedChar ( const DataVect& parameters, const FMX_UInt32 which )
+{
+
+	vector<char> data = ParameterAsVectorChar ( parameters, which );
+	vector<unsigned char> output (data.begin(), data.end() );
+
+	return output;
+
+} // ParameterAsVectorUnsignedChar
+
+
 boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which )
 {
 	
@@ -369,6 +430,28 @@ boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_
 }
 
 
+StringAutoPtr ParameterFileName ( const DataVect& parameters, const FMX_UInt32 which )
+{
+
+	StringAutoPtr file_name ( new string );
+
+	// make sure there's a parameter to get
+	if ( parameters.Size() > which ) {
+
+		const BinaryDataAutoPtr data ( parameters.AtAsBinaryData ( which ) );
+
+		fmx::TextAutoPtr name_as_fmx_text;
+		name_as_fmx_text->Assign ( "" ); // defeat clang: Returning null reference (within a call to 'operator*')
+		data->GetFNAMData ( *name_as_fmx_text );
+		std::string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
+		file_name->assign ( name_as_string );
+
+	}
+
+	return file_name;
+
+} // ParameterFileName
+
 
 #pragma mark -
 #pragma mark Containers
@@ -377,47 +460,49 @@ boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_
 int PreferredContainerType ( const BinaryData& data )
 {
 
-	int which_type = IndexForStream ( data, 'F', 'I', 'L', 'E' );
-	
+	fmx::int32 which_type = IndexForStream ( data, MAIN_CONTAINER_TYPE );
 	if ( which_type == kBE_DataType_Not_Found ) {
 
-		which_type = IndexForStream ( data, 'Z', 'L', 'I', 'B' );
-
-		// and then a sound
+		which_type = IndexForStream ( data, FILE_CONTAINER_TYPE );
+	
 		if ( which_type == kBE_DataType_Not_Found ) {
-			which_type = IndexForStream ( data, 's', 'n', 'd', ' ' );
-		}
-		
-	}
-	
-	// try and guess which image format to try
-	
-	if ( which_type == kBE_DataType_Not_Found ) {
-		
-		// non-image data streams
-		QuadCharAutoPtr dpi__type ( 'D', 'P', 'I', '_' );
-		QuadCharAutoPtr fnam_type ( 'F', 'N', 'A', 'M' );
-		QuadCharAutoPtr size_type ( 'S', 'I', 'Z', 'E' );
-		
-		int count = data.GetCount();
 
-		for ( int i = 0 ; i < count ; i++ ) {
-			QuadCharAutoPtr stream_type;
-			data.GetType ( i, *stream_type );
-			if ( *stream_type != *dpi__type && *stream_type != *fnam_type && *stream_type != *size_type ) {
-				which_type = i;
-				
-				// don't overwrite another type with an fm generated jpeg preview
-				QuadCharAutoPtr jpeg_type ( 'J', 'P', 'E', 'G' );
-				if ( *stream_type != *jpeg_type ) {
-					break;
-				}
-				
+			which_type = IndexForStream ( data, COMPRESSED_CONTAINER_TYPE );
+
+			// and then a sound
+			if ( which_type == kBE_DataType_Not_Found ) {
+				which_type = IndexForStream ( data, SOUND_CONTAINER_TYPE );
 			}
-		}
 		
-	}
+		}
 	
+		// try and guess which image format to try
+	
+		if ( which_type == kBE_DataType_Not_Found ) {
+		
+			fmx::int32 count = data.GetCount();
+
+			for ( fmx::int32 i = 0 ; i < count ; i++ ) {
+
+				BEQuadChar stream_type ( data, i );
+
+				if ( !stream_type.is_image_attribute() ) {
+
+					which_type = i;
+				
+					// don't overwrite another type with an fm generated jpeg preview
+					if ( !stream_type.is_jpeg() ) {
+						break;
+					}
+				
+				}
+			
+			} // for
+		
+		}
+
+	} // if MAIN_CONTAINER_TYPE
+
 	return which_type;
 
 } // PreferredContainerType
@@ -428,21 +513,38 @@ int PreferredContainerType ( const BinaryData& data )
 #pragma mark -
 
 
-int IndexForStream ( const BinaryData& data, const char a, const char b, const char c, const char d )
+const fmx::int32 StreamIndex ( const BinaryData& data, const std::string stream_type )
 {
-	
-	// defeat: Returning null reference (within a call to 'operator*')
-	// constructor for file_type is not null
-	
+
+	QuadCharAutoPtr type ( stream_type[0], stream_type[1], stream_type[2], stream_type[3] );
+
+// defeat: Returning null reference (within a call to 'operator*')
 #ifndef __clang_analyzer__
-	QuadCharAutoPtr type ( a, b, c, d );
-	int stream_index = data.GetIndex ( *type );
+	fmx::int32 stream_index = data.GetIndex ( *type );
 #else
-	int stream_index = kBE_DataType_Not_Found;
+	fmx::int32 stream_index = kBE_DataType_Not_Found;
 #endif
-	
+
 	return stream_index;
-	
+
+}
+
+
+const fmx::int32 IndexForStream ( const BinaryData& data, const std::string stream_type )
+{
+
+	fmx::int32 stream_index = StreamIndex ( data, stream_type );
+
+	if ( stream_index != kErrorUnknown && stream_type == MAIN_CONTAINER_TYPE ) {
+
+		char quad_char[4] = {};
+		data.GetData ( stream_index, 0, 4, quad_char ); // error =
+		stream_index = StreamIndex ( data, quad_char );
+
+	}
+
+	return stream_index;
+
 }
 
 
@@ -464,7 +566,7 @@ bool StreamIsCompressed ( const BinaryData& data )
 {
 	bool compressed = false;
 	
-	int which_type = IndexForStream ( data, 'Z', 'L', 'I', 'B' );
+	int which_type = IndexForStream ( data, COMPRESSED_CONTAINER_TYPE );
 	
 	if ( which_type != kBE_DataType_Not_Found ) {
 		compressed = true;
@@ -491,16 +593,16 @@ StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path )
 		inFile.seekg ( 0, ios::beg );
 		
 		// slurp up the file contents
-		char * buffer = new char [length];
-		inFile.read ( buffer, length );
+		std::vector<char> buffer ( length );
+		inFile.read ( &buffer[0], length );
 		inFile.close ();
 				
 		// convert the text in the file to utf-8 if possible
-		result = ConvertTextToUTF8 ( buffer, length, g_text_encoding );
+		result = ConvertTextToUTF8 ( &buffer[0], length );
 		if ( result->length() == 0 ) {
-			result->assign ( buffer );
+			result->assign ( &buffer[0] );
 		}
-		delete [] buffer;
+
 	} else {
 		g_last_error = kNoSuchFileOrDirectoryError;
 	}
@@ -517,9 +619,6 @@ StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path )
 
 vector<char> ConvertTextEncoding ( char * in, const size_t length, const string& to, const string& from )
 {
-	size_t available = (length * 4) + 1;	// worst case for utf-32 to utf-8 ?
-	char * encoded = new char [available]();	// value-initialization (to zero)… we crash otherwise
-	
 	vector<string> codesets;
 	if ( from != UTF8 ) {
 		codesets.push_back ( from );
@@ -535,30 +634,36 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 	const size_t kIconvError = -1;
 	size_t error_result = kIconvError;
 	vector<string>::iterator it = codesets.begin();
-	size_t remaining = available;
-	
+
+	vector<char> out;
+
 	while ( error_result == kIconvError && it != codesets.end() ) {
 		
 		char * start = in;
 		size_t start_length = length;
-		char * encoded_start = encoded;
-		
+
+		size_t available = (length * 4) + 1;	// worst case for utf-32 to utf-8 ?
+		std::vector<char> encoded ( available );
+		char * encoded_start = &encoded[0];
+		size_t remaining = available;
+
 		iconv_t conversion = iconv_open ( to.c_str(), it->c_str() );
 		if ( conversion != (iconv_t)kIconvError ) {
 			error_result = iconv ( conversion, &start, &start_length, &encoded_start, &remaining );
-			iconv_close ( conversion );
+			if ( error_result != kIconvError ) {
+				iconv_close ( conversion );
+				out.assign ( &encoded[0], &encoded[0] + available - remaining );
+			} else {
+				throw BEPlugin_Exception ( errno );
+			}
+
 		} else {
-			error_result = errno;
+			throw BEPlugin_Exception ( errno );
 		}
 
 		++it;
 	}
 
-	g_last_error = (fmx::errcode)error_result;
-
-	vector<char> out ( encoded, encoded + available - remaining );
-	delete[] encoded;
-	
 	return out;
 	
 } // ConvertTextEncoding
@@ -579,18 +684,19 @@ StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const string& to, const st
 StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from )
 {
 	vector<char> text = ConvertTextEncoding ( in, length, UTF8, from );
+	if ( ! utf8::is_valid ( text.begin(), text.end() ) ) {
+		throw BEPlugin_Exception ( kInvalidUTF8 );
+	}
+
 	StringAutoPtr out ( new string ( text.begin(), text.end() ) );
 	return out;
+
 } // ConvertToUTF8
 
 
 void SetTextEncoding ( const string& encoding )
 {
-	if ( encoding.empty() ) {
-		g_text_encoding = UTF8;
-	} else {
-		g_text_encoding = encoding;
-	}
+	g_text_encoding = encoding;
 }
 
 
@@ -618,6 +724,21 @@ string TextAsUTF8String ( const Text& fmx_text )
 
 
 
+string TextAsNumberString ( const Text& fmx_text )
+{
+	std::string number_string = TextAsUTF8String ( fmx_text );
+	
+	// bug in fm text to float conversion removes a leading 0
+	std::string decimal_point = ".";
+	auto found = std::mismatch ( decimal_point.begin(), decimal_point.end(), number_string.begin() );
+	if ( found.first == decimal_point.end()) {
+		number_string = "0" + number_string;
+	}
+
+	return number_string;
+}
+
+
 string DataAsUTF8String ( const Data& data )
 {
 	return TextAsUTF8String ( data.GetAsText() );	
@@ -643,6 +764,49 @@ double DataAsDouble ( const Data& data )
 	
 	return ( number->AsFloat() );
 }
+
+
+#pragma mark -
+#pragma mark FMX
+#pragma mark -
+
+errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Data& parameter, const ExprEnv& environment )
+{
+	errcode error = kNoError;
+	
+	try {
+		
+		TextAutoPtr database;
+	
+		if ( file_name.GetSize() != 0 ) {
+			database->SetText ( file_name );
+		} else {
+
+			TextAutoPtr command;
+			command->Assign ( "Get ( FileName )" );
+			
+			DataAutoPtr name;
+
+// defeat: Returning null reference (within a call to 'operator*')
+#ifndef __clang_analyzer__
+			environment.Evaluate ( *command, *name );
+#endif
+			
+			database->SetText ( name->GetAsText() );
+			
+		}
+		
+		error = FMX_StartScript ( &(*database), &script_name, kFMXT_Pause, &parameter );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return error;
+	
+} // ExecuteScript
 
 
 #pragma mark -

@@ -307,12 +307,18 @@ fmx::errcode DisplayProgressDialog ( WStringAutoPtr title, WStringAutoPtr descri
 	
 	if ( progressDialog == nil ) {
 		
-		progressDialog = [[ProgressDialogWindowController alloc] initWithWindowNibName: @"ProgressDialog"];
+		progressDialog = [[ProgressDialogWindowController alloc] initWithWindowNibName: @"BEProgressDialog"];
 
-		NSString * title_string = NSStringFromWStringAutoPtr ( title );
-		NSString * description_string = NSStringFromWStringAutoPtr ( description );
+		if ( progressDialog != nil ) {
+
+			NSString * title_string = NSStringFromWStringAutoPtr ( title );
+			NSString * description_string = NSStringFromWStringAutoPtr ( description );
 	
-		[progressDialog show: title_string description: description_string maximumValue: maximum canCancel: can_cancel];
+			[progressDialog show: title_string description: description_string maximumValue: maximum canCancel: can_cancel];
+
+		} else {
+			error = kWindowIsMissingError;
+		}
 
 	} else {
 		error = kFileOrObjectIsInUse;

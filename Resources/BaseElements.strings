@@ -37,7 +37,7 @@
 "126" = "BE_FileSize ( path )";
 
 "128" = "BaseElements";
-"129" = "Version: 3.0\n\nThis plug-in provides additional functionality for BaseElements from Goya";
+"129" = "Version: 3.1\n\nThis plug-in provides additional functionality for BaseElements from Goya";
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
 "151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )";
@@ -65,6 +65,7 @@
 "174" = "BE_SetTextEncoding ( { encoding } )";
 "175" = "BE_Base64_URL_Encode ( data )";
 "176" = "BE_ExportFieldContents ( field ; outputPath )";
+"177" = "BE_ImportFile ( path {; compress } )";
 
 
 "180" = "BE_HTTP_POST ( url ; parameters {; username ; password } )";
@@ -74,10 +75,10 @@
 "184" = "BE_HTTP_DELETE ( url {; username ; password } )";
 "185" = "BE_HTTP_PUT_FILE ( url ; path {; username ; password } )";
 "186" = "BE_HTTP_Set_Proxy ( proxy {; port ; username ; password } )";
-"187" = "BE_Curl_Set_Option ( option ; value )";
+"187" = "BE_Curl_Set_Option ( { option ; value } )";
 "188" = "BE_HTTP_PUT_DATA ( url ; data {; username ; password } )";
 "189" = "BE_FTP_Upload ( url ; data {; username ; password } )";
-
+"190" = "BE_Curl_Trace";
 
 "200" = "BE_ApplyXSLTInMemory ( xml ; xslt )";
 "201" = "BE_XPath ( xml ; xpath {; namespaceList ; asText } )";
@@ -94,6 +95,12 @@
 
 "230" = "BE_SaveFileDialog ( prompt {; fileName ; inFolder } )";
 
+"250" = "BE_ContainerIsCompressed ( containerField )";
+"251" = "BE_Gzip ( data {; filename } )";
+"252" = "BE_UnGzip ( gzip_data {; filename } )";
+
+"270" = "BE_JPEG_Recompress ( jpeg {; compressionLevel ; width ; height } )";
+
 "300" = "BE_JSONPath ( json ; path )";
 "301" = "BE_JSON_Error_Description";
 "302" = "BE_JSON_ArraySize ( json )";
@@ -104,24 +111,29 @@
 
 
 "330" = "BE_Xero_SetTokens ( consumer_key ; private_key )";
+"331" = "BE_Xero_GenerateKeys ( organisation {; organisationalUnit ; country ; state ; suburb ; domain ; emailAddress } )";
 
 
-"350" = "BE_Values_Unique ( listOfValues )";
-"351" = "BE_Values_FilterOut ( textToFilter ; filterValues )";
+"350" = "BE_Values_Unique ( listOfValues {; caseSensitive } )";
+"351" = "BE_Values_FilterOut ( textToFilter ; filterValues {; caseSensitive } )";
 
 "353" = "BE_Values_Sort ( listOfValues )";
 
 
 "400" = "BE_SMTP_Server ( server { ; port ; username ; password } )";
-"401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; html ; attachments } )";
+"401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
 
 
 "500" = "BE_Encrypt_AES ( key ; text )";
 "501" = "BE_Decrypt_AES ( key ; text )";
 
-"550" = "BE_HMAC ( text ; key {; algorithm ; encoding } )";
+"550" = "BE_HMAC ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
 
 "600" = "BE_EvaluateJavaScript ( javaScript )";
+
+"700" = "BE_ConvertContainer ( field {; type ; width ; height } )";
+
+"800" = "BE_XOR ( text ; xorWith )";
 
 
 // replaces 120 BE_ExecuteShellCommand

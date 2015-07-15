@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
  
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -77,9 +77,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 #define BUNDLE_STRINGS_ID "BaseElements"
 
-#define	VERSION_NUMBER_STRING L"3.0.0"
-#define	AUTO_UPDATE_VERSION L"03000000"
-#define VERSION_STRING "3.0"
+#define	VERSION_NUMBER_STRING L"3.1.0"
+#define	AUTO_UPDATE_VERSION L"03010000"
+#define VERSION_STRING "3.1" // also in xcode project build settings
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
 
@@ -142,6 +142,7 @@ enum functions {
 	kBE_SetTextEncoding = 174,
 	kBE_Base64_URL_Encode = 175,
 	kBE_ExportFieldContents = 176,
+	kBE_ImportFile = 177,
 	kBE_HTTP_POST = 180,
 	kBE_HTTP_Response_Code = 181,
 	kBE_HTTP_Response_Headers = 182,
@@ -152,6 +153,7 @@ enum functions {
 	kBE_Curl_Set_Option = 187,
 	kBE_HTTP_PUT_Data = 188,
 	kBE_FTP_Upload = 189,
+	kBE_Curl_Trace = 190,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,
@@ -162,6 +164,10 @@ enum functions {
 	kBE_UTCMilliseconds = 221,
 	kBE_TimeZoneOffset = 222,
 	kBE_SaveFileDialog = 230,
+	kBE_ContainerIsCompressed = 250,
+	kBE_Gzip = 251,
+	kBE_UnGzip = 252,
+	kBE_JPEG_Recompress = 270,
 	kBE_JSONPath = 300,
 	kBE_JSON_Error_Description = 301,
 	kBE_JSON_ArraySize = 302,
@@ -170,6 +176,7 @@ enum functions {
 	kBE_OAuth_RequestAccessToken = 321,
 //	kBE_OAuth_SetToken = 322,
 	kBE_Xero_SetTokens = 330,
+	kBE_Xero_GenerateKeys = 331,
 	kBE_Values_Unique = 350,
 	kBE_Values_FilterOut = 351,
 	kBE_Values_Sort = 353,
@@ -179,6 +186,8 @@ enum functions {
 	kBE_Decrypt_AES = 501,
 	kBE_HMAC = 550,
 	kBE_EvaluateJavaScript = 600,
+	kBE_ConvertContainer = 700,
+	kBE_XOR = 800,
 	kBE_ExecuteSystemCommand = 1120
 };
 
@@ -203,7 +212,11 @@ enum errors {
 	kErrorParameterMissing = 102,
 	kWindowIsMissingError = 112,
 	kNotFoundError = 401,
+	kInvalidFieldType = 413,
+	kCannotInsertAsImage = 735,
 	kFileSystemError = 10000,
+	kInvalidUTF8 = 10100,
+	kZipError = 10200,
 	kDDLCommandQueued = 11000,
 	kCommandTimeout = 12000,
 	kNotImplemented = 13000,
@@ -211,7 +224,12 @@ enum errors {
 	kEncryptionInitialisationFailed = 14001,
 	kEncryptionUpdateFailed = 14002,
 	kDecryptionUpdateFailed = 14003,
-	kDecryptionInputVectorNotFound = 14004
+	kDecryptionInputVectorNotFound = 14004,
+	kJPEGReadHeaderError = 15000,
+	kJPEGInitDecompressorError = 15001,
+	kJPEGDecompressionError = 15002,
+	kJPEGCompressionError = 15003,
+	kJPEGInitCcompressorError = 15004
 };
 
 

@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
  
- Copyright 2011-2014 Goya. All rights reserved.
+ Copyright 2011-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -30,10 +30,11 @@
 #include <sstream>
 #include <errno.h>
 
+#include <boost/algorithm/string.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/scoped_ptr.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 
 
 using namespace std;
@@ -46,6 +47,7 @@ using namespace boost::filesystem;
 
 int g_http_response_code;
 string g_http_response_headers;
+std::stringstream g_curl_trace;
 CustomHeaders g_http_custom_headers;
 struct host_details g_http_proxy;
 BECurlOptionMap g_curl_options;
@@ -62,6 +64,8 @@ extern BEFileMakerPlugin * g_be_plugin;
 size_t WriteMemoryCallback (void *ptr, size_t size, size_t nmemb, void *data );
 int SeekFunction ( void *instream, curl_off_t offset, int origin );
 MemoryStruct InitalizeCallbackMemory ( void );
+static void dump_trace_data ( const unsigned char *ptr, const size_t size );
+static int trace_callback ( CURL * /* curl */, curl_infotype type, char * data, size_t size, void * /* userp */ );
 int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
 int old_progress_dialog ( void *p, double dltotal, double dlnow, double ultotal, double ulnow );
 
@@ -145,6 +149,89 @@ MemoryStruct InitalizeCallbackMemory ( void )
 #endif
 	
 }
+
+
+// originally based on https://raw.githubusercontent.com/bagder/curl/master/docs/examples/debug.c
+
+static void dump_trace_data ( const unsigned char *ptr, const size_t size )
+{
+	const unsigned long width = 0x40;
+
+	g_curl_trace << ", " << size << " bytes (" << std::showbase << setw ( 2 ) << setfill ( '0' ) << std::hex << size << ")" << FILEMAKER_END_OF_LINE;
+
+	for ( size_t i = 0; i < size; i += width ) {
+
+		g_curl_trace  << setw ( 4 ) << setfill ( '0' )  << std::hex << i << ": ";
+
+		for ( size_t c = 0; (c < width) && (i+c < size); c++ ) {
+
+			// check for 0D0A; if found, skip past and start a new line
+			if ( (i+c+1 < size) && ptr[i+c]==0x0D && ptr[i+c+1]==0x0A ) {
+				i += c + 2 - width;
+				break;
+			}
+
+			g_curl_trace << static_cast<char>((ptr[i+c]>=0x20) && (ptr[i+c]<0x80)?ptr[i+c]:'.');
+
+			// check again for 0D0A, to avoid an extra \n if it's at width
+			if ( (i+c+2 < size) && ptr[i+c+1]==0x0D && ptr[i+c+2]==0x0A ) {
+				i += c + 3 - width;
+				break;
+			}
+
+		}
+
+		g_curl_trace << FILEMAKER_END_OF_LINE;
+
+	}
+
+}
+
+
+static int trace_callback ( CURL * /* curl */, curl_infotype type, char * data, size_t size, void * /* userp */ )
+{
+
+	switch ( type ) {
+
+		case CURLINFO_HEADER_OUT:
+			g_curl_trace << "=> Send header";
+			break;
+
+		case CURLINFO_DATA_OUT:
+			g_curl_trace << "=> Send data";
+			break;
+
+		case CURLINFO_SSL_DATA_OUT:
+			g_curl_trace << "=> Send SSL data";
+			break;
+
+		case CURLINFO_HEADER_IN:
+			g_curl_trace << "<= Recv header";
+			break;
+
+		case CURLINFO_DATA_IN:
+			g_curl_trace << "<= Recv data";
+			break;
+
+		case CURLINFO_SSL_DATA_IN:
+			g_curl_trace << "<= Recv SSL data";
+			break;
+
+		case CURLINFO_TEXT:
+			g_curl_trace << "== Info: ";
+			g_curl_trace << data;
+			// falling through
+
+		default: /* in case a new one is introduced to shock us */
+			return kNoError;
+
+	}
+
+	dump_trace_data ( (unsigned char *)data, size );
+
+	return kNoError;
+
+} // trace_callback
 
 
 #pragma mark -
@@ -269,10 +356,7 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 
 	// send all headers & data to these functions
 	
-	headers = InitalizeCallbackMemory();
 	easy_setopt ( CURLOPT_WRITEHEADER, (void *)&headers );
-	
-	data = InitalizeCallbackMemory();
 	easy_setopt ( CURLOPT_HEADERFUNCTION, WriteMemoryCallback );
 	
 	// any custom options, headers etc.
@@ -284,10 +368,8 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	configure_progress_dialog ( );
 	
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
-	easy_setopt ( CURLOPT_SSL_VERIFYPEER, 0L );
-	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
-	
+
 	// allow the user to override anything we set
 	set_options ( g_curl_options );
 	
@@ -296,7 +378,8 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 
 BECurl::~BECurl()
 {
-	if ( curl ) { curl_easy_cleanup ( curl ); }
+	curl_easy_cleanup ( curl );
+	curl_formfree ( post_data );
 	curl_global_cleanup();
 }
 
@@ -309,9 +392,12 @@ BECurl::~BECurl()
 
 void BECurl::Init ( )
 {
-	upload_file = NULL; // must intialise, we crash otherwise
-	custom_headers = NULL; // must intialise, we crash otherwise
+	// must intialise, we crash otherwise
+	upload_file = NULL;
+	custom_headers = NULL;
+	post_data = NULL;
 	
+	//
 	http_response_code = 0;
 	
 	// set up curl as much as we can
@@ -326,6 +412,19 @@ void BECurl::Init ( )
 		throw bad_alloc(); // curl_easy_init thinks all errors are memory errors
 	}
 	
+	easy_setopt ( CURLOPT_SSL_VERIFYPEER, 0L );
+	easy_setopt ( CURLOPT_SSL_VERIFYHOST, 0L );
+
+	// debug trace
+	easy_setopt ( CURLOPT_DEBUGFUNCTION, trace_callback );
+	//	easy_setopt ( CURLOPT_DEBUGDATA, &config );
+	easy_setopt ( CURLOPT_VERBOSE, 1L ); // DEBUGFUNCTION has no effect unless enabled
+	g_curl_trace.str ( "" );
+	g_curl_trace.clear();
+
+	headers = InitalizeCallbackMemory();
+	data = InitalizeCallbackMemory();
+
 }
 
 
@@ -354,11 +453,6 @@ vector<char> BECurl::perform_action ( )
 	}
 	
 	cleanup ();
-	
-	g_last_error = last_error();
-	g_http_response_code = response_code();
-	g_http_response_headers = response_headers();
-	g_http_custom_headers.clear();
 	
 	return response;
 	
@@ -498,12 +592,49 @@ vector<char> BECurl::ftp_upload ( )
 
 void BECurl::set_parameters ( )
 {
-	
-	// add the parameters to the form
+
 	if ( !parameters.empty() ) {
-		easy_setopt ( CURLOPT_POSTFIELDS, parameters.c_str() );
-		easy_setopt ( CURLOPT_POSTFIELDSIZE, parameters.length() );
-	}
+
+		if ( std::string::npos == parameters.find ( "=@" ) ) { // let curl do the work unless there's a file path
+
+			easy_setopt ( CURLOPT_POSTFIELDS, parameters.c_str() );
+			easy_setopt ( CURLOPT_POSTFIELDSIZE, parameters.length() );
+
+		} else {
+
+			vector<string> fields;
+			boost::split ( fields, parameters, boost::is_any_of ( "&" ) );
+
+			struct curl_httppost *last_form_field = NULL;
+
+			for ( vector<string>::iterator it = fields.begin() ; it != fields.end(); ++it ) {
+
+				vector<string> key_value_pair;
+				boost::split ( key_value_pair, *it, boost::is_any_of ( "=" ) );
+				if ( 1 == key_value_pair.size() ) {
+					key_value_pair.push_back ( "" );
+				} else if ( 0 == key_value_pair.size() ) {
+					break;
+				}
+
+				// get rid of @ sign that marks that it's a file path
+				int value_type = CURLFORM_COPYCONTENTS;
+				string value = key_value_pair.at ( 1 );
+				if ( !value.empty() && value[0] == '@' ) {
+					value.erase ( value.begin() );
+					value_type = CURLFORM_FILE;
+				}
+
+				// add the field
+				curl_formadd ( &post_data, &last_form_field, CURLFORM_COPYNAME, key_value_pair.at ( 0 ).c_str(), value_type, value.c_str(), CURLFORM_END );
+
+			} // for
+
+			easy_setopt ( CURLOPT_HTTPPOST, post_data );
+
+		} // if ( std::string::npos == parameters.find ( "=@" ) )fi
+
+	} // if ( !parameters.empty() )
 	
 }	//	set_parameters
 
@@ -583,6 +714,7 @@ void BECurl::set_options ( BECurlOptionMap options )
 				break;
 				
 			case BECurlOption::type_long:
+			case BECurlOption::type_named_constant:
 				easy_setopt ( curl_option->option(), curl_option->as_long() );
 				break;
 				
@@ -664,6 +796,11 @@ void BECurl::cleanup ( )
 		curl_slist_free_all ( custom_headers );
 	}
 	
+	g_last_error = last_error();
+	g_http_response_code = response_code();
+	g_http_response_headers = response_headers();
+	g_http_custom_headers.clear();
+
 } // cleanup
 
 

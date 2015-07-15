@@ -2,7 +2,7 @@
  BECurlOptions.cpp
  BaseElements Plug-In
  
- Copyright 2013-2014 Goya. All rights reserved.
+ Copyright 2013-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -47,6 +47,10 @@ void BECurlOption::set ( const fmx::Data& option_value )
 			curl_off_t_value = DataAsDouble ( option_value );
 			break;
 			
+		case type_named_constant:
+			long_value = named_constants ( DataAsUTF8String ( option_value ) );
+			break;
+			
 		default: // type_void_at, type_unknown & type_not_handled
 			throw BECurlOption_Exception ( kNotImplemented );
 			break;
@@ -70,6 +74,33 @@ const long BECurlOption::as_long ( )
 const curl_off_t BECurlOption::as_curl_off_t ( )
 {
 	return curl_off_t_value;
+}
+
+
+const long BECurlOption::named_constants ( const std::string constant_name )
+{
+	std::map<std::string, long> named_constants;
+
+	named_constants [ "CURLAUTH_BASIC" ] = CURLAUTH_BASIC;
+	named_constants [ "CURLAUTH_DIGEST" ] = CURLAUTH_DIGEST;
+	named_constants [ "CURLAUTH_DIGEST_IE" ] = CURLAUTH_DIGEST_IE;
+	named_constants [ "CURLAUTH_NEGOTIATE" ] = CURLAUTH_NEGOTIATE;
+	named_constants [ "CURLAUTH_NTLM" ] = CURLAUTH_NTLM;
+	named_constants [ "CURLAUTH_NTLM_WB" ] = CURLAUTH_NTLM_WB;
+	named_constants [ "CURLAUTH_ANY" ] = CURLAUTH_ANY;
+	named_constants [ "CURLAUTH_ANYSAFE" ] = CURLAUTH_ANYSAFE;
+	named_constants [ "CURLAUTH_ONLY" ] = CURLAUTH_ONLY;
+
+	long out = 0;
+	
+	// look up the constant or, for backward compatibility, try to convert it to an integer
+	try {
+		out = named_constants.at ( constant_name );
+	} catch ( std::out_of_range e ) {
+		out = atol ( constant_name.c_str() );
+	}
+	
+	return out;
 }
 
 
@@ -155,9 +186,9 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_TCP_KEEPIDLE" ] = type_long;
 	types [ "CURLOPT_TCP_KEEPINTVL" ] = type_long;
 	types [ "CURLOPT_NETRC" ] = type_long;
-	types [ "CURLOPT_HTTPAUTH" ] = type_long;
+	types [ "CURLOPT_HTTPAUTH" ] = type_named_constant;
 	types [ "CURLOPT_TLSAUTH_TYPE" ] = type_long;
-	types [ "CURLOPT_PROXYAUTH" ] = type_long;
+	types [ "CURLOPT_PROXYAUTH" ] = type_named_constant;
 	types [ "CURLOPT_AUTOREFERER" ] = type_long;
 	types [ "CURLOPT_TRANSFER_ENCODING" ] = type_long;
 	types [ "CURLOPT_FOLLOWLOCATION" ] = type_long;

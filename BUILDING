@@ -5,8 +5,8 @@ Building
 The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
 Notes:
-- these instructions apply to version 3.0 of the BaseElements Plugin
-- version 12.0.1.5 of the FileMaker plug-in SDK is required
+- these instructions apply to version 3.1 of the BaseElements Plugin
+- version 14.0.1.175 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 - the location of the release builds needs to be changed to suit your environment
 
@@ -14,7 +14,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 3.0 of the plug-in is built on Mac OS X 10.10.1 using Xcode 6.1 with the 10.6 base SDK from Xcode 4.3.3. The Xcode Command Line Tools are also needed.
+Version 3.1 of the plug-in is built on Mac OS X 10.10.4 using Xcode 6.4. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -25,7 +25,7 @@ and place the FMWrapper.framework in the Libraries directory.
 On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built the Boost FileSystem, System and Thread libraries.
 
 =======================================================================
-Boost - 1.57_0
+Boost - 1.58_0
 =======================================================================
 
 Boost is available from
@@ -34,9 +34,25 @@ Boost is available from
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_57_0
+	cd boost_1_58_0
 	./bootstrap.sh
-	./b2 architecture=x86 address-model=32_64 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.6"
+	./b2 architecture=x86 address-model=32 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.6"
+
+and
+
+	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build64 --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.6"
+
+Then, to create the universal binaries
+
+	lipo -create -arch i386 build/lib/libboost_date_time.a -arch x86_64 build64/lib/libboost_date_time.a -output <path to BaseElements-Plugin>/Libraries/osx/libboost_date_time.a
+
+	lipo -create -arch i386 build/lib/libboost_filesystem.a -arch x86_64 build64/lib/libboost_filesystem.a -output <path to BaseElements-Plugin>/Libraries/osx/libboost_filesystem.a
+
+	lipo -create -arch i386 build/lib/libboost_regex.a -arch x86_64 build64/lib/libboost_regex.a -output <path to BaseElements-Plugin>/Libraries/osx/libboost_regex.a
+
+	lipo -create -arch i386 build/lib/libboost_system.a -arch x86_64 build64/lib/libboost_system.a -output <path to BaseElements-Plugin>/Libraries/osx/libboost_system.a
+
+	lipo -create -arch i386 build/lib/libboost_thread.a -arch x86_64 build64/lib/libboost_thread.a -output <path to BaseElements-Plugin>/Libraries/osx/libboost_thread.a
 
 See
 
@@ -45,17 +61,6 @@ See
 for for further information on compiling the Boost libraries.
 
 Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the boost/lib directory to the Libraries directory.
-
-
-=======================================================================
-minizip - 1.2.8
-=======================================================================
-
-Download the zlib source from
-
-	http://www.zlib.net/
-
-and extract the folder zlib-1.2.8 to the desktop. Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory and zip.h and zconf.h from the root directory of the distribution to the Headers directory.
 
 
 =======================================================================
@@ -104,7 +109,7 @@ Copy the directory containing the mimetic headers from the build/include directo
 
 
 =======================================================================
-libssh2 - 1.4.3
+libssh2 - 1.6.0
 =======================================================================
 
 Download the source from
@@ -129,7 +134,7 @@ to Headers/libssh2
 
 
 =======================================================================
-libcurl - 7.39
+libcurl - 7.43
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -176,7 +181,7 @@ into Headers.
 
 
 =======================================================================
-duktape - 1.0.2
+duktape - 1.2.2
 =======================================================================
 
 Download the source from
@@ -187,10 +192,76 @@ and extract the archive to the desktop and copy the src directory to the Source 
 
 
 =======================================================================
+libjpeg-turbo - 1.4.1
+=======================================================================
+
+Download the source from
+
+	http://www.libjpeg-turbo.org/
+
+and extract the archive to the desktop and then, from that directory
+
+	nasm -v
+
+if the version is < 2.11.08 then get a new version of nasm (http://www.nasm.us/)... note: depending on how this is installed (from source, macports etc.) you may need to change the NASM path below. Then
+
+	autoreconf -fiv
+	./configure --host i686-apple-darwin CFLAGS='-O3 -m32' LDFLAGS=-m32
+	make install prefix=~/Desktop/build32
+
+Then
+
+	make distclean
+	./configure --host x86_64-apple-darwin NASM=/opt/local/bin/nasm
+	make install prefix=~/Desktop/build64
+	lipo -create ~/Desktop/build32/lib/libturbojpeg.a ~/Desktop/build64/lib/libturbojpeg.a -output <path to BaseElements-Plugin>/Libraries/osx/libturbojpeg.a
+
+Then copy ~/Desktop/build/libturbojpeg.a to Libraries directory and rename ~/Desktop/build/include to ~/Desktop/build/libturbojpeg and copy the directory into Headers.
+
+
+=======================================================================
+utf8-cpp
+=======================================================================
+
+Download from
+
+	http://utfcpp.sourceforge.net/
+
+and place the source/utf8.h file and source/utf8 directory in the project Headers directory.
+
+
+=======================================================================
+Poco
+=======================================================================
+
+Download the Poco Complete Edition from
+
+	http://pocoproject.org/download/index.html
+
+Then, after extracting the archive
+
+	cd poco-1.6.0-all
+
+	export MACOSX_DEPLOYMENT_TARGET=10.6
+
+	./configure --config=Darwin32 --static --no-tests --no-samples --omit=Data,MongoDB && make
+	find . -name "*.o" -type f -delete
+	./configure --config=Darwin64 --static --no-tests --no-samples --omit=Data,MongoDB && make
+	make install DESTDIR=./Poco
+
+	cd lib/Darwin
+
+	lipo -create i386/libPocoFoundation.a x86_64/libPocoFoundation.a -output libPocoFoundation.a
+	lipo -create i386/libPocoZip.a x86_64/libPocoZip.a -output libPocoZip.a
+
+Copy the poco libraries to the Libraries directory and copy the Poco/usr/local/include/Poco to Headers.
+
+
+=======================================================================
 Windows
 =======================================================================
 
-The plug-in was built using Visual Studio 2010 Professional on Windows 7 Ultimate (32-bit).
+The plug-in was built using Visual Studio 2015 Professional RC on Windows 8.1 (64-bit).
 
 Download the FileMaker External Plug-In API from
 
@@ -210,7 +281,7 @@ Another note: when doing both debug and release builds clean the project when sw
 
 
 =======================================================================
-Boost - 1.57_0
+Boost - 1.58_0
 =======================================================================
 
 The Boost FileSystem and System libraries are required.
@@ -223,9 +294,9 @@ See
 
 for instructions on compiling the Boost libraries. From the command prompt try
 
-	cd boost_1_57_0
+	cd boost_1_58_0
 	bootstrap.bat
-	b2 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex install --prefix=build
+	b2 address-model=32 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex install --prefix=build
 
 and for 64-bit support
 
@@ -236,7 +307,7 @@ Copy the directory containing the boost headers from the build/include directory
 
 
 =======================================================================
-zlib & minizip - 1.2.8
+zlib
 =======================================================================
 
 Building zlib is straightforward. Download the zlib source from
@@ -245,17 +316,17 @@ Building zlib is straightforward. Download the zlib source from
 
 and extract the folder zlib-1.2.8 to the desktop.
 
-Open the solution file "contrib/vstudio/vc10/zlibvc.sln" and remove ZLIB_WINAPI from the list of preprocessor definitions for both the libzstat Win32 and x64 ReleaseWithoutAsmfi configurations. From the "Build Menu" select "Batch Build" and select the libzstat "ReleaseWithoutAsm" configuration for both Win32 and x64, and "Build".
+Open the solution file "contrib/vstudio/vc11/zlibvc.sln" and remove ZLIB_WINAPI from the list of preprocessor definitions for both the libzstat Win32 and x64 ReleaseWithoutAsm configurations. From the "Build Menu" select "Batch Build" and select the libzstat "ReleaseWithoutAsm" configuration for both Win32 and x64, and "Build".
 
 Move
 
-	contrib/vstudio/vc10/x86/ZlibStatReleaseWithoutAsm/zlibstat.lib
+	contrib/vstudio/vc11/x86/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
 in the Libraries directory and
 
-	contrib/vstudio/vc10/x64/ZlibStatReleaseWithoutAsm/zlibstat.lib
+	contrib/vstudio/vc11/x64/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
-Copy the minizip directory from the contrib directory in the zlib distribution to the Source directory and zip.h and zconf.h from the root directory of the distribution to the Headers directory.
+Copy zip.h and zconf.h from the root directory of the distribution to the Headers directory.
 
 
 =======================================================================
@@ -306,7 +377,7 @@ In
 
 	Configuration Properties -> General -> Project Defaults
 
-set
+for MTDebug & MTRelease set
 
 	Character Set = Use Unicode Character Set
 
@@ -316,20 +387,23 @@ Build -> Configuration Manager -> Active Solution Platform: -> <New>
 	-	Type or select the new platform: -> x64
 	-	Copy Settings from Win32
 
-In the Debug and Release x64 configuration set:
+In the MTDebug & MTRelease configurations set:
 
+	Configuration Properties -> Librarian -> General -> Output File -> .\.\x86\libmimetic_d.lib
 	Configuration Properties -> Librarian -> General -> Output File -> .\.\x64\libmimetic_d.lib
+
+	Configuration Properties -> Librarian -> General -> Output File -> .\.\x86\libmimetic.lib
 	Configuration Properties -> Librarian -> General -> Output File -> .\.\x64\libmimetic.lib
 
-repectively. To build both 32 and 64 bit libraries go to:
+for the 32-bit and 64-bit configurations respectively. To build both 32 and 64 bit libraries go to:
 
-	Build -> Batch Build ... select both Debug Release configurations and then "Build"
+	Build -> Batch Build ... select both MTRelease configurations and then "Build"
 
-Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib and libmimetic.lib from the win32 directory to the Libraries directory and from win32/x64 to Libraries/x64.
+Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib & libmimetic.lib from the win32\x86 directory to the Libraries directory and from win32\x64 to Libraries\x64.
 
 
 =======================================================================
-libssh2 - 1.4.3
+libssh2 - 1.6.0
 =======================================================================
 
 Download the source from
@@ -347,7 +421,13 @@ and set the following Configuration Properties:
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
 	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
 
-From Batch Build select LIB Release.
+Comment out the line
+
+	#define snprintf _snprintf
+
+in libssh2_config.h.
+
+From Batch Build select "OpenSSL LIB Release".
 
 Copy the library from
 
@@ -370,7 +450,7 @@ into the Libraries\x64 directory.
 
 
 =======================================================================
-OpenSSL - 1.0.1j
+OpenSSL - 1.0.2c
 =======================================================================
 
 Building OpenSSL requires that perl is installed. The ActiveState perl (Community Edition) is a good
@@ -383,20 +463,20 @@ Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-(openssl-1.0.1j.tar.gz at the time of writing).
+(openssl-1.0.2c.tar.gz at the time of writing).
 
-Unpack the archive onto the desktop and, using the "Visual Studio Command Prompt (2010)"
+Unpack the archive and, using the "VS2015 x86 Native Command Prompt"
 
-	cd c:\Users\Mark\Desktop\openssl-1.0.1j
+	cd c:\Users\Mark\Downloads\openssl-1.0.2c
 	perl Configure VC-WIN32 enable-static-engine no-asm
 	ms\do_nt
 	nmake -f ms\nt.mak
 
 Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries and copy inc32\openssl to Headers.
 
-For x64 builds in a "Visual Studio x64 Cross Tools Command Prompt (2010)" use:
+For x64 builds in a "VS2015 x64 Native Command Prompt" use:
 
-	cd c:\Users\Mark\Desktop\openssl-1.0.1j
+	cd c:\Users\Mark\Downloads\openssl-1.0.2c
 	perl Configure VC-WIN64A enable-static-engine no-asm
 	ms\do_win64a
 	nmake -f ms\nt.mak
@@ -405,7 +485,7 @@ Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\x64 and copy inc32\o
 
 
 =======================================================================
-libcurl - 7.39
+libcurl - 7.43
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -496,7 +576,7 @@ The Visual Studio solution file is in
 
 	libxml2-2.9.2\win32\VC10
 
-From the "Build" menu select "Confuration Manager" and then set "Active solution configuration" to Release and in the "Build" column, uncheck "runsuite".
+From the "Build" menu select "Configuration Manager" and then set "Active solution configuration" to Release and in the "Build" column, uncheck "runsuite".
 
 In the Property Pages
 
@@ -526,7 +606,19 @@ In the Property Pages of both libxml2 & iconv set
 
 	... -> Configuration Properties -> C/C++ -> Code Generation -> Runtime Library = Multi-threaded (/MT)
 
-and then build the project.
+Comment out the line
+
+	#define snprintf _snprintf
+
+in win32\VC10\config.h and in libxml.h change the line
+
+	#elif defined(_WIN32_WCE)
+
+to
+
+	#elif defined(_MSC_VER)
+
+then build the project.
 
 Copy Release\iconv.lib & Release\libxml2.lib to the BE Plugin Libraries folder and, finally, copy
 
@@ -537,7 +629,6 @@ into the BE Plugin Headers folder and create a folder, iconv, in the BE Plugin H
 	libiconv-1.14.vc10\include\iconv.h
 
 into that.
-
 
 For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK". Set the "Active solution configuration" to "Release" and uncheck "Build" for "runsuite".
 
@@ -561,7 +652,7 @@ and expand it into a directory on the Desktop.
 
 Note: the full path of the directory should not contain any spaces.
 
-For Win32 builds use the "Visual Studio Command Prompt (2010)" and for x64 builds the "Visual Studio x64 Cross Tools Command Prompt (2010)".
+For Win32 builds use the "VS2015 x86 Native Command Prompt" and for x64 builds the "VS2015 x64 Native Command Prompt".
 
 Move to the win32 directory in the archive
 
@@ -571,11 +662,23 @@ Run the commands (changing the include= & lib= paths as appropriate)
 
 32-bit
 
-	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin\Libraries>"
+	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin>\Libraries\win32"
 
 64-bit
 
-	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin\Libraries\x64>"
+	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin>\Libraries\x64"
+
+Comment out the line
+
+	#define snprintf _snprintf
+
+in each of
+
+	config.h
+	libxslt\win32config.h
+	xsltproc\xsltproc.c
+
+and then
 
 	nmake -f Makefile.msvc MFLAGS=-MT libxslta libexslta
 
@@ -591,9 +694,11 @@ into directories, libxslt & libexslt, in the Headers directory and copy the libr
 
 into the Libraries (or Libraries\x64) directory.
 
+Note: if building both 32 & 64 bit libraries clean the project in between the builds.
+
 
 =======================================================================
-duktape - 1.0.2
+duktape - 1.2.2
 =======================================================================
 
 Download the source from
@@ -601,6 +706,89 @@ Download the source from
 	http://duktape.org/
 
 and extract the archive to the desktop and copy the src directory to the Source directory and rename it to duktape.
+
+
+=======================================================================
+libjpeg-turbo - 1.4.1
+=======================================================================
+
+To build first download and install NASM from
+
+	http://www.nasm.us/
+
+Download the source from
+
+	http://www.libjpeg-turbo.org/
+
+and extract the archive to the desktop. Download and install cmake from
+
+	 http://www.cmake.org/download/
+
+and then, from that directory, in a terminal window
+
+	cmake -G "Visual Studio 14"
+
+Open the project
+
+	turbojpeg-static
+
+and in
+
+	Configuration Properties -> General -> Project Defaults
+
+set
+
+	Character Set = Use Unicode Character Set
+
+and build the Release configuration. Copy turbojpeg-static.lib to the Liraries/win32 directory. For 64-bit builds either start with fresh copy of the source or clean the 32-bit Release configuration and delete the file
+
+	CMakeCahche.txt
+
+and then, in a terminal
+
+	cmake -G "Visual Studio 14 Win64"
+
+etc. and copy turbojpeg-static.lib to the Liraries/x64 directory.
+
+Create a directory libturbojpeg in the Headers directory and copy
+
+	jconfig.h
+	jerror.j
+	jmorecfg.h
+	jpeglib.h
+	turbo.jpg.h
+
+into that from the source directory.
+
+
+=======================================================================
+utf8-cpp
+=======================================================================
+
+Download from
+
+	http://utfcpp.sourceforge.net/
+
+and place the source/utf8.h file and source/utf8 directory in the project Headers directory.
+
+
+=======================================================================
+Poco 1.6.0
+=======================================================================
+
+Download poco from
+
+	http://pocoproject.org/download/index.html
+
+Then, after extracting the archive
+
+	Build the Zip and Foundation MT Release and Debug libraries using the projects in the respective directories. Before building set
+
+	Configuration Properties -> General -> Project Defaults -> Character Set = Use Unicode Character Set
+
+for all configurations.
+
+Copy PocoFoundationmt.lib & PocoZipmt.lib libraries from the lib and lib64 driectories into the Libraries/win32 and Libraries/x64 directories and copy the include/Poco directory to Headers.
 
 
 =======================================================================

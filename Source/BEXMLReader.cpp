@@ -2,7 +2,7 @@
  BEXMLReader.cpp
  BaseElements Plug-In
  
- Copyright 2012-2014 Goya. All rights reserved.
+ Copyright 2012-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -79,7 +79,7 @@ int StripXMLNodes ( const path input_file, const path output_file, const vector<
 					break;
 					
 				case XML_READER_TYPE_CDATA:
-					writer->write_raw ( reader->raw_xml() );
+					writer->write_raw ( reader->inner_xml() );
 					break;
 
 				case XML_READER_TYPE_END_ELEMENT:
@@ -103,7 +103,7 @@ int StripXMLNodes ( const path input_file, const path output_file, const vector<
 		
 	return kNoError;
 	
- }
+} // StripXMLNodes
 
 
 int SplitBEXMLFiles ( const path input_file )
@@ -136,16 +136,14 @@ int SplitBEXMLFiles ( const path input_file )
 					string payload;
 					
 					if ( reader->is_xml() ) {
-						payload = reader->inner_raw_xml();
+						payload = reader->inner_xml();
 					} else {
 						payload = reader->as_string();
 					}
-					
-					if ( !payload.empty() ) {
-						output_file.write ( payload.c_str(), payload.size() );
-						output_file.close();
-					}
-					
+
+					output_file.write ( payload.c_str(), payload.size() );
+					output_file.close();
+
 				} catch ( filesystem_error& e ) {
 					g_last_error = e.code().value();
 				} catch ( exception& /* e */ ) {
@@ -164,5 +162,5 @@ int SplitBEXMLFiles ( const path input_file )
 	
 	return kNoError;
 	
-}
+} // SplitBEXMLFiles
 

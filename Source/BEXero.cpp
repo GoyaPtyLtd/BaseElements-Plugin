@@ -1,18 +1,62 @@
-//
-//  BE_Xero.cpp
-//  BaseElements
-//
-//  Created by Mark Banks on 14/01/2014.
-//  Copyright (c) 2014 Goya. All rights reserved.
-//
+/*
+ BE_Xero.cpp
+ BaseElements Plug-In
+
+ Copyright (c) 2014~2015 Goya. All rights reserved.
+ For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
+
+ http://www.goya.com.au/baseelements/plugin
+
+ */
+
 
 #include "BEXero.h"
 #include "BECurl.h"
+#include "BEPluginException.h"
+#include "Crypto/BEBio.h"
+#include "Crypto/BEX509.h"
 
+#include <openssl/bio.h>
+#include <openssl/err.h>
+#include <openssl/pem.h>
 
 
 using namespace std;
 
+
+const std::string xero_generate_key_pair ( BEX509 * x509 )
+{
+	std::string generated_key;
+
+	RSA * rsa_key_pair = RSA_generate_key ( 1024, RSA_3, NULL, NULL );
+
+	if ( rsa_key_pair ) {
+
+		EVP_PKEY * private_key = EVP_PKEY_new();
+
+		if ( private_key ) {
+
+			EVP_PKEY_assign_RSA ( private_key, rsa_key_pair );
+
+			x509->set_private_key ( private_key );
+
+			std::auto_ptr<BEBio> bio ( new BEBio );
+			generated_key = bio->extract( private_key );
+			generated_key.append ( x509->generate() );
+
+			EVP_PKEY_free ( private_key );
+
+		} else {
+			throw BEPlugin_Exception ( ERR_get_error() );
+		}
+
+	} else {
+		throw BEPlugin_Exception ( ERR_get_error() );
+	}
+
+	return generated_key;
+
+} // xero_generate_key_pair
 
 
 int BEXero::sign_url ( string& url, string& post_arguments, const string http_method ) {
