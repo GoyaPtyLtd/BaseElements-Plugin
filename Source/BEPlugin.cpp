@@ -222,6 +222,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, true, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Xero_GenerateKeys, BE_Xero_GenerateKeys, true, 1, 7 );
 
+	g_be_plugin->RegisterFunction ( kBE_RegularExpression, BE_RegularExpression, true, 2, 4 );
+
 	// still alpha
 	
 //	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestToken, BE_OAuth_RequestAccessToken, true, 3 );
