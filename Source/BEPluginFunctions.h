@@ -128,6 +128,7 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 
 FMX_PROC(fmx::errcode) BE_Values_Unique ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_Values_FilterOut ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_Values_ContainsDuplicates ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_Values_Sort ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 

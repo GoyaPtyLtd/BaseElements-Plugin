@@ -2166,6 +2166,31 @@ FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* en
 } // BE_Values_FilterOut
 
 
+FMX_PROC(errcode) BE_Values_ContainsDuplicates ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto value_list = ParameterAsUTF8String ( parameters );
+		auto case_sensitive = ParameterAsBoolean ( parameters, 1 );
+
+		auto values ( new BEValueList<string> ( *value_list, case_sensitive ) );
+		auto contains_duplicates = values->contains_duplicates();
+		
+		SetResult ( contains_duplicates, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Values_ContainsDuplicates
+
+
 FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();

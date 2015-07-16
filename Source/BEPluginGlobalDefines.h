@@ -77,9 +77,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 #define BUNDLE_STRINGS_ID "BaseElements"
 
-#define	VERSION_NUMBER_STRING L"3.2.0"
-#define	AUTO_UPDATE_VERSION L"03019000"
-#define VERSION_STRING "3.2" // also in xcode project build settings
+#define	VERSION_NUMBER_STRING L"3.1.0"
+#define	AUTO_UPDATE_VERSION L"03010000"
+#define VERSION_STRING "3.1" // also in xcode project build settings
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
 
@@ -180,6 +180,7 @@ enum functions {
 	kBE_Xero_GenerateKeys = 331,
 	kBE_Values_Unique = 350,
 	kBE_Values_FilterOut = 351,
+	kBE_Values_ContainsDuplicates = 352,
 	kBE_Values_Sort = 353,
 	kBE_SMTP_Server = 400,
 	kBE_SMTP_Send = 401,
