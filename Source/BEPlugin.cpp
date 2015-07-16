@@ -91,43 +91,43 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_GetLastError, BE_GetLastError );
 	g_be_plugin->RegisterFunction ( kBE_GetLastDDLError, BE_GetLastError );
 
-	g_be_plugin->RegisterFunction ( kBE_ClipboardFormats, BE_ClipboardFormats, false );
-	g_be_plugin->RegisterFunction ( kBE_ClipboardData, BE_ClipboardData, false, 1 );
-	g_be_plugin->RegisterFunction ( kBE_SetClipboardData, BE_SetClipboardData, false, 2 );
+	g_be_plugin->RegisterFunction ( kBE_ClipboardFormats, BE_ClipboardFormats );
+	g_be_plugin->RegisterFunction ( kBE_ClipboardData, BE_ClipboardData, 1 );
+	g_be_plugin->RegisterFunction ( kBE_SetClipboardData, BE_SetClipboardData, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_CreateFolder, BE_CreateFolder, 1 );
 	g_be_plugin->RegisterFunction ( kBE_DeleteFile, BE_DeleteFile, 1 );
 	g_be_plugin->RegisterFunction ( kBE_FileExists, BE_FileExists, 1 );
 	g_be_plugin->RegisterFunction ( kBE_FileSize, BE_FileSize, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ReadTextFromFile, BE_ReadTextFromFile, 1 );
-	g_be_plugin->RegisterFunction ( kBE_WriteTextToFile, BE_WriteTextToFile, true, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_WriteTextToFile, BE_WriteTextToFile, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_StripInvalidUTF16CharactersFromXMLFile, BE_StripInvalidUTF16CharactersFromXMLFile, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ExportFieldContents, BE_ExportFieldContents, 2 );
-	g_be_plugin->RegisterFunction ( kBE_ImportFile, BE_ImportFile, true, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_ImportFile, BE_ImportFile, 1, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_MoveFile, BE_MoveFile, 2 );
 	g_be_plugin->RegisterFunction ( kBE_CopyFile, BE_CopyFile, 2 );
-	g_be_plugin->RegisterFunction ( kBE_ListFilesInFolder, BE_ListFilesInFolder, true, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_ListFilesInFolder, BE_ListFilesInFolder, 1, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_FileType_ALL + kBE_FileTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_FileType_File + kBE_FileTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_FileType_Folder + kBE_FileTypeOffset, BE_NumericConstants );
 
-	g_be_plugin->RegisterFunction ( kBE_SelectFile, BE_SelectFile, false, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_SelectFolder, BE_SelectFolder, false, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_SaveFileDialog, BE_SaveFileDialog, false, 1, 3 );
+	g_be_plugin->RegisterFunction ( kBE_SelectFile, BE_SelectFile, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_SelectFolder, BE_SelectFolder, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_SaveFileDialog, BE_SaveFileDialog, 1, 3 );
 	
-	g_be_plugin->RegisterFunction ( kBE_DisplayDialog, BE_DisplayDialog, false, 3, 5 );
-	g_be_plugin->RegisterFunction ( kBE_OpenFile, BE_OpenFile, false, 1, 1 );
-	g_be_plugin->RegisterFunction ( kBE_ProgressDialog, BE_ProgressDialog, false, 2, 3 );
-	g_be_plugin->RegisterFunction ( kBE_ProgressDialog_Update, BE_ProgressDialog_Update, false, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_DisplayDialog, BE_DisplayDialog, 3, 5 );
+	g_be_plugin->RegisterFunction ( kBE_OpenFile, BE_OpenFile, 1, 1 );
+	g_be_plugin->RegisterFunction ( kBE_ProgressDialog, BE_ProgressDialog, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_ProgressDialog_Update, BE_ProgressDialog_Update, 1, 2 );
 	
 	
 	g_be_plugin->RegisterFunction ( kBE_ApplyXSLT, BE_ApplyXSLT, 3 );
 	
 	g_be_plugin->RegisterFunction ( kBE_ApplyXSLTInMemory, BE_ApplyXSLTInMemory, 2 );
-	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, false, 2, 4 );
-	g_be_plugin->RegisterFunction ( kBE_XPathAll, BE_XPathAll, false, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_XPathAll, BE_XPathAll, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_StripXMLNodes, BE_StripXMLNodes, 3 );
 	g_be_plugin->RegisterFunction ( kBE_XML_Parse, BE_XML_Parse, 1 );
 	g_be_plugin->RegisterFunction ( kBE_SplitBEFileNodes, BE_SplitBEFileNodes, 1 );
@@ -139,58 +139,58 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_CancelButton + kBE_ButtonOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_AlternateButton + kBE_ButtonOffset, BE_NumericConstants );
 	
-	g_be_plugin->RegisterFunction ( kBE_ExecuteSystemCommand, BE_ExecuteSystemCommand, false, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_ExecuteSystemCommand, BE_ExecuteSystemCommand, 1, 2 );
 	
-	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, false, 1 );
+	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, 1 );
 
-	g_be_plugin->RegisterFunction ( kBE_ExecuteScript, BE_ExecuteScript, true, 1, 3 );
+	g_be_plugin->RegisterFunction ( kBE_ExecuteScript, BE_ExecuteScript, 1, 3 );
 	
-	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, true, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, 1, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_ContainerIsCompressed, BE_ContainerIsCompressed, 1 );
-	g_be_plugin->RegisterFunction ( kBE_Gzip, BE_Gzip, true, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_UnGzip, BE_UnGzip, true, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Gzip, BE_Gzip, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_UnGzip, BE_UnGzip, 1, 2 );
 	
-	g_be_plugin->RegisterFunction ( kBE_JSONPath, BE_JSONPath, true, 2 );
+	g_be_plugin->RegisterFunction ( kBE_JSONPath, BE_JSONPath, 2 );
 	g_be_plugin->RegisterFunction ( kBE_JSON_Error_Description, BE_JSON_Error_Description );
-	g_be_plugin->RegisterFunction ( kBE_JSON_ArraySize, BE_JSON_ArraySize, true, 1 );
-	g_be_plugin->RegisterFunction ( kBE_JSON_Encode, BE_JSON_Encode, true, 1, 3 );
+	g_be_plugin->RegisterFunction ( kBE_JSON_ArraySize, BE_JSON_ArraySize, 1 );
+	g_be_plugin->RegisterFunction ( kBE_JSON_Encode, BE_JSON_Encode, 1, 3 );
 	
 	
-	g_be_plugin->RegisterFunction ( kBE_GetURL, BE_GetURL, true, 1, 4 );
-	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_SaveURLToFile, true, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_GetURL, BE_GetURL, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_SaveURLToFile, 2, 4 );
 
-	g_be_plugin->RegisterFunction ( kBE_SetPreference, BE_SetPreference, true, 2, 3 );
-	g_be_plugin->RegisterFunction ( kBE_GetPreference, BE_GetPreference, true, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_SetPreference, BE_SetPreference, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_GetPreference, BE_GetPreference, 1, 2 );
 
-	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, true, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, true, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Base64_Decode, BE_Base64_Decode, true, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Base64_Decode, BE_Base64_Decode, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Base64_Encode, BE_Base64_Encode, 1 );
-	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, true, 0, 1 );
+	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, 0, 1 );
 	g_be_plugin->RegisterFunction ( kBE_Base64_URL_Encode, BE_Base64_Encode, 1 );
 
 
-	g_be_plugin->RegisterFunction ( kBE_JPEG_Recompress, BE_JPEG_Recompress, true, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_JPEG_Recompress, BE_JPEG_Recompress, 1, 4 );
 
 	
 	g_be_plugin->RegisterFunction ( kBE_Encrypt_AES, BE_Encrypt_AES, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Decrypt_AES, BE_Decrypt_AES, 2 );
 
 	
-	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST_OR_PUT, true, 2, 4 );
-	g_be_plugin->RegisterFunction ( kBE_HTTP_DELETE, BE_HTTP_DELETE, true, 1, 3 );
-	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_File, BE_HTTP_POST_OR_PUT, true, 2, 4 );
-	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_Data, BE_HTTP_POST_OR_PUT, true, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST_OR_PUT, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_DELETE, BE_HTTP_DELETE, 1, 3 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_File, BE_HTTP_POST_OR_PUT, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_Data, BE_HTTP_POST_OR_PUT, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Code, BE_HTTP_Response_Code );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Headers, BE_HTTP_Response_Headers );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Set_Custom_Header, BE_HTTP_Set_Custom_Header, 2 );
-	g_be_plugin->RegisterFunction ( kBE_HTTP_Set_Proxy, BE_HTTP_Set_Proxy, true, 1, 4 );
-	g_be_plugin->RegisterFunction ( kBE_Curl_Set_Option, BE_Curl_Set_Option, true, 0, 2 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_Set_Proxy, BE_HTTP_Set_Proxy, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_Curl_Set_Option, BE_Curl_Set_Option, 0, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Curl_Trace, BE_Curl_Trace );
 
-	g_be_plugin->RegisterFunction ( kBE_MessageDigest, BE_MessageDigest, true, 1, 3 );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigest, BE_MessageDigest, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_MD5 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA256 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_MDC2 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
@@ -199,7 +199,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA224 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_HMAC, BE_HMAC, true, 2, 5 );
+	g_be_plugin->RegisterFunction ( kBE_HMAC, BE_HMAC, 2, 5 );
 
 	g_be_plugin->RegisterFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_Encoding_Base64 + kBE_EncodingOffset, BE_NumericConstants );
@@ -209,33 +209,33 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_TimeZoneOffset, BE_TimeFunctions );
 	
 	
-	g_be_plugin->RegisterFunction ( kBE_Values_Unique, BE_Values_Unique, true, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Values_FilterOut, BE_Values_FilterOut, true, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_Values_Unique, BE_Values_Unique, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Values_FilterOut, BE_Values_FilterOut, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_Values_Sort, BE_Values_Sort, 1 );
 	
 	
-	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, true, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, 2, 4 );
 
-	g_be_plugin->RegisterFunction ( kBE_SMTP_Server, BE_SMTP_Server, true, 1, 4 );
-	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, true, 4, 9 );
+	g_be_plugin->RegisterFunction ( kBE_SMTP_Server, BE_SMTP_Server, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, 4, 9 );
 	
-	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, true, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Xero_GenerateKeys, BE_Xero_GenerateKeys, true, 1, 7 );
+	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Xero_GenerateKeys, BE_Xero_GenerateKeys, 1, 7 );
 
-	g_be_plugin->RegisterFunction ( kBE_RegularExpression, BE_RegularExpression, true, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_RegularExpression, BE_RegularExpression, 2, 4 );
 
 	// still alpha
 	
 //	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestToken, BE_OAuth_RequestAccessToken, true, 3 );
 //	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, true, 3, 5 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, 3, 5 );
 //	g_be_plugin->RegisterFunction ( kBE_OAuth_ClearToken, BE_OAuth_RequestAccessToken, true );
 	
-	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, true, 1 );
+	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, 1 );
 
-	g_be_plugin->RegisterHiddenFunction ( kBE_ConvertContainer, BE_ConvertContainer, true, 1, 4 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_ConvertContainer, BE_ConvertContainer, 1, 4 );
 
-	g_be_plugin->RegisterHiddenFunction ( kBE_XOR, BE_XOR, true, 2, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_XOR, BE_XOR, 2, 2 );
 
 	return kCurrentExtnVersion;	// enable the plug-in
 	
