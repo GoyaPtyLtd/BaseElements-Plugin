@@ -54,6 +54,14 @@
 #include "BEJavaScript.h"
 #include "Images/BEJPEG.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wall"
+#pragma clang diagnostic ignored "-pedantic"
+#pragma clang diagnostic ignored "-Wdocumentation"
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wunused-parameter"
+#pragma clang diagnostic ignored "-Wshadow"
+
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/thread.hpp>
@@ -63,6 +71,12 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
+
+#pragma clang diagnostic pop
+
+#include <Poco/Exception.h>
+#include <Poco/RegularExpression.h>
+#include <Poco/String.h>
 
 #include <iconv.h>
 
@@ -2152,6 +2166,31 @@ FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* en
 } // BE_Values_FilterOut
 
 
+FMX_PROC(errcode) BE_Values_ContainsDuplicates ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto value_list = ParameterAsUTF8String ( parameters );
+		auto case_sensitive = ParameterAsBoolean ( parameters, 1 );
+
+		auto values ( new BEValueList<string> ( *value_list, case_sensitive ) );
+		auto contains_duplicates = values->contains_duplicates();
+		
+		SetResult ( contains_duplicates, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Values_ContainsDuplicates
+
+
 FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
@@ -2689,4 +2728,97 @@ FMX_PROC(errcode) BE_ConvertContainer ( short /* funcId */, const ExprEnv& /* en
 	return MapError ( error );
 
 } // BE_ConvertContainer
+
+
+/*
+ notes
+
+ the options are a string consisting of, in any order
+ i	case insensitive
+ m	multiline
+ s	dot matches all characters, including newline
+ x	ignore whitespace
+ g	replace all
+
+ if the replaceString parameter is present ( can be empty ) then a replace is performed
+ otherwise a find
+ */
+
+FMX_PROC(errcode) BE_RegularExpression ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		StringAutoPtr options = ParameterAsUTF8String ( parameters, 2 );
+
+		int constructor_options = 0;
+		int match_options = 0;
+		int replace_options = 0;
+
+		Poco::toLowerInPlace ( *options );
+		std::size_t found = options->find ( "i" );
+		if ( found != std::string::npos ) {
+			constructor_options |= Poco::RegularExpression::RE_CASELESS;
+		}
+
+		found = options->find ( "m" );
+		if ( found != std::string::npos ) {
+			constructor_options |= Poco::RegularExpression::RE_MULTILINE;
+		}
+
+		found = options->find ( "s" );
+		if ( found != std::string::npos ) {
+			constructor_options |= Poco::RegularExpression::RE_DOTALL;
+		}
+
+		found = options->find ( "x" );
+		if ( found != std::string::npos ) {
+			constructor_options |= Poco::RegularExpression::RE_EXTENDED;
+		}
+
+		found = options->find ( "g" );
+		if ( found != std::string::npos ) {
+			replace_options |= Poco::RegularExpression::RE_GLOBAL;
+		}
+
+		std::string matched;
+
+		try {
+
+			StringAutoPtr text = ParameterAsUTF8String ( parameters );
+			const StringAutoPtr regex = ParameterAsUTF8String ( parameters, 1 );
+
+			Poco::RegularExpression re ( *regex, constructor_options, false );
+
+			if ( parameters.Size() < 4 ) {
+
+				re.extract ( *text, matched, match_options );
+				SetResult ( matched, results );
+
+			} else {
+
+				const StringAutoPtr replacement = ParameterAsUTF8String ( parameters, 3 );
+				re.subst ( *text, *replacement, replace_options ); // int now_many =
+				SetResult ( *text, results );
+
+			}
+
+		} catch ( Poco::RegularExpressionException& e ) {
+			error = e.code();
+		}
+
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_RegularExpression
+
 

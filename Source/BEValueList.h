@@ -48,6 +48,7 @@ public:
 	
 	T unique ( );
 	T filter_out ( BEValueList& filter_out );
+	const bool contains_duplicates ( );
 	T sort ( ) const;
 	void remove_prefix ( const T& prefix );
 	
@@ -223,25 +224,47 @@ T BEValueList<T>::filter_out ( BEValueList& filter_out )
 
 
 template <typename T>
+const bool BEValueList<T>::contains_duplicates ( )
+{
+	std::set<T> unique;
+	auto contains_duplicates = false;
+
+	for ( typename std::vector<T>::iterator it = values.begin() ; it != values.end(); ++it ) {
+
+		bool value_inserted = inserted ( *it, unique );
+
+		if ( value_inserted == false ) {
+			contains_duplicates = true;
+			break;
+		}
+
+	}
+
+	return contains_duplicates;
+
+} // duplicate_values
+
+
+template <typename T>
 T BEValueList<T>::sort ( ) const
 {
-	
+
 	std::vector<T> sorted ( values.begin(), values.end() );
 	std::sort ( sorted.begin(), sorted.end() );
-	
+
 	std::stringstream text;
-	
+
 	for ( typename std::vector<T>::iterator it = sorted.begin() ; it != sorted.end(); ++it ) {
-		
+
 		if ( text.rdbuf()->in_avail() > 0 ) {
 			text << FILEMAKER_END_OF_LINE;
 		}
 		text << *it;
-		
+
 	}
-	
+
 	return text.str();
-	
+
 } // sort
 
 

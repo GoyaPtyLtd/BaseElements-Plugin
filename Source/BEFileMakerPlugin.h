@@ -32,11 +32,10 @@ public:
     BEFileMakerPlugin ( fmx::QuadCharAutoPtr plugin_id );
 	~BEFileMakerPlugin();
 	
-    fmx::errcode RegisterHiddenFunction ( short function_id, fmx::ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
-    fmx::errcode RegisterFunction ( short function_id, fmx::ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
-    fmx::errcode RegisterPluginFunction ( FMX_UInt32 function_flags, short function_id, fmx::ExtPluginType funcion_pointer, bool server_compatible, int minumum_parameters = 0, int maximum_parameters = NULL );
-    fmx::errcode RegisterFunction ( short function_id, fmx::ExtPluginType funcion_pointer, int minumum_parameters = 0 );
-	
+    fmx::errcode RegisterHiddenFunction ( short function_id, fmx::ExtPluginType funcion_pointer, int minumum_parameters = 0, int maximum_parameters = NULL );
+    fmx::errcode RegisterFunction ( short function_id, fmx::ExtPluginType funcion_pointer, int minumum_parameters = 0, int maximum_parameters = NULL );
+    fmx::errcode RegisterPluginFunction ( FMX_UInt32 function_flags, short function_id, fmx::ExtPluginType funcion_pointer, int minumum_parameters = 0, int maximum_parameters = NULL );
+
 	void set_fmx_application ( const FMX_Application fmx_application_value );
 	bool running_on_server ( );
 

@@ -95,6 +95,8 @@
 
 "230" = "BE_SaveFileDialog ( prompt {; fileName ; inFolder } )";
 
+"240" = "BE_RegularExpression ( text ; expression {; options ; replaceString } )";
+
 "250" = "BE_ContainerIsCompressed ( containerField )";
 "251" = "BE_Gzip ( data {; filename } )";
 "252" = "BE_UnGzip ( gzip_data {; filename } )";
@@ -116,7 +118,7 @@
 
 "350" = "BE_Values_Unique ( listOfValues {; caseSensitive } )";
 "351" = "BE_Values_FilterOut ( textToFilter ; filterValues {; caseSensitive } )";
-
+"352" = "BE_Values_ContainsDuplicates ( listOfValues  {; caseSensitive } )";
 "353" = "BE_Values_Sort ( listOfValues )";
 
 

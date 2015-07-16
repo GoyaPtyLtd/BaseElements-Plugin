@@ -2,7 +2,7 @@
 Version 3.1
 ########################################################################
 
-July 15, 2015
+July 16, 2015
 
 New Functions
 
@@ -13,10 +13,12 @@ BE_Gzip
 BE_ImportFile
 BE_JPEG_Recompress
 BE_UnGzip
+BE_Values_ContainsDuplicates
 BE_Xero_GenerateKeys
 
 Experimental (Hidden) Functions
 
+BE_RegularExpression
 BE_XOR
 
 
