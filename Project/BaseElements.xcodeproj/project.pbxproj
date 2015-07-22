@@ -561,6 +561,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -602,6 +604,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -721,7 +725,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.1;
+				VERSION_STRING = 3.1.1;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -809,7 +813,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.1;
+				VERSION_STRING = 3.1.1;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",

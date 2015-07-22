@@ -2,7 +2,7 @@
  BEFileTextReader.cpp
  BaseElements Plug-In
  
- Copyright 2013 Goya. All rights reserved.
+ Copyright 2013-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -18,9 +18,9 @@
 // over-rides
 
 
-string BEFileTextReader::name()
+std::string BEFileTextReader::name()
 {
-	string name = "";
+	std::string name = "";
 
 	try {
 		name = BEXMLTextReader::name();
@@ -36,9 +36,9 @@ string BEFileTextReader::name()
 }
 
 
-string BEFileTextReader::get_attribute ( const string attribute_name )
+std::string BEFileTextReader::get_attribute ( const std::string attribute_name )
 {
-	string value = "";
+	std::string value = "";
 	
 	try {
 		value = BEXMLTextReader::get_attribute ( attribute_name );
