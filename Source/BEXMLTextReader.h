@@ -2,7 +2,7 @@
  BEXMLTextReader.h
  BaseElements Plug-In
  
- Copyright 2012-2014 Goya. All rights reserved.
+ Copyright 2012-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -23,9 +23,6 @@
 #include <libxml/xmlreader.h>
 
 
-using namespace std;
-
-
 static std::string error_report;
 
 
@@ -43,7 +40,7 @@ public:
 	
 	std::string parse ( );
 
-	string name();
+	std::string name();
 	int node_type();
 	int depth();
 	
@@ -51,12 +48,13 @@ public:
 	int number_of_attributes();
 	void move_to_element();
 	void move_to_attribute ( const int attribute_number );
-	string get_attribute ( const string attribute_name );
+	std::string get_attribute ( const std::string attribute_name );
 	bool empty();
-	string value();
-	string as_string();
-	string inner_xml();
-	string content();
+	std::string value();
+	std::string as_string();
+	std::string inner_xml();
+	std::string outer_xml();
+	std::string content();
 	void skip_unwanted_nodes();
 		
 	static void error_reader ( void * arg, const char * msg, xmlParserSeverities severity, xmlTextReaderLocatorPtr locator );

@@ -99,7 +99,7 @@ void BEXMLTextReader::read ( )
 
 void BEXMLTextReader::error_reader ( void * arg, const char * msg, xmlParserSeverities /* severity */, xmlTextReaderLocatorPtr locator )
 {
-	ostringstream error;
+	std::ostringstream error;
 
 	const xmlChar * uri = xmlTextReaderLocatorBaseURI ( locator );
 	if ( uri ) {
@@ -120,7 +120,7 @@ void BEXMLTextReader::error_reader ( void * arg, const char * msg, xmlParserSeve
 }
 
 
-string BEXMLTextReader::parse ( )
+std::string BEXMLTextReader::parse ( )
 {
 		
 	xmlTextReaderSetErrorHandler ( reader, (xmlTextReaderErrorFunc) BEXMLTextReader::error_reader, &file );
@@ -136,10 +136,10 @@ string BEXMLTextReader::parse ( )
 } // validate
 
 
-string BEXMLTextReader::name()
+std::string BEXMLTextReader::name()
 {
 	const xmlChar * node_name = xmlTextReaderName ( reader );
-	string name = "";
+	std::string name = "";
 	if ( node_name ) {
 		name = (const char *)node_name;
 		xmlFree ( (xmlChar *)node_name );
@@ -201,10 +201,10 @@ void BEXMLTextReader::move_to_element()
 }
 
 
-string BEXMLTextReader::get_attribute ( const string attribute_name )
+std::string BEXMLTextReader::get_attribute ( const std::string attribute_name )
 {
 	const xmlChar * attribute_value = xmlTextReaderGetAttribute ( reader, (xmlChar *)attribute_name.c_str() );
-	string value;
+	std::string value;
 	if ( attribute_value ) {
 		value = (const char *)attribute_value;
 		xmlFree ( (xmlChar *)attribute_value );
@@ -238,10 +238,10 @@ bool BEXMLTextReader::empty()
 }
 
 
-string BEXMLTextReader::value()
+std::string BEXMLTextReader::value()
 {
 	const xmlChar * reader_value = xmlTextReaderValue ( reader );
-	string value;
+	std::string value;
 	
 	if ( reader_value ) {
 		value = (const char *)reader_value;
@@ -253,11 +253,11 @@ string BEXMLTextReader::value()
 }
 
 
-string BEXMLTextReader::inner_xml()
+std::string BEXMLTextReader::inner_xml()
 {
-	string inner_xml;
+	std::string inner_xml;
 
-	const xmlChar * raw_xml = xmlTextReaderReadOuterXml ( reader );
+	const xmlChar * raw_xml = xmlTextReaderReadInnerXml ( reader );
 	const xmlErrorPtr xml_error = xmlGetLastError();
 	if ( NULL == xml_error ) {
 		inner_xml = (char *)raw_xml;
@@ -271,21 +271,43 @@ string BEXMLTextReader::inner_xml()
 } // inner_xml
 
 
-string BEXMLTextReader::content()
+std::string BEXMLTextReader::outer_xml()
+{
+	std::string outer_xml;
+
+	const xmlChar * raw_xml = xmlTextReaderReadOuterXml ( reader );
+	const xmlErrorPtr xml_error = xmlGetLastError();
+	if ( NULL == xml_error ) {
+		outer_xml = (char *)raw_xml;
+		xmlFree ( (void *)raw_xml );
+	} else {
+		throw BEXMLReaderInterface_Exception ( xml_error->code );
+	}
+
+	return outer_xml;
+
+} // outer_xml
+
+
+std::string BEXMLTextReader::content()
 {
 	const xmlChar * xml_data = xmlNodeGetContent ( xmlTextReaderCurrentNode ( reader ) );
-	const string xml_result ( (char *)xml_data, xmlStrlen ( xml_data ) );
+	const std::string xml_result ( (char *)xml_data, xmlStrlen ( xml_data ) );
 	xmlFree ( (xmlChar *)xml_data );
 
 	return xml_result;
 } // content
 
 
-string BEXMLTextReader::as_string()
+std::string BEXMLTextReader::as_string()
 {
+	std::string value;
+
 	const xmlChar * reader_value = xmlTextReaderReadString ( reader );
-	const string value = (const char *)reader_value;
-	xmlFree ( (void *)reader_value );
+	if ( reader_value ) {
+		value = (const char *)reader_value;
+		xmlFree((void *)reader_value);
+	}
 
 	return value;
 } // as_string

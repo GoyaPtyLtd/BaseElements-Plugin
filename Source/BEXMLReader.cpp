@@ -31,8 +31,8 @@ int StripXMLNodes ( const path input_file, const path output_file, const vector<
 
 	try {
 		
-		auto_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
-		auto_ptr<BEXMLTextWriter> writer ( new BEXMLTextWriter ( output_file ) );
+		boost::shared_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
+		boost::shared_ptr<BEXMLTextWriter> writer ( new BEXMLTextWriter ( output_file ) );
 		
 		reader->read();
 		
@@ -79,7 +79,7 @@ int StripXMLNodes ( const path input_file, const path output_file, const vector<
 					break;
 					
 				case XML_READER_TYPE_CDATA:
-					writer->write_raw ( reader->inner_xml() );
+					writer->write_raw ( reader->outer_xml() );
 					break;
 
 				case XML_READER_TYPE_END_ELEMENT:
@@ -111,7 +111,7 @@ int SplitBEXMLFiles ( const path input_file )
 	
 	try {
 		
-		auto_ptr<BEFileTextReader> reader ( new BEFileTextReader ( input_file ) );
+		boost::shared_ptr<BEFileTextReader> reader ( new BEFileTextReader ( input_file ) );
 		
 		reader->read();
 		
@@ -129,7 +129,7 @@ int SplitBEXMLFiles ( const path input_file )
 					string type = reader->type_attribute();
 					output_path.replace_extension ( type );
 					
-					ios_base::openmode mode = reader->overwrite() ? ios_base::trunc : ios_base::app;					
+					ios_base::openmode mode = reader->overwrite() ? ios_base::trunc : ios_base::app;
 					boost::filesystem::ofstream output_file ( output_path, ios_base::out | mode );
 					output_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
 					
