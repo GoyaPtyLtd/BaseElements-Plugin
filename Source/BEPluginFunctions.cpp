@@ -53,6 +53,7 @@
 #include "BESMTP.h"
 #include "BEJavaScript.h"
 #include "Images/BEJPEG.h"
+#include "BERegularExpression.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wall"
@@ -2730,85 +2731,23 @@ FMX_PROC(errcode) BE_ConvertContainer ( short /* funcId */, const ExprEnv& /* en
 } // BE_ConvertContainer
 
 
-/*
- notes
-
- the options are a string consisting of, in any order
- i	case insensitive
- m	multiline
- s	dot matches all characters, including newline
- x	ignore whitespace
- g	replace all
-
- if the replaceString parameter is present ( can be empty ) then a replace is performed
- otherwise a find
- */
-
 FMX_PROC(errcode) BE_RegularExpression ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
-		StringAutoPtr options = ParameterAsUTF8String ( parameters, 2 );
-
-		int constructor_options = 0;
-		int match_options = 0;
-		int replace_options = 0;
-
-		Poco::toLowerInPlace ( *options );
-		std::size_t found = options->find ( "i" );
-		if ( found != std::string::npos ) {
-			constructor_options |= Poco::RegularExpression::RE_CASELESS;
-		}
-
-		found = options->find ( "m" );
-		if ( found != std::string::npos ) {
-			constructor_options |= Poco::RegularExpression::RE_MULTILINE;
-		}
-
-		found = options->find ( "s" );
-		if ( found != std::string::npos ) {
-			constructor_options |= Poco::RegularExpression::RE_DOTALL;
-		}
-
-		found = options->find ( "x" );
-		if ( found != std::string::npos ) {
-			constructor_options |= Poco::RegularExpression::RE_EXTENDED;
-		}
-
-		found = options->find ( "g" );
-		if ( found != std::string::npos ) {
-			replace_options |= Poco::RegularExpression::RE_GLOBAL;
-		}
-
-		std::string matched;
-
-		try {
-
-			StringAutoPtr text = ParameterAsUTF8String ( parameters );
-			const StringAutoPtr regex = ParameterAsUTF8String ( parameters, 1 );
-
-			Poco::RegularExpression re ( *regex, constructor_options, false );
-
-			if ( parameters.Size() < 4 ) {
-
-				re.extract ( *text, matched, match_options );
-				SetResult ( matched, results );
-
-			} else {
-
-				const StringAutoPtr replacement = ParameterAsUTF8String ( parameters, 3 );
-				re.subst ( *text, *replacement, replace_options ); // int now_many =
-				SetResult ( *text, results );
-
-			}
-
-		} catch ( Poco::RegularExpressionException& e ) {
-			error = e.code();
-		}
-
-
+        const StringAutoPtr text = ParameterAsUTF8String ( parameters );
+        const StringAutoPtr expression = ParameterAsUTF8String ( parameters, 1 );
+		const StringAutoPtr options = ParameterAsUTF8String ( parameters, 2 );
+        const StringAutoPtr replace_with = ParameterAsUTF8String ( parameters, 3 );
+        const bool replace = parameters.Size() == 4 ;
+        
+        BEValueList<std::string> matched = regular_expression ( *text, *expression, *options, *replace_with, replace );
+        std::string matched_text = matched.get_as_filemaker_string();
+        // add new setresult for value lists
+        SetResult ( matched_text, results );
+        
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {

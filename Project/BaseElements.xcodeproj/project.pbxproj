@@ -30,8 +30,8 @@
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
-		4DB753AC1B38DA2000E89C6A /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C383186115F300E7F4A1 /* libcrypto.dylib */; };
-		4DB753AD1B38DA3000E89C6A /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C381186115EB00E7F4A1 /* libssl.dylib */; };
+		4DBCA9911B7D6FBA00880836 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCA98F1B7D6FBA00880836 /* libcrypto.a */; };
+		4DBCA9921B7D6FBA00880836 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCA9901B7D6FBA00880836 /* libssl.a */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
@@ -109,6 +109,7 @@
 		4D27C381186115EB00E7F4A1 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
 		4D27C383186115F300E7F4A1 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
 		4D27C3851861160000E7F4A1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		4D2C4EAA1B7C774D00760408 /* BERegularExpression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BERegularExpression.h; path = ../Source/BERegularExpression.h; sourceTree = "<group>"; };
 		4D35117A17E1314A00AEDF01 /* BEFileTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileTextReader.cpp; path = ../Source/BEFileTextReader.cpp; sourceTree = "<group>"; };
 		4D35117B17E1314A00AEDF01 /* BEFileTextReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileTextReader.h; path = ../Source/BEFileTextReader.h; sourceTree = "<group>"; };
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
@@ -165,6 +166,8 @@
 		4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginGlobalDefines.h; path = ../Source/BEPluginGlobalDefines.h; sourceTree = SOURCE_ROOT; };
 		4DAC555318BDA41E00F365F5 /* BESMTP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTP.cpp; path = ../Source/BESMTP.cpp; sourceTree = "<group>"; };
 		4DAC555418BDA41E00F365F5 /* BESMTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTP.h; path = ../Source/BESMTP.h; sourceTree = "<group>"; };
+		4DBCA98F1B7D6FBA00880836 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../Libraries/osx/libcrypto.a; sourceTree = "<group>"; };
+		4DBCA9901B7D6FBA00880836 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../Libraries/osx/libssl.a; sourceTree = "<group>"; };
 		4DC182C8144CEC0900E27CAA /* BEZlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEZlib.h; path = ../Source/BEZlib.h; sourceTree = SOURCE_ROOT; };
 		4DC182C9144CEC0900E27CAA /* BEZlib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEZlib.cpp; path = ../Source/BEZlib.cpp; sourceTree = SOURCE_ROOT; };
 		4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurlOption.cpp; path = ../Source/BECurlOption.cpp; sourceTree = "<group>"; };
@@ -197,6 +200,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DBCA9911B7D6FBA00880836 /* libcrypto.a in Frameworks */,
+				4DBCA9921B7D6FBA00880836 /* libssl.a in Frameworks */,
 				4D0579331B3B83550000585F /* FMWrapper.framework in Frameworks */,
 				4D0579341B3B83550000585F /* libcurl.a in Frameworks */,
 				4D0579351B3B83550000585F /* libjansson.a in Frameworks */,
@@ -212,8 +217,6 @@
 				4D0E296F1B3A6C1000A35298 /* libPocoFoundation.a in Frameworks */,
 				4D0E29701B3A6C1000A35298 /* libPocoZip.a in Frameworks */,
 				4D0E29711B3A6C1000A35298 /* libturbojpeg.a in Frameworks */,
-				4DB753AD1B38DA3000E89C6A /* libssl.dylib in Frameworks */,
-				4DB753AC1B38DA2000E89C6A /* libcrypto.dylib in Frameworks */,
 				4DCD496C1A195B0C00EFCF7F /* libldap.dylib in Frameworks */,
 				4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */,
 				4DCD49721A195B0C00EFCF7F /* libz.dylib in Frameworks */,
@@ -366,6 +369,7 @@
 				4D807F011A9C256100E27E38 /* Images */,
 				4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */,
 				4D8D8E151B167A2C005FEBD3 /* BEQuadChar.h */,
+				4D2C4EAA1B7C774D00760408 /* BERegularExpression.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -383,6 +387,8 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4DBCA98F1B7D6FBA00880836 /* libcrypto.a */,
+				4DBCA9901B7D6FBA00880836 /* libssl.a */,
 				4D05792C1B3B83550000585F /* FMWrapper.framework */,
 				4D05792D1B3B83550000585F /* libcurl.a */,
 				4D05792E1B3B83550000585F /* libjansson.a */,
