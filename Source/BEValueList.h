@@ -15,6 +15,7 @@
 
 
 #include "BEPluginGlobalDefines.h"
+#include "BERegularExpression.h"
 
 #include <string>
 #include <vector>
@@ -35,7 +36,7 @@ public:
 	BEValueList ( void );
 	BEValueList ( const T& value_list, bool is_case_sensitive = true );
 	BEValueList ( const std::vector<T>& value_list, bool is_case_sensitive = true );
-	BEValueList ( const T& value_list, const T& delimiter, const bool is_case_sensitive );
+	BEValueList ( const T& value_list, const T& delimiter, const bool is_case_sensitive = true );
 
 	bool not_empty ( );
 	size_t size ( ) const;
@@ -55,7 +56,9 @@ public:
 	std::vector<T> get_values ( void ) const { return values; }
 	T get_as_comma_separated ( void ) const;
 	T get_as_filemaker_string ( void ) const;
-	
+    
+    BEValueList<T> apply_regular_expression ( const T expression, const std::string options, const T replace_with, const bool replace = false ) const;
+
 protected:
 	
 	std::vector<T> values;
@@ -294,6 +297,20 @@ template <typename T>
 T BEValueList<T>::get_as_filemaker_string ( void ) const
 {
 	return boost::algorithm::join ( values, FILEMAKER_END_OF_LINE );
+}
+
+
+template <typename T>
+BEValueList<T> BEValueList<T>::apply_regular_expression ( const T expression, const std::string options, const T replace_with, const bool replace ) const
+{
+    BEValueList<T> matched;
+    
+    for ( auto it = values.begin() ; it != values.end(); ++it ) {
+        
+        matched.append ( regular_expression ( *it, expression, options, replace_with, replace ) );
+    }
+
+    return matched;
 }
 
 
