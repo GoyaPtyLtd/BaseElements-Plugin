@@ -297,7 +297,7 @@ Copy the poco libraries to the Libraries/osx directory and copy the Poco/usr/loc
 Windows
 =======================================================================
 
-The plug-in was built using Visual Studio 2015 Professional RC on Windows 8.1 (64-bit).
+The plug-in was built using Visual Studio 2015 Professional on Windows 8.1 (64-bit).
 
 Download the FileMaker External Plug-In API from
 
