@@ -20,6 +20,24 @@ extern CustomHeaders g_http_custom_headers;
 using namespace std;
 
 
+const std::string strip_address ( const std::string address );
+const std::string strip_address ( const std::string address )
+{
+    const size_t open = address.find ( "<" );
+    const size_t close = address.find ( ">" );
+    
+    std::string stripped;
+    
+    if ( open != std::string::npos && close != std::string::npos ) {
+        stripped = address.substr ( open, close );
+    } else {
+        stripped = address;
+    }
+    
+    return stripped;
+}
+
+
 #pragma mark -
 #pragma mark Constructors
 #pragma mark -
@@ -56,12 +74,13 @@ BESMTP::BESMTP ( const std::string _host, const std::string _port, const std::st
 #pragma mark Methods
 #pragma mark -
 
-
 fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 {
 	CURLcode result = CURLE_OK;
-	
-	easy_setopt ( CURLOPT_MAIL_FROM, message->from_address().c_str() );
+
+    std::string from = strip_address ( message->from_address() );
+
+    easy_setopt ( CURLOPT_MAIL_FROM, from.c_str() );
 
 	// who we send this to
 	
@@ -72,7 +91,10 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 	
 	vector<string> addresses = send_to->get_values();
 	for ( vector<string>::iterator it = addresses.begin() ; it != addresses.end() ; ++it ) {
-		recipients = curl_slist_append ( recipients, (*it).c_str() );
+        
+        const std::string address = strip_address ( *it );
+        recipients = curl_slist_append ( recipients, address.c_str() );
+        
 	}
 		
 	if ( recipients ) {

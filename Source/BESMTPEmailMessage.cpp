@@ -56,7 +56,7 @@ BESMTPEmailMessage::~BESMTPEmailMessage ( )
 
 std::auto_ptr< BEValueList<std::string> > BESMTPEmailMessage::get_address_list ( const std::string& addresses )
 {
-	std::auto_ptr< BEValueList<std::string> > addresses_list ( new BEValueList<string> ( addresses, ", ", true ) );
+	std::auto_ptr< BEValueList<std::string> > addresses_list ( new BEValueList<string> ( addresses, ",", true ) );
 	return addresses_list;
 };
 
