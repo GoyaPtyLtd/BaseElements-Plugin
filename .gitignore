@@ -45,3 +45,4 @@ Project/BaseElements.xcodeproj/xcuserdata/mark.xcuserdatad/xcschemes/xcschememan
 Project/BaseElements.vcxproj.filters
 Project/.vs/BaseElements/v14/.suo
 Project/BaseElements.opensdf
+Source/minizip/*

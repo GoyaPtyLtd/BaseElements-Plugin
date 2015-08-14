@@ -5,7 +5,7 @@ Building
 The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
 Notes:
-- these instructions apply to version 3.1 of the BaseElements Plugin
+- these instructions apply to version 3.1.2 of the BaseElements Plugin
 - version 14.0.1.175 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 - the location of the release builds needs to be changed to suit your environment
@@ -14,7 +14,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 3.1 of the plug-in is built on Mac OS X 10.10.4 using Xcode 6.4. The Xcode Command Line Tools are also needed.
+Version 3.1 of the plug-in is built on Mac OS X 10.10.5 using Xcode 6.4. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -75,7 +75,7 @@ and follow the supplied building instructions but with the following ./configure
 
 	./configure CFLAGS="-arch i386 -arch x86_64" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
 
-Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and  ./src/.libs/libjansson.a to Libraries.
+Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and  ./src/.libs/libjansson.a to Libraries/osx.
 
 
 =======================================================================
@@ -90,7 +90,7 @@ and follow the supplied building instructions but with the following ./configure
 
 	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
 
-Copy oauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a to Libraries.
+Copy oauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a to Libraries/osx.
 
 
 =======================================================================
@@ -105,7 +105,43 @@ Follow the supplied building instructions using this ./configure command (to bui
 
 	./configure CXXFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking --prefix=build && make install
 
-Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the library in the boost/lib directory to the Libraries directory.
+Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the library in the boost/lib directory to the Libraries/osx directory.
+
+
+=======================================================================
+OpenSSL - 1.0.2d
+=======================================================================
+
+Download the latest openssl source from
+
+	http://www.openssl.org/source/
+
+(openssl-1.0.2d.tar.gz at the time of writing).
+
+To build the 32-bit library
+
+	cd openssl-1.0.2d
+	export KERNEL_BITS=32
+	./config
+	make
+	mkdir x86
+	mv *.a x86/
+	
+For the 64-bit build
+
+	make clean
+	export KERNEL_BITS=64
+	./config
+	make
+	mkdir x64
+	mv *.a x64/
+
+Then, to make the universal libraries
+
+	lipo -create x64/libcrypto.a x86/libcrypto.a -output libcrypto.a
+	lipo -create x64/libssl.a x86/libssl.a -output libssl.a
+
+Copy libcrypto.a and libssl.a to Libraries/osx and copy include/openssl to Headers.
 
 
 =======================================================================
@@ -126,7 +162,7 @@ Copy
 
 	<path_to_install_libssh2>/lib/libssh2.a
 
-into the Libraries directory and copy
+into the Libraries/osx directory and copy
 
 	<path_to_install_libssh2>/include
 
@@ -173,7 +209,7 @@ Copy
 
 	<path_to_intsall_libcurl>/lib/curl.a
 
-into the Libraries directory and
+into the Libraries/osx directory and
 
 	<path_to_intsall_libcurl>/inlcude/curl
 
@@ -216,7 +252,7 @@ Then
 	make install prefix=~/Desktop/build64
 	lipo -create ~/Desktop/build32/lib/libturbojpeg.a ~/Desktop/build64/lib/libturbojpeg.a -output <path to BaseElements-Plugin>/Libraries/osx/libturbojpeg.a
 
-Then copy ~/Desktop/build/libturbojpeg.a to Libraries directory and rename ~/Desktop/build/include to ~/Desktop/build/libturbojpeg and copy the directory into Headers.
+Then copy ~/Desktop/build/libturbojpeg.a to Libraries/osx directory and rename ~/Desktop/build/include to ~/Desktop/build/libturbojpeg and copy the directory into Headers.
 
 
 =======================================================================
@@ -254,7 +290,7 @@ Then, after extracting the archive
 	lipo -create i386/libPocoFoundation.a x86_64/libPocoFoundation.a -output libPocoFoundation.a
 	lipo -create i386/libPocoZip.a x86_64/libPocoZip.a -output libPocoZip.a
 
-Copy the poco libraries to the Libraries directory and copy the Poco/usr/local/include/Poco to Headers.
+Copy the poco libraries to the Libraries/osx directory and copy the Poco/usr/local/include/Poco to Headers.
 
 
 =======================================================================
@@ -267,7 +303,7 @@ Download the FileMaker External Plug-In API from
 
 	http://www.filemaker.com/support/technologies/
 
-and place the FMWrapper directory inside the SDK's Headers directory in the Headers directory. The version of FMWrapper.lib in the Libraries\Win\win32 should be placed the Libraries directory. If building a 64-bit plug-in place the Libraries\Win\x86 in the Libraries\x86 directory.
+and place the FMWrapper directory inside the SDK's Headers directory in the Headers directory. The version of FMWrapper.lib in the Libraries\Win\win32 should be placed the Libraries directory. If building a 64-bit plug-in place the Libraries\Win\x86 in the Libraries\win32 directory.
 
 The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries (/MTd & /MT) using libcmt.lib and nafxcw.lib for release and libcrtd.lib and nafxcwd.lib for debug builds.
 
@@ -303,7 +339,7 @@ and for 64-bit support
 	b2 address-model=64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex install --prefix=build64
 
 
-Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib and build64/lib directories to the Libraries directory.
+Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib to Libraries/x86 and also from build64/lib to the Libraries/x64.
 
 
 =======================================================================
@@ -322,9 +358,11 @@ Move
 
 	contrib/vstudio/vc11/x86/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
-in the Libraries directory and
+into the Libraries/x86 directory and
 
 	contrib/vstudio/vc11/x64/ZlibStatReleaseWithoutAsm/zlibstat.lib
+
+into the Libraries/x64.
 
 Copy zip.h and zconf.h from the root directory of the distribution to the Headers directory.
 
@@ -347,7 +385,7 @@ And
 
 Finally, Build->Batch Build to build the two "Release" configurations.
 
-Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib  to Libraries and win32/vs2010/Output/Release/jansson.lib to Libraries\x64.
+Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib  to Libraries\win32 and win32/vs2010/Output/Release/jansson.lib to Libraries\x64.
 
 
 =======================================================================
@@ -362,7 +400,7 @@ Download the source from
 
 Unpack directory containing the Visual Studio solution files (from the BaseElements-Plugin Projects/Extras), open the Solution make sure the project can find the BaseElements plug-in Header and Libraries directories. Then, from Build->Batch Build build the two "Release" configurations.
 
-Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib  to Libraries and liboauth\Release\liboauth.lib to Libraries\x64.
+Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib  to Libraries\win32 and liboauth\Release\liboauth.lib to Libraries\x64.
 
 
 =======================================================================
@@ -399,7 +437,7 @@ for the 32-bit and 64-bit configurations respectively. To build both 32 and 64 b
 
 	Build -> Batch Build ... select both MTRelease configurations and then "Build"
 
-Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib & libmimetic.lib from the win32\x86 directory to the Libraries directory and from win32\x64 to Libraries\x64.
+Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib & libmimetic.lib from the win32\x86 directory to the Libraries\win32 directory and from win32\x64 to Libraries\x64.
 
 
 =======================================================================
@@ -433,7 +471,7 @@ Copy the library from
 
 	win32\Release_lib\libssl2.lib
 
-into the Libraries directory and copy
+into the Libraries\win32 directory and copy
 
 	include
 
@@ -450,7 +488,7 @@ into the Libraries\x64 directory.
 
 
 =======================================================================
-OpenSSL - 1.0.2c
+OpenSSL - 1.0.2d
 =======================================================================
 
 Building OpenSSL requires that perl is installed. The ActiveState perl (Community Edition) is a good
@@ -463,20 +501,22 @@ Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-(openssl-1.0.2c.tar.gz at the time of writing).
+(openssl-1.0.2d.tar.gz at the time of writing).
+
+Note: if building both x86 and x64 versions unpack a clean version of the source for each build.
 
 Unpack the archive and, using the "VS2015 x86 Native Command Prompt"
 
-	cd c:\Users\Mark\Downloads\openssl-1.0.2c
+	cd c:\Users\Mark\Downloads\openssl-1.0.2d
 	perl Configure VC-WIN32 enable-static-engine no-asm
 	ms\do_nt
 	nmake -f ms\nt.mak
 
-Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries and copy inc32\openssl to Headers.
+Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\win32 and copy inc32\openssl to Headers.
 
 For x64 builds in a "VS2015 x64 Native Command Prompt" use:
 
-	cd c:\Users\Mark\Downloads\openssl-1.0.2c
+	cd c:\Users\Mark\Downloads\openssl-1.0.2d
 	perl Configure VC-WIN64A enable-static-engine no-asm
 	ms\do_win64a
 	nmake -f ms\nt.mak
@@ -530,7 +570,7 @@ Copy the library from
 
 	build\Win32\VC10\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
 
-into the Libraries directory and copy
+into the Libraries\win32 directory and copy
 
 	build\Win64\VC10\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
 
@@ -620,7 +660,7 @@ to
 
 then build the project.
 
-Copy Release\iconv.lib & Release\libxml2.lib to the BE Plugin Libraries folder and, finally, copy
+Copy Release\iconv.lib & Release\libxml2.lib to the BE Plugin Libraries\win32 folder and, finally, copy
 
 	libxml2-2.9.2\include\libxml
 
@@ -692,7 +732,7 @@ into directories, libxslt & libexslt, in the Headers directory and copy the libr
 
 	bin.msvc\libxslt_a.lib & bin.msvc\libexslt_a.lib
 
-into the Libraries (or Libraries\x64) directory.
+into the Libraries\x64 (or Libraries\x64) directory.
 
 Note: if building both 32 & 64 bit libraries clean the project in between the builds.
 
@@ -740,7 +780,7 @@ set
 
 	Character Set = Use Unicode Character Set
 
-and build the Release configuration. Copy turbojpeg-static.lib to the Liraries/win32 directory. For 64-bit builds either start with fresh copy of the source or clean the 32-bit Release configuration and delete the file
+and build the Release configuration. Copy turbojpeg-static.lib to the Liraries\win32 directory. For 64-bit builds either start with fresh copy of the source or clean the 32-bit Release configuration and delete the file
 
 	CMakeCahche.txt
 
