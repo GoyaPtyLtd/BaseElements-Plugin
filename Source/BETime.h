@@ -2,7 +2,7 @@
  BETime.h
  BaseElements Plug-In
  
- Copyright 2012 Goya. All rights reserved.
+ Copyright 2012-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -24,7 +24,8 @@
 #pragma clang diagnostic pop
 
 
-fmx::int64 ptime_to_milliseconds ( const boost::posix_time::ptime& the_time );
+const fmx::int64 ptime_to_milliseconds ( const boost::posix_time::ptime& the_time );
+const fmx::int64 std_time_to_timestamp ( const std::time_t the_time );
 
 
 

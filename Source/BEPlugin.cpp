@@ -99,6 +99,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_DeleteFile, BE_DeleteFile, 1 );
 	g_be_plugin->RegisterFunction ( kBE_FileExists, BE_FileExists, 1 );
 	g_be_plugin->RegisterFunction ( kBE_FileSize, BE_FileSize, 1 );
+    g_be_plugin->RegisterFunction ( kBE_File_Modification_Timestamp, BE_File_Modification_Timestamp, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ReadTextFromFile, BE_ReadTextFromFile, 1 );
 	g_be_plugin->RegisterFunction ( kBE_WriteTextToFile, BE_WriteTextToFile, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_StripInvalidUTF16CharactersFromXMLFile, BE_StripInvalidUTF16CharactersFromXMLFile, 1 );

@@ -2,7 +2,7 @@
  BEPluginFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -32,6 +32,7 @@ FMX_PROC(fmx::errcode) BE_CreateFolder ( short funcId, const fmx::ExprEnv& envir
 FMX_PROC(fmx::errcode) BE_DeleteFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_FileExists ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_FileSize ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_File_Modification_Timestamp ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_ReadTextFromFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_WriteTextToFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );

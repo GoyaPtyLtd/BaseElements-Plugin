@@ -44,9 +44,6 @@
 #endif
 
 
-#define FILEMAKER_EPOCH_OFFSET 62135596800
-
-
 #ifdef __cplusplus
 
 #pragma clang diagnostic push
@@ -79,7 +76,7 @@ extern fmx::errcode g_last_error;
 
 #define	VERSION_NUMBER_STRING L"3.1.1"
 #define	AUTO_UPDATE_VERSION L"03010102"
-#define VERSION_STRING "3.1.1" // also in xcode project build settings
+#define VERSION_STRING "3.1.2b1" // also in xcode project build settings
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/" VERSION_STRING
 
@@ -124,6 +121,7 @@ enum functions {
 	kBE_OpenURL = 124,
 	kBE_OpenFile = 125,
 	kBE_FileSize = 126,
+    kBE_File_Modification_Timestamp = 127,
 	kBE_ExecuteScript = 150,
 	kBE_FileMakerSQL = 151,
 	kBE_GetURL = 152,

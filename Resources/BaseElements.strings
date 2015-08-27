@@ -35,6 +35,7 @@
 "124" = "BE_OpenURL ( url )";
 "125" = "BE_OpenFile ( path )";
 "126" = "BE_FileSize ( path )";
+"127" = "BE_File_Modification_Timestamp ( path )";
 
 "128" = "BaseElements";
 "129" = "Version: 3.1.1\n\nThis plug-in provides additional functionality for BaseElements from Goya";

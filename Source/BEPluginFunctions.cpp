@@ -70,7 +70,6 @@
 #include <boost/tokenizer.hpp>
 #include <boost/algorithm/string.hpp>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
 
 #pragma clang diagnostic pop
@@ -80,8 +79,6 @@
 #include <Poco/String.h>
 
 #include <iconv.h>
-
-#include <iostream>
 
 
 using namespace std;
@@ -317,6 +314,33 @@ FMX_PROC(errcode) BE_FileSize ( short /* funcId */, const ExprEnv& /* environmen
 	
 } // BE_FileSize
 
+
+#pragma mark BE_File_Modification_Timestamp
+
+FMX_PROC(errcode) BE_File_Modification_Timestamp ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+    errcode error = NoError();
+    
+    try {
+        
+        const path path = ParameterAsPath ( parameters );
+        
+        const std::time_t last_modified = boost::filesystem::last_write_time ( path );
+		const fmx::int64 timestamp = std_time_to_timestamp ( last_modified );
+
+		SetResult ( timestamp, results );
+
+	} catch ( filesystem_error& e ) {
+        g_last_error = e.code().value();
+    } catch ( bad_alloc& /* e */ ) {
+        error = kLowMemoryError;
+    } catch ( exception& /* e */ ) {
+        error = kErrorUnknown;
+    }
+    
+    return MapError ( error );
+    
+} // BE_File_Modification_Timestamp
 
 
 FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
