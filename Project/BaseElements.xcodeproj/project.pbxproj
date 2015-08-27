@@ -430,11 +430,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4DCD49811A195B0C00EFCF7F /* Build configuration list for PBXNativeTarget "BaseElements" */;
 			buildPhases = (
-				4DC7C43B1B2E7DFE00B7B142 /* ShellScript */,
 				4DCD49451A195B0C00EFCF7F /* Sources */,
 				4DCD49681A195B0C00EFCF7F /* Resources */,
 				4DCD496B1A195B0C00EFCF7F /* Frameworks */,
-				4D3D6A461A25954B006E2304 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -486,35 +484,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		4D3D6A461A25954B006E2304 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n\n#/bin/cp -R /Applications/FileMaker\\ Pro\\ 13\\ Advanced/Extensions/BaseElements.fmplugin /Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Build/Debug/BaseElements.fmplugin\n\nexit 0;\n\n\nfi\n\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n\nAUTO_UPDATE_VERSION=$(grep 'define.*AUTO_UPDATE_VERSION' ../Source/BEPluginGlobalDefines.h | awk -F '[^0-9]*' '{print $2}')\n\nVERSION_STRING=$(grep 'define VERSION_STRING' ../Source/BEPluginGlobalDefines.h | awk -F '[^0-9a-z.]*' '{print $3}')\n\nrm \"${CONFIGURATION_BUILD_DIR}/Vers\"*\n/usr/bin/touch \"${CONFIGURATION_BUILD_DIR}/Version ${VERSION_STRING} (${AUTO_UPDATE_VERSION})\"\n\ncd \"${CONFIGURATION_BUILD_DIR}\"\n/usr/bin/zip -ry \"${PRODUCT_NAME}.fmplugin.zip\" \"${PRODUCT_NAME}.fmplugin/\"\n/usr/bin/setfile -a B \"${PRODUCT_NAME}.fmplugin/\"\n\nfi\n\n\n";
-		};
-		4DC7C43B1B2E7DFE00B7B142 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n\nrm -rf \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.fmplugin\"\n\nfi\n\nexit 0\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4DCD49451A195B0C00EFCF7F /* Sources */ = {
@@ -659,7 +628,7 @@
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_CONSTANT_CONVERSION = NO;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
-				CONFIGURATION_BUILD_DIR = "/Users/mark/Dropbox/Goya/BaseElemetns PlugIn/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = "../Build/$(PROJECT_NAME).dst";

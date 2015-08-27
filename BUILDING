@@ -8,7 +8,6 @@ Notes:
 - these instructions apply to version 3.1.2 of the BaseElements Plugin
 - version 14.0.1.175 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
-- the location of the release builds needs to be changed to suit your environment
 
 =======================================================================
 Mac OS X

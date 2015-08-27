@@ -21,6 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{646553B8-5F11-4EB7-8AFE-29B5AC598E93}</ProjectGuid>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -97,8 +98,8 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration)\$(Platform)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Z:\Dropbox\Goya\BaseElemetns PlugIn\$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Z:\Dropbox\Goya\BaseElemetns PlugIn\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Build\$(Configuration)\$(Platform)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Build\$(Configuration)\$(Platform)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)</TargetName>
@@ -120,9 +121,9 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeaderOutputFile>..\Build\$(Configuration).intermediate\$(ProjectName).pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\Build\</AssemblerListingLocation>
-      <ObjectFileName>..\Build\</ObjectFileName>
-      <ProgramDataBaseFileName>..\Build\</ProgramDataBaseFileName>
+      <AssemblerListingLocation>..\Build\$(Platform)\</AssemblerListingLocation>
+      <ObjectFileName>..\Build\$(Platform)\</ObjectFileName>
+      <ProgramDataBaseFileName>..\Build\$(Platform)\</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
@@ -159,9 +160,9 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeaderOutputFile>..\Build\$(Configuration).intermediate\$(ProjectName).pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\Build\</AssemblerListingLocation>
-      <ObjectFileName>..\Build\</ObjectFileName>
-      <ProgramDataBaseFileName>..\Build\</ProgramDataBaseFileName>
+      <AssemblerListingLocation>..\Build\$(Platform)\</AssemblerListingLocation>
+      <ObjectFileName>..\Build\$(Platform)\</ObjectFileName>
+      <ProgramDataBaseFileName>..\Build\$(Platform)\</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
