@@ -7,6 +7,9 @@ Headers/*
 
 Libraries/*
 !Libraries/README
+!Libraries/osx/README
+!Libraries/win32/README
+!Libraries/x64/README
 
 # Ignore generated VC2010 files
 
@@ -39,3 +42,7 @@ Source/minizip*
 Project/BaseElements.xcodeproj/xcuserdata/mark.xcuserdatad/xcschemes/xcschememanagement.plist
 Project/BaseElements.xcodeproj/project.xcworkspace/xcshareddata/BaseElements.xccheckout
 Project/BaseElements.xcodeproj/xcuserdata/mark.xcuserdatad/xcschemes/xcschememanagement.plist
+Project/.vs/BaseElements/v14/.suo
+Project/BaseElements.vcxproj.filters
+Project/BaseElements.xcodeproj/.dat091b.034
+Project/BaseElements.xcodeproj/project.xcworkspace/contents.xcworkspacedata

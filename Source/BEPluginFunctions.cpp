@@ -63,9 +63,6 @@
 
 #include <iconv.h>
 
-#include <openssl/rand.h>
-#include <openssl/evp.h>
-
 #include <iostream>
 
 

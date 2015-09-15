@@ -7,6 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D0173011BA78F2D00E1A387 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172EF1BA78F2D00E1A387 /* FMWrapper.framework */; };
+		4D0173021BA78F2D00E1A387 /* libboost_atomic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172F01BA78F2D00E1A387 /* libboost_atomic.a */; };
+		4D0173031BA78F2D00E1A387 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172F11BA78F2D00E1A387 /* libboost_date_time.a */; };
+		4D0173041BA78F2D00E1A387 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172F21BA78F2D00E1A387 /* libboost_filesystem.a */; };
+		4D0173051BA78F2D00E1A387 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172F31BA78F2D00E1A387 /* libboost_regex.a */; };
+		4D0173061BA78F2D00E1A387 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172F41BA78F2D00E1A387 /* libboost_system.a */; };
+		4D0173071BA78F2D00E1A387 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172F51BA78F2D00E1A387 /* libboost_thread.a */; };
+		4D0173081BA78F2D00E1A387 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172F61BA78F2D00E1A387 /* libcrypto.a */; };
+		4D0173091BA78F2D00E1A387 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172F71BA78F2D00E1A387 /* libcurl.a */; };
+		4D01730A1BA78F2D00E1A387 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172F81BA78F2D00E1A387 /* libjansson.a */; };
+		4D01730B1BA78F2D00E1A387 /* libmimetic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172F91BA78F2D00E1A387 /* libmimetic.a */; };
+		4D01730C1BA78F2D00E1A387 /* liboauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172FA1BA78F2D00E1A387 /* liboauth.a */; };
+		4D01730D1BA78F2D00E1A387 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172FB1BA78F2D00E1A387 /* libPocoFoundation.a */; };
+		4D01730E1BA78F2D00E1A387 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172FC1BA78F2D00E1A387 /* libPocoZip.a */; };
+		4D01730F1BA78F2D00E1A387 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172FD1BA78F2D00E1A387 /* libssh2.a */; };
+		4D0173101BA78F2D00E1A387 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172FE1BA78F2D00E1A387 /* libssl.a */; };
+		4D0173111BA78F2D00E1A387 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0172FF1BA78F2D00E1A387 /* libturbojpeg.a */; };
+		4D0173121BA78F2D00E1A387 /* libxerces-c.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0173001BA78F2D00E1A387 /* libxerces-c.a */; };
+		4D0173141BA78F6200E1A387 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0173131BA78F6200E1A387 /* Cocoa.framework */; };
+		4D0173161BA78F6D00E1A387 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0173151BA78F6D00E1A387 /* Carbon.framework */; };
+		4D0173181BA78F8800E1A387 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0173171BA78F8800E1A387 /* libxml2.dylib */; };
+		4D01731A1BA78F9300E1A387 /* libxslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0173191BA78F9300E1A387 /* libxslt.dylib */; };
+		4D01731B1BA7917B00E1A387 /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF89193EEA9F006739BE /* libldap.dylib */; };
+		4D01731C1BA7919200E1A387 /* libexslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E016D3553200E10827 /* libexslt.dylib */; };
+		4D01731D1BA791A100E1A387 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E616D355C100E10827 /* libiconv.dylib */; };
 		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
 		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
 		4D9CFD6F1A3FED7E008D72D1 /* ProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* ProgressDialog.xib */; };
@@ -44,27 +69,6 @@
 		4DCD49651A195B0C00EFCF7F /* BESMTPEmailMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */; };
 		4DCD49661A195B0C00EFCF7F /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C918DA773900DFC47A /* BEBase64.cpp */; };
 		4DCD49691A195B0C00EFCF7F /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
-		4DCD496C1A195B0C00EFCF7F /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF89193EEA9F006739BE /* libldap.dylib */; };
-		4DCD496D1A195B0C00EFCF7F /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF85193EE945006739BE /* libcurl.a */; };
-		4DCD496E1A195B0C00EFCF7F /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3618015EDE782003A0CB9 /* libssl.dylib */; };
-		4DCD496F1A195B0C00EFCF7F /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */; };
-		4DCD49701A195B0C00EFCF7F /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF7E193EE0F3006739BE /* libssh2.a */; };
-		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
-		4DCD49721A195B0C00EFCF7F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52D916D3551400E10827 /* libz.dylib */; };
-		4DCD49731A195B0C00EFCF7F /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E616D355C100E10827 /* libiconv.dylib */; };
-		4DCD49741A195B0C00EFCF7F /* libmimetic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9BAA0918C0009000831FF0 /* libmimetic.a */; };
-		4DCD49751A195B0C00EFCF7F /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52DC16D3552500E10827 /* libxml2.dylib */; };
-		4DCD49761A195B0C00EFCF7F /* libxslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52DE16D3552D00E10827 /* libxslt.dylib */; };
-		4DCD49771A195B0C00EFCF7F /* libcharset.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52EB16D355F100E10827 /* libcharset.dylib */; };
-		4DCD49781A195B0C00EFCF7F /* libexslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E016D3553200E10827 /* libexslt.dylib */; };
-		4DCD49791A195B0C00EFCF7F /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76701E16CDC17A00010A75 /* libjansson.a */; };
-		4DCD497A1A195B0C00EFCF7F /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9BAA0B18C0169000831FF0 /* libboost_regex.a */; };
-		4DCD497B1A195B0C00EFCF7F /* liboauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3884FD17FE6DDC00E1894F /* liboauth.a */; };
-		4DCD497C1A195B0C00EFCF7F /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */; };
-		4DCD497D1A195B0C00EFCF7F /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9EEE7F118A8E9C00EC9352 /* libboost_filesystem.a */; };
-		4DCD497E1A195B0C00EFCF7F /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9E2B0B118A9F4A00EC9352 /* libboost_system.a */; };
-		4DCD497F1A195B0C00EFCF7F /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8BA594134579BD003A90B5 /* libboost_thread.a */; };
-		4DCD49801A195B0C00EFCF7F /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB348716FA7A7B004AD91C /* libboost_date_time.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -85,9 +89,28 @@
 		4D00CC5816D3279000160030 /* BEJSON.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEJSON.cpp; path = ../Source/BEJSON.cpp; sourceTree = "<group>"; };
 		4D00CC5916D3279000160030 /* BEJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEJSON.h; path = ../Source/BEJSON.h; sourceTree = "<group>"; };
 		4D00CC6116D3357C00160030 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		4D00CC6516D3357C00160030 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		4D00CC6616D3357C00160030 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		4D00CC6716D3357C00160030 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		4D0172EF1BA78F2D00E1A387 /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/osx/FMWrapper.framework; sourceTree = "<group>"; };
+		4D0172F01BA78F2D00E1A387 /* libboost_atomic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_atomic.a; path = ../Libraries/osx/libboost_atomic.a; sourceTree = "<group>"; };
+		4D0172F11BA78F2D00E1A387 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../Libraries/osx/libboost_date_time.a; sourceTree = "<group>"; };
+		4D0172F21BA78F2D00E1A387 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../Libraries/osx/libboost_filesystem.a; sourceTree = "<group>"; };
+		4D0172F31BA78F2D00E1A387 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../Libraries/osx/libboost_regex.a; sourceTree = "<group>"; };
+		4D0172F41BA78F2D00E1A387 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../Libraries/osx/libboost_system.a; sourceTree = "<group>"; };
+		4D0172F51BA78F2D00E1A387 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../Libraries/osx/libboost_thread.a; sourceTree = "<group>"; };
+		4D0172F61BA78F2D00E1A387 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../Libraries/osx/libcrypto.a; sourceTree = "<group>"; };
+		4D0172F71BA78F2D00E1A387 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/osx/libcurl.a; sourceTree = "<group>"; };
+		4D0172F81BA78F2D00E1A387 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/osx/libjansson.a; sourceTree = "<group>"; };
+		4D0172F91BA78F2D00E1A387 /* libmimetic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmimetic.a; path = ../Libraries/osx/libmimetic.a; sourceTree = "<group>"; };
+		4D0172FA1BA78F2D00E1A387 /* liboauth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liboauth.a; path = ../Libraries/osx/liboauth.a; sourceTree = "<group>"; };
+		4D0172FB1BA78F2D00E1A387 /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = ../Libraries/osx/libPocoFoundation.a; sourceTree = "<group>"; };
+		4D0172FC1BA78F2D00E1A387 /* libPocoZip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZip.a; path = ../Libraries/osx/libPocoZip.a; sourceTree = "<group>"; };
+		4D0172FD1BA78F2D00E1A387 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/osx/libssh2.a; sourceTree = "<group>"; };
+		4D0172FE1BA78F2D00E1A387 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../Libraries/osx/libssl.a; sourceTree = "<group>"; };
+		4D0172FF1BA78F2D00E1A387 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = ../Libraries/osx/libturbojpeg.a; sourceTree = "<group>"; };
+		4D0173001BA78F2D00E1A387 /* libxerces-c.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libxerces-c.a"; path = "../Libraries/osx/libxerces-c.a"; sourceTree = "<group>"; };
+		4D0173131BA78F6200E1A387 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		4D0173151BA78F6D00E1A387 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
+		4D0173171BA78F8800E1A387 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
+		4D0173191BA78F9300E1A387 /* libxslt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxslt.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/usr/lib/libxslt.dylib; sourceTree = DEVELOPER_DIR; };
 		4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPEmailMessage.cpp; path = ../Source/BESMTPEmailMessage.cpp; sourceTree = "<group>"; };
 		4D0BA9B118BEF74D00F8FD45 /* BESMTPEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTPEmailMessage.h; path = ../Source/BESMTPEmailMessage.h; sourceTree = "<group>"; };
 		4D10AD931484202000814440 /* BESQLCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESQLCommand.cpp; path = ../Source/BESQLCommand.cpp; sourceTree = SOURCE_ROOT; };
@@ -115,9 +138,6 @@
 		4D4153A6120140AF00770E14 /* BEWStringVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEWStringVector.h; path = ../Source/BEWStringVector.h; sourceTree = SOURCE_ROOT; };
 		4D55C63815EE0F0A008F7FBA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
-		4D57DF7E193EE0F3006739BE /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/libssh2.a; sourceTree = "<group>"; };
-		4D57DF85193EE945006739BE /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/libcurl.a; sourceTree = "<group>"; };
-		4D57DF87193EE984006739BE /* ldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = ldap.dylib; path = usr/lib/samba/idmap/ldap.dylib; sourceTree = SDKROOT; };
 		4D57DF89193EEA9F006739BE /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = usr/lib/libldap.dylib; sourceTree = SDKROOT; };
 		4D59DAFA16F95E2400F87180 /* BEValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEValueList.h; path = ../Source/BEValueList.h; sourceTree = "<group>"; };
 		4D668AA31A36BC8900D14592 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
@@ -183,13 +203,8 @@
 		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
 		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
 		4DEB348716FA7A7B004AD91C /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../Libraries/libboost_date_time.a; sourceTree = "<group>"; };
-		4DF3617A15EDE74F003A0CB9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		4DF3617C15EDE761003A0CB9 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcurl.dylib; sourceTree = DEVELOPER_DIR; };
-		4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libcrypto.dylib; sourceTree = DEVELOPER_DIR; };
-		4DF3618015EDE782003A0CB9 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libssl.dylib; sourceTree = DEVELOPER_DIR; };
 		4DFFF8B11884A0390015B531 /* BEXero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXero.cpp; path = ../Source/BEXero.cpp; sourceTree = "<group>"; };
 		4DFFF8B21884A0390015B531 /* BEXero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXero.h; path = ../Source/BEXero.h; sourceTree = "<group>"; };
-		C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/FMWrapper.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,27 +212,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DCD496C1A195B0C00EFCF7F /* libldap.dylib in Frameworks */,
-				4DCD496D1A195B0C00EFCF7F /* libcurl.a in Frameworks */,
-				4DCD496E1A195B0C00EFCF7F /* libssl.dylib in Frameworks */,
-				4DCD496F1A195B0C00EFCF7F /* libcrypto.dylib in Frameworks */,
-				4DCD49701A195B0C00EFCF7F /* libssh2.a in Frameworks */,
-				4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */,
-				4DCD49721A195B0C00EFCF7F /* libz.dylib in Frameworks */,
-				4DCD49731A195B0C00EFCF7F /* libiconv.dylib in Frameworks */,
-				4DCD49741A195B0C00EFCF7F /* libmimetic.a in Frameworks */,
-				4DCD49751A195B0C00EFCF7F /* libxml2.dylib in Frameworks */,
-				4DCD49761A195B0C00EFCF7F /* libxslt.dylib in Frameworks */,
-				4DCD49771A195B0C00EFCF7F /* libcharset.dylib in Frameworks */,
-				4DCD49781A195B0C00EFCF7F /* libexslt.dylib in Frameworks */,
-				4DCD49791A195B0C00EFCF7F /* libjansson.a in Frameworks */,
-				4DCD497A1A195B0C00EFCF7F /* libboost_regex.a in Frameworks */,
-				4DCD497B1A195B0C00EFCF7F /* liboauth.a in Frameworks */,
-				4DCD497C1A195B0C00EFCF7F /* FMWrapper.framework in Frameworks */,
-				4DCD497D1A195B0C00EFCF7F /* libboost_filesystem.a in Frameworks */,
-				4DCD497E1A195B0C00EFCF7F /* libboost_system.a in Frameworks */,
-				4DCD497F1A195B0C00EFCF7F /* libboost_thread.a in Frameworks */,
-				4DCD49801A195B0C00EFCF7F /* libboost_date_time.a in Frameworks */,
+				4D01731D1BA791A100E1A387 /* libiconv.dylib in Frameworks */,
+				4D01731C1BA7919200E1A387 /* libexslt.dylib in Frameworks */,
+				4D01731B1BA7917B00E1A387 /* libldap.dylib in Frameworks */,
+				4D01731A1BA78F9300E1A387 /* libxslt.dylib in Frameworks */,
+				4D0173181BA78F8800E1A387 /* libxml2.dylib in Frameworks */,
+				4D0173161BA78F6D00E1A387 /* Carbon.framework in Frameworks */,
+				4D0173141BA78F6200E1A387 /* Cocoa.framework in Frameworks */,
+				4D0173011BA78F2D00E1A387 /* FMWrapper.framework in Frameworks */,
+				4D0173021BA78F2D00E1A387 /* libboost_atomic.a in Frameworks */,
+				4D0173031BA78F2D00E1A387 /* libboost_date_time.a in Frameworks */,
+				4D0173041BA78F2D00E1A387 /* libboost_filesystem.a in Frameworks */,
+				4D0173051BA78F2D00E1A387 /* libboost_regex.a in Frameworks */,
+				4D0173061BA78F2D00E1A387 /* libboost_system.a in Frameworks */,
+				4D0173071BA78F2D00E1A387 /* libboost_thread.a in Frameworks */,
+				4D0173081BA78F2D00E1A387 /* libcrypto.a in Frameworks */,
+				4D0173091BA78F2D00E1A387 /* libcurl.a in Frameworks */,
+				4D01730A1BA78F2D00E1A387 /* libjansson.a in Frameworks */,
+				4D01730B1BA78F2D00E1A387 /* libmimetic.a in Frameworks */,
+				4D01730C1BA78F2D00E1A387 /* liboauth.a in Frameworks */,
+				4D01730D1BA78F2D00E1A387 /* libPocoFoundation.a in Frameworks */,
+				4D01730E1BA78F2D00E1A387 /* libPocoZip.a in Frameworks */,
+				4D01730F1BA78F2D00E1A387 /* libssh2.a in Frameworks */,
+				4D0173101BA78F2D00E1A387 /* libssl.a in Frameworks */,
+				4D0173111BA78F2D00E1A387 /* libturbojpeg.a in Frameworks */,
+				4D0173121BA78F2D00E1A387 /* libxerces-c.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,9 +246,6 @@
 		4D00CC6416D3357C00160030 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4D00CC6516D3357C00160030 /* AppKit.framework */,
-				4D00CC6616D3357C00160030 /* CoreData.framework */,
-				4D00CC6716D3357C00160030 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -371,26 +387,40 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D0173191BA78F9300E1A387 /* libxslt.dylib */,
+				4D0173171BA78F8800E1A387 /* libxml2.dylib */,
+				4D0173151BA78F6D00E1A387 /* Carbon.framework */,
+				4D0173131BA78F6200E1A387 /* Cocoa.framework */,
+				4D0172EF1BA78F2D00E1A387 /* FMWrapper.framework */,
+				4D0172F01BA78F2D00E1A387 /* libboost_atomic.a */,
+				4D0172F11BA78F2D00E1A387 /* libboost_date_time.a */,
+				4D0172F21BA78F2D00E1A387 /* libboost_filesystem.a */,
+				4D0172F31BA78F2D00E1A387 /* libboost_regex.a */,
+				4D0172F41BA78F2D00E1A387 /* libboost_system.a */,
+				4D0172F51BA78F2D00E1A387 /* libboost_thread.a */,
+				4D0172F61BA78F2D00E1A387 /* libcrypto.a */,
+				4D0172F71BA78F2D00E1A387 /* libcurl.a */,
+				4D0172F81BA78F2D00E1A387 /* libjansson.a */,
+				4D0172F91BA78F2D00E1A387 /* libmimetic.a */,
+				4D0172FA1BA78F2D00E1A387 /* liboauth.a */,
+				4D0172FB1BA78F2D00E1A387 /* libPocoFoundation.a */,
+				4D0172FC1BA78F2D00E1A387 /* libPocoZip.a */,
+				4D0172FD1BA78F2D00E1A387 /* libssh2.a */,
+				4D0172FE1BA78F2D00E1A387 /* libssl.a */,
+				4D0172FF1BA78F2D00E1A387 /* libturbojpeg.a */,
+				4D0173001BA78F2D00E1A387 /* libxerces-c.a */,
 				4D57DF89193EEA9F006739BE /* libldap.dylib */,
-				4D57DF87193EE984006739BE /* ldap.dylib */,
-				4D57DF85193EE945006739BE /* libcurl.a */,
-				4D57DF7E193EE0F3006739BE /* libssh2.a */,
 				4D27C3851861160000E7F4A1 /* Cocoa.framework */,
 				4D27C383186115F300E7F4A1 /* libcrypto.dylib */,
 				4D27C381186115EB00E7F4A1 /* libssl.dylib */,
 				4D27C37F186115E300E7F4A1 /* libcurl.dylib */,
 				4D55C63815EE0F0A008F7FBA /* Carbon.framework */,
-				4DF3617A15EDE74F003A0CB9 /* Cocoa.framework */,
-				4DF3618015EDE782003A0CB9 /* libssl.dylib */,
-				4DF3617E15EDE773003A0CB9 /* libcrypto.dylib */,
-				4DF3617C15EDE761003A0CB9 /* libcurl.dylib */,
 				4DDA52EB16D355F100E10827 /* libcharset.dylib */,
 				4DDA52E616D355C100E10827 /* libiconv.dylib */,
 				4DDA52E016D3553200E10827 /* libexslt.dylib */,
 				4DDA52DE16D3552D00E10827 /* libxslt.dylib */,
 				4DDA52DC16D3552500E10827 /* libxml2.dylib */,
 				4DDA52D916D3551400E10827 /* libz.dylib */,
-				C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */,
 				4D00CC6116D3357C00160030 /* SenTestingKit.framework */,
 				4D00CC6416D3357C00160030 /* Other Frameworks */,
 			);
@@ -530,24 +560,17 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = ../Build;
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../Libraries\"",
-					"\"$(SRCROOT)\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = ../Libraries/osx;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
 				INFOPLIST_FILE = ../Resources/Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/../Libraries",
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
-					"$(SDKROOT)/usr/lib/samba/idmap",
-				);
+				LIBRARY_SEARCH_PATHS = ../Libraries/osx;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
@@ -558,7 +581,7 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				TEST_AFTER_BUILD = NO;
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
+				USER_HEADER_SEARCH_PATHS = "../Headers ../Source";
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Release;
@@ -570,25 +593,17 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 13 Advanced/Extensions/";
+				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 14 Advanced/Extensions/";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../Libraries\"",
-					"\"$(SRCROOT)\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = ../Libraries/osx;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
 				INFOPLIST_FILE = ../Resources/Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/../Libraries",
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries",
-					"$(SDKROOT)/usr/lib/samba/idmap",
-				);
+				LIBRARY_SEARCH_PATHS = ../Libraries/osx;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
@@ -600,7 +615,7 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				TEST_AFTER_BUILD = NO;
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
+				USER_HEADER_SEARCH_PATHS = "../Headers ../Source";
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Debug;
@@ -656,7 +671,7 @@
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
-				LIBRARY_SEARCH_PATHS = ../Libraries;
+				LIBRARY_SEARCH_PATHS = ../Libraries/osx;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
@@ -673,7 +688,7 @@
 				PRODUCT_NAME = BaseElements;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				SEPARATE_STRIP = YES;
 				STRIP_STYLE = "non-global";
 				SYMROOT = ../Build;
@@ -738,7 +753,7 @@
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
-				LIBRARY_SEARCH_PATHS = ../Libraries;
+				LIBRARY_SEARCH_PATHS = ../Libraries/osx;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
@@ -755,7 +770,7 @@
 				PRODUCT_NAME = BaseElements;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				SEPARATE_STRIP = NO;
 				STRIP_STYLE = "non-global";
 				SYMROOT = ../Build;

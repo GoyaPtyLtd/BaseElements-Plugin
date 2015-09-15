@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
  
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2015 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -77,9 +77,9 @@ extern fmx::errcode g_last_error;
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 #define BUNDLE_STRINGS_ID "BaseElements"
 
-#define	VERSION_NUMBER_STRING L"3.0.0"
-#define	AUTO_UPDATE_VERSION L"03000000"
-#define VERSION_STRING "3.0"
+#define	VERSION_NUMBER_STRING L"3.0.1"
+#define	AUTO_UPDATE_VERSION L"03000001"
+#define VERSION_STRING "3.0.1"
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/"VERSION_STRING
 
