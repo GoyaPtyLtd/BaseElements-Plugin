@@ -1,4 +1,41 @@
 ########################################################################
+Version 3.1.2
+########################################################################
+
+September 17, 2015
+
+New Functions
+
+BE_File_Modification_Timestamp
+
+
+Changes
+
+Build OpenSSL rather than use the Apple supplied one on OS X
+Strip names from email addresses before passing them to curl
+Use libcurl 7.44
+Support additional curl options
+- CURLOPT_PIPEWAIT
+- CURLOPT_PROXY_SERVICE_NAME
+- CURLOPT_SERVICE_NAME
+- CURLOPT_CERTINFO
+- CURLOPT_SSL_FALSESTART
+- CURLOPT_PATH_AS_IS
+- CURLOPT_SSL_VERIFYSTATUS
+- CURLOPT_UNIX_SOCKET_PATH
+- CURLOPT_PINNEDPUBLICKEY
+- CURLOPT_PROXYHEADER
+- CURLOPT_HEADEROPT
+- CURLOPT_EXPECT_100_TIMEOUT_MS
+- CURLOPT_SSL_ENABLE_NPN
+- CURLOPT_SSL_ENABLE_ALPN
+- CURLOPT_XFERINFOFUNCTION
+- CURLOPT_TCP_KEEPALIVE
+- CURLOPT_TCP_KEEPIDLE
+- CURLOPT_TCP_KEEPINTVL
+
+
+########################################################################
 Version 3.1.1
 ########################################################################
 

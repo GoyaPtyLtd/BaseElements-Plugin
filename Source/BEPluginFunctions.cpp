@@ -1797,6 +1797,7 @@ FMX_PROC(errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* envi
 } // BE_HTTP_Set_Custom_Header
 
 
+#pragma mark BE_Curl_Set_Option
 
 FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
 {
@@ -1804,7 +1805,7 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 	
 	try {
 		
-		StringAutoPtr option = ParameterAsUTF8String ( parameters, 0 );
+		const StringAutoPtr option = ParameterAsUTF8String ( parameters );
 		
 		const unsigned long number_of_parameters = parameters.Size();
 		switch ( number_of_parameters ) {
@@ -1846,7 +1847,7 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 	
 	return MapError ( error );
 	
-} // BE_HTTP_Set_Custom_Header
+} // BE_Curl_Set_Option
 
 
 FMX_PROC(fmx::errcode) BE_Curl_Trace ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* parameters */, fmx::Data& results )

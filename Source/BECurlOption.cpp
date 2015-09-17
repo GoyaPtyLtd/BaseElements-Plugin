@@ -164,6 +164,11 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_SSH_PUBLIC_KEYFILE" ] = type_string;
 	types [ "CURLOPT_SSH_PRIVATE_KEYFILE" ] = type_string;
 	types [ "CURLOPT_SSH_KNOWNHOSTS" ] = type_string;
+	types [ "CURLOPT_PROXY_SERVICE_NAME" ] = type_string;
+	types [ "CURLOPT_SERVICE_NAME" ] = type_string;
+	types [ "CURLOPT_CERTINFO" ] = type_string;
+	types [ "CURLOPT_UNIX_SOCKET_PATH" ] = type_string;
+	types [ "CURLOPT_PINNEDPUBLICKEY" ] = type_string;
 
 	types [ "CURLOPT_VERBOSE" ] = type_long;
 	types [ "CURLOPT_HEADER" ] = type_long;
@@ -251,7 +256,15 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_SSH_AUTH_TYPES" ] = type_long;
 	types [ "CURLOPT_NEW_FILE_PERMS" ] = type_long;
 	types [ "CURLOPT_NEW_DIRECTORY_PERMS" ] = type_long;
-	
+	types [ "CURLOPT_PIPEWAIT" ] = type_long;
+	types [ "CURLOPT_SSL_FALSESTART" ] = type_long;
+	types [ "CURLOPT_PATH_AS_IS" ] = type_long;
+	types [ "CURLOPT_SSL_VERIFYSTATUS" ] = type_long;
+
+	types [ "CURLOPT_TCP_KEEPALIVE" ] = type_long;
+	types [ "CURLOPT_TCP_KEEPIDLE" ] = type_long;
+	types [ "CURLOPT_TCP_KEEPINTVL" ] = type_long;
+
 	types [ "CURLOPT_NOPROGRESS" ] = type_long;
 
 	types [ "CURLOPT_POSTFIELDSIZE_LARGE" ] = type_curl_off_t;
@@ -317,7 +330,21 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_SSH_KEYFUNCTION" ] = type_not_handled;
 	types [ "CURLOPT_SHARE" ] = type_not_handled;
 	types [ "CURLOPT_TELNETOPTIONS" ] = type_not_handled;
-	
+	types [ "CURLSSLOPT_NO_REVOKE" ] = type_not_handled;
+	types [ "CURLMOPT_PIPELINING" ] = type_not_handled;
+	types [ "CURLOPT_PROXYHEADER" ] = type_not_handled;
+	types [ "CURLOPT_HEADEROPT" ] = type_not_handled;
+	types [ "CURLOPT_XFERINFOFUNCTION" ] = type_not_handled;
+
+	types [ "CURLMOPT_PUSHFUNCTION" ] = type_not_handled;
+	types [ "CURLMOPT_MAX_HOST_CONNECTIONS" ] = type_not_handled;
+	types [ "CURLMOPT_MAX_TOTAL_CONNECTIONS" ] = type_not_handled;
+	types [ "CURLMOPT_MAX_PIPELINE_LENGTH" ] = type_not_handled;
+	types [ "CURLMOPT_CONTENT_LENGTH_PENALTY_SIZE" ] = type_not_handled;
+	types [ "CURLMOPT_CHUNK_LENGTH_PENALTY_SIZE" ] = type_not_handled;
+	types [ "CURLMOPT_PIPELINING_SITE_BL" ] = type_not_handled;
+	types [ "CURLMOPT_PIPELINING_SERVER_BL" ] = type_not_handled;
+
 //	BECurlOptionType type = type_unknown;
 	return types.at ( boost::to_upper_copy ( name ) ); // note: at throws if not found
 	
@@ -530,6 +557,34 @@ CURLoption BECurlOption::option ( )
 	options [ "CURLOPT_TELNETOPTIONS" ] = CURLOPT_TELNETOPTIONS;
 	options [ "CURLOPT_NOPROGRESS" ] = CURLOPT_NOPROGRESS;
 	
+	options [ "CURLOPT_PIPEWAIT" ] = CURLOPT_PIPEWAIT;
+	options [ "CURLOPT_PROXY_SERVICE_NAME" ] = CURLOPT_PROXY_SERVICE_NAME;
+	options [ "CURLOPT_SERVICE_NAME" ] = CURLOPT_SERVICE_NAME;
+	options [ "CURLOPT_CERTINFO" ] = CURLOPT_CERTINFO;
+	options [ "CURLOPT_SSL_FALSESTART" ] = CURLOPT_SSL_FALSESTART;
+	options [ "CURLOPT_PATH_AS_IS" ] = CURLOPT_PATH_AS_IS;
+	options [ "CURLOPT_SSL_VERIFYSTATUS" ] = CURLOPT_SSL_VERIFYSTATUS;
+	options [ "CURLOPT_UNIX_SOCKET_PATH" ] = CURLOPT_UNIX_SOCKET_PATH;
+	options [ "CURLOPT_PINNEDPUBLICKEY" ] = CURLOPT_PINNEDPUBLICKEY;
+	options [ "CURLOPT_PROXYHEADER" ] = CURLOPT_PROXYHEADER;
+	options [ "CURLOPT_HEADEROPT" ] = CURLOPT_HEADEROPT;
+	options [ "CURLOPT_EXPECT_100_TIMEOUT_MS" ] = CURLOPT_EXPECT_100_TIMEOUT_MS;
+	options [ "CURLOPT_SSL_ENABLE_NPN" ] = CURLOPT_SSL_ENABLE_NPN;
+	options [ "CURLOPT_SSL_ENABLE_ALPN" ] = CURLOPT_SSL_ENABLE_ALPN;
+	options [ "CURLOPT_XFERINFOFUNCTION" ] = CURLOPT_XFERINFOFUNCTION;
+	options [ "CURLOPT_TCP_KEEPALIVE" ] = CURLOPT_TCP_KEEPALIVE;
+	options [ "CURLOPT_TCP_KEEPIDLE" ] = CURLOPT_TCP_KEEPIDLE;
+	options [ "CURLOPT_TCP_KEEPINTVL" ] = CURLOPT_TCP_KEEPINTVL;
+	
+//	options [ "CURLMOPT_PIPELINING" ] = CURLMOPT_PIPELINING;
+//	options [ "CURLMOPT_MAX_HOST_CONNECTIONS" ] = CURLMOPT_MAX_HOST_CONNECTIONS;
+//	options [ "CURLMOPT_MAX_TOTAL_CONNECTIONS" ] = CURLMOPT_MAX_HOST_CONNECTIONS;
+//	options [ "CURLMOPT_MAX_PIPELINE_LENGTH" ] = CURLMOPT_MAX_PIPELINE_LENGTH;
+//	options [ "CURLMOPT_CONTENT_LENGTH_PENALTY_SIZE" ] = CURLMOPT_CONTENT_LENGTH_PENALTY_SIZE;
+//	options [ "CURLMOPT_CHUNK_LENGTH_PENALTY_SIZE" ] = CURLMOPT_CHUNK_LENGTH_PENALTY_SIZE;
+//	options [ "CURLMOPT_PIPELINING_SITE_BL" ] = CURLMOPT_PIPELINING_SITE_BL;
+//	options [ "CURLMOPT_PIPELINING_SERVER_BL" ] = CURLMOPT_PIPELINING_SERVER_BL;
+
 	return options.at ( boost::to_upper_copy ( name ) ); // note: at throws if not found
 	
 }

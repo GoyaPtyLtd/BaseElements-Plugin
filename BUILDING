@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 3.1 of the plug-in is built on Mac OS X 10.10.5 using Xcode 6.4. The Xcode Command Line Tools are also needed.
+Version 3.1.2 of the plug-in is built on Mac OS X 10.10.5 using Xcode 7. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -24,7 +24,7 @@ and place the FMWrapper.framework in the Libraries directory.
 On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built the Boost FileSystem, System and Thread libraries.
 
 =======================================================================
-Boost - 1.58_0
+Boost - 1.59_0
 =======================================================================
 
 Boost is available from
@@ -33,7 +33,7 @@ Boost is available from
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_58_0
+	cd boost_1_59_0
 	./bootstrap.sh
 	./b2 architecture=x86 address-model=32 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.6"
 
@@ -169,7 +169,7 @@ to Headers/libssh2
 
 
 =======================================================================
-libcurl - 7.43
+libcurl - 7.44
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -180,7 +180,7 @@ Download the source from
 
 and expand it into a directory on the Desktop. cd into the directory and run
 
-	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6 -I<path to /BaseElements-Plugin/Headers/libssh>" LDFLAGS="-L<path to /BaseElements-Plugin/Libraries>" --disable-dependency-tracking --with-ssl=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/usr/lib/libssl.dylib  --disable-shared --with-libz --prefix=<install path> --with-libssh2
+	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6 -I<path to /BaseElements-Plugin/Headers/libssh>" LDFLAGS="-L<path to /BaseElements-Plugin/Libraries>" --disable-dependency-tracking --with-ssl --disable-shared --with-libz --prefix=<install path> --with-libssh2
 
 (replacing the indicated paths as appropriate).
 
@@ -316,7 +316,7 @@ Another note: when doing both debug and release builds clean the project when sw
 
 
 =======================================================================
-Boost - 1.58_0
+Boost - 1.59_0
 =======================================================================
 
 The Boost FileSystem and System libraries are required.
@@ -329,7 +329,7 @@ See
 
 for instructions on compiling the Boost libraries. From the command prompt try
 
-	cd boost_1_58_0
+	cd boost_1_59_0
 	bootstrap.bat
 	b2 address-model=32 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex install --prefix=build
 
@@ -524,7 +524,7 @@ Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\x64 and copy inc32\o
 
 
 =======================================================================
-libcurl - 7.43
+libcurl - 7.44
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -537,7 +537,7 @@ and expand it into a directory on the Desktop.
 
 Open
 
-	projects\Windows\VC10\curl.vcproj
+	projects\Windows\VC14\curl.vcproj
 
 and set the following Configuration Properties for all projects/platforms:
 
@@ -546,32 +546,15 @@ and set the following Configuration Properties for all projects/platforms:
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
 	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
 
-Edit the file lib\ssh.c such that
-
-#ifdef WIN32
-#  undef  PATH_MAX
-#  define PATH_MAX MAX_PATH
-#endif
-
-becomes
-
-#ifdef WIN32
-#  undef  PATH_MAX
-#  define PATH_MAX MAX_PATH
-# ifndef R_OK
-# define R_OK 4
-# endif
-#endif
-
 In Visual Studio and select "Batch Build" and select both the x86 & x64 "LIB Release - LIB OpenSSL - LIB LibSSH2" configurations and then "Build".
 
 Copy the library from
 
-	build\Win32\VC10\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
+	build\Win32\VC14\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
 
 into the Libraries\win32 directory and copy
 
-	build\Win64\VC10\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
+	build\Win64\VC14\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
 
 into the Libraries\x64 directory and copy
 
