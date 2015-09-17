@@ -1,20 +1,4 @@
 ########################################################################
-Version 3.1.2
-########################################################################
-
-August 27, 2015
-
-New Functions
-
-BE_File_Modification_Timestamp
-
-
-Changes
-
-Build OpenSSL rather than use the Apple supplied one on OS X
-Strip names from email addresses before passing them to curl
-
-########################################################################
 Version 3.1.1
 ########################################################################
 
