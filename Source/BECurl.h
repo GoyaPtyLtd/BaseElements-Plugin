@@ -17,17 +17,9 @@
 #include "BEPluginUtilities.h"
 #include "BECurlOption.h"
 
-#include "boost/shared_ptr.hpp"
-#include "boost/filesystem/path.hpp"
-
 #include <vector>
-#include <map>
-
 
 #include "curl/curl.h"
-
-
-typedef std::map<std::string, boost::shared_ptr<BECurlOption> > BECurlOptionMap;
 
 
 typedef enum be_http_method {

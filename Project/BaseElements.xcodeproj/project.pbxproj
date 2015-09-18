@@ -449,7 +449,7 @@
 		C7DEDEEB07E10BF3002283F3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Goya;
 			};
 			buildConfigurationList = 6FD50587097C3165009399BF /* Build configuration list for PBXProject "BaseElements" */;
@@ -561,9 +561,10 @@
 					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = au.com.goya.baseelements;
 				PRODUCT_NAME = BaseElements;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = macosx;
@@ -605,9 +606,10 @@
 					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = au.com.goya.baseelements;
 				PRODUCT_NAME = BaseElements;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = macosx;
@@ -636,7 +638,7 @@
 					../Libraries,
 					../Libraries/osx,
 				);
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -679,7 +681,7 @@
 					../Libraries/osx,
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = (
 					"-Dfopen64=fopen",
 					"-Dftello64=ftello",
@@ -700,7 +702,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.1.1;
+				VERSION_STRING = 3.1.2b2;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -720,11 +722,12 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DSTROOT = "../Build/$(PROJECT_NAME).dst";
+				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					../Libraries,
 					../Libraries/osx,
 				);
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -767,7 +770,7 @@
 					../Libraries/osx,
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = (
 					"-Dfopen64=fopen",
 					"-Dftello64=ftello",
@@ -788,7 +791,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.1.1;
+				VERSION_STRING = 3.1.2b2;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",

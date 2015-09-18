@@ -40,6 +40,7 @@ void BECurlOption::set ( const fmx::Data& option_value )
 			break;
 			
 		case type_long:
+		case type_be_long:
 			long_value = DataAsLong ( option_value );
 			break;
 			
@@ -266,7 +267,7 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_TCP_KEEPINTVL" ] = type_long;
 
 	types [ "CURLOPT_NOPROGRESS" ] = type_long;
-
+	
 	types [ "CURLOPT_POSTFIELDSIZE_LARGE" ] = type_curl_off_t;
 	types [ "CURLOPT_RESUME_FROM_LARGE" ] = type_curl_off_t;
 	types [ "CURLOPT_INFILESIZE_LARGE" ] = type_curl_off_t;
@@ -344,6 +345,10 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLMOPT_CHUNK_LENGTH_PENALTY_SIZE" ] = type_not_handled;
 	types [ "CURLMOPT_PIPELINING_SITE_BL" ] = type_not_handled;
 	types [ "CURLMOPT_PIPELINING_SERVER_BL" ] = type_not_handled;
+
+	// custom option for the plugin
+	types [ "BE_CURLOPT_FORCE_STARTTLS" ] = type_be_long;
+	
 
 //	BECurlOptionType type = type_unknown;
 	return types.at ( boost::to_upper_copy ( name ) ); // note: at throws if not found
@@ -585,6 +590,29 @@ CURLoption BECurlOption::option ( )
 //	options [ "CURLMOPT_PIPELINING_SITE_BL" ] = CURLMOPT_PIPELINING_SITE_BL;
 //	options [ "CURLMOPT_PIPELINING_SERVER_BL" ] = CURLMOPT_PIPELINING_SERVER_BL;
 
+	// custom option for the plugin
+	options [ "BE_CURLOPT_FORCE_STARTTLS" ] = (CURLoption)BE_CURLOPT_FORCE_STARTTLS;
+	
 	return options.at ( boost::to_upper_copy ( name ) ); // note: at throws if not found
 	
 }
+
+
+#pragma mark -
+#pragma mark Non-member Functions
+#pragma mark -
+
+const bool curl_force_tls ( const BECurlOptionMap options )
+{
+	bool force = false;
+	
+	std::map<std::string, boost::shared_ptr<BECurlOption> >::const_iterator it = options.find ( "BE_CURLOPT_FORCE_STARTTLS" );
+	if ( it != options.end() ) {
+		boost::shared_ptr<BECurlOption> force_tls_option = it->second;
+		force = force_tls_option->as_long();
+	}
+	
+	return force;
+	
+}
+

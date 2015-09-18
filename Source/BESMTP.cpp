@@ -55,7 +55,9 @@ BESMTP::BESMTP ( const std::string _host, const std::string _port, const std::st
 	
 	// if there's a uername etc. try for SSL
 	if ( !username.empty() ) {
-		scheme += "s";
+		if ( curl_force_tls ( g_curl_options ) == false ) {
+			scheme += "s";
+		}
 		easy_setopt ( CURLOPT_USE_SSL, CURLUSESSL_ALL );
 	}
 	

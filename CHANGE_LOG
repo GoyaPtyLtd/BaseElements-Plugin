@@ -1,8 +1,8 @@
 ########################################################################
-Version 3.1.2
+Version 3.1.2b2
 ########################################################################
 
-September 17, 2015
+September 18, 2015
 
 New Functions
 
@@ -33,7 +33,8 @@ Support additional curl options
 - CURLOPT_TCP_KEEPALIVE
 - CURLOPT_TCP_KEEPIDLE
 - CURLOPT_TCP_KEEPINTVL
-
+Add the plugin specific curl option: BE_CURLOPT_FORCE_STARTTLS for use with SMTP
+Use Poco 1.6.1
 
 ########################################################################
 Version 3.1.1

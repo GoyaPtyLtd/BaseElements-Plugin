@@ -842,24 +842,27 @@ FMX_PROC(errcode) BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& 
 #pragma mark XML / XSLT
 #pragma mark -
 
+
+#pragma mark BE_ApplyXSLT
+
 FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
 	try {
-
-		path xml_path = ParameterAsPath ( parameters, 0 );
+		
+		path xml_path = ParameterAsPath ( parameters );
 		StringAutoPtr xslt = ParameterAsUTF8String ( parameters, 1 );
 		path csv_path = ParameterAsPath ( parameters, 2 );
-
-		results.SetAsText( *ApplyXSLT ( xml_path, xslt, csv_path ), parameters.At(0).GetLocale() );
-	
+		
+		SetResult ( *ApplyXSLT ( xml_path, xslt, csv_path ), results );
+		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-
+	
 	return MapError ( error );
 	
 } // BE_ApplyXSLT
@@ -1871,13 +1874,15 @@ FMX_PROC(fmx::errcode) BE_Curl_Trace ( short /* funcId */, const fmx::ExprEnv& /
 } // BE_Curl_Trace
 
 
+#pragma mark BE_FTP_Upload
+
 FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
 	try {
 		
-		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr url = ParameterAsUTF8String ( parameters );
 		vector<char> data = ParameterAsVectorChar ( parameters, 1 );
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );

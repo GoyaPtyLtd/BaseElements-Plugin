@@ -16,8 +16,11 @@
 
 #include "BEPluginGlobalDefines.h"
 
-
 #include "Curl/Curl.h"
+
+#include "boost/shared_ptr.hpp"
+
+#include <map>
 
 
 class BECurlOption_Exception : public std::runtime_error {
@@ -50,8 +53,14 @@ public:
 		type_long = 2,
 		type_curl_off_t = 3,
 		type_void_at = 4,
-		type_named_constant = 5
+		type_named_constant = 5,
+		type_be_long = 6
 	};
+	
+	enum BECustomOption {
+		BE_CURLOPT_FORCE_STARTTLS = 10000
+	};
+	
 	
 	BECurlOption ( const std::string option_name, const fmx::Data& option_value );
 	
@@ -63,7 +72,7 @@ public:
 	const std::string as_string ( );
 	const long as_long ( );
 	const curl_off_t as_curl_off_t ( );
-
+	
 	
 protected:
 		
@@ -78,6 +87,11 @@ protected:
 	const long named_constants ( const std::string constant_name );
 
 };
+
+
+typedef std::map<std::string, boost::shared_ptr<BECurlOption> > BECurlOptionMap;
+
+const bool curl_force_tls ( BECurlOptionMap options );
 
 
 #endif /* defined(__BaseElements__BECurlOptions__) */
