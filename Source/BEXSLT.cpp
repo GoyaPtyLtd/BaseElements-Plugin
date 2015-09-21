@@ -182,7 +182,7 @@ void CleanupLibXSLT ( void )
 #endif
 
 
-TextAutoPtr ApplyXSLT ( const boost::filesystem::path xml_path, StringAutoPtr xslt, const boost::filesystem::path csv_path )
+TextAutoPtr ApplyXSLT ( const boost::filesystem::path& xml_path, StringAutoPtr xslt, const boost::filesystem::path& csv_path )
 {
 	g_last_xslt_error = kNoError;
 	TextAutoPtr result;
