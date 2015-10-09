@@ -141,7 +141,7 @@ WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, WStringAutoPtr in_fol
 	NSOpenPanel* file_dialog = [NSOpenPanel openPanel];
 	
 	NSString * prompt_string = NSStringFromWStringAutoPtr ( prompt );
-	[file_dialog setTitle: prompt_string ];
+	[file_dialog setMessage: prompt_string];
 
 	NSString * default_directory = NSStringFromWStringAutoPtr ( in_folder );
 	if ( [default_directory length] != 0 ) {
