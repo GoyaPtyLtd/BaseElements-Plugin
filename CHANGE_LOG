@@ -2,7 +2,7 @@
 Version 3.1.2b2
 ########################################################################
 
-October 9, 2015
+October 26, 2015
 
 New Functions
 
@@ -36,6 +36,7 @@ Support additional curl options
 Add the plugin specific curl option: BE_CURLOPT_FORCE_STARTTLS for use with SMTP
 Use Poco 1.6.1
 Set the message area rather than the dialog title for Open File dialogs on OS X
+Correct an issue where BE_ApplyXSLT could fail to load external entities on Windows
 
 
 ########################################################################

@@ -75,7 +75,7 @@ extern fmx::errcode g_last_error;
 #define BUNDLE_STRINGS_ID "BaseElements"
 
 #define	VERSION_NUMBER_STRING L"3.1.2"
-#define	AUTO_UPDATE_VERSION L"03010105"
+#define	AUTO_UPDATE_VERSION L"03010106"
 #define VERSION_STRING "3.1.2b2" // also in xcode project build settings
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/" VERSION_STRING

@@ -203,13 +203,7 @@ TextAutoPtr ApplyXSLT ( const boost::filesystem::path& xml_path, StringAutoPtr x
 			
 			// to get the line numbers etc in the error the stylesheet must have a file name
 			stylesheet->doc->URL = xmlStrdup ( (xmlChar *)"<FileMaker::Text::XSLT>" );
-			
-#if defined ( FMX_WIN_TARGET )
-			int file_descriptor = _wopen ( xml_path.c_str(), O_RDONLY | _O_WTEXT );
-			xmlDocPtr xml = xmlReadFd ( file_descriptor, NULL, NULL, options );
-#else
-			xmlDocPtr xml = xmlReadFile ( xml_path.c_str(), NULL, options );	
-#endif
+			xmlDocPtr xml = xmlReadFile ( xml_path.string().c_str(), NULL, options );
 			
 			if ( xml ) {
 				
@@ -243,14 +237,12 @@ TextAutoPtr ApplyXSLT ( const boost::filesystem::path& xml_path, StringAutoPtr x
 					
 					result->AppendText ( *ReportXSLTError ( xml->URL ) );					
 				}
+				
 				xsltFreeTransformContext ( context );
 				xmlFreeDoc ( xml );
 			}
+			
 			xsltFreeStylesheet ( stylesheet );
-
-#if defined ( FMX_WIN_TARGET )
-			_close ( file_descriptor );
-#endif
 
 		}
 	}
