@@ -2,7 +2,7 @@
 Version 3.1.2b2
 ########################################################################
 
-September 18, 2015
+October 9, 2015
 
 New Functions
 
@@ -35,6 +35,8 @@ Support additional curl options
 - CURLOPT_TCP_KEEPINTVL
 Add the plugin specific curl option: BE_CURLOPT_FORCE_STARTTLS for use with SMTP
 Use Poco 1.6.1
+Set the message area rather than the dialog title for Open File dialogs on OS X
+
 
 ########################################################################
 Version 3.1.1
