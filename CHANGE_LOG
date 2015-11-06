@@ -2,7 +2,7 @@
 Version 3.1.2b2
 ########################################################################
 
-October 26, 2015
+November 6, 2015
 
 New Functions
 
@@ -37,6 +37,8 @@ Add the plugin specific curl option: BE_CURLOPT_FORCE_STARTTLS for use with SMTP
 Use Poco 1.6.1
 Set the message area rather than the dialog title for Open File dialogs on OS X
 Correct an issue where BE_ApplyXSLT could fail to load external entities on Windows
+Use libjpeg-turbo 1.4.2
+BE_JPEG_Recompress: use FMP like behaviour when no image is supplied rather than generate an error
 
 
 ########################################################################

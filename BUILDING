@@ -227,31 +227,27 @@ and extract the archive to the desktop and copy the src directory to the Source 
 
 
 =======================================================================
-libjpeg-turbo - 1.4.1
+libjpeg-turbo - 1.4.2
 =======================================================================
 
 Download the source from
 
 	http://www.libjpeg-turbo.org/
 
-and extract the archive to the desktop and then, from that directory
-
-	nasm -v
-
-if the version is < 2.11.08 then get a new version of nasm (http://www.nasm.us/)... note: depending on how this is installed (from source, macports etc.) you may need to change the NASM path below. Then
+and extract the archive to the desktop and then
 
 	autoreconf -fiv
-	./configure --host i686-apple-darwin CFLAGS='-O3 -m32' LDFLAGS=-m32
+	./configure --host i686-apple-darwin CFLAGS='-O3 -m32' LDFLAGS=-m32 --without-simd
 	make install prefix=~/Desktop/build32
 
 Then
 
 	make distclean
-	./configure --host x86_64-apple-darwin NASM=/opt/local/bin/nasm
+	./configure --host x86_64-apple-darwin --without-simd
 	make install prefix=~/Desktop/build64
 	lipo -create ~/Desktop/build32/lib/libturbojpeg.a ~/Desktop/build64/lib/libturbojpeg.a -output <path to BaseElements-Plugin>/Libraries/osx/libturbojpeg.a
 
-Then copy ~/Desktop/build/libturbojpeg.a to Libraries/osx directory and rename ~/Desktop/build/include to ~/Desktop/build/libturbojpeg and copy the directory into Headers.
+Then rename ~/Desktop/build/include to ~/Desktop/build/libturbojpeg and copy the directory into Headers.
 
 
 =======================================================================
@@ -731,7 +727,7 @@ and extract the archive to the desktop and copy the src directory to the Source 
 
 
 =======================================================================
-libjpeg-turbo - 1.4.1
+libjpeg-turbo - 1.4.2
 =======================================================================
 
 To build first download and install NASM from
