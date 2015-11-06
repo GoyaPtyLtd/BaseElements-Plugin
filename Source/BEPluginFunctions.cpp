@@ -2700,17 +2700,23 @@ FMX_PROC(errcode) BE_JPEG_Recompress ( short /* funcId */, const ExprEnv& /* env
 		
 		vector<unsigned char> original_jpeg = ParameterAsVectorUnsignedChar ( parameters );
 
-		const int width = (const int)ParameterAsLong ( parameters, 2, 0 );
-		const int height = (const int)ParameterAsLong ( parameters, 3, 0 );
+		if ( original_jpeg.size() > 0 ) {
 
-		auto_ptr<BEJPEG> jpeg ( new BEJPEG ( original_jpeg, width, height ) );
+			const int width = (const int)ParameterAsLong ( parameters, 2, 0 );
+			const int height = (const int)ParameterAsLong ( parameters, 3, 0 );
 
-		const int quality = (const int)ParameterAsLong ( parameters, 1, 75 ); // percent
-		jpeg->set_compression_level ( quality );
-		jpeg->recompress ( );
+			auto_ptr<BEJPEG> jpeg ( new BEJPEG ( original_jpeg, width, height ) );
 
-		const StringAutoPtr image_name = ParameterFileName ( parameters );
-		SetResult ( *image_name, *jpeg, results );
+			const int quality = (const int)ParameterAsLong ( parameters, 1, 75 ); // percent
+			jpeg->set_compression_level ( quality );
+			jpeg->recompress();
+
+			const StringAutoPtr image_name = ParameterFileName ( parameters );
+			SetResult ( *image_name, *jpeg, results );
+
+		} else {
+			; // nothing... just do what fmp does
+		}
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();

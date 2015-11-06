@@ -83,19 +83,25 @@ void BEJPEG::read_header ( void )
 	tjhandle jpeg_decompressor = tjInitDecompress();
 	if ( NULL != jpeg_decompressor ) {
 
-		int error = tjDecompressHeader3 ( jpeg_decompressor, &data[0], data.size(), &image_width, &image_height, &chrominance_subsampling, &pixel_format );
-		tjDestroy ( jpeg_decompressor ); // error =
+		if ( data.size() > 0) {
 
-		if ( 0 == error ) {
+			int error = tjDecompressHeader3 ( jpeg_decompressor, &data[0], data.size(), &image_width, &image_height, &chrominance_subsampling, &pixel_format );
+			tjDestroy(jpeg_decompressor); // error =
 
-			int scaled_width = adjust_dimension ( width, image_width, height, image_height );
-			int scaled_height = height = adjust_dimension ( height, image_height, width, image_width );
+			if ( 0 == error ) {
 
-			width = scaled_width;
-			height = scaled_height;
+				int scaled_width = adjust_dimension ( width, image_width, height, image_height );
+				int scaled_height = height = adjust_dimension ( height, image_height, width, image_width );
+
+				width = scaled_width;
+				height = scaled_height;
+
+			} else {
+				throw BEPlugin_Exception ( kJPEGReadHeaderError, tjGetErrorStr() );
+			}
 
 		} else {
-			throw BEPlugin_Exception ( kJPEGReadHeaderError, tjGetErrorStr() );
+			throw BEPlugin_Exception ( kErrorParameterMissing );
 		}
 
 	} else {
@@ -114,14 +120,19 @@ void BEJPEG::decompress ( void )
 
 		std::vector<unsigned char> decompressed_image ( width * height * tjPixelSize[pixel_format] );
 
-		int error = tjDecompress2 ( jpeg_decompressor, &data[0], data.size(), &decompressed_image[0], width, 0, height, pixel_format, 0 );
-		tjDestroy ( jpeg_decompressor ); // error =
+		if ( data.size() > 0) {
+			
+			int error = tjDecompress2 ( jpeg_decompressor, &data[0], data.size(), &decompressed_image[0], width, 0, height, pixel_format, 0 );
+			tjDestroy ( jpeg_decompressor ); // error =
 
-		if ( 0 == error ) {
-			data = decompressed_image;
+			if ( 0 == error ) {
+				data = decompressed_image;
+			} else {
+				throw BEPlugin_Exception ( kJPEGDecompressionError, tjGetErrorStr() );
+			}
+
 		} else {
-			std::cout << tjGetErrorStr() << std::endl;
-			throw BEPlugin_Exception ( kJPEGDecompressionError, tjGetErrorStr() );
+			throw BEPlugin_Exception ( kErrorParameterMissing );
 		}
 
 	} else {
