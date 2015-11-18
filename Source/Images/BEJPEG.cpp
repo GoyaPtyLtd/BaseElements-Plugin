@@ -56,21 +56,30 @@ void BEJPEG::recompress ( void )
 }
 
 
-const int BEJPEG::adjust_dimension ( const int dimension, const int default_dimension, const int other_dimension, const int default_other_dimension )
+void BEJPEG::adjust_dimensions ( const int image_width, const int image_height )
 {
 	int number_of_scaling_factors = 0;
 	tjscalingfactor * scaling_factor = tjGetScalingFactors ( &number_of_scaling_factors );
 
-	int adjusted_dimension = dimension;
-	if ( 1 > adjusted_dimension && 1 > other_dimension ) {
-		adjusted_dimension = default_dimension;
-	} else if ( 1 > adjusted_dimension ) {
-		adjusted_dimension = round ( ((double)other_dimension / (double)default_other_dimension) * default_dimension );
+	if ( width < 1 && height < 1 ) {
+		width = image_width;
+		height = image_height;
+	} else if ( width > 0 && height < 1 ) {
+		height = ceil ( ((double)width / (double)image_width) * image_height );
+	} else if ( width < 1 && height > 0 ) {
+		width = ceil ( ((double)height / (double)image_width) * image_height );
 	}
 
-	adjusted_dimension = TJSCALED ( adjusted_dimension, scaling_factor[8] );
-
-	return adjusted_dimension;
+	for ( int i = 0; i < number_of_scaling_factors ; i++ ) {
+		
+		const int scaled_width = TJSCALED ( image_width, scaling_factor[i] );
+		const int scaled_height = TJSCALED ( image_height, scaling_factor[i] );
+		if ( scaled_width <= width && scaled_height <= height ) {
+			width = scaled_width;
+			height = scaled_height;
+			break;
+		}
+	}
 }
 
 
@@ -89,13 +98,7 @@ void BEJPEG::read_header ( void )
 			tjDestroy(jpeg_decompressor); // error =
 
 			if ( 0 == error ) {
-
-				int scaled_width = adjust_dimension ( width, image_width, height, image_height );
-				int scaled_height = height = adjust_dimension ( height, image_height, width, image_width );
-
-				width = scaled_width;
-				height = scaled_height;
-
+				adjust_dimensions ( image_width, image_height );
 			} else {
 				throw BEPlugin_Exception ( kJPEGReadHeaderError, tjGetErrorStr() );
 			}

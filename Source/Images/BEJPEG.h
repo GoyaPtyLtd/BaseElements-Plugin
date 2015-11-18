@@ -36,7 +36,7 @@ public:
 protected:
 
 	void compress ( void );
-	const int adjust_dimension ( const int dimension, const int default_dimension, const int other_dimension, const int default_other_dimension );
+	void adjust_dimensions ( const int image_width, const int image_height );
 	void read_header ( void );
 	void decompress ( void );
 
