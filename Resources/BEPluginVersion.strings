@@ -1,0 +1,11 @@
+/* 
+  BEVersion.strings
+  BaseElements
+
+  Created by Mark Banks on 16/11/2015.
+  Copyright © 2015 Goya. All rights reserved.
+*/
+
+
+"65000" = "Version: 3.1.2b2\n\nThis plug-in provides additional functionality for BaseElements from Goya";
+

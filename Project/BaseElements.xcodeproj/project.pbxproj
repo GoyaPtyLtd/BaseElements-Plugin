@@ -71,6 +71,7 @@
 		4DCD49771A195B0C00EFCF7F /* libcharset.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52EB16D355F100E10827 /* libcharset.dylib */; };
 		4DCD49781A195B0C00EFCF7F /* libexslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E016D3553200E10827 /* libexslt.dylib */; };
 		4DCD497C1A195B0C00EFCF7F /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */; };
+		4DFDF4931BF9994000B4C7C4 /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4DFDF4921BF9994000B4C7C4 /* BEPluginVersion.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -190,6 +191,8 @@
 		4DDA52EB16D355F100E10827 /* libcharset.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcharset.dylib; path = usr/lib/libcharset.dylib; sourceTree = SDKROOT; };
 		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
 		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
+		4DFDF48F1BF992A100B4C7C4 /* BEPluginVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEPluginVersion.h; path = ../Source/BEPluginVersion.h; sourceTree = "<group>"; };
+		4DFDF4921BF9994000B4C7C4 /* BEPluginVersion.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = BEPluginVersion.strings; path = ../Resources/BEPluginVersion.strings; sourceTree = "<group>"; };
 		4DFFF8B11884A0390015B531 /* BEXero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXero.cpp; path = ../Source/BEXero.cpp; sourceTree = "<group>"; };
 		4DFFF8B21884A0390015B531 /* BEXero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXero.h; path = ../Source/BEXero.h; sourceTree = "<group>"; };
 		C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/FMWrapper.framework; sourceTree = SOURCE_ROOT; };
@@ -326,6 +329,7 @@
 				4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */,
 				4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */,
 				4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */,
+				4DFDF48F1BF992A100B4C7C4 /* BEPluginVersion.h */,
 				4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */,
 				4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */,
 				4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */,
@@ -377,6 +381,7 @@
 		C7DEDEFC07E10BF3002283F3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4DFDF4921BF9994000B4C7C4 /* BEPluginVersion.strings */,
 				4D7FCA5C11E9308B0047A453 /* BaseElements.strings */,
 				4D7FCA5E11E9308B0047A453 /* Info.plist */,
 				4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */,
@@ -479,6 +484,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DCD49691A195B0C00EFCF7F /* BaseElements.strings in Resources */,
+				4DFDF4931BF9994000B4C7C4 /* BEPluginVersion.strings in Resources */,
 				4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

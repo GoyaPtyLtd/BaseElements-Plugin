@@ -96,7 +96,7 @@ void Do_GetString ( unsigned long whichString,  fmx::TextAutoPtr& intoHere, bool
 
 // used by Do_GetString
 #if defined(FMX_MAC_TARGET)
-	unsigned long  Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax );
+	unsigned long  Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId );
 #endif
 
 

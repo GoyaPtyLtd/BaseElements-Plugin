@@ -1,3 +1,4 @@
+
 "1" = "GyBE1nnYYnn";
 "131" = "GyBE1nnYYnn";
 
@@ -38,7 +39,6 @@
 "127" = "BE_File_Modification_Timestamp ( path )";
 
 "128" = "BaseElements";
-"129" = "Version: 3.1.2b2\n\nThis plug-in provides additional functionality for BaseElements from Goya";
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
 "151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )";

@@ -17,6 +17,7 @@
 
 	#include <CoreServices/CoreServices.h>
 	#include <Carbon/Carbon.h>
+	#include <CoreFoundation/CoreFoundation.h>
 
 #endif 
 
@@ -909,25 +910,36 @@ void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_Pt
 #endif
 			
 #if defined(FMX_MAC_TARGET)
-			Sub_OSXLoadString(kBE_OptionsStringID, string, resultsize);
+			Sub_OSXLoadString(kBE_OptionsStringID, string, resultsize, BUNDLE_STRINGS_ID);
 #endif
-
-//			processedSpecialStringID = true;
 			break;
 		}
+
+		case kFMXT_AppConfigStr:
+		{
+#if defined(FMX_WIN_TARGET)
+			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)PLUGIN_DESCRIPTION_STRING_ID, (LPWSTR)string, (uint32)resultsize);
+#endif
+			
+#if defined(FMX_MAC_TARGET)
+			Sub_OSXLoadString ( PLUGIN_DESCRIPTION_STRING_ID, string, resultsize, BUNDLE_VERSION_ID );
+#endif
+			break;
+		}
+
 		default:
 #if defined(FMX_WIN_TARGET)
 			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)whichString, (LPWSTR)string, (uint32)resultsize);
 #endif
 				
 #if defined(FMX_MAC_TARGET)
-			Sub_OSXLoadString(whichString, string, resultsize);
+			Sub_OSXLoadString ( whichString, string, resultsize, BUNDLE_STRINGS_ID );
 #endif
 	
-	} // switch (whichString)
+	} // switch ( whichString )
 	
 	
-} // Do_GetString (FMX_Unichar* version)
+} // Do_GetString ( FMX_Unichar* version )
 
 
 void Do_GetString(unsigned long whichStringID, TextAutoPtr& intoHere, bool stripFunctionParams)
@@ -958,7 +970,7 @@ void Do_GetString(unsigned long whichStringID, TextAutoPtr& intoHere, bool strip
 
 #if defined(FMX_MAC_TARGET)
 
-unsigned long Sub_OSXLoadString(unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax)
+unsigned long Sub_OSXLoadString(unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId )
 {
 	unsigned long returnResult = 0;
 	
@@ -967,7 +979,7 @@ unsigned long Sub_OSXLoadString(unsigned long stringID, FMX_Unichar* intoHere, l
 		CFStringRef 	strIdStr = CFStringCreateWithFormat( kCFAllocatorDefault, NULL, CFSTR("%ld"), stringID );
 		
 		// Note: The plug-in must be explicit about the bundle and file it wants to pull the string from.
-		CFStringRef 	osxStr = CFBundleCopyLocalizedString( reinterpret_cast<CFBundleRef>(gFMX_ExternCallPtr->instanceID), strIdStr, strIdStr, CFSTR( BUNDLE_STRINGS_ID ) );
+		CFStringRef 	osxStr = CFBundleCopyLocalizedString ( reinterpret_cast<CFBundleRef>(gFMX_ExternCallPtr->instanceID), strIdStr, strIdStr, CFStringCreateWithCString ( NULL, bundleId.c_str(), (unsigned int)bundleId.size() ) );
 		
 		if((osxStr != NULL) && (osxStr != strIdStr)) {
 			
