@@ -22,6 +22,7 @@
 #include <sstream>
 #include <set>
 #include <algorithm>
+#include <map>
 
 #include <boost/algorithm/string.hpp>
 
@@ -50,13 +51,15 @@ public:
 	T unique ( );
 	T filter_out ( BEValueList& filter_out );
 	const bool contains_duplicates ( );
+	BEValueList<T> times_duplicated ( const long numberOfDuplicates ) const;
 	T sort ( ) const;
 	void remove_prefix ( const T& prefix );
 	
 	std::vector<T> get_values ( void ) const { return values; }
 	T get_as_comma_separated ( void ) const;
 	T get_as_filemaker_string ( void ) const;
-    
+	std::vector<double> get_as_vector_double ( void ) const;
+
     BEValueList<T> apply_regular_expression ( const T expression, const std::string options, const T replace_with, const bool replace = false ) const;
 
 protected:
@@ -249,6 +252,29 @@ const bool BEValueList<T>::contains_duplicates ( )
 
 
 template <typename T>
+BEValueList<T> BEValueList<T>::times_duplicated ( const long numberOfDuplicates ) const
+{
+	BEValueList<T> duplicates;
+	std::map<T,int> count_of_duplicates;
+	
+	for ( auto it = values.begin() ; it != values.end(); ++it ) {
+		count_of_duplicates[*it]++;
+	}
+	
+	for ( auto it = count_of_duplicates.begin() ; it != count_of_duplicates.end(); ++it ) {
+		
+		if ( it->second == numberOfDuplicates ) {
+			duplicates.append ( it->first );
+		}
+		
+	}
+	
+	return duplicates;
+	
+} // duplicate_values
+
+
+template <typename T>
 T BEValueList<T>::sort ( ) const
 {
 
@@ -298,6 +324,27 @@ T BEValueList<T>::get_as_filemaker_string ( void ) const
 {
 	return boost::algorithm::join ( values, FILEMAKER_END_OF_LINE );
 }
+
+
+template <typename T>
+std::vector<double>  BEValueList<T>::get_as_vector_double ( void ) const
+{
+	std::vector<double> out;
+	
+	for ( auto it = values.begin() ; it != values.end(); ++it ) {
+		
+		double number;
+		std::stringstream convert ( *it );
+		if ( !(convert >> number) ) {
+			number = 0; // if that fails set number to 0
+		}
+		
+		out.push_back ( number );
+	}
+	
+	return out;
+}
+
 
 
 template <typename T>
