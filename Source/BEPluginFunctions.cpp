@@ -55,6 +55,9 @@
 #include "Images/BEJPEG.h"
 #include "BERegularExpression.h"
 
+#include <numeric> // for inner_product
+#include <list>
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wall"
 #pragma clang diagnostic ignored "-pedantic"
@@ -2246,6 +2249,33 @@ FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environ
 } // BE_Values_Sort
 
 
+#pragma mark BE_Values_TimesDuplicated
+
+FMX_PROC(errcode) BE_Values_TimesDuplicated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr value_list = ParameterAsUTF8String ( parameters );
+		const long numberOfTimes = ParameterAsLong ( parameters, 1 );
+		
+		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
+		BEValueList<std::string> times_duplicated = values->times_duplicated ( numberOfTimes );
+		std::string found = times_duplicated.get_as_filemaker_string();
+		SetResult ( found, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Values_Sort
+
+
 
 #pragma mark -
 #pragma mark Bitwise
@@ -2279,6 +2309,81 @@ FMX_PROC(fmx::errcode) BE_XOR ( short /* funcId */, const fmx::ExprEnv& /* envir
 	return MapError ( error );
 
 } // BE_XOR
+
+
+
+#pragma mark -
+#pragma mark Vector Operations
+#pragma mark -
+
+
+#pragma mark BE_Vector_DotProduct
+
+FMX_PROC(fmx::errcode) BE_Vector_DotProduct ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+
+	try {
+		
+		vector<double> a = ParameterAsVectorDouble ( parameters );
+		const vector<double> b = ParameterAsVectorDouble ( parameters, 1 );
+		
+		// it's ok for <b> to be longer as only the number of elements that exist in <a> are used but not vica-versa
+		while ( a.size() > b.size() ) {
+			a.pop_back();
+		}
+
+		const long dot_product = std::inner_product ( a.begin (), a.end (), b.begin (), 0 );
+		
+		SetResultAsDouble ( dot_product, results );
+					
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+				
+	return MapError ( error );
+				
+} // BE_Vector_DotProduct
+
+
+#pragma mark BE_Vector_EuclideanDistance
+
+FMX_PROC(fmx::errcode) BE_Vector_EuclideanDistance ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+				
+	try {
+					
+		const vector<double> a = ParameterAsVectorDouble ( parameters );
+		const vector<double> b = ParameterAsVectorDouble ( parameters, 1 );
+		
+		double euclidean_distance = 0.0;
+		auto ait = a.begin();
+		auto bit = b.begin();
+		
+		while ( ait != a.end() && bit != b.end() ) {
+			
+			double dist = ( *ait++ ) - ( *bit++ );
+			euclidean_distance += dist * dist;
+			
+		}
+
+		euclidean_distance = euclidean_distance > 0.0 ? sqrt ( euclidean_distance ) : 0.0;
+		
+		SetResultAsDouble ( euclidean_distance, results );
+					
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+				
+	return MapError ( error );
+				
+} // BE_Vector_EuclideanDistance
+
 
 
 #pragma mark -

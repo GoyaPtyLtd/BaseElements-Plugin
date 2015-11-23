@@ -121,7 +121,7 @@
 "351" = "BE_Values_FilterOut ( textToFilter ; filterValues {; caseSensitive } )";
 "352" = "BE_Values_ContainsDuplicates ( listOfValues  {; caseSensitive } )";
 "353" = "BE_Values_Sort ( listOfValues )";
-
+"354" = "BE_Values_TimesDuplicated ( listOfValues ; numberOfTimes )";
 
 "400" = "BE_SMTP_Server ( server { ; port ; username ; password } )";
 "401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
@@ -137,6 +137,9 @@
 "700" = "BE_ConvertContainer ( field {; type ; width ; height } )";
 
 "800" = "BE_XOR ( text ; xorWith )";
+
+"900" = "BE_Vector_DotProduct ( a ; b )";
+"901" = "BE_Vector_EuclideanDistance ( a ; b )";
 
 
 // replaces 120 BE_ExecuteShellCommand

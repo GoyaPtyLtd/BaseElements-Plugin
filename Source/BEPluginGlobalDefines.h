@@ -174,6 +174,7 @@ enum functions {
 	kBE_Values_FilterOut = 351,
 	kBE_Values_ContainsDuplicates = 352,
 	kBE_Values_Sort = 353,
+	kBE_Values_TimesDuplicated = 354,
 	kBE_SMTP_Server = 400,
 	kBE_SMTP_Send = 401,
 	kBE_Encrypt_AES = 500,
@@ -182,6 +183,8 @@ enum functions {
 	kBE_EvaluateJavaScript = 600,
 	kBE_ConvertContainer = 700,
 	kBE_XOR = 800,
+	kBE_Vector_DotProduct = 900,
+	kBE_Vector_EuclideanDistance = 901,
 	kBE_ExecuteSystemCommand = 1120
 };
 
