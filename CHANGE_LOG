@@ -1,8 +1,8 @@
 ########################################################################
-Version 3.1.2b2
+Version 3.1.2
 ########################################################################
 
-November 6, 2015
+November 23, 2015
 
 New Functions
 
@@ -39,6 +39,7 @@ Set the message area rather than the dialog title for Open File dialogs on OS X
 Correct an issue where BE_ApplyXSLT could fail to load external entities on Windows
 Use libjpeg-turbo 1.4.2
 BE_JPEG_Recompress: use FMP like behaviour when no image is supplied rather than generate an error
+BE_JPEG_Recompress: resize/scale for all values
 
 
 ########################################################################
