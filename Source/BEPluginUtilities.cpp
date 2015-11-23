@@ -430,6 +430,17 @@ vector<unsigned char> ParameterAsVectorUnsignedChar ( const DataVect& parameters
 } // ParameterAsVectorUnsignedChar
 
 
+std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which )
+{
+
+	StringAutoPtr value_list = ParameterAsUTF8String ( parameters, which );
+	auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
+	
+	return values->get_as_vector_double();
+
+} // ParameterAsVectorDouble
+
+
 boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which )
 {
 	
