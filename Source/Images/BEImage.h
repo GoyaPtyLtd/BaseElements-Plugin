@@ -42,6 +42,8 @@ public:
 	std::vector<unsigned char> get_data ( void ) const { return data; }
 
 	void set_type ( const std::string new_type ) { type = new_type; }
+	void set_width ( const int new_width ) { width = new_width; }
+	void set_height ( const int new_height ) { height = new_height; }
 
 protected:
 
