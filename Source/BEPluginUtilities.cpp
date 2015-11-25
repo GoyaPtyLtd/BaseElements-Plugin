@@ -297,6 +297,16 @@ bool ParameterAsBoolean ( const DataVect& parameters, const FMX_UInt32 which, co
 }
 	
 	
+double ParameterAsDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which, const bool default_value )
+{
+	try {
+		return parameters.AtAsNumber ( which ).AsFloat();
+	} catch ( exception& /* e */ ) {
+		return default_value;
+	}
+}
+
+
 long ParameterAsLong ( const DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value )
 {
 	try {

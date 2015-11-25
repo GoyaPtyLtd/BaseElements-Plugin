@@ -53,6 +53,7 @@ void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results
 void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results );
 
 bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool default_value = true );
+double ParameterAsDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool default_value = 0.0 );
 long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const unsigned long default_value = 0 );
 StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const std::string default_value = "" );
 WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
