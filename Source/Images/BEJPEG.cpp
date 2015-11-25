@@ -24,10 +24,15 @@
 #include <libturbojpeg/turbojpeg.h>
 
 
+#define MINIMUM_SCALING_FACTOR 0.125
+#define MAXIMUM_SCALING_FACTOR 2
 
-BEJPEG::BEJPEG ( )
+
+
+BEJPEG::BEJPEG ( const std::vector<unsigned char>& image_data, const int image_width, const int image_height ) : BEImage ( image_data, image_width, image_height )
 {
 	compression_level = 75;
+	scale = 0.0;
 }
 
 
@@ -40,6 +45,19 @@ void BEJPEG::set_compression_level ( const int level )
 	} else {
 		compression_level = level;
 	}
+}
+
+
+void BEJPEG::set_scaling ( const double new_scale )
+{
+	if ( MINIMUM_SCALING_FACTOR > new_scale ) {
+		scale = MINIMUM_SCALING_FACTOR;
+	} else if ( MAXIMUM_SCALING_FACTOR < new_scale ) {
+		scale = MAXIMUM_SCALING_FACTOR;
+	} else {
+		scale = new_scale;
+	}
+	
 }
 
 
@@ -70,6 +88,13 @@ void BEJPEG::adjust_dimensions ( const int image_width, const int image_height )
 		width = ceil ( ((double)height / (double)image_width) * image_height );
 	}
 
+	if ( scale != 0.0 ) {
+		
+		width = ceil ( (double)width * scale );
+		height = ceil ( (double)height * scale );
+		
+	}
+	
 	for ( int i = 0; i < number_of_scaling_factors ; i++ ) {
 		
 		const int scaled_width = TJSCALED ( image_width, scaling_factor[i] );
@@ -80,7 +105,7 @@ void BEJPEG::adjust_dimensions ( const int image_width, const int image_height )
 			break;
 		}
 	}
-}
+} // adjust_dimensions
 
 
 void BEJPEG::read_header ( void )

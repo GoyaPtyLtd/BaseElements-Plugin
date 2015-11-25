@@ -2,7 +2,9 @@
 Version 3.2a1
 ########################################################################
 
-November 23, 2015
+
+November 25, 2015
+
 
 New Functions
 
@@ -12,6 +14,8 @@ BE_Vector_EuclideanDistance
 
 
 Changes
+
+BE_JPEG_Recompress: takes a scaling factor rather than width and height
 
 
 ########################################################################

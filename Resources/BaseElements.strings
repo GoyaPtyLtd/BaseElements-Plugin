@@ -102,7 +102,9 @@
 "251" = "BE_Gzip ( data {; filename } )";
 "252" = "BE_UnGzip ( gzip_data {; filename } )";
 
-"270" = "BE_JPEG_Recompress ( jpeg {; compressionLevel ; width ; height } )";
+// 271 replaces 270 (which is depreciated)
+"270" = "BE_JPEG_Recompress_Depreciated ( jpeg {; compressionLevel ; width ; height } )";
+"271" = "BE_JPEG_Recompress ( jpeg {; compressionLevel ; scale } )";
 
 "300" = "BE_JSONPath ( json ; path )";
 "301" = "BE_JSON_Error_Description";

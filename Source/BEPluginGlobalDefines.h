@@ -160,7 +160,8 @@ enum functions {
 	kBE_ContainerIsCompressed = 250,
 	kBE_Gzip = 251,
 	kBE_UnGzip = 252,
-	kBE_JPEG_Recompress = 270,
+	kBE_JPEG_Recompress_Depreciated = 270, // depreciated
+	kBE_JPEG_Recompress = 271,
 	kBE_JSONPath = 300,
 	kBE_JSON_Error_Description = 301,
 	kBE_JSON_ArraySize = 302,

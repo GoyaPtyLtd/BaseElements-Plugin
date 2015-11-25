@@ -2796,8 +2796,8 @@ FMX_PROC(errcode) BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */
 	
 } // BE_HMAC
 
-
-FMX_PROC(errcode) BE_JPEG_Recompress ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+			
+FMX_PROC(errcode) BE_JPEG_Recompress ( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
@@ -2807,13 +2807,27 @@ FMX_PROC(errcode) BE_JPEG_Recompress ( short /* funcId */, const ExprEnv& /* env
 
 		if ( original_jpeg.size() > 0 ) {
 
-			const int width = (const int)ParameterAsLong ( parameters, 2, 0 );
-			const int height = (const int)ParameterAsLong ( parameters, 3, 0 );
-
-			auto_ptr<BEJPEG> jpeg ( new BEJPEG ( original_jpeg, width, height ) );
-
+			auto_ptr<BEJPEG> jpeg ( new BEJPEG ( original_jpeg ) );
 			const int quality = (const int)ParameterAsLong ( parameters, 1, 75 ); // percent
 			jpeg->set_compression_level ( quality );
+
+			if ( function_id == kBE_JPEG_Recompress ) {
+				
+				const double scale = ParameterAsDouble ( parameters, 2 );
+				jpeg->set_scaling ( scale );
+				
+			} else {
+				
+				// depreciated
+			
+				const int width = (const int)ParameterAsLong ( parameters, 2, 0 );
+				jpeg->set_width ( width );
+
+				const int height = (const int)ParameterAsLong ( parameters, 3, 0 );
+				jpeg->set_height ( height );
+
+			}
+
 			jpeg->recompress();
 
 			const StringAutoPtr image_name = ParameterFileName ( parameters );
