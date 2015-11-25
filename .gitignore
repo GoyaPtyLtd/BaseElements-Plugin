@@ -46,3 +46,4 @@ Project/BaseElements.vcxproj.filters
 Project/.vs/BaseElements/v14/.suo
 Project/BaseElements.opensdf
 Source/minizip/*
+Project/Extras/Recover.log
