@@ -15,7 +15,9 @@ BE_Vector_EuclideanDistance
 
 Changes
 
+BE_ConvertContainer: visible in calculation dialogs
 BE_JPEG_Recompress: takes a scaling factor rather than width and height
+BE_XOR: visible in calculation dialogs
 
 
 ########################################################################

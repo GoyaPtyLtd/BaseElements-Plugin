@@ -226,6 +226,12 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Xero_GenerateKeys, BE_Xero_GenerateKeys, 1, 7 );
 
+	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, 1 );
+	
+	g_be_plugin->RegisterFunction ( kBE_ConvertContainer, BE_ConvertContainer, 1, 4 );
+	
+	g_be_plugin->RegisterFunction ( kBE_XOR, BE_XOR, 2, 2 );
+	
 	g_be_plugin->RegisterFunction ( kBE_RegularExpression, BE_RegularExpression, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_Vector_DotProduct, BE_Vector_DotProduct, 2 );
@@ -238,12 +244,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_OAuth_RequestAccessToken, BE_OAuth_RequestAccessToken, 3, 5 );
 //	g_be_plugin->RegisterFunction ( kBE_OAuth_ClearToken, BE_OAuth_RequestAccessToken, true );
 	
-	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, 1 );
-
-	g_be_plugin->RegisterHiddenFunction ( kBE_ConvertContainer, BE_ConvertContainer, 1, 4 );
-
-	g_be_plugin->RegisterHiddenFunction ( kBE_XOR, BE_XOR, 2, 2 );
-
 	return kCurrentExtnVersion;	// enable the plug-in
 	
 } // LoadPlugin
