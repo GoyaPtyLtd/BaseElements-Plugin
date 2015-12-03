@@ -170,6 +170,7 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_CERTINFO" ] = type_string;
 	types [ "CURLOPT_UNIX_SOCKET_PATH" ] = type_string;
 	types [ "CURLOPT_PINNEDPUBLICKEY" ] = type_string;
+	types [ "CURLOPT_DEFAULT_PROTOCOL" ] = type_string;
 
 	types [ "CURLOPT_VERBOSE" ] = type_long;
 	types [ "CURLOPT_HEADER" ] = type_long;
@@ -267,6 +268,8 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_TCP_KEEPINTVL" ] = type_long;
 
 	types [ "CURLOPT_NOPROGRESS" ] = type_long;
+		
+	types [ "CURLOPT_STREAM_WEIGHT" ] = type_long;
 	
 	types [ "CURLOPT_POSTFIELDSIZE_LARGE" ] = type_curl_off_t;
 	types [ "CURLOPT_RESUME_FROM_LARGE" ] = type_curl_off_t;
@@ -580,6 +583,9 @@ CURLoption BECurlOption::option ( )
 	options [ "CURLOPT_TCP_KEEPALIVE" ] = CURLOPT_TCP_KEEPALIVE;
 	options [ "CURLOPT_TCP_KEEPIDLE" ] = CURLOPT_TCP_KEEPIDLE;
 	options [ "CURLOPT_TCP_KEEPINTVL" ] = CURLOPT_TCP_KEEPINTVL;
+	
+	options [ "CURLOPT_DEFAULT_PROTOCOL" ] = CURLOPT_DEFAULT_PROTOCOL;
+	options [ "CURLOPT_STREAM_WEIGHT" ] = CURLOPT_STREAM_WEIGHT;
 	
 //	options [ "CURLMOPT_PIPELINING" ] = CURLMOPT_PIPELINING;
 //	options [ "CURLMOPT_MAX_HOST_CONNECTIONS" ] = CURLMOPT_MAX_HOST_CONNECTIONS;
