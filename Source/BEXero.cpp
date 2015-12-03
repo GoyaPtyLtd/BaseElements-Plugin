@@ -17,6 +17,7 @@
 #include "Crypto/BEX509.h"
 
 #include <openssl/bio.h>
+#include <openssl/bn.h>
 #include <openssl/err.h>
 #include <openssl/pem.h>
 
@@ -27,10 +28,15 @@ using namespace std;
 const std::string xero_generate_key_pair ( BEX509 * x509 )
 {
 	std::string generated_key;
+	
+	RSA * rsa_key_pair = RSA_new();
+	BIGNUM * e = BN_new();
+	int result = RSA_generate_key_ex ( rsa_key_pair, 1024, e, NULL );
 
-	RSA * rsa_key_pair = RSA_generate_key ( 1024, RSA_3, NULL, NULL );
+	BN_clear_free ( e );
+	e = NULL;
 
-	if ( rsa_key_pair ) {
+	if ( result ) {
 
 		EVP_PKEY * private_key = EVP_PKEY_new();
 
