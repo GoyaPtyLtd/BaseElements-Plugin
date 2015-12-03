@@ -80,6 +80,8 @@
 "188" = "BE_HTTP_PUT_DATA ( url ; data {; username ; password } )";
 "189" = "BE_FTP_Upload ( url ; data {; username ; password } )";
 "190" = "BE_Curl_Trace";
+"191" = "BE_FTP_Delete ( url {; username ; password } )";
+
 
 "200" = "BE_ApplyXSLTInMemory ( xml ; xslt )";
 "201" = "BE_XPath ( xml ; xpath {; namespaceList ; asText } )";

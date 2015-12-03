@@ -44,6 +44,9 @@
 
 #pragma clang diagnostic pop
 
+#include <Poco/URI.h>
+#include <Poco/Path.h>
+
 using namespace std;
 using namespace boost::filesystem;
 
@@ -402,6 +405,7 @@ void BECurl::Init ( )
 	// must intialise, we crash otherwise
 	upload_file = NULL;
 	custom_headers = NULL;
+	command_list = NULL;
 	post_data = NULL;
 	
 	//
@@ -444,6 +448,10 @@ vector<char> BECurl::perform_action ( )
 			
 		case kBE_FTP_METHOD_UPLOAD:
 			response = ftp_upload ( );
+			break;
+			
+		case kBE_FTP_METHOD_DELETE:
+			response = ftp_delete ( );
 			break;
 			
 		case kBE_HTTP_METHOD_DELETE:
@@ -594,6 +602,35 @@ vector<char> BECurl::ftp_upload ( )
 	return result;
 	
 }	//	ftp_upload
+
+
+vector<char> BECurl::ftp_delete ( )
+{
+	
+	try {
+		
+		write_to_memory ( );
+		
+		// delete this
+		const Poco::URI uri ( url );
+		std::string path = uri.getPath();
+		path.erase ( 0, 1 );
+		const std::string ftp_command = "DELE " + path;
+		command_list = curl_slist_append ( command_list, ftp_command.c_str() );
+		easy_setopt ( CURLOPT_QUOTE, command_list );
+		
+		const std::string connect_to = uri.getScheme() + "://" + uri.getAuthority();
+		easy_setopt ( CURLOPT_URL, connect_to.c_str() );
+		
+		perform ( );
+		
+	} catch ( BECurl_Exception& e ) {
+		error = e.code();
+	}
+	
+	return result;
+	
+}	//	ftp_delete
 
 
 
@@ -802,6 +839,11 @@ void BECurl::cleanup ( )
 	if ( custom_headers ) {
 		curl_slist_free_all ( custom_headers );
 	}
+	
+	if ( command_list ) {
+		curl_slist_free_all ( command_list );
+	}
+	
 	
 	g_last_error = last_error();
 	g_http_response_code = response_code();

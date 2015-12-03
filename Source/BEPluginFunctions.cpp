@@ -1909,6 +1909,36 @@ FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environm
 } // BE_FTP_Upload
 
 
+#pragma mark BE_FTP_Delete
+
+FMX_PROC(errcode) BE_FTP_Delete ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr url = ParameterAsUTF8String ( parameters );
+		StringAutoPtr username = ParameterAsUTF8String ( parameters, 1 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
+		
+		auto_ptr<BECurl> curl ( new BECurl ( *url, kBE_FTP_METHOD_DELETE, "", *username, *password ) );
+		vector<char> response = curl->perform_action ( );
+
+		error = g_last_error;
+		if ( error == kNoError ) {
+			SetResult ( response, results );
+		}
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_FTP_Delete
+
 
 #pragma mark -
 #pragma mark SMTP

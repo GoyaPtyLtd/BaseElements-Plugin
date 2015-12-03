@@ -27,7 +27,8 @@ typedef enum be_http_method {
 	kBE_HTTP_METHOD_GET,
 	kBE_HTTP_METHOD_POST,
 	kBE_HTTP_METHOD_PUT,
-	kBE_FTP_METHOD_UPLOAD
+	kBE_FTP_METHOD_UPLOAD,
+	kBE_FTP_METHOD_DELETE
 } be_http_method;
 
 
@@ -93,6 +94,7 @@ public:
     std::vector<char> http_put ( );
     std::vector<char> http_delete ( );
     std::vector<char> ftp_upload ( );
+    std::vector<char> ftp_delete ( );
 	
 	be_http_method get_http_method ( ) { return http_method; };
 	void set_http_method ( be_http_method method ) { http_method = method; };
@@ -128,6 +130,7 @@ protected:
 	std::string parameters;
 	
 	struct curl_slist * custom_headers;
+	struct curl_slist * command_list;
 	struct MemoryStruct headers;
 	struct MemoryStruct data;
 	std::vector<char> result;

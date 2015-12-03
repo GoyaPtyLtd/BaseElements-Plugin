@@ -3,12 +3,12 @@ Version 3.2a1
 ########################################################################
 
 
-November 25, 2015
+December 3, 2015
 
 
 New Functions
 
-Tests for BE_Values_TimesDuplicated
+BE_Values_TimesDuplicated
 BE_Vector_DotProduct
 BE_Vector_EuclideanDistance
 
@@ -18,6 +18,10 @@ Changes
 BE_ConvertContainer: visible in calculation dialogs
 BE_JPEG_Recompress: takes a scaling factor rather than width and height
 BE_XOR: visible in calculation dialogs
+Use libcurl 7.46
+Support for new curl otpions:
+- CURLOPT_DEFAULT_PROTOCOL
+- CURLOPT_STREAM_WEIGHT
 
 
 ########################################################################
