@@ -38,7 +38,7 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 
 	text = new mimetic::MimeEntity;
 	text->body().assign ( message_body + "\n\n" );
-	text->header().contentType() = "text/plain";
+	text->header().contentType() = "text/plain; charset=\"utf-8\"";
 
 }
 
@@ -93,7 +93,7 @@ void BESMTPEmailMessage::set_html_alternative ( const std::string& html_part )
 {
 	html = new mimetic::MimeEntity;
 	html->body().assign ( html_part );
-	html->header().contentType() = "text/html";
+	html->header().contentType() = "text/html; charset=\"utf-8\"";
 }
 
 
