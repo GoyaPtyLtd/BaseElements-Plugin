@@ -2,8 +2,7 @@
 Version 3.2a1
 ########################################################################
 
-
-December 3, 2015
+December 17, 2015
 
 
 New Functions
@@ -19,6 +18,8 @@ BE_ConvertContainer: visible in calculation dialogs
 BE_JPEG_Recompress: takes a scaling factor rather than width and height
 BE_XOR: visible in calculation dialogs
 Use libcurl 7.46
+Use OpenSSL 1.0.2e
+Static link libxml2 (2.9.1)
 Support for new curl otpions:
 - CURLOPT_DEFAULT_PROTOCOL
 - CURLOPT_STREAM_WEIGHT

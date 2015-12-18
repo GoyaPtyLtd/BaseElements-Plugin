@@ -5,7 +5,7 @@ Building
 The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
 Notes:
-- these instructions apply to version 3.1.2 of the BaseElements Plugin
+- these instructions apply to version 3.2 of the BaseElements Plugin
 - version 14.0.1.175 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 
@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 3.1.2 of the plug-in is built on Mac OS X 10.11.1 using Xcode 7.1. The Xcode Command Line Tools are also needed.
+Version 3.2 of the plug-in is built on Mac OS X 10.11.2 using Xcode 7.2. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -108,39 +108,34 @@ Copy the directory containing the mimetic headers from the build/include directo
 
 
 =======================================================================
-OpenSSL - 1.0.2d
+OpenSSL - 1.0.2e
 =======================================================================
 
 Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-(openssl-1.0.2d.tar.gz at the time of writing).
+(openssl-1.0.2e.tar.gz at the time of writing).
 
 To build the 32-bit library
 
-	cd openssl-1.0.2d
-	export KERNEL_BITS=32
-	./config
-	make
-	mkdir x86
-	mv *.a x86/
+	cd openssl-1.0.2e
+	./Configure darwin-i386-cc -mmacosx-version-min=10.7 --prefix=/Users/mark/Desktop/openssl/build32
+	make install
 	
 For the 64-bit build
 
 	make clean
-	export KERNEL_BITS=64
-	./config
-	make
-	mkdir x64
-	mv *.a x64/
+	./Configure darwin64-x86_64-cc -mmacosx-version-min=10.7 --prefix=/Users/mark/Desktop/openssl/build64
+	make install
 
 Then, to make the universal libraries
 
-	lipo -create x64/libcrypto.a x86/libcrypto.a -output libcrypto.a
-	lipo -create x64/libssl.a x86/libssl.a -output libssl.a
+	cd ~/Desktop/openssl
+	lipo -create build64/lib/libcrypto.a build32/lib/libcrypto.a -output libcrypto.a
+	lipo -create build64/lib/libssl.a build32/lib/libssl.a -output libssl.a
 
-Copy libcrypto.a and libssl.a to Libraries/osx and copy include/openssl to Headers.
+Copy libcrypto.a and libssl.a to Libraries/osx and copy build64/include/openssl to Headers.
 
 
 =======================================================================
@@ -153,7 +148,7 @@ Download the source from
 
 Unpack the archive and in the distribution directory
 
-	CFLAGS="-arch x86_64 -arch i386  -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" ./configure --prefix=/usr --exec-prefix=/usr --with-openssl --with-libz --without-libgcrypt --prefix=<path_to_install_libssh2> -exec-prefix=<path_to_install_libssh2> && make install
+	CFLAGS="-arch x86_64 -arch i386  -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" ./configure --with-openssl --with-libz --without-libgcrypt --prefix=<path_to_install_libssh2> -exec-prefix=<path_to_install_libssh2> && make install
 
 (replacing <path_to_install_libssh2> as appropriate).
 
@@ -286,12 +281,30 @@ Then, after extracting the archive
 
 Copy the poco libraries to the Libraries/osx directory and copy the Poco/usr/local/include/Poco to Headers.
 
+=======================================================================
+libxml2 - 2.9.1
+=======================================================================
+
+Note: libxml2 version 2.9.1 (not 2.9.2 or 2.9.3) must be used.
+
+Download the source for libxml2 from
+
+	http://xmlsoft.org/downloads.html
+
+and expand it into a directory on the Desktop.
+
+	cd libxml2-2.9.1
+	./configure  CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7"  LDFLAGS="-arch i386 -arch x86_64" --disable-shared --without-python --without-zlib  --prefix=<path to Desktop>/libxml2-2.9.3/build
+	make install
+	
+and then copy libxml2.a from build/lib to the Libraries/osx directory and the libxml2 directory from build/include to Headers.
+
 
 =======================================================================
 Windows
 =======================================================================
 
-The plug-in was built using Visual Studio 2015 Professional on Windows 8.1 (64-bit).
+The plug-in was built using Visual Studio 2015 Professional Upgrade 1 on Windows 8.1 (64-bit).
 
 Download the FileMaker External Plug-In API from
 
@@ -482,7 +495,7 @@ into the Libraries\x64 directory.
 
 
 =======================================================================
-OpenSSL - 1.0.2d
+OpenSSL - 1.0.2e
 =======================================================================
 
 Building OpenSSL requires that perl is installed. The ActiveState perl (Community Edition) is a good
@@ -495,13 +508,13 @@ Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-(openssl-1.0.2d.tar.gz at the time of writing).
+(openssl-1.0.2e.tar.gz at the time of writing).
 
 Note: if building both x86 and x64 versions unpack a clean version of the source for each build.
 
 Unpack the archive and, using the "VS2015 x86 Native Command Prompt"
 
-	cd c:\Users\Mark\Downloads\openssl-1.0.2d
+	cd openssl-1.0.2e
 	perl Configure VC-WIN32 enable-static-engine no-asm
 	ms\do_nt
 	nmake -f ms\nt.mak
@@ -510,7 +523,7 @@ Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\win32 and copy inc32
 
 For x64 builds in a "VS2015 x64 Native Command Prompt" use:
 
-	cd c:\Users\Mark\Downloads\openssl-1.0.2d
+	cd openssl-1.0.2e
 	perl Configure VC-WIN64A enable-static-engine no-asm
 	ms\do_win64a
 	nmake -f ms\nt.mak
@@ -519,7 +532,7 @@ Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\x64 and copy inc32\o
 
 
 =======================================================================
-libcurl - 7.44
+libcurl - 7.46
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
