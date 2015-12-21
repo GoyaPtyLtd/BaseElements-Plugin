@@ -301,6 +301,23 @@ and then copy libxml2.a from build/lib to the Libraries/osx directory and the li
 
 
 =======================================================================
+libxslt - 1.1.28
+=======================================================================
+
+Download the source from
+
+	http://xmlsoft.org/downloads.html
+
+and expand it into a directory on the Desktop.
+
+	cd libxslt-1.1.28
+	./configure  CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7"  LDFLAGS="-arch i386 -arch x86_64" --disable-shared --without-python --prefix=<path to Desktop>/libxslt-1.1.28/build
+	make install
+	
+and then copy libxslt.a and libexslt.a from build/lib to the Libraries/osx directory and the libxslt & libexslt directories from build/include to Headers.
+
+
+=======================================================================
 Windows
 =======================================================================
 

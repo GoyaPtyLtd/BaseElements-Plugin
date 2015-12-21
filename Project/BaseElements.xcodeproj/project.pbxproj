@@ -22,12 +22,18 @@
 		4D0E296F1B3A6C1000A35298 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29671B3A6C1000A35298 /* libPocoFoundation.a */; };
 		4D0E29701B3A6C1000A35298 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29681B3A6C1000A35298 /* libPocoZip.a */; };
 		4D0E29711B3A6C1000A35298 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29691B3A6C1000A35298 /* libturbojpeg.a */; };
+		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
+		4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06701C23B389006899FE /* libiconv.tbd */; };
+		4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06761C23B3A9006899FE /* libcharset.tbd */; };
+		4D4C06791C23B3B6006899FE /* libldap.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06781C23B3B6006899FE /* libldap.tbd */; };
+		4D4C067A1C23CE0D006899FE /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9BD0BD1C23B27200851E74 /* libxml2.a */; };
+		4D4C067D1C23CE0D006899FE /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C067B1C23CE0D006899FE /* libexslt.a */; };
+		4D4C067E1C23CE0D006899FE /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C067C1C23CE0D006899FE /* libxslt.a */; };
 		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
 		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
 		4D807F001A9C255000E27E38 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4D807F041A9C27AB00E27E38 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
 		4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
-		4D9BD0BE1C23B27200851E74 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9BD0BD1C23B27200851E74 /* libxml2.a */; };
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
@@ -63,13 +69,7 @@
 		4DCD49651A195B0C00EFCF7F /* BESMTPEmailMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */; };
 		4DCD49661A195B0C00EFCF7F /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C918DA773900DFC47A /* BEBase64.cpp */; };
 		4DCD49691A195B0C00EFCF7F /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
-		4DCD496C1A195B0C00EFCF7F /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D57DF89193EEA9F006739BE /* libldap.dylib */; };
 		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
-		4DCD49721A195B0C00EFCF7F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52D916D3551400E10827 /* libz.dylib */; };
-		4DCD49731A195B0C00EFCF7F /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E616D355C100E10827 /* libiconv.dylib */; };
-		4DCD49761A195B0C00EFCF7F /* libxslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52DE16D3552D00E10827 /* libxslt.dylib */; };
-		4DCD49771A195B0C00EFCF7F /* libcharset.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52EB16D355F100E10827 /* libcharset.dylib */; };
-		4DCD49781A195B0C00EFCF7F /* libexslt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDA52E016D3553200E10827 /* libexslt.dylib */; };
 		4DCD497C1A195B0C00EFCF7F /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DEDF3707E10CBC002283F3 /* FMWrapper.framework */; };
 		4DFDF4931BF9994000B4C7C4 /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4DFDF4921BF9994000B4C7C4 /* BEPluginVersion.strings */; };
 /* End PBXBuildFile section */
@@ -124,6 +124,15 @@
 		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
 		4D4153A5120140AF00770E14 /* BEWStringVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEWStringVector.cpp; path = ../Source/BEWStringVector.cpp; sourceTree = SOURCE_ROOT; };
 		4D4153A6120140AF00770E14 /* BEWStringVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEWStringVector.h; path = ../Source/BEWStringVector.h; sourceTree = SOURCE_ROOT; };
+		4D4C066C1C23B372006899FE /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		4D4C066E1C23B37E006899FE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		4D4C06701C23B389006899FE /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		4D4C06721C23B39B006899FE /* libexslt.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexslt.tbd; path = usr/lib/libexslt.tbd; sourceTree = SDKROOT; };
+		4D4C06731C23B39B006899FE /* libxslt.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxslt.tbd; path = usr/lib/libxslt.tbd; sourceTree = SDKROOT; };
+		4D4C06761C23B3A9006899FE /* libcharset.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcharset.tbd; path = usr/lib/libcharset.tbd; sourceTree = SDKROOT; };
+		4D4C06781C23B3B6006899FE /* libldap.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libldap.tbd; path = usr/lib/libldap.tbd; sourceTree = SDKROOT; };
+		4D4C067B1C23CE0D006899FE /* libexslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexslt.a; path = ../Libraries/osx/libexslt.a; sourceTree = "<group>"; };
+		4D4C067C1C23CE0D006899FE /* libxslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxslt.a; path = ../Libraries/osx/libxslt.a; sourceTree = "<group>"; };
 		4D55C63815EE0F0A008F7FBA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
 		4D57DF7E193EE0F3006739BE /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/libssh2.a; sourceTree = "<group>"; };
@@ -204,7 +213,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D9BD0BE1C23B27200851E74 /* libxml2.a in Frameworks */,
+				4D4C067D1C23CE0D006899FE /* libexslt.a in Frameworks */,
+				4D4C067E1C23CE0D006899FE /* libxslt.a in Frameworks */,
+				4D4C067A1C23CE0D006899FE /* libxml2.a in Frameworks */,
+				4D4C06791C23B3B6006899FE /* libldap.tbd in Frameworks */,
+				4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */,
+				4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */,
+				4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */,
 				4DBCA9911B7D6FBA00880836 /* libcrypto.a in Frameworks */,
 				4DBCA9921B7D6FBA00880836 /* libssl.a in Frameworks */,
 				4D0579331B3B83550000585F /* FMWrapper.framework in Frameworks */,
@@ -222,13 +237,7 @@
 				4D0E296F1B3A6C1000A35298 /* libPocoFoundation.a in Frameworks */,
 				4D0E29701B3A6C1000A35298 /* libPocoZip.a in Frameworks */,
 				4D0E29711B3A6C1000A35298 /* libturbojpeg.a in Frameworks */,
-				4DCD496C1A195B0C00EFCF7F /* libldap.dylib in Frameworks */,
 				4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */,
-				4DCD49721A195B0C00EFCF7F /* libz.dylib in Frameworks */,
-				4DCD49731A195B0C00EFCF7F /* libiconv.dylib in Frameworks */,
-				4DCD49761A195B0C00EFCF7F /* libxslt.dylib in Frameworks */,
-				4DCD49771A195B0C00EFCF7F /* libcharset.dylib in Frameworks */,
-				4DCD49781A195B0C00EFCF7F /* libexslt.dylib in Frameworks */,
 				4DCD497C1A195B0C00EFCF7F /* FMWrapper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -393,6 +402,15 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D4C067B1C23CE0D006899FE /* libexslt.a */,
+				4D4C067C1C23CE0D006899FE /* libxslt.a */,
+				4D4C06781C23B3B6006899FE /* libldap.tbd */,
+				4D4C06761C23B3A9006899FE /* libcharset.tbd */,
+				4D4C06721C23B39B006899FE /* libexslt.tbd */,
+				4D4C06731C23B39B006899FE /* libxslt.tbd */,
+				4D4C06701C23B389006899FE /* libiconv.tbd */,
+				4D4C066E1C23B37E006899FE /* libz.tbd */,
+				4D4C066C1C23B372006899FE /* libxml2.tbd */,
 				4D9BD0BD1C23B27200851E74 /* libxml2.a */,
 				4DBCA98F1B7D6FBA00880836 /* libcrypto.a */,
 				4DBCA9901B7D6FBA00880836 /* libssl.a */,

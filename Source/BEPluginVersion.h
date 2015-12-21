@@ -18,7 +18,7 @@
 #define PLUGIN_DESCRIPTION_STRING_ID 65000
 
 #define	VERSION_NUMBER_STRING L"3.2.0"
-#define	AUTO_UPDATE_VERSION L"03019901"
+#define	AUTO_UPDATE_VERSION L"03019902"
 #define VERSION_STRING "3.2a1" // also in xcode project build settings
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/" VERSION_STRING

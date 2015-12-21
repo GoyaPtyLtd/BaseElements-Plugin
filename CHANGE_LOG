@@ -16,10 +16,11 @@ Changes
 
 BE_ConvertContainer: visible in calculation dialogs
 BE_JPEG_Recompress: takes a scaling factor rather than width and height
+BE_SMTP_Send: explicitly set the charset for the text & html parts
 BE_XOR: visible in calculation dialogs
 Use libcurl 7.46
 Use OpenSSL 1.0.2e
-Static link libxml2 (2.9.1)
+Static link libxml2 (2.9.1) & libxslt/libexslt (1.1.28)
 Support for new curl otpions:
 - CURLOPT_DEFAULT_PROTOCOL
 - CURLOPT_STREAM_WEIGHT
