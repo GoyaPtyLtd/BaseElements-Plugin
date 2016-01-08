@@ -51,6 +51,11 @@ using namespace std;
 using namespace boost::filesystem;
 
 
+#define FTP_DELETE_COMMAND "dele";
+#define SFTP_DELETE_COMMAND "rm";
+#define SFTP_SCHEME "sftp";
+
+
 #pragma mark -
 #pragma mark Globals
 #pragma mark -
@@ -587,7 +592,7 @@ vector<char> BECurl::ftp_upload ( )
 		
 		prepare_upload ( );
 		prepare_data_upload ( );
-				
+
 		// upload this
 		easy_setopt ( CURLOPT_URL, url.c_str() );
 		
@@ -614,8 +619,15 @@ vector<char> BECurl::ftp_delete ( )
 		// delete this
 		const Poco::URI uri ( url );
 		std::string path = uri.getPath();
-		path.erase ( 0, 1 );
-		const std::string ftp_command = "DELE " + path;
+		path.erase ( 0, 1 ); // lop off the leading slash
+		
+		// ftp and sftp use different commands
+		std::string delete_command = FTP_DELETE_COMMAND;
+		if ( boost::iequals ( uri.getScheme(), "sftp" ) ) { // SFTP_SCHEME
+			delete_command = SFTP_DELETE_COMMAND;
+		}
+		
+		const std::string ftp_command = delete_command + " " + path;
 		command_list = curl_slist_append ( command_list, ftp_command.c_str() );
 		easy_setopt ( CURLOPT_QUOTE, command_list );
 		
