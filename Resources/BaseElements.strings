@@ -101,8 +101,8 @@
 "240" = "BE_RegularExpression ( text ; expression {; options ; replaceString } )";
 
 "250" = "BE_ContainerIsCompressed ( containerField )";
-"251" = "BE_Gzip ( data {; filename } )";
-"252" = "BE_UnGzip ( gzip_data {; filename } )";
+"251" = "BE_ContainerCompress ( data {; filename } )";
+"252" = "BE_ContainerUncompress ( gzip_data {; filename } )";
 
 // 271 replaces 270 (which is depreciated)
 "270" = "BE_JPEG_Recompress_Depreciated ( jpeg {; compressionLevel ; width ; height } )";

@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
  
- Copyright 2010-2015 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -1436,7 +1436,7 @@ FMX_PROC(errcode) BE_ContainerIsCompressed ( short /*funcId*/, const ExprEnv& /*
 } // BE_ContainerIsCompressed
 
 
-FMX_PROC(errcode) BE_Gzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+FMX_PROC(errcode) BE_ContainerCompress ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
@@ -1455,10 +1455,10 @@ FMX_PROC(errcode) BE_Gzip ( short /*funcId*/, const ExprEnv& /* environment */, 
 	
 	return MapError ( error );
 	
-} // BE_Gzip
+} // BE_ContainerCompress
 
 
-FMX_PROC(errcode) BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+FMX_PROC(errcode) BE_ContainerUncompress ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
@@ -1477,7 +1477,7 @@ FMX_PROC(errcode) BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */
 	
 	return MapError ( error );
 	
-} // BE_UnGzip
+} // BE_ContainerUncompress
 
 
 #pragma mark -
