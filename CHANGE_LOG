@@ -1,12 +1,13 @@
 ########################################################################
-Version 3.2a1
+Version 3.2
 ########################################################################
 
-December 17, 2015
+January 14, 2016
 
 
 New Functions
 
+BE_FTP_Delete
 BE_Values_TimesDuplicated
 BE_Vector_DotProduct
 BE_Vector_EuclideanDistance
@@ -15,10 +16,12 @@ BE_Vector_EuclideanDistance
 Changes
 
 BE_ConvertContainer: visible in calculation dialogs
+BE_Gzip: renamed to BE_ContainerCompress
 BE_JPEG_Recompress: takes a scaling factor rather than width and height
 BE_SMTP_Send: explicitly set the charset for the text & html parts
+BE_UnGzip: renamed to BE_ContainerUncompress
 BE_XOR: visible in calculation dialogs
-Use libcurl 7.46
+Use libcurl 7.46 (compiled against Secure Transport on OS X)
 Use OpenSSL 1.0.2e
 Static link libxml2 (2.9.1) & libxslt/libexslt (1.1.28)
 Support for new curl otpions:
@@ -31,6 +34,7 @@ Version 3.1.2
 ########################################################################
 
 November 23, 2015
+
 
 New Functions
 
@@ -76,6 +80,7 @@ Version 3.1.1
 
 July 22, 2015
 
+
 Changes
 
 Get inner rather than outer xml for BE_SplitBEXMLFiles
@@ -86,6 +91,7 @@ Version 3.1
 ########################################################################
 
 July 16, 2015
+
 
 New Functions
 
@@ -135,6 +141,7 @@ Version 3.0
 
 December 19, 2014
 
+
 New Functions
 
 BE_ExportFieldContents
@@ -171,6 +178,7 @@ Version 2.3.1
 
 August 29, 2014
 
+
 Changes
 
 BE_Decrypt_AES: fix a crash when attempting to decrypt data not encrypted with the plug-in
@@ -184,6 +192,7 @@ Version 2.3
 ########################################################################
 
 June 23, 2014
+
 
 New Functions
 
@@ -210,6 +219,7 @@ Version 2.2.2
 
 April 11, 2014
 
+
 Changes
 
 Update OpenSSL for the "Heartbleed" bug (Win)
@@ -220,6 +230,7 @@ Version 2.2.1
 ########################################################################
 
 March 12, 2014
+
 
 Changes
 
@@ -234,9 +245,11 @@ Version 2.2
 
 February 25, 2014
 
+
 New Functions
 
 BE_SplitBEFileNodes
+
 
 Changes
 
@@ -257,6 +270,7 @@ Version 2.1
 
 June 19, 2013
 
+
 New Functions
 
 BE_Curl_Set_Option
@@ -273,6 +287,7 @@ BE_Values_FilterOut
 BE_Values_Sort
 BE_Values_Unique
 
+
 Changes
 
 BE_CreateFolder: create directory structures recursively
@@ -286,6 +301,7 @@ Version 2.0
 
 February 5, 2013
 
+
 New Functions
 
 BE_Base64_URL_Encode
@@ -298,6 +314,7 @@ BE_HTTP_Set_Proxy
 BE_StripXMLNodes
 BE_TimeZoneOffset
 BE_UTCMilliseconds
+
 
 Changes
 
@@ -321,6 +338,7 @@ Version 1.3.2
 
 June 19, 2012
 
+
 Changes
 
 BE_GetURL: bug fix
@@ -333,6 +351,7 @@ Version 1.3.1
 
 March 2, 2012
 
+
 Changes
 
 BE_Base64_Decode: both parameters are required
@@ -344,6 +363,7 @@ Version 1.3
 ########################################################################
 
 January 31, 2012
+
 
 New Functions
 
@@ -361,6 +381,7 @@ BE_SetTextEncoding
 BE_Unzip
 BE_Zip
 
+
 Changes
 
 BE_FileMakerSQL: accept multi-character delimiters
@@ -375,6 +396,7 @@ Version 1.2.1
 
 August 19, 2011
 
+
 Changes
 
 BE_ExecuteShellCommand: bug fix
@@ -385,6 +407,7 @@ Version 1.2
 ########################################################################
 
 July 26, 2011
+
 
 New Functions
 
@@ -398,6 +421,7 @@ BE_SaveURLToFile
 BE_XPath
 BE_XPathAll
 
+
 Changes
 
 BE_CopyFiles: handle directories
@@ -410,6 +434,7 @@ Version 1.1
 
 May 2, 2011
 
+
 New Functions
 
 BE_CopyFile
@@ -419,6 +444,7 @@ BE_FileMaker_Tables
 BE_ListFilesInFolder
 BE_MoveFile
 BE_OpenURL
+
 
 Changes
 
@@ -432,6 +458,7 @@ Version 1.0
 ########################################################################
 
 October 8, 2010
+
 
 BE_Version
 BE_VersionAutoUpdate

@@ -22,6 +22,8 @@
 		4D0E296F1B3A6C1000A35298 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29671B3A6C1000A35298 /* libPocoFoundation.a */; };
 		4D0E29701B3A6C1000A35298 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29681B3A6C1000A35298 /* libPocoZip.a */; };
 		4D0E29711B3A6C1000A35298 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29691B3A6C1000A35298 /* libturbojpeg.a */; };
+		4D145DDD1C44BCAF00C9FF3E /* libgcrypt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D145DDB1C44BCAF00C9FF3E /* libgcrypt.a */; };
+		4D145DDE1C44BCAF00C9FF3E /* libgpg-error.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D145DDC1C44BCAF00C9FF3E /* libgpg-error.a */; };
 		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
 		4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06701C23B389006899FE /* libiconv.tbd */; };
 		4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06761C23B3A9006899FE /* libcharset.tbd */; };
@@ -31,14 +33,15 @@
 		4D4C067E1C23CE0D006899FE /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C067C1C23CE0D006899FE /* libxslt.a */; };
 		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
 		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
+		4D7613841C44C94200FC651E /* libssl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7613831C44C94200FC651E /* libssl.tbd */; };
+		4D7613861C44C94E00FC651E /* libcrypto.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7613851C44C94E00FC651E /* libcrypto.tbd */; };
+		4D7613871C460D7300FC651E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7613811C44C52E00FC651E /* Security.framework */; };
 		4D807F001A9C255000E27E38 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4D807F041A9C27AB00E27E38 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
 		4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
-		4DBCA9911B7D6FBA00880836 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCA98F1B7D6FBA00880836 /* libcrypto.a */; };
-		4DBCA9921B7D6FBA00880836 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCA9901B7D6FBA00880836 /* libssl.a */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
@@ -102,6 +105,8 @@
 		4D10AD941484202000814440 /* BESQLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESQLCommand.h; path = ../Source/BESQLCommand.h; sourceTree = SOURCE_ROOT; };
 		4D13006616DADD8A0075FE0C /* BEOAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEOAuth.cpp; path = ../Source/BEOAuth.cpp; sourceTree = "<group>"; };
 		4D13006716DADD8A0075FE0C /* BEOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEOAuth.h; path = ../Source/BEOAuth.h; sourceTree = "<group>"; };
+		4D145DDB1C44BCAF00C9FF3E /* libgcrypt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgcrypt.a; path = ../Libraries/osx/libgcrypt.a; sourceTree = "<group>"; };
+		4D145DDC1C44BCAF00C9FF3E /* libgpg-error.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgpg-error.a"; path = "../Libraries/osx/libgpg-error.a"; sourceTree = "<group>"; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/Crypto/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/Crypto/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
 		4D27C3851861160000E7F4A1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -142,6 +147,9 @@
 		4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLTextWriter.cpp; path = ../Source/BEXMLTextWriter.cpp; sourceTree = "<group>"; };
 		4D760F7E15AD646D001A0BAF /* BEXMLReaderInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReaderInterface.h; path = ../Source/BEXMLReaderInterface.h; sourceTree = "<group>"; };
 		4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLReaderInterface.cpp; path = ../Source/BEXMLReaderInterface.cpp; sourceTree = "<group>"; };
+		4D7613811C44C52E00FC651E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		4D7613831C44C94200FC651E /* libssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libssl.tbd; path = usr/lib/libssl.tbd; sourceTree = SDKROOT; };
+		4D7613851C44C94E00FC651E /* libcrypto.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcrypto.tbd; path = usr/lib/libcrypto.tbd; sourceTree = SDKROOT; };
 		4D7FCA5C11E9308B0047A453 /* BaseElements.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = BaseElements.strings; path = ../Resources/BaseElements.strings; sourceTree = SOURCE_ROOT; };
 		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D807EFE1A9C255000E27E38 /* BEImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEImage.cpp; path = ../Source/Images/BEImage.cpp; sourceTree = "<group>"; };
@@ -195,6 +203,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D7613871C460D7300FC651E /* Security.framework in Frameworks */,
+				4D7613861C44C94E00FC651E /* libcrypto.tbd in Frameworks */,
+				4D7613841C44C94200FC651E /* libssl.tbd in Frameworks */,
+				4D145DDD1C44BCAF00C9FF3E /* libgcrypt.a in Frameworks */,
+				4D145DDE1C44BCAF00C9FF3E /* libgpg-error.a in Frameworks */,
 				4D4C067D1C23CE0D006899FE /* libexslt.a in Frameworks */,
 				4D4C067E1C23CE0D006899FE /* libxslt.a in Frameworks */,
 				4D4C067A1C23CE0D006899FE /* libxml2.a in Frameworks */,
@@ -202,8 +215,6 @@
 				4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */,
 				4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */,
 				4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */,
-				4DBCA9911B7D6FBA00880836 /* libcrypto.a in Frameworks */,
-				4DBCA9921B7D6FBA00880836 /* libssl.a in Frameworks */,
 				4D0579331B3B83550000585F /* FMWrapper.framework in Frameworks */,
 				4D0579341B3B83550000585F /* libcurl.a in Frameworks */,
 				4D0579351B3B83550000585F /* libjansson.a in Frameworks */,
@@ -378,6 +389,11 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D7613851C44C94E00FC651E /* libcrypto.tbd */,
+				4D7613831C44C94200FC651E /* libssl.tbd */,
+				4D7613811C44C52E00FC651E /* Security.framework */,
+				4D145DDB1C44BCAF00C9FF3E /* libgcrypt.a */,
+				4D145DDC1C44BCAF00C9FF3E /* libgpg-error.a */,
 				4D4C067B1C23CE0D006899FE /* libexslt.a */,
 				4D4C067C1C23CE0D006899FE /* libxslt.a */,
 				4D4C06781C23B3B6006899FE /* libldap.tbd */,
