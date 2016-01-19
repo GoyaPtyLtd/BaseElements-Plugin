@@ -93,6 +93,8 @@ using namespace boost::filesystem;
 #pragma mark Globals
 #pragma mark -
 
+#define GZIP_FILE_EXTENSION string ( ".gz" )
+
 errcode g_last_error;
 errcode g_last_ddl_error;
 string g_text_encoding;
@@ -1478,6 +1480,77 @@ FMX_PROC(errcode) BE_ContainerUncompress ( short /*funcId*/, const ExprEnv& /* e
 	return MapError ( error );
 	
 } // BE_ContainerUncompress
+
+
+#pragma mark BE_Gzip
+
+FMX_PROC(errcode) BE_Gzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		const vector<char> to_compress = ParameterAsVectorChar ( parameters );
+		if ( !to_compress.empty() ) {
+			
+			const vector<char> compressed = CompressContainerStream ( to_compress );
+			
+			path filename = ParameterAsPath ( parameters, 1 );
+			if ( filename.empty() ) {
+				filename = *ParameterFileName ( parameters );
+				filename += GZIP_FILE_EXTENSION;
+			}
+			
+			SetResult ( filename.string(), compressed, results );
+
+		}
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Gzip
+
+
+#pragma mark BE_UnGzip
+
+FMX_PROC(errcode) BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		const vector<char> gzipped = ParameterAsVectorChar ( parameters );
+		if ( !gzipped.empty() ) {
+			
+			const vector<char> uncompressed = UncompressContainerStream ( gzipped );
+			
+			path filename = ParameterAsPath ( parameters, 1 );
+			if ( filename.empty() ) {
+				filename = *ParameterFileName ( parameters );
+				if ( filename.extension() == GZIP_FILE_EXTENSION ) {
+					filename.replace_extension ( "" );
+				}
+			}
+			
+			SetResult ( filename.string(), uncompressed, results );
+
+		}
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_UnGzip
+
 
 
 #pragma mark -
