@@ -3023,3 +3023,26 @@ FMX_PROC(errcode) BE_RegularExpression ( short /* funcId */, const ExprEnv& /* e
 } // BE_RegularExpression
 
 
+FMX_PROC(errcode) BE_Pause ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
+{
+	errcode error = NoError();
+				
+	try {
+		
+		const long milliseconds = ParameterAsLong ( parameters );
+		
+//		std::this_thread::sleep_for ( std::chrono::milliseconds ( milliseconds ) ); // c++11
+		boost::this_thread::sleep ( boost::posix_time::milliseconds ( milliseconds ) );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+				
+	return MapError ( error );
+				
+} // BE_Pause
+			
+			
+			

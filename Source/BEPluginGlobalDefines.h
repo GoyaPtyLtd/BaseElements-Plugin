@@ -125,6 +125,7 @@ enum functions {
 	kBE_SaveURLToFile = 156,
 	kBE_ProgressDialog = 157,
 	kBE_ProgressDialog_Update = 158,
+	kBE_Pause = 159,
 	kBE_SetPreference = 160,
 	kBE_GetPreference = 161,
 	kBE_Unzip = 170,
