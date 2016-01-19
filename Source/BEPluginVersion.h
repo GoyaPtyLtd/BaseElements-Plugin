@@ -17,9 +17,9 @@
 #define BUNDLE_VERSION_ID "BEPluginVersion"
 #define PLUGIN_DESCRIPTION_STRING_ID 65000
 
-#define	VERSION_NUMBER_STRING L"3.2.0"
-#define	AUTO_UPDATE_VERSION L"03020000"
-#define VERSION_STRING "3.2" // also in xcode project build settings
+#define	VERSION_NUMBER_STRING L"3.3.0"
+#define	AUTO_UPDATE_VERSION L"03029900"
+#define VERSION_STRING "3.3a1" // also in xcode project build settings
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/" VERSION_STRING
 
