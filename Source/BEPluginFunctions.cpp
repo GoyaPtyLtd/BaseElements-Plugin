@@ -1438,13 +1438,15 @@ FMX_PROC(errcode) BE_ContainerIsCompressed ( short /*funcId*/, const ExprEnv& /*
 } // BE_ContainerIsCompressed
 
 
+#pragma mark BE_ContainerCompress
+
 FMX_PROC(errcode) BE_ContainerCompress ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
 	try {
 		
-		vector<char> to_compress = ParameterAsVectorChar ( parameters, 0 );
+		vector<char> to_compress = ParameterAsVectorChar ( parameters );
 		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
 
 		SetResult ( *filename, to_compress, results, COMPRESSED_CONTAINER_TYPE );
@@ -1460,13 +1462,15 @@ FMX_PROC(errcode) BE_ContainerCompress ( short /*funcId*/, const ExprEnv& /* env
 } // BE_ContainerCompress
 
 
+#pragma mark BE_ContainerUncompress
+
 FMX_PROC(errcode) BE_ContainerUncompress ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	
 	try {
 		
-		vector<char> gzipped = ParameterAsVectorChar ( parameters, 0 );
+		vector<char> gzipped = ParameterAsVectorChar ( parameters );
 		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
 
 		SetResult ( *filename, gzipped, results );
