@@ -622,20 +622,24 @@ StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path )
 	if ( exists ( path ) ) {
 		size_t length = (size_t)file_size ( path ); // boost::uintmax_t
 		
-		boost::filesystem::ifstream inFile ( path, ios_base::in | ios_base::binary | ios_base::ate );
-		inFile.seekg ( 0, ios::beg );
-		
-		// slurp up the file contents
-		std::vector<char> buffer ( length );
-		inFile.read ( &buffer[0], length );
-		inFile.close ();
-				
-		// convert the text in the file to utf-8 if possible
-		result = ConvertTextToUTF8 ( &buffer[0], length );
-		if ( result->length() == 0 ) {
-			result->assign ( &buffer[0] );
+		if ( length > 0 ) {
+			
+			boost::filesystem::ifstream inFile ( path, ios_base::in | ios_base::binary | ios_base::ate );
+			inFile.seekg ( 0, ios::beg );
+			
+			// slurp up the file contents
+			std::vector<char> buffer ( length );
+			inFile.read ( &buffer[0], length );
+			inFile.close ();
+			
+			// convert the text in the file to utf-8 if possible
+			result = ConvertTextToUTF8 ( &buffer[0], length );
+			if ( result->length() == 0 ) {
+				result->assign ( &buffer[0] );
+			}
+			
 		}
-
+		
 	} else {
 		g_last_error = kNoSuchFileOrDirectoryError;
 	}
