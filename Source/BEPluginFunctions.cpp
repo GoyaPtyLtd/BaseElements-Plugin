@@ -2462,19 +2462,19 @@ FMX_PROC(fmx::errcode) BE_Vector_DotProduct ( short /* funcId */, const fmx::Exp
 		while ( a.size() > b.size() ) {
 			a.pop_back();
 		}
-
-		const long dot_product = std::inner_product ( a.begin (), a.end (), b.begin (), 0 );
 		
-		SetResultAsDouble ( dot_product, results );
-					
+		const double dot_product = std::inner_product ( a.begin(), a.end(), b.begin(), 0.0 );
+
+		SetResult ( dot_product, results );
+
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-				
+
 	return MapError ( error );
-				
+
 } // BE_Vector_DotProduct
 
 
@@ -2483,35 +2483,35 @@ FMX_PROC(fmx::errcode) BE_Vector_DotProduct ( short /* funcId */, const fmx::Exp
 FMX_PROC(fmx::errcode) BE_Vector_EuclideanDistance ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
 {
 	errcode error = NoError();
-				
+
 	try {
-					
+
 		const vector<double> a = ParameterAsVectorDouble ( parameters );
 		const vector<double> b = ParameterAsVectorDouble ( parameters, 1 );
-		
+
 		double euclidean_distance = 0.0;
 		auto ait = a.begin();
 		auto bit = b.begin();
-		
+
 		while ( ait != a.end() && bit != b.end() ) {
-			
+
 			double dist = ( *ait++ ) - ( *bit++ );
 			euclidean_distance += dist * dist;
-			
+
 		}
 
 		euclidean_distance = euclidean_distance > 0.0 ? sqrt ( euclidean_distance ) : 0.0;
-		
-		SetResultAsDouble ( euclidean_distance, results );
-					
+
+		SetResult ( euclidean_distance, results );
+
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-				
+
 	return MapError ( error );
-				
+
 } // BE_Vector_EuclideanDistance
 
 
