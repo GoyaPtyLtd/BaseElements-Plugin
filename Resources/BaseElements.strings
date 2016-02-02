@@ -135,6 +135,7 @@
 
 "400" = "BE_SMTP_Server ( server { ; port ; username ; password } )";
 "401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
+"402" = "BE_SMTP_AddAttachment ( container )";
 
 
 "500" = "BE_Encrypt_AES ( key ; text )";

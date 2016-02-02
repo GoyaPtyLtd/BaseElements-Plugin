@@ -182,6 +182,7 @@ enum functions {
 	kBE_Values_TimesDuplicated = 354,
 	kBE_SMTP_Server = 400,
 	kBE_SMTP_Send = 401,
+	kBE_SMTP_AddAttachment = 402,
 	kBE_Encrypt_AES = 500,
 	kBE_Decrypt_AES = 501,
 	kBE_HMAC = 550,

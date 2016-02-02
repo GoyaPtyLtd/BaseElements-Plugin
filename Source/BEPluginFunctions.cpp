@@ -2028,7 +2028,7 @@ FMX_PROC(fmx::errcode) BE_SMTP_Server ( short /* funcId */, const fmx::ExprEnv& 
 	
 	try {
 		
-		StringAutoPtr host = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr host = ParameterAsUTF8String ( parameters );
 		StringAutoPtr port = ParameterAsUTF8String ( parameters, 1 );
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
@@ -2059,7 +2059,7 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 	
 	try {
 		
-		StringAutoPtr from = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr from = ParameterAsUTF8String ( parameters );
 		StringAutoPtr to = ParameterAsUTF8String ( parameters, 1 );
 		StringAutoPtr subject = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 3 );
@@ -2098,6 +2098,29 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 	return MapError ( error );
 	
 } // BE_SMTP_Send
+
+
+FMX_PROC(fmx::errcode) BE_SMTP_AddAttachment ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		//		StringAutoPtr host = ParameterAsUTF8String ( parameters );
+		
+		//		string do_nothing = "";
+		//		SetResult ( do_nothing, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_SMTP_AddAttachment
+
 
 
 #pragma mark -
