@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
  
- Copyright 2010-2015 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -98,36 +98,25 @@ errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
 } // TextConstantFunction
 
 
-// get parameters and set function results
-
-
 #pragma mark -
 #pragma mark SetResult
 #pragma mark -
 
-void SetResult ( const intmax_t number, Data& results )
+
+void SetResult ( const double number, Data& results )
 {
 	FixPtAutoPtr numeric_result;
-	numeric_result->AssignDouble ( (double)number );
+	numeric_result->AssignDouble ( number );
 	results.SetAsNumber ( *numeric_result );
 }
 
 
-// Cannot use SetResult as the compiler is not disignusing const double and const intmax_t
-
-void SetResultAsDouble ( const double number, Data& results )
+void SetResultAsDoubleAsText ( const double number, Data& results )
 {
-//	FixPtAutoPtr numeric_result;
-//	numeric_result->AssignDouble ( number );
-//	results.SetAsNumber ( *numeric_result );
-
-//	const std::string as_string = boost::lexical_cast<std::string>( number );
-	
 	// do this the c++ vay to avoid rounding errors
 	ostringstream stream;
 	stream << number;
-	StringAutoPtr result ( new string );
-	*result = stream.str();
+	StringAutoPtr result ( new string ( stream.str() ) );
 	SetResult ( result, results );
 }
 

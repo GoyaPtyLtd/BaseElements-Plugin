@@ -67,7 +67,7 @@ void BEJSON::json_path_query ( const StringAutoPtr json_path, fmx::Data& results
 				break;
 				
 			case JSON_REAL:
-				SetResultAsDouble ( json_real_value ( node ), results );
+				SetResultAsDoubleAsText ( json_real_value ( node ), results );
 				break;
 				
 			case JSON_TRUE:

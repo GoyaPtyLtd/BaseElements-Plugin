@@ -2,7 +2,7 @@
  BEPluginUtilities.h
  BaseElements Plug-In
 	
- Copyright 2010-2015 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -33,8 +33,8 @@ typedef std::auto_ptr<std::wstring> WStringAutoPtr;
 fmx::errcode TextConstantFunction ( std::wstring text, fmx::Data& results );
 fmx::errcode TextConstantFunction ( WStringAutoPtr text, fmx::Data& results );
 
-void SetResult ( const intmax_t number, fmx::Data& results );
-void SetResultAsDouble ( const double number, fmx::Data& results );
+void SetResult ( const double number, fmx::Data& results );
+void SetResultAsDoubleAsText ( const double number, fmx::Data& results );
 void SetResult ( const fmx::Text& text, fmx::Data& results );
 
 void SetResult ( const std::string& text, fmx::Data& results );
