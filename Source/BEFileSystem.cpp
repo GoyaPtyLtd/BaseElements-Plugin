@@ -2,7 +2,7 @@
  BEFileSystem.cpp
  BaseElements Plug-In
  
- Copyright 2011-2014 Goya. All rights reserved.
+ Copyright 2011-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -20,24 +20,22 @@ using namespace boost::filesystem;
 
 bool recursive_directory_copy ( const path & from, const path & to  ) {
 	
-//	if ( !exists ( from ) ) return false;
-	
 	path base = from;
 
 	if ( is_directory ( from ) ) {
 
 		copy_directory ( from, to );
 
-		directory_iterator end_itr; // default construction yields past-the-end
+		directory_iterator end_it; // default construction yields past-the-end
 		
-		for ( directory_iterator itr ( from ); itr != end_itr; ++itr ) {
+		for ( directory_iterator it ( from ); it != end_it; ++it ) {
 			
 			path relative = from;
 			
 			path target = to;
-			target /= itr->path().filename();
+			target /= it->path().filename();
 			
-			bool failed = recursive_directory_copy ( itr->path(), target );
+			bool failed = recursive_directory_copy ( it->path(), target );
 			if ( !failed ) {
 				return false;
 			}
@@ -65,37 +63,28 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 		
 		path directory_path = directory;
 		directory_path.make_preferred(); // force the correct path separator for the platform
-		bool directory_exists = exists ( directory_path );
 		
-		if ( directory_exists ) {
+		recursive_directory_iterator end_it; // default construction yields past-the-end
+		recursive_directory_iterator it ( directory_path );
 			
-			directory_iterator end_itr; // default construction yields past-the-end
-			directory_iterator itr ( directory_path );
-			
-			while ( itr != end_itr ) {
+		while ( it != end_it ) {
+				
+			if ( !((recurse == false) && (it.level() > 0)) ) {
 
-				bool is_folder = is_directory ( itr->status() );
-				
-				if ( is_folder && recurse ) {
-					list_of_files->append ( *list_files_in_directory ( itr->path(), file_type_wanted, recurse ) );
-				}
-				
+				bool is_folder = is_directory ( it->status() );
+					
 				if (
-					(!is_folder && (file_type_wanted == kBE_FileType_File)) ||
-					(is_folder && (file_type_wanted == kBE_FileType_Folder)) ||
-					(file_type_wanted == kBE_FileType_ALL)
+						(!is_folder && (file_type_wanted == kBE_FileType_File)) ||
+						(is_folder && (file_type_wanted == kBE_FileType_Folder)) ||
+						(file_type_wanted == kBE_FileType_ALL)
 					) {
-					
-					list_of_files->append ( itr->path().wstring() );
-					
+					list_of_files->append ( it->path().wstring() );
 				}
-				
-				++itr;
 				
 			}
-			
-		} else {
-			throw BEPlugin_Exception ( kNoSuchFileOrDirectoryError );
+				
+			++it;
+
 		}
 		
 	} catch ( filesystem_error& e ) {
