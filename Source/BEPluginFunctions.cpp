@@ -380,7 +380,7 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 		
 	try {
 		
-		path path = ParameterAsPath ( parameters, 0 );
+		path path = ParameterAsPath ( parameters );
 		
 		// should the text be appended to the file or replace any existing contents
 		
@@ -395,21 +395,9 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 		StringAutoPtr text_to_write = ParameterAsUTF8String ( parameters, 1 );
 		vector<char> out = ConvertTextEncoding ( (char *)text_to_write->c_str(), text_to_write->size(), g_text_encoding, UTF8 );
 		
-		try {
-			
-			boost::filesystem::ofstream output_file ( path, ios_base::out | mode );
-			output_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );			
-			
-			output_file.write ( &out[0], out.size() );
-			output_file.close();
+		error = write_to_file ( path, out, mode );
 
-		} catch ( filesystem_error& e ) {
-			g_last_error = e.code().value();
-		} catch ( exception& /* e */ ) {
-			g_last_error = errno; // unable to write to the file
-		}
-		
-		SetResult ( g_last_error, results );
+		SetResult ( error, results );
 		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -527,25 +515,8 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 		vector<char> field_contents = ParameterAsVectorChar ( parameters );
 		path destination = ParameterAsPath ( parameters, 1 );
 		
-		try {
-			
-			boost::filesystem::ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
-			output_file.exceptions ( boost::filesystem::ofstream::failbit | boost::filesystem::ofstream::badbit );
+		error = write_to_file ( destination, field_contents );
 
-			if ( !field_contents.empty() ) {
-				output_file.write ( &field_contents.front(), field_contents.size() );
-			} else {
-				output_file.flush();
-			}
-			
-			output_file.close();
-			
-		} catch ( boost::filesystem::ofstream::failure& /* e */ ) {
-			error = errno; // cannot write to the file
-		} catch ( boost::filesystem::filesystem_error& e ) {
-			error = e.code().value();
-		}
-		
 		//		SetResult ( "", results );
 		
 	} catch ( bad_alloc& /* e */ ) {

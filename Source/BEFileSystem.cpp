@@ -13,6 +13,8 @@
 #include "BEFileSystem.h"
 #include "BEPluginException.h"
 
+#include "boost/filesystem/fstream.hpp"
+
 
 using namespace std;
 using namespace boost::filesystem;
@@ -94,4 +96,34 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 	return list_of_files;
 	
 } // list_files_in_directory
+
+
+fmx::errcode write_to_file ( const path& new_file, const vector<char>& contents, const ios_base::openmode flags )
+{
+	fmx::errcode error = kNoError;
+	
+	try {
+		
+		const ios_base::openmode mode = ios_base::out | flags;
+		boost::filesystem::ofstream output_file ( new_file, mode );
+		output_file.exceptions ( boost::filesystem::ofstream::failbit | boost::filesystem::ofstream::badbit );
+		
+		if ( !contents.empty() ) {
+			output_file.write ( &contents.front(), contents.size() );
+		} else {
+			output_file.flush();
+		}
+		
+		output_file.close();
+		
+	} catch ( boost::filesystem::ofstream::failure& /* e */ ) {
+		error = errno; // cannot write to the file
+	} catch ( boost::filesystem::filesystem_error& e ) {
+		error = e.code().value();
+	}
+
+	return error;
+	
+} // write_new_file
+
 
