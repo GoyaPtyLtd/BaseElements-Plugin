@@ -65,7 +65,7 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 		directory_path.make_preferred(); // force the correct path separator for the platform
 		
 		recursive_directory_iterator end_it; // default construction yields past-the-end
-		recursive_directory_iterator it ( directory_path );
+		recursive_directory_iterator it ( directory_path, symlink_option::recurse );
 			
 		while ( it != end_it ) {
 				
