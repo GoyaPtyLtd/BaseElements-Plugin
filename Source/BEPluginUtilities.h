@@ -90,6 +90,7 @@ fmx::errcode NoError ( void );
 fmx::errcode MapError ( const fmx::errcode error = kNoError, const bool map = false );
 
 bool AllowUserAbort ( const fmx::ExprEnv& environment );
+std::string GetFileMakerTemporaryDirectory ( const fmx::ExprEnv& environment );
 
 // extract localised strings from the plug-in resources
 

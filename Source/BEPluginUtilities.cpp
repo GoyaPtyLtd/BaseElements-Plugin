@@ -903,7 +903,29 @@ bool AllowUserAbort ( const ExprEnv& environment )
 	bool allow_abort = reply->GetAsBoolean();
 
 	return allow_abort;
-}
+
+} // AllowUserAbort
+
+
+std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
+{
+	TextAutoPtr command;
+	command->Assign ( "Get ( TemporaryPath )" );
+	
+	DataAutoPtr reply;
+	
+#ifdef __clang_analyzer__
+	reply->Clear(); // defeat: Returning null reference (within a call to 'operator*')
+#endif
+	
+	environment.Evaluate ( *command, *reply );
+	
+	const std::string temporary_path = TextAsUTF8String ( reply->GetAsText() );
+	
+	return temporary_path;
+
+} // GetFileMakerTemporaryDirectory
+
 
 
 /*
