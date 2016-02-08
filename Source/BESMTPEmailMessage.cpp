@@ -2,7 +2,7 @@
  BESMTPEmailMessage.cpp
  BaseElements Plug-In
  
- Copyright 2014-2015 Goya. All rights reserved.
+ Copyright 2014-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -121,14 +121,13 @@ void BESMTPEmailMessage::add_attachments ( void )
 {
 		
 	for ( size_t i = 0 ; i < attachments.size() ; i++ ) {
-		boost::filesystem::path attachment = attachments.at ( i );
-		add_attachment ( attachment );
+		add_attachment ( attachments.at ( i ) );
 	}
 
 }
 
 
-void BESMTPEmailMessage::set_attachments ( const BEValueList<std::wstring>& attachment_list )
+void BESMTPEmailMessage::set_attachments ( const BEValueList<boost::filesystem::path>& attachment_list )
 {
 	attachments = attachment_list;
 }

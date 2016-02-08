@@ -2,7 +2,7 @@
  BESMTPEmailMessage.h
  BaseElements Plug-In
  
- Copyright 2014-2015 Goya. All rights reserved.
+ Copyright 2014-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -53,7 +53,7 @@ public:
 	void set_bcc_addresses ( const std::string& email_addresses );
 	void set_reply_to ( const std::string& reply_to_address );
 	void set_html_alternative ( const std::string& html_part );
-	void set_attachments ( const BEValueList<std::wstring>& attachment_list );
+	void set_attachments ( const BEValueList<boost::filesystem::path>& attachment_list );
 
 	std::string as_string ( );
 	
@@ -64,7 +64,7 @@ protected:
 	mimetic::MimeEntity * text;
 	mimetic::MimeEntity * html;
 
-	BEValueList<std::wstring> attachments;
+	BEValueList<boost::filesystem::path> attachments;
 	
 	std::auto_ptr< BEValueList<std::string> > get_address_list ( const std::string& addresses );
 	void add_attachment ( const boost::filesystem::path path_to_attachment );
