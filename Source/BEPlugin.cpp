@@ -80,7 +80,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	SetTextEncoding ( );
 	
 	InitialiseForPlatform ( );
-
+	
+	
 	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
 	g_be_plugin = new BEFileMakerPlugin ( plugin_id );
 	g_be_plugin->set_fmx_application ( plugin_call->parm1 );
@@ -227,7 +228,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Server, BE_SMTP_Server, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, 4, 9 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_SMTP_AddAttachment, BE_SMTP_AddAttachment, 1 );
+	g_be_plugin->RegisterFunction ( kBE_SMTP_AddAttachment, BE_SMTP_AddAttachment, 0, 1 );
 
 	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Xero_GenerateKeys, BE_Xero_GenerateKeys, 1, 7 );

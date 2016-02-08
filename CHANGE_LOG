@@ -2,17 +2,22 @@
 Version 3.3b1
 ########################################################################
 
-February 2, 2016
+February 9, 2016
 
 
 New Functions
 
 BE_Gzip
 BE_Pause
+BE_SMTP_AddAttachment
 BE_UnGzip
 
 
 Changes
+
+BE_ExportFieldContents: recurively create any directories needed
+BE_SMTP_Send: can send files/images in container fields as attachments
+BE_WriteTextToFile: recurively create any directories needed
 
 
 ########################################################################

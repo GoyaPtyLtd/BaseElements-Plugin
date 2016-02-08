@@ -54,6 +54,7 @@
 #include "BEJavaScript.h"
 #include "Images/BEJPEG.h"
 #include "BERegularExpression.h"
+#include "BESMTPContainerAttachments.h"
 
 #include <numeric> // for inner_product
 #include <list>
@@ -101,6 +102,7 @@ string g_text_encoding;
 string g_json_error_description;
 BEOAuth * g_oauth;
 struct host_details g_smtp_host;
+BESMTPContainerAttachments g_smtp_attachments;
 
 extern int g_http_response_code;
 extern string g_http_response_headers;
@@ -1993,6 +1995,8 @@ FMX_PROC(errcode) BE_FTP_Delete ( short /* funcId */, const ExprEnv& /* environm
 #pragma mark -
 
 
+#pragma mark BE_SMTP_Server
+
 FMX_PROC(fmx::errcode) BE_SMTP_Server ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
 {
 	errcode error = NoError();
@@ -2023,6 +2027,7 @@ FMX_PROC(fmx::errcode) BE_SMTP_Server ( short /* funcId */, const fmx::ExprEnv& 
 } // BE_Email_SMTP_Server
 
 
+#pragma mark BE_SMTP_Send
 
 FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
 {
@@ -2049,8 +2054,15 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 		StringAutoPtr html = ParameterAsUTF8String ( parameters, 7 );
 		message->set_html_alternative ( *html );
 		
-		WStringAutoPtr attachments = ParameterAsWideString ( parameters, 8 );
-		message->set_attachments ( *attachments );
+		const WStringAutoPtr attachments = ParameterAsWideString ( parameters, 8 );
+		vector<path> values;
+		if ( !attachments->empty() ) {
+			boost::split ( values, *attachments, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
+		}
+		BEValueList<path> attachment_list = BEValueList<path> ( values );
+		BEValueList<path> container_attachments = g_smtp_attachments.get_file_list();
+		attachment_list.append ( container_attachments );
+		message->set_attachments ( attachment_list );
 
 		auto_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
 		error = smtp->send ( message.get() );
@@ -2066,10 +2078,14 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 		error = kErrorUnknown;
 	}
 	
+	g_smtp_attachments.clear(); // clear out and clean up any "container" attachments
+	
 	return MapError ( error );
 	
 } // BE_SMTP_Send
 
+
+#pragma mark BE_SMTP_AddAttachment
 
 FMX_PROC(fmx::errcode) BE_SMTP_AddAttachment ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
 {
@@ -2077,7 +2093,16 @@ FMX_PROC(fmx::errcode) BE_SMTP_AddAttachment ( short /* funcId */, const fmx::Ex
 	
 	try {
 		
-		//		StringAutoPtr host = ParameterAsUTF8String ( parameters );
+		if ( parameters.Size() == 1 ) {
+			
+			vector<char> contents = ParameterAsVectorChar ( parameters );
+			StringAutoPtr file_name = ParameterFileName ( parameters );
+
+			g_smtp_attachments.add ( *file_name, contents );
+
+		} else { // destroy the temporary files and clear out the list
+			g_smtp_attachments.clear();
+		}
 		
 		//		string do_nothing = "";
 		//		SetResult ( do_nothing, results );
