@@ -42,6 +42,8 @@ public:
 	bool not_empty ( );
 	size_t size ( ) const;
 	
+	void clear ( void );
+	
 	void append ( BEValueList& to_append );
 	void append ( const T& to_append );
 	
@@ -81,8 +83,7 @@ typedef std::auto_ptr<BEValueList<std::wstring> > BEValueListWideStringAutoPtr;
 template <typename T>
 BEValueList<T>::BEValueList ( void )
 {
-	values.clear();
-	case_sensitive = true;
+	clear();
 }
 
 
@@ -134,6 +135,14 @@ template <typename T>
 size_t BEValueList<T>::size ( ) const
 {
 	return values.size();
+}
+
+
+template <typename T>
+void BEValueList<T>::clear ( void )
+{
+	values.clear();
+	case_sensitive = true;
 }
 
 
