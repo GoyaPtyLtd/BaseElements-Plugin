@@ -920,7 +920,10 @@ std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
 	
 	environment.Evaluate ( *command, *reply );
 	
-	const std::string temporary_path = TextAsUTF8String ( reply->GetAsText() );
+	// we want the filesystem path, not the "filemaker" path
+	std::string temporary_path = TextAsUTF8String ( reply->GetAsText() );
+	auto root = temporary_path.find ( "/", 1 );
+	temporary_path.erase ( 0, root );
 	
 	return temporary_path;
 
