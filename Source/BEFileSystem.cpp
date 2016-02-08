@@ -104,6 +104,10 @@ fmx::errcode write_to_file ( const path& new_file, const vector<char>& contents,
 	
 	try {
 		
+		if ( ! exists ( new_file.parent_path() ) ) {
+			boost::filesystem::create_directories ( new_file.parent_path() );
+		}
+		
 		const ios_base::openmode mode = ios_base::out | flags;
 		boost::filesystem::ofstream output_file ( new_file, mode );
 		output_file.exceptions ( boost::filesystem::ofstream::failbit | boost::filesystem::ofstream::badbit );
