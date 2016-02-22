@@ -2,7 +2,7 @@
  BEXSLT.cpp
  BaseElements Plug-In
  
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -116,11 +116,15 @@ TextAutoPtr ReportXSLTError ( const xmlChar * url )
 	TextAutoPtr	result_text;
 	result_text->AppendText ( *g_last_xslt_error_text );
 
-	string format = "no result for %s\n";
-	string message = boost::str ( boost::format ( format ) %url );
-	TextAutoPtr no_result_for;
-	no_result_for->Assign ( message.c_str(), Text::kEncoding_UTF8 );
-	result_text->AppendText ( *no_result_for );
+	if ( xmlStrlen ( url ) > 0 ) {
+		
+		string format = "no result for %s\n";
+		string message = boost::str ( boost::format ( format ) %url );
+		TextAutoPtr no_result_for;
+		no_result_for->Assign ( message.c_str(), Text::kEncoding_UTF8 );
+		result_text->AppendText ( *no_result_for );
+
+	}
 	
 	g_last_xslt_error_text->Assign ( "" );
 	
@@ -617,9 +621,16 @@ TextAutoPtr ApplyXPathExpression ( StringAutoPtr xml, StringAutoPtr xpath, Strin
 		}
 		
 		xmlFreeDoc ( doc );
-		
+
 	}
 	
+	xmlErrorPtr xml_error = xmlGetLastError();
+	
+	if ( xml_error != NULL && g_last_xslt_error_text->GetSize() == 0 ) {
+		g_last_xslt_error_text->Assign ( xml_error->message );
+		result->AppendText ( *ReportXSLTError ( NULL ) );
+	}
+
 	xmlCleanupParser();
 	
 	return result;
