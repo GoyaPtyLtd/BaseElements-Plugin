@@ -414,6 +414,8 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 } // BE_WriteTextToFile
 
 
+#pragma mark BE_StripInvalidUTF16CharactersFromXMLFile
+
 /*
  filemaker can create DDRs which contain utf-16 characters that are not
  valid in an XML document. reads the DDR and writes out a new one, skipping
@@ -463,6 +465,7 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 			if ( (*utf16 == 0x9) ||
 				(*utf16 == 0xA) ||
 				(*utf16 == 0xD) ||
+				(*utf16 == 0x1A) || // ascii 26 - causes problems in pcdata
 				((*utf16 >= 0x20) && (*utf16 <= 0xD7FF)) ||
 				((*utf16 >= 0xE000) && (*utf16 <= 0xFFFE)) ) {
 				

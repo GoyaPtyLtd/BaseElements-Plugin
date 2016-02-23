@@ -17,6 +17,7 @@ Changes
 
 BE_ExportFieldContents: recurively create any directories needed
 BE_SMTP_Send: can send files/images in container fields as attachments
+BE_StripInvalidUTF16CharactersFromXMLFile: do not show in calculation dialogs
 BE_Values_Sort: add parameters to allow ascending/descending and numeric sort order
 BE_WriteTextToFile: recurively create any directories needed
 
