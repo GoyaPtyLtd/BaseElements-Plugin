@@ -2,7 +2,7 @@
  BEValueList.h
  BaseElements Plug-In
  
- Copyright 2013-2015 Goya. All rights reserved.
+ Copyright 2013-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -25,6 +25,35 @@
 #include <map>
 
 #include <boost/algorithm/string.hpp>
+
+
+//template <typename T>
+//bool numeric_sort ( const T i, const T j );
+
+
+template<typename T>
+inline long double convert_to_double ( const T& s )
+{
+	std::istringstream i ( s );
+	long double x;
+	if ( !(i >> x) ) {
+		x = 0;
+	}
+	
+	return x;
+}
+
+
+template<typename T>
+bool numeric_sort ( const T i, const T j )
+{
+	const long double ii = convert_to_double ( i );
+	const long double jj = convert_to_double ( j );
+	
+	return ( ii < jj );
+}
+
+
 
 
 template <typename T>
@@ -54,7 +83,7 @@ public:
 	T filter_out ( BEValueList& filter_out );
 	const bool contains_duplicates ( );
 	BEValueList<T> times_duplicated ( const long numberOfDuplicates ) const;
-	T sort ( ) const;
+	T sort ( const bool ascending = true, const bool numeric = false ) const;
 	void remove_prefix ( const T& prefix );
 	
 	std::vector<T> get_values ( void ) const { return values; }
@@ -70,7 +99,7 @@ protected:
 	bool case_sensitive;
 	
 	bool inserted ( T value, typename std::set<T>& values_wanted );
-
+	
 };
 
 
@@ -284,11 +313,28 @@ BEValueList<T> BEValueList<T>::times_duplicated ( const long numberOfDuplicates 
 
 
 template <typename T>
-T BEValueList<T>::sort ( ) const
+T BEValueList<T>::sort ( const bool ascending, const bool numeric ) const
 {
 
 	std::vector<T> sorted ( values.begin(), values.end() );
-	std::sort ( sorted.begin(), sorted.end() );
+	
+	if ( ! numeric ) {
+		
+		if ( ascending ) {
+			std::sort ( sorted.begin(), sorted.end() );
+		} else {
+			std::sort ( sorted.rbegin(), sorted.rend() );
+		}
+
+	} else {
+		
+		if ( ascending ) {
+			std::sort ( sorted.begin(), sorted.end(), numeric_sort<T> );
+		} else {
+			std::sort ( sorted.rbegin(), sorted.rend(), numeric_sort<T> );
+		}
+
+	}
 
 	std::stringstream text;
 

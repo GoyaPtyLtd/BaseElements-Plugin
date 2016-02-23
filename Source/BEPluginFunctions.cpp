@@ -2357,10 +2357,12 @@ FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environ
 	
 	try {
 		
-		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr value_list = ParameterAsUTF8String ( parameters );
+		const bool ascending = ParameterAsBoolean ( parameters, 1, true );
+		const long type = ParameterAsLong ( parameters, 2, kBE_DataType_String );
 		
 		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
-		string sorted_values = values->sort();
+		string sorted_values = values->sort ( ascending, type );
 		
 		SetResult ( sorted_values, results );
 		
