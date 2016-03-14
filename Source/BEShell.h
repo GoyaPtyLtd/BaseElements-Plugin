@@ -2,7 +2,7 @@
  BEShell.h
  BaseElements Plug-In
  
- Copyright 2011-2012 Goya. All rights reserved.
+ Copyright 2011-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -17,7 +17,7 @@
 #include "BEPluginUtilities.h"
 
 
-short ExecuteSystemCommand ( const std::string command, std::string& result, const long command_timeout );
+short ExecuteSystemCommand ( const std::string command, std::string& result, const long command_timeout = kBE_Never );
 
 
 #endif // BESHELL_H
