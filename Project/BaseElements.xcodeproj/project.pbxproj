@@ -24,6 +24,7 @@
 		4D0E29711B3A6C1000A35298 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E29691B3A6C1000A35298 /* libturbojpeg.a */; };
 		4D145DDD1C44BCAF00C9FF3E /* libgcrypt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D145DDB1C44BCAF00C9FF3E /* libgcrypt.a */; };
 		4D145DDE1C44BCAF00C9FF3E /* libgpg-error.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D145DDC1C44BCAF00C9FF3E /* libgpg-error.a */; };
+		4D35A7441C8D29CB00D6A353 /* BEFMS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D35A7421C8D29CB00D6A353 /* BEFMS.cpp */; };
 		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
 		4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06701C23B389006899FE /* libiconv.tbd */; };
 		4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06761C23B3A9006899FE /* libcharset.tbd */; };
@@ -114,6 +115,8 @@
 		4D2C4EAA1B7C774D00760408 /* BERegularExpression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BERegularExpression.h; path = ../Source/BERegularExpression.h; sourceTree = "<group>"; };
 		4D35117A17E1314A00AEDF01 /* BEFileTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileTextReader.cpp; path = ../Source/BEFileTextReader.cpp; sourceTree = "<group>"; };
 		4D35117B17E1314A00AEDF01 /* BEFileTextReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileTextReader.h; path = ../Source/BEFileTextReader.h; sourceTree = "<group>"; };
+		4D35A7421C8D29CB00D6A353 /* BEFMS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFMS.cpp; path = ../Source/BEFMS.cpp; sourceTree = "<group>"; };
+		4D35A7431C8D29CB00D6A353 /* BEFMS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFMS.h; path = ../Source/BEFMS.h; sourceTree = "<group>"; };
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B21339CF080084730B /* BECurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECurl.h; path = ../Source/BECurl.h; sourceTree = SOURCE_ROOT; };
 		4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEOpenSSLAES.cpp; sourceTree = "<group>"; };
@@ -384,6 +387,8 @@
 				4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */,
 				4D8D8E151B167A2C005FEBD3 /* BEQuadChar.h */,
 				4D2C4EAA1B7C774D00760408 /* BERegularExpression.h */,
+				4D35A7421C8D29CB00D6A353 /* BEFMS.cpp */,
+				4D35A7431C8D29CB00D6A353 /* BEFMS.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -526,6 +531,7 @@
 				4DCD494F1A195B0C00EFCF7F /* BEWStringVector.cpp in Sources */,
 				4DCD49501A195B0C00EFCF7F /* BECurl.cpp in Sources */,
 				4DCD49511A195B0C00EFCF7F /* BEMessageDigest.cpp in Sources */,
+				4D35A7441C8D29CB00D6A353 /* BEFMS.cpp in Sources */,
 				4DCD49521A195B0C00EFCF7F /* BEFileSystem.cpp in Sources */,
 				4DCD49531A195B0C00EFCF7F /* BEShell.cpp in Sources */,
 				4DCD49541A195B0C00EFCF7F /* BEZlib.cpp in Sources */,
