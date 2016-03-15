@@ -2197,6 +2197,7 @@ FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /
 		
 		StringAutoPtr username = ParameterAsUTF8String ( parameters );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 1 );
+		const bool show_statistics = ParameterAsBoolean ( parameters, 2, false );
 
 		string reply = "";
 		auto_ptr<BEFMS> fms ( new BEFMS ( *username, *password ) );
@@ -2204,7 +2205,7 @@ FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /
 		switch ( function_id ) {
 			
 			case kBE_FMS_List_Files:
-				reply = fms->list_files();
+				reply = fms->list_files ( show_statistics );
 				break;
 				
 			case kBE_FMS_Pause_Files:
@@ -2220,7 +2221,7 @@ FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /
 				break;
 				
 			case kBE_FMS_List_Clients:
-				reply = fms->list_clients();
+				reply = fms->list_clients ( show_statistics );
 				break;
 				
 			default:

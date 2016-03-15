@@ -139,11 +139,11 @@
 
 "450" = "BE_FMS_Upload_Database ( container ; username ; password {; replaceExisting ; destination } )";
 "451" = "BE_FMS_Download_Database ( path ; username ; password {; stop } )";
-"452" = "BE_FMS_List_Files ( username ; password )";
+"452" = "BE_FMS_List_Files ( username ; password {; showStatistics } )";
 "453" = "BE_FMS_Pause_Files ( username ; password {; files } )";
 "454" = "BE_FMS_Run_Schedule ( username ; password ; scheduleNumber )";
 "455" = "BE_FMS_List_Schedules ( username ; password )";
-"456" = "BE_FMS_List_Clients ( username ; password )";
+"456" = "BE_FMS_List_Clients ( username ; password {; showStatistics } )";
 
 
 

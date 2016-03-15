@@ -46,9 +46,9 @@ const std::string BEFMS::download_database ( const std::vector<char> database, c
 }
 
 
-const std::string BEFMS::list_files()
+const std::string BEFMS::list_files ( const bool show_statistics )
 {
-	return run_command ( "list files" );
+	return run_command ( "list files", show_statistics );
 }
 
 
@@ -73,9 +73,9 @@ const std::string BEFMS::list_schedules()
 }
 
 
-const std::string BEFMS::list_clients()
+const std::string BEFMS::list_clients ( const bool show_statistics )
 {
-	return run_command ( "list clients" );
+	return run_command ( "list clients", show_statistics );
 }
 
 
@@ -84,9 +84,10 @@ const std::string BEFMS::list_clients()
 #pragma mark -
 
 
-const std::string BEFMS::run_command ( const std::string command )
+const std::string BEFMS::run_command ( const std::string command, const bool show_statistics )
 {
-	const std::string fms = std::string ( FMSADMIN_PATH ) + "fmsadmin -u " + username + " -p " + password + " " + command;
+	const std::string s_flag = show_statistics ? " -s" : "";
+	const std::string fms = std::string ( FMSADMIN_PATH ) + "fmsadmin -u " + username + " -p " + password + s_flag + " " + command;
 
 	std::string result;
 	short return_code = ExecuteSystemCommand ( fms, result );

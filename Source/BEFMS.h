@@ -30,11 +30,11 @@ public:
 	const std::string upload_database ( const std::vector<char> database, const bool replace_existing, const std::string destination );
 	const std::string download_database ( const std::vector<char> database, const bool stop );
 
-	const std::string list_files();
+	const std::string list_files ( const bool show_statistics = false );
 	const std::string pause_files ( const std::string files = "" );
 	const std::string run_schedule ( const long schedule_number );
 	const std::string list_schedules();
-	const std::string list_clients();
+	const std::string list_clients ( const bool show_statistics = false );
 				
 	
 protected:
@@ -42,7 +42,7 @@ protected:
 	std::string username;
 	std::string password;
 	
-	const std::string run_command ( const std::string command );
+	const std::string run_command ( const std::string command, const bool show_statistics = false );
 	
 };
 
