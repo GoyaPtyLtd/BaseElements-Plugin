@@ -190,6 +190,7 @@ enum functions {
 	kBE_FMS_Run_Schedule = 454,
 	kBE_FMS_List_Schedules = 455,
 	kBE_FMS_List_Clients = 456,
+	kBE_FMS_Resume_Files = 457,
 	kBE_Encrypt_AES = 500,
 	kBE_Decrypt_AES = 501,
 	kBE_HMAC = 550,

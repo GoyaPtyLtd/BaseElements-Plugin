@@ -34,18 +34,6 @@ BEFMS::BEFMS ( const std::string _username, const std::string _password )
 }
 
 
-const std::string BEFMS::upload_database ( const std::vector<char> database, const bool replace_existing, const std::string destination )
-{
-	return "not implemented";
-}
-
-
-const std::string BEFMS::download_database ( const std::vector<char> database, const bool stop )
-{
-	return "not implemented";
-}
-
-
 const std::string BEFMS::list_files ( const bool show_statistics )
 {
 	return run_command ( "list files", show_statistics );
@@ -54,7 +42,19 @@ const std::string BEFMS::list_files ( const bool show_statistics )
 
 const std::string BEFMS::pause_files ( const std::string files )
 {
-	return run_command ( "pause files " + files );
+	return run_command ( "pause " + files );
+}
+
+
+const std::string BEFMS::resume_files ( const std::string files )
+{
+	return run_command ( "resume " + files );
+}
+
+
+const std::string BEFMS::close_files ( const std::string files )
+{
+	return run_command ( "close " + files );
 }
 
 
@@ -91,9 +91,9 @@ const std::string BEFMS::run_command ( const std::string command, const bool sho
 
 	std::string result;
 	short return_code = ExecuteSystemCommand ( fms, result );
-//	if ( kNoError != return_code ) {
-//		throw BEPlugin_Exception ( return_code );
-//	}
+	if ( kNoError != return_code ) {
+		throw BEPlugin_Exception ( return_code );
+	}
 
 	return result;
 }

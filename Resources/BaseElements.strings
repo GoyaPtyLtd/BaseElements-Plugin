@@ -137,13 +137,14 @@
 "401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
 "402" = "BE_SMTP_AddAttachment ( container )";
 
-"450" = "BE_FMS_Upload_Database ( container ; username ; password {; replaceExisting ; destination } )";
-"451" = "BE_FMS_Download_Database ( path ; username ; password {; stop } )";
+"450" = "BE_FMS_Upload_Database ( container ; path )";
+"451" = "BE_FMS_Download_Database ( path )";
 "452" = "BE_FMS_List_Files ( username ; password {; showStatistics } )";
 "453" = "BE_FMS_Pause_Files ( username ; password {; files } )";
 "454" = "BE_FMS_Run_Schedule ( username ; password ; scheduleNumber )";
 "455" = "BE_FMS_List_Schedules ( username ; password )";
 "456" = "BE_FMS_List_Clients ( username ; password {; showStatistics } )";
+"457" = "BE_FMS_Resume_Files ( username ; password {; files } )";
 
 
 

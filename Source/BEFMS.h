@@ -27,11 +27,10 @@ public:
 	BEFMS ( const std::string _username, const std::string _password );
 
 	
-	const std::string upload_database ( const std::vector<char> database, const bool replace_existing, const std::string destination );
-	const std::string download_database ( const std::vector<char> database, const bool stop );
-
 	const std::string list_files ( const bool show_statistics = false );
 	const std::string pause_files ( const std::string files = "" );
+	const std::string resume_files ( const std::string files = "" );
+	const std::string close_files ( const std::string files = "" );
 	const std::string run_schedule ( const long schedule_number );
 	const std::string list_schedules();
 	const std::string list_clients ( const bool show_statistics = false );

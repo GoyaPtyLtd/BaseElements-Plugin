@@ -2128,65 +2128,6 @@ FMX_PROC(fmx::errcode) BE_SMTP_AddAttachment ( short /* funcId */, const fmx::Ex
 #pragma mark -
 
 
-#pragma mark BE_FMS_Upload_Database
-
-FMX_PROC(fmx::errcode) BE_FMS_Upload_Database ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
-{
-	errcode error = NoError();
-	
-	try {
-		
-		const vector<char> database = ParameterAsVectorChar ( parameters );
-		StringAutoPtr username = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
-		const bool replace_existing = ParameterAsBoolean ( parameters, 3, false );
-		StringAutoPtr destination = ParameterAsUTF8String ( parameters, 4, "" );
-
-		auto_ptr<BEFMS> fms ( new BEFMS ( *username, *password ) );
-		const std::string reply = fms->upload_database ( database, replace_existing, *destination );
-
-		SetResult ( reply, results );
-		
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-	
-	return MapError ( error );
-	
-} // BE_FMS_Upload_Database
-
-
-#pragma mark BE_FMS_Download_Database
-
-FMX_PROC(fmx::errcode) BE_FMS_Download_Database ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
-{
-	errcode error = NoError();
-	
-	try {
-		
-		const vector<char> database = ParameterAsVectorChar ( parameters );
-		StringAutoPtr username = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
-		const bool stop = ParameterAsBoolean ( parameters, 3, false );
-
-		auto_ptr<BEFMS> fms ( new BEFMS ( *username, *password ) );
-		const std::string reply = fms->download_database ( database, stop );
-		
-		SetResult ( reply, results );
-		
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-	
-	return MapError ( error );
-	
-} // BE_FMS_Download_Database
-
-
 #pragma mark BE_FMS_Command
 
 FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
@@ -2222,6 +2163,10 @@ FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /
 				
 			case kBE_FMS_List_Clients:
 				reply = fms->list_clients ( show_statistics );
+				break;
+				
+			case kBE_FMS_Resume_Files:
+				reply = fms->resume_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
 				break;
 				
 			default:
