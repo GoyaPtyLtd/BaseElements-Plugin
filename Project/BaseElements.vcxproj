@@ -140,7 +140,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;IPHLPAPI.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -178,7 +178,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmt.lib;IPHLPAPI.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -221,7 +221,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;IPHLPAPI.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -272,7 +272,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FMWrapper.lib;libcmtd.lib;IPHLPAPI.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -281,7 +281,7 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrtd.lib;msvcrt.lib;libcmt.lib;libcpmt.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrt.lib;msvcrtd.lib;libcmt.lib;libcpmt.lib</IgnoreSpecificDefaultLibraries>
       <AssemblyLinkResource>
       </AssemblyLinkResource>
       <DelayLoadDLLs>
