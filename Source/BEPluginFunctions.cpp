@@ -1682,8 +1682,9 @@ FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* envir
 } // BE_SaveURLToFile
 
 
+#pragma mark BE_HTTP_POST_PUT_PATCH
 
-FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+FMX_PROC(errcode) BE_HTTP_POST_PUT_PATCH ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
 	errcode error = NoError();
 	
@@ -1702,6 +1703,13 @@ FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environm
 			response =  curl.perform_action ( );
 		
 		
+		} else if ( funcId == kBE_HTTP_PATCH ) {
+			
+			StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
+			BECurl curl ( *url, kBE_HTTP_METHOD_PATCH, "", *username, *password, *post_parameters );
+			response =  curl.perform_action ( );
+			
+			
 		} else if ( funcId == kBE_HTTP_PUT_File ) {
 
 			path filename = ParameterAsPath ( parameters, 1 );
@@ -1730,7 +1738,7 @@ FMX_PROC(errcode) BE_HTTP_POST_OR_PUT ( short funcId, const ExprEnv& /* environm
 	
 	return MapError ( error );
 	
-} // BE_HTTP_POST
+} // BE_HTTP_POST_PUT_PATCH
 
 
 

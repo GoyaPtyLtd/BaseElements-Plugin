@@ -384,6 +384,10 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
+	
+	if ( http_method == kBE_HTTP_METHOD_PATCH ) {
+		easy_setopt ( CURLOPT_CUSTOMREQUEST, HTTP_METHOD_PATCH );
+	}
 
 	// allow the user to override anything we set
 	set_options ( g_curl_options );
@@ -924,6 +928,10 @@ string BECurl::http_method_as_string ( )
 
 		case kBE_HTTP_METHOD_PUT:
 			method = HTTP_METHOD_PUT;
+			break;
+			
+		case kBE_HTTP_METHOD_PATCH:
+			method = HTTP_METHOD_PATCH;
 			break;
 			
 		default:
