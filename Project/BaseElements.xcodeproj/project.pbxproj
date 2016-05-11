@@ -611,7 +611,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 14 Advanced/Extensions/";
+				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 15 Advanced/Extensions/";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
