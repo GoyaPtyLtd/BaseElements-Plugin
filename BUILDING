@@ -254,12 +254,12 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.3*
+Poco 1.7.3
 =======================================================================
 
-Download the develop branch from
+Download the source from
 
-	https://github.com/pocoproject/poco
+	http://pocoproject.org/download/index.html
 
 Then, after extracting the archive
 
@@ -816,12 +816,12 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.3*
+Poco 1.7.3
 =======================================================================
 
-Download poco from
+Download the source from
 
-	https://github.com/pocoproject/poco
+	http://pocoproject.org/download/index.html
 
 Then, after extracting the archive set
 
