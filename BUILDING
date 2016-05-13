@@ -263,7 +263,7 @@ Download the source from
 
 Then, after extracting the archive
 
-	cd poco-develop
+	cd poco-1.7.3-all
 
 	export MACOSX_DEPLOYMENT_TARGET=10.7
 
