@@ -106,7 +106,7 @@ protected:
 
 typedef std::auto_ptr<BEValueList<std::string> > BEValueListStringAutoPtr;
 typedef std::auto_ptr<BEValueList<std::wstring> > BEValueListWideStringAutoPtr;
-
+typedef boost::shared_ptr< BEValueList<std::string> > BEValueListStringSharedPtr;
 
 
 template <typename T>
