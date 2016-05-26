@@ -104,6 +104,7 @@ string g_json_error_description;
 BEOAuth * g_oauth;
 struct host_details g_smtp_host;
 BESMTPContainerAttachments g_smtp_attachments;
+vector<BEValueListStringSharedPtr> arrays;
 
 extern int g_http_response_code;
 extern string g_http_response_headers;
@@ -1176,7 +1177,95 @@ FMX_PROC(fmx::errcode) BE_EvaluateJavaScript ( short /* funcId */, const fmx::Ex
 	
 	return MapError ( error );
 	
-} // BE_SetPreference
+} // BE_EvaluateJavaScript
+
+
+#pragma mark -
+#pragma mark Arrays
+#pragma mark -
+
+
+FMX_PROC(fmx::errcode) BE_ArraySetFromValueList ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr value_list = ParameterAsUTF8String ( parameters );
+		BEValueListStringSharedPtr array ( new BEValueList<string> ( *value_list ) );
+		
+		arrays.push_back ( array );
+		const size_t size = arrays.size();
+		
+		SetResult ( size, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_ArraySetFromList
+
+
+FMX_PROC(fmx::errcode) BE_ArrayGetSize ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		const long array_id = ParameterAsLong ( parameters ) - 1;
+		
+		try {
+
+			const size_t array_size = ( arrays.at ( array_id ) )->size();
+			SetResult ( array_size, results );
+			
+		} catch ( out_of_range& /* e */ ) {
+			; // we not returnin' anyting
+		}
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_ArrayGetSize
+
+
+FMX_PROC(fmx::errcode) BE_ArrayGetValue ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		const long array_id = ParameterAsLong ( parameters ) - 1;
+		const long value_id = ParameterAsLong ( parameters, 1 ) - 1;
+		
+		string value;
+
+		try {
+			value = ( arrays.at ( array_id ) )->at ( value_id );
+		} catch ( out_of_range& /* e */ ) {
+			; // we already empty string
+		}
+
+		SetResult ( value, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_ArrayGetValue
 
 
 #pragma mark -

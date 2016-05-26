@@ -79,6 +79,11 @@ FMX_PROC(fmx::errcode) BE_JSON_Encode ( short /* funcId */, const fmx::ExprEnv& 
 FMX_PROC(fmx::errcode) BE_EvaluateJavaScript ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 
+FMX_PROC(fmx::errcode) BE_ArraySetFromValueList ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ArrayGetSize ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+FMX_PROC(fmx::errcode) BE_ArrayGetValue ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
+
+
 FMX_PROC(fmx::errcode) BE_SetPreference ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_GetPreference ( short /*funcId*/, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 

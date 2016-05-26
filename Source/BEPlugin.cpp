@@ -247,6 +247,12 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, 1 );
 	
+	
+	g_be_plugin->RegisterFunction ( kBE_ArraySetFromValueList, BE_ArraySetFromValueList, 1 );
+	g_be_plugin->RegisterFunction ( kBE_ArrayGetSize, BE_ArrayGetSize, 1 );
+	g_be_plugin->RegisterFunction ( kBE_ArrayGetValue, BE_ArrayGetValue, 2 );
+	
+
 	g_be_plugin->RegisterFunction ( kBE_ConvertContainer, BE_ConvertContainer, 1, 4 );
 	
 	g_be_plugin->RegisterFunction ( kBE_XOR, BE_XOR, 2, 2 );

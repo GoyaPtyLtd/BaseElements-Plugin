@@ -156,6 +156,12 @@
 
 "600" = "BE_EvaluateJavaScript ( javaScript )";
 
+
+"650" = "BE_ArraySetFromValueList ( valueList )";
+"651" = "BE_ArrayGetSize ( array )";
+"652" = "BE_ArrayGetValue ( array ; valueNumber )";
+
+
 "700" = "BE_ConvertContainer ( field {; type ; width ; height } )";
 
 "800" = "BE_XOR ( text ; xorWith )";
