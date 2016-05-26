@@ -84,7 +84,7 @@ static void XSLTErrorFunction ( void *context ATTRIBUTE_UNUSED, const char *mess
 	try {
 		xmlChar buffer[size]; // individual errors are typically < 1k
 		
-		int error = xmlStrVPrintf ( buffer, size, (const xmlChar*)message, parameters ); // -1 on error
+		int error = xmlStrVPrintf ( buffer, size, message, parameters ); // -1 on error
 		if ( error != -1 ) {
 			TextAutoPtr error_message;
 			error_message->Assign ( (const char*)buffer, Text::kEncoding_UTF8 );
