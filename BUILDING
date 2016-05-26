@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 3.2 of the plug-in is built on Mac OS X 10.11.2 using Xcode 7.2. The Xcode Command Line Tools are also needed.
+Version 3.3 of the plug-in is built on Mac OS X 10.11.5 using Xcode 7.3. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -173,7 +173,7 @@ Download the source from
 
 and expand it into a directory on the Desktop. cd into the directory and run
 
-	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7 -I<path to /BaseElements-Plugin/Headers/libssh>" LDFLAGS="-arch i386 -arch x86_64 -L<path to /BaseElements-Plugin/Libraries/osx>" --disable-dependency-tracking --with-darwinssl --disable-shared --with-libz --prefix=<install path> --with-libssh2
+	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7 -I<path to /BaseElements-Plugin/Headers/libssh>" LDFLAGS="-arch i386 -arch x86_64 -L<path to /BaseElements-Plugin/Libraries/osx>" --disable-dependency-tracking --disable-shared --with-libz --prefix=<install path> --with-libssh2
 
 (replacing the indicated paths as appropriate).
 
@@ -280,10 +280,8 @@ Then, after extracting the archive
 Copy the poco libraries to the Libraries/osx directory and copy the Poco/usr/local/include/Poco to Headers.
 
 =======================================================================
-libxml2 - 2.9.1
+libxml2 - 2.9.4
 =======================================================================
-
-Note: libxml2 version 2.9.1 (not 2.9.2 or 2.9.3) must be used.
 
 Download the source for libxml2 from
 
@@ -291,15 +289,15 @@ Download the source for libxml2 from
 
 and expand it into a directory on the Desktop.
 
-	cd libxml2-2.9.1
-	./configure  CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7"  LDFLAGS="-arch i386 -arch x86_64" --disable-shared --without-python --without-zlib  --prefix=<path to Desktop>/libxml2-2.9.3/build
+	cd libxml2-2.9.4
+	./configure  CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7" LDFLAGS="-arch i386 -arch x86_64" --disable-shared --without-python --without-zlib --prefix=<path to Desktop>/libxml2-2.9.4/build
 	make install
 	
 and then copy libxml2.a from build/lib to the Libraries/osx directory and the libxml2 directory from build/include to Headers.
 
 
 =======================================================================
-libxslt - 1.1.28
+libxslt - 1.1.29
 =======================================================================
 
 Download the source from
@@ -308,8 +306,8 @@ Download the source from
 
 and expand it into a directory on the Desktop.
 
-	cd libxslt-1.1.28
-	./configure  CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7"  LDFLAGS="-arch i386 -arch x86_64" --disable-shared --without-python --prefix=<path to Desktop>/libxslt-1.1.28/build
+	cd libxslt-1.1.29
+	./configure  CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7"  LDFLAGS="-arch i386 -arch x86_64" --disable-shared --without-python --without-crypto --prefix=<path to Desktop>/libxslt-1.1.29/build
 	make install
 	
 and then copy libxslt.a and libexslt.a from build/lib to the Libraries/osx directory and the libxslt & libexslt directories from build/include to Headers.
@@ -585,7 +583,7 @@ to the Headers directory.
 
 
 =======================================================================
-libiconv - 1.14 & libxml2 - 2.9.2
+libiconv - 1.14 & libxml2 - 2.9.4
 =======================================================================
 
 Download the libiconv source from
@@ -617,7 +615,7 @@ Rename the folder libiconv-1.14 to libiconv-1.14.vc10
 
 The Visual Studio solution file is in
 
-	libxml2-2.9.2\win32\VC10
+	libxml2-2.9.4\win32\VC10
 
 From the "Build" menu select "Configuration Manager" and then set "Active solution configuration" to Release and in the "Build" column, uncheck "runsuite".
 
@@ -627,8 +625,8 @@ In the Property Pages
 
 add paths to the following directories
 
-	libxml2-2.9.2\win32\VC10
-	libxml2-2.9.2\include
+	libxml2-2.9.4\win32\VC10
+	libxml2-2.9.4\include
 	libiconv-1.14.vc10\include
 
 and in
@@ -649,11 +647,7 @@ In the Property Pages of both libxml2 & iconv set
 
 	... -> Configuration Properties -> C/C++ -> Code Generation -> Runtime Library = Multi-threaded (/MT)
 
-Comment out the line
-
-	#define snprintf _snprintf
-
-in win32\VC10\config.h and in libxml.h change the line
+Change the line
 
 	#elif defined(_WIN32_WCE)
 
@@ -661,11 +655,11 @@ to
 
 	#elif defined(_MSC_VER)
 
-then build the project.
+and build the project.
 
 Copy Release\iconv.lib & Release\libxml2.lib to the BE Plugin Libraries\win32 folder and, finally, copy
 
-	libxml2-2.9.2\include\libxml
+	libxml2-2.9.4\include\libxml
 
 into the BE Plugin Headers folder and create a folder, iconv, in the BE Plugin Headers folder and copy
 
@@ -684,7 +678,7 @@ to the Libraries/x64 directory.
 
 
 =======================================================================
-libxslt & libexslt - 1.1.28
+libxslt & libexslt - 1.1.29
 =======================================================================
 
 Download the source from
@@ -699,7 +693,7 @@ For Win32 builds use the "VS2015 x86 Native Command Prompt" and for x64 builds t
 
 Move to the win32 directory in the archive
 
-	cd Desktop\libxslt-1.1.28\win32
+	cd Desktop\libxslt-1.1.29\win32
 
 Run the commands (changing the include= & lib= paths as appropriate)
 
@@ -711,17 +705,7 @@ Run the commands (changing the include= & lib= paths as appropriate)
 
 	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin>\Libraries\x64"
 
-Comment out the line
-
-	#define snprintf _snprintf
-
-in each of
-
-	config.h
-	libxslt\win32config.h
-	xsltproc\xsltproc.c
-
-and then
+Then
 
 	nmake -f Makefile.msvc MFLAGS=-MT libxslta libexslta
 
@@ -729,7 +713,7 @@ to configure and build the source.
 
 Finally, place the headers from the directories
 
-	libxslt-1.1.28\libxslt & libxslt-1.1.28\libexslt
+	libxslt-1.1.29\libxslt & libxslt-1.1.29\libexslt
 
 into directories, libxslt & libexslt, in the Headers directory and copy the libraries
 
