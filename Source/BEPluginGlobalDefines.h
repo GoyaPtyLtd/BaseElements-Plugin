@@ -118,7 +118,7 @@ enum functions {
     kBE_File_Modification_Timestamp = 127,
 	kBE_ExecuteScript = 150,
 	kBE_FileMakerSQL = 151,
-	kBE_GetURL = 152,
+	kBE_HTTP_GET = 152,
 	kBE_GetLastError = 153,
 	kBE_MessageDigest = 154,
 	kBE_GetLastDDLError = 155,

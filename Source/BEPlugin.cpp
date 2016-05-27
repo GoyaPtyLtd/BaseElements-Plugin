@@ -162,8 +162,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_JSON_Encode, BE_JSON_Encode, 1, 3 );
 	
 	
-	g_be_plugin->RegisterFunction ( kBE_GetURL, BE_GetURL, 1, 4 );
-	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_SaveURLToFile, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_GET, BE_HTTP_GET, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_HTTP_GET_File, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_SetPreference, BE_SetPreference, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_GetPreference, BE_GetPreference, 1, 2 );

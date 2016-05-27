@@ -42,14 +42,14 @@
 
 "150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
 "151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )";
-"152" = "BE_GetURL ( url {; filename ; username ; password } )";
+"152" = "BE_HTTP_GET ( url {; filename ; username ; password } )";
 "153" = "BE_GetLastError";
 
 "154" = "BE_MessageDigest ( text {; algorithm ; encoding } )";
 
 "155" = "BE_GetLastDDLError";
 
-"156" = "BE_SaveURLToFile ( url ; path {; username ; password } )";
+"156" = "BE_HTTP_GET_File ( url ; path {; username ; password } )";
 
 
 "157" = "BE_ProgressDialog ( title ; description {; maximum } )";

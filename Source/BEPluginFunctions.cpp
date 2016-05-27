@@ -1714,13 +1714,15 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 #pragma mark -
 
 
-FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+#pragma mark BE_HTTP_GET
+
+FMX_PROC(errcode) BE_HTTP_GET ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {	
 	errcode error = NoError();
 	
 	try {
 		
-		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr url = ParameterAsUTF8String ( parameters );
 		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
@@ -1741,17 +1743,19 @@ FMX_PROC(errcode) BE_GetURL ( short /* funcId */, const ExprEnv& /* environment 
 	
 	return MapError ( error );
 	
-} // BE_GetURL
+} // BE_HTTP_GET
 
 
 
-FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
+#pragma mark BE_HTTP_GET_File
+
+FMX_PROC(errcode) BE_HTTP_GET_File ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
 {	
 	errcode error = NoError();
 	
 	try {
 		
-		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr url = ParameterAsUTF8String ( parameters );
 		path filename = ParameterAsPath ( parameters, 1 );
 		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
 		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
@@ -1768,7 +1772,7 @@ FMX_PROC(errcode) BE_SaveURLToFile ( short /* funcId */, const ExprEnv& /* envir
 	
 	return MapError ( error );
 	
-} // BE_SaveURLToFile
+} // BE_HTTP_GET_File
 
 
 #pragma mark BE_HTTP_POST_PUT_PATCH
