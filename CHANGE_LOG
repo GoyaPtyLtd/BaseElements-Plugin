@@ -2,24 +2,45 @@
 Version 3.3b1
 ########################################################################
 
-February 23, 2016
+July 5, 2016
 
 
 New Functions
 
+BE_ArraySetFromValueList
+BE_ArrayGetSize
+BE_ArrayGetValue
 BE_Gzip
+BE_HTTP_PATCH
 BE_Pause
 BE_SMTP_AddAttachment
 BE_UnGzip
+
+Hidden
+
+BE_FMS_Download_Database
+BE_FMS_List_Files
+BE_FMS_List_Clients
+BE_FMS_List_Schedules
+BE_FMS_Pause_Files
+BE_FMS_Resume_Files
+BE_FMS_Run_Schedule
+BE_FMS_Upload_Database
 
 
 Changes
 
 BE_ExportFieldContents: recurively create any directories needed
+BE_GetURL renamed to BE_HTTP_GET
+BE_ListFilesInFolder: follow aliases/symlinks when listing directory contents
+BE_SaveURLToFile renamed to BE_HTTP_GET_File
 BE_SMTP_Send: can send files/images in container fields as attachments
+BE_SMTP_Send: correct a problem where messages would fail to send through some SMTP servers when multiple to/cc/bcc addresses were specified
 BE_StripInvalidUTF16CharactersFromXMLFile: do not show in calculation dialogs
 BE_Values_Sort: add parameters to allow ascending/descending and numeric sort order
 BE_WriteTextToFile: recurively create any directories needed
+
+Update third-party libraries: libxml2 2.9.4, libxslt 1.1.29, poco 1.7.3, libcurl-2.48, libssh2-1.7.0, openssl-1.0.2g
 
 
 ########################################################################
