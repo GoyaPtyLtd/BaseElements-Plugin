@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <map>
 
+#include <boost/bind.hpp>
 #include <boost/algorithm/string.hpp>
 
 
@@ -91,7 +92,9 @@ public:
 	T get_as_filemaker_string ( void ) const;
 	std::vector<double> get_as_vector_double ( void ) const;
 
-    BEValueList<T> apply_regular_expression ( const T expression, const std::string options, const T replace_with, const bool replace = false ) const;
+	BEValueList<T> apply_regular_expression ( const T expression, const std::string options, const T replace_with, const bool replace = false ) const;
+
+	void trim_values ( );
 
 protected:
 	
@@ -401,7 +404,6 @@ std::vector<double>  BEValueList<T>::get_as_vector_double ( void ) const
 }
 
 
-
 template <typename T>
 BEValueList<T> BEValueList<T>::apply_regular_expression ( const T expression, const std::string options, const T replace_with, const bool replace ) const
 {
@@ -414,6 +416,14 @@ BEValueList<T> BEValueList<T>::apply_regular_expression ( const T expression, co
 
     return matched;
 }
+
+
+template <typename T>
+void BEValueList<T>::trim_values ( )
+{
+	for_each ( values.begin(), values.end(), boost::bind ( &boost::trim<T>, _1, std::locale() ) );
+}
+
 
 
 #pragma mark -
