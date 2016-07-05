@@ -223,7 +223,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Values_ContainsDuplicates, BE_Values_ContainsDuplicates, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Values_Sort, BE_Values_Sort, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_Values_TimesDuplicated, BE_Values_TimesDuplicated, 2 );
-	
+	g_be_plugin->RegisterFunction ( kBE_Values_Trim, BE_Values_Trim, 1 );
+
 	
 	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, 2, 4 );
 

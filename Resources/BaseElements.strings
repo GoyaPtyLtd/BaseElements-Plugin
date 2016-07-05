@@ -133,6 +133,8 @@
 "352" = "BE_Values_ContainsDuplicates ( listOfValues  {; caseSensitive } )";
 "353" = "BE_Values_Sort ( listOfValues {; ascending ; type } )";
 "354" = "BE_Values_TimesDuplicated ( listOfValues ; numberOfTimes )";
+"355" = "BE_Values_Trim ( listOfValues )";
+
 
 "400" = "BE_SMTP_Server ( server { ; port ; username ; password } )";
 "401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";

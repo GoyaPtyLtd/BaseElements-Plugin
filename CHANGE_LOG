@@ -14,6 +14,7 @@ BE_Gzip
 BE_HTTP_PATCH
 BE_Pause
 BE_SMTP_AddAttachment
+BE_Values_Trim
 BE_UnGzip
 
 Hidden

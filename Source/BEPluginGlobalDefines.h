@@ -181,6 +181,7 @@ enum functions {
 	kBE_Values_ContainsDuplicates = 352,
 	kBE_Values_Sort = 353,
 	kBE_Values_TimesDuplicated = 354,
+	kBE_Values_Trim = 355,
 	kBE_SMTP_Server = 400,
 	kBE_SMTP_Send = 401,
 	kBE_SMTP_AddAttachment = 402,

@@ -2570,7 +2570,33 @@ FMX_PROC(errcode) BE_Values_TimesDuplicated ( short /* funcId */, const ExprEnv&
 	
 	return MapError ( error );
 	
-} // BE_Values_Sort
+} // BE_Values_TimesDuplicated
+
+
+#pragma mark BE_Values_Trim
+
+FMX_PROC(errcode) BE_Values_Trim ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		StringAutoPtr value_list = ParameterAsUTF8String ( parameters );
+		
+		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
+		values->trim_values();
+//		std::string found = values.get_as_filemaker_string();
+		SetResult ( values->get_as_filemaker_string(), results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Values_Trim
 
 
 
