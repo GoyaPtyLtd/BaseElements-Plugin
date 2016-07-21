@@ -63,6 +63,9 @@ int BEXero::sign_url ( string& url, string& post_arguments, const string http_me
 	
 	int error = kNoError;
 	
+	// ensure srand is always set [oauth call oauth_sign_url2 will always return the same nonce under FMS on Win]
+	srand ( (unsigned)time ( NULL ) );
+
 	char * oauth_url;
 
 	if ( http_method == HTTP_METHOD_POST ) {
