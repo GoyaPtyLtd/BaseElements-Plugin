@@ -2246,28 +2246,40 @@ FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /
 
 		switch ( function_id ) {
 			
-			case kBE_FMS_List_Files:
-				reply = fms->list_files ( show_statistics );
-				break;
-				
-			case kBE_FMS_Pause_Files:
-				reply = fms->pause_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
-				break;
-				
-			case kBE_FMS_Run_Schedule:
-				reply = fms->run_schedule ( ParameterAsLong ( parameters, 2 ) );
-				break;
-				
-			case kBE_FMS_List_Schedules:
-				reply = fms->list_schedules();
+			case kBE_FMS_Close_Files:
+				reply = fms->close_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
 				break;
 				
 			case kBE_FMS_List_Clients:
 				reply = fms->list_clients ( show_statistics );
 				break;
 				
+			case kBE_FMS_List_Files:
+				reply = fms->list_files ( show_statistics );
+				break;
+				
+			case kBE_FMS_List_Schedules:
+				reply = fms->list_schedules();
+				break;
+				
+			case kBE_FMS_Open_Files:
+				reply = fms->open_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
+				break;
+				
+			case kBE_FMS_Pause_Files:
+				reply = fms->pause_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
+				break;
+				
+			case kBE_FMS_Remove_Files:
+				reply = fms->remove_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
+				break;
+				
 			case kBE_FMS_Resume_Files:
 				reply = fms->resume_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
+				break;
+				
+			case kBE_FMS_Run_Schedule:
+				reply = fms->run_schedule ( ParameterAsLong ( parameters, 2 ) );
 				break;
 				
 			default:

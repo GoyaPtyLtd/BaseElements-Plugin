@@ -31,6 +31,8 @@ public:
 	const std::string pause_files ( const std::string files = "" );
 	const std::string resume_files ( const std::string files = "" );
 	const std::string close_files ( const std::string files = "" );
+	const std::string open_files ( const std::string files = "" );
+	const std::string remove_files ( const std::string files = "" );
 	const std::string run_schedule ( const long schedule_number );
 	const std::string list_schedules();
 	const std::string list_clients ( const bool show_statistics = false );

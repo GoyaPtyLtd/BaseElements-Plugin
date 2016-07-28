@@ -2,7 +2,7 @@
 Version 3.3b1
 ########################################################################
 
-July 5, 2016
+July 26, 2016
 
 
 New Functions
@@ -19,11 +19,14 @@ BE_UnGzip
 
 Hidden
 
+BE_FMS_Close_Files
 BE_FMS_Download_Database
 BE_FMS_List_Files
 BE_FMS_List_Clients
 BE_FMS_List_Schedules
+BE_FMS_Open_Files
 BE_FMS_Pause_Files
+BE_FMS_Remove_Files
 BE_FMS_Resume_Files
 BE_FMS_Run_Schedule
 BE_FMS_Upload_Database
@@ -33,6 +36,7 @@ Changes
 
 BE_ExportFieldContents: recurively create any directories needed
 BE_GetURL renamed to BE_HTTP_GET
+BE_HTTP_POST:james correct a problem where Xero connections could fail under FMS on Windows
 BE_ListFilesInFolder: follow aliases/symlinks when listing directory contents
 BE_SaveURLToFile renamed to BE_HTTP_GET_File
 BE_SMTP_Send: can send files/images in container fields as attachments

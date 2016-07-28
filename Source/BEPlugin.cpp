@@ -241,6 +241,9 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_FMS_List_Schedules, BE_FMS_Command, 2 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_FMS_List_Clients, BE_FMS_Command, 2, 3 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_FMS_Resume_Files, BE_FMS_Command, 2, 3 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_FMS_Close_Files, BE_FMS_Command, 2, 3 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_FMS_Remove_Files, BE_FMS_Command, 2, 3 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_FMS_Open_Files, BE_FMS_Command, 2, 3 );
 	
 
 	g_be_plugin->RegisterFunction ( kBE_Xero_SetTokens, BE_Xero_SetTokens, 2 );

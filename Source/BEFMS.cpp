@@ -58,6 +58,18 @@ const std::string BEFMS::close_files ( const std::string files )
 }
 
 
+const std::string BEFMS::open_files ( const std::string files )
+{
+	return run_command ( "open " + files );
+}
+
+
+const std::string BEFMS::remove_files ( const std::string files )
+{
+	return run_command ( "remove " + files );
+}
+
+
 const std::string BEFMS::run_schedule ( const long schedule_number )
 {
 	std::stringstream schedule;
@@ -87,11 +99,11 @@ const std::string BEFMS::list_clients ( const bool show_statistics )
 const std::string BEFMS::run_command ( const std::string command, const bool show_statistics )
 {
 	const std::string s_flag = show_statistics ? " -s" : "";
-	const std::string fms = std::string ( FMSADMIN_PATH ) + "fmsadmin -u " + username + " -p " + password + s_flag + " " + command;
+	const std::string fms = std::string ( FMSADMIN_PATH ) + "fmsadmin -u " + username + " -p " + password + s_flag + " -y " + command;
 
 	std::string result;
 	short return_code = ExecuteSystemCommand ( fms, result );
-	if ( kNoError != return_code ) {
+	if ( kNoError != return_code && result.empty() ) {
 		throw BEPlugin_Exception ( return_code );
 	}
 

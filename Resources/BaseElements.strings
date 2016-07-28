@@ -148,6 +148,9 @@
 "455" = "BE_FMS_List_Schedules ( username ; password )";
 "456" = "BE_FMS_List_Clients ( username ; password {; showStatistics } )";
 "457" = "BE_FMS_Resume_Files ( username ; password {; files } )";
+"458" = "BE_FMS_Close_Files ( username ; password {; files } )";
+"459" = "BE_FMS_Remove_Files ( username ; password {; files } )";
+"460" = "BE_FMS_Open_Files ( username ; password {; files } )";
 
 
 
