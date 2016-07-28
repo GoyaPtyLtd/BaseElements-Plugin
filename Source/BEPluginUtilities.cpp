@@ -741,7 +741,7 @@ string TextAsUTF8String ( const Text& fmx_text )
 	
 	try {
 		
-		FMX_UInt32 text_size = (2*(fmx_text.GetSize())) + 1;
+		FMX_UInt32 text_size = (4*(fmx_text.GetSize())) + 1;
 		char * text = new char [ text_size ]();
 		fmx_text.GetBytes ( text, text_size, 0, (FMX_UInt32)Text::kSize_End, Text::kEncoding_UTF8 );
 		result.assign ( text );
