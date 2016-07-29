@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 3.3 of the plug-in is built on Mac OS X 10.11.5 using Xcode 7.3. The Xcode Command Line Tools are also needed.
+Version 3.3 of the plug-in is built on Mac OS X 10.11.6 using Xcode 7.3. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -317,7 +317,7 @@ and then copy libxslt.a and libexslt.a from build/lib to the Libraries/osx direc
 Windows
 =======================================================================
 
-The plug-in was built using Visual Studio 2015 Professional Upgrade 1 on Windows 8.1 (64-bit).
+The plug-in was built using Visual Studio 2015 Professional Upgrade 3 on Windows 8.1 (64-bit).
 
 Download the FileMaker External Plug-In API from
 

@@ -599,6 +599,7 @@
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
+				VERSION_STRING = 3.3;
 			};
 			name = Release;
 		};
@@ -645,6 +646,7 @@
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
+				VERSION_STRING = 3.3;
 			};
 			name = Debug;
 		};
@@ -728,7 +730,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.3b1;
+				VERSION_STRING = 3.3;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -817,7 +819,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.3b1;
+				VERSION_STRING = 3.3;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
