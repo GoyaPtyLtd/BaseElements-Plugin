@@ -51,4 +51,8 @@ bool OpenURL ( WStringAutoPtr url );
 bool OpenFile ( WStringAutoPtr path );
 
 
+// used by Do_GetString
+unsigned long  Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId );
+
+
 #endif // BEMACFUNCTIONS_H

@@ -97,10 +97,5 @@ std::string GetFileMakerTemporaryDirectory ( const fmx::ExprEnv& environment );
 void Do_GetString ( unsigned long whichString, FMX_PtrType winLangID, FMX_PtrType resultsize, FMX_Unichar* string );
 void Do_GetString ( unsigned long whichString,  fmx::TextAutoPtr& intoHere, bool stripFunctionParams = false );
 
-// used by Do_GetString
-#if defined(FMX_MAC_TARGET)
-	unsigned long  Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId );
-#endif
-
 
 #endif // BEPLUGINUTILITIES_H
