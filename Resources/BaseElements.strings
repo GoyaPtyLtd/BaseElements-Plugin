@@ -165,6 +165,7 @@
 "650" = "BE_ArraySetFromValueList ( valueList )";
 "651" = "BE_ArrayGetSize ( array )";
 "652" = "BE_ArrayGetValue ( array ; valueNumber )";
+"653" = "BE_Array_Delete ( array )";
 
 
 "700" = "BE_ConvertContainer ( field {; type ; width ; height } )";

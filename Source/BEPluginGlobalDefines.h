@@ -203,6 +203,7 @@ enum functions {
 	kBE_ArraySetFromValueList = 650,
 	kBE_ArrayGetSize = 651,
 	kBE_ArrayGetValue = 652,
+	kBE_Array_Delete = 653,
 	kBE_ConvertContainer = 700,
 	kBE_XOR = 800,
 	kBE_Vector_DotProduct = 900,

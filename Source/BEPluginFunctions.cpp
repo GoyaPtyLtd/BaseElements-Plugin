@@ -1268,6 +1268,33 @@ FMX_PROC(fmx::errcode) BE_ArrayGetValue ( short /* funcId */, const fmx::ExprEnv
 } // BE_ArrayGetValue
 
 
+FMX_PROC(fmx::errcode) BE_Array_Delete ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto array_id = ParameterAsLong ( parameters ) - 1;
+		
+		try {
+			auto unwanted = arrays.at ( array_id ); // so we throw
+			arrays.erase ( arrays.begin () + array_id );
+		} catch ( out_of_range& /* e */ ) {
+			; // if we don't find it don't error
+		}
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Array_Delete
+
+
+
 #pragma mark -
 #pragma mark User Preferences
 #pragma mark -
