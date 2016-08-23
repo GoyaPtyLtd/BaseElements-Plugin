@@ -308,6 +308,14 @@ long ParameterAsLong ( const DataVect& parameters, const FMX_UInt32 which, const
 }
 
 
+// since c++ index starts at 0 and fmp from 1
+
+const long ParameterAsIndex ( const fmx::DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value )
+{
+	return ParameterAsLong ( parameters, which, default_value ) - 1;
+}
+
+
 StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which, const std::string default_value )
 {	
 	

@@ -1216,7 +1216,7 @@ FMX_PROC(fmx::errcode) BE_ArrayGetSize ( short /* funcId */, const fmx::ExprEnv&
 	
 	try {
 		
-		const long array_id = ParameterAsLong ( parameters ) - 1;
+		auto array_id = ParameterAsIndex ( parameters );
 		
 		try {
 
@@ -1244,8 +1244,8 @@ FMX_PROC(fmx::errcode) BE_ArrayGetValue ( short /* funcId */, const fmx::ExprEnv
 	
 	try {
 		
-		const long array_id = ParameterAsLong ( parameters ) - 1;
-		const long value_id = ParameterAsLong ( parameters, 1 ) - 1;
+		auto array_id = ParameterAsIndex ( parameters );
+		auto value_id = ParameterAsIndex ( parameters, 1 );
 		
 		string value;
 
@@ -1274,10 +1274,10 @@ FMX_PROC(fmx::errcode) BE_Array_Delete ( short /* funcId */, const fmx::ExprEnv&
 	
 	try {
 		
-		auto array_id = ParameterAsLong ( parameters ) - 1;
+		auto array_id = ParameterAsIndex ( parameters );
 		
 		try {
-			auto unwanted = arrays.at ( array_id ); // so we throw
+			auto unwanted = arrays.at ( array_id ); // so we throw if the index is invalid
 			arrays.erase ( arrays.begin () + array_id );
 		} catch ( out_of_range& /* e */ ) {
 			; // if we don't find it don't error
