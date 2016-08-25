@@ -2,7 +2,7 @@
  BESQLCommand.h
  BaseElements Plug-In
  
- Copyright 2011-2014 Goya. All rights reserved.
+ Copyright 2011-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -22,26 +22,26 @@ class BESQLCommand
 	
 public:
 	
-	BESQLCommand ( const fmx::TextAutoPtr expression, const fmx::TextAutoPtr filename );
+	BESQLCommand ( const fmx::Text& expression, const fmx::Text& filename );
 
 	void execute ( void );
 	void execute ( const fmx::ExprEnv& _environment );
-	fmx::TextAutoPtr get_text_result ( void );
+	fmx::TextUniquePtr get_text_result ( void );
 	
-	void set_column_separator ( const fmx::TextAutoPtr new_column_separator );
-	void set_row_separator ( const fmx::TextAutoPtr new_row_separator );
+	void set_column_separator ( const fmx::Text& new_column_separator );
+	void set_row_separator ( const fmx::Text& new_row_separator );
 	
 	void wait ( ) { waiting = true; };
 	
 protected:
 	
-	fmx::TextAutoPtr expression;
-	fmx::TextAutoPtr filename;
-	fmx::DataVectAutoPtr parameters;
-	fmx::RowVectAutoPtr result;
+	fmx::TextUniquePtr expression;
+	fmx::TextUniquePtr filename;
+	fmx::DataVectUniquePtr parameters;
+	fmx::RowVectUniquePtr result;
 	
-	fmx::TextAutoPtr column_separator;
-	fmx::TextAutoPtr row_separator;
+	fmx::TextUniquePtr column_separator;
+	fmx::TextUniquePtr row_separator;
 	
 	bool is_ddl_command ( void ) const;
 	
@@ -50,7 +50,7 @@ protected:
 };
 
 
-typedef std::auto_ptr<BESQLCommand> BESQLCommandAutoPtr;
+typedef std::unique_ptr<BESQLCommand> BESQLCommandAutoPtr;
 
 
 #endif // BESQLCOMMAND_H

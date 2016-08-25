@@ -266,7 +266,7 @@ int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t 
 	const double mb_total = (double)total_bytes / bytes_per_megabyte;
 	const double mb_so_far = (double)bytes_so_far / bytes_per_megabyte;
 	
-	WStringAutoPtr description ( new wstring );
+	std::wstring description;
 	
 	fmx::errcode error = kNoError;
 	static boost::posix_time::ptime last;
@@ -290,7 +290,7 @@ int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t 
 			d.precision ( 1 );
 			wstring mb_suffix = L" MB";
 			d << direction << L"loading... " << fixed << mb_so_far << mb_suffix << L" of " << fixed << mb_total << mb_suffix;
-			description->assign ( d.str() );
+			description.assign ( d.str() );
 			
 			if ( completed ) {
 				++bytes_so_far;
@@ -304,8 +304,8 @@ int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t 
 		
 		if ( ! completed ) {
 			
-			WStringAutoPtr title ( new wstring ( direction + L"load Progress" ) );
-			description->append ( L"Starting " + direction + L"load." );
+			auto title ( direction + L"load Progress" );
+			description.append ( L"Starting " + direction + L"load." );
 			
 			error = DisplayProgressDialog ( title, description, (unsigned long)total_bytes, false /* AllowUserAbort ( *environment ) */ );
 			

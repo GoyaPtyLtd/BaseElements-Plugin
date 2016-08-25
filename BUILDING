@@ -5,15 +5,15 @@ Building
 The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
 Notes:
-- these instructions apply to version 3.2 of the BaseElements Plugin
-- version 14.0.1.175 of the FileMaker plug-in SDK is required
+- these instructions apply to version 4.0 of the BaseElements Plugin
+- version 15.0.1.119 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 
 =======================================================================
 Mac OS X
 =======================================================================
 
-Version 3.3 of the plug-in is built on Mac OS X 10.11.6 using Xcode 7.3. The Xcode Command Line Tools are also needed.
+Version 4.0 of the plug-in is built on Mac OS X 10.11.6 using Xcode 7.3. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -24,7 +24,7 @@ and place the FMWrapper.framework in the Libraries directory.
 On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built the Boost FileSystem, System and Thread libraries.
 
 =======================================================================
-Boost - 1.59_0
+Boost - 1.61_0
 =======================================================================
 
 Boost is available from
@@ -33,31 +33,9 @@ Boost is available from
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_59_0
+	cd boost_1_61_0
 	./bootstrap.sh
-	./b2 architecture=x86 address-model=32 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.6"
-
-and
-
-	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build64 --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.6"
-
-Then, to create the universal binaries
-
-	lipo -create -arch i386 build/lib/libboost_date_time.a -arch x86_64 build64/lib/libboost_date_time.a -output <path to BaseElements-Plugin>/Libraries/osx/libboost_date_time.a
-
-	lipo -create -arch i386 build/lib/libboost_filesystem.a -arch x86_64 build64/lib/libboost_filesystem.a -output <path to BaseElements-Plugin>/Libraries/osx/libboost_filesystem.a
-
-	lipo -create -arch i386 build/lib/libboost_regex.a -arch x86_64 build64/lib/libboost_regex.a -output <path to BaseElements-Plugin>/Libraries/osx/libboost_regex.a
-
-	lipo -create -arch i386 build/lib/libboost_system.a -arch x86_64 build64/lib/libboost_system.a -output <path to BaseElements-Plugin>/Libraries/osx/libboost_system.a
-
-	lipo -create -arch i386 build/lib/libboost_thread.a -arch x86_64 build64/lib/libboost_thread.a -output <path to BaseElements-Plugin>/Libraries/osx/libboost_thread.a
-
-See
-
-	more/getting_started/index.html
-
-for for further information on compiling the Boost libraries.
+	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.7 -stdlib=libc++" linkflags="-stdlib=libc++"
 
 Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the boost/lib directory to the Libraries directory.
 
@@ -102,9 +80,9 @@ Download the source from
 
 Follow the supplied building instructions using this ./configure command (to build a universal binary)
 
-	./configure CXXFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking --prefix=build && make install
+	./configure CXXFLAGS="-stdlib=libc++ -mmacosx-version-min=10.7" LDFLAGS="-stdlib=libc++" --prefix=build && make install
 
-Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the library in the boost/lib directory to the Libraries/osx directory.
+Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy boost/lib/libmimetic.a directory to the Libraries/osx directory.
 
 
 =======================================================================
@@ -254,7 +232,7 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.3
+Poco 1.7.4
 =======================================================================
 
 Download the source from
@@ -263,21 +241,14 @@ Download the source from
 
 Then, after extracting the archive
 
-	cd poco-1.7.3-all
+	cd poco-1.7.4-all
 
 	export MACOSX_DEPLOYMENT_TARGET=10.7
 
-	./configure --config=Darwin32 --static --no-tests --no-samples --cflags="-stdlib=libstdc++" --omit=Data,MongoDB,Crypto,Net,XML && make
-	find . -name "*.o" -type f -delete
-	./configure --config=Darwin64 --static --no-tests --no-samples --cflags="-stdlib=libstdc++" --omit=Data,MongoDB,Crypto,Net,XML && make
+	./configure --config=Darwin64 --static --cflags="-stdlib=libc++" --no-tests --no-samples --omit=Data,MongoDB,Crypto,Net,XML,JSON
 	make install DESTDIR=./Poco
 
-	cd lib/Darwin
-
-	lipo -create i386/libPocoFoundation.a x86_64/libPocoFoundation.a -output libPocoFoundation.a
-	lipo -create i386/libPocoZip.a x86_64/libPocoZip.a -output libPocoZip.a
-
-Copy the poco libraries to the Libraries/osx directory and copy the Poco/usr/local/include/Poco to Headers.
+Copy libPocoFoundation.a and libPocoZip.a from ./Poco/usr/local/lib to the Libraries/osx directory and copy the Poco/usr/local/include/Poco to Headers.
 
 =======================================================================
 libxml2 - 2.9.4
@@ -337,7 +308,7 @@ Another note: when doing both debug and release builds clean the project when sw
 
 
 =======================================================================
-Boost - 1.59_0
+Boost - 1.61_0
 =======================================================================
 
 The Boost FileSystem and System libraries are required.
@@ -350,16 +321,12 @@ See
 
 for instructions on compiling the Boost libraries. From the command prompt try
 
-	cd boost_1_59_0
+	cd boost_1_61_0
 	bootstrap.bat
-	b2 address-model=32 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex install --prefix=build
-
-and for 64-bit support
-
-	b2 address-model=64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex install --prefix=build64
+	b2 address-model=64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex --prefix=build install
 
 
-Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib to Libraries/x86 and also from build64/lib to the Libraries/x64.
+Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib to Libraries/x64.
 
 
 =======================================================================
@@ -445,17 +412,7 @@ Build -> Configuration Manager -> Active Solution Platform: -> <New>
 	-	Type or select the new platform: -> x64
 	-	Copy Settings from Win32
 
-In the MTDebug & MTRelease configurations set:
-
-	Configuration Properties -> Librarian -> General -> Output File -> .\.\x86\libmimetic_d.lib
-	Configuration Properties -> Librarian -> General -> Output File -> .\.\x64\libmimetic_d.lib
-
-	Configuration Properties -> Librarian -> General -> Output File -> .\.\x86\libmimetic.lib
-	Configuration Properties -> Librarian -> General -> Output File -> .\.\x64\libmimetic.lib
-
-for the 32-bit and 64-bit configurations respectively. To build both 32 and 64 bit libraries go to:
-
-	Build -> Batch Build ... select both MTRelease configurations and then "Build"
+Then build the MTRelease x64 configuration.
 
 Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib & libmimetic.lib from the win32\x86 directory to the Libraries\win32 directory and from win32\x64 to Libraries\x64.
 
@@ -800,7 +757,7 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.3
+Poco 1.7.4
 =======================================================================
 
 Download the source from

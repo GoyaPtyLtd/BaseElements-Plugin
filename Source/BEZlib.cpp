@@ -2,7 +2,7 @@
  BEZlib.cpp
  BaseElements Plug-In
  
- Copyright 2011-2015 Goya. All rights reserved.
+ Copyright 2011-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -49,20 +49,20 @@ public:
 #pragma mark -
 
 
-const long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_directory )
+const long UnZip ( const std::string& archive, const std::string& output_directory )
 {
 	long error = kNoError;
 	
-	Poco::File archive_path = *archive;
+	Poco::File archive_path = archive;
 
 	if ( archive_path.exists() ) {
 		
-		std::ifstream out ( archive->c_str(), std::ios::binary );
+		std::ifstream out ( archive.c_str(), std::ios::binary );
 		poco_assert ( out );
 
-		Poco::Path decompress_here ( *output_directory );
-		if ( output_directory->empty() ) {
-			Poco::Path where = *archive;
+		Poco::Path decompress_here ( output_directory );
+		if ( output_directory.empty() ) {
+			Poco::Path where = archive;
 			decompress_here = where.parent();
 		}
 
@@ -85,7 +85,7 @@ const long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_direc
 #pragma mark -
 
 
-const long Zip ( const BEValueList<std::string> * filenames, const StringAutoPtr archive )
+const long Zip ( const BEValueList<std::string> * filenames, const std::string& archive )
 {
 
     long error = 0;
@@ -93,8 +93,8 @@ const long Zip ( const BEValueList<std::string> * filenames, const StringAutoPtr
 	const Poco::File file = filenames->first();
 	if ( file.exists() ) {
 		
-		Poco::Path archive_path = *archive;
-		if ( archive->empty() ) {
+		Poco::Path archive_path = archive;
+		if ( archive.empty() ) {
 			archive_path = file.path() + ".zip";
 		}
 

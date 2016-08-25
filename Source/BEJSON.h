@@ -2,7 +2,7 @@
  BEJSON.h
  BaseElements Plug-In
 
- Copyright (c) 2013 Goya. All rights reserved.
+ Copyright (c) 2013-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -75,12 +75,12 @@ class BEJSON {
 public:
 	
 	BEJSON ( );
-	BEJSON ( const StringAutoPtr json );
+	BEJSON ( const std::string& json );
 		~BEJSON ( );
 
-	void json_path_query ( const StringAutoPtr json_path, fmx::Data& results );
+	void json_path_query ( const std::string& json_path, fmx::Data& results );
 	void array_size ( fmx::Data& results );
-	StringAutoPtr encode ( const StringAutoPtr format, const fmx::Data& value, const StringAutoPtr type );
+	std::string encode ( const std::string& format, const fmx::Data& value, const std::string& type );
 	
 protected:
 	

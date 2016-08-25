@@ -26,12 +26,7 @@
 extern std::string g_text_encoding;
 
 
-typedef std::auto_ptr<std::string> StringAutoPtr;
-typedef std::auto_ptr<std::wstring> WStringAutoPtr;
-
-
-fmx::errcode TextConstantFunction ( std::wstring text, fmx::Data& results );
-fmx::errcode TextConstantFunction ( WStringAutoPtr text, fmx::Data& results );
+const fmx::errcode TextConstantFunction ( const std::wstring& text, fmx::Data& results );
 
 void SetResult ( const double number, fmx::Data& results );
 void SetResultAsDoubleAsText ( const double number, fmx::Data& results );
@@ -39,9 +34,6 @@ void SetResult ( const fmx::Text& text, fmx::Data& results );
 
 void SetResult ( const std::string& text, fmx::Data& results );
 void SetResult ( const std::wstring& text, fmx::Data& results );
-
-void SetResult ( const StringAutoPtr text, fmx::Data& results );
-void SetResult ( const WStringAutoPtr text, fmx::Data& results );
 void SetResult ( std::vector<char>& data, fmx::Data& results );
 void SetResult ( const std::vector<unsigned char>& data, fmx::Data& results );
 void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results, const std::string data_type );
@@ -52,29 +44,29 @@ void SetResult ( const std::string& filename, const std::vector<char>& data, con
 void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results );
 void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results );
 
-bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool default_value = true );
-double ParameterAsDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool default_value = 0.0 );
-long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const unsigned long default_value = 0 );
+const bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool default_value = true );
+const double ParameterAsDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool default_value = 0.0 );
+const long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const unsigned long default_value = 0 );
 const long ParameterAsIndex ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const unsigned long default_value = 0 );
-StringAutoPtr ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const std::string default_value = "" );
-WStringAutoPtr ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
-std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
-std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
-std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
-boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
-StringAutoPtr ParameterFileName ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+const std::string ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const std::string default_value = "" );
+const std::wstring ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+const std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+const std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+const boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+const std::string ParameterFileName ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 
-int PreferredContainerType ( const fmx::BinaryData& data );
+const int PreferredContainerType ( const fmx::BinaryData& data );
 
 const fmx::int32 StreamIndex ( const fmx::BinaryData& data, const std::string stream_type );
 const fmx::int32 IndexForStream ( const fmx::BinaryData& data, const std::string stream_type );
-std::vector<char> DataAsVectorChar ( const fmx::BinaryData& data, const FMX_UInt32 which );
-bool StreamIsCompressed ( const fmx::BinaryData& data );
+const std::vector<char> DataAsVectorChar ( const fmx::BinaryData& data, const FMX_UInt32 which );
+const bool StreamIsCompressed ( const fmx::BinaryData& data );
 
-StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path );
+std::string ReadFileAsUTF8 ( const boost::filesystem::path path );
 std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from = g_text_encoding );
-StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const std::string& to, const std::string& from = g_text_encoding );
-StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from = g_text_encoding );
+std::string ConvertTextEncoding ( std::string& in, const std::string& to, const std::string& from = g_text_encoding );
+std::string ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from = g_text_encoding );
 
 void SetTextEncoding ( const std::string& encoding = UTF8 );
 std::string TextAsUTF8String ( const fmx::Text& fmx_text );
@@ -96,7 +88,7 @@ std::string GetFileMakerTemporaryDirectory ( const fmx::ExprEnv& environment );
 // extract localised strings from the plug-in resources
 
 void Do_GetString ( unsigned long whichString, FMX_PtrType winLangID, FMX_PtrType resultsize, FMX_Unichar* string );
-void Do_GetString ( unsigned long whichString,  fmx::TextAutoPtr& intoHere, bool stripFunctionParams = false );
+void Do_GetString ( unsigned long whichString,  fmx::TextUniquePtr& intoHere, bool stripFunctionParams = false );
 
 
 #endif // BEPLUGINUTILITIES_H

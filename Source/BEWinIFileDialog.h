@@ -2,7 +2,7 @@
  BEWinIFileDialog.h
  BaseElements Plug-In
  
- Copyright 2014 Goya. All rights reserved.
+ Copyright 2014-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -27,15 +27,15 @@ class BEWinIFileOpenDialog
 public:
 	
 	BEWinIFileOpenDialog ( ) {};
-	BEWinIFileOpenDialog ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
+	BEWinIFileOpenDialog ( const std::wstring& prompt, const std::wstring& in_folder );
 
-	virtual WStringAutoPtr Show ( );
+	virtual const std::wstring Show ( );
 
 
 protected:
 	
 	virtual void SetDefaultFolder ( );
-	virtual WStringAutoPtr GetSelection ( );
+	virtual const std::wstring GetSelection ( );
 	void CheckIfUserCancelled ( );
 
 
@@ -58,14 +58,14 @@ class BEWinIFileSaveDialog : public BEWinIFileOpenDialog
 	
 public:
 	
-	BEWinIFileSaveDialog ( WStringAutoPtr prompt, WStringAutoPtr file_name, WStringAutoPtr in_folder );
-	virtual WStringAutoPtr Show ( );
+	BEWinIFileSaveDialog ( const std::wstring& prompt, const std::wstring& file_name, const std::wstring& in_folder );
+	virtual const std::wstring Show ( );
 
 
 protected:
 	
 	virtual void SetDefaultFolder ( );
-	virtual WStringAutoPtr GetSelection ( );
+	virtual const std::wstring GetSelection ( );
 
 	IFileSaveDialog * file_dialog;
 	std::wstring file_name;

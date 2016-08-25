@@ -26,7 +26,7 @@ BESMTPContainerAttachments::~BESMTPContainerAttachments()
 
 void BESMTPContainerAttachments::add ( std::string file_name, std::vector<char>& data )
 {
-	const fmx::ExprEnvAutoPtr environment;
+	const fmx::ExprEnvUniquePtr environment;
 	FMX_SetToCurrentEnv ( &(*environment) );
 	boost::filesystem::path path = GetFileMakerTemporaryDirectory ( *environment ) + BUNDLE_STRINGS_ID + "/SMTP_Attachments/" + file_name;
 	

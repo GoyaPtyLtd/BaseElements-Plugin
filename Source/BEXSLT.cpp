@@ -54,22 +54,22 @@ using namespace std;
 using namespace fmx;
 
 
-TextAutoPtr ReportXSLTError ( const xmlChar * url );
-StringAutoPtr ConvertFileMakerEOLs ( StringAutoPtr in );
+TextUniquePtr ReportXSLTError ( const xmlChar * url );
+std::string ConvertFileMakerEOLs ( std::string& in );
 void InitialiseLibXSLT ( void );
 void CleanupLibXSLT ( void );
 
 
 int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
-TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
-TextAutoPtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj );
-void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result );
+TextUniquePtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
+TextUniquePtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj );
+void NodeSetToValueList ( xmlNodeSetPtr ns, TextUniquePtr& result );
 
 
 
 // globals for error reporting
 
-TextAutoPtr g_last_xslt_error_text;
+TextUniquePtr g_last_xslt_error_text;
 errcode g_last_xslt_error;
 
 
@@ -86,7 +86,7 @@ static void XSLTErrorFunction ( void *context ATTRIBUTE_UNUSED, const char *mess
 		
 		int error = xmlStrVPrintf ( buffer, size, message, parameters ); // -1 on error
 		if ( error != -1 ) {
-			TextAutoPtr error_message;
+			TextUniquePtr error_message;
 			error_message->Assign ( (const char*)buffer, Text::kEncoding_UTF8 );
 			g_last_xslt_error_text->AppendText ( *error_message );
 		} else {
@@ -106,21 +106,21 @@ static void XSLTErrorFunction ( void *context ATTRIBUTE_UNUSED, const char *mess
 
 // format an error as per xsltproc
 
-TextAutoPtr ReportXSLTError ( const xmlChar * url )
+TextUniquePtr ReportXSLTError ( const xmlChar * url )
 {	
 	if ( url == NULL ) {
 		string unknown = ""; // <unknown>
 		url = (xmlChar *)unknown.c_str();
 	}
 
-	TextAutoPtr	result_text;
+	TextUniquePtr	result_text;
 	result_text->AppendText ( *g_last_xslt_error_text );
 
 	if ( xmlStrlen ( url ) > 0 ) {
 		
 		string format = "no result for %s\n";
 		string message = boost::str ( boost::format ( format ) %url );
-		TextAutoPtr no_result_for;
+		TextUniquePtr no_result_for;
 		no_result_for->Assign ( message.c_str(), Text::kEncoding_UTF8 );
 		result_text->AppendText ( *no_result_for );
 
@@ -138,16 +138,16 @@ TextAutoPtr ReportXSLTError ( const xmlChar * url )
  convert filemaker line ending in the text to line feeds
  */
 
-StringAutoPtr ConvertFileMakerEOLs ( StringAutoPtr in )
+std::string ConvertFileMakerEOLs ( std::string& in )
 {
     size_t look_here = 0;
 	string from = "\r";
 	string to = "\n";
     size_t found_here;
 	
-    while ( (found_here = in->find ( from, look_here )) != string::npos )
+    while ( (found_here = in.find ( from, look_here )) != string::npos )
     {
-		in->replace ( found_here, from.size(), to );
+		in.replace ( found_here, from.size(), to );
 		look_here = found_here + to.size();
     }
 	
@@ -186,17 +186,17 @@ void CleanupLibXSLT ( void )
 #endif
 
 
-TextAutoPtr ApplyXSLT ( const boost::filesystem::path& xml_path, StringAutoPtr xslt, const boost::filesystem::path& csv_path )
+TextUniquePtr ApplyXSLT ( const boost::filesystem::path& xml_path, std::string& xslt, const boost::filesystem::path& csv_path )
 {
 	g_last_xslt_error = kNoError;
-	TextAutoPtr result;
+	TextUniquePtr result;
 	
 	InitialiseLibXSLT();
 		
 	// parse the stylesheet
 	xslt = ConvertFileMakerEOLs ( xslt ); // otherwise all errors occur on line 1
 	int options = XML_PARSE_HUGE;
-	xmlDocPtr xslt_doc = xmlReadDoc ( (xmlChar *) xslt->c_str(), NULL, NULL, options );
+	xmlDocPtr xslt_doc = xmlReadDoc ( (xmlChar *)xslt.c_str(), NULL, NULL, options );
 	
 	if ( xslt_doc ) {
 		
@@ -320,17 +320,17 @@ xmlOutputBufferPtr xmlOutputBufferCreateBuffer(xmlBufferPtr buffer, xmlCharEncod
 #endif
 
 
-TextAutoPtr ApplyXSLTInMemory ( StringAutoPtr xml, StringAutoPtr xslt )
+TextUniquePtr ApplyXSLTInMemory ( std::string& xml, std::string& xslt )
 {
 	g_last_xslt_error = kNoError;
-	TextAutoPtr result;
+	TextUniquePtr result;
 	
 	InitialiseLibXSLT();
 	
 	// parse the stylesheet
 	xslt = ConvertFileMakerEOLs ( xslt ); // otherwise all errors occur on line 1
 	int options = XML_PARSE_HUGE;
-	xmlDocPtr xslt_doc = xmlReadDoc ( (xmlChar *) xslt->c_str(), NULL, NULL, options );
+	xmlDocPtr xslt_doc = xmlReadDoc ( (xmlChar *) xslt.c_str(), NULL, NULL, options );
 	
 	if ( xslt_doc ) {
 		
@@ -342,7 +342,7 @@ TextAutoPtr ApplyXSLTInMemory ( StringAutoPtr xml, StringAutoPtr xslt )
 			// to get the line numbers etc in the error the stylesheet must have a file name
 			stylesheet->doc->URL = xmlStrdup ( (xmlChar *)"<FileMaker::Text::XSLT>" );
 			
-			xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml->c_str(), NULL, NULL, options );
+			xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), NULL, NULL, options );
 			
 			if ( xml_doc ) {
 				
@@ -458,10 +458,10 @@ int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList )
 
 
 
-TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
+TextUniquePtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 {
 	
-	TextAutoPtr result;
+	TextUniquePtr result;
 
 	xmlChar* oject_as_string = NULL;
 	
@@ -507,9 +507,9 @@ TextAutoPtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 
 
 
-TextAutoPtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj )
+TextUniquePtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj )
 {
-	TextAutoPtr result;
+	TextUniquePtr result;
 	
 	xmlBufferPtr xml_buffer = xmlBufferCreate();
 	xmlErrorPtr xml_error = xmlGetLastError();
@@ -554,7 +554,7 @@ TextAutoPtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjec
 }
 
 
-void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result )
+void NodeSetToValueList ( xmlNodeSetPtr ns, TextUniquePtr& result )
 {
 	
 	if ( (ns == NULL) || (ns->nodeNr == 0) || (ns->nodeTab == NULL) ) {
@@ -581,29 +581,29 @@ void NodeSetToValueList ( xmlNodeSetPtr ns, TextAutoPtr& result )
 }
 
 
-TextAutoPtr ApplyXPathExpression ( StringAutoPtr xml, StringAutoPtr xpath, StringAutoPtr ns_list, const xmlXPathObjectType xpath_object_type )
+TextUniquePtr ApplyXPathExpression ( std::string& xml, std::string& xpath, std::string& ns_list, const xmlXPathObjectType xpath_object_type )
 {
 	g_last_xslt_error = kNoError;
-	TextAutoPtr result;
+	TextUniquePtr result;
 	
 	xmlInitParser();
 	
 	// parse the xml
 	int options = XML_PARSE_HUGE;
-	xmlDocPtr doc = xmlReadDoc ( (xmlChar *)xml->c_str(), NULL, NULL, options );
+	xmlDocPtr doc = xmlReadDoc ( (xmlChar *)xml.c_str(), NULL, NULL, options );
 	if ( doc ) {
 		
 		xmlXPathContextPtr xpathCtx = xmlXPathNewContext ( doc );
 		if ( xpathCtx ) {
 			
-			RegisterNamespaces ( xpathCtx, (xmlChar *)ns_list->c_str() );
+			RegisterNamespaces ( xpathCtx, (xmlChar *)ns_list.c_str() );
 			
-			xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression ( (xmlChar *)xpath->c_str(), xpathCtx );
+			xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression ( (xmlChar *)xpath.c_str(), xpathCtx );
 			
 			if ( xpathObj ) {
 				
 				if ( xpath_object_type == XPATH_NODESET && xpathObj->type == XPATH_NODESET ) {
-					TextAutoPtr valueList;
+					TextUniquePtr valueList;
 					NodeSetToValueList ( xpathObj->nodesetval, valueList );
 					result->SetText(*valueList);
 				} else if ( xpath_object_type == XPATH_NODESET || xpath_object_type == XPATH_STRING ) {

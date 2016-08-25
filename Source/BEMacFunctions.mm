@@ -2,7 +2,7 @@
  BEMacFunctions.cpp
  BaseElements Plug-In
  
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -29,12 +29,12 @@ using namespace std;
 const NSStringEncoding kEncoding_wchar_t = CFStringConvertEncodingToNSStringEncoding ( ENCODING );
 
 
-NSString * NSStringFromStringAutoPtr ( StringAutoPtr text );
-NSString * NSStringFromWStringAutoPtr ( const WStringAutoPtr text );
-WStringAutoPtr WStringAutoPtrFromNSString ( const NSString * text );
+NSString * NSStringFromString ( const std::string& text );
+NSString * NSStringFromWString ( const std::wstring& text );
+std::wstring WStringFromNSString ( const NSString * text );
 
 
-WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder, bool choose_file );
+const std::wstring SelectFileOrFolder ( const std::wstring& prompt, const std::wstring& in_folder, bool choose_file );
 
 
 ProgressDialogWindowController* progressDialog;
@@ -50,9 +50,9 @@ void InitialiseForPlatform ( )
 #pragma mark String Utilities
 #pragma mark -
 
-NSString * NSStringFromStringAutoPtr ( StringAutoPtr text )
+NSString * NSStringFromString ( const std::string& text )
 {
-	NSString * new_string = [NSString stringWithCString: text->c_str() encoding: NSUTF8StringEncoding];
+	NSString * new_string = [NSString stringWithCString: text.c_str() encoding: NSUTF8StringEncoding];
 	
 	return new_string;
 }
@@ -64,10 +64,10 @@ NSString * NSStringFromStringAutoPtr ( StringAutoPtr text )
  http://www.cocoabuilder.com/archive/cocoa/200434-nsstring-from-wstring.html
  */
 
-NSString * NSStringFromWStringAutoPtr ( const WStringAutoPtr text )
+NSString * NSStringFromWString ( const std::wstring& text )
 {
-	char * string_data = (char *)text->data();
-	unsigned long size = text->size() * sizeof ( wchar_t );
+	char * string_data = (char *)text.data();
+	unsigned long size = text.size() * sizeof ( wchar_t );
 	
 	NSString* new_string = [[NSString alloc] initWithBytes: string_data length: size encoding: kEncoding_wchar_t];
 
@@ -75,12 +75,12 @@ NSString * NSStringFromWStringAutoPtr ( const WStringAutoPtr text )
 }
 
 
-WStringAutoPtr WStringAutoPtrFromNSString ( const NSString * text )
+std::wstring WStringFromNSString ( const NSString * text )
 {
 	NSData * string_data = [text dataUsingEncoding: kEncoding_wchar_t];
 	size_t size = [string_data length] / sizeof ( wchar_t );
 	
-	return WStringAutoPtr ( new wstring ( (wchar_t *)[string_data bytes], size ) );
+	return wstring ( (wchar_t *)[string_data bytes], size );
 }
 
 
@@ -88,7 +88,7 @@ WStringAutoPtr WStringAutoPtrFromNSString ( const NSString * text )
 #pragma mark Clipboard
 #pragma mark -
 
-WStringAutoPtr ClipboardFormats ( void )
+const std::wstring ClipboardFormats ( void )
 {
 	NSArray *types = [[[NSPasteboard generalPasteboard] types] copy];
 	NSMutableString *formats = [NSMutableString stringWithCapacity: 1];
@@ -100,26 +100,26 @@ WStringAutoPtr ClipboardFormats ( void )
 	
 	[types release];
 	
-	return WStringAutoPtrFromNSString ( (NSString*)formats );
+	return WStringFromNSString ( (NSString*)formats );
 	
 } // ClipboardFormats
 
 
-StringAutoPtr ClipboardData ( WStringAutoPtr atype )
+const std::string ClipboardData ( std::wstring& atype )
 {
-	NSString * pasteboard_type = NSStringFromWStringAutoPtr ( atype );
+	NSString * pasteboard_type = NSStringFromWString ( atype );
 	NSData * pasteboard_data = [[[[NSPasteboard generalPasteboard] dataForType: pasteboard_type] copy] autorelease];
 	NSString * clipboard_data = [[[NSString alloc] initWithData: pasteboard_data encoding: NSUTF8StringEncoding] autorelease];
 	
-	return StringAutoPtr ( new string ( [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding] ) );
+	return [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding];
 	
 } // ClipboardData
 
 
-bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
+const bool SetClipboardData ( std::string& data, std::wstring& atype )
 {
-	NSString * data_to_copy = NSStringFromStringAutoPtr ( data );
-	NSString * data_type = NSStringFromWStringAutoPtr ( atype );
+	NSString * data_to_copy = NSStringFromString ( data );
+	NSString * data_type = NSStringFromWString ( atype );
 	NSArray * new_types = [NSArray arrayWithObject: data_type];
 	
 	[[NSPasteboard generalPasteboard] declareTypes: new_types owner: nil];
@@ -135,15 +135,15 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 #pragma mark Dialogs
 #pragma mark -
 
-WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder, bool choose_file )
+const std::wstring SelectFileOrFolder ( const std::wstring& prompt, const std::wstring& in_folder, bool choose_file )
 {
 	
 	NSOpenPanel* file_dialog = [NSOpenPanel openPanel];
 	
-	NSString * prompt_string = NSStringFromWStringAutoPtr ( prompt );
+	NSString * prompt_string = NSStringFromWString ( prompt );
 	[file_dialog setMessage: prompt_string];
 
-	NSString * default_directory = NSStringFromWStringAutoPtr ( in_folder );
+	NSString * default_directory = NSStringFromWString ( in_folder );
 	if ( [default_directory length] != 0 ) {
 		NSURL *directory_url = [NSURL fileURLWithPath: default_directory];
 		[file_dialog setDirectoryURL: directory_url];
@@ -185,34 +185,34 @@ WStringAutoPtr SelectFileOrFolder ( WStringAutoPtr prompt, WStringAutoPtr in_fol
 	
 	//	[prompt_string release];
 	
-	return WStringAutoPtrFromNSString ( file_path );
+	return WStringFromNSString ( file_path );
 	
 } // SelectFileOrFolder
 
 
-WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
+const std::wstring SelectFile ( const std::wstring& prompt, const std::wstring& in_folder )
 {
 	return SelectFileOrFolder ( prompt, in_folder, YES );
 }
 
 
-WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
+const std::wstring SelectFolder ( const std::wstring& prompt, const std::wstring& in_folder )
 {
 	return SelectFileOrFolder ( prompt, in_folder, NO );
 }
 
 
-WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr fileName, WStringAutoPtr inFolder )
+const std::wstring SaveFileDialog ( std::wstring& prompt, std::wstring& fileName, std::wstring& inFolder )
 {
 	NSSavePanel* file_dialog = [NSSavePanel savePanel];
 	
-	NSString * prompt_string = NSStringFromWStringAutoPtr ( prompt );
+	NSString * prompt_string = NSStringFromWString ( prompt );
 	[file_dialog setTitle: prompt_string ];
 
-	NSString * filename_string = NSStringFromWStringAutoPtr ( fileName );
+	NSString * filename_string = NSStringFromWString ( fileName );
 	[file_dialog setNameFieldStringValue: filename_string ];
 		
-	NSString * default_directory = NSStringFromWStringAutoPtr ( inFolder );
+	NSString * default_directory = NSStringFromWString ( inFolder );
 	if ( [default_directory length] != 0 ) {
 		NSURL *directory_url = [NSURL fileURLWithPath: default_directory];
 		[file_dialog setDirectoryURL: directory_url];
@@ -231,20 +231,22 @@ WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr fileName, 
 	//	[prompt_string release];
 	//	[filename_string release];
 
-	return WStringAutoPtrFromNSString ( file_path );
+	return WStringFromNSString ( file_path );
 	
 } // SaveFileDialog
 
 
-int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr ok_button, WStringAutoPtr cancel_button, WStringAutoPtr alternate_button )
+
+
+const int DisplayDialog ( std::wstring& title, std::wstring& message, std::wstring& ok_button, std::wstring& cancel_button, std::wstring& alternate_button )
 {
 	int button_pressed = 0;
 	
-	NSString * title_string = NSStringFromWStringAutoPtr ( title );
-	NSString * ok_button_string = NSStringFromWStringAutoPtr ( ok_button );
-	NSString * cancel_button_string = NSStringFromWStringAutoPtr ( cancel_button );
-	NSString * alternate_button_string = NSStringFromWStringAutoPtr ( alternate_button );
-	NSString * message_string = NSStringFromWStringAutoPtr ( message );
+	NSString * title_string = NSStringFromWString ( title );
+	NSString * ok_button_string = NSStringFromWString ( ok_button );
+	NSString * cancel_button_string = NSStringFromWString ( cancel_button );
+	NSString * alternate_button_string = NSStringFromWString ( alternate_button );
+	NSString * message_string = NSStringFromWString ( message );
 	
 	NSInteger response = NSRunAlertPanel (  ( title_string ),
 									@"%@", 
@@ -295,7 +297,7 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 #pragma mark -
 
 
-fmx::errcode DisplayProgressDialog ( WStringAutoPtr title, WStringAutoPtr description, const long maximum, const bool can_cancel )
+const fmx::errcode DisplayProgressDialog ( const std::wstring& title, const std::wstring& description, const long maximum, const bool can_cancel )
 {
 	
 	fmx::errcode error = kNoError;
@@ -311,8 +313,8 @@ fmx::errcode DisplayProgressDialog ( WStringAutoPtr title, WStringAutoPtr descri
 
 		if ( progressDialog != nil ) {
 
-			NSString * title_string = NSStringFromWStringAutoPtr ( title );
-			NSString * description_string = NSStringFromWStringAutoPtr ( description );
+			NSString * title_string = NSStringFromWString ( title );
+			NSString * description_string = NSStringFromWString ( description );
 	
 			[progressDialog show: title_string description: description_string maximumValue: maximum canCancel: can_cancel];
 
@@ -328,7 +330,7 @@ fmx::errcode DisplayProgressDialog ( WStringAutoPtr title, WStringAutoPtr descri
 }
 
 
-fmx::errcode UpdateProgressDialog ( const long value, WStringAutoPtr description )
+const fmx::errcode UpdateProgressDialog ( const long value, const std::wstring& description )
 {
 	fmx::errcode error = kNoError;
 	
@@ -336,8 +338,8 @@ fmx::errcode UpdateProgressDialog ( const long value, WStringAutoPtr description
 		
 		NSString * description_string;
 		
-		if ( !description->empty() ) {
-			description_string = NSStringFromWStringAutoPtr ( description );
+		if ( !description.empty() ) {
+			description_string = NSStringFromWString ( description );
 		} else {
 			description_string = NULL;
 		}
@@ -363,7 +365,7 @@ fmx::errcode UpdateProgressDialog ( const long value, WStringAutoPtr description
 #pragma mark -
 
 
-bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain )
+const bool SetPreference ( std::wstring& key, std::wstring& value, std::wstring& domain )
 {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
@@ -373,11 +375,11 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 	
 	if ( standardUserDefaults ) {
 
-		NSString * domain_name = NSStringFromWStringAutoPtr ( domain );
+		NSString * domain_name = NSStringFromWString ( domain );
 		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];		
 		
-		NSString * preference_key = NSStringFromWStringAutoPtr ( key );
-		NSString * preference_value = NSStringFromWStringAutoPtr ( value );
+		NSString * preference_key = NSStringFromWString ( key );
+		NSString * preference_value = NSStringFromWString ( value );
 		
 		NSMutableDictionary * new_preferences = [NSMutableDictionary dictionaryWithCapacity: [preferences count] + 1];
 		[new_preferences addEntriesFromDictionary: preferences];
@@ -396,7 +398,7 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 }
 
 
-WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
+const std::wstring GetPreference ( std::wstring& key, std::wstring& domain )
 {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
@@ -407,14 +409,14 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 		
 		[standardUserDefaults synchronize];
 		
-		NSString * domain_name = NSStringFromWStringAutoPtr ( domain );
+		NSString * domain_name = NSStringFromWString ( domain );
 		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];		
 
-		NSString * preference_key = NSStringFromWStringAutoPtr ( key );
+		NSString * preference_key = NSStringFromWString ( key );
 		preference_value = [preferences objectForKey: preference_key];
 	}
 	
-	WStringAutoPtr preference = WStringAutoPtrFromNSString ( preference_value );
+	std::wstring preference = WStringFromNSString ( preference_value );
 	
 	[pool drain];
 	
@@ -428,15 +430,15 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 #pragma mark -
 
 
-bool OpenURL ( WStringAutoPtr url )
+const bool OpenURL ( std::wstring& url )
 {	
-	return [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: NSStringFromWStringAutoPtr ( url ) ]];
+	return [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: NSStringFromWString ( url ) ]];
 }
 
 
-bool OpenFile ( WStringAutoPtr path )
+const bool OpenFile ( std::wstring& path )
 {	
-	return [[NSWorkspace sharedWorkspace] openFile: NSStringFromWStringAutoPtr ( path ) ];
+	return [[NSWorkspace sharedWorkspace] openFile: NSStringFromWString ( path ) ];
 }
 
 
@@ -444,7 +446,7 @@ bool OpenFile ( WStringAutoPtr path )
 #pragma mark Other (FMX)
 #pragma mark -
 
-unsigned long Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId )
+const unsigned long Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId )
 {
 	unsigned long returnResult = 0;
 	

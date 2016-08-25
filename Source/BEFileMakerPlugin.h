@@ -2,7 +2,7 @@
  BEFileMakerPlugin.h
  BaseElements Plug-In
  
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -24,12 +24,12 @@
 
 class BEFileMakerPlugin {
 	
-	fmx::QuadCharAutoPtr id;
+	fmx::QuadCharUniquePtr id;
 	std::vector<short> registered_functions;
 	
 public:
 	
-    BEFileMakerPlugin ( fmx::QuadCharAutoPtr plugin_id );
+    BEFileMakerPlugin ( fmx::QuadChar& plugin_id );
 	~BEFileMakerPlugin();
 	
     fmx::errcode RegisterHiddenFunction ( short function_id, fmx::ExtPluginType funcion_pointer, int minumum_parameters = 0, int maximum_parameters = NULL );

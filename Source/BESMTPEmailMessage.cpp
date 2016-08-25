@@ -30,7 +30,7 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	
 	message = new mimetic::MultipartMixed;
 
-	auto_ptr< BEValueList<string> > mail_to ( new BEValueList<string> ( to ) );
+	unique_ptr< BEValueList<string> > mail_to ( new BEValueList<string> ( to ) );
 	message->header().to ( mail_to->get_as_comma_separated() );
 
 	message->header().from ( from );
@@ -54,9 +54,9 @@ BESMTPEmailMessage::~BESMTPEmailMessage ( )
 #pragma mark -
 
 
-std::auto_ptr< BEValueList<std::string> > BESMTPEmailMessage::get_address_list ( const std::string& addresses )
+std::unique_ptr< BEValueList<std::string> > BESMTPEmailMessage::get_address_list ( const std::string& addresses )
 {
-	std::auto_ptr< BEValueList<std::string> > addresses_list ( new BEValueList<string> ( addresses, ",", true ) );
+	std::unique_ptr< BEValueList<std::string> > addresses_list ( new BEValueList<string> ( addresses, ",", true ) );
 	addresses_list->trim_values();
 	
 	return addresses_list;
@@ -65,7 +65,7 @@ std::auto_ptr< BEValueList<std::string> > BESMTPEmailMessage::get_address_list (
 
 void BESMTPEmailMessage::set_cc_addresses ( const std::string& email_addresses )
 {
-	auto_ptr< BEValueList<string> > cc ( new BEValueList<string> ( email_addresses ) );
+	unique_ptr< BEValueList<string> > cc ( new BEValueList<string> ( email_addresses ) );
 	if ( cc->not_empty() ) {
 		message->header().cc ( cc->get_as_comma_separated() );
 	}
@@ -74,7 +74,7 @@ void BESMTPEmailMessage::set_cc_addresses ( const std::string& email_addresses )
 
 void BESMTPEmailMessage::set_bcc_addresses ( const std::string& email_addresses )
 {
-	auto_ptr< BEValueList<string> > bcc ( new BEValueList<string> ( email_addresses ) );
+	unique_ptr< BEValueList<string> > bcc ( new BEValueList<string> ( email_addresses ) );
 	if ( bcc->not_empty() ) {
 		message->header().bcc ( bcc->get_as_comma_separated() );
 	}

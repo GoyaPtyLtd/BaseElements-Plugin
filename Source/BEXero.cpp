@@ -2,7 +2,7 @@
  BE_Xero.cpp
  BaseElements Plug-In
 
- Copyright (c) 2014~2015 Goya. All rights reserved.
+ Copyright (c) 2014~2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -40,7 +40,7 @@ const std::string xero_generate_key_pair ( BEX509 * x509 )
 
 			x509->set_private_key ( private_key );
 
-			std::auto_ptr<BEBio> bio ( new BEBio );
+			std::unique_ptr<BEBio> bio ( new BEBio );
 			generated_key = bio->extract( private_key );
 			generated_key.append ( x509->generate() );
 

@@ -20,9 +20,9 @@ using namespace std;
 using namespace boost::filesystem;
 
 
-bool recursive_directory_copy ( const path & from, const path & to  ) {
+const bool recursive_directory_copy ( const path & from, const path & to  ) {
 	
-	path base = from;
+	auto base = from;
 
 	if ( is_directory ( from ) ) {
 
@@ -32,12 +32,12 @@ bool recursive_directory_copy ( const path & from, const path & to  ) {
 		
 		for ( directory_iterator it ( from ); it != end_it; ++it ) {
 			
-			path relative = from;
+//			auto relative = from;
 			
 			path target = to;
 			target /= it->path().filename();
 			
-			bool failed = recursive_directory_copy ( it->path(), target );
+			auto failed = recursive_directory_copy ( it->path(), target );
 			if ( !failed ) {
 				return false;
 			}
@@ -48,7 +48,7 @@ bool recursive_directory_copy ( const path & from, const path & to  ) {
 		
 		// note: aliases & symlinks are not handled correctly
 		
-		copy ( from, to );
+		copy_file ( from, to );
 	}
 	
 	return true;
@@ -56,10 +56,10 @@ bool recursive_directory_copy ( const path & from, const path & to  ) {
 } // recursive_directory_copy
 
 
-BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::path & directory, const long file_type_wanted = kBE_FileType_ALL, const bool recurse = false )
+BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem::path & directory, const long file_type_wanted = kBE_FileType_ALL, const bool recurse = false )
 {
 	
-	BEValueListWideStringAutoPtr list_of_files ( new BEValueList<wstring> );
+	BEValueListWideStringUniquePtr list_of_files ( new BEValueList<wstring> );
 	
 	try {
 		
@@ -98,14 +98,15 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 } // list_files_in_directory
 
 
-fmx::errcode write_to_file ( const path& new_file, const vector<char>& contents, const ios_base::openmode flags )
+const fmx::errcode write_to_file ( const path& new_file, const vector<char>& contents, const ios_base::openmode flags )
 {
 	fmx::errcode error = kNoError;
 	
 	try {
 		
-		if ( ! exists ( new_file.parent_path() ) ) {
-			boost::filesystem::create_directories ( new_file.parent_path() );
+		const path parent_directory = new_file.parent_path ();
+		if ( ! exists ( parent_directory ) ) {
+			boost::filesystem::create_directories ( parent_directory );
 		}
 		
 		const ios_base::openmode mode = ios_base::out | flags;

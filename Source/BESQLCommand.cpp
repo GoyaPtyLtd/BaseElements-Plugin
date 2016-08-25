@@ -2,7 +2,7 @@
  BESQLCommand.cpp
  BaseElements Plug-In
  
- Copyright 2011-2014 Goya. All rights reserved.
+ Copyright 2011-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -22,10 +22,10 @@ extern errcode g_last_ddl_error;
 BESQLCommandAutoPtr g_ddl_command;
 
 
-BESQLCommand::BESQLCommand ( const TextAutoPtr _expression, const TextAutoPtr _filename )
+BESQLCommand::BESQLCommand ( const Text& _expression, const Text& _filename )
 {
-	expression->SetText ( *_expression );
-	filename->SetText ( *_filename );
+	expression->SetText ( _expression );
+	filename->SetText ( _filename );
 
 	column_separator->Assign ( "\t" );
 	row_separator->Assign ( FILEMAKER_END_OF_LINE );
@@ -36,7 +36,7 @@ BESQLCommand::BESQLCommand ( const TextAutoPtr _expression, const TextAutoPtr _f
 
 void BESQLCommand::execute ( )
 {
-	const ExprEnvAutoPtr environment;
+	const ExprEnvUniquePtr environment;
 	FMX_SetToCurrentEnv ( &(*environment) );
 	execute ( *environment );
 }
@@ -50,12 +50,14 @@ void BESQLCommand::execute ( const ExprEnv& environment )
 	if ( ddl && !waiting ) {
 
 		// auto_ptrs : do not use the copy constructor
-		BESQLCommandAutoPtr command ( new BESQLCommand ( expression, filename ) );
-		command->set_column_separator ( column_separator );
-		command->set_row_separator ( row_separator );
+		BESQLCommandAutoPtr command ( new BESQLCommand ( *expression, *filename ) );
+		command->set_column_separator ( *column_separator );
+		command->set_row_separator ( *row_separator );
+//		BESQLCommandAutoPtr command ( this );
 		command->wait();
 		
-		g_ddl_command = command;
+		g_ddl_command.swap ( command );
+//		g_ddl_command.reset ( command );
 
 	} else {
 		
@@ -71,9 +73,9 @@ void BESQLCommand::execute ( const ExprEnv& environment )
 
 
 
-TextAutoPtr BESQLCommand::get_text_result ( void )
+TextUniquePtr BESQLCommand::get_text_result ( void )
 {
-	TextAutoPtr	text_result;
+	TextUniquePtr	text_result;
 
 	if ( !waiting ) {
 		const FMX_UInt32 number_of_rows = result->Size();
@@ -106,29 +108,29 @@ TextAutoPtr BESQLCommand::get_text_result ( void )
 
 
 
-void BESQLCommand::set_column_separator ( const TextAutoPtr new_column_separator )
+void BESQLCommand::set_column_separator ( const Text& new_column_separator )
 {
-	column_separator->SetText ( *new_column_separator );
+	column_separator->SetText ( new_column_separator );
 }
 
 
 
-void BESQLCommand::set_row_separator ( const TextAutoPtr new_row_separator )
+void BESQLCommand::set_row_separator ( const Text& new_row_separator )
 {
-	row_separator->SetText ( *new_row_separator );
+	row_separator->SetText ( new_row_separator );
 }
 
 
 
 bool BESQLCommand::is_ddl_command ( void ) const 
 {
-	const TextAutoPtr alter;
+	const TextUniquePtr alter;
 	alter->Assign ( "ALTER" );
 	
-	const TextAutoPtr create;
+	const TextUniquePtr create;
 	create->Assign ( "CREATE" );
 	
-	const TextAutoPtr drop;
+	const TextUniquePtr drop;
 	drop->Assign ( "DROP" );
 		
 	bool is_ddl = expression->FindIgnoringCase ( *alter, 0 ) == 0 ||

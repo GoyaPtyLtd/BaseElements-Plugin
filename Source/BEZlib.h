@@ -2,7 +2,7 @@
  BEZlib.h
  BaseElements Plug-In
  
- Copyright 2011-2015 Goya. All rights reserved.
+ Copyright 2011-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -21,8 +21,8 @@
 #include <vector>
 
 
-const long UnZip ( const StringAutoPtr archive, const StringAutoPtr output_directory );
-const long Zip ( const BEValueList<std::string> * filename, const StringAutoPtr archive );
+const long UnZip ( const std::string& archive, const std::string& output_directory );
+const long Zip ( const BEValueList<std::string> * filename, const std::string& archive );
 
 const std::vector<char> CompressContainerStream ( const std::vector<char> data );
 const std::vector<char> UncompressContainerStream ( const std::vector<char> data );

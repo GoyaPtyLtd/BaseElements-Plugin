@@ -472,7 +472,7 @@
 		C7DEDEEB07E10BF3002283F3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Goya;
 			};
 			buildConfigurationList = 6FD50587097C3165009399BF /* Build configuration list for PBXProject "BaseElements" */;
@@ -561,9 +561,8 @@
 		4DCD49821A195B0C00EFCF7F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -598,7 +597,7 @@
 				STRIP_STYLE = "non-global";
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = x86_64;
 				VERSION_STRING = 3.3;
 			};
 			name = Release;
@@ -606,9 +605,8 @@
 		4DCD49831A195B0C00EFCF7F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -645,7 +643,7 @@
 				STRIP_STYLE = "non-global";
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = x86_64;
 				VERSION_STRING = 3.3;
 			};
 			name = Debug;
@@ -653,7 +651,6 @@
 		6FD50588097C3165009399BF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_CONSTANT_CONVERSION = NO;
@@ -729,7 +726,7 @@
 				STRIP_STYLE = "non-global";
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = x86_64;
 				VERSION_STRING = 3.3;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -742,7 +739,6 @@
 		6FD50589097C3165009399BF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_CONSTANT_CONVERSION = NO;
@@ -799,6 +795,7 @@
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Dfopen64=fopen",
 					"-Dftello64=ftello",
@@ -818,7 +815,7 @@
 				STRIP_STYLE = "non-global";
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = x86_64;
 				VERSION_STRING = 3.3;
 				WARNING_CFLAGS = (
 					"-Wall",

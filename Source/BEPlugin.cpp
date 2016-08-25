@@ -82,8 +82,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	InitialiseForPlatform ( );
 	
 	
-	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
-	g_be_plugin = new BEFileMakerPlugin ( plugin_id );
+	QuadCharUniquePtr plugin_id ( PLUGIN_ID );
+	g_be_plugin = new BEFileMakerPlugin ( *plugin_id );
 	g_be_plugin->set_fmx_application ( plugin_call->parm1 );
 	
 	g_be_plugin->RegisterFunction ( kBE_Version, BE_Version );

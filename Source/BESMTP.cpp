@@ -87,7 +87,7 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 	// who we send this to
 	
 	struct curl_slist *recipients = NULL;
-	BEValueListStringAutoPtr send_to = message->to_address();
+	BEValueListStringUniquePtr send_to = message->to_address();
 	send_to->append ( *(message->cc_addresses()) );
 	send_to->append ( *(message->bcc_addresses()) );
 	

@@ -174,8 +174,8 @@ FMX_PROC(errcode) BE_ClipboardData ( short /* funcId */, const ExprEnv& /* envir
 	
 	try {
 		
-		WStringAutoPtr atype = ParameterAsWideString ( parameters, 0 );
-		StringAutoPtr clipboard_contents = ClipboardData ( atype );
+		auto atype = ParameterAsWideString ( parameters );
+		auto clipboard_contents = ClipboardData ( atype );
 		SetResult ( clipboard_contents, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
@@ -195,8 +195,8 @@ FMX_PROC(errcode) BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* en
 	
 	try {
 
-		StringAutoPtr to_copy = ParameterAsUTF8String ( parameters, 0 );
-		WStringAutoPtr atype = ParameterAsWideString ( parameters, 1 );
+		std::string to_copy = ParameterAsUTF8String ( parameters );
+		std::wstring atype = ParameterAsWideString ( parameters, 1 );
 		bool success = SetClipboardData ( to_copy, atype );
 		SetResult ( success, results );
 
@@ -358,8 +358,8 @@ FMX_PROC(errcode) BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* en
 
 	try {
 
-		path file = ParameterAsPath ( parameters, 0 );
-		StringAutoPtr contents = ReadFileAsUTF8 ( file );
+		auto file = ParameterAsPath ( parameters );
+		auto contents = ReadFileAsUTF8 ( file );
 
 		SetResult ( contents, results );
 
@@ -396,8 +396,8 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 			}
 		}
 		
-		StringAutoPtr text_to_write = ParameterAsUTF8String ( parameters, 1 );
-		vector<char> out = ConvertTextEncoding ( (char *)text_to_write->c_str(), text_to_write->size(), g_text_encoding, UTF8 );
+		std::string text_to_write = ParameterAsUTF8String ( parameters, 1 );
+		vector<char> out = ConvertTextEncoding ( (char *)text_to_write.c_str(), text_to_write.size(), g_text_encoding, UTF8 );
 		
 		error = write_to_file ( path, out, mode );
 
@@ -455,12 +455,12 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 			}
 			
 			// swap the byte order for big-endian files
-			unichar * utf16 = (unichar *)codepoint;
+			unichar16 * utf16 = (unichar16 *)codepoint;
 			char byte_swapped[size];
 			if ( big_endian ) {
 				byte_swapped[0] = codepoint[1];
 				byte_swapped[1] = codepoint[0];
-				utf16 = (unichar *)byte_swapped;
+				utf16 = (unichar16 *)byte_swapped;
 			}
 			
 			// only check codepoints in the bmp (so no 4-byte codepoints)
@@ -519,8 +519,8 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 	
 	try {
 		
-		vector<char> field_contents = ParameterAsVectorChar ( parameters );
-		path destination = ParameterAsPath ( parameters, 1 );
+		auto field_contents = ParameterAsVectorChar ( parameters );
+		auto destination = ParameterAsPath ( parameters, 1 );
 		
 		error = write_to_file ( destination, field_contents );
 
@@ -643,7 +643,7 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 		
 		try {
 
-			BEValueListWideStringAutoPtr list_of_files ( list_files_in_directory ( directory, file_type_wanted, include_subfolders ) );
+			BEValueListWideStringUniquePtr list_of_files ( list_files_in_directory ( directory, file_type_wanted, include_subfolders ) );
 			if ( ! use_full_path ) {
 				list_of_files->remove_prefix ( directory.wstring() );
 			}
@@ -675,10 +675,10 @@ FMX_PROC(errcode) BE_SelectFile ( short /* funcId */, const ExprEnv& /* environm
 	
 	try {
 		
-		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
-		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 1 );
+		std::wstring prompt = ParameterAsWideString ( parameters );
+		std::wstring inFolder = ParameterAsWideString ( parameters, 1 );
 		
-		WStringAutoPtr files ( SelectFile ( prompt, inFolder ) );
+		std::wstring files ( SelectFile ( prompt, inFolder ) );
 		
 		SetResult ( files, results );
 		
@@ -699,10 +699,10 @@ FMX_PROC(errcode) BE_SelectFolder ( short /* funcId */, const ExprEnv& /* enviro
 	
 	try {
 		
-		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
-		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 1 );
+		std::wstring prompt = ParameterAsWideString ( parameters );
+		std::wstring inFolder = ParameterAsWideString ( parameters, 1 );
 		
-		WStringAutoPtr folder = SelectFolder ( prompt, inFolder );
+		std::wstring folder = SelectFolder ( prompt, inFolder );
 		
 		SetResult ( folder, results );
 		
@@ -723,11 +723,11 @@ FMX_PROC(errcode) BE_SaveFileDialog ( short /* funcId */, const ExprEnv& /* envi
 	
 	try {
 		
-		WStringAutoPtr prompt = ParameterAsWideString ( parameters, 0 );
-		WStringAutoPtr fileName = ParameterAsWideString ( parameters, 1 );
-		WStringAutoPtr inFolder = ParameterAsWideString ( parameters, 2 );
+		std::wstring prompt = ParameterAsWideString ( parameters );
+		std::wstring fileName = ParameterAsWideString ( parameters, 1 );
+		std::wstring inFolder = ParameterAsWideString ( parameters, 2 );
 		
-		WStringAutoPtr folder = SaveFileDialog ( prompt, fileName, inFolder );
+		std::wstring folder = SaveFileDialog ( prompt, fileName, inFolder );
 		
 		SetResult ( folder, results );
 		
@@ -748,11 +748,11 @@ FMX_PROC(errcode) BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* envir
 		
 	try {
 
-		WStringAutoPtr title = ParameterAsWideString ( parameters, 0 );
-		WStringAutoPtr message = ParameterAsWideString ( parameters, 1 );
-		WStringAutoPtr ok_button = ParameterAsWideString ( parameters, 2 );
-		WStringAutoPtr cancel_button = ParameterAsWideString ( parameters, 3 );
-		WStringAutoPtr alternate_button = ParameterAsWideString ( parameters, 4 );
+		std::wstring title = ParameterAsWideString ( parameters );
+		std::wstring message = ParameterAsWideString ( parameters, 1 );
+		std::wstring ok_button = ParameterAsWideString ( parameters, 2 );
+		std::wstring cancel_button = ParameterAsWideString ( parameters, 3 );
+		std::wstring alternate_button = ParameterAsWideString ( parameters, 4 );
 	
 		int response = DisplayDialog ( title, message, ok_button, cancel_button, alternate_button );
 		SetResult ( response, results );
@@ -775,8 +775,8 @@ FMX_PROC(errcode) BE_ProgressDialog ( short /* funcId */, const ExprEnv& environ
 	
 	try {
 		
-		WStringAutoPtr title = ParameterAsWideString ( parameters, 0 );
-		WStringAutoPtr description = ParameterAsWideString ( parameters, 1 );
+		std::wstring title = ParameterAsWideString ( parameters );
+		std::wstring description = ParameterAsWideString ( parameters, 1 );
 		long maximum = ParameterAsLong ( parameters, 2, 0 ); // 0 == indeterminite
 		
 		// allow the user to cancel ?
@@ -805,7 +805,7 @@ FMX_PROC(errcode) BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& 
 		long value = ParameterAsLong ( parameters, 0, 0 );
 		value = value < 0 ? 0 : value;
 		
-		WStringAutoPtr description = ParameterAsWideString ( parameters, 1 );
+		auto description = ParameterAsWideString ( parameters, 1 );
 		
 		error = UpdateProgressDialog ( value, description );
 		
@@ -835,7 +835,7 @@ FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environme
 	try {
 		
 		path xml_path = ParameterAsPath ( parameters );
-		StringAutoPtr xslt = ParameterAsUTF8String ( parameters, 1 );
+		auto xslt = ParameterAsUTF8String ( parameters, 1 );
 		path csv_path = ParameterAsPath ( parameters, 2 );
 		
 		SetResult ( *ApplyXSLT ( xml_path, xslt, csv_path ), results );
@@ -857,8 +857,8 @@ FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* e
 	
 	try {
 		
-		StringAutoPtr xml = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr xslt = ParameterAsUTF8String ( parameters, 1 );
+		auto xml = ParameterAsUTF8String ( parameters );
+		auto xslt = ParameterAsUTF8String ( parameters, 1 );
 		
 		results.SetAsText( *ApplyXSLTInMemory ( xml, xslt ), parameters.At(0).GetLocale() );
 		
@@ -879,9 +879,9 @@ FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment *
 	
 	try {
 		
-		StringAutoPtr xml = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr xpath = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr ns_list ( new string );
+		auto xml = ParameterAsUTF8String ( parameters );
+		auto xpath = ParameterAsUTF8String ( parameters, 1 );
+		std::string ns_list;
 
 		const unsigned long number_of_parameters = parameters.Size();
 		if ( number_of_parameters > 2 ) {
@@ -914,15 +914,15 @@ FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment *
 FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
-	TextAutoPtr text;
+	TextUniquePtr text;
 	
 	try {
 
-		StringAutoPtr xml = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr xpath = ParameterAsUTF8String ( parameters, 1 );
+		auto xml = ParameterAsUTF8String ( parameters );
+		auto xpath = ParameterAsUTF8String ( parameters, 1 );
 
 		const unsigned long number_of_parameters = parameters.Size();
-		StringAutoPtr ns_list ( new string );
+		std::string ns_list;
 		if ( number_of_parameters > 2 ) {
 			ns_list = ParameterAsUTF8String ( parameters, 2 );
 		}
@@ -947,12 +947,12 @@ FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* envir
 	
 	try {
 		
-		path input_file = ParameterAsPath ( parameters, 0 );
+		path input_file = ParameterAsPath ( parameters );
 		path output_file = ParameterAsPath ( parameters, 1 );
-		StringAutoPtr node_names = ParameterAsUTF8String ( parameters, 2 );
+		std::string node_names = ParameterAsUTF8String ( parameters, 2 );
 		
 		vector<string> node_names_vector;
-		boost::tokenizer<> tokeniser ( *node_names );
+		boost::tokenizer<> tokeniser ( node_names );
 		for ( boost::tokenizer<>::iterator it = tokeniser.begin() ; it != tokeniser.end() ; ++it ) {
 			node_names_vector.push_back ( *it );
 		}
@@ -978,9 +978,9 @@ FMX_PROC(errcode) BE_XML_Parse ( short /* funcId */, const ExprEnv& /* environme
 	
 	try {
 		
-		path input_file = ParameterAsPath ( parameters, 0 );
+		path input_file = ParameterAsPath ( parameters );
 		
-		auto_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
+		unique_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
 		string result = reader->parse();
 		
 		SetResult ( result, results );
@@ -1005,7 +1005,7 @@ FMX_PROC(errcode) BE_SplitBEFileNodes ( short /* funcId */, const ExprEnv& /* en
 	
 	try {
 		
-		path input_file = ParameterAsPath ( parameters, 0 );
+		path input_file = ParameterAsPath ( parameters );
 		
 		int result = SplitBEXMLFiles ( input_file );
 				
@@ -1038,10 +1038,10 @@ FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environmen
 	
 	try {
 		
-		StringAutoPtr json = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr json_path_expression = ParameterAsUTF8String ( parameters, 1 );
+		auto json = ParameterAsUTF8String ( parameters );
+		auto json_path_expression = ParameterAsUTF8String ( parameters, 1 );
 		
-		auto_ptr<BEJSON> json_document ( new BEJSON ( json ) );
+		unique_ptr<BEJSON> json_document ( new BEJSON ( json ) );
 		json_document->json_path_query ( json_path_expression, results );
 		
 	} catch ( BEJSON_Exception& e ) {
@@ -1089,9 +1089,9 @@ FMX_PROC(errcode) BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* envi
 	
 	try {
 		
-		StringAutoPtr json = ParameterAsUTF8String ( parameters, 0 );
+		auto json = ParameterAsUTF8String ( parameters );
 		
-		auto_ptr<BEJSON> json_document ( new BEJSON ( json ) );
+		unique_ptr<BEJSON> json_document ( new BEJSON ( json ) );
 		json_document->array_size ( results );
 		
 	} catch ( BEJSON_Exception& e ) {
@@ -1117,20 +1117,20 @@ FMX_PROC(errcode) BE_JSON_Encode ( short /* funcId */, const ExprEnv& /* environ
 	
 	try {
 		
-		StringAutoPtr key = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr type = ParameterAsUTF8String ( parameters, 2 );
+		auto key = ParameterAsUTF8String ( parameters );
+		auto type = ParameterAsUTF8String ( parameters, 2 );
 		
 		if ( parameters.Size() == 1 ) {
 
-			string out = "\"" + *key + "\":";
+			string out = "\"" + key + "\":";
 			SetResult ( out, results );
 
 		} else {
 
-			auto_ptr<BEJSON> json_document ( new BEJSON ( ) );
-			StringAutoPtr json = json_document->encode ( key, parameters.At ( 1 ), type );
-			json->erase ( 0, 1 ); // remove {
-			json->erase ( json->length() - 1 ); // remove }
+			unique_ptr<BEJSON> json_document ( new BEJSON ( ) );
+			auto json = json_document->encode ( key, parameters.At ( 1 ), type );
+			json.erase ( 0, 1 ); // remove {
+			json.erase ( json.length() - 1 ); // remove }
 			SetResult ( json, results );
 
 		}
@@ -1163,9 +1163,9 @@ FMX_PROC(fmx::errcode) BE_EvaluateJavaScript ( short /* funcId */, const fmx::Ex
 	
 	try {
 		
-		StringAutoPtr javaScript = ParameterAsUTF8String ( parameters, 0 );
+		auto javaScript = ParameterAsUTF8String ( parameters );
 		
-		StringAutoPtr jsResult = Evaluate_JavaScript ( javaScript );
+		auto jsResult = Evaluate_JavaScript ( javaScript );
 		
 		SetResult ( jsResult, results );
 		
@@ -1191,8 +1191,8 @@ FMX_PROC(fmx::errcode) BE_ArraySetFromValueList ( short /* funcId */, const fmx:
 	
 	try {
 		
-		StringAutoPtr value_list = ParameterAsUTF8String ( parameters );
-		BEValueListStringSharedPtr array ( new BEValueList<string> ( *value_list ) );
+		auto value_list = ParameterAsUTF8String ( parameters );
+		BEValueListStringSharedPtr array ( new BEValueList<string> ( value_list ) );
 		
 		arrays.push_back ( array );
 		const size_t size = arrays.size();
@@ -1306,12 +1306,12 @@ FMX_PROC(errcode) BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environ
 	
 	try {
 		
-		WStringAutoPtr key = ParameterAsWideString ( parameters, 0 );
-		WStringAutoPtr value = ParameterAsWideString ( parameters, 1 );
-		WStringAutoPtr domain = ParameterAsWideString ( parameters, 2 );
+		auto key = ParameterAsWideString ( parameters );
+		auto value = ParameterAsWideString ( parameters, 1 );
+		auto domain = ParameterAsWideString ( parameters, 2 );
 		
-		if ( domain->empty() ) {
-			domain->assign ( USER_PREFERENCES_DOMAIN );
+		if ( domain.empty() ) {
+			domain.assign ( USER_PREFERENCES_DOMAIN );
 		}
 
 		SetResult ( SetPreference ( key, value, domain ), results );
@@ -1334,11 +1334,11 @@ FMX_PROC(errcode) BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environ
 	
 	try {
 		
-		WStringAutoPtr key = ParameterAsWideString ( parameters, 0 );
-		WStringAutoPtr domain = ParameterAsWideString ( parameters, 1 );
+		auto key = ParameterAsWideString ( parameters );
+		auto domain = ParameterAsWideString ( parameters, 1 );
 		
-		if ( domain->empty() ) {
-			domain->assign ( USER_PREFERENCES_DOMAIN );
+		if ( domain.empty() ) {
+			domain.assign ( USER_PREFERENCES_DOMAIN );
 		}
 		
 		SetResult ( GetPreference ( key, domain ), results );
@@ -1367,8 +1367,8 @@ FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */,
 	
 	try {
 		
-		StringAutoPtr archive = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
+		auto archive = ParameterAsUTF8String ( parameters );
+		auto output_directory = ParameterAsUTF8String ( parameters, 1 );
 
 		error = (fmx::errcode)UnZip ( archive, output_directory );
 		SetResult ( error, results );
@@ -1393,8 +1393,8 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 	
 	try {
 		
-		const BEValueList<string> * files  = new BEValueList<string> ( *ParameterAsUTF8String ( parameters, 0 ) );
-		StringAutoPtr output_directory = ParameterAsUTF8String ( parameters, 1 );
+		auto files  = new const BEValueList<string> ( ParameterAsUTF8String ( parameters ) );
+		auto output_directory = ParameterAsUTF8String ( parameters, 1 );
 
 		error = (fmx::errcode)Zip ( files, output_directory );
 		SetResult ( error, results );
@@ -1421,15 +1421,15 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 	
 	try {
 		
-		StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
+		auto text = ParameterAsUTF8String ( parameters );
+		auto filename = ParameterAsUTF8String ( parameters, 1 );
 		
 		// decode it...
 		vector<char> data = Base64_Decode ( text );
-		if ( filename->empty() ) {
+		if ( filename.empty() ) {
 			SetResult ( data, results );
 		} else {
-			SetResult ( *filename, data, results );
+			SetResult ( filename, data, results );
 		}
 		
 	} catch ( bad_alloc& /* e */ ) {
@@ -1450,8 +1450,8 @@ FMX_PROC(errcode) BE_Base64_Encode ( short funcId, const ExprEnv& /* environment
 	
 	try {
 
-		vector<char> data = ParameterAsVectorChar ( parameters, 0 );
-		StringAutoPtr base64 = Base64_Encode ( data, funcId == kBE_Base64_URL_Encode );
+		auto data = ParameterAsVectorChar ( parameters );
+		auto base64 = Base64_Encode ( data, funcId == kBE_Base64_URL_Encode );
 		
 		SetResult ( base64, results );
 				
@@ -1473,11 +1473,11 @@ FMX_PROC(errcode) BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* envir
 	
 	try {
 		
-		StringAutoPtr encoding = ParameterAsUTF8String ( parameters, 0 );
+		auto encoding = ParameterAsUTF8String ( parameters );
 		
-		iconv_t conversion = iconv_open ( encoding->c_str(), encoding->c_str() );
+		iconv_t conversion = iconv_open ( encoding.c_str(), encoding.c_str() );
 		if ( conversion != (iconv_t)-1 ) {
-			SetTextEncoding ( *encoding );
+			SetTextEncoding ( encoding );
 			iconv_close ( conversion );
 		 } else {
 			error = errno;
@@ -1505,7 +1505,7 @@ FMX_PROC(errcode) BE_ContainerIsCompressed ( short /*funcId*/, const ExprEnv& /*
 		
 		if ( (parameters.At(0)).GetNativeType() == fmx::Data::kDTBinary ) {
 			
-			const BinaryDataAutoPtr data_stream ( parameters.AtAsBinaryData ( 0 ) );
+			const BinaryDataUniquePtr data_stream ( parameters.AtAsBinaryData ( 0 ) );
 
 // defeat: Returning null reference (within a call to 'operator*')
 #ifndef __clang_analyzer__
@@ -1539,10 +1539,10 @@ FMX_PROC(errcode) BE_ContainerCompress ( short /*funcId*/, const ExprEnv& /* env
 	
 	try {
 		
-		vector<char> to_compress = ParameterAsVectorChar ( parameters );
-		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
+		auto to_compress = ParameterAsVectorChar ( parameters );
+		auto filename = ParameterAsUTF8String ( parameters, 1 );
 
-		SetResult ( *filename, to_compress, results, COMPRESSED_CONTAINER_TYPE );
+		SetResult ( filename, to_compress, results, COMPRESSED_CONTAINER_TYPE );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
@@ -1563,10 +1563,10 @@ FMX_PROC(errcode) BE_ContainerUncompress ( short /*funcId*/, const ExprEnv& /* e
 	
 	try {
 		
-		vector<char> gzipped = ParameterAsVectorChar ( parameters );
-		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
+		auto gzipped = ParameterAsVectorChar ( parameters );
+		auto filename = ParameterAsUTF8String ( parameters, 1 );
 
-		SetResult ( *filename, gzipped, results );
+		SetResult ( filename, gzipped, results );
 		
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
@@ -1587,14 +1587,14 @@ FMX_PROC(errcode) BE_Gzip ( short /*funcId*/, const ExprEnv& /* environment */, 
 	
 	try {
 		
-		const vector<char> to_compress = ParameterAsVectorChar ( parameters );
+		auto to_compress = ParameterAsVectorChar ( parameters );
 		if ( !to_compress.empty() ) {
 			
 			const vector<char> compressed = CompressContainerStream ( to_compress );
 			
 			path filename = ParameterAsPath ( parameters, 1 );
 			if ( filename.empty() ) {
-				filename = *ParameterFileName ( parameters );
+				filename = ParameterFileName ( parameters );
 				filename += GZIP_FILE_EXTENSION;
 			}
 			
@@ -1628,7 +1628,7 @@ FMX_PROC(errcode) BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */
 			
 			path filename = ParameterAsPath ( parameters, 1 );
 			if ( filename.empty() ) {
-				filename = *ParameterFileName ( parameters );
+				filename = ParameterFileName ( parameters );
 				if ( filename.extension() == GZIP_FILE_EXTENSION ) {
 					filename.replace_extension ( "" );
 				}
@@ -1661,12 +1661,12 @@ FMX_PROC(errcode) BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 	
 	try {
 		
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
+		auto password = ParameterAsUTF8String ( parameters );
+		auto text = ParameterAsUTF8String ( parameters, 1 );
 		
 		string key;
 		vector<char> input_vector;
-		GenerateKeyAndInputVector ( *password, key, input_vector );
+		GenerateKeyAndInputVector ( password, key, input_vector );
 		
 		// escape the delimiter we use below
 		replace ( input_vector.begin(), input_vector.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
@@ -1674,10 +1674,10 @@ FMX_PROC(errcode) BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		vector<char> output_to_encode ( input_vector.begin(), input_vector.end() );
 		output_to_encode.push_back ( FILEMAKER_END_OF_LINE_CHAR );
 		
-		vector<char> encrypted_data = Encrypt_AES ( key, *text, input_vector );
+		vector<char> encrypted_data = Encrypt_AES ( key, text, input_vector );
 		output_to_encode.insert ( output_to_encode.end(), encrypted_data.begin(), encrypted_data.end() );
 		
-		StringAutoPtr base64 = Base64_Encode ( output_to_encode );
+		auto base64 = Base64_Encode ( output_to_encode );
 		SetResult ( base64, results );
 		
 		
@@ -1701,12 +1701,12 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 	
 	try {
 		
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
+		auto password = ParameterAsUTF8String ( parameters );
+		auto text = ParameterAsUTF8String ( parameters, 1 );
 		
 		string key;
 		vector<char> unwanted;
-		GenerateKeyAndInputVector ( *password, key, unwanted );
+		GenerateKeyAndInputVector ( password, key, unwanted );
 		
 		vector<char> decoded = Base64_Decode ( text );
 		
@@ -1749,17 +1749,17 @@ FMX_PROC(errcode) BE_HTTP_GET ( short /* funcId */, const ExprEnv& /* environmen
 	
 	try {
 		
-		StringAutoPtr url = ParameterAsUTF8String ( parameters );
-		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
+		auto url = ParameterAsUTF8String ( parameters );
+		auto filename = ParameterAsUTF8String ( parameters, 1 );
+		auto username = ParameterAsUTF8String ( parameters, 2 );
+		auto password = ParameterAsUTF8String ( parameters, 3 );
 		
 		// not saving to file so do not supply the filename here
-		BECurl curl ( *url, kBE_HTTP_METHOD_GET, "", *username, *password );
+		BECurl curl ( url, kBE_HTTP_METHOD_GET, "", username, password );
 		vector<char> data = curl.perform_action ( );
 		error = g_last_error;
 		if ( error == kNoError ) {
-			SetResult ( *filename, data, results );
+			SetResult ( filename, data, results );
 		}
 		
 	} catch ( bad_alloc& /* e */ ) {
@@ -1782,12 +1782,12 @@ FMX_PROC(errcode) BE_HTTP_GET_File ( short /* funcId */, const ExprEnv& /* envir
 	
 	try {
 		
-		StringAutoPtr url = ParameterAsUTF8String ( parameters );
+		auto url = ParameterAsUTF8String ( parameters );
 		path filename = ParameterAsPath ( parameters, 1 );
-		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
+		auto username = ParameterAsUTF8String ( parameters, 2 );
+		auto password = ParameterAsUTF8String ( parameters, 3 );
 		
-		BECurl curl ( *url, kBE_HTTP_METHOD_GET, filename, *username, *password );
+		BECurl curl ( url, kBE_HTTP_METHOD_GET, filename, username, password );
 		vector<char> data = curl.perform_action ( );
 		error = g_last_error;
 		
@@ -1810,37 +1810,37 @@ FMX_PROC(errcode) BE_HTTP_POST_PUT_PATCH ( short funcId, const ExprEnv& /* envir
 	
 	try {
 		
-		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
+		auto url = ParameterAsUTF8String ( parameters );
+		auto username = ParameterAsUTF8String ( parameters, 2 );
+		auto password = ParameterAsUTF8String ( parameters, 3 );
 				
 		vector<char> response;
 		
 		if ( funcId == kBE_HTTP_POST ) {
 
-			StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
-			BECurl curl ( *url, kBE_HTTP_METHOD_POST, "", *username, *password, *post_parameters );
+			auto post_parameters = ParameterAsUTF8String ( parameters, 1 );
+			BECurl curl ( url, kBE_HTTP_METHOD_POST, "", username, password, post_parameters );
 			response =  curl.perform_action ( );
 		
 		
 		} else if ( funcId == kBE_HTTP_PATCH ) {
 			
-			StringAutoPtr post_parameters = ParameterAsUTF8String ( parameters, 1 );
-			BECurl curl ( *url, kBE_HTTP_METHOD_PATCH, "", *username, *password, *post_parameters );
+			auto post_parameters = ParameterAsUTF8String ( parameters, 1 );
+			BECurl curl ( url, kBE_HTTP_METHOD_PATCH, "", username, password, post_parameters );
 			response =  curl.perform_action ( );
 			
 			
 		} else if ( funcId == kBE_HTTP_PUT_File ) {
 
 			path filename = ParameterAsPath ( parameters, 1 );
-			BECurl curl ( *url, kBE_HTTP_METHOD_PUT, filename, *username, *password );
+			BECurl curl ( url, kBE_HTTP_METHOD_PUT, filename, username, password );
 			response = curl.perform_action ( );
 			
 			
 		} else { // kBE_HTTP_PUT_DATA
 			
 			vector<char> data = ParameterAsVectorChar ( parameters, 1 );
-			BECurl curl ( *url, kBE_HTTP_METHOD_PUT, "", *username, *password, "", data );
+			BECurl curl ( url, kBE_HTTP_METHOD_PUT, "", username, password, "", data );
 			response = curl.perform_action ( );
 			
 		}
@@ -1868,11 +1868,11 @@ FMX_PROC(errcode) BE_HTTP_DELETE ( short /* funcId */, const ExprEnv& /* environ
 	
 	try {
 		
-		StringAutoPtr url = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr username = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
+		auto url = ParameterAsUTF8String ( parameters );
+		auto username = ParameterAsUTF8String ( parameters, 1 );
+		auto password = ParameterAsUTF8String ( parameters, 2 );
 		
-		BECurl curl ( *url, kBE_HTTP_METHOD_DELETE, "", *username, *password );
+		BECurl curl ( url, kBE_HTTP_METHOD_DELETE, "", username, password );
 		vector<char> data = curl.perform_action ( );
 		error = g_last_error;
 		if ( error == kNoError ) {
@@ -1917,7 +1917,7 @@ FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& 
 	
 	try {
 		
-		StringAutoPtr headers ( new string ( g_http_response_headers ) );
+		auto headers ( g_http_response_headers );
 		SetResult ( headers, results );
 
 	} catch ( bad_alloc& /* e */ ) {
@@ -1938,13 +1938,13 @@ FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv&
 	
 	try {
 		
-		StringAutoPtr name = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr value = ParameterAsUTF8String ( parameters, 1 );
+		auto name = ParameterAsUTF8String ( parameters );
+		auto value = ParameterAsUTF8String ( parameters, 1 );
 		
-		if ( value->empty() ) {
-			g_http_custom_headers.erase ( *name );
+		if ( value.empty() ) {
+			g_http_custom_headers.erase ( name );
 		} else {
-			g_http_custom_headers [ *name ] = *value;
+			g_http_custom_headers [ name ] = value;
 		}
 		
 		SetResult ( g_last_error, results );
@@ -1967,10 +1967,10 @@ FMX_PROC(errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* envi
 	
 	try {
 		
-		g_http_proxy.host = *ParameterAsUTF8String ( parameters, 0 );
-		g_http_proxy.port = *ParameterAsUTF8String ( parameters, 1 );
-		g_http_proxy.username = *ParameterAsUTF8String ( parameters, 2 );
-		g_http_proxy.password = *ParameterAsUTF8String ( parameters, 3 );
+		g_http_proxy.host = ParameterAsUTF8String ( parameters );
+		g_http_proxy.port = ParameterAsUTF8String ( parameters, 1 );
+		g_http_proxy.username = ParameterAsUTF8String ( parameters, 2 );
+		g_http_proxy.password = ParameterAsUTF8String ( parameters, 3 );
 
 		SetResult ( g_last_error, results );
 		
@@ -1993,7 +1993,7 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 	
 	try {
 		
-		const StringAutoPtr option = ParameterAsUTF8String ( parameters );
+		auto option = ParameterAsUTF8String ( parameters );
 		
 		const unsigned long number_of_parameters = parameters.Size();
 		switch ( number_of_parameters ) {
@@ -2004,7 +2004,7 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 				
 			case 1:
 			{
-				BECurlOptionMap::iterator it = g_curl_options.find ( *option );
+				BECurlOptionMap::iterator it = g_curl_options.find ( option );
 				if ( it != g_curl_options.end() ) {
 					g_curl_options.erase ( it );
 				} else {
@@ -2014,8 +2014,8 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 			}
 				
 			case 2:
-				boost::shared_ptr<BECurlOption> curl_option ( new BECurlOption ( *option, parameters.At ( 1 ) ) ); // throws if option not known or not handled
-				g_curl_options [ *option ] = curl_option;
+				boost::shared_ptr<BECurlOption> curl_option ( new BECurlOption ( option, parameters.At ( 1 ) ) ); // throws if option not known or not handled
+				g_curl_options [ option ] = curl_option;
 				break;
 				
 //			default:
@@ -2067,12 +2067,12 @@ FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environm
 	
 	try {
 		
-		StringAutoPtr url = ParameterAsUTF8String ( parameters );
-		vector<char> data = ParameterAsVectorChar ( parameters, 1 );
-		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
+		auto url = ParameterAsUTF8String ( parameters );
+		auto data = ParameterAsVectorChar ( parameters, 1 );
+		auto username = ParameterAsUTF8String ( parameters, 2 );
+		auto password = ParameterAsUTF8String ( parameters, 3 );
 		
-		BECurl curl ( *url, kBE_FTP_METHOD_UPLOAD, "", *username, *password, "", data );
+		BECurl curl ( url, kBE_FTP_METHOD_UPLOAD, "", username, password, "", data );
 		vector<char> response = curl.perform_action ( );
 			
 		error = g_last_error;
@@ -2099,11 +2099,11 @@ FMX_PROC(errcode) BE_FTP_Delete ( short /* funcId */, const ExprEnv& /* environm
 	
 	try {
 		
-		StringAutoPtr url = ParameterAsUTF8String ( parameters );
-		StringAutoPtr username = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 2 );
+		auto url = ParameterAsUTF8String ( parameters );
+		auto username = ParameterAsUTF8String ( parameters, 1 );
+		auto password = ParameterAsUTF8String ( parameters, 2 );
 		
-		auto_ptr<BECurl> curl ( new BECurl ( *url, kBE_FTP_METHOD_DELETE, "", *username, *password ) );
+		unique_ptr<BECurl> curl ( new BECurl ( url, kBE_FTP_METHOD_DELETE, "", username, password ) );
 		vector<char> response = curl->perform_action ( );
 
 		error = g_last_error;
@@ -2135,15 +2135,15 @@ FMX_PROC(fmx::errcode) BE_SMTP_Server ( short /* funcId */, const fmx::ExprEnv& 
 	
 	try {
 		
-		StringAutoPtr host = ParameterAsUTF8String ( parameters );
-		StringAutoPtr port = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr username = ParameterAsUTF8String ( parameters, 2 );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 3 );
+		auto host = ParameterAsUTF8String ( parameters );
+		auto port = ParameterAsUTF8String ( parameters, 1 );
+		auto username = ParameterAsUTF8String ( parameters, 2 );
+		auto password = ParameterAsUTF8String ( parameters, 3 );
 
-		g_smtp_host.host = *host;
-		g_smtp_host.port = *port;
-		g_smtp_host.username = *username;
-		g_smtp_host.password = *password;
+		g_smtp_host.host = host;
+		g_smtp_host.port = port;
+		g_smtp_host.username = username;
+		g_smtp_host.password = password;
 		
 //		string do_nothing = "";
 //		SetResult ( do_nothing, results );
@@ -2167,36 +2167,36 @@ FMX_PROC(fmx::errcode) BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /*
 	
 	try {
 		
-		StringAutoPtr from = ParameterAsUTF8String ( parameters );
-		StringAutoPtr to = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr subject = ParameterAsUTF8String ( parameters, 2 );
-		StringAutoPtr text = ParameterAsUTF8String ( parameters, 3 );
+		auto from = ParameterAsUTF8String ( parameters );
+		auto to = ParameterAsUTF8String ( parameters, 1 );
+		auto subject = ParameterAsUTF8String ( parameters, 2 );
+		auto text = ParameterAsUTF8String ( parameters, 3 );
 		
-		auto_ptr<BESMTPEmailMessage> message ( new BESMTPEmailMessage ( *from, *to, *subject, *text ) );
+		unique_ptr<BESMTPEmailMessage> message ( new BESMTPEmailMessage ( from, to, subject, text ) );
 		
-		StringAutoPtr cc = ParameterAsUTF8String ( parameters, 4 );
-		message->set_cc_addresses ( *cc );
+		auto cc = ParameterAsUTF8String ( parameters, 4 );
+		message->set_cc_addresses ( cc );
 		
-		StringAutoPtr bcc = ParameterAsUTF8String ( parameters, 5 );
-		message->set_bcc_addresses ( *bcc );
+		auto bcc = ParameterAsUTF8String ( parameters, 5 );
+		message->set_bcc_addresses ( bcc );
 		
-		StringAutoPtr reply_to = ParameterAsUTF8String ( parameters, 6 );
-		message->set_reply_to ( *reply_to );
+		auto reply_to = ParameterAsUTF8String ( parameters, 6 );
+		message->set_reply_to ( reply_to );
 
-		StringAutoPtr html = ParameterAsUTF8String ( parameters, 7 );
-		message->set_html_alternative ( *html );
+		auto html = ParameterAsUTF8String ( parameters, 7 );
+		message->set_html_alternative ( html );
 		
-		const WStringAutoPtr attachments = ParameterAsWideString ( parameters, 8 );
+		auto attachments = ParameterAsWideString ( parameters, 8 );
 		vector<path> values;
-		if ( !attachments->empty() ) {
-			boost::split ( values, *attachments, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
+		if ( !attachments.empty() ) {
+			boost::split ( values, attachments, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
 		}
 		BEValueList<path> attachment_list = BEValueList<path> ( values );
 		BEValueList<path> container_attachments = g_smtp_attachments.get_file_list();
 		attachment_list.append ( container_attachments );
 		message->set_attachments ( attachment_list );
 
-		auto_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
+		unique_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
 		error = smtp->send ( message.get() );
 		
 //		string do_nothing = "";
@@ -2228,9 +2228,9 @@ FMX_PROC(fmx::errcode) BE_SMTP_AddAttachment ( short /* funcId */, const fmx::Ex
 		if ( parameters.Size() == 1 ) {
 			
 			vector<char> contents = ParameterAsVectorChar ( parameters );
-			StringAutoPtr file_name = ParameterFileName ( parameters );
+			auto file_name = ParameterFileName ( parameters );
 
-			g_smtp_attachments.add ( *file_name, contents );
+			g_smtp_attachments.add ( file_name, contents );
 
 		} else { // destroy the temporary files and clear out the list
 			g_smtp_attachments.clear();
@@ -2264,17 +2264,17 @@ FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /
 	
 	try {
 		
-		StringAutoPtr username = ParameterAsUTF8String ( parameters );
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 1 );
+		auto username = ParameterAsUTF8String ( parameters );
+		auto password = ParameterAsUTF8String ( parameters, 1 );
 		const bool show_statistics = ParameterAsBoolean ( parameters, 2, false );
 
 		string reply = "";
-		auto_ptr<BEFMS> fms ( new BEFMS ( *username, *password ) );
+		unique_ptr<BEFMS> fms ( new BEFMS ( username, password ) );
 
 		switch ( function_id ) {
 			
 			case kBE_FMS_Close_Files:
-				reply = fms->close_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
+				reply = fms->close_files ( ParameterAsUTF8String ( parameters, 2 ) );
 				break;
 				
 			case kBE_FMS_List_Clients:
@@ -2290,19 +2290,19 @@ FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /
 				break;
 				
 			case kBE_FMS_Open_Files:
-				reply = fms->open_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
+				reply = fms->open_files ( ParameterAsUTF8String ( parameters, 2 ) );
 				break;
 				
 			case kBE_FMS_Pause_Files:
-				reply = fms->pause_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
+				reply = fms->pause_files ( ParameterAsUTF8String ( parameters, 2 ) );
 				break;
 				
 			case kBE_FMS_Remove_Files:
-				reply = fms->remove_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
+				reply = fms->remove_files ( ParameterAsUTF8String ( parameters, 2 ) );
 				break;
 				
 			case kBE_FMS_Resume_Files:
-				reply = fms->resume_files ( *(ParameterAsUTF8String ( parameters, 2 )) );
+				reply = fms->resume_files ( ParameterAsUTF8String ( parameters, 2 ) );
 				break;
 				
 			case kBE_FMS_Run_Schedule:
@@ -2338,11 +2338,11 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 	
 	try {
 		
-		StringAutoPtr uri = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr consumer_key = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr consumer_secret = ParameterAsUTF8String ( parameters, 2 );
-		StringAutoPtr request_key = ParameterAsUTF8String ( parameters, 3 );
-		StringAutoPtr request_secret = ParameterAsUTF8String ( parameters, 4 );
+		auto uri = ParameterAsUTF8String ( parameters );
+		auto consumer_key = ParameterAsUTF8String ( parameters, 1 );
+		auto consumer_secret = ParameterAsUTF8String ( parameters, 2 );
+		auto request_key = ParameterAsUTF8String ( parameters, 3 );
+		auto request_secret = ParameterAsUTF8String ( parameters, 4 );
 		
 		if ( g_oauth ) {
 			delete g_oauth;
@@ -2353,10 +2353,10 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 		
 		// if the uri is empty then we are only clearing out any set oauth data
 		
-		if ( !uri->empty() ) {
+		if ( !uri.empty() ) {
 			
-			BEOAuth * oauth = new BEOAuth ( *consumer_key, *consumer_secret );
-			error = oauth->oauth_request ( *uri, *request_key, *request_secret );
+			BEOAuth * oauth = new BEOAuth ( consumer_key, consumer_secret );
+			error = oauth->oauth_request ( uri, request_key, request_secret );
 			
 			// argh, nasty
 			if ( error == kNoError ) {
@@ -2409,16 +2409,16 @@ FMX_PROC(errcode) BE_Xero_SetTokens ( short /* funcId */, const ExprEnv& /* envi
 			g_oauth = NULL;
 		}
 		
-		StringAutoPtr consumer_key = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr consumer_secret = ParameterAsUTF8String ( parameters, 1 );
+		auto consumer_key = ParameterAsUTF8String ( parameters );
+		auto consumer_secret = ParameterAsUTF8String ( parameters, 1 );
 		
 		// if the consumer_key is empty then we are only clearing out any set oauth data
 		
-		if ( !consumer_key->empty() ) {
+		if ( !consumer_key.empty() ) {
 			
-			boost::algorithm::replace_all ( *consumer_secret, FILEMAKER_END_OF_LINE, "\r\n" );
+			boost::algorithm::replace_all ( consumer_secret, FILEMAKER_END_OF_LINE, "\r\n" );
 
-			BEXero * xero = new BEXero ( *consumer_key, *consumer_secret );
+			BEXero * xero = new BEXero ( consumer_key, consumer_secret );
 			g_oauth = xero; // must assign after the authorisation request otherwise BECurl will try and use g_oauth
 			
 		}
@@ -2442,23 +2442,23 @@ FMX_PROC(errcode) BE_Xero_GenerateKeys ( short /* funcId */, const ExprEnv& /* e
 	
 	try {
 
-		StringAutoPtr organisation = ParameterAsUTF8String ( parameters );
-		StringAutoPtr organisational_unit = ParameterAsUTF8String ( parameters, 1 );
-		StringAutoPtr country = ParameterAsUTF8String ( parameters, 2 );
-		StringAutoPtr state = ParameterAsUTF8String ( parameters, 3 );
-		StringAutoPtr suburb = ParameterAsUTF8String ( parameters, 4 );
-		StringAutoPtr domain = ParameterAsUTF8String ( parameters, 5 );
-		StringAutoPtr email = ParameterAsUTF8String ( parameters, 6 );
+		auto organisation = ParameterAsUTF8String ( parameters );
+		auto organisational_unit = ParameterAsUTF8String ( parameters, 1 );
+		auto country = ParameterAsUTF8String ( parameters, 2 );
+		auto state = ParameterAsUTF8String ( parameters, 3 );
+		auto suburb = ParameterAsUTF8String ( parameters, 4 );
+		auto domain = ParameterAsUTF8String ( parameters, 5 );
+		auto email = ParameterAsUTF8String ( parameters, 6 );
 
-		auto_ptr<BEX509> x509 ( new BEX509 );
+		unique_ptr<BEX509> x509 ( new BEX509 );
 
-		x509->add_name_entry ( "O", *organisation );
-		x509->add_name_entry ( "OU", *organisational_unit );
-		x509->add_name_entry ( "C", *country );
-		x509->add_name_entry ( "ST", *state );
-		x509->add_name_entry ( "L", *suburb );
-		x509->add_name_entry ( "CN", *domain );
-		x509->add_name_entry ( "emailAddress", *email );
+		x509->add_name_entry ( "O", organisation );
+		x509->add_name_entry ( "OU", organisational_unit );
+		x509->add_name_entry ( "C", country );
+		x509->add_name_entry ( "ST", state );
+		x509->add_name_entry ( "L", suburb );
+		x509->add_name_entry ( "CN", domain );
+		x509->add_name_entry ( "emailAddress", email );
 
 		SetResult ( xero_generate_key_pair ( x509.get() ), results );
 
@@ -2487,10 +2487,10 @@ FMX_PROC(errcode) BE_Values_Unique ( short /* funcId */, const ExprEnv& /* envir
 	
 	try {
 		
-		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
-		bool case_sensitive = ParameterAsBoolean ( parameters, 1 );
+		auto value_list = ParameterAsUTF8String ( parameters );
+		const bool case_sensitive = ParameterAsBoolean ( parameters, 1 );
 
-		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list, case_sensitive ) );
+		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list, case_sensitive ) );
 		string unique_values = values->unique();
 		
 		SetResult ( unique_values, results );
@@ -2513,12 +2513,12 @@ FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* en
 	
 	try {
 		
-		StringAutoPtr value_list = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr filter_out = ParameterAsUTF8String ( parameters, 1 );
-		bool case_sensitive = ParameterAsBoolean ( parameters, 2 );
+		auto value_list = ParameterAsUTF8String ( parameters );
+		auto filter_out = ParameterAsUTF8String ( parameters, 1 );
+		const bool case_sensitive = ParameterAsBoolean ( parameters, 2 );
 		
-		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list, case_sensitive ) );
-		auto_ptr< BEValueList<string> > filter ( new BEValueList<string> ( *filter_out, case_sensitive ) );
+		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list, case_sensitive ) );
+		unique_ptr< BEValueList<string> > filter ( new BEValueList<string> ( filter_out, case_sensitive ) );
 		string filtered_values = values->filter_out ( *filter );
 				
 		SetResult ( filtered_values, results );
@@ -2543,7 +2543,7 @@ FMX_PROC(errcode) BE_Values_ContainsDuplicates ( short /* funcId */, const ExprE
 		auto value_list = ParameterAsUTF8String ( parameters );
 		auto case_sensitive = ParameterAsBoolean ( parameters, 1 );
 
-		auto values ( new BEValueList<string> ( *value_list, case_sensitive ) );
+		auto values ( new BEValueList<string> ( value_list, case_sensitive ) );
 		auto contains_duplicates = values->contains_duplicates();
 		
 		SetResult ( contains_duplicates, results );
@@ -2565,11 +2565,11 @@ FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environ
 	
 	try {
 		
-		StringAutoPtr value_list = ParameterAsUTF8String ( parameters );
+		auto value_list = ParameterAsUTF8String ( parameters );
 		const bool ascending = ParameterAsBoolean ( parameters, 1, true );
 		const long type = ParameterAsLong ( parameters, 2, kBE_DataType_String );
 		
-		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
+		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
 		string sorted_values = values->sort ( ascending, type );
 		
 		SetResult ( sorted_values, results );
@@ -2593,10 +2593,10 @@ FMX_PROC(errcode) BE_Values_TimesDuplicated ( short /* funcId */, const ExprEnv&
 	
 	try {
 		
-		StringAutoPtr value_list = ParameterAsUTF8String ( parameters );
+		auto value_list = ParameterAsUTF8String ( parameters );
 		const long numberOfTimes = ParameterAsLong ( parameters, 1 );
 		
-		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
+		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
 		BEValueList<std::string> times_duplicated = values->times_duplicated ( numberOfTimes );
 		std::string found = times_duplicated.get_as_filemaker_string();
 		SetResult ( found, results );
@@ -2620,9 +2620,9 @@ FMX_PROC(errcode) BE_Values_Trim ( short /* funcId */, const ExprEnv& /* environ
 	
 	try {
 		
-		StringAutoPtr value_list = ParameterAsUTF8String ( parameters );
+		auto value_list = ParameterAsUTF8String ( parameters );
 		
-		auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
+		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
 		values->trim_values();
 //		std::string found = values.get_as_filemaker_string();
 		SetResult ( values->get_as_filemaker_string(), results );
@@ -2650,12 +2650,12 @@ FMX_PROC(fmx::errcode) BE_XOR ( short /* funcId */, const fmx::ExprEnv& /* envir
 
 	try {
 
-		const StringAutoPtr text = ParameterAsUTF8String ( parameters );
+		auto text = ParameterAsUTF8String ( parameters );
 		const uint8_t xorWith = (uint8_t)ParameterAsLong ( parameters, 1 );
 
 		std::stringstream xord_text;
 
-		for ( std::string::iterator it = text->begin() ; it != text->end() ; ++it ) {
+		for ( std::string::iterator it = text.begin() ; it != text.end() ; ++it ) {
 			const uint8_t xord = *it ^ xorWith;
 			xord_text << std::setfill ( '0' ) << std::setw ( 2 ) << std::hex << (const unsigned int)xord;
 		}
@@ -2845,17 +2845,17 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 	try {
 		
 		BEWStringVector variables;
-		WStringAutoPtr calculation = ParameterAsWideString ( parameters, 0 );
+		auto calculation = ParameterAsWideString ( parameters );
 
 		wstring search_for = L"$/\""; // variables, comments and strings (including escaped strings)
-		size_t found = calculation->find_first_of ( search_for );
+		size_t found = calculation.find_first_of ( search_for );
 
 		while ( found != wstring::npos )
 		{
 			size_t end = 0;
 			size_t search_from = found + 1;
 									
-			switch ( calculation->at ( found ) ) {
+			switch ( calculation.at ( found ) ) {
 				case L'$': // variables
 				{
 					/*
@@ -2864,27 +2864,27 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 					 unicode escapes are required on Windows
 					 */
 					
-					end = calculation->find_first_of ( L" ;+-=*/&^<>\t\r[]()\u2260\u2264\u2265,", search_from );
+					end = calculation.find_first_of ( L" ;+-=*/&^<>\t\r[]()\u2260\u2264\u2265,", search_from );
 					if ( end == wstring::npos ) {
-						end = calculation->size();
+						end = calculation.size();
 					}
 
 					// add the variable to the list
-					wstring wanted = calculation->substr ( found, end - found );
+					wstring wanted = calculation.substr ( found, end - found );
 					variables.PushBack ( wanted );
 					search_from = end + 1;
 				}
 				break;
 					
 				case L'/': // comments
-					switch ( calculation->at ( search_from ) ) {
+					switch ( calculation.at ( search_from ) ) {
 						case L'/':
-							end = calculation->find ( L"\r", search_from );
+							end = calculation.find ( L"\r", search_from );
 							search_from = end + 1;
 							break;
 							
 						case L'*':
-							end = calculation->find ( L"*/", search_from );
+							end = calculation.find ( L"*/", search_from );
 							search_from = end + 2;
 							break;
 							
@@ -2894,9 +2894,9 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 					break;
 					
 				case L'\"': // escaped strings
-					end = calculation->find ( L"\"", search_from );
-					while ( (end != string::npos) && (calculation->at ( end - 1 ) == L'\\') ) {
-						end = calculation->find ( L"\"", end + 1 );
+					end = calculation.find ( L"\"", search_from );
+					while ( (end != string::npos) && (calculation.at ( end - 1 ) == L'\\') ) {
+						end = calculation.find ( L"\"", end + 1 );
 					}
 					search_from = end + 1;
 					break;
@@ -2905,8 +2905,8 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 			}
 			
 			// this is not on an eternal quest
-			if ( (end != string::npos) && (search_from < calculation->size()) ) { 
-				found = calculation->find_first_of ( search_for, search_from );
+			if ( (end != string::npos) && (search_from < calculation.size()) ) { 
+				found = calculation.find_first_of ( search_for, search_from );
 			} else {
 				found = string::npos;
 			}
@@ -2932,11 +2932,11 @@ FMX_PROC(errcode) BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /
 	
 	try {
 		
-		StringAutoPtr command = ParameterAsUTF8String ( parameters, 0 );
-		long timeout = ParameterAsLong ( parameters, 1, kBE_Never );
+		auto command = ParameterAsUTF8String ( parameters );
+		const long timeout = ParameterAsLong ( parameters, 1, kBE_Never );
 
-		StringAutoPtr response ( new string );
-		error = ExecuteSystemCommand ( *command, *response, timeout );
+		std::string response;
+		error = ExecuteSystemCommand ( command, response, timeout );
 		
 		SetResult ( response, results );
 		
@@ -2968,7 +2968,7 @@ FMX_PROC(errcode) BE_OpenURL ( short /* funcId */, const ExprEnv& /* environment
 	
 	try {
 		
-		WStringAutoPtr url = ParameterAsWideString ( parameters, 0 );
+		auto url = ParameterAsWideString ( parameters );
 		bool succeeded = OpenURL ( url );
 
 		SetResult ( succeeded, results );
@@ -2992,7 +2992,7 @@ FMX_PROC(errcode) BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment 
 	try {
 		
 		// in this instance the string is a better choice than boost::filesystem::path
-		WStringAutoPtr path = ParameterAsWideString ( parameters, 0 );
+		auto path = ParameterAsWideString ( parameters );
 		
 		bool succeeded = OpenFile ( path );
 		SetResult ( succeeded, results );
@@ -3015,24 +3015,24 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 	
 	try {
 		
-		TextAutoPtr script_name;
+		TextUniquePtr script_name;
 		script_name->SetText ( parameters.AtAsText ( 0 ) );
 
 		FMX_UInt32 number_of_paramters = parameters.Size();
 		
-		TextAutoPtr file_name;
+		TextUniquePtr file_name;
 		if ( number_of_paramters >= 2 ) {
 			file_name->SetText ( parameters.AtAsText ( 1 ) );
 		}
 
 		// get the parameter, if present		
-		DataAutoPtr parameter;
+		DataUniquePtr parameter;
 		if ( number_of_paramters == 3 ) {
 
 			// defeat: Returning null reference (within a call to 'operator*')
 			// default constructor for default_locale gives the current locale
 #ifndef __clang_analyzer__
-			LocaleAutoPtr default_locale;
+			LocaleUniquePtr default_locale;
 			parameter->SetAsText ( parameters.AtAsText ( 2 ), *default_locale );
 #endif
 
@@ -3062,28 +3062,28 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environme
 	
 	try {
 		
-		TextAutoPtr expression;
+		TextUniquePtr expression;
 		expression->SetText ( parameters.AtAsText(0) );
 		
 		FMX_UInt32 number_of_paramters = parameters.Size();
 		
-		TextAutoPtr filename;
+		TextUniquePtr filename;
 		if ( number_of_paramters == 4 ) {
 			filename->SetText ( parameters.AtAsText(3) );
 		}
 		
-		BESQLCommandAutoPtr sql ( new BESQLCommand ( expression, filename ) );
+		BESQLCommandAutoPtr sql ( new BESQLCommand ( *expression, *filename ) );
 		
 		if ( number_of_paramters >= 2 ) {
-			TextAutoPtr column_separator;
+			TextUniquePtr column_separator;
 			column_separator->SetText ( parameters.AtAsText(1) );
-			sql->set_column_separator ( column_separator );
+			sql->set_column_separator ( *column_separator );
 		}
 		
 		if ( number_of_paramters >= 3 ) {
-			TextAutoPtr row_separator;
+			TextUniquePtr row_separator;
 			row_separator->SetText ( parameters.AtAsText(2) );
-			sql->set_row_separator ( row_separator );
+			sql->set_row_separator ( *row_separator );
 		}
 		
 		sql->execute ( environment );
@@ -3108,11 +3108,11 @@ FMX_PROC(errcode) BE_MessageDigest ( short /* funcId */, const ExprEnv& /* envir
 		
 	try {
 		
-		StringAutoPtr message = ParameterAsUTF8String ( parameters, 0 );
+		auto message = ParameterAsUTF8String ( parameters );
 		const unsigned long algorithm = ParameterAsLong( parameters, 1, kBE_MessageDigestAlgorithm_SHA256 );
 		const unsigned long output_type = ParameterAsLong( parameters, 2, kBE_Encoding_Hex );
 
-		string digest = message_digest ( *message, algorithm, output_type );
+		string digest = message_digest ( message, algorithm, output_type );
 		
 		SetResult ( digest, results );
 		
@@ -3136,13 +3136,13 @@ FMX_PROC(errcode) BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */
 	
 	try {
 		
-		StringAutoPtr message = ParameterAsUTF8String ( parameters, 0 );
-		StringAutoPtr key = ParameterAsUTF8String ( parameters, 1 );
+		auto message = ParameterAsUTF8String ( parameters );
+		auto key = ParameterAsUTF8String ( parameters, 1 );
 		const unsigned long algorithm = ParameterAsLong ( parameters, 2, kBE_MessageDigestAlgorithm_SHA1 );
 		const unsigned long output_type = ParameterAsLong ( parameters, 3, kBE_Encoding_Hex );
 		const unsigned long input_type = ParameterAsLong ( parameters, 4, kBE_Encoding_None );
 
-		string hmac = HMAC ( *message, algorithm, output_type, *key, input_type );
+		string hmac = HMAC ( message, algorithm, output_type, key, input_type );
 
 		SetResult ( hmac, results );
 		
@@ -3169,7 +3169,7 @@ FMX_PROC(errcode) BE_JPEG_Recompress ( const short function_id, const ExprEnv& /
 
 		if ( original_jpeg.size() > 0 ) {
 
-			auto_ptr<BEJPEG> jpeg ( new BEJPEG ( original_jpeg ) );
+			unique_ptr<BEJPEG> jpeg ( new BEJPEG ( original_jpeg ) );
 			const int quality = (const int)ParameterAsLong ( parameters, 1, 75 ); // percent
 			jpeg->set_compression_level ( quality );
 
@@ -3192,8 +3192,8 @@ FMX_PROC(errcode) BE_JPEG_Recompress ( const short function_id, const ExprEnv& /
 
 			jpeg->recompress();
 
-			const StringAutoPtr image_name = ParameterFileName ( parameters );
-			SetResult ( *image_name, *jpeg, results );
+			auto image_name = ParameterFileName ( parameters );
+			SetResult ( image_name, *jpeg, results );
 
 		} else {
 			; // nothing... just do what fmp does
@@ -3218,18 +3218,18 @@ FMX_PROC(errcode) BE_ConvertContainer ( short /* funcId */, const ExprEnv& /* en
 
 	try {
 
-		const BinaryDataAutoPtr data ( parameters.AtAsBinaryData ( 0 ) );
+		const BinaryDataUniquePtr data ( parameters.AtAsBinaryData ( 0 ) );
 		if ( data->GetCount() > 0 ) {
 
 			vector<char> container_data = ParameterAsVectorChar ( parameters );
-			StringAutoPtr filename = ParameterFileName ( parameters );
+			auto filename = ParameterFileName ( parameters );
 
-			StringAutoPtr type = ParameterAsUTF8String ( parameters, 1, FILE_CONTAINER_TYPE );
+			auto type = ParameterAsUTF8String ( parameters, 1, FILE_CONTAINER_TYPE );
 
 			const unsigned long width = ParameterAsLong ( parameters, 2, kErrorUnknown );
 			const unsigned long height = ParameterAsLong ( parameters, 3, kErrorUnknown );
 
-			SetResult ( *filename, container_data, *type, width, height, results );
+			SetResult ( filename, container_data, type, width, height, results );
 
 		} else {
 			error = kInvalidFieldType;
@@ -3254,13 +3254,13 @@ FMX_PROC(errcode) BE_RegularExpression ( short /* funcId */, const ExprEnv& /* e
 
 	try {
 
-        const StringAutoPtr text = ParameterAsUTF8String ( parameters );
-        const StringAutoPtr expression = ParameterAsUTF8String ( parameters, 1 );
-		const StringAutoPtr options = ParameterAsUTF8String ( parameters, 2 );
-        const StringAutoPtr replace_with = ParameterAsUTF8String ( parameters, 3 );
+        auto text = ParameterAsUTF8String ( parameters );
+        auto expression = ParameterAsUTF8String ( parameters, 1 );
+		auto options = ParameterAsUTF8String ( parameters, 2 );
+        auto replace_with = ParameterAsUTF8String ( parameters, 3 );
         const bool replace = parameters.Size() == 4 ;
         
-        BEValueList<std::string> matched = regular_expression ( *text, *expression, *options, *replace_with, replace );
+        BEValueList<std::string> matched = regular_expression ( text, expression, options, replace_with, replace );
         std::string matched_text = matched.get_as_filemaker_string();
         // add new setresult for value lists
         SetResult ( matched_text, results );

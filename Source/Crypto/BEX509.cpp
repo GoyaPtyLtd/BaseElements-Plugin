@@ -81,7 +81,7 @@ const std::string BEX509::generate ( )
 		throw BEPlugin_Exception ( ERR_get_error() );
 	}
 
-	std::auto_ptr<BEBio> bio ( new BEBio );
+	std::unique_ptr<BEBio> bio ( new BEBio );
 
 	return bio->extract ( x509 );
 	

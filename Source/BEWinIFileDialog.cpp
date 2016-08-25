@@ -2,7 +2,7 @@
  BEWinIFileDialog.cpp
  BaseElements Plug-In
  
- Copyright 2014 Goya. All rights reserved.
+ Copyright 2014-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -53,10 +53,10 @@ HRESULT _SetDefaultFolder ( T& file_dialog, const wstring in_folder )
 #pragma mark -
 
 
-BEWinIFileOpenDialog::BEWinIFileOpenDialog ( WStringAutoPtr dialog_prompt, WStringAutoPtr start_in_folder )
+BEWinIFileOpenDialog::BEWinIFileOpenDialog ( const std::wstring& dialog_prompt, const std::wstring& start_in_folder )
 {
-	prompt = *dialog_prompt;
-	in_folder = *start_in_folder;
+	prompt = dialog_prompt;
+	in_folder = start_in_folder;
 
 	dialog_type = CLSID_FileOpenDialog;
 	dialog_flags = FOS_FORCEFILESYSTEM | FOS_ALLOWMULTISELECT | FOS_PATHMUSTEXIST | FOS_FILEMUSTEXIST | FOS_NOREADONLYRETURN;
@@ -65,10 +65,10 @@ BEWinIFileOpenDialog::BEWinIFileOpenDialog ( WStringAutoPtr dialog_prompt, WStri
 
 // NOTE: this function is all but a copy/paste from BEWinIFileSaveDialog - if changing here check there aslo
 
-WStringAutoPtr BEWinIFileOpenDialog::Show ( )
+const std::wstring BEWinIFileOpenDialog::Show ( )
 {
 	hr = S_OK;
-	WStringAutoPtr selected_files ( new wstring );
+	std::wstring selected_files;
 
 	file_dialog = NULL;
 	hr = CoCreateInstance ( dialog_type, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS ( &file_dialog ) );
@@ -118,7 +118,7 @@ void BEWinIFileOpenDialog::SetDefaultFolder ( )
 }
 
 
-WStringAutoPtr BEWinIFileOpenDialog::GetSelection ( )
+const std::wstring BEWinIFileOpenDialog::GetSelection ( )
 {
 	hr = S_OK;
 
@@ -150,7 +150,8 @@ WStringAutoPtr BEWinIFileOpenDialog::GetSelection ( )
 		file_names->Release();
 	}
 
-	WStringAutoPtr out ( new wstring ( selected_files->get_as_filemaker_string() ) );
+	const std::wstring out ( selected_files->get_as_filemaker_string() );
+
 	return out;
 
 } // GetSelection
@@ -170,11 +171,11 @@ void BEWinIFileOpenDialog::CheckIfUserCancelled ( )
 #pragma mark -
 
 
-BEWinIFileSaveDialog::BEWinIFileSaveDialog ( WStringAutoPtr dialog_prompt, WStringAutoPtr default_file_name, WStringAutoPtr start_in_folder )
+BEWinIFileSaveDialog::BEWinIFileSaveDialog ( const std::wstring& dialog_prompt, const std::wstring& default_file_name, const std::wstring& start_in_folder )
 {
-	prompt = *dialog_prompt;
-	file_name = *default_file_name;
-	in_folder = *start_in_folder;
+	prompt = dialog_prompt;
+	file_name = default_file_name;
+	in_folder = start_in_folder;
 
 	dialog_flags = FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST | FOS_FILEMUSTEXIST | FOS_NOREADONLYRETURN;
 
@@ -185,10 +186,10 @@ BEWinIFileSaveDialog::BEWinIFileSaveDialog ( WStringAutoPtr dialog_prompt, WStri
 
 // NOTE: this function is all but a copy/paste from BEWinIFileOpenDialog - if changing here check there aslo
 
-WStringAutoPtr BEWinIFileSaveDialog::Show ( )
+const std::wstring BEWinIFileSaveDialog::Show ( )
 {
 	hr = S_OK;
-	WStringAutoPtr selected_files ( new wstring );
+	wstring selected_files;
 
 	file_dialog = NULL;
 	hr = CoCreateInstance ( dialog_type, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS ( &file_dialog ) );
@@ -247,12 +248,12 @@ void BEWinIFileSaveDialog::SetDefaultFolder ( )
 }
 
 
-WStringAutoPtr BEWinIFileSaveDialog::GetSelection ( )
+const std::wstring BEWinIFileSaveDialog::GetSelection ( )
 {
 	hr = S_OK;
 
 	IShellItem * new_file_name_item;
-	WStringAutoPtr save_file_as ( new wstring ( L"" ) );
+	wstring save_file_as;
 
 	hr = file_dialog->GetResult ( &new_file_name_item );
 	if ( SUCCEEDED ( hr ) ) {
@@ -260,7 +261,7 @@ WStringAutoPtr BEWinIFileSaveDialog::GetSelection ( )
 		LPOLESTR new_file_name = NULL;
 		hr = new_file_name_item->GetDisplayName ( SIGDN_FILESYSPATH, &new_file_name ); // Get its file system path
 		if ( SUCCEEDED ( hr ) ) {
-			save_file_as->assign ( new_file_name );
+			save_file_as.assign ( new_file_name );
 		}
 	}
 

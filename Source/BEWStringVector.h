@@ -2,7 +2,7 @@
  BEWStringVector.h
  BaseElements Plug-In
  
- Copyright 2010-2011 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -32,7 +32,7 @@ public:
 	void PushBack ( std::wstring );
 	
 	// compile a FileMaker "value list" of the contents
-	fmx::TextAutoPtr AsValueList();
+	fmx::TextUniquePtr AsValueList();
 	
 };
 

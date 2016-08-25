@@ -2,7 +2,7 @@
  BEWStringVector.cpp
  BaseElements Plug-In
  
- Copyright 2010-2011 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -30,7 +30,7 @@ void BEWStringVector::PushBack ( wstring item )
 }
 
 
-TextAutoPtr BEWStringVector::AsValueList()
+TextUniquePtr BEWStringVector::AsValueList()
 {
 	wstring value_list = L"";
 	
@@ -46,7 +46,7 @@ TextAutoPtr BEWStringVector::AsValueList()
 		}
 	}
 	
-	TextAutoPtr result;
+	TextUniquePtr result;
 	result->AssignWide ( value_list.c_str() );
 	
 	return result;

@@ -2,7 +2,7 @@
  BEMacFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -22,37 +22,37 @@
 
 void InitialiseForPlatform ( );
 
-WStringAutoPtr ClipboardFormats ( void );
-StringAutoPtr ClipboardData ( WStringAutoPtr atype );
-bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype );
+const std::wstring ClipboardFormats ( void );
+const std::string ClipboardData ( std::wstring& atype );
+const bool SetClipboardData ( std::string& data, std::wstring& atype );
 
-WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
-WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
-WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr fileName, WStringAutoPtr inFolder );
+const std::wstring SelectFile ( const std::wstring& prompt, const std::wstring& in_folder );
+const std::wstring SelectFolder ( const std::wstring& prompt, const std::wstring& in_folder );
+const std::wstring SaveFileDialog ( std::wstring& prompt, std::wstring& fileName, std::wstring& inFolder );
 
-int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr ok_button, WStringAutoPtr cancel_button, WStringAutoPtr alternate_button );
+const int DisplayDialog ( std::wstring& title, std::wstring& message, std::wstring& ok_button, std::wstring& cancel_button, std::wstring& alternate_button );
 
 
 // Progress Dialog
 
-fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAutoPtr description, const long maximum, const bool can_cancel );
-fmx::errcode UpdateProgressDialog ( const long value, const WStringAutoPtr description );
+const fmx::errcode DisplayProgressDialog ( const std::wstring& title, const std::wstring& description, const long maximum, const bool can_cancel );
+const fmx::errcode UpdateProgressDialog ( const long value, const std::wstring& description );
 
 
 // user preferences
 
-bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain );
-WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain );
+const bool SetPreference ( std::wstring& key, std::wstring& value, std::wstring& domain );
+const std::wstring GetPreference ( std::wstring& key, std::wstring& domain );
 
 
 // other
 
-bool OpenURL ( WStringAutoPtr url );
-bool OpenFile ( WStringAutoPtr path );
+const bool OpenURL ( std::wstring& url );
+const bool OpenFile ( std::wstring& path );
 
 
 // used by Do_GetString
-unsigned long  Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId );
+const unsigned long  Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId );
 
 
 #endif // BEMACFUNCTIONS_H

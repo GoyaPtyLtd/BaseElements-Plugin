@@ -67,25 +67,15 @@ extern errcode g_last_ddl_error;
 
 // convenience functions that handle most of the work needed to return text from a function
 
-errcode TextConstantFunction ( wstring text, Data& results )
-{
-	
-	WStringAutoPtr text_constant ( new wstring ( text ) );
-	
-	return TextConstantFunction ( text_constant, results );	
-		
-} // TextConstantFunction
-
-
-errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
+const errcode TextConstantFunction ( const std::wstring& text, Data& results )
 {
 	
 	errcode error_result = kNoError;
 	
 	try {
 		
-		TextAutoPtr result_text;
-		result_text->AssignWide ( text->c_str() );
+		TextUniquePtr result_text;
+		result_text->AssignWide ( text.c_str() );
 		
 		SetResult ( *result_text, results );
 		
@@ -107,7 +97,7 @@ errcode TextConstantFunction ( WStringAutoPtr text, Data& results )
 
 void SetResult ( const double number, Data& results )
 {
-	FixPtAutoPtr numeric_result;
+	FixPtUniquePtr numeric_result;
 	numeric_result->AssignDouble ( number );
 	results.SetAsNumber ( *numeric_result );
 }
@@ -118,8 +108,7 @@ void SetResultAsDoubleAsText ( const double number, Data& results )
 	// do this the c++ vay to avoid rounding errors
 	ostringstream stream;
 	stream << number;
-	StringAutoPtr result ( new string ( stream.str() ) );
-	SetResult ( result, results );
+	SetResult ( stream.str(), results );
 }
 
 
@@ -128,7 +117,7 @@ void SetResult ( const Text& text, Data& results )
 // defeat: Returning null reference (within a call to 'operator*')
 // default constructor for default_locale gives the current locale
 #ifndef __clang_analyzer__
-	LocaleAutoPtr default_locale;
+	LocaleUniquePtr default_locale;
 	results.SetAsText ( text, *default_locale );
 #endif
 }
@@ -136,7 +125,11 @@ void SetResult ( const Text& text, Data& results )
 
 void SetResult ( const string& text, Data& results )
 {
-	TextAutoPtr result_text;
+	if ( ! utf8::is_valid ( text.begin(), text.end() ) ) {
+		throw BEPlugin_Exception ( kInvalidUTF8 );
+	}
+		
+	TextUniquePtr result_text;
 	result_text->Assign ( text.c_str(), Text::kEncoding_UTF8 );
 	SetResult ( *result_text, results );
 }
@@ -144,47 +137,29 @@ void SetResult ( const string& text, Data& results )
 
 void SetResult ( const wstring& text, Data& results )
 {
-	TextAutoPtr result_text;
+	TextUniquePtr result_text;
 	result_text->AssignWide ( text.c_str() );
 	SetResult ( *result_text, results );
 }
 
 
-void SetResult ( const StringAutoPtr text, Data& results )
-{
-	if ( ! utf8::is_valid ( text->begin(), text->end() ) ) {
-		throw BEPlugin_Exception ( kInvalidUTF8 );
-	}
-
-	TextAutoPtr result_text;
-	result_text->Assign ( text->c_str(), Text::kEncoding_UTF8 );			
-	SetResult ( *result_text, results );
-}
-
-
-void SetResult ( const WStringAutoPtr text, Data& results )
-{
-	TextAutoPtr result_text;
-	result_text->AssignWide ( text->c_str() );			
-	SetResult ( *result_text, results );
-}
 
 void SetResult ( vector<char>& data, Data& results )
 {
 	data.push_back ( '\0' );
-	StringAutoPtr data_string ( new string ( &data[0], data.size() ) );
+	const std::string data_string ( &data[0] );//, data.size() );
 	SetResult ( data_string, results );
 
 //	SetResult ( "", data, results );
 
 }
 
+
 void SetResult ( const vector<unsigned char>& data, Data& results )
 {
 	vector<char> char_data ( data.begin(), data.end() );
 	SetResult ( char_data, results );
 }
-
 
 
 void SetResult ( const std::string& filename, const vector<char>& data, Data& results, std::string data_type )
@@ -214,8 +189,8 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 
 	if ( as_binary ) {	// if a file name is supplied send back a file
 		
-		BinaryDataAutoPtr resultBinary;
-		TextAutoPtr file;
+		BinaryDataUniquePtr resultBinary;
+		TextUniquePtr file;
 		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
 		resultBinary->AddFNAMData ( *file ); // error =
 
@@ -238,13 +213,13 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 			// filemaker will go into an infinite loop if non-utf8 data is set as utf8
 			// so try to convert it first
 		
-			StringAutoPtr utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size() );
+			std::string utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size() );
 
 			if ( compress ) {
-				vector<char> utf8_text ( utf8->begin(), utf8->end() );
+				vector<char> utf8_text ( utf8.begin(), utf8.end() );
 				output = CompressContainerStream ( utf8_text );
 			} else {
-				output.assign ( utf8->begin(), utf8->end() );
+				output.assign ( utf8.begin(), utf8.end() );
 			}
 
 		}
@@ -278,7 +253,7 @@ void SetResult ( const std::string& filename, const std::vector<char>& data, fmx
 #pragma mark ParameterAs
 #pragma mark -
 
-bool ParameterAsBoolean ( const DataVect& parameters, const FMX_UInt32 which, const bool default_value )
+const bool ParameterAsBoolean ( const DataVect& parameters, const FMX_UInt32 which, const bool default_value )
 {
 	try {
 		return parameters.AtAsBoolean ( which );
@@ -288,7 +263,7 @@ bool ParameterAsBoolean ( const DataVect& parameters, const FMX_UInt32 which, co
 }
 	
 	
-double ParameterAsDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which, const bool default_value )
+const double ParameterAsDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which, const bool default_value )
 {
 	try {
 		return parameters.AtAsNumber ( which ).AsFloat();
@@ -298,7 +273,7 @@ double ParameterAsDouble ( const fmx::DataVect& parameters, const FMX_UInt32 whi
 }
 
 
-long ParameterAsLong ( const DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value )
+const long ParameterAsLong ( const DataVect& parameters, const FMX_UInt32 which, const unsigned long default_value )
 {
 	try {
 		return parameters.AtAsNumber ( which ).AsLong();
@@ -316,17 +291,17 @@ const long ParameterAsIndex ( const fmx::DataVect& parameters, const FMX_UInt32 
 }
 
 
-StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which, const std::string default_value )
+const std::string ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which, const std::string default_value )
 {	
 	
-	StringAutoPtr result ( new string ( default_value ) );
+	std::string result ( default_value );
 	
 	try {
 		
-		TextAutoPtr raw_data;
+		TextUniquePtr raw_data;
 		raw_data->SetText ( parameters.AtAsText ( which ) );
 		
-		result->assign ( TextAsUTF8String ( *raw_data ) );
+		result.assign ( TextAsUTF8String ( *raw_data ) );
 		
 	} catch ( exception& /* e */ ) {
 		;	// return the default
@@ -337,14 +312,14 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt
 } // ParameterAsUTF8String
 
 
-WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which )
+const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which )
 {	
 	
-	WStringAutoPtr result ( new wstring );
+	std::wstring result;
 	
 	try {
 		
-		TextAutoPtr raw_data;
+		TextUniquePtr raw_data;
 		raw_data->SetText ( parameters.AtAsText(which) );
 		
 		FMX_Int32 text_size = raw_data->GetSize();
@@ -370,7 +345,7 @@ WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, const FMX_UIn
 		
 		#endif
 		
-		result->append ( parameter );
+		result.append ( parameter );
 		delete [] parameter; // parameter == text on Windows
 				
 	} catch ( exception& /* e */ ) {
@@ -382,7 +357,7 @@ WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, const FMX_UIn
 } // ParameterAsUnicodeString
 
 
-vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX_UInt32 which )
+const vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX_UInt32 which )
 {
 
 	vector<char> output;
@@ -390,7 +365,7 @@ vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX_UInt3
 	// make sure there's a parameter to get
 	if ( parameters.Size() > which ) {
 
-		const BinaryDataAutoPtr data ( parameters.AtAsBinaryData ( which ) );
+		const BinaryDataUniquePtr data ( parameters.AtAsBinaryData ( which ) );
 		int count = data->GetCount();
 		
 		if ( count > 0 ) {
@@ -416,8 +391,8 @@ vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX_UInt3
 			// if we don't have any streams try getting as text
 			// note: we also end up here for anything inserted as QuickTime, which is probably not what the user wants, but...
 			
-			StringAutoPtr text = ParameterAsUTF8String ( parameters, which );
-			output.assign ( text->begin(), text->end() );
+			std::string text = ParameterAsUTF8String ( parameters, which );
+			output.assign ( text.begin(), text.end() );
 			
 		}
 
@@ -428,7 +403,7 @@ vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX_UInt3
 } // ParameterAsVectorChar
 
 
-vector<unsigned char> ParameterAsVectorUnsignedChar ( const DataVect& parameters, const FMX_UInt32 which )
+const vector<unsigned char> ParameterAsVectorUnsignedChar ( const DataVect& parameters, const FMX_UInt32 which )
 {
 
 	vector<char> data = ParameterAsVectorChar ( parameters, which );
@@ -439,22 +414,22 @@ vector<unsigned char> ParameterAsVectorUnsignedChar ( const DataVect& parameters
 } // ParameterAsVectorUnsignedChar
 
 
-std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which )
+const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which )
 {
 
-	StringAutoPtr value_list = ParameterAsUTF8String ( parameters, which );
-	auto_ptr< BEValueList<string> > values ( new BEValueList<string> ( *value_list ) );
+	std::string value_list = ParameterAsUTF8String ( parameters, which );
+	unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
 	
 	return values->get_as_vector_double();
 
 } // ParameterAsVectorDouble
 
 
-boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which )
+const boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which )
 {
 	
-	WStringAutoPtr file = ParameterAsWideString ( parameters, which );
-	boost::filesystem::path path = *file;
+	std::wstring file = ParameterAsWideString ( parameters, which );
+	boost::filesystem::path path = file;
 	path.make_preferred();
 	
 	return path;
@@ -462,17 +437,17 @@ boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_
 }
 
 
-StringAutoPtr ParameterFileName ( const DataVect& parameters, const FMX_UInt32 which )
+const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt32 which )
 {
 
-	StringAutoPtr file_name ( new string );
+	std::string file_name;
 
 	// make sure there's a parameter to get
 	if ( parameters.Size() > which ) {
 
-		const BinaryDataAutoPtr data ( parameters.AtAsBinaryData ( which ) );
+		const BinaryDataUniquePtr data ( parameters.AtAsBinaryData ( which ) );
 
-		fmx::TextAutoPtr name_as_fmx_text;
+		fmx::TextUniquePtr name_as_fmx_text;
 		name_as_fmx_text->Assign ( "" ); // defeat clang: Returning null reference (within a call to 'operator*')
 		data->GetFNAMData ( *name_as_fmx_text );
 		std::string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
@@ -483,7 +458,7 @@ StringAutoPtr ParameterFileName ( const DataVect& parameters, const FMX_UInt32 w
 			name_as_string.erase ( 0, colon + 1 );
 		}
 		
-		file_name->assign ( name_as_string );
+		file_name.assign ( name_as_string );
 
 	}
 
@@ -496,7 +471,7 @@ StringAutoPtr ParameterFileName ( const DataVect& parameters, const FMX_UInt32 w
 #pragma mark Containers
 #pragma mark -
 
-int PreferredContainerType ( const BinaryData& data )
+const int PreferredContainerType ( const BinaryData& data )
 {
 
 	fmx::int32 which_type = IndexForStream ( data, MAIN_CONTAINER_TYPE );
@@ -555,7 +530,7 @@ int PreferredContainerType ( const BinaryData& data )
 const fmx::int32 StreamIndex ( const BinaryData& data, const std::string stream_type )
 {
 
-	QuadCharAutoPtr type ( stream_type[0], stream_type[1], stream_type[2], stream_type[3] );
+	QuadCharUniquePtr type ( stream_type[0], stream_type[1], stream_type[2], stream_type[3] );
 
 // defeat: Returning null reference (within a call to 'operator*')
 #ifndef __clang_analyzer__
@@ -587,7 +562,7 @@ const fmx::int32 IndexForStream ( const BinaryData& data, const std::string stre
 }
 
 
-vector<char> DataAsVectorChar ( const BinaryData& data, const FMX_UInt32 which )
+const vector<char> DataAsVectorChar ( const BinaryData& data, const FMX_UInt32 which )
 {
 	uint32 size = data.GetSize ( which );
 	char * output_buffer = new char [ size ];
@@ -601,7 +576,7 @@ vector<char> DataAsVectorChar ( const BinaryData& data, const FMX_UInt32 which )
 }
 
 
-bool StreamIsCompressed ( const BinaryData& data )
+const bool StreamIsCompressed ( const BinaryData& data )
 {
 	bool compressed = false;
 	
@@ -620,10 +595,10 @@ bool StreamIsCompressed ( const BinaryData& data )
 #pragma mark Files
 #pragma mark -
 
-StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path )
+std::string ReadFileAsUTF8 ( const boost::filesystem::path path )
 {
 	
-	StringAutoPtr result ( new string );
+	std::string result;
 	
 	if ( exists ( path ) ) {
 		size_t length = (size_t)file_size ( path ); // boost::uintmax_t
@@ -640,8 +615,8 @@ StringAutoPtr ReadFileAsUTF8 ( const boost::filesystem::path path )
 			
 			// convert the text in the file to utf-8 if possible
 			result = ConvertTextToUTF8 ( &buffer[0], length );
-			if ( result->length() == 0 ) {
-				result->assign ( &buffer[0] );
+			if ( result.length() == 0 ) {
+				result.assign ( &buffer[0] );
 			}
 			
 		}
@@ -713,10 +688,10 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 
 
 
-StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const string& to, const std::string& from )
+std::string ConvertTextEncoding ( std::string& in, const string& to, const std::string& from )
 {
-	vector<char> text = ConvertTextEncoding ( (char *)in->c_str(), (const size_t)in->size() - 1, to, from );
-	StringAutoPtr out ( new string ( text.begin(), text.end() ) );
+	vector<char> text = ConvertTextEncoding ( (char *)in.c_str(), (const size_t)in.size() - 1, to, from );
+	std::string out ( text.begin(), text.end() );
 	return out;
 }
 
@@ -724,14 +699,14 @@ StringAutoPtr ConvertTextEncoding ( StringAutoPtr in, const string& to, const st
 // convert text to utf-8
 // currently handles utf-16, ascii and utf-8 text
 
-StringAutoPtr ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from )
+std::string ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from )
 {
 	vector<char> text = ConvertTextEncoding ( in, length, UTF8, from );
 	if ( ! utf8::is_valid ( text.begin(), text.end() ) ) {
 		throw BEPlugin_Exception ( kInvalidUTF8 );
 	}
 
-	StringAutoPtr out ( new string ( text.begin(), text.end() ) );
+	std::string out ( text.begin(), text.end() );
 	return out;
 
 } // ConvertToUTF8
@@ -744,10 +719,10 @@ void SetTextEncoding ( const string& encoding )
 
 
 
-string TextAsUTF8String ( const Text& fmx_text )
+std::string TextAsUTF8String ( const Text& fmx_text )
 {
 	
-	string result;
+	std::string result;
 	
 	try {
 		
@@ -767,7 +742,7 @@ string TextAsUTF8String ( const Text& fmx_text )
 
 
 
-string TextAsNumberString ( const Text& fmx_text )
+std::string TextAsNumberString ( const Text& fmx_text )
 {
 	std::string number_string = TextAsUTF8String ( fmx_text );
 	
@@ -792,7 +767,7 @@ string DataAsUTF8String ( const Data& data )
 
 long DataAsLong ( const Data& data )
 {
-	FixPtAutoPtr number;
+	FixPtUniquePtr number;
 	number->AssignFixPt ( data.GetAsNumber() );
 	
 	return ( number->AsLong() );
@@ -802,7 +777,7 @@ long DataAsLong ( const Data& data )
 
 double DataAsDouble ( const Data& data )
 {
-	FixPtAutoPtr number;
+	FixPtUniquePtr number;
 	number->AssignFixPt ( data.GetAsNumber() );
 	
 	return ( number->AsFloat() );
@@ -819,16 +794,16 @@ errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Da
 	
 	try {
 		
-		TextAutoPtr database;
+		TextUniquePtr database;
 	
 		if ( file_name.GetSize() != 0 ) {
 			database->SetText ( file_name );
 		} else {
 
-			TextAutoPtr command;
+			TextUniquePtr command;
 			command->Assign ( "Get ( FileName )" );
 			
-			DataAutoPtr name;
+			DataUniquePtr name;
 
 // defeat: Returning null reference (within a call to 'operator*')
 #ifndef __clang_analyzer__
@@ -907,10 +882,10 @@ errcode MapError ( const errcode error, const bool map )
 
 bool AllowUserAbort ( const ExprEnv& environment )
 {
-	TextAutoPtr command;
+	TextUniquePtr command;
 	command->Assign ( "Get ( AllowAbortState )" );
 	
-	DataAutoPtr reply;
+	DataUniquePtr reply;
 
 #ifdef __clang_analyzer__
 	reply->Clear(); // defeat: Returning null reference (within a call to 'operator*')
@@ -926,10 +901,10 @@ bool AllowUserAbort ( const ExprEnv& environment )
 
 std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
 {
-	TextAutoPtr command;
+	TextUniquePtr command;
 	command->Assign ( "Get ( TemporaryPath )" );
 	
-	DataAutoPtr reply;
+	DataUniquePtr reply;
 	
 #ifdef __clang_analyzer__
 	reply->Clear(); // defeat: Returning null reference (within a call to 'operator*')
@@ -998,7 +973,7 @@ void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_Pt
 } // Do_GetString ( FMX_Unichar* version )
 
 
-void Do_GetString(unsigned long whichStringID, TextAutoPtr& intoHere, bool stripFunctionParams)
+void Do_GetString(unsigned long whichStringID, TextUniquePtr& intoHere, bool stripFunctionParams)
 {
 	FMX_Unichar			tempBuffer[kBE_GetStringMaxBufferSize];
 	
@@ -1009,7 +984,7 @@ void Do_GetString(unsigned long whichStringID, TextAutoPtr& intoHere, bool strip
 		
 		// The string for this whichStringID is a Function Prototype, but all the plug-in needs now is the Function Name by itself.
 		
-		TextAutoPtr		parenToken;
+		TextUniquePtr		parenToken;
 		parenToken->Assign ( " (" );
 		
 		FMX_UInt32 originalSize = intoHere->GetSize();
@@ -1020,7 +995,7 @@ void Do_GetString(unsigned long whichStringID, TextAutoPtr& intoHere, bool strip
 		
 	} // stripFunctionParams
 	
-} // Do_GetString (TextAutoPtr version)
+} // Do_GetString (TextUniquePtr version)
 
 
 

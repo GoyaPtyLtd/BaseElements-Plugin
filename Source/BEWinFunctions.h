@@ -2,7 +2,7 @@
  BEWinFunctions.h
  BaseElements Plug-in
 
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -20,40 +20,40 @@
 
 
 void InitialiseForPlatform ( void );
-fmx::errcode GetLastErrorAsFMX ( void );
+const fmx::errcode GetLastErrorAsFMX ( void );
 
-WStringAutoPtr ClipboardFormats ( void );
-StringAutoPtr ClipboardData ( WStringAutoPtr atype );
-bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype );
+const std::wstring ClipboardFormats ( void );
+const std::string ClipboardData ( const std::wstring& atype );
+const bool SetClipboardData ( const std::string& data, const std::wstring& atype );
 
-WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
-WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder );
-WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr file_name, WStringAutoPtr in_folder );
+const std::wstring SelectFile ( const std::wstring& prompt, const std::wstring& in_folder );
+const std::wstring SelectFolder ( const std::wstring& prompt, const std::wstring& in_folder );
+const std::wstring SaveFileDialog ( const std::wstring& prompt, const std::wstring& file_name, const std::wstring& in_folder );
 
-int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr button1, WStringAutoPtr button2, WStringAutoPtr button3 );
+const int DisplayDialog ( const std::wstring& title, const std::wstring& message, const std::wstring& button1, const std::wstring& button2, const std::wstring& button3 );
 
 
 // Progress Dialog
 
-fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAutoPtr description, const long maximum, const bool can_cancel );
-fmx::errcode UpdateProgressDialog ( const unsigned long value, const WStringAutoPtr description );
+const fmx::errcode DisplayProgressDialog ( const std::wstring& title, const std::wstring& description, const long maximum, const bool can_cancel );
+const fmx::errcode UpdateProgressDialog ( const unsigned long value, const std::wstring& description );
 
 
 // user preferences
 
-bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain );
-WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain );
+const bool SetPreference ( const std::wstring& key, const std::wstring& value, const std::wstring& domain );
+const std::wstring GetPreference ( const std::wstring& key, const std::wstring& domain );
 
 
 // other
 
-bool OpenURL ( WStringAutoPtr url );
-bool OpenFile ( WStringAutoPtr file );
+const bool OpenURL ( const std::wstring& url );
+const bool OpenFile ( const std::wstring& file );
 
 // utilities
 
-std::wstring utf8toutf16 ( const std::string& instr );
-std::string utf16ToUTF8 ( const std::wstring& s );
+const std::wstring utf8toutf16 ( const std::string& instr );
+const std::string utf16ToUTF8 ( const std::wstring& s );
 
 
 #endif // BEWINFUNCTIONS_H

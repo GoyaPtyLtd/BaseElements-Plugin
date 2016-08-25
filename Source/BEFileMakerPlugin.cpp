@@ -2,7 +2,7 @@
  BEFileMakerPlugin.cpp
  BaseElements Plug-In
  
- Copyright 2010-2014 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -29,9 +29,9 @@ extern BEFileMakerPlugin * g_be_plugin;		// the plug-in instance
 #pragma mark Constructors
 #pragma mark -
 
-BEFileMakerPlugin::BEFileMakerPlugin ( fmx::QuadCharAutoPtr plugin_id )
+BEFileMakerPlugin::BEFileMakerPlugin ( fmx::QuadChar& plugin_id )
 {
-	id = plugin_id;
+	*id = plugin_id;
 }
 
 
@@ -75,12 +75,12 @@ errcode BEFileMakerPlugin::RegisterPluginFunction ( FMX_UInt32 function_flags, s
 	int max_params = maximum_parameters ? maximum_parameters : minimum_parameters;
 	
 	errcode error_result = 0;
-	TextAutoPtr name, prototype;
+	TextUniquePtr name, prototype;
 	
 	Do_GetString ( function_id, name, true );
 	Do_GetString ( function_id, prototype, false );
 	
-//	QuadCharAutoPtr plugin_id ( PLUGIN_ID );
+//	QuadCharUniquePtr plugin_id ( PLUGIN_ID );
 	
 	error_result = fmx::ExprEnv::RegisterExternalFunction ( *id, function_id, *name, *prototype, (short)minimum_parameters, (short)max_params, function_flags, function_pointer );
 	

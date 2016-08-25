@@ -2,7 +2,7 @@
  BEQuadChar.cpp
  BaseElements Plug-In
 
- Copyright 2015 Goya. All rights reserved.
+ Copyright 2015-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -19,8 +19,8 @@ BEQuadChar::BEQuadChar ( const std::string new_type )
 		throw std::out_of_range ( "Type must be exactly 4 characters long" );
 	}
 
-	fmx::QuadCharAutoPtr _type ( new_type[0], new_type[1], new_type[2], new_type[3] );
-	type = _type;
+	fmx::QuadCharUniquePtr _type ( new_type[0], new_type[1], new_type[2], new_type[3] );
+	*type = *_type;
 
 };
 
@@ -35,6 +35,13 @@ BEQuadChar::BEQuadChar ( const fmx::BinaryData& data, const fmx::int32 which )
 #endif
 
 };
+
+
+fmx::QuadCharUniquePtr BEQuadChar::get_type ( )
+{
+	fmx::QuadCharUniquePtr out ( *type );
+	return out;
+}
 
 
 const bool BEQuadChar::is_file ( ) const
@@ -77,7 +84,7 @@ const bool BEQuadChar::is_image_attribute ( ) const
 
 const bool BEQuadChar::is_type ( const std::string new_type ) const
 {
-	const fmx::QuadCharAutoPtr file ( new_type[0], new_type[1], new_type[2], new_type[3] );
+	const fmx::QuadCharUniquePtr file ( new_type[0], new_type[1], new_type[2], new_type[3] );
 
 // defeat: Returning null reference (within a call to 'operator*')
 #ifndef __clang_analyzer__

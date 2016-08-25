@@ -2,7 +2,7 @@
  BEWinFunctions.cpp
  BaseElements Plug-in
 	
- Copyright 2010-2015 Goya. All rights reserved.
+ Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -25,11 +25,11 @@ using namespace std;
 
 
 const bool IsUnicodeFormat ( const UINT format_id );
-wstring ClipboardFormatNameForID ( const UINT format_id );
-UINT ClipboardFormatIDForName ( const wstring format_name );
-bool SafeOpenClipboard ( void );
-bool IsFileMakerClipboardType ( const wstring atype );
-UINT32 ClipboardOffset ( const wstring atype );
+const wstring ClipboardFormatNameForID ( const UINT format_id );
+const UINT ClipboardFormatIDForName ( const wstring& format_name );
+const bool SafeOpenClipboard ( void );
+const bool IsFileMakerClipboardType ( const wstring& atype );
+const UINT32 ClipboardOffset ( const wstring& atype );
 
 
 // functions & globals for the dialog callback
@@ -74,7 +74,7 @@ void InitialiseForPlatform ( void )
 
 // dry... fmx::errcode is not large enough to hold all results from GetLastError()
 
-fmx::errcode GetLastErrorAsFMX ( void )
+const fmx::errcode GetLastErrorAsFMX ( void )
 {
 	return (fmx::errcode)GetLastError();
 }
@@ -104,7 +104,7 @@ const bool IsUnicodeFormat ( const UINT format_id )
 // http://msdn.microsoft.com/en-us/library/windows/desktop/ff729168(v=vs.85).aspx
 
 
-wstring ClipboardFormatNameForID ( const UINT format_id )
+const wstring ClipboardFormatNameForID ( const UINT format_id )
 {
 	wstring format_name;
 
@@ -228,7 +228,7 @@ wstring ClipboardFormatNameForID ( const UINT format_id )
 
 
 
-UINT ClipboardFormatIDForName ( const wstring name ) {
+const UINT ClipboardFormatIDForName ( const wstring& name ) {
 	
 	UINT format_id = 0;
 
@@ -302,7 +302,7 @@ UINT ClipboardFormatIDForName ( const wstring name ) {
 	
 // transient access is denied errors (#5) can occur after setting the clipboard
 
-bool SafeOpenClipboard ( void )
+const bool SafeOpenClipboard ( void )
 {
 	BOOL is_open = OpenClipboard ( NULL );
 	int i = 0;
@@ -319,7 +319,7 @@ bool SafeOpenClipboard ( void )
 }
 
 	
-WStringAutoPtr ClipboardFormats ( void )
+const wstring ClipboardFormats ( void )
 {
 	wstring format_list = L"";
 
@@ -343,7 +343,7 @@ WStringAutoPtr ClipboardFormats ( void )
 
 	}
 
-	return WStringAutoPtr ( new wstring ( format_list ) );
+	return wstring ( format_list );
 	
 } // ClipboardFormats
 
@@ -352,7 +352,7 @@ WStringAutoPtr ClipboardFormats ( void )
  FileMaker clipboard types for Windows are of the form Mac-XMxx
  */
 
-bool IsFileMakerClipboardType ( const wstring atype )
+const bool IsFileMakerClipboardType ( const wstring& atype )
 {
 	return ( atype.find ( L"Mac-XM" ) == 0 );
 }
@@ -362,7 +362,7 @@ bool IsFileMakerClipboardType ( const wstring atype )
  for FileMaker types the first 4 bytes on the clipboard is the size of the data on the clipboard
  */
 
-UINT32 ClipboardOffset ( const wstring atype )
+const UINT32 ClipboardOffset ( const wstring& atype )
 {
 
 	if ( IsFileMakerClipboardType ( atype ) ) {
@@ -374,11 +374,11 @@ UINT32 ClipboardOffset ( const wstring atype )
 }
 
 
-StringAutoPtr UTF8ClipboardData ( const WStringAutoPtr atype )
+const string UTF8ClipboardData ( const wstring& atype )
 {
 	char * clipboard_data = NULL;
 
-	UINT format_wanted = ClipboardFormatIDForName ( *atype );
+	UINT format_wanted = ClipboardFormatIDForName ( atype );
 	HGLOBAL clipboard_memory = GetClipboardData ( format_wanted );
 	unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( clipboard_memory );
 	SIZE_T clipboard_size = GlobalSize ( clipboard_memory );
@@ -395,8 +395,8 @@ StringAutoPtr UTF8ClipboardData ( const WStringAutoPtr atype )
 	/* 
 	 prefix the data to place on the clipboard with the size of the data
 	 */
-	UINT32 offset = ClipboardOffset ( *atype );
-	StringAutoPtr reply ( new string ( clipboard_data + offset ) );
+	UINT32 offset = ClipboardOffset ( atype );
+	const string reply ( clipboard_data + offset );
 
 	delete[] clipboard_data;
 
@@ -405,11 +405,11 @@ StringAutoPtr UTF8ClipboardData ( const WStringAutoPtr atype )
 } // UTF8ClipboardData
 
 
-StringAutoPtr WideClipboardData ( const WStringAutoPtr atype )
+const string WideClipboardData ( const wstring& atype )
 {
 	wchar_t * clipboard_data = NULL;
 
-	UINT format_wanted = ClipboardFormatIDForName ( *atype );
+	UINT format_wanted = ClipboardFormatIDForName ( atype );
 
 	HGLOBAL clipboard_memory = GetClipboardData ( format_wanted );
 	wchar_t * clipboard_contents = (wchar_t *)GlobalLock ( clipboard_memory );
@@ -425,20 +425,20 @@ StringAutoPtr WideClipboardData ( const WStringAutoPtr atype )
 
 	string utf8 = utf16ToUTF8 ( clipboard_data );
 	delete[] clipboard_data;
-	StringAutoPtr reply ( new string ( utf8 ) );
+	const string reply ( utf8 );
 
 	return reply;
 
 } // WideClipboardData
 
 
-StringAutoPtr ClipboardData ( WStringAutoPtr atype )
+const string ClipboardData ( const wstring& atype )
 {
-	StringAutoPtr reply ( new string );
+	string reply;
 
 	if ( SafeOpenClipboard() ) {
 		
-		UINT format = ClipboardFormatIDForName ( *atype );
+		UINT format = ClipboardFormatIDForName ( atype );
 
 		if ( IsClipboardFormatAvailable ( format ) ) {
 
@@ -462,24 +462,24 @@ StringAutoPtr ClipboardData ( WStringAutoPtr atype )
 
 
 
-HGLOBAL DataForClipboardAsUTF8 ( const StringAutoPtr data, const WStringAutoPtr atype )
+HGLOBAL DataForClipboardAsUTF8 ( const string& data, const wstring& atype )
 {
-	SIZE_T data_size = data->size();
+	SIZE_T data_size = data.size();
 
 	/* 
 	 prefix the data to place on the clipboard with the size of the data
 	 */
-	SIZE_T offset = ClipboardOffset ( *atype );
+	SIZE_T offset = ClipboardOffset ( atype );
 	SIZE_T clipboard_size = data_size + offset;
 
 	HGLOBAL clipboard_memory = GlobalAlloc ( GMEM_MOVEABLE, clipboard_size );
 	unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( clipboard_memory );
 
-	if ( IsFileMakerClipboardType ( *atype ) == TRUE ) {
+	if ( IsFileMakerClipboardType ( atype ) == TRUE ) {
 		memcpy_s ( clipboard_contents, offset, &data_size, offset );
 	}
 
-	memcpy_s ( clipboard_contents + offset, clipboard_size, data->c_str(), clipboard_size );
+	memcpy_s ( clipboard_contents + offset, clipboard_size, data.c_str(), clipboard_size );
 
 	GlobalUnlock ( clipboard_memory );
 
@@ -489,9 +489,9 @@ HGLOBAL DataForClipboardAsUTF8 ( const StringAutoPtr data, const WStringAutoPtr 
 
 
 
-void * DataForClipboardAsWide ( const StringAutoPtr data )
+void * DataForClipboardAsWide ( const string& data )
 {
-	wstring data_as_wide = utf8toutf16 ( *data );
+	wstring data_as_wide = utf8toutf16 ( data );
 
 	SIZE_T clipboard_size = data_as_wide.size() + 1;
 	SIZE_T memory_size = clipboard_size * sizeof ( wchar_t );
@@ -508,7 +508,7 @@ void * DataForClipboardAsWide ( const StringAutoPtr data )
 
 
 
-bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
+const bool SetClipboardData ( const string& data, const wstring& atype )
 {
 	bool ok = FALSE;
 	
@@ -516,7 +516,7 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 		
 		if ( EmptyClipboard() ) {
 
-			UINT format = ClipboardFormatIDForName ( *atype );
+			UINT format = ClipboardFormatIDForName ( atype );
 
 			HGLOBAL clipboard_memory;
 
@@ -547,10 +547,10 @@ bool SetClipboardData ( StringAutoPtr data, WStringAutoPtr atype )
 // file dialogs
 
 
-WStringAutoPtr SelectFile ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
+const wstring SelectFile ( const wstring& prompt, const wstring& in_folder )
 {
 	BEWinIFileOpenDialogAutoPtr file_dialog ( new BEWinIFileOpenDialog ( prompt, in_folder ) );
-	WStringAutoPtr selected_files ( file_dialog->Show ( ) );
+	const wstring selected_files ( file_dialog->Show ( ) );
 
 	return selected_files;
 
@@ -572,15 +572,15 @@ static int CALLBACK SelectFolderCallback ( HWND hwnd, UINT uMsg, LPARAM lParam, 
 }
 
 
-WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
+const wstring SelectFolder ( const wstring& prompt, const wstring& in_folder )
 {
 	BROWSEINFO browse_info = { 0 };
 	browse_info.hwndOwner = GetActiveWindow();
 	browse_info.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
-    browse_info.lpszTitle = prompt->c_str();
-	if ( !in_folder->empty() ) {
+    browse_info.lpszTitle = prompt.c_str();
+	if ( !in_folder.empty() ) {
 		browse_info.lpfn = SelectFolderCallback;
-		browse_info.lParam = (LPARAM)in_folder->c_str();
+		browse_info.lParam = (LPARAM)in_folder.c_str();
 	}
 
     LPITEMIDLIST item_list = SHBrowseForFolder ( &browse_info );
@@ -593,15 +593,15 @@ WStringAutoPtr SelectFolder ( WStringAutoPtr prompt, WStringAutoPtr in_folder )
 		SHGetPathFromIDList ( item_list, path );
 	}
 
-	return WStringAutoPtr ( new wstring ( path ) );
+	return wstring ( path );
 
 }	//	SelectFolder
 
 
-WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr file_name, WStringAutoPtr in_folder )
+const wstring SaveFileDialog ( const wstring& prompt, const wstring& file_name, const wstring& in_folder )
 {
 	BEWinIFileSaveDialogAutoPtr file_dialog ( new BEWinIFileSaveDialog ( prompt, file_name, in_folder ) );
-	WStringAutoPtr save_file_as ( file_dialog->Show ( ) );
+	const wstring save_file_as ( file_dialog->Show ( ) );
 
 	return save_file_as;
 
@@ -610,12 +610,12 @@ WStringAutoPtr SaveFileDialog ( WStringAutoPtr prompt, WStringAutoPtr file_name,
 
 // (customized) alert dialogs
 
-int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr button1, WStringAutoPtr button2, WStringAutoPtr button3 )
+const int DisplayDialog ( const wstring& title, const wstring& message, const wstring& button1, const wstring& button2, const wstring& button3 )
 {
 	// set the names to be used for each button
-	g_button1_name.swap ( *button1 );
-	g_button2_name.swap ( *button2 );
-	g_button3_name.swap ( *button3 );
+	g_button1_name = button1;
+	g_button2_name = button2;
+	g_button3_name = button3;
 
 	// the type of dialog displayed varies depends on the nunmber of buttons required
 	UINT type = MB_OK;
@@ -635,7 +635,7 @@ int DisplayDialog ( WStringAutoPtr title, WStringAutoPtr message, WStringAutoPtr
 	 choice on OS X
 	 */
 
-	int button_clicked = MessageBox ( GetForegroundWindow(), message->c_str(), title->c_str(), type );
+	int button_clicked = MessageBox ( GetForegroundWindow(), message.c_str(), title.c_str(), type );
 
 	unsigned long response = 0;
 
@@ -702,7 +702,7 @@ LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam )
 #pragma mark -
 
 
-fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAutoPtr description, const long maximum, const bool can_cancel )
+const fmx::errcode DisplayProgressDialog ( const wstring& title, const wstring& description, const long maximum, const bool can_cancel )
 {
 	HRESULT result = S_OK;
 
@@ -716,11 +716,11 @@ fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAu
 		result = CoCreateInstance ( CLSID_ProgressDialog, NULL, CLSCTX_INPROC_SERVER, IID_IProgressDialog, (void**)&progress_dialog );
 
 		if ( result == S_OK ) {
-			result = progress_dialog->SetTitle ( title->c_str () );
+			result = progress_dialog->SetTitle ( title.c_str () );
 		}
 
 		if ( result == S_OK ) {
-			result = progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
+			result = progress_dialog->SetLine ( 2, description.c_str (), false, NULL );
 		}
 
 		DWORD flags = PROGDLG_NORMAL;
@@ -743,7 +743,7 @@ fmx::errcode DisplayProgressDialog ( const WStringAutoPtr title, const WStringAu
 } // DisplayProgressDialog
 
 
-fmx::errcode UpdateProgressDialog ( const unsigned long value, const WStringAutoPtr description )
+const fmx::errcode UpdateProgressDialog ( const unsigned long value, const wstring& description )
 {
 	fmx::errcode error = kNoError;
 
@@ -763,8 +763,8 @@ fmx::errcode UpdateProgressDialog ( const unsigned long value, const WStringAuto
 
 			HRESULT result;
 
-			if ( !description->empty () ) {
-				result = progress_dialog->SetLine ( 2, description->c_str (), false, NULL );
+			if ( !description.empty () ) {
+				result = progress_dialog->SetLine ( 2, description.c_str (), false, NULL );
 			}
 
 			if ( result == S_OK ) {
@@ -788,14 +788,14 @@ fmx::errcode UpdateProgressDialog ( const unsigned long value, const WStringAuto
 #pragma mark -
 
 
-bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr domain )
+const bool SetPreference ( const wstring& key, const wstring& value, const wstring& domain )
 {
 	HKEY registry_key;
  
 	LSTATUS status;
 
 	status = RegCreateKeyEx ( HKEY_CURRENT_USER,
-								domain->c_str(),
+								domain.c_str(),
 								0,
 								NULL,
 								REG_OPTION_NON_VOLATILE,
@@ -808,11 +808,11 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 	if ( status == ERROR_SUCCESS ) {
 
 		status = RegSetValueEx ( registry_key,
-								key->c_str(),
+								key.c_str(),
 								0,
 								REG_SZ,
-								(PBYTE)value->c_str(),
-								(DWORD)(value->size() * sizeof(wchar_t)) + 1
+								(PBYTE)value.c_str(),
+								(DWORD)(value.size() * sizeof(wchar_t)) + 1
 								);
 		RegCloseKey ( registry_key );
 	}
@@ -824,7 +824,7 @@ bool SetPreference ( WStringAutoPtr key, WStringAutoPtr value, WStringAutoPtr do
 }
 
 
-WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
+const wstring GetPreference ( const wstring& key, const wstring& domain )
 {
 
 	HKEY registry_key;
@@ -834,7 +834,7 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 	LSTATUS status;
 
 	status = RegOpenKeyEx ( HKEY_CURRENT_USER, 
-							domain->c_str(),
+							domain.c_str(),
 							NULL,
 							KEY_READ,
 							&registry_key
@@ -843,7 +843,7 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 	if ( status == ERROR_SUCCESS ) {
 
 		status = RegQueryValueEx ( registry_key,
-									key->c_str(),
+									key.c_str(),
 									NULL,
 									NULL,
 									(LPBYTE)preference_data,
@@ -857,7 +857,7 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 			preference_data = new wchar_t[buffer_size + 1]();
 
 			status = RegQueryValueEx ( registry_key,
-										key->c_str(),
+										key.c_str(),
 										NULL,
 										NULL,
 										(LPBYTE)preference_data,
@@ -867,7 +867,7 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 		RegCloseKey ( registry_key );
 	}
 
-	WStringAutoPtr value = WStringAutoPtr ( new wstring ( preference_data ) );
+	const wstring value ( preference_data );
   
 	delete [] preference_data;
 
@@ -883,10 +883,10 @@ WStringAutoPtr GetPreference ( WStringAutoPtr key, WStringAutoPtr domain )
 #pragma mark -
 
 
-bool OpenURL ( WStringAutoPtr url )
+const bool OpenURL ( const wstring& url )
 {
 
-	HINSTANCE result = ShellExecute ( NULL, (LPCWSTR)L"open", url->c_str(), NULL, NULL, SW_SHOWNORMAL );
+	HINSTANCE result = ShellExecute ( NULL, (LPCWSTR)L"open", url.c_str(), NULL, NULL, SW_SHOWNORMAL );
 
 	// see http://msdn.microsoft.com/en-us/library/bb762153(VS.85).aspx
 
@@ -894,7 +894,7 @@ bool OpenURL ( WStringAutoPtr url )
 }
 
 
-bool OpenFile ( WStringAutoPtr path )
+const bool OpenFile ( const wstring& path )
 {
 	return OpenURL ( path );
 }
@@ -905,7 +905,7 @@ bool OpenFile ( WStringAutoPtr path )
 #pragma mark Utilities
 #pragma mark -
 
-wstring utf8toutf16 ( const string& instr )
+const wstring utf8toutf16 ( const string& instr )
 {
     // Assumes std::string is encoded using the UTF-8 codepage
     int bufferlen = MultiByteToWideChar ( CP_UTF8, 0, instr.c_str(), (int)instr.size(), NULL, 0 );
@@ -928,7 +928,7 @@ wstring utf8toutf16 ( const string& instr )
 
 
 
-string utf16ToUTF8 ( const wstring& s )
+const string utf16ToUTF8 ( const wstring& s )
 {
     const int size = ::WideCharToMultiByte( CP_UTF8, 0, s.c_str(), -1, NULL, 0, 0, NULL );
 
