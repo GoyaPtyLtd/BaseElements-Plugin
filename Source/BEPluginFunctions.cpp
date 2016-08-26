@@ -3299,5 +3299,22 @@ FMX_PROC(errcode) BE_Pause ( short /* funcId */, const ExprEnv& /* environment *
 				
 } // BE_Pause
 			
-			
-			
+
+FMX_PROC(errcode) BE_Get_Machine_Name ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+				
+	try {
+		
+		auto machine_name = get_machine_name();
+		SetResult ( machine_name, results );
+		
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+				
+	return MapError ( error );
+				
+} // BE_Get_Machine_Name

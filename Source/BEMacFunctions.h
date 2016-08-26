@@ -50,6 +50,8 @@ const std::wstring GetPreference ( std::wstring& key, std::wstring& domain );
 const bool OpenURL ( std::wstring& url );
 const bool OpenFile ( std::wstring& path );
 
+const std::wstring get_machine_name ( );
+
 
 // used by Do_GetString
 const unsigned long  Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId );

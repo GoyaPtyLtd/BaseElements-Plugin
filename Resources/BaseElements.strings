@@ -175,6 +175,8 @@
 "900" = "BE_Vector_DotProduct ( a ; b )";
 "901" = "BE_Vector_EuclideanDistance ( a ; b )";
 
+"950" = "BE_Get_Machine_Name";
+
 
 // replaces 120 BE_ExecuteShellCommand
 "1120" = "BE_ExecuteSystemCommand ( command { ; timeout } )";

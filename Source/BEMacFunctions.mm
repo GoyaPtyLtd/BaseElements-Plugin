@@ -442,6 +442,13 @@ const bool OpenFile ( std::wstring& path )
 }
 
 
+const std::wstring get_machine_name ( )
+{
+	NSString * machine_name = [[NSHost currentHost] localizedName];
+	return WStringFromNSString ( machine_name );
+}
+
+
 #pragma mark -
 #pragma mark Other (FMX)
 #pragma mark -

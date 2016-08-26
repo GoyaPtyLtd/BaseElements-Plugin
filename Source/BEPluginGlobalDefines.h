@@ -208,6 +208,7 @@ enum functions {
 	kBE_XOR = 800,
 	kBE_Vector_DotProduct = 900,
 	kBE_Vector_EuclideanDistance = 901,
+	kBE_Get_Machine_Name = 950,
 	kBE_ExecuteSystemCommand = 1120
 };
 

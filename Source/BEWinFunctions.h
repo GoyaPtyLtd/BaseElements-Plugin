@@ -49,6 +49,7 @@ const std::wstring GetPreference ( const std::wstring& key, const std::wstring& 
 
 const bool OpenURL ( const std::wstring& url );
 const bool OpenFile ( const std::wstring& file );
+const std::wstring get_machine_name ();
 
 // utilities
 

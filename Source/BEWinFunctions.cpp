@@ -900,6 +900,17 @@ const bool OpenFile ( const wstring& path )
 }
 
 
+const std::wstring get_machine_name ()
+{
+	const int BUFFER_SIZE = MAX_COMPUTERNAME_LENGTH + 1;
+	wchar_t buffer[BUFFER_SIZE] = L"";
+	DWORD size = BUFFER_SIZE;
+
+	GetComputerNameEx ( ComputerNamePhysicalNetBIOS, buffer, &size );
+
+	return buffer;
+}
+
 
 #pragma mark -
 #pragma mark Utilities

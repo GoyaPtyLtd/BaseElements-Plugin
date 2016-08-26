@@ -267,6 +267,9 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Vector_DotProduct, BE_Vector_DotProduct, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Vector_EuclideanDistance, BE_Vector_EuclideanDistance, 2 );
 
+	g_be_plugin->RegisterFunction ( kBE_Get_Machine_Name, BE_Get_Machine_Name );
+
+	
 	// still alpha
 	
 //	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestToken, BE_OAuth_RequestAccessToken, true, 3 );
