@@ -39,6 +39,9 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	text = new mimetic::MimeEntity;
 	text->body().assign ( message_body + "\n\n" );
 	text->header().contentType() = "text/plain; charset=\"utf-8\"";
+	
+	mimetic::MimeVersion mime_version = mimetic::MimeVersion ( "1.0" );
+	text->header().mimeVersion( mime_version );
 
 }
 

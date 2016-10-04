@@ -66,7 +66,7 @@ BESMTP::BESMTP ( const std::string _host, const std::string _port, const std::st
 
 	// allow the user to override anything we set
 	set_options ( g_curl_options );
-	
+		
 	set_custom_headers ( g_http_custom_headers );
 
 }
