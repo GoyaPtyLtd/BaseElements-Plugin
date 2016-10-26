@@ -50,7 +50,7 @@ Download the source from
 
 and follow the supplied building instructions but with the following ./configure command (to build a universal binary)
 
-	./configure CFLAGS="-arch i386 -arch x86_64" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
+	./configure
 
 Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and  ./src/.libs/libjansson.a to Libraries/macOS.
 
@@ -65,7 +65,7 @@ Download the source from
 
 and follow the supplied building instructions but with the following ./configure command (to build a universal binary)
 
-	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
+	./configure CFLAGS="-mmacosx-version-min=10.7"
 
 Copy oauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a to Libraries/macOS.
 
@@ -93,25 +93,13 @@ Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-To build the 32-bit library
+To build the library
 
 	cd openssl-1.0.2g
-	./Configure darwin-i386-cc -mmacosx-version-min=10.7 --prefix=/Users/mark/Desktop/openssl/build32
-	make install
-	
-For the 64-bit build
-
-	make clean
-	./Configure darwin64-x86_64-cc -mmacosx-version-min=10.7 --prefix=/Users/mark/Desktop/openssl/build64
+	./Configure darwin64-x86_64-cc -mmacosx-version-min=10.7 --prefix=/Users/mark/Desktop/openssl/build
 	make install
 
-Then, to make the universal libraries
-
-	cd ~/Desktop/openssl
-	lipo -create build64/lib/libcrypto.a build32/lib/libcrypto.a -output libcrypto.a
-	lipo -create build64/lib/libssl.a build32/lib/libssl.a -output libssl.a
-
-Copy libcrypto.a and libssl.a to Libraries/macOS and copy build64/include/openssl to Headers.
+Copy libcrypto.a and libssl.a to Libraries/macOS and copy build/include/openssl to Headers.
 
 
 =======================================================================
@@ -124,7 +112,7 @@ Download the source from
 
 Unpack the archive and in the distribution directory
 
-	CFLAGS="-arch x86_64 -arch i386 -mmacosx-version-min=10.7 -I<path_to_openssl/include>" LDFLAGS="-arch i386 -arch x86_64 -L<path_to_openssl/lib>" ./configure --with-openssl --with-libz --without-libgcrypt --prefix=<path_to_install_libssh2> -exec-prefix=<path_to_install_libssh2> --disable-shared && make install
+	CFLAGS="-mmacosx-version-min=10.7 -I<path_to_openssl/include>" LDFLAGS="-L<path_to_openssl/lib>" ./configure --with-openssl --with-libz --without-libgcrypt --prefix=<path_to_install_libssh2> -exec-prefix=<path_to_install_libssh2> --disable-shared && make install
 
 (replacing <paths> as appropriate).
 
@@ -151,31 +139,15 @@ Download the source from
 
 and expand it into a directory on the Desktop. cd into the directory and run
 
-	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7 -I<path to /BaseElements-Plugin/Headers/libssh>" LDFLAGS="-arch i386 -arch x86_64 -L<path to /BaseElements-Plugin/Libraries/macOS>" --disable-dependency-tracking --disable-shared --with-libz --prefix=<install path> --with-libssh2
+	./configure CFLAGS="-mmacosx-version-min=10.7 -I<path to /BaseElements-Plugin/Headers/libssh>" LDFLAGS="-L<path to /BaseElements-Plugin/Libraries/macOS>" --disable-dependency-tracking --disable-shared --with-libz --prefix=<install path> --with-libssh2
 
 (replacing the indicated paths as appropriate).
 
-Open the file
-
-	include/curl/curlbuild.h
-
-and replace the line
-
-	#define CURL_SIZEOF_LONG 8
-
-with
-
-	#ifdef __x86_64__
-		#define CURL_SIZEOF_LONG 8
-	#else
-		#define CURL_SIZEOF_LONG 4
-	#endif
-
-And then run
+Then run
 
 	make install
 
-Copy
+and copy
 
 	<path_to_intsall_libcurl>/lib/curl.a
 
@@ -208,16 +180,10 @@ Download the source from
 and extract the archive to the desktop and then
 
 	autoreconf -fiv
-	./configure --host i686-apple-darwin CFLAGS='-O3 -m32 -mmacosx-version-min=10.7' LDFLAGS=-m32 --without-simd	make install prefix=~/Desktop/build32
-
-Then
-
-	make distclean
 	./configure --host x86_64-apple-darwin CFLAGS='-mmacosx-version-min=10.7' --without-simd
-	make install prefix=~/Desktop/build64
-	lipo -create ~/Desktop/build32/lib/libturbojpeg.a ~/Desktop/build64/lib/libturbojpeg.a -output <path to BaseElements-Plugin>/Libraries/macOS/libturbojpeg.a
+	make install prefix=~/Desktop/build
 
-Then rename ~/Desktop/build/include to ~/Desktop/build/libturbojpeg and copy the directory into Headers.
+Copy build/libturbojpeg.a to Libraries/macOS and rename ~/Desktop/build/include to ~/Desktop/build/libturbojpeg and copy the directory into Headers.
 
 
 =======================================================================
@@ -261,7 +227,7 @@ Download the source for libxml2 from
 and expand it into a directory on the Desktop.
 
 	cd libxml2-2.9.4
-	./configure  CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7" LDFLAGS="-arch i386 -arch x86_64" --disable-shared --without-python --without-zlib --prefix=<path to Desktop>/libxml2-2.9.4/build
+	./configure  CFLAGS="-mmacosx-version-min=10.7" --disable-shared --without-python --without-zlib --prefix=<path to Desktop>/libxml2-2.9.4/build
 	make install
 	
 and then copy libxml2.a from build/lib to the Libraries/macOS directory and the libxml2 directory from build/include to Headers.
@@ -278,7 +244,7 @@ Download the source from
 and expand it into a directory on the Desktop.
 
 	cd libxslt-1.1.29
-	./configure  CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7"  LDFLAGS="-arch i386 -arch x86_64" --disable-shared --without-python --without-crypto --prefix=<path to Desktop>/libxslt-1.1.29/build
+	./configure  CFLAGS="-mmacosx-version-min=10.7" --disable-shared --without-python --without-crypto --prefix=<path to Desktop>/libxslt-1.1.29/build
 	make install
 	
 and then copy libxslt.a and libexslt.a from build/lib to the Libraries/macOS directory and the libxslt & libexslt directories from build/include to Headers.
@@ -294,7 +260,7 @@ Download the FileMaker External Plug-In API from
 
 	http://www.filemaker.com/support/technologies/
 
-and place the FMWrapper directory inside the SDK's Headers directory in the Headers directory. The version of FMWrapper.lib in the Libraries\Win\win32 should be placed the Libraries directory. If building a 64-bit plug-in place the Libraries\Win\x86 in the Libraries\win32 directory.
+and place the FMWrapper directory inside the SDK's Headers directory in the Headers directory. The version of FMWrapper.lib in the Libraries\win64 should be placed the Libraries directory.
 
 The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries (/MTd & /MT) using libcmt.lib and nafxcw.lib for release and libcrtd.lib and nafxcwd.lib for debug builds.
 
@@ -325,7 +291,6 @@ for instructions on compiling the Boost libraries. From the command prompt try
 	bootstrap.bat
 	b2 address-model=64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex --prefix=build install
 
-
 Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib to Libraries/x64.
 
 
@@ -339,13 +304,9 @@ Building zlib is straightforward. Download the zlib source from
 
 and extract the folder zlib-1.2.8 to the desktop.
 
-Open the solution file "contrib/vstudio/vc11/zlibvc.sln" and remove ZLIB_WINAPI from the list of preprocessor definitions for both the libzstat Win32 and x64 ReleaseWithoutAsm configurations. From the "Build Menu" select "Batch Build" and select the libzstat "ReleaseWithoutAsm" configuration for both Win32 and x64, and "Build".
+Open the solution file "contrib/vstudio/vc11/zlibvc.sln" and remove ZLIB_WINAPI from the list of preprocessor definitions for the libzstat x64 ReleaseWithoutAsm configuration. From the "Build Menu" select "Batch Build" and select the libzstat "ReleaseWithoutAsm" configuration for x64, and "Build".
 
 Move
-
-	contrib/vstudio/vc11/x86/ZlibStatReleaseWithoutAsm/zlibstat.lib
-
-into the Libraries/x86 directory and
 
 	contrib/vstudio/vc11/x64/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
@@ -372,7 +333,7 @@ And
 
 Finally, Build->Batch Build to build the two "Release" configurations.
 
-Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib  to Libraries\win32 and win32/vs2010/Output/Release/jansson.lib to Libraries\x64.
+Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib to Libraries\x64.
 
 
 =======================================================================
@@ -387,7 +348,7 @@ Download the source from
 
 Unpack directory containing the Visual Studio solution files (from the BaseElements-Plugin Projects/Extras), open the Solution make sure the project can find the BaseElements plug-in Header and Libraries directories. Then, from Build->Batch Build build the two "Release" configurations.
 
-Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib  to Libraries\win32 and liboauth\Release\liboauth.lib to Libraries\x64.
+Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib to Libraries\x64.
 
 
 =======================================================================
@@ -414,7 +375,7 @@ Build -> Configuration Manager -> Active Solution Platform: -> <New>
 
 Then build the MTRelease x64 configuration.
 
-Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib & libmimetic.lib from the win32\x86 directory to the Libraries\win32 directory and from win32\x64 to Libraries\x64.
+Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib & libmimetic.lib from the win32\x64 to Libraries\x64.
 
 
 =======================================================================
@@ -424,7 +385,6 @@ libssh2 - 1.7.0
 Download the source from
 
 	http://www.libssh2.org/
-
 
 Open
 
@@ -442,26 +402,17 @@ Comment out the line
 
 in libssh2_config.h.
 
-From Batch Build select "OpenSSL LIB Release".
-
-Copy the library from
-
-	win32\Release_lib\libssl2.lib
-
-into the Libraries\win32 directory and copy
-
-	include
-
-to the Headers directory and rename it libssh2.
-
-
 For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK".
 
 Copy the library from
 
 	win32\Release_lib\libssl2.lib
 
-into the Libraries\x64 directory.
+into the Libraries\x64 directory and copy
+
+	include
+
+to the Headers directory and rename it libssh2.
 
 
 =======================================================================
@@ -478,18 +429,7 @@ Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-Note: if building both x86 and x64 versions unpack a clean version of the source for each build.
-
-Unpack the archive and, using the "VS2015 x86 Native Command Prompt"
-
-	cd openssl-1.0.2g
-	perl Configure VC-WIN32 enable-static-engine no-asm
-	ms\do_nt
-	nmake -f ms\nt.mak
-
-Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\win32 and copy inc32\openssl to Headers.
-
-For x64 builds in a "VS2015 x64 Native Command Prompt" use:
+Unpack the archive and, in a "VS2015 x64 Native Command Prompt":
 
 	cd openssl-1.0.2g
 	perl Configure VC-WIN64A enable-static-engine no-asm
@@ -525,10 +465,6 @@ and set the following Configuration Properties for all projects/platforms:
 In Visual Studio and select "Batch Build" and select both the x86 & x64 "LIB Release - LIB OpenSSL - LIB LibSSH2" configurations and then "Build".
 
 Copy the library from
-
-	build\Win32\VC14\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
-
-into the Libraries\win32 directory and copy
 
 	build\Win64\VC14\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
 
@@ -612,9 +548,14 @@ to
 
 	#elif defined(_MSC_VER)
 
-and build the project.
+For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK". Set the "Active solution configuration" to "Release" and uncheck "Build" for "runsuite".
 
-Copy Release\iconv.lib & Release\libxml2.lib to the BE Plugin Libraries\win32 folder and, finally, copy
+Make the changes to the configuration properties as per the x86 instructions, above, and then build the project. Move
+
+	win32/VC10/x64/Release/iconv.lib
+	win32/VC10/x64/Release/libxml2.lib
+
+to the Libraries/x64 directory and copy
 
 	libxml2-2.9.4\include\libxml
 
@@ -623,16 +564,6 @@ into the BE Plugin Headers folder and create a folder, iconv, in the BE Plugin H
 	libiconv-1.14.vc10\include\iconv.h
 
 into that.
-
-For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK". Set the "Active solution configuration" to "Release" and uncheck "Build" for "runsuite".
-
-Make the changes to the configuration properties as per the x86 instructions, above, and then build the project. Move
-
-	win32/VC10/x64/Release/iconv.lib
-	win32/VC10/x64/Release/libxml2.lib
-
-to the Libraries/x64 directory.
-
 
 =======================================================================
 libxslt & libexslt - 1.1.29
@@ -654,12 +585,6 @@ Move to the win32 directory in the archive
 
 Run the commands (changing the include= & lib= paths as appropriate)
 
-32-bit
-
-	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin>\Libraries\win32"
-
-64-bit
-
 	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin>\Libraries\x64"
 
 Then
@@ -677,8 +602,6 @@ into directories, libxslt & libexslt, in the Headers directory and copy the libr
 	bin.msvc\libxslt_a.lib & bin.msvc\libexslt_a.lib
 
 into the Libraries\x64 (or Libraries\x64) directory.
-
-Note: if building both 32 & 64 bit libraries clean the project in between the builds.
 
 
 =======================================================================
@@ -710,7 +633,7 @@ and extract the archive to the desktop. Download and install cmake from
 
 and then, from that directory, in a terminal window
 
-	cmake -G "Visual Studio 14"
+	cmake -G "Visual Studio 14 Win64"
 
 Open the project
 
@@ -724,15 +647,7 @@ set
 
 	Character Set = Use Unicode Character Set
 
-and build the Release configuration. Copy turbojpeg-static.lib to the Liraries\win32 directory. For 64-bit builds either start with fresh copy of the source or clean the 32-bit Release configuration and delete the file
-
-	CMakeCahche.txt
-
-and then, in a terminal
-
-	cmake -G "Visual Studio 14 Win64"
-
-etc. and copy turbojpeg-static.lib to the Liraries/x64 directory.
+and build the Release configuration and copy turbojpeg-static.lib to the Liraries/x64 directory.
 
 Create a directory libturbojpeg in the Headers directory and copy
 
