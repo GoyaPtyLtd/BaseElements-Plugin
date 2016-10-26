@@ -572,7 +572,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../Libraries\"",
 					"$(SRCROOT)",
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
@@ -582,8 +581,7 @@
 				INFOPLIST_FILE = ../Resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../Libraries",
-					../Libraries/osx,
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
+					../Libraries/macOS,
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -617,7 +615,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../Libraries\"",
 					"$(SRCROOT)",
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
@@ -627,8 +624,7 @@
 				INFOPLIST_FILE = ../Resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../Libraries",
-					../Libraries/osx,
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
+					../Libraries/macOS,
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -671,7 +667,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					../Libraries,
-					../Libraries/osx,
+					../Libraries/macOS,
 				);
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
@@ -714,7 +710,7 @@
 				INFOPLIST_PREPROCESS = YES;
 				LIBRARY_SEARCH_PATHS = (
 					../Libraries,
-					../Libraries/osx,
+					../Libraries/macOS,
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -770,7 +766,7 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					../Libraries,
-					../Libraries/osx,
+					../Libraries/macOS,
 				);
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
@@ -813,7 +809,7 @@
 				INFOPLIST_PREPROCESS = YES;
 				LIBRARY_SEARCH_PATHS = (
 					../Libraries,
-					../Libraries/osx,
+					../Libraries/macOS,
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
