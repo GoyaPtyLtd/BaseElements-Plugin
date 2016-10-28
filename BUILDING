@@ -291,7 +291,7 @@ for instructions on compiling the Boost libraries. From the command prompt try
 	bootstrap.bat
 	b2 address-model=64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex --prefix=build install
 
-Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib to Libraries/x64.
+Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib to Libraries/win64.
 
 
 =======================================================================
@@ -310,7 +310,7 @@ Move
 
 	contrib/vstudio/vc11/x64/ZlibStatReleaseWithoutAsm/zlibstat.lib
 
-into the Libraries/x64.
+into the Libraries/win64.
 
 Copy zip.h and zconf.h from the root directory of the distribution to the Headers directory.
 
@@ -329,11 +329,11 @@ And
 2. Change the Configuration Properties->General->Configuration Type to "Static library (.lib)".
 3. Add the src directory to Configuration Properties->VC++ Directories->Include Directories.
 4. Change Configuration Properties->C/C++->Code Generation->Runtime Library to "Multi-threaded Debug (/MTd)" for the the debug configuration and "Multi-threaded (/MT)" for the release one.
-5. Add new configurations for x64 and change Configuration Properties->General->Output Directory to "Output\$(Configuration)\x64" for the x64 configurations.
+5. Add new configurations for x64 and change Configuration Properties->General->Output Directory to "Output\$(Configuration)\win64" for the x64 configurations.
 
 Finally, Build->Batch Build to build the two "Release" configurations.
 
-Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib to Libraries\x64.
+Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib to Libraries\win64.
 
 
 =======================================================================
@@ -348,7 +348,7 @@ Download the source from
 
 Unpack directory containing the Visual Studio solution files (from the BaseElements-Plugin Projects/Extras), open the Solution make sure the project can find the BaseElements plug-in Header and Libraries directories. Then, from Build->Batch Build build the two "Release" configurations.
 
-Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib to Libraries\x64.
+Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib to Libraries\win64.
 
 
 =======================================================================
@@ -375,7 +375,7 @@ Build -> Configuration Manager -> Active Solution Platform: -> <New>
 
 Then build the MTRelease x64 configuration.
 
-Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib & libmimetic.lib from the win32\x64 to Libraries\x64.
+Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib & libmimetic.lib from the win32\win64 to Libraries\win64.
 
 
 =======================================================================
@@ -408,7 +408,7 @@ Copy the library from
 
 	win32\Release_lib\libssl2.lib
 
-into the Libraries\x64 directory and copy
+into the Libraries\win64 directory and copy
 
 	include
 
@@ -436,7 +436,7 @@ Unpack the archive and, in a "VS2015 x64 Native Command Prompt":
 	ms\do_win64a
 	nmake -f ms\nt.mak
 
-Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\x64 and copy inc32\openssl to Headers.
+Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\win64 and copy inc32\openssl to Headers.
 
 
 =======================================================================
@@ -468,7 +468,7 @@ Copy the library from
 
 	build\Win64\VC14\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
 
-into the Libraries\x64 directory and copy
+into the Libraries\win64 directory and copy
 
 	include\curl
 
@@ -555,7 +555,7 @@ Make the changes to the configuration properties as per the x86 instructions, ab
 	win32/VC10/x64/Release/iconv.lib
 	win32/VC10/x64/Release/libxml2.lib
 
-to the Libraries/x64 directory and copy
+to the Libraries/win64 directory and copy
 
 	libxml2-2.9.4\include\libxml
 
@@ -585,7 +585,7 @@ Move to the win32 directory in the archive
 
 Run the commands (changing the include= & lib= paths as appropriate)
 
-	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin>\Libraries\x64"
+	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers>;<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin>\Libraries\win64"
 
 Then
 
@@ -601,7 +601,7 @@ into directories, libxslt & libexslt, in the Headers directory and copy the libr
 
 	bin.msvc\libxslt_a.lib & bin.msvc\libexslt_a.lib
 
-into the Libraries\x64 (or Libraries\x64) directory.
+into the Libraries\win64 directory.
 
 
 =======================================================================
@@ -647,7 +647,7 @@ set
 
 	Character Set = Use Unicode Character Set
 
-and build the Release configuration and copy turbojpeg-static.lib to the Liraries/x64 directory.
+and build the Release configuration and copy turbojpeg-static.lib to the Liraries/win64 directory.
 
 Create a directory libturbojpeg in the Headers directory and copy
 
@@ -685,7 +685,7 @@ Then, after extracting the archive set
 
 Then build the Zip and Foundation MT Release and Debug libraries using the projects in the respective directories.
 
-Copy PocoFoundationmt.lib/PocoFoundationmtd.lib & PocoZipmt.lib/PocoZipmtd.lib libraries from the lib and lib64 driectories into the Libraries/win32 and Libraries/x64 directories and copy the include/Poco directory to Headers.
+Copy PocoFoundationmt.lib/PocoFoundationmtd.lib & PocoZipmt.lib/PocoZipmtd.lib libraries from the lib and lib64 driectories into the Libraries/win32 and Libraries/win64 directories and copy the include/Poco directory to Headers.
 
 
 =======================================================================
