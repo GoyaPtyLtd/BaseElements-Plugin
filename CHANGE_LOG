@@ -9,6 +9,7 @@ Changes
 
 BE_SMTP_Send: Add "MIME-Version" header to SMTP messages (GitHub #124)
 
+Use boost 1.62, poco 1.7.6
 
 ########################################################################
 Version 3.3

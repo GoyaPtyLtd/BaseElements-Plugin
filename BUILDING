@@ -24,7 +24,7 @@ and place the FMWrapper.framework in the Libraries directory.
 On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built the Boost FileSystem, System and Thread libraries.
 
 =======================================================================
-Boost - 1.59_0
+Boost - 1.62_0
 =======================================================================
 
 Boost is available from
@@ -33,13 +33,13 @@ Boost is available from
 
 The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
 
-	cd boost_1_59_0
+	cd boost_1_62_0
 	./bootstrap.sh
-	./b2 architecture=x86 address-model=32 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.6"
+	./b2 architecture=x86 address-model=32 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.7"
 
 and
 
-	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build64 --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.6"
+	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build64 --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.7"
 
 Then, to create the universal binaries
 
@@ -102,7 +102,7 @@ Download the source from
 
 Follow the supplied building instructions using this ./configure command (to build a universal binary)
 
-	./configure CXXFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking --prefix=build && make install
+	./configure CXXFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking --prefix=build && make install
 
 Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the library in the boost/lib directory to the Libraries/osx directory.
 
@@ -254,7 +254,7 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.3
+Poco 1.7.6
 =======================================================================
 
 Download the source from
@@ -263,7 +263,7 @@ Download the source from
 
 Then, after extracting the archive
 
-	cd poco-1.7.3-all
+	cd poco-1.7.6-all
 
 	export MACOSX_DEPLOYMENT_TARGET=10.7
 
@@ -337,7 +337,7 @@ Another note: when doing both debug and release builds clean the project when sw
 
 
 =======================================================================
-Boost - 1.59_0
+Boost - 1.62_0
 =======================================================================
 
 The Boost FileSystem and System libraries are required.
@@ -350,7 +350,7 @@ See
 
 for instructions on compiling the Boost libraries. From the command prompt try
 
-	cd boost_1_59_0
+	cd boost_1_62_0
 	bootstrap.bat
 	b2 address-model=32 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex install --prefix=build
 
@@ -800,7 +800,7 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.3
+Poco 1.7.6
 =======================================================================
 
 Download the source from
