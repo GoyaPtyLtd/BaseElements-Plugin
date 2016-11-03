@@ -571,9 +571,8 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../Libraries\"",
+					"\"$(SRCROOT)/../Libraries/osx\"",
 					"$(SRCROOT)",
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
@@ -584,7 +583,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../Libraries",
 					../Libraries/osx,
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -599,7 +597,7 @@
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.3;
+				VERSION_STRING = 3.3.1;
 			};
 			name = Release;
 		};
@@ -617,9 +615,8 @@
 				DEPLOYMENT_POSTPROCESSING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../Libraries\"",
+					"\"$(SRCROOT)/../Libraries/osx\"",
 					"$(SRCROOT)",
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
@@ -630,7 +627,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../Libraries",
 					../Libraries/osx,
-					"/Users/mark/Documents/Projects/Goya/BaseElements-Plugin/Libraries/osx",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -646,7 +642,7 @@
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.3;
+				VERSION_STRING = 3.3.1;
 			};
 			name = Debug;
 		};
@@ -730,7 +726,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.3;
+				VERSION_STRING = 3.3.1;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -819,7 +815,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.3;
+				VERSION_STRING = 3.3.1;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
