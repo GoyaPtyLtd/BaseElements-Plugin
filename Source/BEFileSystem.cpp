@@ -22,8 +22,6 @@ using namespace boost::filesystem;
 
 bool recursive_directory_copy ( const path & from, const path & to  ) {
 	
-	path base = from;
-
 	if ( is_directory ( from ) ) {
 
 		copy_directory ( from, to );
