@@ -2,14 +2,14 @@
 Version 3.3.1
 ########################################################################
 
-November 4, 2016
+November 7, 2016
 
 
 Changes
 
 BE_SMTP_Send: Add "MIME-Version" header to SMTP messages (GitHub #124)
 
-Use boost 1.62, poco 1.7.6
+Use poco 1.7.6
 
 ########################################################################
 Version 3.3
