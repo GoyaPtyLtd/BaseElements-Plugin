@@ -7,6 +7,7 @@ November 7, 2016
 
 Changes
 
+BE_JSONPath, BE_JSON_Encode: Workaround for number rounding problems in jansson (Zendesk #141)
 BE_SMTP_Send: Add "MIME-Version" header to SMTP messages (GitHub #124)
 
 Use poco 1.7.6
