@@ -21,8 +21,6 @@ using namespace boost::filesystem;
 
 
 const bool recursive_directory_copy ( const path & from, const path & to  ) {
-	
-	auto base = from;
 
 	if ( is_directory ( from ) ) {
 
@@ -31,8 +29,6 @@ const bool recursive_directory_copy ( const path & from, const path & to  ) {
 		directory_iterator end_it; // default construction yields past-the-end
 		
 		for ( directory_iterator it ( from ); it != end_it; ++it ) {
-			
-//			auto relative = from;
 			
 			path target = to;
 			target /= it->path().filename();
