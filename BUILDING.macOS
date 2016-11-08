@@ -1,0 +1,245 @@
+=======================================================================
+macOS
+=======================================================================
+
+Version 4.0 of the plug-in is built on macOS 10.12.1 using Xcode 8.1. The Xcode Command Line Tools are also needed.
+
+Download the FileMaker External Plug-In API from
+
+	http://www.filemaker.com/support/technologies/
+
+and place the FMWrapper.framework in the Libraries directory.
+
+On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built the Boost FileSystem, System and Thread libraries.
+
+=======================================================================
+Boost - 1.61_0
+=======================================================================
+
+Boost is available from
+
+	http://www.boost.org/
+
+The plug-in is a universal binary and the boost libraries should be built accordingly. For example:
+
+	cd boost_1_61_0
+	./bootstrap.sh
+	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.7 -stdlib=libc++" linkflags="-stdlib=libc++"
+
+Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the boost/lib directory to the Libraries directory.
+
+
+=======================================================================
+Jansson - 2.5
+=======================================================================
+
+Download the source from
+
+	https://github.com/GoyaPtyLtd/jansson
+
+Then
+
+	cd jansson-json_path
+	autoreconf -i
+	CFLAGS=-fPIC ./configure --prefix=build
+	make install
+
+Copy jansson.h and jansson_config.h from build/include to the Headers directory and  build/lib/libjansson.a to Libraries/osx.
+
+
+=======================================================================
+liboauth - 1.0.3
+=======================================================================
+
+Download the source from
+
+	http://liboauth.sourceforge.net/
+
+and follow the supplied building instructions but with the following ./configure command (to build a universal binary)
+
+	./configure CFLAGS="-mmacosx-version-min=10.7"
+
+Copy oauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a to Libraries/macOS.
+
+
+=======================================================================
+mimetic - 0.9.8
+=======================================================================
+
+Download the source from
+
+	http://www.codesink.org/mimetic_mime_library.html#download
+
+Follow the supplied building instructions using this ./configure command (to build a universal binary)
+
+	./configure CXXFLAGS="-stdlib=libc++ -mmacosx-version-min=10.7" LDFLAGS="-stdlib=libc++" --prefix=build && make install
+
+Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy boost/lib/libmimetic.a directory to the Libraries/macOS directory.
+
+
+=======================================================================
+OpenSSL - 1.0.2g
+=======================================================================
+
+Download the latest openssl source from
+
+	http://www.openssl.org/source/
+
+To build the library
+
+	cd openssl-1.0.2g
+	./Configure darwin64-x86_64-cc -mmacosx-version-min=10.7 --prefix=/Users/mark/Desktop/openssl/build
+	make install
+
+Copy libcrypto.a and libssl.a to Libraries/macOS and copy build/include/openssl to Headers.
+
+
+=======================================================================
+libssh2 - 1.7.0
+=======================================================================
+
+Download the source from
+
+	http://www.libssh2.org/
+
+Unpack the archive and in the distribution directory
+
+	CFLAGS="-mmacosx-version-min=10.7 -I<path_to_openssl/include>" LDFLAGS="-L<path_to_openssl/lib>" ./configure --with-openssl --with-libz --without-libgcrypt --prefix=<path_to_install_libssh2> -exec-prefix=<path_to_install_libssh2> --disable-shared && make install
+
+(replacing <paths> as appropriate).
+
+Copy
+
+	<path_to_install_libssh2>/lib/libssh2.a
+
+into the Libraries/macOS directory and copy
+
+	<path_to_install_libssh2>/include
+
+to Headers/libssh2
+
+
+=======================================================================
+libcurl - 7.48
+=======================================================================
+
+Note: OpenSSL & libssh2 must be built before building libcurl.
+
+Download the source from
+
+	http://curl.haxx.se/download.html
+
+and expand it into a directory on the Desktop. cd into the directory and run
+
+	./configure CFLAGS="-mmacosx-version-min=10.7 -I<path to /BaseElements-Plugin/Headers/libssh>" LDFLAGS="-L<path to /BaseElements-Plugin/Libraries/macOS>" --disable-dependency-tracking --disable-shared --with-libz --prefix=<install path> --with-libssh2
+
+(replacing the indicated paths as appropriate).
+
+Then run
+
+	make install
+
+and copy
+
+	<path_to_intsall_libcurl>/lib/curl.a
+
+into the Libraries/macOS directory and
+
+	<path_to_intsall_libcurl>/inlcude/curl
+
+into Headers.
+
+
+=======================================================================
+duktape - 1.2.2
+=======================================================================
+
+Download the source from
+
+	http://duktape.org/
+
+and extract the archive to the desktop and copy the src directory to the Source directory and rename it to duktape.
+
+
+=======================================================================
+libjpeg-turbo - 1.4.2
+=======================================================================
+
+Download the source from
+
+	http://www.libjpeg-turbo.org/
+
+and extract the archive to the desktop and then
+
+	autoreconf -fiv
+	./configure --host x86_64-apple-darwin CFLAGS='-mmacosx-version-min=10.7' --without-simd
+	make install prefix=~/Desktop/build
+
+Copy build/libturbojpeg.a to Libraries/macOS and rename ~/Desktop/build/include to ~/Desktop/build/libturbojpeg and copy the directory into Headers.
+
+
+=======================================================================
+utf8-cpp
+=======================================================================
+
+Download from
+
+	http://utfcpp.sourceforge.net/
+
+and place the source/utf8.h file and source/utf8 directory in the project Headers directory.
+
+
+=======================================================================
+Poco 1.7.4
+=======================================================================
+
+Download the source from
+
+	http://pocoproject.org/download/index.html
+
+Then, after extracting the archive
+
+	cd poco-1.7.4-all
+
+	export MACOSX_DEPLOYMENT_TARGET=10.7
+
+	./configure --config=Darwin64 --static --cflags="-stdlib=libc++" --no-tests --no-samples --omit=Data,MongoDB,Crypto,Net,XML,JSON
+	make install DESTDIR=./Poco
+
+Copy libPocoFoundation.a and libPocoZip.a from ./Poco/usr/local/lib to the Libraries/macOS directory and copy the Poco/usr/local/include/Poco to Headers.
+
+=======================================================================
+libxml2 - 2.9.4
+=======================================================================
+
+Download the source for libxml2 from
+
+	http://xmlsoft.org/downloads.html
+
+and expand it into a directory on the Desktop.
+
+	cd libxml2-2.9.4
+	./configure  CFLAGS="-mmacosx-version-min=10.7" --disable-shared --without-python --without-zlib --prefix=<path to Desktop>/libxml2-2.9.4/build
+	make install
+	
+and then copy libxml2.a from build/lib to the Libraries/macOS directory and the libxml2 directory from build/include to Headers.
+
+
+=======================================================================
+libxslt - 1.1.29
+=======================================================================
+
+Download the source from
+
+	http://xmlsoft.org/downloads.html
+
+and expand it into a directory on the Desktop.
+
+	cd libxslt-1.1.29
+	./configure  CFLAGS="-mmacosx-version-min=10.7" --disable-shared --without-python --without-crypto --prefix=<path to Desktop>/libxslt-1.1.29/build
+	make install
+	
+and then copy libxslt.a and libexslt.a from build/lib to the Libraries/macOS directory and the libxslt & libexslt directories from build/include to Headers.
+
+
+=======================================================================

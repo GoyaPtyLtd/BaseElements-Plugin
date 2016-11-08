@@ -63,13 +63,11 @@ void BEJSON::json_path_query ( const std::string& json_path, fmx::Data& results 
 				break;
 				
 			case JSON_INTEGER:
-				SetResult ( json_integer_value ( node ), results );
-				break;
-				
 			case JSON_REAL:
-				SetResultAsDoubleAsText ( json_real_value ( node ), results );
+				string_result = (char *)json_number_value_as_string ( node );
+				SetResult ( string_result, results );
 				break;
-				
+
 			case JSON_TRUE:
 				SetResult ( true, results );
 				break;
@@ -121,10 +119,11 @@ std::string BEJSON::encode ( const std::string& key, const fmx::Data& value, con
 		
 		fmx::FixPtUniquePtr number;
 		number->AssignFixPt ( value.GetAsNumber() );
-		
+
 		// integer or real value ?
 		fmx::TextUniquePtr fmx_text;
 		fmx_text->SetText ( value.GetAsText( ) );
+		std::string json_text = TextAsNumberString ( *fmx_text );
 
 		fmx::TextUniquePtr decimal_point;
 		decimal_point->Assign ( "." );
@@ -132,10 +131,8 @@ std::string BEJSON::encode ( const std::string& key, const fmx::Data& value, con
 		bool integer = fmx_text->Find ( *decimal_point, 0 ) == fmx::Text::kSize_End;
 		
 		if ( integer ) {
-			json_value = json_integer ( number->AsFloat ( ) ); // AsLong returns an int (which overflows)
+			json_value = json_integer_with_string( number->AsFloat ( ), json_text.c_str() ); // AsLong returns an int (which overflows)
 		} else {
-
-			std::string json_text = TextAsNumberString ( *fmx_text );
 
 			// put it in as string and rip out the unwanted quotes below
 			json_value = json_string ( json_text.c_str() );
