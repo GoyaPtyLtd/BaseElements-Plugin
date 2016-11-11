@@ -68,7 +68,7 @@ Download the source from
 
 and follow the supplied building instructions but with the following ./configure command (to build a universal binary)
 
-	./configure CFLAGS="-arch i386 -arch x86_64" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking --prefix=build
+	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking --prefix=build
 
 Copy jansson.h and jansson_config.h from build/include to the Headers directory and  build/lib/libjansson.a to Libraries/osx.
 
@@ -83,7 +83,7 @@ Download the source from
 
 and follow the supplied building instructions but with the following ./configure command (to build a universal binary)
 
-	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
+	./configure CFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking
 
 Copy oauth.h from ./src/ to the Headers directory and  ./src/.libs/liboauth.a to Libraries/osx.
 
@@ -261,11 +261,9 @@ Then, after extracting the archive
 
 	cd poco-1.7.6-all
 
-	export MACOSX_DEPLOYMENT_TARGET=10.7
-
-	./configure --config=Darwin32 --static --no-tests --no-samples --cflags="-stdlib=libstdc++" --omit=Data,MongoDB,Crypto,Net,XML && make
+	./configure --config=Darwin32 --static --no-tests --no-samples --cflags="-stdlib=libstdc++ -mmacosx-version-min=10.7" --omit=Data,MongoDB,Crypto,Net,XML && make
 	find . -name "*.o" -type f -delete
-	./configure --config=Darwin64 --static --no-tests --no-samples --cflags="-stdlib=libstdc++" --omit=Data,MongoDB,Crypto,Net,XML && make
+	./configure --config=Darwin64 --static --no-tests --no-samples --cflags="-stdlib=libstdc++ -mmacosx-version-min=10.7" --omit=Data,MongoDB,Crypto,Net,XML && make
 	make install DESTDIR=./Poco
 
 	cd lib/Darwin
