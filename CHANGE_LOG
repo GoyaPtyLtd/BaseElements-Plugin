@@ -8,6 +8,7 @@ November 17, 2016
 New Functions
 
 BE_Array_Delete
+BE_HTTP_Get_Response_Header
 
 
 Changes

@@ -1953,6 +1953,30 @@ FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& 
 } // BE_HTTP_Response_Headers
 
 
+FMX_PROC(errcode) BE_HTTP_Get_Response_Header ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto http_headers = boost::replace_all_copy (g_http_response_headers, "\r\n", "\n");;
+
+		BEValueList<string> headers ( http_headers, "\n", false );
+		auto look_for = ParameterAsUTF8String ( parameters );
+		auto found = headers.starts_with ( look_for + ": " );
+
+		SetResult ( found, results );
+
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_HTTP_Get_Response_Header
+
 
 FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {

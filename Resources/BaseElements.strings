@@ -84,6 +84,7 @@
 "190" = "BE_Curl_Trace";
 "191" = "BE_FTP_Delete ( url {; username ; password } )";
 "192" = "BE_HTTP_PATCH ( url ; parameters {; username ; password } )";
+"193" = "BE_HTTP_Get_Response_Header ( header )";
 
 
 "200" = "BE_ApplyXSLTInMemory ( xml ; xslt )";

@@ -163,6 +163,7 @@ enum functions {
 	kBE_Curl_Trace = 190,
 	kBE_FTP_Delete = 191,
 	kBE_HTTP_PATCH = 192,
+	kBE_HTTP_Get_Response_Header = 193,
 	kBE_ApplyXSLTInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,
