@@ -79,6 +79,8 @@ public:
 	
 	T first ( ) const;
 	T at ( const size_t which ) const;
+
+	T starts_with ( const T prefix ) const;
 	
 	T unique ( );
 	T filter_out ( BEValueList& filter_out );
@@ -205,6 +207,27 @@ T BEValueList<T>::at ( const size_t which ) const
 {
 	return values.at ( which );
 }
+
+
+template <typename T>
+T BEValueList<T>::starts_with ( const T prefix ) const
+{
+
+	BEValueList<T> wanted_values;
+
+	for ( auto it = values.begin() ; it != values.end(); ++it ) {
+
+		if ( boost::istarts_with ( *it, prefix ) == true ) {
+			wanted_values.append ( *it );
+		}
+
+	}
+
+	wanted_values.remove_prefix ( prefix );
+
+	return wanted_values.get_as_filemaker_string();
+
+} // starts_with
 
 
 template <typename T>
