@@ -1,0 +1,306 @@
+=======================================================================
+Linux
+=======================================================================
+
+The plug-in was built using Code::Blocks 13.12 on Centos 7 (64-bit).
+
+Download the FileMaker External Plug-In API from
+
+	http://www.filemaker.com/support/technologies/
+
+and place the FMWrapper directory inside the SDK's Headers directory in the Headers directory. The version of libFMWrapper.so in the Libraries/Linux should be placed the Libraries/linux directory.
+
+The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries.
+
+=======================================================================
+Boost - 1.61_0
+=======================================================================
+
+The Boost FileSystem and System libraries are required.
+
+	http://www.boost.org/
+
+See
+
+	more/getting_started/index.html
+
+for instructions on compiling the Boost libraries. From the command prompt try
+
+	cd boost_1_61_0
+	./bootstrap.sh
+	./b2 link=static cflags=-fPIC cxxflags=-fPIC runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread
+
+
+Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib to Libraries/linux.
+
+
+=======================================================================
+zlib
+=======================================================================
+
+Building zlib is straightforward. Download the zlib source from
+
+	http://www.zlib.net/
+
+and extract the folder zlib-1.2.8 to the desktop.
+
+	cd zlib-1.2.8
+	CFLAGS="-fPIC" ./configure --static --prefix=build
+	make install
+
+Move
+
+	buld/libz.a
+
+into the Libraries/linux directory and copy zip.h and zconf.h from the root directory of the distribution to the Headers directory.
+
+
+=======================================================================
+Jansson - 2.5
+=======================================================================
+
+Download the source from
+
+	https://github.com/GoyaPtyLtd/jansson
+
+Then
+
+	cd jansson-json_path
+	autoreconf -i
+	CFLAGS=-fPIC ./configure --prefix=build
+	make install
+
+Copy jansson.h and jansson_config.h from build/include to the Headers directory and  build/lib/libjansson.a to Libraries/linux.
+
+=======================================================================
+OpenSSL - 1.0.2g
+=======================================================================
+
+Download the latest openssl source from
+
+	http://www.openssl.org/source/
+
+	cd openssl-1.0.2h
+	export CFLAGS=-fPIC
+	export CXXFLAGS=-fPIC
+	./config --prefix=build no-shared -fPIC
+	make depend
+	make install
+
+Copy libcrypto.a and libssl.a to Libraries/linux and copy build/include/openssl to Headers.
+
+=======================================================================
+liboauth - 1.0.3
+=======================================================================
+
+Note: OpenSSL must be built first.
+
+Download the source from
+
+	http://liboauth.sourceforge.net/
+
+	cd openssl-1.0.3
+	CFLAGS="-fPIC -I/home/mark/Documents/BaseElements-Plugin.git/trunk/Headers" LDFLAGS="-L/home/mark/Documents/BaseElements-Plugin.git/trunk/Libraries/linux" ./configure --prefix=/home/mark/Desktop/liboauth-1.0.3/build --disable-shared
+	make install
+
+Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib  to Libraries\win32 and liboauth\Release\liboauth.lib to Libraries\x64.
+
+
+=======================================================================
+mimetic - 0.9.8
+=======================================================================
+
+Download the source from
+
+	http://www.codesink.org/mimetic_mime_library.html#download
+
+Then
+
+	cd mimetic-0.9.8
+	CFLAGS=-fPIC ./configure --prefix=build
+	make install
+
+Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the library in the build/lib directory to the Libraries/linux directory.
+
+
+=======================================================================
+libssh2 - 1.7.0
+=======================================================================
+
+Note: OpenSSL & zlib must be built first.
+
+Download the source from
+
+	http://www.libssh2.org/
+
+Then
+
+	cd libssh2-1.7.0
+	CFLAGS="-fPIC -I/home/mark/Documents/BaseElements-Plugin.git/trunk/Headers" LDFLAGS="-L/home/mark/Documents/BaseElements-Plugin.git/trunk/Libraries/linux -ldl" ./configure --prefix=/home/mark/Desktop/libssh2-1.7.0/build --with-openssl --with-libz --without-libgcrypt --disable-examples-build --disable-shared
+	make install
+	
+Copy
+
+	build/lib/libssh2.a
+
+into the Libraries/osx directory and copy
+
+	build/include
+
+to Headers/libssh
+
+
+=======================================================================
+libcurl - 7.50.1
+=======================================================================
+
+Note: OpenSSL & libssh2 must be built before building libcurl.
+
+Download the source from
+
+	http://curl.haxx.se/download.html
+
+and expand it into a directory on the Desktop. Then
+
+	cd curl-7.50.1
+	./configure --with-ssl='/home/mark/Desktop/openssl-1.0.2h/build' --with-libssh2='/home/mark/Desktop/libssh2-1.7.0/build' --disable-shared --with-zlib='/home/mark/Desktop/zlib-1.2.8/build' --prefix='/home/mark/Desktop/curl-7.50.1/build'
+	make install
+
+Copy
+
+	build/lib/curl.a
+
+into the Libraries/linux directory and
+
+	build/inlcude/curl
+
+into Headers.
+
+
+=======================================================================
+libiconv - 1.14 & libxml2 - 2.9.4
+=======================================================================
+
+Download the libiconv source from
+
+	http://www.gnu.org/software/libiconv/
+
+Then
+
+	cd libiconv-1.14
+
+Change line  682 from
+
+	#if @GNULIB_GETS@
+
+to
+
+	#if 0
+
+then...
+
+	CFLAGS=-fPIC ./configure --prefix=build
+	make install
+
+Download the source for libxml2 from
+
+	http://xmlsoft.org/downloads.html
+
+and expand it into a directory on the Desktop.
+
+	cd libxml2-2.9.4
+	CFLAGS=-fPIC ./configure --without-python --prefix=build
+	make install
+
+Copy build/libxml2.a to Libraries/linux folder and, copy
+
+	build/include/libxml
+
+into the BE Plugin Headers folder.
+
+
+=======================================================================
+libxslt & libexslt - 1.1.29
+=======================================================================
+
+Download the source from
+
+	http://xmlsoft.org/XSLT/downloads.html
+
+and expand it into a directory on the Desktop.
+
+	cd libxslt-1.1.29
+	CFLAGS=-fPIC ./configure --prefix='/home/mark/Desktop/libxslt-1.1.29/build' --with-libxml-prefix='/home/mark/Desktop/libxml2-2.9.4/build'
+	make install
+
+Finally, place the headers
+
+	build/include/libxslt & build/include/libexslt
+
+in the Headers directory and copy the libraries
+
+	build/lib/libxslt.a & build/lib/libexslt.a
+
+into the Libraries/linux directory.
+
+
+=======================================================================
+duktape - 1.2.2
+=======================================================================
+
+Download the source from
+
+	http://duktape.org/
+
+and extract the archive to the desktop and copy the src directory to the Source directory and rename it to duktape.
+
+
+=======================================================================
+libjpeg-turbo - 1.5
+=======================================================================
+
+Download the source from
+
+	http://www.libjpeg-turbo.org/
+
+and extract the archive to the desktop. Then
+
+	cd libjpeg-turbo-1.5.0
+	autoreconf -fiv
+	CFLAGS=-fPIC ./configure --prefix=build
+	make install
+	
+Rename build/include to libturbojpeg and copy the directory to Headers. Copy build/lib/libjpeg.a & libturbojpeg.a to Libraries/linux.
+
+
+=======================================================================
+utf8-cpp
+=======================================================================
+
+Download from
+
+	http://utfcpp.sourceforge.net/
+
+and place the source/utf8.h file and source/utf8 directory in the project Headers directory.
+
+
+=======================================================================
+Poco 1.7.6
+=======================================================================
+
+Download the source from
+
+	http://pocoproject.org/download/index.html
+
+Then
+
+	cd poco-1.7.6-all
+	./configure --cflags=-fPIC --config=Linux-clang --static --no-tests --no-samples --omit=Data,MongoDB,Crypto,Net,XML,JSON,PageCompiler --prefix=build
+	make install
+
+Copy the libraries libPocoFoundation.a & libPocoZip.a from build/lib to the Libraries/linux directory and copy the build/include/Poco to Headers.
+
+
+=======================================================================
+
+

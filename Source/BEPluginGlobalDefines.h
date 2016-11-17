@@ -14,7 +14,7 @@
 	#define BEPLUGINGLOBALDEFINES_H
 
 
-#if defined( __APPLE__ )
+#if defined __APPLE__
 
 	#define FMX_MAC_TARGET	1
 
@@ -30,7 +30,7 @@
 	// tchar
 	#define _TEXT(x) x
 
-#elif defined( _MSC_VER )
+#elif defined _WIN64
 
 	#define NOMINMAX // boost 1.53 and later break without this defined before including windows.h
 	#include <windows.h> // life comes to an end if this is not included before anything else
@@ -41,8 +41,22 @@
 
 	#define PATH_MAX MAX_PATH
 
+#elif defined __linux__
+
+    #define FMX_LINUX_TARGET 1
+
+    // tchar
+    #define _TEXT(x) x
+    #define FOPEN fopen
+    #define USER_PREFERENCES_DOMAIN L"au.com.goya.baseelements.plugin-user"
+
+#else
+
+   error "Unknown compiler"
+
 #endif
 
+#define FMX_USE_UNIQUE_PTR 1
 
 #ifdef __cplusplus
 
@@ -93,8 +107,8 @@ enum functions {
 	kBE_Version = 102,
 	kBE_VersionAutoUpdate = 103,
 	kBE_ClipboardFormats = 104,
-	kBE_ClipboardData = 105,
-	kBE_SetClipboardData = 106,
+	kBE_ClipboardText = 105,
+	kBE_SetClipboardText = 106,
 	kBE_CreateFolder = 107,
 	kBE_DeleteFile = 108,
 	kBE_FileExists = 109,
@@ -118,7 +132,7 @@ enum functions {
     kBE_File_Modification_Timestamp = 127,
 	kBE_ExecuteScript = 150,
 	kBE_FileMakerSQL = 151,
-	kBE_HTTP_GET = 152,
+	kBE_HTTP_GET_File = 152,
 	kBE_GetLastError = 153,
 	kBE_MessageDigest = 154,
 	kBE_GetLastDDLError = 155,
@@ -225,6 +239,7 @@ enum errors {
 	kNoError = 0,
 	kUserCancelledError = 1,
 	kNoSuchFileOrDirectoryError = 2,
+	kCommandIsUnavailableError = 3,
 	kLowMemoryError = 7,
 	kRequestedDataIsMissingError = 10,
 	kNameIsNotValid = 11,

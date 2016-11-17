@@ -1,19 +1,19 @@
 /*
  BEPluginUtilities.cpp
  BaseElements Plug-In
- 
+
  Copyright 2010-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
- 
+
  http://www.goya.com.au/baseelements/plugin
- 
+
  */
 
 
 #include "BEPluginGlobalDefines.h"
 
 
-#if defined(FMX_MAC_TARGET)
+#if defined FMX_MAC_TARGET
 
 	#include <CoreServices/CoreServices.h>
 	#include <Carbon/Carbon.h>
@@ -21,7 +21,11 @@
 
 	#include "BEMacFunctions.h"
 
-#endif 
+#elif defined FMX_LINUX_TARGET
+
+	#include "BELinuxFunctions.h"
+
+#endif
 
 
 #include "BEPluginException.h"
@@ -69,24 +73,26 @@ extern errcode g_last_ddl_error;
 
 const errcode TextConstantFunction ( const std::wstring& text, Data& results )
 {
-	
-	errcode error_result = kNoError;
-	
+
+	errcode error = kNoError;
+
 	try {
-		
+
 		TextUniquePtr result_text;
 		result_text->AssignWide ( text.c_str() );
-		
+
 		SetResult ( *result_text, results );
-		
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
-		error_result = kLowMemoryError;
+		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
-		error_result = kErrorUnknown;
+		error = kErrorUnknown;
 	}
-	
-	return error_result;
-	
+
+	return error;
+
 } // TextConstantFunction
 
 
@@ -128,7 +134,7 @@ void SetResult ( const string& text, Data& results )
 	if ( ! utf8::is_valid ( text.begin(), text.end() ) ) {
 		throw BEPlugin_Exception ( kInvalidUTF8 );
 	}
-		
+
 	TextUniquePtr result_text;
 	result_text->Assign ( text.c_str(), Text::kEncoding_UTF8 );
 	SetResult ( *result_text, results );
@@ -181,14 +187,14 @@ void SetResult ( const std::string& filename, const vector<unsigned char>& data,
 void SetResult ( const std::string& filename, const vector<char>& data, const std::string& type, const short width, const short height, Data& results )
 {
 	bool as_binary = !filename.empty();
-	
+
 	vector<char> output = data;
 
 	BEQuadChar data_type ( type );
 	bool compress = data_type.is_zlib();
 
 	if ( as_binary ) {	// if a file name is supplied send back a file
-		
+
 		BinaryDataUniquePtr resultBinary;
 		TextUniquePtr file;
 		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
@@ -205,14 +211,14 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 		}
 		resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)&output[0] ); // error =
 		results.SetBinaryData ( *resultBinary, true );
-		
+
 	} else { // otherwise try sending back text
 
 		if ( data.size() > 0 ) {
 
 			// filemaker will go into an infinite loop if non-utf8 data is set as utf8
 			// so try to convert it first
-		
+
 			std::string utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size() );
 
 			if ( compress ) {
@@ -225,15 +231,15 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 		}
 
 		SetResult ( output, results );
-		
+
 	}
-	
+
 } // SetResult
 
 
 void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results )
 {
-	
+
 	const vector<unsigned char> unsigned_char_data = image.get_data();
 	vector<char> char_data ( unsigned_char_data.begin(), unsigned_char_data.end() );
 
@@ -261,8 +267,8 @@ const bool ParameterAsBoolean ( const DataVect& parameters, const FMX_UInt32 whi
 		return default_value;
 	}
 }
-	
-	
+
+
 const double ParameterAsDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which, const bool default_value )
 {
 	try {
@@ -279,7 +285,7 @@ const long ParameterAsLong ( const DataVect& parameters, const FMX_UInt32 which,
 		return parameters.AtAsNumber ( which ).AsLong();
 	} catch ( exception& /* e */ ) {
 		return default_value;
-	}	
+	}
 }
 
 
@@ -292,68 +298,66 @@ const long ParameterAsIndex ( const fmx::DataVect& parameters, const FMX_UInt32 
 
 
 const std::string ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which, const std::string default_value )
-{	
-	
+{
+
 	std::string result ( default_value );
-	
+
 	try {
-		
+
 		TextUniquePtr raw_data;
 		raw_data->SetText ( parameters.AtAsText ( which ) );
-		
+
 		result.assign ( TextAsUTF8String ( *raw_data ) );
-		
+
 	} catch ( exception& /* e */ ) {
 		;	// return the default
 	}
-	
+
 	return result;
-	
+
 } // ParameterAsUTF8String
 
 
 const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which )
-{	
-	
+{
+
 	std::wstring result;
-	
+
 	try {
-		
+
 		TextUniquePtr raw_data;
 		raw_data->SetText ( parameters.AtAsText(which) );
-		
+
 		FMX_Int32 text_size = raw_data->GetSize();
 		FMX_UInt16 * text = new FMX_UInt16 [ text_size + 1 ];
 		raw_data->GetUnicode ( text, 0, text_size );
         text[text_size] = 0x0000;
 
 		// wchar_t is 4 bytes on OS X and 2 on Windows
-		
-		#if defined(FMX_MAC_TARGET)
-		
+
+		#if defined FMX_MAC_TARGET || defined FMX_LINUX_TARGET
+
 			wchar_t * parameter = new wchar_t [ text_size + 1 ];
 			for ( long i = 0 ; i <= text_size ; i++ ) {
 				parameter[i] = (wchar_t)text[i];
 			}
 			delete [] text;
-		
-		#endif 
-		
-		#if defined(FMX_WIN_TARGET)
-		
+
+		#elif defined FMX_WIN_TARGET
+
 			wchar_t * parameter = (wchar_t*)text;
-		
+
 		#endif
-		
+
 		result.append ( parameter );
 		delete [] parameter; // parameter == text on Windows
-				
+
 	} catch ( exception& /* e */ ) {
 		;	// return an empty string
 	}
-	
+
 	return result;
-	
+
 } // ParameterAsUnicodeString
 
 
@@ -361,45 +365,45 @@ const vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX
 {
 
 	vector<char> output;
-	
+
 	// make sure there's a parameter to get
 	if ( parameters.Size() > which ) {
 
 		const BinaryDataUniquePtr data ( parameters.AtAsBinaryData ( which ) );
 		int count = data->GetCount();
-		
+
 		if ( count > 0 ) {
-			
+
 			int which_type = PreferredContainerType ( *data );
 
 			// dig the data out of the container stream
-			
+
 			if ( which_type != kBE_DataType_Not_Found ) {
-				
+
 				output = DataAsVectorChar ( *data, which_type );
 
 				if ( StreamIsCompressed ( *data ) ) {
 					output = UncompressContainerStream ( output );
 				}
-				
+
 			} else {
 				g_last_error = kRequestedDataIsMissingError;
 			}
-			
+
 		} else {
-			
+
 			// if we don't have any streams try getting as text
 			// note: we also end up here for anything inserted as QuickTime, which is probably not what the user wants, but...
-			
+
 			std::string text = ParameterAsUTF8String ( parameters, which );
 			output.assign ( text.begin(), text.end() );
-			
+
 		}
 
 	}
-	
+
 	return output;
-	
+
 } // ParameterAsVectorChar
 
 
@@ -419,7 +423,7 @@ const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& paramet
 
 	std::string value_list = ParameterAsUTF8String ( parameters, which );
 	unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
-	
+
 	return values->get_as_vector_double();
 
 } // ParameterAsVectorDouble
@@ -427,13 +431,13 @@ const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& paramet
 
 const boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which )
 {
-	
+
 	std::wstring file = ParameterAsWideString ( parameters, which );
 	boost::filesystem::path path = file;
 	path.make_preferred();
-	
+
 	return path;
-	
+
 }
 
 
@@ -451,13 +455,13 @@ const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt
 		name_as_fmx_text->Assign ( "" ); // defeat clang: Returning null reference (within a call to 'operator*')
 		data->GetFNAMData ( *name_as_fmx_text );
 		std::string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
-		
+
 		// if the file name is for an image strip the image: prefix
 		auto colon = name_as_string.find ( ":" );
 		if ( colon != std::string::npos ) {
 			name_as_string.erase ( 0, colon + 1 );
 		}
-		
+
 		file_name.assign ( name_as_string );
 
 	}
@@ -478,7 +482,7 @@ const int PreferredContainerType ( const BinaryData& data )
 	if ( which_type == kBE_DataType_Not_Found ) {
 
 		which_type = IndexForStream ( data, FILE_CONTAINER_TYPE );
-	
+
 		if ( which_type == kBE_DataType_Not_Found ) {
 
 			which_type = IndexForStream ( data, COMPRESSED_CONTAINER_TYPE );
@@ -487,13 +491,13 @@ const int PreferredContainerType ( const BinaryData& data )
 			if ( which_type == kBE_DataType_Not_Found ) {
 				which_type = IndexForStream ( data, SOUND_CONTAINER_TYPE );
 			}
-		
+
 		}
-	
+
 		// try and guess which image format to try
-	
+
 		if ( which_type == kBE_DataType_Not_Found ) {
-		
+
 			fmx::int32 count = data.GetCount();
 
 			for ( fmx::int32 i = 0 ; i < count ; i++ ) {
@@ -503,16 +507,16 @@ const int PreferredContainerType ( const BinaryData& data )
 				if ( !stream_type.is_image_attribute() ) {
 
 					which_type = i;
-				
+
 					// don't overwrite another type with an fm generated jpeg preview
 					if ( !stream_type.is_jpeg() ) {
 						break;
 					}
-				
+
 				}
-			
+
 			} // for
-		
+
 		}
 
 	} // if MAIN_CONTAINER_TYPE
@@ -571,7 +575,7 @@ const vector<char> DataAsVectorChar ( const BinaryData& data, const FMX_UInt32 w
 	vector<char> output ( output_buffer, output_buffer + size );
 
 	delete[] output_buffer;
-	
+
 	return output;
 }
 
@@ -579,15 +583,15 @@ const vector<char> DataAsVectorChar ( const BinaryData& data, const FMX_UInt32 w
 const bool StreamIsCompressed ( const BinaryData& data )
 {
 	bool compressed = false;
-	
+
 	int which_type = IndexForStream ( data, COMPRESSED_CONTAINER_TYPE );
-	
+
 	if ( which_type != kBE_DataType_Not_Found ) {
 		compressed = true;
 	}
-	
+
 	return compressed;
-	
+
 }
 
 
@@ -597,36 +601,36 @@ const bool StreamIsCompressed ( const BinaryData& data )
 
 std::string ReadFileAsUTF8 ( const boost::filesystem::path path )
 {
-	
+
 	std::string result;
-	
+
 	if ( exists ( path ) ) {
 		size_t length = (size_t)file_size ( path ); // boost::uintmax_t
-		
+
 		if ( length > 0 ) {
-			
+
 			boost::filesystem::ifstream inFile ( path, ios_base::in | ios_base::binary | ios_base::ate );
 			inFile.seekg ( 0, ios::beg );
-			
+
 			// slurp up the file contents
 			std::vector<char> buffer ( length );
 			inFile.read ( &buffer[0], length );
 			inFile.close ();
-			
+
 			// convert the text in the file to utf-8 if possible
 			result = ConvertTextToUTF8 ( &buffer[0], length );
 			if ( result.length() == 0 ) {
 				result.assign ( &buffer[0] );
 			}
-			
+
 		}
-		
+
 	} else {
 		g_last_error = kNoSuchFileOrDirectoryError;
 	}
-	
+
 	return result;
-	
+
 } // ReadFileAsUTF8
 
 
@@ -643,12 +647,12 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 	}
 	codesets.push_back ( UTF8 );
 	codesets.push_back ( UTF16 ); // backwards compatibility with v1.2
-	
+
 	/*
 	 there no clean way to determine the codeset of the supplied text so
 	 try each converting from each of the codesets in turn
 	 */
-	
+
 	const size_t kIconvError = -1;
 	size_t error_result = kIconvError;
 	vector<string>::iterator it = codesets.begin();
@@ -656,7 +660,7 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 	vector<char> out;
 
 	while ( error_result == kIconvError && it != codesets.end() ) {
-		
+
 		char * start = in;
 		size_t start_length = length;
 
@@ -683,7 +687,7 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 	}
 
 	return out;
-	
+
 } // ConvertTextEncoding
 
 
@@ -721,23 +725,23 @@ void SetTextEncoding ( const string& encoding )
 
 std::string TextAsUTF8String ( const Text& fmx_text )
 {
-	
+
 	std::string result;
-	
+
 	try {
-		
+
 		FMX_UInt32 text_size = ( 4 * ( fmx_text.GetSize() ) ) + 1;
 		char * text = new char [ text_size ]();
 		fmx_text.GetBytes ( text, text_size, 0, (FMX_UInt32)Text::kSize_End, Text::kEncoding_UTF8 );
 		result.assign ( text );
 		delete [] text;
-		
+
 	} catch ( exception& /* e */ ) {
 		;	// return an empty string
 	}
-	
+
 	return result;
-	
+
 } // TextAsString
 
 
@@ -745,7 +749,7 @@ std::string TextAsUTF8String ( const Text& fmx_text )
 std::string TextAsNumberString ( const Text& fmx_text )
 {
 	std::string number_string = TextAsUTF8String ( fmx_text );
-	
+
 	// bug in fm text to float conversion removes a leading 0
 	std::string decimal_point = ".";
 	auto found = std::mismatch ( decimal_point.begin(), decimal_point.end(), number_string.begin() );
@@ -759,7 +763,7 @@ std::string TextAsNumberString ( const Text& fmx_text )
 
 string DataAsUTF8String ( const Data& data )
 {
-	return TextAsUTF8String ( data.GetAsText() );	
+	return TextAsUTF8String ( data.GetAsText() );
 }
 
 
@@ -769,7 +773,7 @@ long DataAsLong ( const Data& data )
 {
 	FixPtUniquePtr number;
 	number->AssignFixPt ( data.GetAsNumber() );
-	
+
 	return ( number->AsLong() );
 }
 
@@ -779,7 +783,7 @@ double DataAsDouble ( const Data& data )
 {
 	FixPtUniquePtr number;
 	number->AssignFixPt ( data.GetAsNumber() );
-	
+
 	return ( number->AsFloat() );
 }
 
@@ -791,39 +795,39 @@ double DataAsDouble ( const Data& data )
 errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Data& parameter, const ExprEnv& environment )
 {
 	errcode error = kNoError;
-	
+
 	try {
-		
+
 		TextUniquePtr database;
-	
+
 		if ( file_name.GetSize() != 0 ) {
 			database->SetText ( file_name );
 		} else {
 
 			TextUniquePtr command;
 			command->Assign ( "Get ( FileName )" );
-			
+
 			DataUniquePtr name;
 
 // defeat: Returning null reference (within a call to 'operator*')
 #ifndef __clang_analyzer__
 			environment.Evaluate ( *command, *name );
 #endif
-			
+
 			database->SetText ( name->GetAsText() );
-			
+
 		}
-		
+
 		error = FMX_StartScript ( &(*database), &script_name, kFMXT_Pause, &parameter );
-		
+
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return error;
-	
+
 } // ExecuteScript
 
 
@@ -836,7 +840,7 @@ errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Da
 errcode NoError ( void )
 {
 	g_last_ddl_error = kNoError;
-	
+
 	g_last_error = kNoError;
 	return g_last_error;
 }
@@ -846,19 +850,19 @@ errcode NoError ( void )
 
 errcode MapError ( const errcode error, const bool map )
 {
-	
+
 	errcode mapped_error = kNoError;
-	
+
 	// map the error to a FileMaker error (so that FMP can display an
 	// appropriate dialog etc.
-	
+
 	if ( map ) {
-		
+
 		mapped_error = error;
 		g_last_error = error;
 
 	} else {
-		
+
 		// map all other errors to "unknown"
 		if ( error != kNoError || g_last_error != kNoError ) {
 			mapped_error = kErrorUnknown;
@@ -884,13 +888,13 @@ bool AllowUserAbort ( const ExprEnv& environment )
 {
 	TextUniquePtr command;
 	command->Assign ( "Get ( AllowAbortState )" );
-	
+
 	DataUniquePtr reply;
 
 #ifdef __clang_analyzer__
 	reply->Clear(); // defeat: Returning null reference (within a call to 'operator*')
 #endif
-	
+
 	environment.Evaluate ( *command, *reply );
 	bool allow_abort = reply->GetAsBoolean();
 
@@ -903,20 +907,20 @@ std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
 {
 	TextUniquePtr command;
 	command->Assign ( "Get ( TemporaryPath )" );
-	
+
 	DataUniquePtr reply;
-	
+
 #ifdef __clang_analyzer__
 	reply->Clear(); // defeat: Returning null reference (within a call to 'operator*')
 #endif
-	
+
 	environment.Evaluate ( *command, *reply );
-	
+
 	// we want the filesystem path, not the "filemaker" path
 	std::string temporary_path = TextAsUTF8String ( reply->GetAsText() );
 	auto root = temporary_path.find ( "/", 1 );
 	temporary_path.erase ( 0, root );
-	
+
 	return temporary_path;
 
 } // GetFileMakerTemporaryDirectory
@@ -925,76 +929,76 @@ std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
 
 /*
  The following functions are modifications of ones included in the Example plug-in
- shipped by FileMaker Inc. with the External Plug-In API on the CDs for 
+ shipped by FileMaker Inc. with the External Plug-In API on the CDs for
  FileMaker Developer/Pro Advance versions 7 through 10 and are used by permission.
  */
 
 void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_PtrType resultsize, FMX_Unichar* string)
 {
-	
+
 	switch ( whichString )
 	{
 		case kFMXT_OptionsStr:
 		{
-#if defined(FMX_WIN_TARGET)
-			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), kBE_OptionsStringID, (LPWSTR)string, (uint32)resultsize);
-#endif
-			
-#if defined(FMX_MAC_TARGET)
+#if defined FMX_MAC_TARGET
 			Sub_OSXLoadString(kBE_OptionsStringID, string, resultsize, BUNDLE_STRINGS_ID);
+#elif defined FMX_WIN_TARGET
+			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), kBE_OptionsStringID, (LPWSTR)string, (uint32)resultsize);
+#elif defined FMX_LINUX_TARGET
+			Sub_LinuxLoadString ( (unsigned long)kBE_OptionsStringID, string, resultsize );
 #endif
 			break;
 		}
 
 		case kFMXT_AppConfigStr:
 		{
-#if defined(FMX_WIN_TARGET)
-			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)PLUGIN_DESCRIPTION_STRING_ID, (LPWSTR)string, (uint32)resultsize);
-#endif
-			
-#if defined(FMX_MAC_TARGET)
+#if defined FMX_MAC_TARGET
 			Sub_OSXLoadString ( PLUGIN_DESCRIPTION_STRING_ID, string, resultsize, BUNDLE_VERSION_ID );
+#elif defined FMX_WIN_TARGET
+			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)PLUGIN_DESCRIPTION_STRING_ID, (LPWSTR)string, (uint32)resultsize);
+#elif defined FMX_LINUX_TARGET
+			Sub_LinuxLoadString ( PLUGIN_DESCRIPTION_STRING_ID, string, resultsize );
 #endif
 			break;
 		}
 
 		default:
-#if defined(FMX_WIN_TARGET)
-			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)whichString, (LPWSTR)string, (uint32)resultsize);
-#endif
-				
-#if defined(FMX_MAC_TARGET)
+#if defined FMX_MAC_TARGET
 			Sub_OSXLoadString ( whichString, string, resultsize, BUNDLE_STRINGS_ID );
+#elif defined FMX_WIN_TARGET
+			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)whichString, (LPWSTR)string, (uint32)resultsize);
+#elif defined FMX_LINUX_TARGET
+			Sub_LinuxLoadString ( whichString, string, resultsize );
 #endif
-	
+
 	} // switch ( whichString )
-	
-	
+
+
 } // Do_GetString ( FMX_Unichar* version )
 
 
 void Do_GetString(unsigned long whichStringID, TextUniquePtr& intoHere, bool stripFunctionParams)
 {
 	FMX_Unichar			tempBuffer[kBE_GetStringMaxBufferSize];
-	
+
 	Do_GetString ( whichStringID, 0, kBE_GetStringMaxBufferSize, tempBuffer );
 	intoHere->AssignUnicode(tempBuffer);
-	
+
 	if(stripFunctionParams) {
-		
+
 		// The string for this whichStringID is a Function Prototype, but all the plug-in needs now is the Function Name by itself.
-		
+
 		TextUniquePtr		parenToken;
 		parenToken->Assign ( " (" );
-		
+
 		FMX_UInt32 originalSize = intoHere->GetSize();
 		FMX_UInt32 firstParenLocation;
 		firstParenLocation = intoHere->Find(*parenToken, 0);
-		
+
 		intoHere->DeleteText(firstParenLocation, originalSize-firstParenLocation);
-		
+
 	} // stripFunctionParams
-	
+
 } // Do_GetString (TextUniquePtr version)
 
 

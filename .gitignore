@@ -51,3 +51,6 @@ Project/BaseElements.VC.opendb
 Project/BaseElements.VC.db
 Project/BaseElements.VC.VC.opendb
 Libraries/x64/libmimetic.log
+Libraries/win64/libmimetic.log
+Project/BaseElements.depend
+Project/BaseElements.layout

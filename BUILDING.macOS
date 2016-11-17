@@ -41,7 +41,7 @@ Then
 
 	cd jansson-json_path
 	autoreconf -i
-	CFLAGS=-fPIC ./configure --prefix=build
+	./configure --prefix=build CFLAGS="-mmacosx-version-min=10.7"
 	make install
 
 Copy jansson.h and jansson_config.h from build/include to the Headers directory and  build/lib/libjansson.a to Libraries/osx.
@@ -190,7 +190,7 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.4
+Poco 1.7.6
 =======================================================================
 
 Download the source from
@@ -199,11 +199,9 @@ Download the source from
 
 Then, after extracting the archive
 
-	cd poco-1.7.4-all
+	cd poco-1.7.6-all
 
-	export MACOSX_DEPLOYMENT_TARGET=10.7
-
-	./configure --config=Darwin64 --static --cflags="-stdlib=libc++" --no-tests --no-samples --omit=Data,MongoDB,Crypto,Net,XML,JSON
+	./configure --cflags="-stdlib=libc++ -mmacosx-version-min=10.7" --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,JSON,PageCompiler --no-tests --no-samples --config=Darwin64-clang
 	make install DESTDIR=./Poco
 
 Copy libPocoFoundation.a and libPocoZip.a from ./Poco/usr/local/lib to the Libraries/macOS directory and copy the Poco/usr/local/include/Poco to Headers.
