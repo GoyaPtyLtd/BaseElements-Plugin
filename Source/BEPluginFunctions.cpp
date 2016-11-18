@@ -61,6 +61,7 @@
 
 #include <numeric> // for inner_product
 #include <list>
+#include <thread>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wall"
@@ -72,7 +73,6 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
-#include <boost/thread.hpp>
 #include <boost/foreach.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/algorithm/string.hpp>
@@ -3474,8 +3474,7 @@ FMX_PROC(errcode) BE_Pause ( short /* funcId */, const ExprEnv& /* environment *
 
 		const long milliseconds = ParameterAsLong ( parameters );
 
-//		std::this_thread::sleep_for ( std::chrono::milliseconds ( milliseconds ) ); // c++11
-		boost::this_thread::sleep ( boost::posix_time::milliseconds ( milliseconds ) );
+		std::this_thread::sleep_for ( std::chrono::milliseconds ( milliseconds ) );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
