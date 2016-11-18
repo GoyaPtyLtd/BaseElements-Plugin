@@ -149,6 +149,8 @@ FMX_PROC(errcode) BE_GetLastError ( short funcId, const ExprEnv& /* environment 
 			SetResult ( g_last_ddl_error, results );
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -241,6 +243,8 @@ FMX_PROC(errcode) BE_CreateFolder ( short /* funcId */, const ExprEnv& /* enviro
 
 		SetResult ( g_last_error, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -268,6 +272,8 @@ FMX_PROC(errcode) BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environm
 
 		SetResult ( g_last_error, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -293,6 +299,8 @@ FMX_PROC(errcode) BE_FileExists ( short /* funcId */, const ExprEnv& /* environm
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -319,6 +327,8 @@ FMX_PROC(errcode) BE_FileSize ( short /* funcId */, const ExprEnv& /* environmen
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -347,7 +357,9 @@ FMX_PROC(errcode) BE_File_Modification_Timestamp ( short /* funcId */, const Exp
 
 	} catch ( filesystem_error& e ) {
         g_last_error = e.code().value();
-    } catch ( bad_alloc& /* e */ ) {
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+   } catch ( bad_alloc& /* e */ ) {
         error = kLowMemoryError;
     } catch ( exception& /* e */ ) {
         error = kErrorUnknown;
@@ -507,6 +519,8 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -532,6 +546,8 @@ FMX_PROC(errcode) BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /*
 
 		//		SetResult ( "", results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -568,6 +584,8 @@ FMX_PROC(errcode) BE_ImportFile ( short /* funcId */, const ExprEnv& /* environm
 		error = errno; // cannot read the file
 	} catch ( boost::filesystem::filesystem_error& e ) {
 		error = e.code().value();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -596,6 +614,8 @@ FMX_PROC(errcode) BE_MoveFile ( short /* funcId */, const ExprEnv& /* environmen
 
 		SetResult ( g_last_error, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -624,6 +644,8 @@ FMX_PROC(errcode) BE_CopyFile ( short /* funcId */, const ExprEnv& /* environmen
 
 		SetResult ( g_last_error, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -659,6 +681,8 @@ FMX_PROC(errcode) BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* e
 			error = e.code();
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -858,6 +882,8 @@ FMX_PROC(errcode) BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environme
 
 		SetResult ( *ApplyXSLT ( xml_path, xslt, csv_path ), results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -880,6 +906,8 @@ FMX_PROC(errcode) BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* e
 
 		results.SetAsText( *ApplyXSLTInMemory ( xml, xslt ), parameters.At(0).GetLocale() );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -918,6 +946,8 @@ FMX_PROC(errcode) BE_XPath ( short /* funcId */, const ExprEnv& /* environment *
 
 		results.SetAsText( *ApplyXPathExpression ( xml, xpath, ns_list, xpath_object_type ), parameters.At(0).GetLocale() );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -947,6 +977,8 @@ FMX_PROC(errcode) BE_XPathAll ( short /* funcId */, const ExprEnv& /* environmen
 
 		results.SetAsText ( *ApplyXPathExpression ( xml, xpath, ns_list, XPATH_NODESET ), parameters.At(0).GetLocale() );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -978,6 +1010,8 @@ FMX_PROC(errcode) BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* envir
 		error = StripXMLNodes ( input_file, output_file, node_names_vector );
 		SetResult ( error, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1005,6 +1039,8 @@ FMX_PROC(errcode) BE_XML_Parse ( short /* funcId */, const ExprEnv& /* environme
 
 	} catch ( BEXMLReaderInterface_Exception& e ) {
 		error = e.code();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1030,6 +1066,8 @@ FMX_PROC(errcode) BE_SplitBEFileNodes ( short /* funcId */, const ExprEnv& /* en
 		SetResult ( result, results );
 
 	} catch ( BEXMLReaderInterface_Exception& e ) {
+		error = e.code();
+	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
@@ -1065,6 +1103,8 @@ FMX_PROC(errcode) BE_JSONPath ( short /* funcId */, const ExprEnv& /* environmen
 	} catch ( BEJSON_Exception& e ) {
 		error = e.code();
 		g_json_error_description = e.description();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1087,6 +1127,8 @@ FMX_PROC(errcode) BE_JSON_Error_Description ( short /* funcId */, const ExprEnv&
 
 		SetResult ( g_json_error_description, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1187,6 +1229,8 @@ FMX_PROC(fmx::errcode) BE_EvaluateJavaScript ( short /* funcId */, const fmx::Ex
 
 		SetResult ( jsResult, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1217,6 +1261,8 @@ FMX_PROC(fmx::errcode) BE_ArraySetFromValueList ( short /* funcId */, const fmx:
 
 		SetResult ( size, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1245,6 +1291,8 @@ FMX_PROC(fmx::errcode) BE_ArrayGetSize ( short /* funcId */, const fmx::ExprEnv&
 			; // we not returnin' anyting
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1275,6 +1323,8 @@ FMX_PROC(fmx::errcode) BE_ArrayGetValue ( short /* funcId */, const fmx::ExprEnv
 
 		SetResult ( value, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1301,6 +1351,8 @@ FMX_PROC(fmx::errcode) BE_Array_Delete ( short /* funcId */, const fmx::ExprEnv&
 			; // if we don't find it don't error
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1397,6 +1449,8 @@ FMX_PROC(errcode) BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */,
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1425,6 +1479,8 @@ FMX_PROC(errcode) BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, c
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1454,6 +1510,8 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 			SetResult ( filename, data, results );
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1477,6 +1535,8 @@ FMX_PROC(errcode) BE_Base64_Encode ( short funcId, const ExprEnv& /* environment
 
 		SetResult ( base64, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1508,6 +1568,8 @@ FMX_PROC(errcode) BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* envir
 
 		SetResult ( error, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1542,6 +1604,8 @@ FMX_PROC(errcode) BE_ContainerIsCompressed ( short /*funcId*/, const ExprEnv& /*
 			error = kInvalidFieldType;
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1566,6 +1630,8 @@ FMX_PROC(errcode) BE_ContainerCompress ( short /*funcId*/, const ExprEnv& /* env
 
 		SetResult ( filename, to_compress, results, COMPRESSED_CONTAINER_TYPE );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1590,6 +1656,8 @@ FMX_PROC(errcode) BE_ContainerUncompress ( short /*funcId*/, const ExprEnv& /* e
 
 		SetResult ( filename, gzipped, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1624,6 +1692,8 @@ FMX_PROC(errcode) BE_Gzip ( short /*funcId*/, const ExprEnv& /* environment */, 
 
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1660,6 +1730,8 @@ FMX_PROC(errcode) BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */
 
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1784,6 +1856,8 @@ FMX_PROC(errcode) BE_HTTP_GET ( short /* funcId */, const ExprEnv& /* environmen
 			SetResult ( filename, data, results );
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1813,6 +1887,8 @@ FMX_PROC(errcode) BE_HTTP_GET_File ( short /* funcId */, const ExprEnv& /* envir
 		vector<char> data = curl.perform_action ( );
 		error = g_last_error;
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1872,6 +1948,8 @@ FMX_PROC(errcode) BE_HTTP_POST_PUT_PATCH ( short funcId, const ExprEnv& /* envir
 			SetResult ( response, results );
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1901,6 +1979,8 @@ FMX_PROC(errcode) BE_HTTP_DELETE ( short /* funcId */, const ExprEnv& /* environ
 			SetResult ( data, results );
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1921,6 +2001,8 @@ FMX_PROC(errcode) BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* 
 
 		SetResult ( g_http_response_code, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1942,6 +2024,8 @@ FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& 
 		auto headers ( g_http_response_headers );
 		SetResult ( headers, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1967,6 +2051,8 @@ FMX_PROC(errcode) BE_HTTP_Get_Response_Header ( short /* funcId */, const ExprEn
 
 		SetResult ( found, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -1995,6 +2081,8 @@ FMX_PROC(errcode) BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv&
 
 		SetResult ( g_last_error, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2020,6 +2108,8 @@ FMX_PROC(errcode) BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* envi
 
 		SetResult ( g_last_error, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2073,6 +2163,8 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 		error = e.code();
 	} catch ( out_of_range& /* e */ ) { // we don't know about it
 		error = kNameIsNotValid;
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2093,6 +2185,8 @@ FMX_PROC(fmx::errcode) BE_Curl_Trace ( short /* funcId */, const fmx::ExprEnv& /
 		SetResult ( g_curl_trace.str(), results );
 
 	} catch ( BECurlOption_Exception& e ) { // we don't handle it
+		error = e.code();
+	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
@@ -2126,6 +2220,8 @@ FMX_PROC(errcode) BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environm
 			SetResult ( response, results );
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2157,6 +2253,8 @@ FMX_PROC(errcode) BE_FTP_Delete ( short /* funcId */, const ExprEnv& /* environm
 			SetResult ( response, results );
 		}
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2194,6 +2292,8 @@ FMX_PROC(fmx::errcode) BE_SMTP_Server ( short /* funcId */, const fmx::ExprEnv& 
 //		string do_nothing = "";
 //		SetResult ( do_nothing, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2285,6 +2385,8 @@ FMX_PROC(fmx::errcode) BE_SMTP_AddAttachment ( short /* funcId */, const fmx::Ex
 		//		string do_nothing = "";
 		//		SetResult ( do_nothing, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2362,6 +2464,8 @@ FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /
 
 		SetResult ( reply, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2428,6 +2532,8 @@ FMX_PROC(errcode) BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEn
 
 		SetResult ( response, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2471,6 +2577,8 @@ FMX_PROC(errcode) BE_Xero_SetTokens ( short /* funcId */, const ExprEnv& /* envi
 
 		SetResult ( "", results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2541,6 +2649,8 @@ FMX_PROC(errcode) BE_Values_Unique ( short /* funcId */, const ExprEnv& /* envir
 
 		SetResult ( unique_values, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2569,6 +2679,8 @@ FMX_PROC(errcode) BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* en
 
 		SetResult ( filtered_values, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2594,6 +2706,8 @@ FMX_PROC(errcode) BE_Values_ContainsDuplicates ( short /* funcId */, const ExprE
 
 		SetResult ( contains_duplicates, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2620,6 +2734,8 @@ FMX_PROC(errcode) BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environ
 
 		SetResult ( sorted_values, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2647,6 +2763,8 @@ FMX_PROC(errcode) BE_Values_TimesDuplicated ( short /* funcId */, const ExprEnv&
 		std::string found = times_duplicated.get_as_filemaker_string();
 		SetResult ( found, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2673,6 +2791,8 @@ FMX_PROC(errcode) BE_Values_Trim ( short /* funcId */, const ExprEnv& /* environ
 //		std::string found = values.get_as_filemaker_string();
 		SetResult ( values->get_as_filemaker_string(), results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2708,6 +2828,8 @@ FMX_PROC(fmx::errcode) BE_XOR ( short /* funcId */, const fmx::ExprEnv& /* envir
 
 		SetResult ( xord_text.str(), results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2745,6 +2867,8 @@ FMX_PROC(fmx::errcode) BE_Vector_DotProduct ( short /* funcId */, const fmx::Exp
 
 		SetResult ( dot_product, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2782,6 +2906,8 @@ FMX_PROC(fmx::errcode) BE_Vector_EuclideanDistance ( short /* funcId */, const f
 
 		SetResult ( euclidean_distance, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2818,6 +2944,8 @@ FMX_PROC(errcode) BE_NumericConstants ( short funcId, const ExprEnv& /* environm
 
 		SetResult ( funcId % kBE_NumericConstantOffset, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2864,6 +2992,8 @@ FMX_PROC(errcode) BE_TimeFunctions ( const short funcId, const ExprEnv& /* envir
 
 		SetResult ( reply, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2960,6 +3090,8 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 
 		results.SetAsText( *(variables.AsValueList()), parameters.At(0).GetLocale() );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -2986,6 +3118,8 @@ FMX_PROC(errcode) BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /
 
 		SetResult ( response, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -3094,6 +3228,8 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 
 		SetResult ( error, results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -3140,6 +3276,8 @@ FMX_PROC(errcode) BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environme
 
 		SetResult ( *(sql->get_text_result()), results );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
@@ -3339,6 +3477,8 @@ FMX_PROC(errcode) BE_Pause ( short /* funcId */, const ExprEnv& /* environment *
 //		std::this_thread::sleep_for ( std::chrono::milliseconds ( milliseconds ) ); // c++11
 		boost::this_thread::sleep ( boost::posix_time::milliseconds ( milliseconds ) );
 
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
