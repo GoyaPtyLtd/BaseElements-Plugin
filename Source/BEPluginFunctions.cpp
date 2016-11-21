@@ -1579,12 +1579,7 @@ FMX_PROC(errcode) BE_ContainerIsCompressed ( short /*funcId*/, const ExprEnv& /*
 
 			const BinaryDataUniquePtr data_stream ( parameters.AtAsBinaryData ( 0 ) );
 
-// defeat: Returning null reference (within a call to 'operator*')
-#ifndef __clang_analyzer__
 			bool compressed = StreamIsCompressed ( *data_stream );
-#else
-			bool compressed = false;
-#endif
 
 			SetResult ( compressed, results );
 
@@ -3206,18 +3201,12 @@ FMX_PROC(errcode) BE_ExecuteScript ( short /* funcId */, const ExprEnv& environm
 		DataUniquePtr parameter;
 		if ( number_of_paramters == 3 ) {
 
-			// defeat: Returning null reference (within a call to 'operator*')
-			// default constructor for default_locale gives the current locale
-#ifndef __clang_analyzer__
 			LocaleUniquePtr default_locale;
 			parameter->SetAsText ( parameters.AtAsText ( 2 ), *default_locale );
-#endif
 
 		}
 
-#ifndef __clang_analyzer__
 		error = ExecuteScript ( *script_name, *file_name, *parameter, environment );
-#endif
 
 		SetResult ( error, results );
 

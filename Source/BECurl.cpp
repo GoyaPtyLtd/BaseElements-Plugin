@@ -149,17 +149,11 @@ MemoryStruct InitalizeCallbackMemory ( void )
 {
 	struct MemoryStruct data;
 
-// suppress "Memory is never released; potential leak of memory pointed to by..."
-
-#ifndef __clang_analyzer__
-
 	data.memory = (char *)malloc(1);  // this is grown as needed by WriteMemoryCallback
 	data.memory[0] = '\0';
 	data.size = 0;
 
 	return data;
-
-#endif
 
 }
 

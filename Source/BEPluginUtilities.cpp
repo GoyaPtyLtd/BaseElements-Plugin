@@ -109,12 +109,8 @@ void SetResultAsDoubleAsText ( const double number, Data& results )
 
 void SetResult ( const Text& text, Data& results )
 {
-// defeat: Returning null reference (within a call to 'operator*')
-// default constructor for default_locale gives the current locale
-#ifndef __clang_analyzer__
 	LocaleUniquePtr default_locale;
 	results.SetAsText ( text, *default_locale );
-#endif
 }
 
 
@@ -144,9 +140,6 @@ void SetResult ( vector<char>& data, Data& results )
 	data.push_back ( '\0' );
 	const std::string data_string ( &data[0] );//, data.size() );
 	SetResult ( data_string, results );
-
-//	SetResult ( "", data, results );
-
 }
 
 
@@ -441,7 +434,6 @@ const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt
 		const BinaryDataUniquePtr data ( parameters.AtAsBinaryData ( which ) );
 
 		fmx::TextUniquePtr name_as_fmx_text;
-		name_as_fmx_text->Assign ( "" ); // defeat clang: Returning null reference (within a call to 'operator*')
 		data->GetFNAMData ( *name_as_fmx_text );
 		std::string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
 
@@ -525,12 +517,7 @@ const fmx::int32 StreamIndex ( const BinaryData& data, const std::string stream_
 
 	QuadCharUniquePtr type ( stream_type[0], stream_type[1], stream_type[2], stream_type[3] );
 
-// defeat: Returning null reference (within a call to 'operator*')
-#ifndef __clang_analyzer__
 	fmx::int32 stream_index = data.GetIndex ( *type );
-#else
-	fmx::int32 stream_index = kBE_DataType_Not_Found;
-#endif
 
 	return stream_index;
 
@@ -797,11 +784,7 @@ errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Da
 			command->Assign ( "Get ( FileName )" );
 
 			DataUniquePtr name;
-
-// defeat: Returning null reference (within a call to 'operator*')
-#ifndef __clang_analyzer__
 			environment.Evaluate ( *command, *name );
-#endif
 
 			database->SetText ( name->GetAsText() );
 
@@ -879,11 +862,6 @@ bool AllowUserAbort ( const ExprEnv& environment )
 	command->Assign ( "Get ( AllowAbortState )" );
 
 	DataUniquePtr reply;
-
-#ifdef __clang_analyzer__
-	reply->Clear(); // defeat: Returning null reference (within a call to 'operator*')
-#endif
-
 	environment.Evaluate ( *command, *reply );
 	bool allow_abort = reply->GetAsBoolean();
 
@@ -898,11 +876,6 @@ std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
 	command->Assign ( "Get ( TemporaryPath )" );
 
 	DataUniquePtr reply;
-
-#ifdef __clang_analyzer__
-	reply->Clear(); // defeat: Returning null reference (within a call to 'operator*')
-#endif
-
 	environment.Evaluate ( *command, *reply );
 
 	// we want the filesystem path, not the "filemaker" path

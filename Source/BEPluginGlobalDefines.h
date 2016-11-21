@@ -60,21 +60,16 @@
 
 #ifdef __cplusplus
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wall"
-
-#include "FMWrapper/FMXBinaryData.h"
-#include "FMWrapper/FMXCalcEngine.h"
-#include "FMWrapper/FMXClient.h"
-#include "FMWrapper/FMXData.h"
-#include "FMWrapper/FMXDateTime.h"
-#include "FMWrapper/FMXExtern.h"
-#include "FMWrapper/FMXFixPt.h"
-#include "FMWrapper/FMXText.h"
-#include "FMWrapper/FMXTextStyle.h"
-#include "FMWrapper/FMXTypes.h"
-
-#pragma clang diagnostic pop
+#include <FMWrapper/FMXBinaryData.h>
+#include <FMWrapper/FMXCalcEngine.h>
+#include <FMWrapper/FMXClient.h>
+#include <FMWrapper/FMXData.h>
+#include <FMWrapper/FMXDateTime.h>
+#include <FMWrapper/FMXExtern.h>
+#include <FMWrapper/FMXFixPt.h>
+#include <FMWrapper/FMXText.h>
+#include <FMWrapper/FMXTextStyle.h>
+#include <FMWrapper/FMXTypes.h>
 
 #include "BEPluginVersion.h"
 #include "BECppUtilities.h"

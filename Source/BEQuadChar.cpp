@@ -27,13 +27,7 @@ BEQuadChar::BEQuadChar ( const std::string new_type )
 
 BEQuadChar::BEQuadChar ( const fmx::BinaryData& data, const fmx::int32 which )
 {
-// defeat: Returning null reference (within a call to 'operator*')
-#ifndef __clang_analyzer__
 	data.GetType ( which, *type );
-#else
-	;
-#endif
-
 };
 
 
@@ -86,11 +80,6 @@ const bool BEQuadChar::is_type ( const std::string new_type ) const
 {
 	const fmx::QuadCharUniquePtr file ( new_type[0], new_type[1], new_type[2], new_type[3] );
 
-// defeat: Returning null reference (within a call to 'operator*')
-#ifndef __clang_analyzer__
 	return *type == *file;
-#else
-	return false;
-#endif
 
 }
