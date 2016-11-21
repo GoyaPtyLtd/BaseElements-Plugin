@@ -2149,7 +2149,7 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 			}
 
 			case 2:
-				boost::shared_ptr<BECurlOption> curl_option ( new BECurlOption ( option, parameters.At ( 1 ) ) ); // throws if option not known or not handled
+				std::shared_ptr<BECurlOption> curl_option ( new BECurlOption ( option, parameters.At ( 1 ) ) ); // throws if option not known or not handled
 				g_curl_options [ option ] = curl_option;
 				break;
 

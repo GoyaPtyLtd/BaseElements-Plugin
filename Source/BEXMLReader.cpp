@@ -31,8 +31,8 @@ int StripXMLNodes ( const path input_file, const path output_file, const vector<
 
 	try {
 		
-		boost::shared_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
-		boost::shared_ptr<BEXMLTextWriter> writer ( new BEXMLTextWriter ( output_file ) );
+		std::shared_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
+		std::shared_ptr<BEXMLTextWriter> writer ( new BEXMLTextWriter ( output_file ) );
 		
 		reader->read();
 		
@@ -111,7 +111,7 @@ int SplitBEXMLFiles ( const path input_file )
 	
 	try {
 		
-		boost::shared_ptr<BEFileTextReader> reader ( new BEFileTextReader ( input_file ) );
+		std::shared_ptr<BEFileTextReader> reader ( new BEFileTextReader ( input_file ) );
 		
 		reader->read();
 		

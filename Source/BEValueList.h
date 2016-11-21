@@ -111,7 +111,7 @@ protected:
 
 typedef std::unique_ptr<BEValueList<std::string> > BEValueListStringUniquePtr;
 typedef std::unique_ptr<BEValueList<std::wstring> > BEValueListWideStringUniquePtr;
-typedef boost::shared_ptr<BEValueList<std::string> > BEValueListStringSharedPtr;
+typedef std::shared_ptr<BEValueList<std::string> > BEValueListStringSharedPtr;
 
 
 template <typename T>

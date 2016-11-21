@@ -18,8 +18,6 @@
 
 #include "curl/curl.h"
 
-#include "boost/shared_ptr.hpp"
-
 #include <map>
 
 
@@ -89,7 +87,7 @@ protected:
 };
 
 
-typedef std::map<std::string, boost::shared_ptr<BECurlOption> > BECurlOptionMap;
+typedef std::map<std::string, std::shared_ptr<BECurlOption> > BECurlOptionMap;
 
 const bool curl_force_tls ( BECurlOptionMap options );
 

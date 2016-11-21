@@ -771,7 +771,7 @@ void BECurl::set_options ( BECurlOptionMap options )
 	BECurlOptionMap::iterator it = options.begin();
 	while ( it != options.end() ) {
 
-		boost::shared_ptr<BECurlOption> curl_option = it->second;
+		auto curl_option = it->second;
 
 		switch ( curl_option->type() ) {
 
