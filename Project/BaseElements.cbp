@@ -119,7 +119,6 @@
 		<Unit filename="../Source/BESQLCommand.cpp" />
 		<Unit filename="../Source/BEShell.cpp" />
 		<Unit filename="../Source/BETime.cpp" />
-		<Unit filename="../Source/BEWStringVector.cpp" />
 		<Unit filename="../Source/BEXMLReader.cpp" />
 		<Unit filename="../Source/BEXMLReaderInterface.cpp" />
 		<Unit filename="../Source/BEXMLTextReader.cpp" />
