@@ -36,19 +36,11 @@
 #include <sstream>
 #include <errno.h>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wall"
-#pragma clang diagnostic ignored "-pedantic"
-#pragma clang diagnostic ignored "-Wdocumentation"
-#pragma clang diagnostic ignored "-Wconversion"
-
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/scoped_ptr.hpp>
-
-#pragma clang diagnostic pop
 
 #include <Poco/URI.h>
 #include <Poco/Path.h>

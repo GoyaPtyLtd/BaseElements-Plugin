@@ -2,7 +2,7 @@
  BEOAuth.cpp
  BaseElements Plug-In
  
- Copyright 2013-2014 Goya. All rights reserved.
+ Copyright 2013-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,7 +13,7 @@
 #include "BECurl.h"
 
 
-#include "boost/scoped_ptr.hpp"
+#include <boost/scoped_ptr.hpp>
 
 
 using namespace std;

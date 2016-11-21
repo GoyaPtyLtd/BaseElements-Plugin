@@ -2,7 +2,7 @@
  BEOAuth.h
  BaseElements Plug-In
  
- Copyright 2013-2014 Goya. All rights reserved.
+ Copyright 2013-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -16,10 +16,9 @@
 
 #include "BEPluginUtilities.h"
 
-
 #include "oauth.h"
-#include "boost/algorithm/string.hpp"
 
+#include <boost/algorithm/string.hpp>
 
 
 enum {

@@ -17,18 +17,9 @@
 #include "BEPluginGlobalDefines.h"
 #include "BEValueList.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wall"
-#pragma clang diagnostic ignored "-pedantic"
-#pragma clang diagnostic ignored "-Wdocumentation"
-#pragma clang diagnostic ignored "-Wconversion"
-#pragma clang diagnostic ignored "-Wunused-parameter"
-
 #include <boost/filesystem.hpp>
 
 #include <mimetic/mimetic.h>
-
-#pragma clang diagnostic pop
 
 
 #include <string>

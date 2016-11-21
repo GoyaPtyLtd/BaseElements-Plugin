@@ -2,7 +2,7 @@
  BEXMLTextWriter.cpp
  BaseElements Plug-In
  
- Copyright 2012-2015 Goya. All rights reserved.
+ Copyright 2012-2016 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -11,8 +11,8 @@
 
 #include "BEXMLTextWriter.h"
 
-#include "boost/filesystem.hpp"
-#include "boost/filesystem/fstream.hpp"
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 #include <algorithm>
 #include <string>

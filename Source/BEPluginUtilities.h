@@ -17,7 +17,7 @@
 #include "BEPluginGlobalDefines.h"
 #include "Images/BEImage.h"
 
-#include "boost/filesystem/path.hpp"
+#include <boost/filesystem/path.hpp>
 
 #include <vector>
 #include <stdint.h>
