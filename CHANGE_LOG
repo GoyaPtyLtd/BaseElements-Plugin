@@ -2,7 +2,7 @@
 Version 4.0b1
 ########################################################################
 
-November 17, 2016
+November 21, 2016
 
 
 New Functions
@@ -14,6 +14,7 @@ BE_HTTP_Get_Response_Header
 Changes
 
 Partial Linux Support
+BE_FMS_*: Allow for FMS credentials containing spaces
 
 
 ########################################################################
