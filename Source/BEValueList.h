@@ -234,25 +234,17 @@ template <typename T>
 T BEValueList<T>::unique ( )
 {
 	
-	std::set<T> unique;
-	std::stringstream text;
-	
-	for ( typename std::vector<T>::iterator it = values.begin() ; it != values.end(); ++it ) {
-		
-		bool value_inserted = inserted ( *it, unique );
+	std::set<T> unordered;
+	std::vector<T> unique;
 
-		if ( value_inserted == true ) {
-			
-			if ( text.str().size() > 0 ) {
-				text << FILEMAKER_END_OF_LINE;
-			}
-			text << *it;
+	for ( typename std::vector<T>::iterator it = values.begin() ; it != values.end(); ++it ) {
+		if ( inserted ( *it, unordered ) ) {
+			unique.push_back ( *it );
 		}
-		
 	}
-	
-	return text.str();
-	
+
+	return boost::join ( unique, FILEMAKER_END_OF_LINE );
+
 } // unique
 
 

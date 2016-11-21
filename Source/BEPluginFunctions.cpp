@@ -32,7 +32,6 @@
 #include "BEPluginFunctions.h"
 
 #include "BEXSLT.h"
-#include "BEWStringVector.h"
 #include "BECurl.h"
 #include "BEFileSystem.h"
 #include "BEFMS.h"
@@ -3025,7 +3024,7 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 
 	try {
 
-		BEWStringVector variables;
+		auto variables ( new BEValueList<std::wstring> );
 		auto calculation = ParameterAsWideString ( parameters );
 
 		wstring search_for = L"$/\""; // variables, comments and strings (including escaped strings)
@@ -3052,7 +3051,7 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 
 					// add the variable to the list
 					wstring wanted = calculation.substr ( found, end - found );
-					variables.PushBack ( wanted );
+					variables->append ( wanted );
 					search_from = end + 1;
 				}
 				break;
@@ -3093,7 +3092,7 @@ FMX_PROC(errcode) BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv&
 			}
 		}
 
-		results.SetAsText( *(variables.AsValueList()), parameters.At(0).GetLocale() );
+		SetResult ( variables->unique(), results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
