@@ -2413,11 +2413,16 @@ FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /
 	try {
 
 		auto username = ParameterAsUTF8String ( parameters );
+		std::stringstream quoted_username;
+		quoted_username << boost::io::quoted ( username );
+
 		auto password = ParameterAsUTF8String ( parameters, 1 );
-		const bool show_statistics = ParameterAsBoolean ( parameters, 2, false );
+		std::stringstream quoted_password;
+		quoted_password << boost::io::quoted ( password );
+
+		unique_ptr<BEFMS> fms ( new BEFMS ( quoted_username.str(), quoted_password.str() ) );
 
 		string reply = "";
-		unique_ptr<BEFMS> fms ( new BEFMS ( username, password ) );
 
 		switch ( function_id ) {
 
@@ -2426,11 +2431,11 @@ FMX_PROC(fmx::errcode) BE_FMS_Command ( short function_id, const fmx::ExprEnv& /
 				break;
 
 			case kBE_FMS_List_Clients:
-				reply = fms->list_clients ( show_statistics );
+				reply = fms->list_clients ( ParameterAsBoolean ( parameters, 2, false ) );
 				break;
 
 			case kBE_FMS_List_Files:
-				reply = fms->list_files ( show_statistics );
+				reply = fms->list_files ( ParameterAsBoolean ( parameters, 2, false ) );
 				break;
 
 			case kBE_FMS_List_Schedules:
