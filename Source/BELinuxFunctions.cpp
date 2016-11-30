@@ -209,7 +209,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_ImportFile ] = "BE_ImportFile ( path {; compress } )";
 	strings [ kBE_HTTP_POST ] = "BE_HTTP_POST ( url ; parameters {; username ; password } )";
 	strings [ kBE_HTTP_Response_Code ] = "BE_HTTP_Response_Code";
-	strings [ kBE_HTTP_Response_Headers ] = "BE_HTTP_Response_Headers";
+	strings [ kBE_HTTP_Response_Headers ] = "BE_HTTP_Response_Headers ( { header } )";
 	strings [ kBE_HTTP_Set_Custom_Header ] = "BE_HTTP_Set_Custom_Header ( header ; value )";
 	strings [ kBE_HTTP_DELETE ] = "BE_HTTP_DELETE ( url {; username ; password } )";
 	strings [ kBE_HTTP_PUT_File ] = "BE_HTTP_PUT_File ( url ; path {; username ; password } )";
@@ -220,7 +220,6 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_Curl_Trace ] = "BE_Curl_Trace";
 	strings [ kBE_FTP_Delete ] = "BE_FTP_Delete ( url {; username ; password } )";
 	strings [ kBE_HTTP_PATCH ] = "BE_HTTP_PATCH ( url ; parameters {; username ; password } )";
-	strings [ kBE_HTTP_Get_Response_Header ] = "BE_HTTP_Get_Response_Header ( header )";
 	strings [ kBE_ApplyXSLTInMemory ] = "BE_ApplyXSLTInMemory ( xml ; xslt )";
 	strings [ kBE_XPath ] = "BE_XPath ( xml ; xpath {; namespaceList ; asText } )";
 	strings [ kBE_XPathAll ] = "BE_XPathAll ( xml ; xpath {; namespaceList } )";

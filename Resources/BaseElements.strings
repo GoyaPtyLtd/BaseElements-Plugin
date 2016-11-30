@@ -73,7 +73,7 @@
 
 "180" = "BE_HTTP_POST ( url ; parameters {; username ; password } )";
 "181" = "BE_HTTP_Response_Code";
-"182" = "BE_HTTP_Response_Headers";
+"182" = "BE_HTTP_Response_Headers ( { header } )";
 "183" = "BE_HTTP_Set_Custom_Header ( header ; value )";
 "184" = "BE_HTTP_DELETE ( url {; username ; password } )";
 "185" = "BE_HTTP_PUT_FILE ( url ; path {; username ; password } )";
@@ -84,7 +84,6 @@
 "190" = "BE_Curl_Trace";
 "191" = "BE_FTP_Delete ( url {; username ; password } )";
 "192" = "BE_HTTP_PATCH ( url ; parameters {; username ; password } )";
-"193" = "BE_HTTP_Get_Response_Header ( header )";
 
 
 "200" = "BE_ApplyXSLTInMemory ( xml ; xslt )";

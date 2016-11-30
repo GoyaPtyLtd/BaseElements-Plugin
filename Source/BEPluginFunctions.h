@@ -111,7 +111,6 @@ FMX_PROC(fmx::errcode) BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprE
 FMX_PROC(fmx::errcode) BE_FTP_Upload ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_Curl_Trace ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_FTP_Delete ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
-FMX_PROC(fmx::errcode) BE_HTTP_Get_Response_Header ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results );
 
 FMX_PROC(fmx::errcode) BE_ExtractScriptVariables ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 FMX_PROC(fmx::errcode) BE_NumericConstants ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
