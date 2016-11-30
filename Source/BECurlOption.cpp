@@ -238,6 +238,7 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_TIMEVALUE" ] = type_long;
 	types [ "CURLOPT_TIMEOUT" ] = type_long;
 	types [ "CURLOPT_TIMEOUT_MS" ] = type_long;
+	types [ "CURLOPT_LOW_SPEED_LIMIT" ] = type_long;
 	types [ "CURLOPT_LOW_SPEED_TIME" ] = type_long;
 	types [ "CURLOPT_MAXCONNECTS" ] = type_long;
 	types [ "CURLOPT_FRESH_CONNECT" ] = type_long;
@@ -491,6 +492,7 @@ CURLoption BECurlOption::option ( )
 	options [ "CURLOPT_TIMEVALUE" ] = CURLOPT_TIMEVALUE;
 	options [ "CURLOPT_TIMEOUT" ] = CURLOPT_TIMEOUT;
 	options [ "CURLOPT_TIMEOUT_MS" ] = CURLOPT_TIMEOUT_MS;
+	options [ "CURLOPT_LOW_SPEED_LIMIT" ] = CURLOPT_LOW_SPEED_LIMIT;
 	options [ "CURLOPT_LOW_SPEED_TIME" ] = CURLOPT_LOW_SPEED_TIME;
 	options [ "CURLOPT_MAXCONNECTS" ] = CURLOPT_MAXCONNECTS;
 	options [ "CURLOPT_FRESH_CONNECT" ] = CURLOPT_FRESH_CONNECT;
