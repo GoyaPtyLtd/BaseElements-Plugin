@@ -191,6 +191,7 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 		if ( compress ) {
 			output = CompressContainerStream ( data );
 		}
+		
 		resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)&output[0] ); // error =
 		results.SetBinaryData ( *resultBinary, true );
 
