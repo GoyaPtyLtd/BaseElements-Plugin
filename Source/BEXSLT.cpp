@@ -132,7 +132,7 @@ TextUniquePtr ReportXSLTError ( const xmlChar * url )
 std::string ConvertFileMakerEOLs ( std::string& in )
 {
     size_t look_here = 0;
-	string from = "\r";
+	string from = FILEMAKER_END_OF_LINE;
 	string to = "\n";
     size_t found_here;
 	
