@@ -8,13 +8,26 @@ November 21, 2016
 New Functions
 
 BE_Array_Delete
-BE_HTTP_Get_Response_Header
 
 
 Changes
 
 Partial Linux Support
 BE_FMS_*: Allow for FMS credentials containing spaces
+
+
+
+########################################################################
+Version 3.3.2
+########################################################################
+
+December 5, 2016
+
+
+Changes
+
+BE_Curl_Set_Option: CURLOPT_LOW_SPEED_LIMIT added
+BE_HTTP_Response_Headers: "header" parameter added so that the named header only is returned
 
 
 ########################################################################
