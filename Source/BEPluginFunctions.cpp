@@ -1884,23 +1884,40 @@ FMX_PROC(errcode) BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* 
 
 
 
-FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
-{	
+FMX_PROC(errcode) BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
 	errcode error = NoError();
-	
-	try {
-		
-		StringAutoPtr headers ( new string ( g_http_response_headers ) );
-		SetResult ( headers, results );
 
+	try {
+
+		const unsigned long number_of_parameters = parameters.Size();
+
+		if ( number_of_parameters == 0 ) { // get them all
+
+			auto headers ( g_http_response_headers );
+			SetResult ( headers, results );
+
+		} else {
+
+			auto http_headers = boost::replace_all_copy ( g_http_response_headers, "\r\n", "\n" );
+
+			BEValueList<string> headers ( http_headers, "\n", false );
+			auto look_for = ParameterAsUTF8String ( parameters );
+			auto found = headers.starts_with ( *look_for + ": " );
+
+			SetResult ( found, results );
+		}
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return MapError ( error );
-	
+
 } // BE_HTTP_Response_Headers
 
 

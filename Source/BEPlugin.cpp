@@ -190,7 +190,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_Data, BE_HTTP_POST_PUT_PATCH, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Code, BE_HTTP_Response_Code );
-	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Headers, BE_HTTP_Response_Headers );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Headers, BE_HTTP_Response_Headers, 0, 1 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Set_Custom_Header, BE_HTTP_Set_Custom_Header, 2 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Set_Proxy, BE_HTTP_Set_Proxy, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_Curl_Set_Option, BE_Curl_Set_Option, 0, 2 );
