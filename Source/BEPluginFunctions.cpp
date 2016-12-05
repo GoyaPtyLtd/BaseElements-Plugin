@@ -221,7 +221,7 @@ fmx::errcode BE_CreateFolder ( short /* funcId */, const ExprEnv& /* environment
 
 	try {
 
-		path directory_path = ParameterAsPath ( parameters, 0 );
+		path directory_path = ParameterAsPath ( parameters );
 
 		try {
 			create_directories ( directory_path );
@@ -250,7 +250,7 @@ fmx::errcode BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environment *
 
 	try {
 
-		path path = ParameterAsPath ( parameters, 0 );
+		path path = ParameterAsPath ( parameters );
 
 		try {
 			remove_all ( path ); // if path is a directory then path and all it's contents are deleted
@@ -279,7 +279,7 @@ fmx::errcode BE_FileExists ( short /* funcId */, const ExprEnv& /* environment *
 
 	try {
 
-		path path = ParameterAsPath ( parameters, 0 );
+		path path = ParameterAsPath ( parameters );
 
 		bool file_exists = exists ( path );
 
@@ -307,7 +307,7 @@ fmx::errcode BE_FileSize ( short /* funcId */, const ExprEnv& /* environment */,
 
 	try {
 
-		path path = ParameterAsPath ( parameters, 0 );
+		path path = ParameterAsPath ( parameters );
 
 		uintmax_t size = file_size ( path );
 
@@ -549,7 +549,7 @@ fmx::errcode BE_ImportFile ( short /* funcId */, const ExprEnv& /* environment *
 
 	try {
 
-		path from = ParameterAsPath ( parameters, 0 );
+		path from = ParameterAsPath ( parameters );
 		bool compress = ParameterAsBoolean ( parameters, 1, false );
 		std::string data_type = FILE_CONTAINER_TYPE;
 		if ( compress ) {
@@ -587,7 +587,7 @@ fmx::errcode BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */,
 
 	try {
 
-		path from = ParameterAsPath ( parameters, 0 );
+		path from = ParameterAsPath ( parameters );
 		path to = ParameterAsPath ( parameters, 1 );
 
 		try {
@@ -617,7 +617,7 @@ fmx::errcode BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */,
 
 	try {
 
-		path from = ParameterAsPath ( parameters, 0 );
+		path from = ParameterAsPath ( parameters );
 		path to = ParameterAsPath ( parameters, 1 );
 
 		try {
@@ -648,7 +648,7 @@ fmx::errcode BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* enviro
 
 	try {
 
-		const path directory = ParameterAsPath ( parameters, 0 );
+		const path directory = ParameterAsPath ( parameters );
 		const long file_type_wanted = ParameterAsLong ( parameters, 1, kBE_FileType_File );
 		const bool include_subfolders = ParameterAsBoolean ( parameters, 2, false );
 		const bool use_full_path = ParameterAsBoolean ( parameters, 3, false );
