@@ -24,7 +24,7 @@ BEJSON::BEJSON ( ) {
 BEJSON::BEJSON ( const std::string& json ) {
 
 	json_error_t json_error;
-	document = json_loadb ( json.c_str(), json.size(), 0, &json_error );
+	document = json_loads ( json.c_str(), 0, &json_error );
 	if ( !document ) {
 		throw BEJSON_Exception ( json_error );
 	}
@@ -131,6 +131,9 @@ std::string BEJSON::encode ( const std::string& key, const fmx::Data& value, con
 		bool integer = fmx_text->Find ( *decimal_point, 0 ) == fmx::Text::kSize_End;
 		
 		if ( integer ) {
+			if ( json_text.empty() ) {
+				json_text = "0";
+			}
 			json_value = json_integer_with_string( number->AsFloat ( ), json_text.c_str() ); // AsLong returns an int (which overflows)
 		} else {
 

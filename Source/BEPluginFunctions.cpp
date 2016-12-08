@@ -1072,14 +1072,14 @@ fmx::errcode BE_JSONPath ( short /* funcId */, const ExprEnv& /* environment */,
 {
 	errcode error = NoError();
 
-	g_json_error_description = "";
+	g_json_error_description.clear();
 
 	try {
 
 		auto json = ParameterAsUTF8String ( parameters );
 		auto json_path_expression = ParameterAsUTF8String ( parameters, 1 );
 
-		unique_ptr<BEJSON> json_document ( new BEJSON ( json ) );
+		std::unique_ptr<BEJSON> json_document ( new BEJSON ( json ) );
 		json_document->json_path_query ( json_path_expression, results );
 
 	} catch ( BEJSON_Exception& e ) {
@@ -1127,13 +1127,13 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 {
 	errcode error = NoError();
 
-	g_json_error_description = "";
+	g_json_error_description.clear();
 
 	try {
 
 		auto json = ParameterAsUTF8String ( parameters );
 
-		unique_ptr<BEJSON> json_document ( new BEJSON ( json ) );
+		std::unique_ptr<BEJSON> json_document ( new BEJSON ( json ) );
 		json_document->array_size ( results );
 
 	} catch ( BEJSON_Exception& e ) {
@@ -1155,21 +1155,21 @@ fmx::errcode BE_JSON_Encode ( short /* funcId */, const ExprEnv& /* environment 
 {
 	errcode error = NoError();
 
-	g_json_error_description = "";
+	g_json_error_description.clear();
 
 	try {
 
 		auto key = ParameterAsUTF8String ( parameters );
-		auto type = ParameterAsUTF8String ( parameters, 2 );
+		auto type = ParameterAsUTF8String ( parameters, 2 ); // allows the developer to specify null (only)
 
 		if ( parameters.Size() == 1 ) {
 
-			string out = "\"" + key + "\":";
+			const string out = "\"" + key + "\":";
 			SetResult ( out, results );
 
 		} else {
 
-			unique_ptr<BEJSON> json_document ( new BEJSON ( ) );
+			std::unique_ptr<BEJSON> json_document ( new BEJSON ( ) );
 			auto json = json_document->encode ( key, parameters.At ( 1 ), type );
 			json.erase ( 0, 1 ); // remove {
 			json.erase ( json.length() - 1 ); // remove }
