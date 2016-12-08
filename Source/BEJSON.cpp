@@ -123,7 +123,7 @@ StringAutoPtr BEJSON::encode ( const StringAutoPtr key, const fmx::Data& value, 
 		// integer or real value ?
 		fmx::TextAutoPtr fmx_text;
 		fmx_text->SetText ( value.GetAsText( ) );
-		const std::string json_text = TextAsNumberString ( *fmx_text );
+		std::string json_text = TextAsNumberString ( *fmx_text );
 
 		fmx::TextAutoPtr decimal_point;
 		decimal_point->Assign ( "." );
@@ -131,6 +131,9 @@ StringAutoPtr BEJSON::encode ( const StringAutoPtr key, const fmx::Data& value, 
 		bool integer = fmx_text->Find ( *decimal_point, 0 ) == fmx::Text::kSize_End;
 		
 		if ( integer ) {
+			if ( json_text.empty() ) {
+				json_text = "0";
+			}
 			json_value = json_integer_with_string( number->AsFloat ( ), json_text.c_str() ); // AsLong returns an int (which overflows)
 		} else {
 

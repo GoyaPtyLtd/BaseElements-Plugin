@@ -756,16 +756,21 @@ string TextAsUTF8String ( const Text& fmx_text )
 } // TextAsString
 
 
-
-string TextAsNumberString ( const Text& fmx_text )
+std::string TextAsNumberString ( const Text& fmx_text )
 {
-	std::string number_string = TextAsUTF8String ( fmx_text );
-	
-	// bug in fm text to float conversion removes a leading 0
-	std::string decimal_point = ".";
-	auto found = std::mismatch ( decimal_point.begin(), decimal_point.end(), number_string.begin() );
-	if ( found.first == decimal_point.end()) {
-		number_string = "0" + number_string;
+	auto number_string = TextAsUTF8String ( fmx_text );
+
+	if ( !number_string.empty() ) {
+
+		// bug in fm text to float conversion removes a leading 0
+		const std::string decimal_point = ".";
+		auto found = std::mismatch ( decimal_point.begin(), decimal_point.end(), number_string.begin() );
+		if ( found.first == decimal_point.end() ) {
+			number_string = "0" + number_string;
+		}
+
+	} else {
+		; // do nothing, this waste of code brought to you courtesy of msvc
 	}
 
 	return number_string;
