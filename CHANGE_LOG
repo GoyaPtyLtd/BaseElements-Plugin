@@ -16,6 +16,17 @@ Partial Linux Support
 BE_FMS_*: Allow for FMS credentials containing spaces
 
 
+########################################################################
+Version 3.3.3
+########################################################################
+
+December 9, 2016
+
+
+Changes
+
+BE_JSON_Encode: encode empty number fields as 0
+
 
 ########################################################################
 Version 3.3.2
