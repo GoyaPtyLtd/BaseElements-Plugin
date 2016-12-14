@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D0579331B3B83550000585F /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
 		4D0579341B3B83550000585F /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792D1B3B83550000585F /* libcurl.a */; };
 		4D0579361B3B83550000585F /* libmimetic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792F1B3B83550000585F /* libmimetic.a */; };
 		4D0579371B3B83550000585F /* liboauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0579301B3B83550000585F /* liboauth.a */; };
@@ -75,6 +74,7 @@
 		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4DD510241DD136F200763F7E /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
 		4DFDF4931BF9994000B4C7C4 /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4DFDF4921BF9994000B4C7C4 /* BEPluginVersion.strings */; };
+		6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,7 +85,7 @@
 		4D00CC6516D3357C00160030 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		4D00CC6616D3357C00160030 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		4D00CC6716D3357C00160030 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		4D05792C1B3B83550000585F /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/osx/FMWrapper.framework; sourceTree = "<group>"; };
+		4D05792C1B3B83550000585F /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/macOS/FMWrapper.framework; sourceTree = "<group>"; };
 		4D05792D1B3B83550000585F /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/osx/libcurl.a; sourceTree = "<group>"; };
 		4D05792E1B3B83550000585F /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/osx/libjansson.a; sourceTree = "<group>"; };
 		4D05792F1B3B83550000585F /* libmimetic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmimetic.a; path = ../Libraries/osx/libmimetic.a; sourceTree = "<group>"; };
@@ -207,6 +207,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */,
 				4DD510241DD136F200763F7E /* libjansson.a in Frameworks */,
 				4D7613871C460D7300FC651E /* Security.framework in Frameworks */,
 				4D7613861C44C94E00FC651E /* libcrypto.tbd in Frameworks */,
@@ -220,7 +221,6 @@
 				4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */,
 				4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */,
 				4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */,
-				4D0579331B3B83550000585F /* FMWrapper.framework in Frameworks */,
 				4D0579341B3B83550000585F /* libcurl.a in Frameworks */,
 				4D0579361B3B83550000585F /* libmimetic.a in Frameworks */,
 				4D0579371B3B83550000585F /* liboauth.a in Frameworks */,
@@ -564,23 +564,14 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../Libraries\"",
-					"$(SRCROOT)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "\"$(inherited)\"";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/libxml2/,
 					/usr/include/,
-					"/Users/mark/Desktop/jansson-json_path/src/",
 				);
 				INFOPLIST_FILE = ../Resources/Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/../Libraries",
-					../Libraries/macOS,
-					"$(USER_LIBRARY_DIR)/Mobile\\ Documents/com~apple~CloudDocs/Development/BaseElements-Plugin/Libraries/macOS",
-				);
+				LIBRARY_SEARCH_PATHS = "\"$(inherited)\"";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
@@ -609,23 +600,14 @@
 				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 15 Advanced/Extensions/";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../Libraries\"",
-					"$(SRCROOT)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "\"$(inherited)\"";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/libxml2/,
 					/usr/include/,
-					"/Users/mark/Desktop/jansson-json_path/src/",
 				);
 				INFOPLIST_FILE = ../Resources/Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/../Libraries",
-					../Libraries/macOS,
-					"$(USER_LIBRARY_DIR)/Mobile\\ Documents/com~apple~CloudDocs/Development/BaseElements-Plugin/Libraries/macOS",
-				);
+				LIBRARY_SEARCH_PATHS = "\"$(inherited)\"";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
@@ -665,10 +647,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = "$(BUILD_DIR)/$(PROJECT_NAME).dst";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					../Libraries,
-					../Libraries/macOS,
-				);
+				FRAMEWORK_SEARCH_PATHS = ../Libraries/macOS;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_MODEL_TUNING = "";
@@ -711,10 +690,7 @@
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
-				LIBRARY_SEARCH_PATHS = (
-					../Libraries,
-					../Libraries/macOS,
-				);
+				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = (
@@ -727,7 +703,7 @@
 					"-fpermissive",
 					"$(OTHER_CFLAGS)",
 				);
-				OTHER_LDFLAGS = "-search_paths_first";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = BaseElements;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
@@ -735,7 +711,7 @@
 				SEPARATE_STRIP = YES;
 				STRIP_STYLE = "non-global";
 				SYMROOT = /tmp/Xcode/Build;
-				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\" /Users/mark/Desktop/jansson-json_path/src/";
+				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
 				VERSION_STRING = 4.0b1;
 				WARNING_CFLAGS = (
@@ -767,10 +743,7 @@
 				DSTROOT = "$(BUILD_DIR)/$(PROJECT_NAME).dst";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					../Libraries,
-					../Libraries/macOS,
-				);
+				FRAMEWORK_SEARCH_PATHS = ../Libraries/macOS;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_MODEL_TUNING = "";
@@ -813,10 +786,7 @@
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
-				LIBRARY_SEARCH_PATHS = (
-					../Libraries,
-					../Libraries/macOS,
-				);
+				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
@@ -830,7 +800,7 @@
 					"-fpermissive",
 					"$(OTHER_CFLAGS)",
 				);
-				OTHER_LDFLAGS = "-search_paths_first";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = BaseElements;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
@@ -838,7 +808,7 @@
 				SEPARATE_STRIP = NO;
 				STRIP_STYLE = "non-global";
 				SYMROOT = /tmp/Xcode/Build;
-				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\" /Users/mark/Desktop/jansson-json_path/src/";
+				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
 				VERSION_STRING = 4.0b1;
 				WARNING_CFLAGS = (
