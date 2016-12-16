@@ -486,7 +486,7 @@ const int PreferredContainerType ( const BinaryData& data )
 
 				BEQuadChar stream_type ( data, i );
 
-				if ( !stream_type.is_image_attribute() ) {
+				if ( !stream_type.is_image_attribute() && !stream_type.is_fork() ) {
 
 					which_type = i;
 

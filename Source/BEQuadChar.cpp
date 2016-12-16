@@ -70,6 +70,12 @@ const bool BEQuadChar::is_jpeg ( ) const
 }
 
 
+const bool BEQuadChar::is_fork ( ) const
+{
+	return is_type ( FORK_CONTAINER_TYPE );
+}
+
+
 const bool BEQuadChar::is_image_attribute ( ) const
 {
 	return is_type ( DPI_CONTAINER_TYPE ) || is_type ( FILENAME_CONTAINER_TYPE ) || is_type ( SIZE_CONTAINER_TYPE );

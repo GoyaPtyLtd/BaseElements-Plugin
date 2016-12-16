@@ -28,6 +28,7 @@
 #define DPI_CONTAINER_TYPE "DPI_"
 #define FILENAME_CONTAINER_TYPE "FNAM"
 #define SIZE_CONTAINER_TYPE "SIZE"
+#define FORK_CONTAINER_TYPE "FORK"
 
 #define JPEG_CONTAINER_TYPE "JPEG"
 #define GIF_CONTAINER_TYPE "GIFf"
@@ -49,6 +50,7 @@ class BEQuadChar {
 		const bool is_file ( ) const;
 		const bool is_zlib ( ) const;
 		const bool is_jpeg ( ) const;
+		const bool is_fork ( ) const;
 		const bool is_image ( ) const;
 		const bool is_image_attribute ( ) const;
 
