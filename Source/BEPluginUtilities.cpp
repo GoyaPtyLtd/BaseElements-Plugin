@@ -237,6 +237,12 @@ void SetResult ( const std::string& filename, const std::vector<char>& data, fmx
 }
 
 
+void SetResult ( const std::string& filename, const std::vector<unsigned char>& data, fmx::Data& results )
+{
+	return SetResult ( filename, data, results, FILE_CONTAINER_TYPE );
+}
+
+
 
 #pragma mark -
 #pragma mark ParameterAs
@@ -506,6 +512,24 @@ const int PreferredContainerType ( const BinaryData& data )
 	return which_type;
 
 } // PreferredContainerType
+
+
+const bool BinaryDataAvailable ( const DataVect& parameters, const FMX_UInt32 which )
+{
+
+	// make sure there's a parameter to get
+	if ( parameters.Size() > which ) {
+
+		const BinaryDataUniquePtr data ( parameters.AtAsBinaryData ( which ) );
+		int count = data->GetCount();
+
+		return count > 0;
+	}
+
+	return false;
+
+} // BinaryDataAvailable
+
 
 
 #pragma mark -

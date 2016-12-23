@@ -43,6 +43,7 @@ void SetResult ( const std::string& filename, const std::vector<char>& data, con
 
 void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results );
 void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results );
+void SetResult ( const std::string& filename, const std::vector<unsigned char>& data, fmx::Data& results );
 
 const bool ParameterAsBoolean ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool default_value = true );
 const double ParameterAsDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool default_value = 0.0 );
@@ -57,6 +58,7 @@ const boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters,
 const std::string ParameterFileName ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 
 const int PreferredContainerType ( const fmx::BinaryData& data );
+const bool BinaryDataAvailable ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 
 const fmx::int32 StreamIndex ( const fmx::BinaryData& data, const std::string stream_type );
 const fmx::int32 IndexForStream ( const fmx::BinaryData& data, const std::string stream_type );
