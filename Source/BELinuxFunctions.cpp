@@ -274,6 +274,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_ArrayGetValue ] = "BE_ArrayGetValue ( array ; valueNumber )";
 	strings [ kBE_Array_Delete ] = "BE_Array_Delete ( array )";
 	strings [ kBE_ConvertContainer ] = "BE_ConvertContainer ( field {; type ; width ; height } )";
+	strings [ kBE_PDF_Append ] = "BE_PDF_Append ( pdf ; pdf_to_append {; destination } )";
 	strings [ kBE_XOR ] = "BE_XOR ( text ; xorWith )";
 	strings [ kBE_Vector_DotProduct ] = "BE_Vector_DotProduct ( a ; b )";
 	strings [ kBE_Vector_EuclideanDistance ] = "BE_Vector_EuclideanDistance ( a ; b )";

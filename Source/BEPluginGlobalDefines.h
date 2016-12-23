@@ -214,6 +214,7 @@ enum functions {
 	kBE_ArrayGetValue = 652,
 	kBE_Array_Delete = 653,
 	kBE_ConvertContainer = 700,
+	kBE_PDF_Append = 750,
 	kBE_XOR = 800,
 	kBE_Vector_DotProduct = 900,
 	kBE_Vector_EuclideanDistance = 901,

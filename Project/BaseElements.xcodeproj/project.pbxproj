@@ -35,6 +35,11 @@
 		4D7613841C44C94200FC651E /* libssl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7613831C44C94200FC651E /* libssl.tbd */; };
 		4D7613861C44C94E00FC651E /* libcrypto.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7613851C44C94E00FC651E /* libcrypto.tbd */; };
 		4D7613871C460D7300FC651E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7613811C44C52E00FC651E /* Security.framework */; };
+		4D76243C1E0A37F600266C0D /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624391E0A37F600266C0D /* libfontconfig.a */; };
+		4D76243D1E0A37F600266C0D /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243A1E0A37F600266C0D /* libfreetype.a */; };
+		4D76243E1E0A37F600266C0D /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243B1E0A37F600266C0D /* libpodofo.a */; };
+		4D7624401E0A386F00266C0D /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243F1E0A386F00266C0D /* libbz2.tbd */; };
+		4D7624421E0A3FFE00266C0D /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4D807F001A9C255000E27E38 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4D807F041A9C27AB00E27E38 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
 		4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
@@ -151,6 +156,11 @@
 		4D7613811C44C52E00FC651E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		4D7613831C44C94200FC651E /* libssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libssl.tbd; path = usr/lib/libssl.tbd; sourceTree = SDKROOT; };
 		4D7613851C44C94E00FC651E /* libcrypto.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcrypto.tbd; path = usr/lib/libcrypto.tbd; sourceTree = SDKROOT; };
+		4D7624391E0A37F600266C0D /* libfontconfig.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfontconfig.a; path = ../Libraries/macOS/libfontconfig.a; sourceTree = "<group>"; };
+		4D76243A1E0A37F600266C0D /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../Libraries/macOS/libfreetype.a; sourceTree = "<group>"; };
+		4D76243B1E0A37F600266C0D /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/macOS/libpodofo.a; sourceTree = "<group>"; };
+		4D76243F1E0A386F00266C0D /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		4D7624411E0A3FFE00266C0D /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
 		4D7FCA5C11E9308B0047A453 /* BaseElements.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = BaseElements.strings; path = ../Resources/BaseElements.strings; sourceTree = SOURCE_ROOT; };
 		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D807EFE1A9C255000E27E38 /* BEImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEImage.cpp; path = ../Source/Images/BEImage.cpp; sourceTree = "<group>"; };
@@ -207,6 +217,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D7624421E0A3FFE00266C0D /* libexpat.tbd in Frameworks */,
+				4D4C067A1C23CE0D006899FE /* libxml2.a in Frameworks */,
+				4D7624401E0A386F00266C0D /* libbz2.tbd in Frameworks */,
+				4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */,
+				4D76243D1E0A37F600266C0D /* libfreetype.a in Frameworks */,
+				4D76243C1E0A37F600266C0D /* libfontconfig.a in Frameworks */,
+				4D76243E1E0A37F600266C0D /* libpodofo.a in Frameworks */,
 				6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */,
 				4DD510241DD136F200763F7E /* libjansson.a in Frameworks */,
 				4D7613871C460D7300FC651E /* Security.framework in Frameworks */,
@@ -216,11 +233,9 @@
 				4D145DDE1C44BCAF00C9FF3E /* libgpg-error.a in Frameworks */,
 				4D4C067D1C23CE0D006899FE /* libexslt.a in Frameworks */,
 				4D4C067E1C23CE0D006899FE /* libxslt.a in Frameworks */,
-				4D4C067A1C23CE0D006899FE /* libxml2.a in Frameworks */,
 				4D4C06791C23B3B6006899FE /* libldap.tbd in Frameworks */,
 				4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */,
 				4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */,
-				4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */,
 				4D0579341B3B83550000585F /* libcurl.a in Frameworks */,
 				4D0579361B3B83550000585F /* libmimetic.a in Frameworks */,
 				4D0579371B3B83550000585F /* liboauth.a in Frameworks */,
@@ -403,6 +418,11 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D7624411E0A3FFE00266C0D /* libexpat.tbd */,
+				4D76243F1E0A386F00266C0D /* libbz2.tbd */,
+				4D7624391E0A37F600266C0D /* libfontconfig.a */,
+				4D76243A1E0A37F600266C0D /* libfreetype.a */,
+				4D76243B1E0A37F600266C0D /* libpodofo.a */,
 				4DD510231DD136F200763F7E /* libjansson.a */,
 				4D7613851C44C94E00FC651E /* libcrypto.tbd */,
 				4D7613831C44C94200FC651E /* libssl.tbd */,
@@ -564,14 +584,17 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(inherited)\"";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
 				INFOPLIST_FILE = ../Resources/Info.plist;
-				LIBRARY_SEARCH_PATHS = "\"$(inherited)\"";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Mobile\\ Documents/com~apple~CloudDocs/Development/BaseElements-Plugin/Libraries/macOS",
+				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
@@ -600,14 +623,17 @@
 				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 15 Advanced/Extensions/";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
-				FRAMEWORK_SEARCH_PATHS = "\"$(inherited)\"";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
 				INFOPLIST_FILE = ../Resources/Info.plist;
-				LIBRARY_SEARCH_PATHS = "\"$(inherited)\"";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Mobile\\ Documents/com~apple~CloudDocs/Development/BaseElements-Plugin/Libraries/macOS",
+				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;

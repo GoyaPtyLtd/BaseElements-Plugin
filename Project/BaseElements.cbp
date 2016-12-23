@@ -64,6 +64,11 @@
 			<Add library="/lib64/libcrypto.so.10" />
 			<Add library="../Libraries/linux/libPocoFoundation.a" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
+			<Add library="/lib64/libbz2.so.1" />
+			<Add library="../Libraries/linux/libexpat.a" />
+			<Add library="../Libraries/linux/libfreetype.a" />
+			<Add library="../Libraries/linux/libfontconfig.a" />
+			<Add library="../Libraries/linux/libpodofo.a" />
 			<Add directory="PlugInSDK/Libraries/Linux" />
 			<Add directory="../Libraries/linux" />
 		</Linker>

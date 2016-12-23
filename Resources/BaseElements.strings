@@ -170,6 +170,8 @@
 
 "700" = "BE_ConvertContainer ( field {; type ; width ; height } )";
 
+"750" = "BE_PDF_Append ( pdf ; pdf_to_append {; destination } )";
+
 "800" = "BE_XOR ( text ; xorWith )";
 
 "900" = "BE_Vector_DotProduct ( a ; b )";

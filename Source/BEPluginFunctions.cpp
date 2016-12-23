@@ -75,6 +75,8 @@
 
 #include <iconv.h>
 
+#include <podofo/podofo.h>
+
 
 using namespace std;
 using namespace fmx;
@@ -3436,3 +3438,82 @@ fmx::errcode BE_Get_Machine_Name ( short /* funcId */, const ExprEnv& /* environ
 	return MapError ( error );
 
 } // BE_Get_Machine_Name
+
+
+fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	auto destination = ParameterFileName ( parameters );
+
+	try {
+
+		PoDoFo::PdfMemDocument pdf_document;
+		if ( BinaryDataAvailable ( parameters ) ) {
+			auto pdf = ParameterAsVectorChar ( parameters );
+			pdf_document.Load ( pdf.data(), pdf.size() );
+		} else {
+			auto pdf_path = ParameterAsPath ( parameters );
+			pdf_path.make_preferred();
+			pdf_document.Load ( pdf_path.c_str() );
+			destination = pdf_path.filename().string();
+		}
+
+		PoDoFo::PdfMemDocument pdf_document_to_append;
+		if ( BinaryDataAvailable ( parameters, 1 ) ) {
+			auto pdf_to_append = ParameterAsVectorChar ( parameters, 1 );
+			pdf_document_to_append.Load ( pdf_to_append.data(), pdf_to_append.size() );
+		} else {
+			auto pdf_path_to_append = ParameterAsPath ( parameters, 1 );
+			pdf_path_to_append.make_preferred();
+			pdf_document_to_append.Load ( pdf_path_to_append.c_str() );
+		}
+
+		pdf_document.Append ( pdf_document_to_append );
+
+		auto output_path = ParameterAsPath ( parameters, 2 );
+		if ( output_path.empty() ) {
+			
+			// write out a temporary file
+			auto from = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
+			pdf_document.Write ( from.c_str() );
+
+			// slurp up the file contents
+			boost::filesystem::ifstream input_file ( from, ios_base::in | ios_base::binary | ios_base::ate );
+			input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
+			input_file.seekg ( 0, ios::beg );
+			vector<char> file_data ( (std::istreambuf_iterator<char> ( input_file ) ), std::istreambuf_iterator<char>() );
+
+			SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
+
+//			remove_all ( from );
+
+		} else {
+
+			output_path.make_preferred();
+			pdf_document.Write ( output_path.c_str() );
+			fmx::BinaryDataUniquePtr nothing;
+			results.SetBinaryData ( *nothing );
+//			SetResult ( nothing, results );
+
+		}
+
+
+	} catch ( filesystem_error& e ) {
+		error = e.code().value();
+	} catch ( const PoDoFo::PdfError& e ) {
+		error = e.GetError();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_PDF_Append
+
+
+
