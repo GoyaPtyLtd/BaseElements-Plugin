@@ -296,7 +296,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ 3003 ] = "BE_FileType_Folder";
 	strings [ 4001 ] = "BE_Encoding_Hex";
 	strings [ 4002 ] = "BE_Encoding_Base64";
-	strings [ PLUGIN_DESCRIPTION_STRING_ID ] = "Version: 4.0b1\n\nThis plug-in provides additional functionality for BaseElements from Goya";
+	strings [ PLUGIN_DESCRIPTION_STRING_ID ] = "Version: 4.0b2\n\nThis plug-in provides additional functionality for BaseElements from Goya";
 
 	std::string wanted;
 	try {
