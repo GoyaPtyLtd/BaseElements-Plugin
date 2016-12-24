@@ -241,3 +241,60 @@ and then copy libxslt.a and libexslt.a from build/lib to the Libraries/macOS dir
 
 
 =======================================================================
+freetype - 2.7
+=======================================================================
+
+Download freetype from
+
+	https://www.freetype.org/download.html
+	
+and expand it into a directory on the Desktop.
+
+	cd freetype-2.7
+	CFLAGS="-mmacosx-version-min=10.7" ./configure --disable-shared --prefix=build
+	make install
+
+then copy build/lib/libfreetype.a to Libraries/macOS and build/include/freetype2 to Headers.
+
+
+=======================================================================
+fontconfig - 2.12.1
+=======================================================================
+
+Download fontconfig from
+
+	https://www.freedesktop.org/wiki/Software/fontconfig/
+	
+and expand it into a directory on the Desktop.
+
+	cd fontconfig-2.12.1
+	CFLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" ./configure --disable-shared --prefix=build FREETYPE_CFLAGS="-I<path to /BaseElements-Plugin/Headers>/freetype2" FREETYPE_LIBS="<path to /BaseElements-Plugin/Libraries/macOS>" LDFLAGS="-L<path to /BaseElements-Plugin/Libraries/macOS>"
+	make install
+
+then copy build/lib/libfontconfig.a to Libraries/macOS and build/include/fontconfig to Headers.
+
+
+=======================================================================
+podofo - 0.9.4
+=======================================================================
+
+Download freetype from
+
+	https://www.freetype.org/download.html
+	
+and expand it into a directory on the Desktop.
+
+	cd podofo-0.9.4
+	
+Edit
+
+	CMakeLists.txt
+	
+to remove references to CMP0033 and the PNG library. Then
+
+	CFLAGS="-mmacosx-version-min=10.7" && CPPFLAGS="-mmacosx-version-min=10.7" && cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/freetype2" -DFREETYPE_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/macOS>/libfreetype.a" -DFONTCONFIG_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/macOS>/libfontconfig.a" -DFONTCONFIG_LIBRARIES="<path to /BaseElements-Plugin/Libraries/macOS>" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_C_FLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" -DCMAKE_CXX_FLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" ./
+	make install
+
+then copy _build/lib/libpodofo.a to Libraries/macOS and _build/include/podofo to Headers.
+
+=======================================================================

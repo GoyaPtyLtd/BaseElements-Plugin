@@ -302,5 +302,79 @@ Copy the libraries libPocoFoundation.a & libPocoZip.a from build/lib to the Libr
 
 
 =======================================================================
+freetype - 2.7
+=======================================================================
+
+Download freetype from
+
+	https://www.freetype.org/download.html
+	
+and expand it into a directory on the Desktop.
+
+	cd freetype-2.7
+	CFLAGS="-fPIC" ./configure --disable-shared --prefix=build
+	make install
+
+then copy build/lib/libfreetype.a to Libraries/linux and build/include/freetype2 to Headers.
+
+
+=======================================================================
+expat - 2.20.0
+=======================================================================
+
+Download fontconfig from
+
+	https://www.freedesktop.org/wiki/Software/fontconfig/
+	
+and expand it into a directory on the Desktop.
+
+	cd fontconfig-2.20.0
+	CFLAGS="-fPIC" ./configure --disable-shared --prefix=build
+	make install
+
+then copy build/lib/libexpat.a to Libraries/linux directory.
+
+
+=======================================================================
+fontconfig - 2.12.1
+=======================================================================
+
+Download fontconfig from
+
+	https://www.freedesktop.org/wiki/Software/fontconfig/
+	
+and expand it into a directory on the Desktop.
+
+	cd fontconfig-2.12.1
+	CFLAGS="-fPIC" ./configure --disable-shared --prefix=build FREETYPE_CFLAGS="-I<path to /BaseElements-Plugin/Headers>/freetype2" FREETYPE_LIBS="<path to /BaseElements-Plugin/Libraries/macOS>" LDFLAGS="-L<path to /BaseElements-Plugin/Libraries/macOS>" --with-expat='~/Desktop/expat-2.2.0/build'
+	make install
+
+then copy build/lib/libfontconfig.a to Libraries/linux and build/include/fontconfig to Headers.
+
+
+=======================================================================
+podofo - 0.9.4
+=======================================================================
+
+Download freetype from
+
+	https://www.freetype.org/download.html
+	
+and expand it into a directory on the Desktop.
+
+	cd podofo-0.9.4
+	
+Edit
+
+	CMakeLists.txt
+	
+to remove references to CMP0033 and the PNG library. Then
+
+	cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/freetype2" -DFREETYPE_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/linux>/libfreetype.a" -DFONTCONFIG_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/linux>/libfontconfig.a" -DFONTCONFIG_LIBRARIES="<path to /BaseElements-Plugin/Libraries/linux>" -DPODOFO_BUILD_LIB_ONLY=TRUE -DWANT_LIB64:BOOL=TRUE -DCMAKE_CXX_FLAGS="fPIC" ./
+	make install
+
+then copy _build/lib/libpodofo.a to Libraries/linux and _build/include/podofo to Headers.
+
+=======================================================================
 
 

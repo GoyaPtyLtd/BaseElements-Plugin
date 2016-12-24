@@ -433,4 +433,67 @@ Copy PocoFoundationmt.lib/PocoFoundationmtd.lib & PocoZipmt.lib/PocoZipmtd.lib l
 
 
 =======================================================================
+freetype - 2.7
+=======================================================================
+
+Download freetype from
+
+	https://www.freetype.org/download.html
+	
+and expand it into a directory on the Desktop.
+
+Open the project file at
+
+	builds/windows/vc2010
+	
+and set the following Configuration Properties:
+
+	Project Defaults -> Character Set == Use Unicode Character Set
+	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
+
+and build the x64 Release configuration.
+
+then copy objs/vc2010/x64/freetype27.lib to Libraries/Win64 and rename include to freetype2 and copy to Headers.
+
+
+=======================================================================
+podofo - 0.9.4
+=======================================================================
+
+Download freetype from
+
+	https://www.freetype.org/download.html
+	
+and expand it into a directory on the Desktop.
+	
+		cd podofo-0.9.4
+
+Edit
+
+	CMakeLists.txt
+	
+to remove references to CMP0033 and the PNG library. Then
+
+	cmake -G "Visual Studio 14 2015" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_INCLUDE_PATH=<path to /BaseElements-Plugin/Headers> -DCMAKE_LIBRARY_PATH=<path to /BaseElements-Plugin/Libraries/Win64> -DZLIB_LIBRARY_RELEASE=<path to /BaseElements-Plugin/Libraries/Win64>\zlibstat.lib -DWANT_LIB64:BOOL=TRUE -DFREETYPE_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/freetype2" -DFREETYPE_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/Win64>/freetype27.lib" ./
+
+Open the PoDoFo project and
+
+	Project Defaults -> Character Set == Use Unicode Character Set
+	Librarian -> Command Line -> Additional Options ... delete /machine:X386
+
+and for release builds
+
+	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
+
+and for debug builds
+
+	General -> Target Name == podofod
+	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MTd)
+
+then batch build the podofo_static debug and release targets.
+
+Copy _build/lib/podofod.lib and _build/lib/podofod.lib to Libraries/Win64 and _build/include/podofo to Headers.
+
+
+=======================================================================
 
