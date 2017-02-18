@@ -174,3 +174,43 @@ string HMAC ( const string message, const unsigned long algorithm, const unsigne
 	
 } // HMAC
 
+
+string PBKDF2_HMAC ( const string password, const string salt, const unsigned long iterations, const unsigned long hash_length, const unsigned long algorithm, const unsigned long output_encoding, const unsigned long input_encoding )
+{
+
+	const EVP_MD type = message_digest_algorithm ( algorithm );
+
+	unsigned char * hash = new unsigned char [ hash_length ]();
+
+	if ( input_encoding == kBE_Encoding_Base64 || input_encoding == kBE_Encoding_Hex ) {
+
+		std::vector<char> decoded_password;
+		std::vector<char> decoded_salt;
+
+		if ( input_encoding == kBE_Encoding_Base64 ) {
+
+			decoded_password = Base64_Decode ( password );
+			decoded_salt = Base64_Decode ( salt );
+
+		} else {
+
+			boost::algorithm::unhex ( password, std::back_inserter ( decoded_password ) );
+			boost::algorithm::unhex ( salt, std::back_inserter ( decoded_salt ) );
+
+		}
+		PKCS5_PBKDF2_HMAC(&decoded_password[0], (int)decoded_password.size(), (const unsigned char *)&decoded_salt[0], (int)decoded_salt.size(), (int)iterations, &type, (int)hash_length, hash);
+
+	} else {
+
+		PKCS5_PBKDF2_HMAC(password.data(), (int)password.length(), (const unsigned char *)salt.data(), (int)salt.length(), (int)iterations, &type, (int)hash_length, hash);
+
+	}
+
+	string digest = encode_digest ( hash, (int)hash_length, output_encoding );
+
+	delete[] hash;
+
+	return digest;
+
+} // PBKDF2_HMAC
+

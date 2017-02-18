@@ -158,6 +158,7 @@
 "501" = "BE_Decrypt_AES ( key ; text )";
 
 "550" = "BE_HMAC ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
+"551" = "BE_PBKDF2_HMAC ( password ; salt ; iterations {; hashLength ; algorithm ; outputEncoding ; inputEncoding } )";
 
 "600" = "BE_EvaluateJavaScript ( javaScript )";
 

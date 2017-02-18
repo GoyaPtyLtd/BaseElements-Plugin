@@ -3276,6 +3276,37 @@ fmx::errcode BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */, con
 } // BE_HMAC
 
 
+fmx::errcode BE_PBKDF2_HMAC ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto password = ParameterAsUTF8String ( parameters );
+		auto salt = ParameterAsUTF8String ( parameters, 1 );
+		const unsigned long iterations = ParameterAsLong ( parameters, 2 );
+		const unsigned long hash_length = ParameterAsLong ( parameters, 3, 20 );
+		const unsigned long algorithm = ParameterAsLong ( parameters, 4, kBE_MessageDigestAlgorithm_SHA1 );
+		const unsigned long output_type = ParameterAsLong ( parameters, 5, kBE_Encoding_Hex );
+		const unsigned long input_type = ParameterAsLong ( parameters, 6, kBE_Encoding_None );
+
+		string hash = PBKDF2_HMAC ( password, salt, iterations, hash_length, algorithm, output_type, input_type );
+
+		SetResult ( hash, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_PBKDF2_HMAC
+
+
 fmx::errcode BE_JPEG_Recompress ( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
