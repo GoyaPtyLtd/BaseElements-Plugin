@@ -45,6 +45,7 @@ enum message_digest_error {
 
 std::string message_digest ( const std::string message, const unsigned long algorithm = kBE_MessageDigestAlgorithm_SHA256, const unsigned long output_encoding = kBE_Encoding_Hex );
 std::string HMAC ( const std::string message, const unsigned long algorithm = kBE_MessageDigestAlgorithm_SHA1, const unsigned long output_encoding = kBE_Encoding_Hex, const std::string key = "", const unsigned long input_encoding = kBE_Encoding_None );
+std::string PBKDF2_HMAC ( const std::string password, const std::string salt, const unsigned long iterations, const unsigned long hash_length, const unsigned long algorithm, const unsigned long output_encoding, const unsigned long input_encoding );
 
 
 #endif // BEMESSAGEDIGEST_H

@@ -208,6 +208,7 @@ enum functions {
 	kBE_Encrypt_AES = 500,
 	kBE_Decrypt_AES = 501,
 	kBE_HMAC = 550,
+	kBE_PBKDF2_HMAC = 551,
 	kBE_EvaluateJavaScript = 600,
 	kBE_ArraySetFromValueList = 650,
 	kBE_ArrayGetSize = 651,
