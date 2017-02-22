@@ -208,6 +208,8 @@ enum functions {
 	kBE_Encrypt_AES = 500,
 	kBE_Decrypt_AES = 501,
 	kBE_HMAC = 550,
+	kBE_Encoding_TextToHex = 570,
+	kBE_Encoding_HexToText = 571,
 	kBE_EvaluateJavaScript = 600,
 	kBE_ArraySetFromValueList = 650,
 	kBE_ArrayGetSize = 651,
@@ -263,7 +265,9 @@ enum errors {
 	kJPEGCompressionError = 15003,
 	kJPEGInitCcompressorError = 15004,
     kMessageDigestDecodeKeyError = 16000,
-    kMessageDigestDecodeMessageError = 16001
+    kMessageDigestDecodeMessageError = 16001,
+	kHexEncodingFailed = 16002,
+	kHexDecodingFailed = 16003
 };
 
 

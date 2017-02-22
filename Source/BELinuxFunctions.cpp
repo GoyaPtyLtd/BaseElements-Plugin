@@ -268,6 +268,8 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_Encrypt_AES ] = "BE_Encrypt_AES ( key ; text )";
 	strings [ kBE_Decrypt_AES ] = "BE_Decrypt_AES ( key ; text )";
 	strings [ kBE_HMAC ] = "BE_HMAC ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
+	strings [ kBE_Encoding_TextToHex ] = "BE_Encoding_TextToHex ( text )";
+	strings [ kBE_Encoding_HexToText ] = "BE_Encoding_HexToText ( hex )";
 	strings [ kBE_EvaluateJavaScript ] = "BE_EvaluateJavaScript ( javaScript )";
 	strings [ kBE_ArraySetFromValueList ] = "BE_ArraySetFromValueList ( valueList )";
 	strings [ kBE_ArrayGetSize ] = "BE_ArrayGetSize ( array )";

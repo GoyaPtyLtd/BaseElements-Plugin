@@ -66,6 +66,7 @@
 #include <boost/filesystem/fstream.hpp>
 #include <boost/foreach.hpp>
 #include <boost/tokenizer.hpp>
+#include <boost/algorithm/hex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
 
@@ -3274,6 +3275,62 @@ fmx::errcode BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */, con
 	return MapError ( error );
 
 } // BE_HMAC
+
+
+fmx::errcode BE_Encoding_TextToHex ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto text = ParameterAsUTF8String ( parameters );
+		
+		std::string hex;
+		boost::algorithm::hex ( text, std::back_inserter ( hex ) );
+		
+		SetResult ( hex, results );
+		
+	} catch ( boost::exception& e ) {
+		error = kHexEncodingFailed;
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Encoding_TextToHex
+
+
+fmx::errcode BE_Encoding_HexToText ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto hex = ParameterAsUTF8String ( parameters );
+		
+		std::string text;
+		boost::algorithm::unhex ( hex, std::back_inserter ( text ) );
+		
+		SetResult ( text, results );
+		
+	} catch ( boost::exception& e ) {
+		error = kHexDecodingFailed;
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Encoding_HexToText
 
 
 fmx::errcode BE_JPEG_Recompress ( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )

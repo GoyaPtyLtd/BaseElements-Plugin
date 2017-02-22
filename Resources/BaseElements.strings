@@ -159,6 +159,9 @@
 
 "550" = "BE_HMAC ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
 
+"570" = "BE_Encoding_TextToHex ( text )";
+"571" = "BE_Encoding_HexToText ( hex )";
+
 "600" = "BE_EvaluateJavaScript ( javaScript )";
 
 

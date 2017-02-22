@@ -209,6 +209,9 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_HMAC, BE_HMAC, 2, 5 );
+	
+	g_be_plugin->RegisterFunction ( kBE_Encoding_TextToHex, BE_Encoding_TextToHex, 1 );
+	g_be_plugin->RegisterFunction ( kBE_Encoding_HexToText, BE_Encoding_HexToText, 1 );
 
 	g_be_plugin->RegisterFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_Encoding_Base64 + kBE_EncodingOffset, BE_NumericConstants );
