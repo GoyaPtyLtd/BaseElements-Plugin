@@ -102,7 +102,6 @@
 		<Unit filename="../Headers/FMWrapper/FMXTypes.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="../Source/BEBase64.cpp" />
 		<Unit filename="../Source/BECppUtilities.cpp" />
 		<Unit filename="../Source/BECurl.cpp" />
 		<Unit filename="../Source/BECurlOption.cpp" />
@@ -131,6 +130,7 @@
 		<Unit filename="../Source/BEXSLT.cpp" />
 		<Unit filename="../Source/BEXero.cpp" />
 		<Unit filename="../Source/BEZlib.cpp" />
+		<Unit filename="../Source/Crypto/BEBase64.cpp" />
 		<Unit filename="../Source/Crypto/BEBio.cpp" />
 		<Unit filename="../Source/Crypto/BEMessageDigest.cpp" />
 		<Unit filename="../Source/Crypto/BEOpenSSLAES.cpp" />

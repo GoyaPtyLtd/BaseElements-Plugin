@@ -45,7 +45,7 @@
 #include "BEValueList.h"
 #include "BECurlOption.h"
 #include "BEXMLTextReader.h"
-#include "BEBase64.h"
+#include "Crypto/BEBase64.h"
 #include "Crypto/BEMessageDigest.h"
 #include "Crypto/BEOpenSSLAES.h"
 #include "Crypto/BEX509.h"
@@ -2002,7 +2002,7 @@ fmx::errcode BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* en
 
 			SetResult ( found, results );
 		}
-		
+
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -3473,7 +3473,7 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 
 		auto output_path = ParameterAsPath ( parameters, 2 );
 		if ( output_path.empty() ) {
-			
+
 			// write out a temporary file
 			auto from = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
 			pdf_document.Write ( from.c_str() );
