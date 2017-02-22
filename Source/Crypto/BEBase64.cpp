@@ -10,9 +10,6 @@
  */
 
 
-//#define _ITERATOR_DEBUG_LEVEL 0
-
-
 #include "BEBase64.h"
 
 #include <boost/archive/iterators/base64_from_binary.hpp>
@@ -70,19 +67,10 @@ const vector<char> Base64_Decode ( const std::string& text )
 			++it;
 		}
 		
-		auto start = base64_binary(url_encoded.begin());
-		auto stop = base64_binary(url_encoded.end());
+		vector<char> data ( base64_binary ( url_encoded.begin() ), base64_binary ( url_encoded.end() ) );
+		out = data;
 
-		auto fy = *start;
-
-//		if (start != out.end()) {
-			// decode it...
-			vector<char> data(start, stop);
-			//		vector<char> data ( base64_binary ( url_encoded.begin() ), base64_binary ( url_encoded.end() ) );
-
-			out = data;
-//		}
-//	we don't trap this... let it flow upwards
+//	don't trap this... let it flow upwards
 	
 //	} catch ( dataflow_exception& e ) { // invalid_base64_character
 //		g_last_error = e.code;
