@@ -2,12 +2,15 @@
  BEBase64.cpp
  BaseElements Plug-In
  
- Copyright 2014-2016 Goya. All rights reserved.
+ Copyright 2014-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
  
  */
+
+
+//#define _ITERATOR_DEBUG_LEVEL 0
 
 
 #include "BEBase64.h"
@@ -40,8 +43,8 @@ const vector<char> Base64_Decode ( const std::string& text )
 {
 	vector<char> out;
 	
-	try {
-		
+//	try {
+	
 		string url_encoded = text;
 
 		// throws if we do not lop off any padding
@@ -50,7 +53,7 @@ const vector<char> Base64_Decode ( const std::string& text )
 		
 		// if we have base64url convert it to base64
 		string::iterator it = url_encoded.begin();
-		while ( it < url_encoded.end() ) {
+		while ( it != url_encoded.end() ) {
 			switch ( *it ) {
 				case '-':
 					*it = '+';
@@ -67,13 +70,23 @@ const vector<char> Base64_Decode ( const std::string& text )
 			++it;
 		}
 		
-		// decode it...
-		vector<char> data ( base64_binary ( url_encoded.begin() ), base64_binary ( url_encoded.end() ) );
-		out = data;
-		
-	} catch ( dataflow_exception& e ) { // invalid_base64_character
-		g_last_error = e.code;
-	}
+		auto start = base64_binary(url_encoded.begin());
+		auto stop = base64_binary(url_encoded.end());
+
+		auto fy = *start;
+
+//		if (start != out.end()) {
+			// decode it...
+			vector<char> data(start, stop);
+			//		vector<char> data ( base64_binary ( url_encoded.begin() ), base64_binary ( url_encoded.end() ) );
+
+			out = data;
+//		}
+//	we don't trap this... let it flow upwards
+	
+//	} catch ( dataflow_exception& e ) { // invalid_base64_character
+//		g_last_error = e.code;
+//	}
 	
 	return out;
 	

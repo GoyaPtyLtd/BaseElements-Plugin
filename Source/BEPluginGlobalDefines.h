@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
  
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -261,7 +261,9 @@ enum errors {
 	kJPEGInitDecompressorError = 15001,
 	kJPEGDecompressionError = 15002,
 	kJPEGCompressionError = 15003,
-	kJPEGInitCcompressorError = 15004
+	kJPEGInitCcompressorError = 15004,
+    kMessageDigestDecodeKeyError = 16000,
+    kMessageDigestDecodeMessageError = 16001
 };
 
 
