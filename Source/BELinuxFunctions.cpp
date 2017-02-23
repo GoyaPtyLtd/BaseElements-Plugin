@@ -207,7 +207,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_Base64_URL_Encode ] = "BE_Base64_URL_Encode ( data )";
 	strings [ kBE_ExportFieldContents ] = "BE_ExportFieldContents ( field ; outputPath )";
 	strings [ kBE_ImportFile ] = "BE_ImportFile ( path {; compress } )";
-	strings [ kBE_HTTP_POST ] = "BE_HTTP_POST ( url ; parameters {; username ; password } )";
+	strings [ kBE_HTTP_POST ] = "BE_HTTP_POST ( url ; parameters {; username ; password ; filename } )";
 	strings [ kBE_HTTP_Response_Code ] = "BE_HTTP_Response_Code";
 	strings [ kBE_HTTP_Response_Headers ] = "BE_HTTP_Response_Headers ( { header } )";
 	strings [ kBE_HTTP_Set_Custom_Header ] = "BE_HTTP_Set_Custom_Header ( header ; value )";

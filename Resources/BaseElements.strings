@@ -71,7 +71,7 @@
 "177" = "BE_ImportFile ( path {; compress } )";
 
 
-"180" = "BE_HTTP_POST ( url ; parameters {; username ; password } )";
+"180" = "BE_HTTP_POST ( url ; parameters {; username ; password ; filename } )";
 "181" = "BE_HTTP_Response_Code";
 "182" = "BE_HTTP_Response_Headers ( { header } )";
 "183" = "BE_HTTP_Set_Custom_Header ( header ; value )";

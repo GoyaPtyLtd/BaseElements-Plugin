@@ -184,7 +184,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Decrypt_AES, BE_Decrypt_AES, 2 );
 
 
-	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST_PUT_PATCH, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST_PUT_PATCH, 2, 5 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_DELETE, BE_HTTP_DELETE, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_File, BE_HTTP_POST_PUT_PATCH, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_Data, BE_HTTP_POST_PUT_PATCH, 2, 4 );

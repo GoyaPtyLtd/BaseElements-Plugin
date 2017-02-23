@@ -1877,11 +1877,14 @@ fmx::errcode BE_HTTP_POST_PUT_PATCH ( short funcId, const ExprEnv& /* environmen
 		auto username = ParameterAsUTF8String ( parameters, 2 );
 		auto password = ParameterAsUTF8String ( parameters, 3 );
 
+		std::string container_filename;
+		
 		vector<char> response;
 
 		if ( funcId == kBE_HTTP_POST ) {
 
 			auto post_parameters = ParameterAsUTF8String ( parameters, 1 );
+			container_filename = ParameterAsUTF8String ( parameters, 4 );
 			BECurl curl ( url, kBE_HTTP_METHOD_POST, "", username, password, post_parameters );
 			response =  curl.perform_action ( );
 
@@ -1910,7 +1913,7 @@ fmx::errcode BE_HTTP_POST_PUT_PATCH ( short funcId, const ExprEnv& /* environmen
 
 		error = g_last_error;
 		if ( error == kNoError ) {
-			SetResult ( response, results );
+			SetResult ( container_filename, response, results );
 		}
 
 	} catch ( BEPlugin_Exception& e ) {

@@ -14,6 +14,7 @@ BE_Encoding_TextToHex
 Changes
 
 BE_HMAC: set BE_GetLastError when the key or message encoding is invalid
+BE_HTTP_POST: filename parameter added so that the response can be saved to a container as a file
 
 
 Use Poco 1.7.8
