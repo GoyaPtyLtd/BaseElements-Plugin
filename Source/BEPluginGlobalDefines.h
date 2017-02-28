@@ -282,7 +282,7 @@ enum {
 
 
 enum file_type {
-	kBE_FileType_ALL = 0,
+	kBE_FileType_All = 0,
 	kBE_FileType_File = 1,
 	kBE_FileType_Folder = 2
 };

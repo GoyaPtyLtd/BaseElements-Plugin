@@ -111,7 +111,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_CopyFile, BE_CopyFile, 2 );
 	g_be_plugin->RegisterFunction ( kBE_ListFilesInFolder, BE_ListFilesInFolder, 1, 4 );
 
-	g_be_plugin->RegisterFunction ( kBE_FileType_ALL + kBE_FileTypeOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_FileType_All + kBE_FileTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_FileType_File + kBE_FileTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_FileType_Folder + kBE_FileTypeOffset, BE_NumericConstants );
 
