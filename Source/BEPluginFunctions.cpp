@@ -472,7 +472,6 @@ fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, con
 			if ( (*utf16 == 0x9) || // horizontal tab
 				(*utf16 == 0xA) ||	// line feed
 				(*utf16 == 0xD) ||	// carriage return
-				(*utf16 == 0x1A) || // ascii 26 - causes problems in pcdata
 				((*utf16 >= 0x20) && (*utf16 <= 0xD7FF)) ||
 				((*utf16 >= 0xE000) && (*utf16 <= 0xFFFE)) ) {
 
