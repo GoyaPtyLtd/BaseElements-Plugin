@@ -2,7 +2,7 @@
 Version 4.0b3
 ########################################################################
 
-February 28, 2017
+March 3, 2017
 
 
 New Functions
@@ -16,6 +16,8 @@ Changes
 BE_HMAC: set BE_GetLastError when the key or message encoding is invalid
 BE_HTTP_POST: filename parameter added so that the response can be saved to a container as a file
 BE_ListFilesInFolder: do not push directories when not recursing
+BE_StripInvalidUTF16CharactersFromXMLFile: correctly handle Ascii 26
+BE_StripInvalidUTF16CharactersFromXMLFile: return the number of characters stripped
 
 
 Use Poco 1.7.8
