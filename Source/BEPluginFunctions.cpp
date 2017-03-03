@@ -501,7 +501,7 @@ fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, con
 			}
 		}
 
-		SetResult ( error == kNoError, results );
+		SetResult ( skipped, results );
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
