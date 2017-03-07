@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
  
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -497,7 +497,7 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 			}
 		}
 
-		SetResult ( error == kNoError, results );
+		SetResult ( skipped, results );
 		
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
