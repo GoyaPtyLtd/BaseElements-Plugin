@@ -7,7 +7,12 @@ March 7, 2017
 
 Changes
 
+BE_JSON_Path: correct crashing bug when loading json documents
+BE_ListFilesInFolder: do not push directories when not recursing
 BE_StripInvalidUTF16CharactersFromXMLFile: return the number of characters stripped
+BE_StripInvalidUTF16CharactersFromXMLFile: correctly handle Ascii 26
+
+Use updated jansson
 
 
 ########################################################################

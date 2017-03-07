@@ -69,19 +69,19 @@ BEValueListWideStringAutoPtr list_files_in_directory ( const boost::filesystem::
 			
 		while ( it != end_it ) {
 				
-			if ( !((recurse == false) && (it.level() > 0)) ) {
-
-				bool is_folder = is_directory ( it->status() );
-					
-				if (
-						(!is_folder && (file_type_wanted == kBE_FileType_File)) ||
-						(is_folder && (file_type_wanted == kBE_FileType_Folder)) ||
-						(file_type_wanted == kBE_FileType_ALL)
-					) {
-					list_of_files->append ( it->path().wstring() );
-				}
-				
-			}
+            bool is_folder = is_directory ( it->status() );
+            
+            if ( is_folder && !recurse ) {
+                it.no_push(); // don't recurse into sub directories.
+            }
+            
+            if (
+                (!is_folder && (file_type_wanted == kBE_FileType_File)) ||
+                (is_folder && (file_type_wanted == kBE_FileType_Folder)) ||
+                (file_type_wanted == kBE_FileType_ALL)
+                ) {
+                list_of_files->append ( it->path().wstring() );
+            }
 				
 			++it;
 
