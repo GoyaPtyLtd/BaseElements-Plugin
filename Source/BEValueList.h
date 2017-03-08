@@ -2,7 +2,7 @@
  BEValueList.h
  BaseElements Plug-In
  
- Copyright 2013-2016 Goya. All rights reserved.
+ Copyright 2013-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -243,7 +243,7 @@ T BEValueList<T>::unique ( )
 
 		if ( value_inserted == true ) {
 			
-			if ( text.rdbuf()->in_avail() > 0 ) {
+			if ( text.str().size() > 0 ) {
 				text << FILEMAKER_END_OF_LINE;
 			}
 			text << *it;
@@ -278,7 +278,7 @@ T BEValueList<T>::filter_out ( BEValueList& filter_out )
 		
 		if ( value_inserted == true ) {
 			
-			if ( text.rdbuf()->in_avail() > 0 ) {
+			if ( text.str().size() > 0 ) {
 				text << FILEMAKER_END_OF_LINE;
 			}
 			
@@ -366,7 +366,7 @@ T BEValueList<T>::sort ( const bool ascending, const bool numeric ) const
 
 	for ( typename std::vector<T>::iterator it = sorted.begin() ; it != sorted.end(); ++it ) {
 
-		if ( text.rdbuf()->in_avail() > 0 ) {
+		if ( text.str().size() > 0 ) {
 			text << FILEMAKER_END_OF_LINE;
 		}
 		text << *it;
