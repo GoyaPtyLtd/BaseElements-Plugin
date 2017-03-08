@@ -12,7 +12,9 @@ BE_ListFilesInFolder: do not push directories when not recursing
 BE_StripInvalidUTF16CharactersFromXMLFile: return the number of characters stripped
 BE_StripInvalidUTF16CharactersFromXMLFile: correctly handle Ascii 26
 
+Use Poco 1.7.8
 Use updated jansson
+Use libc++11
 
 
 ########################################################################

@@ -562,8 +562,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -597,7 +597,7 @@
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.3.3;
+				VERSION_STRING = 3.3.4;
 			};
 			name = Release;
 		};
@@ -605,8 +605,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -642,7 +642,7 @@
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.3.3;
+				VERSION_STRING = 3.3.4;
 			};
 			name = Debug;
 		};
@@ -650,8 +650,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CONSTANT_CONVERSION = NO;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
@@ -726,7 +726,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.3.3;
+				VERSION_STRING = 3.3.4;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -739,8 +739,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CONSTANT_CONVERSION = NO;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -815,7 +815,7 @@
 				SYMROOT = ../Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = "i386 x86_64";
-				VERSION_STRING = 3.3.3;
+				VERSION_STRING = 3.3.4;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
