@@ -5,7 +5,7 @@ Building
 The following notes describe the process for building the the plugin and the third-party libraries used. The instructions are supplied "as is" in the hope they may be of assistance.
 
 Notes:
-- these instructions apply to version 3.3.2 of the BaseElements Plugin
+- these instructions apply to version 3.3.4 of the BaseElements Plugin
 - version 14.0.1.175 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed
 
@@ -13,7 +13,7 @@ Notes:
 Mac OS X
 =======================================================================
 
-Version 3.3.2 of the plug-in is built on Mac OS X 10.12.1 using Xcode 8.1. The Xcode Command Line Tools are also needed.
+Version 3.3.4 of the plug-in is built on Mac OS X 10.12.3 using Xcode 8.2.1. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -35,11 +35,11 @@ The plug-in is a universal binary and the boost libraries should be built accord
 
 	cd boost_1_59_0
 	./bootstrap.sh
-	./b2 architecture=x86 address-model=32 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.7"
+	./b2 architecture=x86 address-model=32 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-stdlib=libc++ -mmacosx-version-min=10.7"
 
 and
 
-	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build64 --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.7"
+	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build64 --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-stdlib=libc++ -mmacosx-version-min=10.7"
 
 Then, to create the universal binaries
 
@@ -98,7 +98,7 @@ Download the source from
 
 Follow the supplied building instructions using this ./configure command (to build a universal binary)
 
-	./configure CXXFLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.7" LDFLAGS="-arch i386 -arch x86_64" --disable-dependency-tracking --prefix=build && make install
+	./configure CXXFLAGS="-arch i386 -arch x86_64 -stdlib=libc++ -mmacosx-version-min=10.7" LDFLAGS="-arch i386 -arch x86_64 -stdlib=libc++" --disable-dependency-tracking --prefix=build && make install
 
 Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the library in the boost/lib directory to the Libraries/osx directory.
 
@@ -250,7 +250,7 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.6
+Poco 1.7.8
 =======================================================================
 
 Download the source from
@@ -259,19 +259,20 @@ Download the source from
 
 Then, after extracting the archive
 
-	cd poco-1.7.6-all
+	cd poco-1.7.8-all
 
-	./configure --config=Darwin32 --static --no-tests --no-samples --cflags="-stdlib=libstdc++ -mmacosx-version-min=10.7" --omit=Data,MongoDB,Crypto,Net,XML && make
-	find . -name "*.o" -type f -delete
-	./configure --config=Darwin64 --static --no-tests --no-samples --cflags="-stdlib=libstdc++ -mmacosx-version-min=10.7" --omit=Data,MongoDB,Crypto,Net,XML && make
-	make install DESTDIR=./Poco
-
+	./configure --cflags="-stdlib=libc++ -mmacosx-version-min=10.7" --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,JSON,PageCompiler --no-tests --no-samples --config=Darwin32
+	make install DESTDIR=./Poco32
+	
+	./configure --cflags="-stdlib=libc++ -mmacosx-version-min=10.7" --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,JSON,PageCompiler --no-tests --no-samples --config=Darwin64
+	make install DESTDIR=./Poco64
+	
 	cd lib/Darwin
 
 	lipo -create i386/libPocoFoundation.a x86_64/libPocoFoundation.a -output libPocoFoundation.a
 	lipo -create i386/libPocoZip.a x86_64/libPocoZip.a -output libPocoZip.a
 
-Copy the poco libraries to the Libraries/osx directory and copy the Poco/usr/local/include/Poco to Headers.
+Copy the poco libraries to the Libraries/osx directory and copy the Poco64/usr/local/include/Poco to Headers.
 
 =======================================================================
 libxml2 - 2.9.4
@@ -790,7 +791,7 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.6
+Poco 1.7.8
 =======================================================================
 
 Download the source from
