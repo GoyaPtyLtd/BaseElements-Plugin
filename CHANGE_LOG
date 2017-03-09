@@ -2,13 +2,14 @@
 Version 4.0b3
 ########################################################################
 
-March 6, 2017
+March 9, 2017
 
 
 New Functions
 
 BE_Encoding_HexToText
 BE_Encoding_TextToHex
+BE_XML_Validate
 
 
 Changes

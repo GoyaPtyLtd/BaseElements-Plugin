@@ -52,6 +52,7 @@
 #include "BEPluginException.h"
 #include "BEQuadChar.h"
 #include "BEXero.h"
+#include "BEXMLSchema.h"
 #include "BESMTP.h"
 #include "BEJavaScript.h"
 #include "Images/BEJPEG.h"
@@ -1062,6 +1063,34 @@ fmx::errcode BE_SplitBEFileNodes ( short /* funcId */, const ExprEnv& /* environ
 	return MapError ( error );
 
 } // BE_SplitBEFileNodes
+
+
+fmx::errcode BE_XML_Validate ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error =	NoError();
+	
+	try {
+		
+		auto xml = ParameterAsUTF8String ( parameters );
+		auto schema = ParameterAsUTF8String ( parameters, 1 );
+		
+		auto result = validate_xml ( xml, schema );
+		
+		SetResult ( result, results );
+		
+	} catch ( BEXMLReaderInterface_Exception& e ) {
+		error = e.code();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_XML_Validate
 
 
 

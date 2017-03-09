@@ -226,6 +226,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_StripXMLNodes ] = "BE_StripXMLNodes ( inputPath ; outputPath ; nodeNames )";
 	strings [ kBE_XML_Parse ] = "BE_XML_Parse ( path )";
 	strings [ kBE_SplitBEFileNodes ] = "BE_SplitBEFileNodes ( path )";
+	strings [ kBE_XML_Validate ] = "BE_XML_Validate ( xml ; schema )";
 	strings [ kBE_CurrentTimeMilliseconds ] = "BE_CurrentTimeMilliseconds";
 	strings [ kBE_UTCMilliseconds ] = "BE_UTCMilliseconds";
 	strings [ kBE_TimeZoneOffset ] = "BE_TimeZoneOffset";

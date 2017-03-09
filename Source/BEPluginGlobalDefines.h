@@ -164,6 +164,7 @@ enum functions {
 	kBE_StripXMLNodes = 210,
 	kBE_XML_Parse = 211,
 	kBE_SplitBEFileNodes = 212,
+	kBE_XML_Validate = 213,
 	kBE_CurrentTimeMilliseconds = 220,
 	kBE_UTCMilliseconds = 221,
 	kBE_TimeZoneOffset = 222,

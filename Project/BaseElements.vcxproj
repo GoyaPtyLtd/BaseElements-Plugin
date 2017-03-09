@@ -298,6 +298,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\BEXMLSchema.cpp" />
     <ClCompile Include="..\Source\Crypto\BEBase64.cpp" />
     <ClCompile Include="..\Source\BECppUtilities.cpp" />
     <ClCompile Include="..\Source\BECurl.cpp" />
@@ -376,6 +377,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\resource_version.h" />
+    <ClInclude Include="..\Source\BEXMLSchema.h" />
     <ClInclude Include="..\Source\Crypto\BEBase64.h" />
     <ClInclude Include="..\Source\BECppUtilities.h" />
     <ClInclude Include="..\Source\BECurl.h" />

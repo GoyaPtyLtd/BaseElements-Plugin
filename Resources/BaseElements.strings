@@ -93,6 +93,7 @@
 "210" = "BE_StripXMLNodes ( inputPath ; outputPath ; nodeNames )";
 "211" = "BE_XML_Parse ( path )";
 "212" = "BE_SplitBEFileNodes ( path )";
+"213" = "BE_XML_Validate ( xml ; schema )";
 
 
 "220" = "BE_CurrentTimeMilliseconds";

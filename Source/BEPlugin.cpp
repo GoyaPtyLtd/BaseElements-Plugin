@@ -134,6 +134,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_StripXMLNodes, BE_StripXMLNodes, 3 );
 	g_be_plugin->RegisterFunction ( kBE_XML_Parse, BE_XML_Parse, 1 );
 	g_be_plugin->RegisterFunction ( kBE_SplitBEFileNodes, BE_SplitBEFileNodes, 1 );
+	g_be_plugin->RegisterFunction ( kBE_XML_Validate, BE_XML_Validate, 2 );
 
 
 	g_be_plugin->RegisterFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1 );
