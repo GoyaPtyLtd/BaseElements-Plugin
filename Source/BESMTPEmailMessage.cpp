@@ -2,7 +2,7 @@
  BESMTPEmailMessage.cpp
  BaseElements Plug-In
  
- Copyright 2014-2016 Goya. All rights reserved.
+ Copyright 2014-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,6 +13,11 @@
 #include "BESMTPEmailMessage.h"
 #include "BEPluginException.h"
 #include "BECurl.h"
+
+#include <Poco/Timestamp.h>
+#include <Poco/Timezone.h>
+#include <Poco/DateTimeFormat.h>
+#include <Poco/DateTimeFormatter.h>
 
 #include <sstream>
 
@@ -40,8 +45,20 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	text->body().assign ( message_body + "\n\n" );
 	text->header().contentType() = "text/plain; charset=\"utf-8\"";
 	
+	// rfc 1123 (rfc 822) date header
+	Poco::Timestamp now;
+	static const std::string rfc1123_date = Poco::DateTimeFormatter::format ( now, Poco::DateTimeFormat::RFC1123_FORMAT, Poco::Timezone::tzd() );
+
+	mimetic::Field date_header;
+	date_header.name ( "Date" );
+	date_header.value ( rfc1123_date );
+	std::ostringstream date_header_stream;
+	date_header_stream << date_header;
+	message->header().field ( date_header_stream.str() );
+
+	// MIME Version
 	mimetic::MimeVersion mime_version = mimetic::MimeVersion ( "1.0" );
-	text->header().mimeVersion ( mime_version );
+	message->header().mimeVersion ( mime_version );
 
 }
 
