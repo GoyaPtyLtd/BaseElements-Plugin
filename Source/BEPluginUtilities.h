@@ -2,7 +2,7 @@
  BEPluginUtilities.h
  BaseElements Plug-In
 	
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -19,6 +19,7 @@
 
 #include <boost/filesystem/path.hpp>
 
+#include <map>
 #include <vector>
 #include <stdint.h>
 
@@ -83,6 +84,8 @@ fmx::errcode ExecuteScript ( const fmx::Text& script_name, const fmx::Text& file
 
 fmx::errcode NoError ( void );
 fmx::errcode MapError ( const fmx::errcode error = kNoError, const bool map = false );
+
+void set_name_value_pair ( std::map<std::string, std::string>& pair, const std::string name, const std::string value );
 
 bool AllowUserAbort ( const fmx::ExprEnv& environment );
 std::string GetFileMakerTemporaryDirectory ( const fmx::ExprEnv& environment );

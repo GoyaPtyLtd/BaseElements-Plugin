@@ -103,6 +103,7 @@ vector<BEValueListStringSharedPtr> arrays;
 extern int g_http_response_code;
 extern string g_http_response_headers;
 extern CustomHeaders g_http_custom_headers;
+extern CustomHeaders g_smtp_custom_headers;
 extern std::stringstream g_curl_trace;
 extern struct host_details g_http_proxy;
 extern BECurlOptionMap g_curl_options;
@@ -2048,7 +2049,7 @@ fmx::errcode BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* en
 } // BE_HTTP_Response_Headers
 
 
-fmx::errcode BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_Net_Set_Header ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2056,11 +2057,11 @@ fmx::errcode BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv& /* e
 
 		auto name = ParameterAsUTF8String ( parameters );
 		auto value = ParameterAsUTF8String ( parameters, 1 );
-
-		if ( value.empty() ) {
-			g_http_custom_headers.erase ( name );
+		
+		if ( funcId == kBE_HTTP_Set_Custom_Header ) {
+			set_name_value_pair ( g_http_custom_headers, name, value );
 		} else {
-			g_http_custom_headers [ name ] = value;
+			set_name_value_pair ( g_smtp_custom_headers, name, value );
 		}
 
 		SetResult ( g_last_error, results );
@@ -2075,7 +2076,7 @@ fmx::errcode BE_HTTP_Set_Custom_Header ( short /* funcId */, const ExprEnv& /* e
 
 	return MapError ( error );
 
-} // BE_HTTP_Set_Custom_Header
+} // BE_Net_Set_Net_Header
 
 
 

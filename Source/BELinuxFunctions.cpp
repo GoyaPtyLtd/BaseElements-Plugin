@@ -255,6 +255,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_SMTP_Server ] = "BE_SMTP_Server ( server { ; port ; username ; password } )";
 	strings [ kBE_SMTP_Send ] = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
 	strings [ kBE_SMTP_AddAttachment ] = "BE_SMTP_AddAttachment ( container )";
+	strings [ kBE_SMTP_Set_Header ] = "BE_SMTP_Set_Header ( header ; value )";
 	strings [ kBE_FMS_Upload_Database ] = "BE_FMS_Upload_Database ( container ; path )";
 	strings [ kBE_FMS_Download_Database ] = "BE_FMS_Download_Database ( path )";
 	strings [ kBE_FMS_List_Files ] = "BE_FMS_List_Files ( username ; password {; showStatistics } )";

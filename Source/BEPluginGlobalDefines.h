@@ -195,6 +195,7 @@ enum functions {
 	kBE_SMTP_Server = 400,
 	kBE_SMTP_Send = 401,
 	kBE_SMTP_AddAttachment = 402,
+	kBE_SMTP_Set_Header = 403,
 	kBE_FMS_Upload_Database = 450,
 	kBE_FMS_Download_Database = 451,
 	kBE_FMS_List_Files = 452,

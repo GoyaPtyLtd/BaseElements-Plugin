@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
 
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -884,6 +884,17 @@ errcode MapError ( const errcode error, const bool map )
 #pragma mark -
 #pragma mark Other
 #pragma mark -
+
+
+void set_name_value_pair ( std::map<std::string, std::string>& pair, const std::string name, const std::string value ) {
+	
+	if ( value.empty() ) {
+		pair.erase ( name );
+	} else {
+		pair [ name ] = value;
+	}
+	
+} // set_name_value_pair
 
 
 bool AllowUserAbort ( const ExprEnv& environment )

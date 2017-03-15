@@ -2,13 +2,14 @@
 Version 4.0b3
 ########################################################################
 
-March 10, 2017
+March 15, 2017
 
 
 New Functions
 
 BE_Encoding_HexToText
 BE_Encoding_TextToHex
+BE_SMTP_Set_Header
 BE_XML_Validate
 
 

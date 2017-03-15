@@ -192,7 +192,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Code, BE_HTTP_Response_Code );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Response_Headers, BE_HTTP_Response_Headers, 0, 1 );
-	g_be_plugin->RegisterFunction ( kBE_HTTP_Set_Custom_Header, BE_HTTP_Set_Custom_Header, 2 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_Set_Custom_Header, BE_Net_Set_Header, 2 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_Set_Proxy, BE_HTTP_Set_Proxy, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_Curl_Set_Option, BE_Curl_Set_Option, 0, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Curl_Trace, BE_Curl_Trace );
@@ -235,6 +235,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Server, BE_SMTP_Server, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, 4, 9 );
 	g_be_plugin->RegisterFunction ( kBE_SMTP_AddAttachment, BE_SMTP_AddAttachment, 0, 1 );
+	g_be_plugin->RegisterFunction ( kBE_SMTP_Set_Header, BE_Net_Set_Header, 2 );
 
 
 	g_be_plugin->RegisterHiddenFunction ( kBE_FMS_Upload_Database, BE_ExportFieldContents, 2, 2 );

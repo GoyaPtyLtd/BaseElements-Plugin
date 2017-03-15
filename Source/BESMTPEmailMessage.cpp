@@ -25,6 +25,9 @@
 using namespace std;
 
 
+CustomHeaders g_smtp_custom_headers;
+
+
 #pragma mark -
 #pragma mark Constructors
 #pragma mark -
@@ -45,26 +48,33 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	text->body().assign ( message_body + "\n\n" );
 	text->header().contentType() = "text/plain; charset=\"utf-8\"";
 	
-	// rfc 1123 (rfc 822) date header
-	Poco::Timestamp now;
-	static const std::string rfc1123_date = Poco::DateTimeFormatter::format ( now, Poco::DateTimeFormat::RFC1123_FORMAT, Poco::Timezone::tzd() );
-
-	mimetic::Field date_header;
-	date_header.name ( "Date" );
-	date_header.value ( rfc1123_date );
-	std::ostringstream date_header_stream;
-	date_header_stream << date_header;
-	message->header().field ( date_header_stream.str() );
-
 	// MIME Version
 	mimetic::MimeVersion mime_version = mimetic::MimeVersion ( "1.0" );
 	message->header().mimeVersion ( mime_version );
+	
+	// rfc 1123 (rfc 822) date header
+	Poco::Timestamp now;
+	static const std::string rfc1123_date = Poco::DateTimeFormatter::format ( now, Poco::DateTimeFormat::RFC1123_FORMAT, Poco::Timezone::tzd() );
+	g_smtp_custom_headers [ "Date" ] = rfc1123_date;
+	
+	// custom headers
+	CustomHeaders::const_iterator it = g_smtp_custom_headers.begin();
+	while ( it != g_smtp_custom_headers.end() ) {
+		
+		mimetic::Field smtp_header;
+		smtp_header.name ( it->first );
+		smtp_header.value ( it->second );
+		message->header().push_back ( smtp_header );
+	
+		++it;
+	}
 
 }
 
 
 BESMTPEmailMessage::~BESMTPEmailMessage ( )
 {
+	g_smtp_custom_headers.clear();
 	delete message;
 }
 
