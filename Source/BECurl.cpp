@@ -678,7 +678,10 @@ void BECurl::set_parameters ( )
 				}
 
 				// add the field
-				curl_formadd ( &post_data, &last_form_field, CURLFORM_COPYNAME, key_value_pair.at ( 0 ).c_str(), value_type, value.c_str(), CURLFORM_END );
+				CURLFORMcode add_result = curl_formadd ( &post_data, &last_form_field, CURLFORM_COPYNAME, key_value_pair.at ( 0 ).c_str(), value_type, value.c_str(), CURLFORM_END );
+				if ( add_result ) {
+					throw BECurl_Exception ( (CURLcode)add_result );
+				}
 
 			} // for
 
