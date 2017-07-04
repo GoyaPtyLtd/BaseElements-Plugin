@@ -2,7 +2,7 @@
  BEOAuth.cpp
  BaseElements Plug-In
  
- Copyright 2013-2016 Goya. All rights reserved.
+ Copyright 2013-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -67,10 +67,10 @@ string BEOAuth::http_request ( const string url, const string post_arguments ) {
 		
 		if ( post_arguments.empty() ) { // no post arguments? make a GET request
 			BECurl curl = BECurl ( url, kBE_HTTP_METHOD_GET );
-			response = curl.perform_action ( );
+			response = curl.download ( );
 		} else {
 			BECurl curl = BECurl ( url, kBE_HTTP_METHOD_POST, "", "", "", post_arguments );
-			response = curl.perform_action ( );
+			response = curl.download ( );
 		}
 		
 //		response = curl.perform_action ( );

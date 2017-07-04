@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
 
- Copyright 2011-2016 Goya. All rights reserved.
+ Copyright 2011-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -389,6 +389,30 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 
 BECurl::~BECurl()
 {
+	
+	if ( upload_file ) {
+		fclose ( upload_file );
+		upload_file = NULL;
+	}
+	
+	be_free ( headers.memory );
+	be_free ( data.memory );
+	
+	if ( custom_headers ) {
+		curl_slist_free_all ( custom_headers );
+	}
+	
+	if ( command_list ) {
+		curl_slist_free_all ( command_list );
+	}
+	
+	
+	g_last_error = last_error();
+	g_http_response_code = response_code();
+	g_http_response_headers = response_headers();
+	g_http_custom_headers.clear();
+
+	
 	curl_easy_cleanup ( curl );
 	curl_formfree ( post_data );
 	curl_global_cleanup();
@@ -438,42 +462,6 @@ void BECurl::Init ( )
 	data = InitalizeCallbackMemory();
 
 }
-
-
-
-vector<char> BECurl::perform_action ( )
-{
-	vector<char>response;
-
-	switch ( get_http_method() ) {
-
-		case kBE_FTP_METHOD_UPLOAD:
-			response = ftp_upload ( );
-			break;
-
-		case kBE_FTP_METHOD_DELETE:
-			response = ftp_delete ( );
-			break;
-
-		case kBE_HTTP_METHOD_DELETE:
-			response = http_delete ( );
-			break;
-
-		case kBE_HTTP_METHOD_PUT:
-			response = http_put ( );
-			break;
-
-		default:
-			response = download ( );
-			break;
-	}
-
-	cleanup ();
-
-	return response;
-
-} // perform_action
-
 
 
 vector<char> BECurl::download ( )
@@ -834,34 +822,6 @@ void BECurl::perform ( )
 	}
 
 }	//	easy_perform
-
-
-void BECurl::cleanup ( )
-{
-
-	if ( upload_file ) {
-		fclose ( upload_file );
-		upload_file = NULL;
-	}
-
-	be_free ( headers.memory );
-	be_free ( data.memory );
-
-	if ( custom_headers ) {
-		curl_slist_free_all ( custom_headers );
-	}
-
-	if ( command_list ) {
-		curl_slist_free_all ( command_list );
-	}
-
-
-	g_last_error = last_error();
-	g_http_response_code = response_code();
-	g_http_response_headers = response_headers();
-	g_http_custom_headers.clear();
-
-} // cleanup
 
 
 void BECurl::easy_setopt ( CURLoption option, ... )

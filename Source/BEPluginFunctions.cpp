@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -1849,7 +1849,7 @@ fmx::errcode BE_HTTP_GET ( short /* funcId */, const ExprEnv& /* environment */,
 
 		// not saving to file so do not supply the filename here
 		BECurl curl ( url, kBE_HTTP_METHOD_GET, "", username, password );
-		vector<char> data = curl.perform_action ( );
+		vector<char> data = curl.download ( );
 		error = g_last_error;
 		if ( error == kNoError ) {
 			SetResult ( filename, data, results );
@@ -1880,7 +1880,7 @@ fmx::errcode BE_HTTP_GET_File ( short /* funcId */, const ExprEnv& /* environmen
 		auto password = ParameterAsUTF8String ( parameters, 3 );
 
 		BECurl curl ( url, kBE_HTTP_METHOD_GET, filename, username, password );
-		vector<char> data = curl.perform_action ( );
+		vector<char> data = curl.download ( );
 		error = g_last_error;
 
 	} catch ( BEPlugin_Exception& e ) {
@@ -1915,28 +1915,28 @@ fmx::errcode BE_HTTP_POST_PUT_PATCH ( short funcId, const ExprEnv& /* environmen
 			auto post_parameters = ParameterAsUTF8String ( parameters, 1 );
 			container_filename = ParameterAsUTF8String ( parameters, 4 );
 			BECurl curl ( url, kBE_HTTP_METHOD_POST, "", username, password, post_parameters );
-			response =  curl.perform_action ( );
+			response =  curl.download ( );
 
 
 		} else if ( funcId == kBE_HTTP_PATCH ) {
 
 			auto post_parameters = ParameterAsUTF8String ( parameters, 1 );
 			BECurl curl ( url, kBE_HTTP_METHOD_PATCH, "", username, password, post_parameters );
-			response =  curl.perform_action ( );
+			response =  curl.download ( );
 
 
 		} else if ( funcId == kBE_HTTP_PUT_File ) {
 
 			path filename = ParameterAsPath ( parameters, 1 );
 			BECurl curl ( url, kBE_HTTP_METHOD_PUT, filename, username, password );
-			response = curl.perform_action ( );
+			response = curl.http_put ( );
 
 
 		} else { // kBE_HTTP_PUT_DATA
 
 			vector<char> data = ParameterAsVectorChar ( parameters, 1 );
 			BECurl curl ( url, kBE_HTTP_METHOD_PUT, "", username, password, "", data );
-			response = curl.perform_action ( );
+			response = curl.http_put ( );
 
 		}
 
@@ -1970,7 +1970,7 @@ fmx::errcode BE_HTTP_DELETE ( short /* funcId */, const ExprEnv& /* environment 
 		auto password = ParameterAsUTF8String ( parameters, 2 );
 
 		BECurl curl ( url, kBE_HTTP_METHOD_DELETE, "", username, password );
-		vector<char> data = curl.perform_action ( );
+		vector<char> data = curl.http_delete ( );
 		error = g_last_error;
 		if ( error == kNoError ) {
 			SetResult ( data, results );
@@ -2194,7 +2194,7 @@ fmx::errcode BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environment *
 		auto password = ParameterAsUTF8String ( parameters, 3 );
 
 		BECurl curl ( url, kBE_FTP_METHOD_UPLOAD, "", username, password, "", data );
-		vector<char> response = curl.perform_action ( );
+		vector<char> response = curl.ftp_upload ( );
 
 		error = g_last_error;
 		if ( error == kNoError ) {
@@ -2225,7 +2225,7 @@ fmx::errcode BE_FTP_Delete ( short /* funcId */, const ExprEnv& /* environment *
 		auto password = ParameterAsUTF8String ( parameters, 2 );
 
 		unique_ptr<BECurl> curl ( new BECurl ( url, kBE_FTP_METHOD_DELETE, "", username, password ) );
-		vector<char> response = curl->perform_action ( );
+		vector<char> response = curl->ftp_delete ( );
 
 		error = g_last_error;
 		if ( error == kNoError ) {

@@ -2,7 +2,7 @@
  BECurl.h
  BaseElements Plug-In
  
- Copyright 2011-2016 Goya. All rights reserved.
+ Copyright 2011-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -90,8 +90,6 @@ public:
 	
 	void Init ( );
 	
-	std::vector<char> perform_action ( );
-	
     std::vector<char> download ( );
     std::vector<char> http_put ( );
     std::vector<char> http_delete ( );
@@ -143,7 +141,6 @@ protected:
 
 	void write_to_memory ( );
 	void perform ( );
-	void cleanup ( );
 
 	void easy_setopt ( CURLoption option, ... );
 	void configure_progress_dialog ( );
