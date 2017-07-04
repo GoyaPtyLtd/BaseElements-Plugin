@@ -366,6 +366,12 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	easy_setopt ( CURLOPT_WRITEHEADER, (void *)&headers );
 	easy_setopt ( CURLOPT_HEADERFUNCTION, WriteMemoryCallback );
 
+	if ( http_method == kBE_HTTP_METHOD_POST ) {
+		easy_setopt ( CURLOPT_POST, 1L );
+	} else if ( http_method == kBE_HTTP_METHOD_PATCH ) {
+		easy_setopt ( CURLOPT_CUSTOMREQUEST, HTTP_METHOD_PATCH );
+	}
+	
 	// any custom options, headers etc.
 
 	set_parameters ( );
@@ -376,11 +382,7 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
-
-	if ( http_method == kBE_HTTP_METHOD_PATCH ) {
-		easy_setopt ( CURLOPT_CUSTOMREQUEST, HTTP_METHOD_PATCH );
-	}
-
+	
 	// allow the user to override anything we set
 	set_options ( g_curl_options );
 
@@ -633,7 +635,7 @@ vector<char> BECurl::ftp_delete ( )
 void BECurl::set_parameters ( )
 {
 
-	if ( !parameters.empty() ) {
+	if ( http_method == kBE_HTTP_METHOD_POST || !parameters.empty() ) {
 
 		if ( std::string::npos == parameters.find ( "=@" ) ) { // let curl do the work unless there's a file path
 
