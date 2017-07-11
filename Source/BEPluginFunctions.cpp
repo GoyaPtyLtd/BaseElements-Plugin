@@ -2307,16 +2307,21 @@ fmx::errcode BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /* environme
 		auto html = ParameterAsUTF8String ( parameters, 7 );
 		message->set_html_alternative ( html );
 
+		
 		auto attachments = ParameterAsWideString ( parameters, 8 );
-		vector<path> values;
+		vector<path> paths;
 		if ( !attachments.empty() ) {
-			boost::split ( values, attachments, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
-		}
-		BEValueList<path> attachment_list = BEValueList<path> ( values );
-		BEValueList<path> container_attachments = g_smtp_attachments.get_file_list();
-		attachment_list.append ( container_attachments );
-		message->set_attachments ( attachment_list );
+		
+			boost::split ( paths, attachments, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
 
+			for ( auto const& attach_this : paths ) {
+				g_smtp_attachments.add ( attach_this.string() );
+			}
+
+		}
+		message->set_attachments ( g_smtp_attachments.get_file_list() );
+
+		
 		unique_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
 		error = smtp->send ( message.get() );
 
@@ -2344,12 +2349,23 @@ fmx::errcode BE_SMTP_AddAttachment ( short /* funcId */, const fmx::ExprEnv& /* 
 
 	try {
 
-		if ( parameters.Size() == 1 ) {
+		if ( parameters.Size() > 0 ) {
 
-			vector<char> contents = ParameterAsVectorChar ( parameters );
-			auto file_name = ParameterFileName ( parameters );
+			std::string file_name;
+			vector<char> contents;
+			
+			if ( BinaryDataAvailable ( parameters ) ) {
 
-			g_smtp_attachments.add ( file_name, contents );
+				contents = ParameterAsVectorChar ( parameters );
+				file_name = ParameterFileName ( parameters );
+				
+			} else {
+				file_name = ParameterAsPath ( parameters ).string();
+			}
+			
+			auto content_type = ParameterAsUTF8String ( parameters, 1, BE_DEFAULT_SMTP_CONTENT_TYPE );
+
+			g_smtp_attachments.add ( file_name, contents, content_type );
 
 		} else { // destroy the temporary files and clear out the list
 			g_smtp_attachments.clear();

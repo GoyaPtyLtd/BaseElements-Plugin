@@ -234,7 +234,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Server, BE_SMTP_Server, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Send, BE_SMTP_Send, 4, 9 );
-	g_be_plugin->RegisterFunction ( kBE_SMTP_AddAttachment, BE_SMTP_AddAttachment, 0, 1 );
+	g_be_plugin->RegisterFunction ( kBE_SMTP_AddAttachment, BE_SMTP_AddAttachment, 0, 2 );
 	g_be_plugin->RegisterFunction ( kBE_SMTP_Set_Header, BE_Net_Set_Header, 2 );
 
 

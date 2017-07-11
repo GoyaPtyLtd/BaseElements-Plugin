@@ -326,8 +326,8 @@
 				4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */,
 				4D0BA9B118BEF74D00F8FD45 /* BESMTPEmailMessage.h */,
 				4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */,
-				4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */,
 				4DB857A21C646DF600D0192A /* BESMTPContainerAttachments.h */,
+				4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */,
 			);
 			name = Net;
 			sourceTree = "<group>";

@@ -2,7 +2,7 @@
  BESMTPEmailMessage.h
  BaseElements Plug-In
  
- Copyright 2014-2016 Goya. All rights reserved.
+ Copyright 2014-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -16,15 +16,12 @@
 
 #include "BEPluginGlobalDefines.h"
 #include "BEValueList.h"
-
-#include <boost/filesystem.hpp>
+#include "BESMTPContainerAttachments.h"
 
 #include <mimetic/mimetic.h>
 
-
 #include <string>
 #include <vector>
-
 
 
 class BESMTPEmailMessage {
@@ -44,7 +41,7 @@ public:
 	void set_bcc_addresses ( const std::string& email_addresses );
 	void set_reply_to ( const std::string& reply_to_address );
 	void set_html_alternative ( const std::string& html_part );
-	void set_attachments ( const BEValueList<boost::filesystem::path>& attachment_list );
+	void set_attachments ( const BESMTPContainerAttachmentVector& attachment_list );
 
 	std::string as_string ( );
 	
@@ -55,10 +52,10 @@ protected:
 	mimetic::MimeEntity * text;
 	mimetic::MimeEntity * html;
 
-	BEValueList<boost::filesystem::path> attachments;
+	BESMTPContainerAttachmentVector attachments;
 	
 	std::unique_ptr< BEValueList<std::string> > get_address_list ( const std::string& addresses );
-	void add_attachment ( const boost::filesystem::path path_to_attachment );
+	void add_attachment ( const BESMTPContainerAttachment new_attachment );
 	void add_attachments ( void );
 	void build_message ( );
 	

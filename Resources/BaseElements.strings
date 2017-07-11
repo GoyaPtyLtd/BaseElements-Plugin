@@ -139,7 +139,7 @@
 
 "400" = "BE_SMTP_Server ( server { ; port ; username ; password } )";
 "401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
-"402" = "BE_SMTP_AddAttachment ( container )";
+"402" = "BE_SMTP_AddAttachment ( { attachment ; contentType } )";
 "403" = "BE_SMTP_Set_Header ( header ; value )";
 
 "450" = "BE_FMS_Upload_Database ( container ; path )";

@@ -2,7 +2,7 @@
  BESMTPContainerAttachments.h
  BaseElements Plug-In
  
- Copyright 2016 Goya. All rights reserved.
+ Copyright 2016~2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -14,10 +14,16 @@
 #define BESMTPContainerAttachments_hpp
 
 
-#include "BEValueList.h"
-
+#include <vector>
 
 #include <boost/filesystem.hpp>
+
+
+typedef std::pair<boost::filesystem::path, std::string> BESMTPContainerAttachment;
+typedef std::vector<BESMTPContainerAttachment> BESMTPContainerAttachmentVector;
+
+
+#define BE_DEFAULT_SMTP_CONTENT_TYPE "application/octet-stream"
 
 
 class BESMTPContainerAttachments {
@@ -28,14 +34,17 @@ public:
 	BESMTPContainerAttachments ( void ) {};
 	~BESMTPContainerAttachments();
 	
-	void add ( std::string file_name, std::vector<char>& data );
-	BEValueList<boost::filesystem::path>  get_file_list ( void ) { return file_paths; };
+	void add ( const boost::filesystem::path path, const std::string content_type = BE_DEFAULT_SMTP_CONTENT_TYPE );
+	void add ( const std::string file_name, const std::vector<char>& data, const std::string content_type = BE_DEFAULT_SMTP_CONTENT_TYPE );
+	BESMTPContainerAttachmentVector get_file_list ( void ) { return files; };
 	void clear ( void );
 	
 private:
 	
-	BEValueList<boost::filesystem::path> file_paths;
+	BESMTPContainerAttachmentVector files;
 	
+	const std::string temporary_attachments_directory ( void );
+
 };
 
 

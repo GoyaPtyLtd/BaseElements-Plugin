@@ -129,18 +129,19 @@ void BESMTPEmailMessage::set_html_alternative ( const std::string& html_part )
 }
 
 
-void BESMTPEmailMessage::add_attachment ( const boost::filesystem::path path_to_attachment )
+void BESMTPEmailMessage::add_attachment ( const BESMTPContainerAttachment new_attachment )
 {
-	if ( exists ( path_to_attachment ) ) {
+	if ( exists ( new_attachment.first ) ) {
 
-		boost::filesystem::path attachment = path_to_attachment;
+		boost::filesystem::path attachment = new_attachment.first;
 		attachment.make_preferred();
 
 		mimetic::Attachment * attach_this = new mimetic::Attachment (
 																	 attachment.string(),
-																	 mimetic::ContentType ( "application", "octet-stream" ),
+																	 mimetic::ContentType ( new_attachment.second ),
 																	 mimetic::Base64::Encoder()
 																	 );
+		
 		message->body().parts().push_back ( attach_this );
 		
 	} else {
@@ -159,7 +160,7 @@ void BESMTPEmailMessage::add_attachments ( void )
 }
 
 
-void BESMTPEmailMessage::set_attachments ( const BEValueList<boost::filesystem::path>& attachment_list )
+void BESMTPEmailMessage::set_attachments ( const BESMTPContainerAttachmentVector& attachment_list )
 {
 	attachments = attachment_list;
 }
