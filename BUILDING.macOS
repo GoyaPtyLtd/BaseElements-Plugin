@@ -70,6 +70,15 @@ Download the source from
 
 	http://www.codesink.org/mimetic_mime_library.html#download
 
+Edit the file mimetic/base64.h to replace the line
+
+                *out = NL; ++out;
+
+with
+
+				*out = CR; ++out;
+				*out = LF; ++out;
+
 Follow the supplied building instructions using this ./configure command (to build a universal binary)
 
 	./configure CXXFLAGS="-stdlib=libc++ -mmacosx-version-min=10.7" LDFLAGS="-stdlib=libc++" --prefix=build && make install

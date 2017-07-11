@@ -102,6 +102,15 @@ mimetic - 0.9.8
 Download the source from
 
 	http://www.codesink.org/mimetic_mime_library.html#download
+	
+Edit the file mimetic/base64.h to replace the line
+
+                *out = NL; ++out;
+
+with
+
+				*out = CR; ++out;
+				*out = LF; ++out;
 
 In
 
