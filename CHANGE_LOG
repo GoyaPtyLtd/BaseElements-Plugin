@@ -15,12 +15,17 @@ BE_XML_Validate
 
 Changes
 
-BE_PDF_Append: Allow the destination to overwrite the input files
 BE_HMAC: set BE_GetLastError when the key or message encoding is invalid
-BE_HTTP_POST: filename parameter added so that the response can be saved to a container as a file
+BE_HTTP_POST:	filename parameter added so that the response can be saved to a container as a file
+				always use POST (even when no post args are present)
 BE_JSON_Path: correct crashing bug when loading json documents
 BE_ListFilesInFolder: do not push directories when not recursing
-BE_SMTP_Send: rfc 1123 date header added
+BE_PDF_Append: Allow the destination to overwrite the input files
+BE_RegularExpression: do not hang when the expression is empty
+BE_SMTP_AddAttachment:	allow the content-type for an attachment to be set
+						attachment may be either a container or a file
+BE_SMTP_Send:	rfc 1123 date header added
+				use network line endings when encoding base64 attachments
 BE_StripInvalidUTF16CharactersFromXMLFile: correctly handle Ascii 26
 BE_StripInvalidUTF16CharactersFromXMLFile: return the number of characters stripped
 
