@@ -3553,35 +3553,38 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 
 	try {
 
-		PoDoFo::PdfMemDocument pdf_document;
+		auto pdf_document ( new PoDoFo::PdfMemDocument ( ) );
+
 		if ( BinaryDataAvailable ( parameters ) ) {
 			auto pdf = ParameterAsVectorChar ( parameters );
-			pdf_document.Load ( pdf.data(), pdf.size() );
+			pdf_document->Load ( pdf.data(), pdf.size() );
 		} else {
 			auto pdf_path = ParameterAsPath ( parameters );
 			pdf_path.make_preferred();
-			pdf_document.Load ( pdf_path.c_str() );
+			pdf_document->Load ( pdf_path.c_str() );
 			destination = pdf_path.filename().string();
 		}
 
-		PoDoFo::PdfMemDocument pdf_document_to_append;
+		auto pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
 		if ( BinaryDataAvailable ( parameters, 1 ) ) {
 			auto pdf_to_append = ParameterAsVectorChar ( parameters, 1 );
-			pdf_document_to_append.Load ( pdf_to_append.data(), pdf_to_append.size() );
+			pdf_document_to_append->Load ( pdf_to_append.data(), pdf_to_append.size() );
 		} else {
 			auto pdf_path_to_append = ParameterAsPath ( parameters, 1 );
 			pdf_path_to_append.make_preferred();
-			pdf_document_to_append.Load ( pdf_path_to_append.c_str() );
+			pdf_document_to_append->Load ( pdf_path_to_append.c_str() );
 		}
 
-		pdf_document.Append ( pdf_document_to_append );
-
+		pdf_document->Append ( *pdf_document_to_append );
+		delete pdf_document_to_append; // make sure to close the file
+		
 		auto output_path = ParameterAsPath ( parameters, 2 );
 		if ( output_path.empty() ) {
 
 			// write out a temporary file
 			auto from = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
-			pdf_document.Write ( from.c_str() );
+			pdf_document->Write ( from.c_str() );
+			delete pdf_document; // make sure to close the file
 
 			// slurp up the file contents
 			boost::filesystem::ifstream input_file ( from, ios_base::in | ios_base::binary | ios_base::ate );
@@ -3595,8 +3598,14 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 
 		} else {
 
+			// write out a temporary file
+			auto from = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
+			pdf_document->Write ( from.c_str() );
+			delete pdf_document; // make sure to close the file
+
 			output_path.make_preferred();
-			pdf_document.Write ( output_path.c_str() );
+			rename ( from, output_path );
+
 			fmx::BinaryDataUniquePtr nothing;
 			results.SetBinaryData ( *nothing );
 //			SetResult ( nothing, results );

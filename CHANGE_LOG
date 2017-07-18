@@ -2,7 +2,7 @@
 Version 4.0b3
 ########################################################################
 
-March 15, 2017
+July 18, 2017
 
 
 New Functions
@@ -15,6 +15,7 @@ BE_XML_Validate
 
 Changes
 
+BE_PDF_Append: Allow the destination to overwrite the input files
 BE_HMAC: set BE_GetLastError when the key or message encoding is invalid
 BE_HTTP_POST: filename parameter added so that the response can be saved to a container as a file
 BE_JSON_Path: correct crashing bug when loading json documents
