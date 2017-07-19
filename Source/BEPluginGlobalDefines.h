@@ -16,7 +16,17 @@
 
 #if defined __APPLE__
 
-	#define FMX_MAC_TARGET	1
+	#include <TargetConditionals.h>
+
+	#if TARGET_OS_IPHONE || TARGET_OS_SIMULATOR
+
+		#define FMX_IOS_TARGET  1
+
+	#elif TARGET_OS_MAC
+
+		#define FMX_MAC_TARGET  1
+
+	#endif
 
 	/*
 	 Unloadable modules can not use the new style constant strings that Apple introduced

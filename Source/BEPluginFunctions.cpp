@@ -17,6 +17,10 @@
 
 	#include "BEMacFunctions.h"
 
+#elif FMX_IOS_TARGET
+
+	#include "BEIOSFunctions.h"
+
 #elif defined FMX_WIN_TARGET
 
 	#include <locale.h>
@@ -77,7 +81,9 @@
 
 #include <iconv.h>
 
-#include <podofo/podofo.h>
+#if ! ( FMX_IOS_TARGET )
+	#include <podofo/podofo.h>
+#endif
 
 
 using namespace std;
@@ -3493,6 +3499,8 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 {
 	errcode error = NoError();
 
+#if ! ( FMX_IOS_TARGET )
+	
 	auto destination = ParameterFileName ( parameters );
 
 	try {
@@ -3555,8 +3563,7 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 //			SetResult ( nothing, results );
 
 		}
-
-
+		
 	} catch ( filesystem_error& e ) {
 		error = e.code().value();
 	} catch ( const PoDoFo::PdfError& e ) {
@@ -3569,6 +3576,8 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 		error = kErrorUnknown;
 	}
 
+#endif
+	
 	return MapError ( error );
 
 } // BE_PDF_Append

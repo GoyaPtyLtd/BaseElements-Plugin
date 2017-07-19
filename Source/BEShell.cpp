@@ -2,7 +2,7 @@
  BEShell.cpp
  BaseElements Plug-In
 
- Copyright 2011-2016 Goya. All rights reserved.
+ Copyright 2011-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -22,7 +22,7 @@ using namespace std;
 
 
 
-#if defined FMX_MAC_TARGET || FMX_LINUX_TARGET
+#if defined FMX_MAC_TARGET || FMX_LINUX_TARGET || FMX_IOS_TARGET
 
 
 short ExecuteSystemCommand ( const string command, string& result, const long command_timeout )

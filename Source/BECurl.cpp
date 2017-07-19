@@ -21,6 +21,10 @@
 
 	#include "BEMacFunctions.h"
 
+#elif FMX_IOS_TARGET
+
+	#include "BEIOSFunctions.h"
+
 #elif defined FMX_WIN_TARGET
 
 	#include "BEWinFunctions.h"

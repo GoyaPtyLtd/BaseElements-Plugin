@@ -21,6 +21,10 @@
 
 	#include "BEMacFunctions.h"
 
+#elif defined FMX_IOS_TARGET
+
+	#include "BEIOSFunctions.h"
+
 #elif defined FMX_LINUX_TARGET
 
 	#include "BELinuxFunctions.h"
@@ -324,8 +328,8 @@ const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX
 
 		// wchar_t is 4 bytes on OS X and 2 on Windows
 
-		#if defined FMX_MAC_TARGET || defined FMX_LINUX_TARGET
-
+		#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET || defined FMX_LINUX_TARGET
+		
 			wchar_t * parameter = new wchar_t [ text_size + 1 ];
 			for ( long i = 0 ; i <= text_size ; i++ ) {
 				parameter[i] = (wchar_t)text[i];
@@ -943,7 +947,7 @@ void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_Pt
 	{
 		case kFMXT_OptionsStr:
 		{
-#if defined FMX_MAC_TARGET
+#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET
 			Sub_OSXLoadString(kBE_OptionsStringID, string, resultsize, BUNDLE_STRINGS_ID);
 #elif defined FMX_WIN_TARGET
 			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), kBE_OptionsStringID, (LPWSTR)string, (uint32)resultsize);
@@ -955,7 +959,7 @@ void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_Pt
 
 		case kFMXT_AppConfigStr:
 		{
-#if defined FMX_MAC_TARGET
+#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET
 			Sub_OSXLoadString ( PLUGIN_DESCRIPTION_STRING_ID, string, resultsize, BUNDLE_VERSION_ID );
 #elif defined FMX_WIN_TARGET
 			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)PLUGIN_DESCRIPTION_STRING_ID, (LPWSTR)string, (uint32)resultsize);
@@ -966,7 +970,7 @@ void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_Pt
 		}
 
 		default:
-#if defined FMX_MAC_TARGET
+#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET
 			Sub_OSXLoadString ( whichString, string, resultsize, BUNDLE_STRINGS_ID );
 #elif defined FMX_WIN_TARGET
 			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)whichString, (LPWSTR)string, (uint32)resultsize);

@@ -2,7 +2,7 @@
  BEPlugin.cpp
  BaseElements Plug-in
 
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2017 Goya. All rights reserved.
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -44,6 +44,8 @@
 
 #ifdef FMX_MAC_TARGET
 	#include "BEMacFunctions.h"
+#elif FMX_IOS_TARGET
+	#include "BEIOSFunctions.h"
 #elif FMX_WIN_TARGET
 	#include "BEMacFunctions.h"
 #elif FMX_LINUX_TARGET
