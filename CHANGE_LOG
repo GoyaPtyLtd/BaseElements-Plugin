@@ -2,19 +2,43 @@
 Version 4.0b3
 ########################################################################
 
-July 18, 2017
+July 19, 2017
 
 
 New Functions
 
-BE_Encoding_HexToText
-BE_Encoding_TextToHex
 BE_SMTP_Set_Header
 BE_XML_Validate
 
 
+Deprecated
+
+BE_Base64_Decode
+BE_Base64_Encode
+BE_Base64_URL_Encode
+BE_Encoding_Base64
+BE_Encoding_Hex
+BE_Encrypt_AES
+BE_Decrypt_AES
+BE_HMAC
+BE_JSON_ArraySize
+BE_JSON_Encode
+BE_JSON_Error_Description
+BE_JSONPath
+BE_MessageDigest
+BE_MessageDigestAlgorithm_MD5
+BE_MessageDigestAlgorithm_SHA256
+BE_MessageDigestAlgorithm_MDC2
+BE_MessageDigestAlgorithm_SHA
+BE_MessageDigestAlgorithm_SHA1
+BE_MessageDigestAlgorithm_SHA224
+BE_MessageDigestAlgorithm_SHA384
+BE_MessageDigestAlgorithm_SHA51
+
+
 Changes
 
+BE_ExtractScriptVariables: no longer appears in calculation dialogs
 BE_HMAC: set BE_GetLastError when the key or message encoding is invalid
 BE_HTTP_POST:	filename parameter added so that the response can be saved to a container as a file
 				always use POST (even when no post args are present)
@@ -26,8 +50,10 @@ BE_SMTP_AddAttachment:	allow the content-type for an attachment to be set
 						attachment may be either a container or a file
 BE_SMTP_Send:	rfc 1123 date header added
 				use network line endings when encoding base64 attachments
-BE_StripInvalidUTF16CharactersFromXMLFile: correctly handle Ascii 26
-BE_StripInvalidUTF16CharactersFromXMLFile: return the number of characters stripped
+BE_SplitBEFileNodes: no longer appears in calculation dialogs
+BE_StripXMLNodes: no longer appears in calculation dialogs
+BE_StripInvalidUTF16CharactersFromXMLFile:	correctly handle Ascii 26
+											return the number of characters stripped
 
 
 Use Poco 1.7.8

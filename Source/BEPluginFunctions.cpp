@@ -1100,7 +1100,7 @@ fmx::errcode BE_XML_Validate ( short /* funcId */, const ExprEnv& /* environment
 #pragma mark -
 
 
-fmx::errcode BE_JSONPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_JSONPath_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1127,13 +1127,13 @@ fmx::errcode BE_JSONPath ( short /* funcId */, const ExprEnv& /* environment */,
 
 	return MapError ( error );
 
-} // BE_JSONPath
+} // BE_JSONPath_Deprecated
 
 
 
 // do not set the global last error
 
-fmx::errcode BE_JSON_Error_Description ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+fmx::errcode BE_JSON_Error_Description_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
 {
 	errcode error = kNoError;
 
@@ -1151,11 +1151,11 @@ fmx::errcode BE_JSON_Error_Description ( short /* funcId */, const ExprEnv& /* e
 
 	return error;
 
-} // BE_JSON_Error_Description
+} // BE_JSON_Error_Description_Deprecated
 
 
 
-fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_JSON_ArraySize_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1179,11 +1179,11 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 
 	return MapError ( error );
 
-} // BE_JSON_ArraySize
+} // BE_JSON_ArraySize_Deprecated
 
 
 
-fmx::errcode BE_JSON_Encode ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_JSON_Encode_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1220,7 +1220,7 @@ fmx::errcode BE_JSON_Encode ( short /* funcId */, const ExprEnv& /* environment 
 
 	return MapError ( error );
 
-} // BE_JSON_Encode
+} // BE_JSON_Encode_Deprecated
 
 
 
@@ -1507,7 +1507,7 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 
 
 
-fmx::errcode BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_Base64_Decode_Deprecated ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1534,18 +1534,18 @@ fmx::errcode BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environment 
 
 	return MapError ( error );
 
-} // BE_Base64_Decode
+} // BE_Base64_Decode_Deprecated
 
 
 
-fmx::errcode BE_Base64_Encode ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_Base64_Encode_Deprecated ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
 		auto data = ParameterAsVectorChar ( parameters );
-		auto base64 = Base64_Encode ( data, funcId == kBE_Base64_URL_Encode );
+		auto base64 = Base64_Encode ( data, funcId == kBE_Base64_URL_Encode_Deprecated );
 
 		SetResult ( base64, results );
 
@@ -1559,7 +1559,7 @@ fmx::errcode BE_Base64_Encode ( short funcId, const ExprEnv& /* environment */, 
 
 	return MapError ( error );
 
-} // BE_Base64_Encode
+} // BE_Base64_Encode_Deprecated
 
 
 
@@ -1750,7 +1750,7 @@ fmx::errcode BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */, con
 #pragma mark -
 
 
-fmx::errcode BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_Encrypt_AES_Deprecated ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1786,11 +1786,11 @@ fmx::errcode BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */
 
 	return MapError ( error );
 
-} // BE_Encrypt_AES
+} // BE_Encrypt_AES_Deprecated
 
 
 
-fmx::errcode BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_Decrypt_AES_Deprecated ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1828,7 +1828,7 @@ fmx::errcode BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */
 
 	return MapError ( error );
 
-} // BE_Decrypt_AES
+} // BE_Decrypt_AES_Deprecated
 
 
 #pragma mark -
@@ -3268,7 +3268,7 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 
 
 
-fmx::errcode BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_MessageDigest_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3296,7 +3296,7 @@ fmx::errcode BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environmen
 
 
 
-fmx::errcode BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_HMAC_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3322,63 +3322,7 @@ fmx::errcode BE_HMAC ( short /* funcId */, const ExprEnv& /* environment */, con
 
 	return MapError ( error );
 
-} // BE_HMAC
-
-
-fmx::errcode BE_Encoding_TextToHex ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-	
-	try {
-		
-		auto text = ParameterAsUTF8String ( parameters );
-		
-		std::string hex;
-		boost::algorithm::hex ( text, std::back_inserter ( hex ) );
-		
-		SetResult ( hex, results );
-		
-	} catch ( boost::exception& e ) {
-		error = kHexEncodingFailed;
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-	
-	return MapError ( error );
-	
-} // BE_Encoding_TextToHex
-
-
-fmx::errcode BE_Encoding_HexToText ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-	
-	try {
-		
-		auto hex = ParameterAsUTF8String ( parameters );
-		
-		std::string text;
-		boost::algorithm::unhex ( hex, std::back_inserter ( text ) );
-		
-		SetResult ( text, results );
-		
-	} catch ( boost::exception& e ) {
-		error = kHexDecodingFailed;
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-	
-	return MapError ( error );
-	
-} // BE_Encoding_HexToText
+} // BE_HMAC_Deprecated
 
 
 fmx::errcode BE_JPEG_Recompress ( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -3402,7 +3346,7 @@ fmx::errcode BE_JPEG_Recompress ( const short function_id, const ExprEnv& /* env
 
 			} else {
 
-				// depreciated
+				// deprecated
 
 				const int width = (const int)ParameterAsLong ( parameters, 2, 0 );
 				jpeg->set_width ( width );

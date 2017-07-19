@@ -56,12 +56,10 @@
 			<Add library="../Libraries/linux/liboauth.a" />
 			<Add library="../Libraries/linux/libPocoZip.a" />
 			<Add library="../Libraries/linux/libssh2.a" />
-			<Add library="/lib64/libssl.so.10" />
 			<Add library="../Libraries/linux/libturbojpeg.a" />
 			<Add library="../Libraries/linux/libxml2.a" />
 			<Add library="../Libraries/linux/libxslt.a" />
 			<Add library="../Libraries/linux/libz.a" />
-			<Add library="/lib64/libcrypto.so.10" />
 			<Add library="../Libraries/linux/libPocoFoundation.a" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="/lib64/libbz2.so.1" />
@@ -69,6 +67,8 @@
 			<Add library="../Libraries/linux/libfreetype.a" />
 			<Add library="../Libraries/linux/libfontconfig.a" />
 			<Add library="../Libraries/linux/libpodofo.a" />
+			<Add library="../Libraries/linux/libssl.a" />
+			<Add library="../Libraries/linux/libcrypto.a" />
 			<Add directory="PlugInSDK/Libraries/Linux" />
 			<Add directory="../Libraries/linux" />
 		</Linker>

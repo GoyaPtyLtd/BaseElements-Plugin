@@ -39,7 +39,7 @@
 "152" = "BE_HTTP_GET ( url {; filename ; username ; password } )";
 "153" = "BE_GetLastError";
 
-"154" = "BE_MessageDigest ( text {; algorithm ; encoding } )";
+"154" = "BE_MessageDigest_Deprecated ( text {; algorithm ; encoding } )";
 
 "155" = "BE_GetLastDDLError";
 
@@ -57,10 +57,10 @@
 
 "170" = "BE_Unzip ( archive {; output_directory} )";
 "171" = "BE_Zip ( fileList {; archive} )";
-"172" = "BE_Base64_Decode ( text {; name } )";
-"173" = "BE_Base64_Encode ( data )";
+"172" = "BE_Base64_Decode_Deprecated ( text {; name } )";
+"173" = "BE_Base64_Encode_Deprecated ( data )";
 "174" = "BE_SetTextEncoding ( { encoding } )";
-"175" = "BE_Base64_URL_Encode ( data )";
+"175" = "BE_Base64_URL_Encode_Deprecated ( data )";
 "176" = "BE_ExportFieldContents ( field ; outputPath )";
 "177" = "BE_ImportFile ( path {; compress } )";
 
@@ -106,14 +106,14 @@
 "261" = "BE_UnGzip ( gzip_data {; filename } )";
 
 
-// 271 replaces 270 (which is depreciated)
-"270" = "BE_JPEG_Recompress_Depreciated ( jpeg {; compressionLevel ; width ; height } )";
+// 271 replaces 270 (which is deprecated)
+"270" = "BE_JPEG_Recompress_Deprecated ( jpeg {; compressionLevel ; width ; height } )";
 "271" = "BE_JPEG_Recompress ( jpeg {; compressionLevel ; scale } )";
 
-"300" = "BE_JSONPath ( json ; path )";
-"301" = "BE_JSON_Error_Description";
-"302" = "BE_JSON_ArraySize ( json )";
-"303" = "BE_JSON_Encode ( key {; value ; type } )";
+"300" = "BE_JSONPath_Deprecated ( json ; path )";
+"301" = "BE_JSON_Error_Description_Deprecated";
+"302" = "BE_JSON_ArraySize_Deprecated ( json )";
+"303" = "BE_JSON_Encode_Deprecated ( key {; value ; type } )";
 
 
 "321" = "BE_OAuth_RequestAccessToken ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )";
@@ -133,7 +133,7 @@
 
 "400" = "BE_SMTP_Server ( server { ; port ; username ; password } )";
 "401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
-"402" = "BE_SMTP_AddAttachment ( container )";
+"402" = "BE_SMTP_AddAttachment ( { attachment ; contentType } )";
 "403" = "BE_SMTP_Set_Header ( header ; value )";
 
 "450" = "BE_FMS_Upload_Database ( container ; path )";
@@ -150,13 +150,10 @@
 
 
 
-"500" = "BE_Encrypt_AES ( key ; text )";
-"501" = "BE_Decrypt_AES ( key ; text )";
+"500" = "BE_Encrypt_AES_Deprecated ( key ; text )";
+"501" = "BE_Decrypt_AES_Deprecated ( key ; text )";
 
-"550" = "BE_HMAC ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
-
-"570" = "BE_Encoding_TextToHex ( text )";
-"571" = "BE_Encoding_HexToText ( hex )";
+"550" = "BE_HMAC_Deprecated ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
 
 "600" = "BE_EvaluateJavaScript ( javaScript )";
 
@@ -188,21 +185,21 @@
 "1002" = "BE_CancelButton";
 "1003" = "BE_AlternateButton";
 
-"2001" = "BE_MessageDigestAlgorithm_MD5";
-"2002" = "BE_MessageDigestAlgorithm_SHA256";
-"2004" = "BE_MessageDigestAlgorithm_MDC2";
-"2006" = "BE_MessageDigestAlgorithm_SHA";
-"2007" = "BE_MessageDigestAlgorithm_SHA1";
-"2008" = "BE_MessageDigestAlgorithm_SHA224";
-"2009" = "BE_MessageDigestAlgorithm_SHA384";
-"2010" = "BE_MessageDigestAlgorithm_SHA512";
+"2001" = "BE_MessageDigestAlgorithm_MD5_Deprecated";
+"2002" = "BE_MessageDigestAlgorithm_SHA256_Deprecated";
+"2004" = "BE_MessageDigestAlgorithm_MDC2_Deprecated";
+"2006" = "BE_MessageDigestAlgorithm_SHA_Deprecated";
+"2007" = "BE_MessageDigestAlgorithm_SHA1_Deprecated";
+"2008" = "BE_MessageDigestAlgorithm_SHA224_Deprecated";
+"2009" = "BE_MessageDigestAlgorithm_SHA384_Deprecated";
+"2010" = "BE_MessageDigestAlgorithm_SHA512_Deprecated";
 
 "3000" = "BE_FileType_All";
 "3001" = "BE_FileType_File";
 "3002" = "BE_FileType_Folder";
 
-"4001" = "BE_Encoding_Hex";
-"4002" = "BE_Encoding_Base64";
+"4001" = "BE_Encoding_Hex_Deprecated";
+"4002" = "BE_Encoding_Base64_Deprecated";
 
 
 

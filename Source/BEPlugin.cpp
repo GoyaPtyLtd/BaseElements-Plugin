@@ -131,13 +131,13 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_ApplyXSLTInMemory, BE_ApplyXSLTInMemory, 2 );
 	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_XPathAll, BE_XPathAll, 2, 3 );
-	g_be_plugin->RegisterFunction ( kBE_StripXMLNodes, BE_StripXMLNodes, 3 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_StripXMLNodes, BE_StripXMLNodes, 3 );
 	g_be_plugin->RegisterFunction ( kBE_XML_Parse, BE_XML_Parse, 1 );
-	g_be_plugin->RegisterFunction ( kBE_SplitBEFileNodes, BE_SplitBEFileNodes, 1 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_SplitBEFileNodes, BE_SplitBEFileNodes, 1 );
 	g_be_plugin->RegisterFunction ( kBE_XML_Validate, BE_XML_Validate, 2 );
 
 
-	g_be_plugin->RegisterFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1 );
 
 	g_be_plugin->RegisterFunction ( kBE_OKButton + kBE_ButtonOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_CancelButton + kBE_ButtonOffset, BE_NumericConstants );
@@ -157,10 +157,10 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Gzip, BE_Gzip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_UnGzip, BE_UnGzip, 1, 2 );
 
-	g_be_plugin->RegisterFunction ( kBE_JSONPath, BE_JSONPath, 2 );
-	g_be_plugin->RegisterFunction ( kBE_JSON_Error_Description, BE_JSON_Error_Description );
-	g_be_plugin->RegisterFunction ( kBE_JSON_ArraySize, BE_JSON_ArraySize, 1 );
-	g_be_plugin->RegisterFunction ( kBE_JSON_Encode, BE_JSON_Encode, 1, 3 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_JSONPath_Deprecated, BE_JSONPath_Deprecated, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_JSON_Error_Description_Deprecated, BE_JSON_Error_Description_Deprecated );
+	g_be_plugin->RegisterHiddenFunction ( kBE_JSON_ArraySize_Deprecated, BE_JSON_ArraySize_Deprecated, 1 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_JSON_Encode_Deprecated, BE_JSON_Encode_Deprecated, 1, 3 );
 
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_GET_File, BE_HTTP_GET, 1, 4 );
@@ -171,18 +171,18 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Base64_Decode, BE_Base64_Decode, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Base64_Encode, BE_Base64_Encode, 1 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_Base64_Decode_Deprecated, BE_Base64_Decode_Deprecated, 1, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_Base64_Encode_Deprecated, BE_Base64_Encode_Deprecated, 1 );
 	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, 0, 1 );
-	g_be_plugin->RegisterFunction ( kBE_Base64_URL_Encode, BE_Base64_Encode, 1 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_Base64_URL_Encode_Deprecated, BE_Base64_Encode_Deprecated, 1 );
 
 
-	g_be_plugin->RegisterHiddenFunction ( kBE_JPEG_Recompress_Depreciated, BE_JPEG_Recompress, 1, 4 ); // depreciated
+	g_be_plugin->RegisterHiddenFunction ( kBE_JPEG_Recompress_Deprecated, BE_JPEG_Recompress, 1, 4 ); // deprecated
 	g_be_plugin->RegisterFunction ( kBE_JPEG_Recompress, BE_JPEG_Recompress, 1, 3 );
 
 
-	g_be_plugin->RegisterFunction ( kBE_Encrypt_AES, BE_Encrypt_AES, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Decrypt_AES, BE_Decrypt_AES, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_Encrypt_AES_Deprecated, BE_Encrypt_AES_Deprecated, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_Decrypt_AES_Deprecated, BE_Decrypt_AES_Deprecated, 2 );
 
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST_PUT_PATCH, 2, 5 );
@@ -200,22 +200,19 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PATCH, BE_HTTP_POST_PUT_PATCH, 2, 4 );
 
 
-	g_be_plugin->RegisterFunction ( kBE_MessageDigest, BE_MessageDigest, 1, 3 );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_MD5 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA256 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_MDC2 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA1 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA224 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_HMAC, BE_HMAC, 2, 5 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigest_Deprecated, BE_MessageDigest_Deprecated, 1, 3 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_MD5 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA256 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_MDC2 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA1 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA224 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_HMAC_Deprecated, BE_HMAC_Deprecated, 2, 5 );
 	
-	g_be_plugin->RegisterFunction ( kBE_Encoding_TextToHex, BE_Encoding_TextToHex, 1 );
-	g_be_plugin->RegisterFunction ( kBE_Encoding_HexToText, BE_Encoding_HexToText, 1 );
-
-	g_be_plugin->RegisterFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_Encoding_Base64 + kBE_EncodingOffset, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_Encoding_Base64 + kBE_EncodingOffset, BE_NumericConstants );
 
 	g_be_plugin->RegisterFunction ( kBE_CurrentTimeMilliseconds, BE_TimeFunctions );
 	g_be_plugin->RegisterFunction ( kBE_UTCMilliseconds, BE_TimeFunctions );
