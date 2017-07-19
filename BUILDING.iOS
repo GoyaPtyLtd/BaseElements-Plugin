@@ -1,0 +1,305 @@
+=======================================================================
+iOS
+=======================================================================
+
+Version 4.0 of the plug-in is built on macOS 10.12.1 using Xcode 8.3. The Xcode Command Line Tools are also needed.
+
+Download the FileMaker External Plug-In API from
+
+	http://www.filemaker.com/support/technologies/
+
+and place the FMWrapper.framework in the Libraries directory.
+
+On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built the Boost FileSystem, System and Thread libraries.
+
+=======================================================================
+Boost - 1.61_0
+=======================================================================
+
+Boost is available from
+
+	http://www.boost.org/
+
+Get the script from
+
+	https://github.com/danoli3/ofxiOSBoost/blob/build-yourself/scripts/build-libc%2B%2B
+	
+and place it in the same directory as the boost archive download.
+	
+Change the lines
+
+	BOOST_V1=1.60.0
+	BOOST_V2=1_60_0
+
+to
+
+	BOOST_V1=1.61.0
+	BOOST_V2=1_61_0
+
+
+Build the library using
+
+	./build-libc++.sh BOOST_LIBS="regex,date_time,filesystem,thread" IPHONE_SDKVERSION=10.0
+
+Copy the directory containing the boost headers from the libs/boost/include directory to the Headers directory and copy libbosst.a from libs/boost/ios to the Libraries/iOS directory.
+
+
+=======================================================================
+Jansson - 2.5
+=======================================================================
+
+Download the source from
+
+	https://github.com/GoyaPtyLtd/jansson
+
+Then copy the compile_for_ios.sh script to the distribution directory
+
+	cd jansson-json_path
+	autoreconf -i
+	./compile_for_ios.sh
+
+Copy jansson.h and jansson_config.h from output/<platform>/include to the Headers directory and  output/libjansson.a to Libraries/iOS.
+
+
+=======================================================================
+OpenSSL - 1.0.2g
+=======================================================================
+
+Download the build script from
+
+	https://gist.github.com/armadsen/b30f352a8d6f6c87a146#file-openssl-build-sh
+	
+Change the OPENSSL_VERSION in script to "openssl-1.0.2g"
+
+and add buildIOS and lipo entries for arm7s.
+
+Then run
+
+	sh ./openssl-build.sh
+
+Copy lib/libcrypto.a and lib/libssl.a to Libraries/iOS and copy include/openssl to Headers.
+
+
+=======================================================================
+liboauth - 1.0.3
+=======================================================================
+
+Download the source from
+
+	http://liboauth.sourceforge.net/
+
+and follow the supplied building instructions but with the following ./configure command (to build a universal binary)
+
+	./compile_for_ios.sh
+
+Copy oauth.h from ./src/ to the Headers directory if necessary.
+
+
+=======================================================================
+mimetic - 0.9.8
+=======================================================================
+
+Download the source from
+
+	http://www.codesink.org/mimetic_mime_library.html#download
+
+Follow the supplied building instructions using this ./configure command (to build a universal binary)
+
+	./compile_for_ios.sh
+
+If necessary copy the directory containing the mimetic headers from the output/<platform>/include directory to the Headers directory.
+
+
+=======================================================================
+libssh2 - 1.7.0
+=======================================================================
+
+Note: OpenSSL & zlib must be built first.
+
+Download the source from
+
+	http://www.libssh2.org/
+
+Copy the compile_for_ios.sh to the distribution directory and
+
+	cd libssh2-1.7.0
+	./compile_for_ios.sh "--with-openssl --with-libz --without-libgcrypt --disable-examples-build -without-libssl-prefix"	
+
+If necessary, copy
+
+	output/<platform>/include
+
+to Headers/libssh
+
+
+=======================================================================
+libcurl - 7.48
+=======================================================================
+
+Note: OpenSSL & libssh2 must be built before building libcurl.
+
+Download the source from
+
+	http://curl.haxx.se/download.html
+
+Copy the compile_for_ios.sh to the distribution directory and
+
+	cd curl-7.48.0
+	./compile_for_ios.sh "--with-ssl --with-libz -- with-libssh2"	
+
+If necessary Copy
+
+	output/<platform>/inlcude/curl
+
+into Headers.
+
+
+=======================================================================
+duktape - 1.2.2
+=======================================================================
+
+Download the source from
+
+	http://duktape.org/
+
+and extract the archive to the desktop and copy the src directory to the Source directory and rename it to duktape.
+
+
+=======================================================================
+libjpeg-turbo - 1.4.2
+=======================================================================
+
+Download the source from
+
+	http://www.libjpeg-turbo.org/
+
+Copy the compile_for_ios.sh to the distribution directory and
+
+	autoreconf -fiv
+	./compile_for_ios.sh "--without-simd"
+
+Copy output/<platform>/include into Headers/libturbojpeg if necessary.
+
+
+=======================================================================
+utf8-cpp
+=======================================================================
+
+Download from
+
+	http://utfcpp.sourceforge.net/
+
+and place the source/utf8.h file and source/utf8 directory in the project Headers directory.
+
+
+=======================================================================
+Poco 1.7.8
+=======================================================================
+
+Download the source from
+
+	http://pocoproject.org/download/index.html
+
+Copy the compile_for_ios.sh to the distribution directory and
+
+	cd poco-1.7.8-all
+	./configure --cflags=-fPIC --config=iPhone --static --no-tests --no-samples --omit=Data,MongoDB,Crypto,XML,JSON,Net,PageCompiler,Util --prefix=/Users/mark/Downloads/poco-1.7.8p2-all/_build
+	make -s -j4 install
+	make distclean
+	./configure --cflags=-fPIC --config=iPhoneSimulator --static --no-tests --no-samples --omit=Data,MongoDB,Crypto,XML,JSON,Net,PageCompiler,Util --prefix=/Users/mark/Downloads/poco-1.7.8p2-all/_buildSim
+	make -s -j4 install
+
+If necessary, copy output/<platform>/include/Poco to Headers.
+
+
+=======================================================================
+libxml2 - 2.9.4
+=======================================================================
+
+Download the source for libxml2 from
+
+	http://xmlsoft.org/downloads.html
+
+Copy the compile_for_ios.sh to the distribution directory and
+
+	cd libxml2-2.9.4
+	sh ./compile_for_ios.sh "--disable-shared --without-python --without-zlib"
+		
+If necessary, copy the output/<platform>/libxml2 directory to Headers.
+
+
+=======================================================================
+libxslt - 1.1.29
+=======================================================================
+
+Download the source from
+
+	http://xmlsoft.org/downloads.html
+
+Copy the compile_for_ios.sh to the distribution directory and
+
+	cd libxslt-1.1.29
+	sh ./compile_for_ios.sh "--disable-shared --without-python --without-crypto"
+	
+If necessary, copy the output/<platform>/libxslt & libexslt directories to Headers.
+
+
+=======================================================================
+freetype - 2.7
+=======================================================================
+
+Download freetype from
+
+	https://www.freetype.org/download.html
+	
+Copy the compile_for_ios.sh to the distribution directory and
+
+	cd freetype-2.7
+	sh ./compile_for_ios.sh
+	
+If necessary, copy the output/<platform>/freetype2 directory to Headers.
+
+
+=======================================================================
+fontconfig - 2.12.1
+=======================================================================
+
+Download fontconfig from
+
+	https://www.freedesktop.org/wiki/Software/fontconfig/
+	
+	Edit ./configure to remove references to...
+	
+Copy the compile_for_ios.sh to the distribution directory and
+
+	cd fontconfig-2.12.1
+	sh ./compile_for_ios.sh FREETYPE_CFLAGS=-I/Users/mark/Dropbox/Development/BaseElements-Plugin/Headers/freetype2 FREETYPE_LIBS=/Users/mark/Dropbox/Development/BaseElements-Plugin/Libraries/iOS --enable-libxml2 --enable-static --enable-shared=no
+
+If necessary, copy the output/<platform>/fontconfig directory to Headers.
+
+
+=======================================================================
+podofo - 0.9.4
+=======================================================================
+
+Download podofo from
+
+	http://podofo.sourceforge.net/download.html
+	
+and expand it into a directory on the Desktop.
+
+	cd podofo-0.9.4
+	
+Edit
+
+	CMakeLists.txt
+	
+to remove references to CMP0033 and the PNG library. Then copy the compile_for_ios.sh to the distribution directory and
+
+	PATH="/Applications/CMake.app/Contents/bin":"$PATH"
+	CFLAGS="-mmacosx-version-min=10.7" && CPPFLAGS="-mmacosx-version-min=10.7" && cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/freetype2" -DFREETYPE_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/macOS>/libfreetype.a" -DFONTCONFIG_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/macOS>/libfontconfig.a" -DFONTCONFIG_LIBRARIES="<path to /BaseElements-Plugin/Libraries/macOS>" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_C_FLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" -DCMAKE_CXX_FLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" ./
+	make install
+
+then copy _build/lib/libpodofo.a to Libraries/macOS and _build/include/podofo to Headers.
+
+=======================================================================
