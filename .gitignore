@@ -11,6 +11,7 @@ Headers/*
 *.dylib
 *.framework
 *.lib
+*.so
 
 # Ignore generated Visual Studio files
 
