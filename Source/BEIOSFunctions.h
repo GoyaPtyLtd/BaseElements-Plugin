@@ -16,9 +16,6 @@
 
 
 #include "BEPluginGlobalDefines.h"
-
-#if FMX_IOS_TARGET
-
 #include "BEPluginUtilities.h"
 
 #include <string>
@@ -57,11 +54,6 @@ const bool OpenFile ( std::wstring& path );
 
 const std::wstring get_machine_name ( );
 
-
-// used by Do_GetString
-const unsigned long  Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId );
-
-#endif // FMX_IOS_TARGET
 
 #endif // BEIOSFUNCTIONS_H
 

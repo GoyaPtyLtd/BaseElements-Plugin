@@ -2,7 +2,7 @@
  BEMacFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -51,10 +51,6 @@ const bool OpenURL ( std::wstring& url );
 const bool OpenFile ( std::wstring& path );
 
 const std::wstring get_machine_name ( );
-
-
-// used by Do_GetString
-const unsigned long  Sub_OSXLoadString ( unsigned long stringID, FMX_Unichar* intoHere, long intoHereMax, const std::string bundleId );
 
 
 #endif // BEMACFUNCTIONS_H
