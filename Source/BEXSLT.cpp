@@ -175,6 +175,8 @@ void CleanupLibXSLT ( void )
 	#define XML_PARSE_HUGE 1<<19
 #endif
 
+//#include <boost/locale.hpp>
+//#include <codecvt>
 
 TextUniquePtr ApplyXSLT ( const boost::filesystem::path& xml_path, std::string& xslt, const boost::filesystem::path& csv_path )
 {
@@ -197,8 +199,19 @@ TextUniquePtr ApplyXSLT ( const boost::filesystem::path& xml_path, std::string& 
 			
 			// to get the line numbers etc in the error the stylesheet must have a file name
 			stylesheet->doc->URL = xmlStrdup ( (xmlChar *)"<FileMaker::Text::XSLT>" );
-			xmlDocPtr xml = xmlReadFile ( xml_path.string().c_str(), NULL, options );
-			
+
+#if defined ( FMX_WIN_TARGET )
+			// aaaarrrgggghhhhhh!!!!!
+			auto wide_path = xml_path.wstring();
+			int size = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, NULL, 0, NULL, NULL );
+			std::vector<char> utf8_data ( size );
+			int bytesConverted = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, &utf8_data[0], utf8_data.size(), NULL, NULL );
+			std::string utf8 ( utf8_data.begin(), utf8_data.end() );
+			xmlDocPtr xml = xmlReadFile ( utf8.c_str(), NULL, options );
+#else
+			xmlDocPtr xml = xmlReadFile ( xml_path.c_str(), NULL, options );
+#endif
+
 			if ( xml ) {
 				
 				// let the processor know to use our error handler and options
@@ -206,7 +219,6 @@ TextUniquePtr ApplyXSLT ( const boost::filesystem::path& xml_path, std::string& 
 				xsltSetGenericErrorFunc ( context, XSLTErrorFunction );
 				xmlSetGenericErrorFunc ( context, XSLTErrorFunction );
 				xsltSetCtxtParseOptions ( context, options );
-
 				
 				// apply the stylesheet
 				xmlDocPtr xslt_result = xsltApplyStylesheetUser ( stylesheet, xml, NULL, NULL, NULL, context );

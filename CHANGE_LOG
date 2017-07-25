@@ -7,6 +7,7 @@ July 25, 2017
 
 Changes
 
+BE_ApplyXSLT: fix errors with some unicode file paths on Windows
 BE_HTTP_POST: allow a file (@/path/...) to be specified instead of post args
 BE_ReadTextFromFile: read text from a file in a container
 BE_SMTP_Send:	don't show bcc addresses
