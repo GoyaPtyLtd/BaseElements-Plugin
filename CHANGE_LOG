@@ -1,4 +1,18 @@
 ########################################################################
+Version 4.0b4
+########################################################################
+
+July 25, 2017
+
+
+Changes
+
+BE_HTTP_POST: allow a file (@/path/...) to be specified instead of post args
+BE_ReadTextFromFile: read text from a file in a container
+BE_SMTP_Send:	don't show bcc addresses
+
+
+########################################################################
 Version 4.0b3
 ########################################################################
 
@@ -48,6 +62,7 @@ BE_HTTP_POST:	filename parameter added so that the response can be saved to a co
 BE_JSON_Path: correct crashing bug when loading json documents
 BE_ListFilesInFolder: do not push directories when not recursing
 BE_PDF_Append: Allow the destination to overwrite the input files
+BE_ReadTextFromFile: read text from a file in a container
 BE_RegularExpression: do not hang when the expression is empty
 BE_SMTP_AddAttachment:	allow the content-type for an attachment to be set
 						attachment may be either a container or a file
