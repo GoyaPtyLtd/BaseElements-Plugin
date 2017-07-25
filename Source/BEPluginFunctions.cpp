@@ -373,8 +373,16 @@ fmx::errcode BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environ
 
 	try {
 
-		auto file = ParameterAsPath ( parameters );
-		auto contents = ReadFileAsUTF8 ( file );
+		std::string contents;
+		
+		if ( BinaryDataAvailable ( parameters ) ) {
+			auto binary_contents = ParameterAsVectorChar ( parameters );
+			const std::string temporary_contents ( binary_contents.begin(), binary_contents.end() );
+			contents = temporary_contents;
+		} else {
+			auto file = ParameterAsPath ( parameters );
+			contents = ReadFileAsUTF8 ( file );
+		}
 
 		SetResult ( contents, results );
 
