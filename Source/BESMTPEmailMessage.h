@@ -35,7 +35,7 @@ public:
 	std::string from_address ( ) { return message->header().from().str(); };
 
 	std::unique_ptr< BEValueList<std::string> > cc_addresses ( ) { return get_address_list ( message->header().cc().str() ); };
-	std::unique_ptr< BEValueList<std::string> > bcc_addresses ( ) { return get_address_list ( message->header().bcc().str() ); };
+	std::shared_ptr< BEValueList<std::string> > bcc_addresses ( ) { return bcc_address_list; };
 
 	void set_cc_addresses ( const std::string& email_addresses );
 	void set_bcc_addresses ( const std::string& email_addresses );
@@ -52,6 +52,8 @@ protected:
 	mimetic::MimeEntity * text;
 	mimetic::MimeEntity * html;
 
+	std::shared_ptr< BEValueList<std::string> > bcc_address_list;
+	
 	BESMTPContainerAttachmentVector attachments;
 	
 	std::unique_ptr< BEValueList<std::string> > get_address_list ( const std::string& addresses );
