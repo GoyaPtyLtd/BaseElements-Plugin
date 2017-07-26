@@ -15,6 +15,8 @@
 
 #include <boost/filesystem/fstream.hpp>
 
+#include <sys/stat.h>
+
 
 using namespace std;
 using namespace boost::filesystem;
@@ -127,4 +129,43 @@ const fmx::errcode write_to_file ( const path& new_file, const vector<char>& con
 
 } // write_new_file
 
+
+const uintmax_t file_or_directory_size ( const boost::filesystem::path& path )
+{
+	uintmax_t size = 0;
+	
+	BEValueListWideStringUniquePtr list_of_files ( new BEValueList<wstring> );
+	
+	if ( boost::filesystem::is_directory ( path ) ) {
+		auto directory_listing ( list_files_in_directory ( path, kBE_FileType_File, true ) );
+		list_of_files->append ( *directory_listing );
+	} else {
+		list_of_files->append ( path.wstring() );
+	}
+	
+	for ( size_t i = 0 ;  i < list_of_files->size() ; ++i ) {
+
+		boost::filesystem::path file = list_of_files->at ( i );
+
+#ifdef FMX_WIN_TARGET
+		size += file_size ( file );
+#else
+		if ( ! boost::filesystem::is_symlink ( file ) ) { // boost follows ze aliases
+			size += file_size ( file );
+		} else {
+			
+			struct stat file_status;
+
+			if ( lstat ( file.c_str(), &file_status ) == 0 ) {
+				size += file_status.st_size;
+			}
+			
+		}
+#endif
+		
+	}
+
+	return size;
+	
+} // file_or_directory_size
 

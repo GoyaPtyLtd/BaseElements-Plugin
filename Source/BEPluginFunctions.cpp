@@ -318,9 +318,8 @@ fmx::errcode BE_FileSize ( short /* funcId */, const ExprEnv& /* environment */,
 
 	try {
 
-		path path = ParameterAsPath ( parameters );
-
-		uintmax_t size = file_size ( path );
+		auto path = ParameterAsPath ( parameters );
+		auto size = file_or_directory_size ( path );
 
 		SetResult ( size, results );
 
