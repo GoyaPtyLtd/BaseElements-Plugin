@@ -65,7 +65,7 @@ using namespace fmx;
 FMX_ExternCallPtr gFMX_ExternCallPtr;	// required by the FMX API
 BEFileMakerPlugin * g_be_plugin;		// the plug-in instance
 
-extern BESQLCommandAutoPtr g_ddl_command;
+extern BESQLCommandUniquePtr g_ddl_command;
 
 
 #pragma mark -

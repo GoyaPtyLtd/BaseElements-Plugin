@@ -3249,7 +3249,7 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 			filename->SetText ( parameters.AtAsText(3) );
 		}
 
-		BESQLCommandAutoPtr sql ( new BESQLCommand ( *expression, *filename ) );
+		BESQLCommandUniquePtr sql ( new BESQLCommand ( *expression, *filename ) );
 
 		if ( number_of_paramters >= 2 ) {
 			TextUniquePtr column_separator;

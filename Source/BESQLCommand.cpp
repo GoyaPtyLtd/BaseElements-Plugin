@@ -19,7 +19,7 @@ using namespace fmx;
 
 
 extern errcode g_last_ddl_error;
-BESQLCommandAutoPtr g_ddl_command;
+BESQLCommandUniquePtr g_ddl_command;
 
 
 BESQLCommand::BESQLCommand ( const Text& _expression, const Text& _filename )
@@ -27,8 +27,8 @@ BESQLCommand::BESQLCommand ( const Text& _expression, const Text& _filename )
 	expression->SetText ( _expression );
 	filename->SetText ( _filename );
 
-	column_separator->Assign ( "\t" );
-	row_separator->Assign ( FILEMAKER_END_OF_LINE );
+	column_separator = '\t';
+	row_separator = FILEMAKER_END_OF_LINE_CHAR;
 	
 	waiting = false;
 }
@@ -49,19 +49,15 @@ void BESQLCommand::execute ( const ExprEnv& environment )
 	
 	if ( ddl && !waiting ) {
 
-		// auto_ptrs : do not use the copy constructor
-		BESQLCommandAutoPtr command ( new BESQLCommand ( *expression, *filename ) );
-		command->set_column_separator ( *column_separator );
-		command->set_row_separator ( *row_separator );
-//		BESQLCommandAutoPtr command ( this );
+		// unique_ptrs : do not use the copy constructor
+		BESQLCommandUniquePtr command ( new BESQLCommand ( *expression, *filename ) );
 		command->wait();
 		
 		g_ddl_command.swap ( command );
-//		g_ddl_command.reset ( command );
 
 	} else {
 		
-		errcode error = environment.ExecuteFileSQL ( *expression, *filename, *parameters, *result );
+		errcode error = environment.ExecuteFileSQLTextResult ( *expression, *filename, *parameters, *result, column_separator, row_separator );
 		
 		if ( ddl ) {
 			g_last_ddl_error = error;
@@ -78,28 +74,7 @@ TextUniquePtr BESQLCommand::get_text_result ( void )
 	TextUniquePtr	text_result;
 
 	if ( !waiting ) {
-		const FMX_UInt32 number_of_rows = result->Size();
-		const FMX_UInt32 last_row = number_of_rows - 1;
-		
-		for ( FMX_UInt32 row = 0; row < number_of_rows; ++row ) { 
-			
-			const DataVect& this_row = result->At( row ); 
-			const FMX_UInt32 number_of_columns = this_row.Size();
-			const FMX_UInt32 last_column = number_of_columns - 1;
-			
-			for ( FMX_UInt32 column = 0; column < number_of_columns; ++column ) {
-				// should escape this ??? the old API doesn't so leave it to the FM developers
-				text_result->AppendText ( this_row.At( column ).GetAsText() );
-				// skip last time
-				if ( column < last_column ) {
-					text_result->AppendText( *column_separator );
-				}
-			}
-			// skip last time
-			if ( row < last_row ) {
-				text_result->AppendText ( *row_separator );
-			}
-		}
+		text_result->AppendText( result->GetAsText() );
 	}
 	
 	return text_result;
@@ -110,14 +85,14 @@ TextUniquePtr BESQLCommand::get_text_result ( void )
 
 void BESQLCommand::set_column_separator ( const Text& new_column_separator )
 {
-	column_separator->SetText ( new_column_separator );
+	new_column_separator.GetUnicode ( &column_separator, 0, 1 );
 }
 
 
 
 void BESQLCommand::set_row_separator ( const Text& new_row_separator )
 {
-	row_separator->SetText ( new_row_separator );
+	new_row_separator.GetUnicode ( &row_separator, 0, 1 );
 }
 
 

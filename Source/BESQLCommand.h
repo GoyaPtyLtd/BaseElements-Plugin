@@ -2,7 +2,7 @@
  BESQLCommand.h
  BaseElements Plug-In
  
- Copyright 2011-2016 Goya. All rights reserved.
+ Copyright 2011-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -38,10 +38,10 @@ protected:
 	fmx::TextUniquePtr expression;
 	fmx::TextUniquePtr filename;
 	fmx::DataVectUniquePtr parameters;
-	fmx::RowVectUniquePtr result;
+	fmx::DataUniquePtr result;
 	
-	fmx::TextUniquePtr column_separator;
-	fmx::TextUniquePtr row_separator;
+	fmx::uint16 column_separator;
+	fmx::uint16 row_separator;
 	
 	bool is_ddl_command ( void ) const;
 	
@@ -50,7 +50,7 @@ protected:
 };
 
 
-typedef std::unique_ptr<BESQLCommand> BESQLCommandAutoPtr;
+typedef std::unique_ptr<BESQLCommand> BESQLCommandUniquePtr;
 
 
 #endif // BESQLCOMMAND_H
