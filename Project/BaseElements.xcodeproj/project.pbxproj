@@ -161,6 +161,8 @@
 		4D362AAB1F2085AF0036B751 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A431F207B660036B751 /* libPocoZip.a */; };
 		4D362AAC1F2085AF0036B751 /* libPocoZipd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A441F207B660036B751 /* libPocoZipd.a */; };
 		4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A401F207B660036B751 /* iOSAppSDK.framework */; };
+		4D42F63E1F283EBD0014BDAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D42F63D1F283EBD0014BDAD /* UIKit.framework */; };
+		4D42F63F1F283EC90014BDAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D42F63D1F283EBD0014BDAD /* UIKit.framework */; };
 		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
 		4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06701C23B389006899FE /* libiconv.tbd */; };
 		4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06761C23B3A9006899FE /* libcharset.tbd */; };
@@ -304,6 +306,7 @@
 		4D3969CA18DA773900DFC47A /* BEBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBase64.h; sourceTree = "<group>"; };
 		4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLReader.cpp; path = ../Source/BEXMLReader.cpp; sourceTree = "<group>"; };
 		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
+		4D42F63D1F283EBD0014BDAD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		4D4C066C1C23B372006899FE /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		4D4C066E1C23B37E006899FE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		4D4C06701C23B389006899FE /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -387,6 +390,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D42F63F1F283EC90014BDAD /* UIKit.framework in Frameworks */,
 				4D362A5B1F2083CF0036B751 /* libiconv.tbd in Frameworks */,
 				4D362A591F2083C50036B751 /* libz.tbd in Frameworks */,
 				4D362A531F2081B90036B751 /* iOSAppSDK.framework in Frameworks */,
@@ -420,6 +424,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D42F63E1F283EBD0014BDAD /* UIKit.framework in Frameworks */,
 				4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */,
 				4D362AA91F2085AF0036B751 /* libPocoFoundation.a in Frameworks */,
 				4D362AAA1F2085AF0036B751 /* libPocoFoundationd.a in Frameworks */,
@@ -670,6 +675,7 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D42F63D1F283EBD0014BDAD /* UIKit.framework */,
 				4D11F40E1F271C6F00D78042 /* libturbojpeg.a */,
 				4D11F40C1F271C5400D78042 /* libssh2.a */,
 				4D11F40A1F271C3B00D78042 /* libcurl.a */,

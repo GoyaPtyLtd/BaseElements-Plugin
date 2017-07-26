@@ -16,6 +16,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <UIKit/UIKit.h>
+
 
 #if TARGET_RT_BIG_ENDIAN
 	#define ENCODING kCFStringEncodingUTF32BE
@@ -91,22 +93,32 @@ const std::wstring ClipboardFormats ( void )
 {
 
 	return L"";
-	
+
 } // ClipboardFormats
 
 
-const std::string ClipboardData ( std::wstring& /* atype */ )
+const std::string ClipboardData ( std::wstring& atype )
 {
 	
-	return "";
+	NSString * pasteboard_type = NSStringFromWString ( atype );
+	NSData * data = [[UIPasteboard generalPasteboard] dataForPasteboardType: pasteboard_type];
+	NSString * clipboard_data =[[NSString alloc] initWithData:data encoding: NSUTF8StringEncoding];
+	
+	return [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding];
 	
 } // ClipboardData
 
 
-const bool SetClipboardData ( std::string& /* data */, std::wstring& /* atype */ )
+const bool SetClipboardData ( std::string& data, std::wstring& atype )
 {
 	
-	return L"";
+	NSString * data_to_copy = NSStringFromString ( data );
+	NSString * pasteboard_type = NSStringFromWString ( atype );
+	NSData *clipboard_data = [data_to_copy dataUsingEncoding: NSUTF8StringEncoding];
+	[[UIPasteboard generalPasteboard] setData: clipboard_data forPasteboardType: pasteboard_type];
+
+	
+	return true;
 	
 } // Set_ClipboardData
 
@@ -180,18 +192,55 @@ const fmx::errcode UpdateProgressDialog ( const long /* value */, const std::wst
 #pragma mark -
 
 
-const bool SetPreference ( std::wstring& /* key */, std::wstring& /* value */, std::wstring& /* domain */ )
+const bool SetPreference ( std::wstring& key, std::wstring& value, std::wstring& domain )
 {
-
-	return false;
+	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
 	
+	bool result = true;
+	
+	if ( standardUserDefaults ) {
+		
+		NSString * domain_name = NSStringFromWString ( domain );
+		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];
+		
+		NSString * preference_key = NSStringFromWString ( key );
+		NSString * preference_value = NSStringFromWString ( value );
+		
+		NSMutableDictionary * new_preferences = [NSMutableDictionary dictionaryWithCapacity: [preferences count] + 1];
+		[new_preferences addEntriesFromDictionary: preferences];
+		[new_preferences setObject: preference_value forKey: preference_key];
+		
+		[standardUserDefaults setPersistentDomain: new_preferences forName: domain_name];
+		[standardUserDefaults synchronize];
+		
+	} else {
+		result = false;
+	}
+	
+	return result;
+
 }
 
 
-const std::wstring GetPreference ( std::wstring& /* key */, std::wstring& /* domain */ )
+const std::wstring GetPreference ( std::wstring& key, std::wstring& domain )
 {
-
-	return L"";
+	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+	NSString * preference_value = nil;
+	
+	if ( standardUserDefaults ) {
+		
+		[standardUserDefaults synchronize];
+		
+		NSString * domain_name = NSStringFromWString ( domain );
+		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];
+		
+		NSString * preference_key = NSStringFromWString ( key );
+		preference_value = [preferences objectForKey: preference_key];
+	}
+	
+	std::wstring preference = WStringFromNSString ( preference_value );
+	
+	return preference;
 	
 }
 
@@ -202,9 +251,16 @@ const std::wstring GetPreference ( std::wstring& /* key */, std::wstring& /* dom
 #pragma mark -
 
 
-const bool OpenURL ( std::wstring& /* url */ )
-{	
-	return false;
+const bool OpenURL ( std::wstring& url )
+{
+	auto result = false;
+	NSURL * open_this = [NSURL URLWithString: NSStringFromWString ( url ) ];
+	if ( [[UIApplication sharedApplication] canOpenURL: open_this] ) {
+		[[UIApplication sharedApplication] openURL: open_this options: @{} completionHandler: nil];
+		result = true;
+	}
+	return result;
+	
 }
 
 
@@ -216,7 +272,8 @@ const bool OpenFile ( std::wstring& /* path */ )
 
 const std::wstring get_machine_name ( )
 {
-	return L"";
+	NSString * machine_name = [[UIDevice currentDevice] name];
+	return WStringFromNSString ( machine_name );
 }
 
 

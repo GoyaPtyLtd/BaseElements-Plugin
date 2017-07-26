@@ -5,6 +5,16 @@ Version 4.0b4
 July 26, 2017
 
 
+iOS Implementations for:
+
+BE_ClipboardData
+BE_Get_Machine_Name
+BE_GetPreference
+BE_OpenURL
+BE_SetClipboardData
+BE_SetPreference
+
+
 Changes
 
 BE_ApplyXSLT: fix errors with some unicode file paths on Windows
