@@ -2,7 +2,7 @@
  BEFileMakerPlugin.cpp
  BaseElements Plug-In
  
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -75,14 +75,17 @@ errcode BEFileMakerPlugin::RegisterPluginFunction ( FMX_UInt32 function_flags, s
 	int max_params = maximum_parameters ? maximum_parameters : minimum_parameters;
 	
 	errcode error_result = 0;
-	TextUniquePtr name, prototype;
+	TextUniquePtr name, prototype, description;
 	
-	Do_GetString ( function_id, name, true );
-	Do_GetString ( function_id, prototype, false );
+	Do_GetString ( function_id, name, kFunctionName );
+	Do_GetString ( function_id, prototype, kFunctionPrototype );
 	
-//	QuadCharUniquePtr plugin_id ( PLUGIN_ID );
-	
-	error_result = fmx::ExprEnv::RegisterExternalFunction ( *id, function_id, *name, *prototype, (short)minimum_parameters, (short)max_params, function_flags, function_pointer );
+	if ( gFMX_ExternCallPtr->extnVersion >= k150ExtnVersion ) {
+		Do_GetString ( function_id, description, kFunctionDescription );
+		error_result = fmx::ExprEnv::RegisterExternalFunctionEx ( *id, function_id, *name, *prototype, *description, (short)minimum_parameters, (short)max_params, function_flags, function_pointer );
+	} else {
+		error_result = fmx::ExprEnv::RegisterExternalFunction ( *id, function_id, *name, *prototype, (short)minimum_parameters, (short)max_params, function_flags, function_pointer );
+	}
 	
 	// keep track of registered functions so that they can be automatically unregistered
 	

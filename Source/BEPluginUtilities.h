@@ -24,6 +24,13 @@
 #include <stdint.h>
 
 
+enum {
+	kFunctionName,
+	kFunctionPrototype,
+	kFunctionDescription
+};
+
+
 extern std::string g_text_encoding;
 
 
@@ -93,7 +100,7 @@ std::string GetFileMakerTemporaryDirectory ( const fmx::ExprEnv& environment );
 // extract localised strings from the plug-in resources
 
 void Do_GetString ( unsigned long whichString, FMX_PtrType winLangID, FMX_PtrType resultsize, FMX_Unichar* string );
-void Do_GetString ( unsigned long whichString,  fmx::TextUniquePtr& intoHere, bool stripFunctionParams = false );
+void Do_GetString ( const unsigned long whichStringID, fmx::TextUniquePtr& function_information, const int which_string = kFunctionName );
 
 
 #endif // BEPLUGINUTILITIES_H

@@ -288,8 +288,7 @@ enum {
 	kBE_ButtonOffset = 1000,
 	kBE_MessageDigestAlgorithmOffset_Deprecated = 2000,
 	kBE_FileTypeOffset = 3000,
-	kBE_EncodingOffset = 4000,
-	kBE_GetStringMaxBufferSize = 4096
+	kBE_EncodingOffset = 4000
 };
 
 

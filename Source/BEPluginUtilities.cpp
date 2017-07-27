@@ -986,25 +986,37 @@ void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_Pt
 } // Do_GetString ( FMX_Unichar* version )
 
 
-void Do_GetString(unsigned long whichStringID, TextUniquePtr& intoHere, bool stripFunctionParams)
+void Do_GetString ( const unsigned long whichStringID, TextUniquePtr& function_information, const int which_string )
 {
-	FMX_Unichar			tempBuffer[kBE_GetStringMaxBufferSize];
+	fmx::unichar16 temp_buffer [ PATH_MAX ];
 
-	Do_GetString ( whichStringID, 0, kBE_GetStringMaxBufferSize, tempBuffer );
-	intoHere->AssignUnicode(tempBuffer);
+	Do_GetString ( whichStringID, 0, PATH_MAX, temp_buffer );
+	function_information->AssignUnicode ( temp_buffer );
 
-	if(stripFunctionParams) {
+	TextUniquePtr delimiter;
 
-		// The string for this whichStringID is a Function Prototype, but all the plug-in needs now is the Function Name by itself.
+	switch ( which_string ) {
+			
+		case kFunctionName:
+		{
+			// The string for this whichStringID is a Function Prototype, but all the plug-in needs now is the Function Name by itself.
 
-		TextUniquePtr		parenToken;
-		parenToken->Assign ( " (" );
-
-		FMX_UInt32 originalSize = intoHere->GetSize();
-		FMX_UInt32 firstParenLocation;
-		firstParenLocation = intoHere->Find(*parenToken, 0);
-
-		intoHere->DeleteText(firstParenLocation, originalSize-firstParenLocation);
+			delimiter->Assign ( " (" );
+			fmx::uint32 wanted = function_information->Find ( *delimiter, 0 );
+			fmx::uint32 length = function_information->GetSize();
+			function_information->DeleteText ( wanted, length - wanted );
+			
+		}
+		case kFunctionDescription:
+		{
+			delimiter->Assign ( "|" );
+			fmx::uint32 wanted = function_information->Find ( *delimiter, 0 );
+			function_information->DeleteText ( 0, wanted + 1 );
+		}
+		default:
+		{
+			;// nothing to do
+		}
 
 	} // stripFunctionParams
 
