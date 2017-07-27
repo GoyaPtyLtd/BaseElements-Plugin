@@ -71,7 +71,7 @@ NSString * NSStringFromWString ( const std::wstring& text )
 	
 	NSString* new_string = [[NSString alloc] initWithBytes: string_data length: size encoding: kEncoding_wchar_t];
 
-	return [new_string autorelease];
+	return new_string;
 }
 
 
@@ -98,8 +98,6 @@ const std::wstring ClipboardFormats ( void )
 		[formats appendString: @FILEMAKER_END_OF_LINE];
 	}
 	
-	[types release];
-	
 	return WStringFromNSString ( (NSString*)formats );
 	
 } // ClipboardFormats
@@ -108,8 +106,8 @@ const std::wstring ClipboardFormats ( void )
 const std::string ClipboardData ( std::wstring& atype )
 {
 	NSString * pasteboard_type = NSStringFromWString ( atype );
-	NSData * pasteboard_data = [[[[NSPasteboard generalPasteboard] dataForType: pasteboard_type] copy] autorelease];
-	NSString * clipboard_data = [[[NSString alloc] initWithData: pasteboard_data encoding: NSUTF8StringEncoding] autorelease];
+	NSData * pasteboard_data = [[[NSPasteboard generalPasteboard] dataForType: pasteboard_type] copy];
+	NSString * clipboard_data = [[NSString alloc] initWithData: pasteboard_data encoding: NSUTF8StringEncoding];
 	
 	return [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding];
 	
@@ -303,7 +301,6 @@ const fmx::errcode DisplayProgressDialog ( const std::wstring& title, const std:
 	fmx::errcode error = kNoError;
 
 	if ( (progressDialog != nil) && ([progressDialog closed] == YES) ) {
-			[progressDialog release];
 			progressDialog = nil;
 	}
 	
@@ -347,7 +344,6 @@ const fmx::errcode UpdateProgressDialog ( const long value, const std::wstring& 
 		error = [progressDialog update: value description: description_string];
 		
 		if ( [progressDialog closed] == YES ) {
-			[progressDialog release];
 			progressDialog = nil;
 		}
 		
@@ -367,8 +363,6 @@ const fmx::errcode UpdateProgressDialog ( const long value, const std::wstring& 
 
 const bool SetPreference ( std::wstring& key, std::wstring& value, std::wstring& domain )
 {
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	
 	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
 	
 	bool result = true;
@@ -392,16 +386,12 @@ const bool SetPreference ( std::wstring& key, std::wstring& value, std::wstring&
 		result = false;
 	}
 	
-	[pool drain];
-	
 	return result;
 }
 
 
 const std::wstring GetPreference ( std::wstring& key, std::wstring& domain )
 {
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	
 	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
 	NSString * preference_value = nil;
 	
@@ -417,8 +407,6 @@ const std::wstring GetPreference ( std::wstring& key, std::wstring& domain )
 	}
 	
 	std::wstring preference = WStringFromNSString ( preference_value );
-	
-	[pool drain];
 	
 	return preference;
 }
