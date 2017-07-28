@@ -205,7 +205,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_Base64_Encode_Deprecated ] = "BE_Base64_Encode_Deprecated ( data )";
 	strings [ kBE_SetTextEncoding ] = "BE_SetTextEncoding ( { encoding } )";
 	strings [ kBE_Base64_URL_Encode_Deprecated ] = "BE_Base64_URL_Encode_Deprecated ( data )";
-	strings [ kBE_ExportFieldContents ] = "BE_ExportFieldContents ( field ; outputPath )";
+	strings [ kBE_ExportFieldContents ] = "BE_ExportFieldContents ( field {; outputPath } )";
 	strings [ kBE_ImportFile ] = "BE_ImportFile ( path {; compress } )";
 	strings [ kBE_HTTP_POST ] = "BE_HTTP_POST ( url ; parameters {; username ; password ; filename } )";
 	strings [ kBE_HTTP_Response_Code ] = "BE_HTTP_Response_Code";
@@ -275,6 +275,8 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_ArrayGetSize ] = "BE_ArrayGetSize ( array )";
 	strings [ kBE_ArrayGetValue ] = "BE_ArrayGetValue ( array ; valueNumber )";
 	strings [ kBE_Array_Delete ] = "BE_Array_Delete ( array )";
+	strings [ kBE_Array_Find ] = "BE_Array_Find ( array ; value )";
+	strings [ kBE_Array_Change_Value ] = "BE_Array_Change_Value ( array ; valueNumber ; newValue )";
 	strings [ kBE_ConvertContainer ] = "BE_ConvertContainer ( field {; type ; width ; height } )";
 	strings [ kBE_PDF_Append ] = "BE_PDF_Append ( pdf ; pdf_to_append {; destination } )";
 	strings [ kBE_XOR ] = "BE_XOR ( text ; xorWith )";

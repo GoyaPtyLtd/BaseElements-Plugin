@@ -534,18 +534,27 @@ fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, con
 
 
 
-fmx::errcode BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
+fmx::errcode BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
 		auto field_contents = ParameterAsVectorChar ( parameters );
-		auto destination = ParameterAsPath ( parameters, 1 );
+
+		path destination;
+		
+		auto number_of_parameters = parameters.Size();
+		if ( number_of_parameters == 2 ) {
+			destination = ParameterAsPath ( parameters, 1 );
+		} else {
+			// write out a temporary file
+			destination = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
+		}
 
 		error = write_to_file ( destination, field_contents );
 
-		//		SetResult ( "", results );
+		SetResult ( destination.wstring(), results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -1389,6 +1398,69 @@ fmx::errcode BE_Array_Delete ( short /* funcId */, const fmx::ExprEnv& /* enviro
 	return MapError ( error );
 
 } // BE_Array_Delete
+
+
+fmx::errcode BE_Array_Find ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto array_id = ParameterAsIndex ( parameters );
+		
+		try {
+			auto wanted = arrays.at ( array_id ); // so we throw if the index is invalid
+			auto find_this = ParameterAsUTF8String ( parameters, 1 );
+			auto found = wanted->find ( find_this );
+			SetResult ( found.get_as_filemaker_string(), results );
+		} catch ( out_of_range& /* e */ ) {
+			; // if we don't find it don't error
+		}
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Array_Find
+
+
+fmx::errcode BE_Array_Change_Value ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto array_id = ParameterAsIndex ( parameters );
+		
+		try {
+			
+			auto wanted = arrays.at ( array_id ); // so we throw if the index is invalid
+			auto find_this = ParameterAsIndex ( parameters, 1 );
+			auto replace_with = ParameterAsUTF8String ( parameters, 2 );
+			auto changed = wanted->change_value ( find_this, replace_with );
+			SetResult ( changed, results );
+			
+		} catch ( out_of_range& /* e */ ) {
+			; // if we don't find it don't error
+		}
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Array_Change_Value
 
 
 

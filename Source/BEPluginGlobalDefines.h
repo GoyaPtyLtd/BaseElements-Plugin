@@ -227,6 +227,8 @@ enum functions {
 	kBE_ArrayGetSize = 651,
 	kBE_ArrayGetValue = 652,
 	kBE_Array_Delete = 653,
+	kBE_Array_Find = 654,
+	kBE_Array_Change_Value = 655,
 	kBE_ConvertContainer = 700,
 	kBE_PDF_Append = 750,
 	kBE_XOR = 800,

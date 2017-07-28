@@ -81,6 +81,8 @@ public:
 	T at ( const size_t which ) const;
 
 	T starts_with ( const T prefix ) const;
+	BEValueList<T> find ( const T find_this ) const;
+	bool change_value ( const size_t which, const T new_value );
 	
 	T unique ( );
 	T filter_out ( BEValueList& filter_out );
@@ -228,6 +230,42 @@ T BEValueList<T>::starts_with ( const T prefix ) const
 	return wanted_values.get_as_filemaker_string();
 
 } // starts_with
+
+
+template <typename T>
+BEValueList<T> BEValueList<T>::find ( const T find_this ) const
+{
+	
+	BEValueList<T> found_values;
+	
+	for ( auto it = values.begin() ; it != values.end(); ++it ) {
+		
+		if ( boost::iequals ( *it, find_this ) == true ) {
+			size_t index = std::distance ( values.begin(), it ) + 1;
+			found_values.append ( std::to_string ( index ) );
+		}
+		
+	}
+	
+	return found_values;
+	
+} // find
+
+
+template <typename T>
+bool BEValueList<T>::change_value ( const size_t which, const T new_value )
+{
+	auto result = true;
+	
+	try {
+		values.at ( which ) = new_value;
+	} catch ( std::out_of_range& /* e */ ) {
+		result = false;
+	}
+	
+	return result;
+	
+} // change_value
 
 
 template <typename T>

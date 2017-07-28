@@ -5,6 +5,12 @@ Version 4.0b4
 July 28, 2017
 
 
+New Functions
+
+BE_Array_Change_Value
+BE_Array_Find
+
+
 iOS Implementations for:
 
 BE_ClipboardData
@@ -18,6 +24,7 @@ BE_SetPreference
 Changes
 
 BE_ApplyXSLT: fix errors with some unicode file paths on Windows
+BE:ExportFileContents: return a path to temporary file if one in not specified
 BE_FileSize: return the size for directories in addition to files
 BE_HTTP_POST: allow a file (@/path/...) to be specified instead of post args
 BE_ReadTextFromFile: read text from a file in a container
