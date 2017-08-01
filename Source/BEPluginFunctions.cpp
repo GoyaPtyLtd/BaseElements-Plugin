@@ -874,13 +874,14 @@ fmx::errcode BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */
 
 	try {
 
-		path xml_path = ParameterAsPath ( parameters );
 		auto xml = ParameterPathOrContainerAsUTF8 ( parameters );
-
 		auto xslt = ParameterAsUTF8String ( parameters, 1 );
 		path csv_path = ParameterAsPath ( parameters, 2 );
-
-		SetResult ( *ApplyXSLT ( xml_path, xslt, csv_path ), results );
+	
+		auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path );
+		
+		SetResult ( *csv, results );
+		
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();

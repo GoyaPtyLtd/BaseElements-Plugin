@@ -175,97 +175,6 @@ void CleanupLibXSLT ( void )
 	#define XML_PARSE_HUGE 1<<19
 #endif
 
-//#include <boost/locale.hpp>
-//#include <codecvt>
-
-TextUniquePtr ApplyXSLT ( const boost::filesystem::path& xml_path, std::string& xslt, const boost::filesystem::path& csv_path )
-{
-	g_last_xslt_error = kNoError;
-	TextUniquePtr result;
-	
-	InitialiseLibXSLT();
-		
-	// parse the stylesheet
-	xslt = ConvertFileMakerEOLs ( xslt ); // otherwise all errors occur on line 1
-	int options = XML_PARSE_HUGE;
-	xmlDocPtr xslt_doc = xmlReadDoc ( (xmlChar *)xslt.c_str(), NULL, NULL, options );
-	
-	if ( xslt_doc ) {
-		
-		xsltStylesheetPtr stylesheet = xsltParseStylesheetDoc ( xslt_doc );
-		// xmlFreeDoc ( xslt_doc ); xslt_doc is now owned by stylesheet
-		
-		if ( stylesheet ) {
-			
-			// to get the line numbers etc in the error the stylesheet must have a file name
-			stylesheet->doc->URL = xmlStrdup ( (xmlChar *)"<FileMaker::Text::XSLT>" );
-
-#if defined ( FMX_WIN_TARGET )
-			// aaaarrrgggghhhhhh!!!!!
-			auto wide_path = xml_path.wstring();
-			int size = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, NULL, 0, NULL, NULL );
-			std::vector<char> utf8_data ( size );
-			int bytesConverted = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, &utf8_data[0], utf8_data.size(), NULL, NULL );
-			std::string utf8 ( utf8_data.begin(), utf8_data.end() );
-			xmlDocPtr xml = xmlReadFile ( utf8.c_str(), NULL, options );
-#else
-			xmlDocPtr xml = xmlReadFile ( xml_path.c_str(), NULL, options );
-#endif
-
-			if ( xml ) {
-				
-				// let the processor know to use our error handler and options
-				xsltTransformContextPtr context = xsltNewTransformContext ( stylesheet, xml );
-				xsltSetGenericErrorFunc ( context, XSLTErrorFunction );
-				xmlSetGenericErrorFunc ( context, XSLTErrorFunction );
-				xsltSetCtxtParseOptions ( context, options );
-				
-				// apply the stylesheet
-				xmlDocPtr xslt_result = xsltApplyStylesheetUser ( stylesheet, xml, NULL, NULL, NULL, context );
-				xmlErrorPtr xml_error = xmlGetLastError();
-				if ( xslt_result && xml_error == NULL ) {
-					
-					result->Assign ( "" );	// return an empty string on success
-					
-					// save the output					
-					FILE * csv_file = FOPEN ( csv_path.c_str(), _TEXT ( "w" ) );
-
-					if ( csv_file ) {
-						xsltSaveResultToFile ( csv_file, xslt_result, stylesheet );
-						fclose ( csv_file );						
-					}
-					
-					xmlFreeDoc ( xslt_result );
-					
-				} else {
-					
-					// there was an error performing the transform
-					
-					result->AppendText ( *ReportXSLTError ( xml->URL ) );					
-				}
-				
-				xsltFreeTransformContext ( context );
-				xmlFreeDoc ( xml );
-			}
-			
-			xsltFreeStylesheet ( stylesheet );
-
-		}
-	}
-	
-	CleanupLibXSLT();
-	
-	if ( g_last_xslt_error != kNoError ) {
-		// something has gone very wrong
-		throw exception();
-	}
-	
-	return result;
-	
-} // BE_ApplyXSLT
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////
 //	The following code originally supplied by Magnus Strand, http://www.smartasystem.se/
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -322,7 +231,7 @@ xmlOutputBufferPtr xmlOutputBufferCreateBuffer(xmlBufferPtr buffer, xmlCharEncod
 #endif
 
 
-TextUniquePtr ApplyXSLTInMemory ( std::string& xml, std::string& xslt )
+TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, const boost::filesystem::path csv_path )
 {
 	g_last_xslt_error = kNoError;
 	TextUniquePtr result;
@@ -363,12 +272,26 @@ TextUniquePtr ApplyXSLTInMemory ( std::string& xml, std::string& xslt )
 					if (buf) {
 						xmlOutputBufferPtr outputBufPtr = xmlOutputBufferCreateBuffer(buf, NULL);
 						
-						// save the output					
-						if (outputBufPtr) {
-							xsltSaveResultTo(outputBufPtr, xslt_result, stylesheet);
-							result->AssignWithLength((char*)(buf->content), buf->use, fmx::Text::kEncoding_UTF8);	// return transformed xml on success
+						// save the output
+						
+						if ( !csv_path.empty() ) {
+							
+							FILE * csv_file = FOPEN ( csv_path.c_str(), _TEXT ( "w" ) );
+							
+							if ( csv_file ) {
+								xsltSaveResultToFile ( csv_file, xslt_result, stylesheet );
+								fclose ( csv_file );
+							}
+
+						} else {
+							
+							if ( outputBufPtr ) {
+								xsltSaveResultTo(outputBufPtr, xslt_result, stylesheet);
+								result->AssignWithLength((char*)(buf->content), buf->use, fmx::Text::kEncoding_UTF8);	// return transformed xml on success
+							}
+							xmlBufferFree ( buf );
+
 						}
-						xmlBufferFree(buf);
 					}
 					xmlFreeDoc ( xslt_result );
 					
