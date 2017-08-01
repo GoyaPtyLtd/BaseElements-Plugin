@@ -565,18 +565,14 @@ fmx::errcode BE_ImportFile ( short /* funcId */, const ExprEnv& /* environment *
 
 	try {
 
-		path from = ParameterAsPath ( parameters );
-		bool compress = ParameterAsBoolean ( parameters, 1, false );
+		auto from = ParameterAsPath ( parameters );
+		auto compress = ParameterAsBoolean ( parameters, 1, false );
 		std::string data_type = FILE_CONTAINER_TYPE;
 		if ( compress ) {
 			data_type = COMPRESSED_CONTAINER_TYPE;
 		}
 
-		// slurp up the file contents
-		boost::filesystem::ifstream input_file ( from, ios_base::in | ios_base::binary | ios_base::ate );
-		input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
-		input_file.seekg ( 0, ios::beg );
-		vector<char> file_data ( (std::istreambuf_iterator<char> ( input_file ) ), std::istreambuf_iterator<char>() );
+		auto file_data = ReadFileAsBinary ( from );
 
 		SetResult ( from.filename().string(), file_data, results, data_type );
 
@@ -3610,11 +3606,7 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 			pdf_document->Write ( from.c_str() );
 			delete pdf_document; // make sure to close the file
 
-			// slurp up the file contents
-			boost::filesystem::ifstream input_file ( from, ios_base::in | ios_base::binary | ios_base::ate );
-			input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
-			input_file.seekg ( 0, ios::beg );
-			vector<char> file_data ( (std::istreambuf_iterator<char> ( input_file ) ), std::istreambuf_iterator<char>() );
+			auto file_data = ReadFileAsBinary ( from );
 
 			SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
 

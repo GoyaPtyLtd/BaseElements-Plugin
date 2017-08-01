@@ -74,6 +74,7 @@ const fmx::int32 IndexForStream ( const fmx::BinaryData& data, const std::string
 const std::vector<char> DataAsVectorChar ( const fmx::BinaryData& data, const FMX_UInt32 which );
 const bool StreamIsCompressed ( const fmx::BinaryData& data );
 
+const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path );
 std::string ReadFileAsUTF8 ( const boost::filesystem::path path );
 std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from = g_text_encoding );
 std::string ConvertTextEncoding ( std::string& in, const std::string& to, const std::string& from = g_text_encoding );

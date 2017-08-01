@@ -625,6 +625,35 @@ const bool StreamIsCompressed ( const BinaryData& data )
 #pragma mark Files
 #pragma mark -
 
+
+const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path )
+{
+	
+	std::vector<char> file_data;
+	
+	if ( exists ( path ) ) {
+		size_t length = (size_t)file_size ( path ); // boost::uintmax_t
+		
+		if ( length > 0 ) {
+			
+			// slurp up the file contents
+			boost::filesystem::ifstream input_file ( path, ios_base::in | ios_base::binary | ios_base::ate );
+			input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
+			input_file.seekg ( 0, ios::beg );
+			file_data.resize ( length );
+			input_file.read ( &file_data[0], length );
+			
+		}
+		
+	} else {
+		throw BEPlugin_Exception ( kNoSuchFileOrDirectoryError );
+	}
+	
+	return file_data;
+	
+} // ReadFileAsUTF8
+
+
 std::string ReadFileAsUTF8 ( const boost::filesystem::path path )
 {
 
