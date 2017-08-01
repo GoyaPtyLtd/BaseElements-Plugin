@@ -64,6 +64,7 @@ const std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::Data
 const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::string ParameterFileName ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& parameters, const fmx::uint32 which = 0);
 
 const int PreferredContainerType ( const fmx::BinaryData& data );
 const bool BinaryDataAvailable ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );

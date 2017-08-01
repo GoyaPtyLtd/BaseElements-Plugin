@@ -372,18 +372,8 @@ fmx::errcode BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environ
 
 	try {
 
-		std::string contents;
-		
-		if ( BinaryDataAvailable ( parameters ) ) {
-			auto binary_contents = ParameterAsVectorChar ( parameters );
-			const std::string temporary_contents ( binary_contents.begin(), binary_contents.end() );
-			contents = temporary_contents;
-		} else {
-			auto file = ParameterAsPath ( parameters );
-			contents = ReadFileAsUTF8 ( file );
-		}
-
-		SetResult ( contents, results );
+		auto file_contents = ParameterPathOrContainerAsUTF8 ( parameters );
+		SetResult ( file_contents, results );
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -885,6 +875,8 @@ fmx::errcode BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */
 	try {
 
 		path xml_path = ParameterAsPath ( parameters );
+		auto xml = ParameterPathOrContainerAsUTF8 ( parameters );
+
 		auto xslt = ParameterAsUTF8String ( parameters, 1 );
 		path csv_path = ParameterAsPath ( parameters, 2 );
 

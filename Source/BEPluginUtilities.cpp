@@ -465,6 +465,25 @@ const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt
 } // ParameterFileName
 
 
+const std::string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, const fmx::uint32 which )
+{
+	std::string file_contents;
+	
+	if ( BinaryDataAvailable ( parameters, which ) ) {
+		auto binary_contents = ParameterAsVectorChar ( parameters, which );
+		const std::string temporary_contents ( binary_contents.begin(), binary_contents.end() );
+		file_contents = temporary_contents;
+	} else {
+		auto file = ParameterAsPath ( parameters, which );
+		file_contents = ReadFileAsUTF8 ( file );
+	}
+	
+	return file_contents;
+	
+} // ParameterPathOrContainerAsUTF8
+
+
+
 #pragma mark -
 #pragma mark Containers
 #pragma mark -
