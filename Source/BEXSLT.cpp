@@ -46,8 +46,6 @@ using namespace fmx;
 
 TextUniquePtr ReportXSLTError ( const xmlChar * url );
 std::string ConvertFileMakerEOLs ( std::string& in );
-void InitialiseLibXSLT ( void );
-void CleanupLibXSLT ( void );
 
 
 int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
@@ -184,9 +182,7 @@ TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, con
 {
 	g_last_xslt_error = kNoError;
 	TextUniquePtr result;
-	
-	InitialiseLibXSLT();
-	
+		
 	// parse the stylesheet
 	xslt = ConvertFileMakerEOLs ( xslt ); // otherwise all errors occur on line 1
 	int options = XML_PARSE_HUGE;
@@ -256,9 +252,7 @@ TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, con
 			xsltFreeStylesheet ( stylesheet );
 		}
 	}
-	
-	CleanupLibXSLT();
-	
+		
 	if ( g_last_xslt_error != kNoError ) {
 		// something has gone very wrong
 		throw exception();

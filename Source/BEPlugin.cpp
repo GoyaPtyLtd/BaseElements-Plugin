@@ -40,6 +40,7 @@
 #include "BEPluginUtilities.h"
 #include "BEFileMakerPlugin.h"
 #include "BESQLCommand.h"
+#include "BEXSLT.h"
 #include "Crypto/BEMessageDigest.h"
 
 #ifdef FMX_MAC_TARGET
@@ -82,6 +83,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	SetTextEncoding ( );
 
 	InitialiseForPlatform ( );
+	InitialiseLibXSLT();
 
 
 	QuadCharUniquePtr plugin_id ( PLUGIN_ID );
@@ -292,6 +294,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 
 static void UnloadPlugin ( void ) {
+
+	CleanupLibXSLT();
 
 	delete g_be_plugin;	// un-register the plugin functions
 

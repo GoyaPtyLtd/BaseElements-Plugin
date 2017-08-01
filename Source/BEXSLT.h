@@ -21,6 +21,9 @@
 #include <libxml/xpathInternals.h>
 
 
+void InitialiseLibXSLT ( void );
+void CleanupLibXSLT ( void );
+
 fmx::TextUniquePtr ApplyXSLT ( const boost::filesystem::path& xml_path, std::string& xslt, const boost::filesystem::path& csv_path );
 fmx::TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, const boost::filesystem::path csv_path = "" );
 fmx::TextUniquePtr ApplyXPathExpression ( std::string& xml, std::string& xpath, std::string& ns_list, const xmlXPathObjectType xpath_object_type = XPATH_STRING );
