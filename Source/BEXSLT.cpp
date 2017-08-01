@@ -176,59 +176,8 @@ void CleanupLibXSLT ( void )
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////
-//	The following code originally supplied by Magnus Strand, http://www.smartasystem.se/
+//	The following includes code supplied by Magnus Strand, http://www.smartasystem.se/
 ////////////////////////////////////////////////////////////////////////////////////////
-
-
-#if defined(FMX_MAC_TARGET)
-
-/**
- * xmlBufferWrite:
- * @context:  the xmlBuffer
- * @buffer:  the data to write
- * @len:  number of bytes to write
- *
- * Write @len bytes from @buffer to the xml buffer
- *
- * Returns the number of bytes written
- */
-
-static int xmlBufferWrite (void * context, const char * buffer, int len)
-{
-    int ret;
-	
-    ret = xmlBufferAdd((xmlBufferPtr) context, (const xmlChar *) buffer, len);
-    if (ret != 0)
-        return(-1);
-    return(len);
-}
-
-
-/**
- * xmlOutputBufferCreateBuffer:
- * @buffer:  a xmlBufferPtr
- * @encoder:  the encoding converter or NULL
- *
- * Create a buffered output for the progressive saving to a xmlBuffer
- *
- * Returns the new parser output or NULL
- */
-
-xmlOutputBufferPtr xmlOutputBufferCreateBuffer(xmlBufferPtr buffer, xmlCharEncodingHandlerPtr encoder)
-{
-    xmlOutputBufferPtr ret;
-	
-    if (buffer == NULL) return(NULL);
-	
-    ret = xmlOutputBufferCreateIO((xmlOutputWriteCallback)
-                                  xmlBufferWrite,
-                                  (xmlOutputCloseCallback)
-                                  NULL, (void *) buffer, encoder);
-	
-    return(ret);
-}
-
-#endif
 
 
 TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, const boost::filesystem::path csv_path )
