@@ -44,7 +44,7 @@ using namespace std;
 using namespace fmx;
 
 
-TextUniquePtr ReportXSLTError ( const xmlChar * url );
+const TextUniquePtr ReportXSLTError ( const xmlChar * url );
 std::string ConvertFileMakerEOLs ( std::string& in );
 
 
@@ -54,11 +54,10 @@ TextUniquePtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObj
 void NodeSetToValueList ( xmlNodeSetPtr ns, TextUniquePtr& result );
 
 
-
 // globals for error reporting
 
-TextUniquePtr g_last_xslt_error_text;
-errcode g_last_xslt_error;
+thread_local std::string g_last_xslt_error_text;
+thread_local errcode g_last_xslt_error;
 
 
 // custom error handler for libxml/libxslt ... gather errors reported into a global
@@ -74,9 +73,7 @@ static void XSLTErrorFunction ( void *context ATTRIBUTE_UNUSED, const char *mess
 		
 		int error = xmlStrVPrintf ( buffer, size, message, parameters ); // -1 on error
 		if ( error != -1 ) {
-			TextUniquePtr error_message;
-			error_message->Assign ( (const char*)buffer, Text::kEncoding_UTF8 );
-			g_last_xslt_error_text->AppendText ( *error_message );
+			g_last_xslt_error_text += reinterpret_cast<char*> ( buffer );
 		} else {
 			g_last_xslt_error = kLowMemoryError;
 		}
@@ -94,29 +91,28 @@ static void XSLTErrorFunction ( void *context ATTRIBUTE_UNUSED, const char *mess
 
 // format an error as per xsltproc
 
-TextUniquePtr ReportXSLTError ( const xmlChar * url )
+const TextUniquePtr ReportXSLTError ( const xmlChar * url )
 {	
 	if ( url == NULL ) {
 		string unknown = ""; // <unknown>
 		url = (xmlChar *)unknown.c_str();
 	}
 
-	TextUniquePtr	result_text;
-	result_text->AppendText ( *g_last_xslt_error_text );
+	std::string result_text = g_last_xslt_error_text;
 
 	if ( xmlStrlen ( url ) > 0 ) {
 		
 		string format = "no result for %s\n";
-		string message = boost::str ( boost::format ( format ) %url );
-		TextUniquePtr no_result_for;
-		no_result_for->Assign ( message.c_str(), Text::kEncoding_UTF8 );
-		result_text->AppendText ( *no_result_for );
+		result_text += boost::str ( boost::format ( format ) %url );
 
 	}
 	
-	g_last_xslt_error_text->Assign ( "" );
+	g_last_xslt_error_text.clear();
 	
-	return result_text;
+	TextUniquePtr error_message;
+	error_message->Assign ( result_text.c_str() );
+	
+	return error_message;
 	
 } // ReportXSLTError
 
@@ -148,19 +144,23 @@ std::string ConvertFileMakerEOLs ( std::string& in )
 void InitialiseLibXSLT ( void )
 {
 	xmlInitMemory();
-	xsltRegisterAllExtras();
-	exsltRegisterAll();
-	
+	xmlInitParser();
+
 	xmlSubstituteEntitiesDefault ( 1 );
 	xmlLoadExtDtdDefaultValue = 1;
     xmlLineNumbersDefault ( 1 );
+
+	xsltInit();
+	xsltRegisterAllExtras();
+	exsltRegisterAll();
+	
 }
 
 
 void CleanupLibXSLT ( void )
 {
-	xsltCleanupGlobals();
 	xmlCleanupParser();
+	xsltCleanupGlobals();
 }
 
 
@@ -174,7 +174,7 @@ void CleanupLibXSLT ( void )
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////
-//	The following includes code supplied by Magnus Strand, http://www.smartasystem.se/
+//	ApplyXSLTInMemory includes code supplied by Magnus Strand, http://www.smartasystem.se/
 ////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -454,8 +454,6 @@ TextUniquePtr ApplyXPathExpression ( std::string& xml, std::string& xpath, std::
 	g_last_xslt_error = kNoError;
 	TextUniquePtr result;
 	
-	xmlInitParser();
-	
 	// parse the xml
 	int options = XML_PARSE_HUGE;
 	xmlDocPtr doc = xmlReadDoc ( (xmlChar *)xml.c_str(), NULL, NULL, options );
@@ -494,18 +492,12 @@ TextUniquePtr ApplyXPathExpression ( std::string& xml, std::string& xpath, std::
 	
 	xmlErrorPtr xml_error = xmlGetLastError();
 	
-	if ( xml_error != NULL && g_last_xslt_error_text->GetSize() == 0 ) {
-		g_last_xslt_error_text->Assign ( xml_error->message );
+	if ( xml_error != NULL && g_last_xslt_error_text.empty() == 0 ) {
+		g_last_xslt_error_text = xml_error->message;
 		result->AppendText ( *ReportXSLTError ( NULL ) );
 	}
-
-	xmlCleanupParser();
 	
 	return result;
 	
 } // ApplyXPathExpression
-
-
-
-///////////////////////////////////////////////////////////////////////
 

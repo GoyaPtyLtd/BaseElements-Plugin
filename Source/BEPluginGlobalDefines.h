@@ -84,7 +84,8 @@
 #include "BEPluginVersion.h"
 #include "BECppUtilities.h"
 
-extern fmx::errcode g_last_error;
+
+thread_local extern fmx::errcode g_last_error;
 
 
 #endif // __cplusplus

@@ -218,7 +218,7 @@ Download the source for libxml2 from
 and expand it into a directory on the Desktop.
 
 	cd libxml2-2.9.4
-	CFLAGS=-fPIC ./configure --without-python --prefix=build
+	CFLAGS=-fPIC ./configure --with-threads --without-python --prefix=build
 	make install
 
 Copy build/libxml2.a to Libraries/linux folder and, copy

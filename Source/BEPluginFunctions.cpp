@@ -97,7 +97,8 @@ using namespace boost::filesystem;
 
 #define GZIP_FILE_EXTENSION string ( ".gz" )
 
-errcode g_last_error;
+
+thread_local errcode g_last_error;
 errcode g_last_ddl_error;
 string g_text_encoding;
 string g_json_error_description;
@@ -3645,6 +3646,4 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 	return MapError ( error );
 
 } // BE_PDF_Append
-
-
 

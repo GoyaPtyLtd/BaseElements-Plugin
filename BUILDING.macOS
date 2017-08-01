@@ -226,7 +226,7 @@ Download the source for libxml2 from
 and expand it into a directory on the Desktop.
 
 	cd libxml2-2.9.4
-	./configure  CFLAGS="-mmacosx-version-min=10.7" --disable-shared --without-python --without-zlib --prefix=<path to Desktop>/libxml2-2.9.4/build
+	./configure  CFLAGS="-mmacosx-version-min=10.7" --disable-shared --with-threads --without-python --without-zlib --prefix=<path to Desktop>/libxml2-2.9.4/build
 	make install
 	
 and then copy libxml2.a from build/lib to the Libraries/macOS directory and the libxml2 directory from build/include to Headers.

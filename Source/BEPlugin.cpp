@@ -53,6 +53,7 @@
 	#include "BELinuxFunctions.h"
 #endif
 
+
 using namespace std;
 using namespace fmx;
 
@@ -63,11 +64,10 @@ using namespace fmx;
 #pragma mark Globals
 #pragma mark -
 
-FMX_ExternCallPtr gFMX_ExternCallPtr;	// required by the FMX API
-BEFileMakerPlugin * g_be_plugin;		// the plug-in instance
+FMX_ExternCallPtr gFMX_ExternCallPtr;			// required by the FMX API
+thread_local BEFileMakerPlugin * g_be_plugin;	// the plug-in instance
 
 extern BESQLCommandUniquePtr g_ddl_command;
-
 
 #pragma mark -
 #pragma mark Functions
@@ -214,7 +214,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
 	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
 	g_be_plugin->RegisterHiddenFunction ( kBE_HMAC_Deprecated, BE_HMAC_Deprecated, 2, 5 );
-	
+
 	g_be_plugin->RegisterHiddenFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
 	g_be_plugin->RegisterHiddenFunction ( kBE_Encoding_Base64 + kBE_EncodingOffset, BE_NumericConstants );
 

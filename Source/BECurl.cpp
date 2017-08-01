@@ -70,7 +70,7 @@ struct host_details g_http_proxy;
 BECurlOptionMap g_curl_options;
 
 extern BEOAuth * g_oauth;
-extern BEFileMakerPlugin * g_be_plugin;
+thread_local extern BEFileMakerPlugin * g_be_plugin;
 
 
 #pragma mark -
@@ -375,7 +375,7 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	} else if ( http_method == kBE_HTTP_METHOD_PATCH ) {
 		easy_setopt ( CURLOPT_CUSTOMREQUEST, HTTP_METHOD_PATCH );
 	}
-	
+
 	// any custom options, headers etc.
 
 	set_parameters ( );
@@ -386,7 +386,7 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 
 	easy_setopt ( CURLOPT_USERAGENT, USER_AGENT_STRING );
 	easy_setopt ( CURLOPT_FORBID_REUSE, 1L ); // stop fms running out of file descriptors under heavy usage
-	
+
 	// allow the user to override anything we set
 	set_options ( g_curl_options );
 
@@ -395,30 +395,30 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 
 BECurl::~BECurl()
 {
-	
+
 	if ( upload_file ) {
 		fclose ( upload_file );
 		upload_file = NULL;
 	}
-	
+
 	be_free ( headers.memory );
 	be_free ( data.memory );
-	
+
 	if ( custom_headers ) {
 		curl_slist_free_all ( custom_headers );
 	}
-	
+
 	if ( command_list ) {
 		curl_slist_free_all ( command_list );
 	}
-	
-	
+
+
 	g_last_error = last_error();
 	g_http_response_code = response_code();
 	g_http_response_headers = response_headers();
 	g_http_custom_headers.clear();
 
-	
+
 	curl_easy_cleanup ( curl );
 	curl_formfree ( post_data );
 	curl_global_cleanup();
@@ -642,9 +642,9 @@ void BECurl::set_parameters ( )
 	if ( http_method == kBE_HTTP_METHOD_POST || !parameters.empty() ) {
 
 		if ( 0 == parameters.find ( "@" ) ) { // let curl do the work unless there's a file path
-			
+
 			parameters.erase ( parameters.begin() );
-			
+
 			// slurp up the file contents
 			boost::filesystem::ifstream input_file ( parameters, ios_base::in | ios_base::binary | ios_base::ate );
 			input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
@@ -653,12 +653,12 @@ void BECurl::set_parameters ( )
 
 			easy_setopt ( CURLOPT_POSTFIELDS, &file_data[0] );
 			easy_setopt ( CURLOPT_POSTFIELDSIZE, file_data.size() );
-			
+
 		} else if ( std::string::npos == parameters.find ( "=@" ) ) { // let curl do the work unless there's a file path
-			
+
 			easy_setopt ( CURLOPT_POSTFIELDS, parameters.c_str() );
 			easy_setopt ( CURLOPT_POSTFIELDSIZE, parameters.length() );
-			
+
 		} else {
 
 			vector<string> fields;
