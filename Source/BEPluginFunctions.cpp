@@ -3592,7 +3592,6 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 		} else {
 
 			auto pdf_path = ParameterAsPath ( parameters );
-			output_path.make_preferred();
 			rename ( temporary_file, output_path );
 
 //			SetResult ( nothing, results );
@@ -3684,7 +3683,6 @@ fmx::errcode BE_PDF_GetPages ( short /* funcId */, const ExprEnv& /* environment
 			
 		} else {
 			
-			output_path.make_preferred();
 			rename ( temporary_file, output_path );
 			
 //			SetResult ( nothing, results );
