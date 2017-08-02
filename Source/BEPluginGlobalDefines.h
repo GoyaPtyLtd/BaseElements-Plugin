@@ -136,6 +136,7 @@ enum functions {
 	kBE_OpenFile = 125,
 	kBE_FileSize = 126,
     kBE_File_Modification_Timestamp = 127,
+	kBE_WriteTextFileToContainer = 140,
 	kBE_ExecuteScript = 150,
 	kBE_FileMakerSQL = 151,
 	kBE_HTTP_GET_File = 152,

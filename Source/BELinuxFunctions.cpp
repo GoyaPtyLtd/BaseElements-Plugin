@@ -187,6 +187,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_FileSize ] = "BE_FileSize ( path )";
 	strings [ kBE_File_Modification_Timestamp ] = "BE_File_Modification_Timestamp ( path )";
 	strings [ 128 ] = "BaseElements";
+	strings [ kBE_WriteTextFileToContainer ] = "BE_WriteTextFileToContainer ( path ; text {; append} )";
 	strings [ kBE_ExecuteScript ] = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
 	strings [ kBE_FileMakerSQL ] = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )";
 	strings [ kBE_HTTP_GET_File ] = "BE_HTTP_GET ( url {; filename ; username ; password } )";

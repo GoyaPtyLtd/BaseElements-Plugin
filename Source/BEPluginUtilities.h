@@ -69,7 +69,9 @@ const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& paramet
 const boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::string ParameterFileName ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& parameters, const fmx::uint32 which = 0 );
+#if ! ( FMX_IOS_TARGET )
 std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const fmx::DataVect& parameters, const fmx::uint32 which = 0 );
+#endif
 
 const int PreferredContainerType ( const fmx::BinaryData& data );
 const bool BinaryDataAvailable ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );

@@ -40,6 +40,8 @@
 
 "128" = "BaseElements";
 
+"140" = "BE_WriteTextFileToContainer ( path ; text {; append} )";
+
 "150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
 "151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )";
 "152" = "BE_HTTP_GET ( url {; filename ; username ; password } )";

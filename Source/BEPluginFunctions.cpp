@@ -394,13 +394,13 @@ fmx::errcode BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environ
 fmx::errcode BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
-
+	
 	try {
-
+		
 		path path = ParameterAsPath ( parameters );
-
+		
 		// should the text be appended to the file or replace any existing contents
-
+		
 		ios_base::openmode mode = ios_base::trunc;
 		if ( parameters.Size() == 3 ) {
 			bool append = parameters.AtAsBoolean ( 2 );
@@ -408,13 +408,59 @@ fmx::errcode BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* environm
 				mode = ios_base::app;
 			}
 		}
-
+		
 		std::string text_to_write = ParameterAsUTF8String ( parameters, 1 );
 		vector<char> out = ConvertTextEncoding ( (char *)text_to_write.c_str(), text_to_write.size(), g_text_encoding, UTF8 );
-
+		
 		error = write_to_file ( path, out, mode );
-
+		
 		SetResult ( error, results );
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_WriteTextToFile
+
+
+fmx::errcode BE_WriteTextFileToContainer ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto file_name = ParameterFileName ( parameters );
+		
+		if ( !file_name.empty() ) {
+			
+			std::string text_to_write;
+			
+			// should the text be appended to the file or replace any existing contents
+			
+			//		if ( parameters.Size() == 3 ) {
+			auto append = ParameterAsBoolean ( parameters, 2, false );
+			if ( append && BinaryDataAvailable ( parameters )) {
+				text_to_write = ParameterPathOrContainerAsUTF8 ( parameters );
+			}
+			//		}
+			
+			text_to_write += ParameterAsUTF8String ( parameters, 1 );
+			
+			auto out = ConvertTextEncoding ( (char *)text_to_write.c_str(), text_to_write.size(), g_text_encoding, UTF8 );
+			
+			if ( !out.empty() ) {
+				SetResult ( file_name, out, results );
+			}
+			
+		} else {
+			error = kRequestedDataIsMissingError;
+		}
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -423,10 +469,10 @@ fmx::errcode BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* environm
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-
+	
 	return MapError ( error );
-
-} // BE_WriteTextToFile
+	
+} // BE_WriteTextFileToContainer
 
 
 /*
