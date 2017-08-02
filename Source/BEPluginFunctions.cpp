@@ -3591,7 +3591,6 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 
 		} else {
 
-			auto pdf_path = ParameterAsPath ( parameters );
 			rename ( temporary_file, output_path );
 
 //			SetResult ( nothing, results );
