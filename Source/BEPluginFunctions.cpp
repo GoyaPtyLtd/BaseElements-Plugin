@@ -3574,30 +3574,17 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 
 	try {
 
-		auto pdf_document ( new PoDoFo::PdfMemDocument ( ) );
+		auto pdf_document = ParameterAsPDF ( parameters );
 
-		if ( BinaryDataAvailable ( parameters ) ) {
-			auto pdf = ParameterAsVectorChar ( parameters );
-			pdf_document->Load ( pdf.data(), pdf.size() );
-		} else {
+		if ( ! BinaryDataAvailable ( parameters ) ) {
 			auto pdf_path = ParameterAsPath ( parameters );
 			pdf_path.make_preferred();
-			pdf_document->Load ( pdf_path.c_str() );
 			destination = pdf_path.filename().string();
 		}
 
-		auto pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
-		if ( BinaryDataAvailable ( parameters, 1 ) ) {
-			auto pdf_to_append = ParameterAsVectorChar ( parameters, 1 );
-			pdf_document_to_append->Load ( pdf_to_append.data(), pdf_to_append.size() );
-		} else {
-			auto pdf_path_to_append = ParameterAsPath ( parameters, 1 );
-			pdf_path_to_append.make_preferred();
-			pdf_document_to_append->Load ( pdf_path_to_append.c_str() );
-		}
-
+		auto pdf_document_to_append = ParameterAsPDF ( parameters, 1 );
 		pdf_document->Append ( *pdf_document_to_append );
-		delete pdf_document_to_append; // make sure to close the file
+		pdf_document_to_append.reset(); // make sure to close the file
 		
 		auto output_path = ParameterAsPath ( parameters, 2 );
 		if ( output_path.empty() ) {
@@ -3605,20 +3592,18 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 			// write out a temporary file
 			auto from = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
 			pdf_document->Write ( from.c_str() );
-			delete pdf_document; // make sure to close the file
+			pdf_document.reset(); // make sure to close the file
 
 			auto file_data = ReadFileAsBinary ( from );
 
 			SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
-
-//			remove_all ( from );
 
 		} else {
 
 			// write out a temporary file
 			auto from = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
 			pdf_document->Write ( from.c_str() );
-			delete pdf_document; // make sure to close the file
+			pdf_document.reset(); // make sure to close the file
 
 			output_path.make_preferred();
 			rename ( from, output_path );
@@ -3646,4 +3631,35 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 	return MapError ( error );
 
 } // BE_PDF_Append
+
+
+fmx::errcode BE_PDF_PageCount ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+#if ! ( FMX_IOS_TARGET )
+	
+	try {
+		
+		auto pdf_document = ParameterAsPDF ( parameters );
+		
+		SetResult ( pdf_document->GetPageCount(), results );
+		
+	} catch ( filesystem_error& e ) {
+		error = e.code().value();
+	} catch ( const PoDoFo::PdfError& e ) {
+		error = e.GetError();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+#endif
+	
+	return MapError ( error );
+	
+} // BE_PDF_PageCount
 

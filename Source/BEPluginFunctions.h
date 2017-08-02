@@ -143,6 +143,7 @@ fmx::errcode BE_Pause ( short funcId, const fmx::ExprEnv& environment, const fmx
 fmx::errcode BE_Get_Machine_Name ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_PDF_Append ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_PDF_PageCount ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 // Deprecated

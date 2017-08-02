@@ -484,6 +484,27 @@ const std::string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, c
 
 
 
+std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& parameters, const fmx::uint32 which )
+{
+	std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document ( new PoDoFo::PdfMemDocument ( ) );
+	
+	if ( BinaryDataAvailable ( parameters, which ) ) {
+		auto pdf = ParameterAsVectorChar ( parameters, which );
+		pdf_document->Load ( pdf.data(), pdf.size() );
+	} else {
+		auto pdf_path = ParameterAsPath ( parameters, which );
+		pdf_path.make_preferred();
+		pdf_document->Load ( pdf_path.c_str() );
+	}
+	
+	return pdf_document;
+	
+} // ParameterPathOrContainerAsUTF8
+
+
+
+
+
 #pragma mark -
 #pragma mark Containers
 #pragma mark -
