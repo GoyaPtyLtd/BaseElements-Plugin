@@ -278,8 +278,9 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_Array_Find ] = "BE_Array_Find ( array ; value )";
 	strings [ kBE_Array_Change_Value ] = "BE_Array_Change_Value ( array ; valueNumber ; newValue )";
 	strings [ kBE_ConvertContainer ] = "BE_ConvertContainer ( field {; type ; width ; height } )";
-	strings [ kBE_PDF_Append ] = "BE_PDF_Append ( pdf ; pdf_to_append {; destination } )";
+	strings [ kBE_PDF_Append ] = "BE_PDF_Append ( pdf ; pdfToAppend {; destination } )";
 	strings [ kBE_PDF_PageCount ] = "BE_PDF_PageCount ( pdf )";
+	strings [ kBE_PDF_GetPages ] = "BE_PDF_GetPages ( pdf ; newPDF ; fromPage {; toPage } )";
 	strings [ kBE_XOR ] = "BE_XOR ( text ; xorWith )";
 	strings [ kBE_Vector_DotProduct ] = "BE_Vector_DotProduct ( a ; b )";
 	strings [ kBE_Vector_EuclideanDistance ] = "BE_Vector_EuclideanDistance ( a ; b )";

@@ -233,6 +233,7 @@ enum functions {
 	kBE_ConvertContainer = 700,
 	kBE_PDF_Append = 750,
 	kBE_PDF_PageCount = 751,
+	kBE_PDF_GetPages = 752,
 	kBE_XOR = 800,
 	kBE_Vector_DotProduct = 900,
 	kBE_Vector_EuclideanDistance = 901,

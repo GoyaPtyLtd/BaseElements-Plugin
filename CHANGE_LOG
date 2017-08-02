@@ -9,6 +9,7 @@ New Functions
 
 BE_Array_Change_Value
 BE_Array_Find
+BE_PDF_GetPages
 BE_PDF_PageCount
 
 

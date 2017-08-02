@@ -444,19 +444,26 @@ const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt
 	// make sure there's a parameter to get
 	if ( parameters.Size() > which ) {
 
-		const BinaryDataUniquePtr data ( parameters.AtAsBinaryData ( which ) );
+		if ( BinaryDataAvailable ( parameters, which ) ) {
 
-		fmx::TextUniquePtr name_as_fmx_text;
-		data->GetFNAMData ( *name_as_fmx_text );
-		std::string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
+			const BinaryDataUniquePtr data ( parameters.AtAsBinaryData ( which ) );
 
-		// if the file name is for an image strip the image: prefix
-		auto colon = name_as_string.find ( ":" );
-		if ( colon != std::string::npos ) {
-			name_as_string.erase ( 0, colon + 1 );
+			fmx::TextUniquePtr name_as_fmx_text;
+			data->GetFNAMData ( *name_as_fmx_text );
+			std::string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
+
+			// if the file name is for an image strip the image: prefix
+			auto colon = name_as_string.find ( ":" );
+			if ( colon != std::string::npos ) {
+				name_as_string.erase ( 0, colon + 1 );
+			}
+
+			file_name.assign ( name_as_string );
+			
+		} else {
+			auto path = ParameterAsPath ( parameters, which );
+			file_name = path.filename().string();
 		}
-
-		file_name.assign ( name_as_string );
 
 	}
 

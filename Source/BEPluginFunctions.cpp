@@ -3570,46 +3570,31 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 
 #if ! ( FMX_IOS_TARGET )
 	
-	auto destination = ParameterFileName ( parameters );
-
 	try {
 
 		auto pdf_document = ParameterAsPDF ( parameters );
-
-		if ( ! BinaryDataAvailable ( parameters ) ) {
-			auto pdf_path = ParameterAsPath ( parameters );
-			pdf_path.make_preferred();
-			destination = pdf_path.filename().string();
-		}
-
 		auto pdf_document_to_append = ParameterAsPDF ( parameters, 1 );
 		pdf_document->Append ( *pdf_document_to_append );
 		pdf_document_to_append.reset(); // make sure to close the file
 		
+		// write out a temporary file
+		auto temporary_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
+		pdf_document->Write ( temporary_file.c_str() );
+		pdf_document.reset(); // make sure to close the file
+		
 		auto output_path = ParameterAsPath ( parameters, 2 );
 		if ( output_path.empty() ) {
 
-			// write out a temporary file
-			auto from = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
-			pdf_document->Write ( from.c_str() );
-			pdf_document.reset(); // make sure to close the file
-
-			auto file_data = ReadFileAsBinary ( from );
-
+			auto file_data = ReadFileAsBinary ( temporary_file );
+			auto destination = ParameterFileName ( parameters );
 			SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
 
 		} else {
 
-			// write out a temporary file
-			auto from = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
-			pdf_document->Write ( from.c_str() );
-			pdf_document.reset(); // make sure to close the file
-
+			auto pdf_path = ParameterAsPath ( parameters );
 			output_path.make_preferred();
-			rename ( from, output_path );
+			rename ( temporary_file, output_path );
 
-			fmx::BinaryDataUniquePtr nothing;
-			results.SetBinaryData ( *nothing );
 //			SetResult ( nothing, results );
 
 		}
@@ -3642,8 +3627,8 @@ fmx::errcode BE_PDF_PageCount ( short /* funcId */, const ExprEnv& /* environmen
 	try {
 		
 		auto pdf_document = ParameterAsPDF ( parameters );
-		
-		SetResult ( pdf_document->GetPageCount(), results );
+		auto page_count = pdf_document->GetPageCount();
+		SetResult ( page_count, results );
 		
 	} catch ( filesystem_error& e ) {
 		error = e.code().value();
@@ -3662,4 +3647,65 @@ fmx::errcode BE_PDF_PageCount ( short /* funcId */, const ExprEnv& /* environmen
 	return MapError ( error );
 	
 } // BE_PDF_PageCount
+
+
+fmx::errcode BE_PDF_GetPages ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+#if ! ( FMX_IOS_TARGET )
+	
+	try {
+		
+		auto pdf_document = ParameterAsPDF ( parameters );
+		auto from = ParameterAsIndex ( parameters, 2 );
+		auto to = ParameterAsIndex ( parameters, 3 );
+		to = to < from ? from : to;
+
+		std::unique_ptr<PoDoFo::PdfMemDocument> new_pdf ( new PoDoFo::PdfMemDocument() );
+
+		for ( auto i = from ; i <= to ; i++ ) {
+			new_pdf->InsertExistingPageAt ( *pdf_document, (int)i , new_pdf->GetPageCount() );
+		}
+		
+		pdf_document.reset(); // make sure to close the file
+
+		// write out a temporary file
+		auto temporary_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
+		new_pdf->Write ( temporary_file.c_str() );
+		new_pdf.reset(); // make sure to close the file
+		
+		auto output_path = ParameterAsPath ( parameters, 1 );
+		if ( output_path.empty() ) {
+			
+			auto file_data = ReadFileAsBinary ( temporary_file );
+			auto destination = ParameterFileName ( parameters );
+			SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
+			
+		} else {
+			
+			output_path.make_preferred();
+			rename ( temporary_file, output_path );
+			
+//			SetResult ( nothing, results );
+			
+		}
+		
+	} catch ( filesystem_error& e ) {
+		error = e.code().value();
+	} catch ( const PoDoFo::PdfError& e ) {
+		error = e.GetError();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+#endif
+	
+	return MapError ( error );
+	
+} // BE_PDF_GetPages
 

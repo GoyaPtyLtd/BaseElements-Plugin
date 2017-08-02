@@ -173,8 +173,9 @@
 
 "700" = "BE_ConvertContainer ( field {; type ; width ; height } )";
 
-"750" = "BE_PDF_Append ( pdf ; pdf_to_append {; destination } )";
+"750" = "BE_PDF_Append ( pdf ; pdfToAppend {; destination } )";
 "751" = "BE_PDF_PageCount ( pdf )";
+"752" = "BE_PDF_GetPages ( pdf ; newPDF ; fromPage {; toPage } )";
 
 "800" = "BE_XOR ( text ; xorWith )";
 

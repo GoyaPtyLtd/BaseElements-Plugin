@@ -270,6 +270,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_PDF_Append, BE_PDF_Append, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_PDF_PageCount, BE_PDF_PageCount, 1 );
+	g_be_plugin->RegisterFunction ( kBE_PDF_GetPages, BE_PDF_GetPages, 3, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_XOR, BE_XOR, 2, 2 );
 
