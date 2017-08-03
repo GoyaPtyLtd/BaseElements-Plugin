@@ -2,7 +2,7 @@
  BESMTPEmailMessage.cpp
  BaseElements Plug-In
  
- Copyright 2014-2016 Goya. All rights reserved.
+ Copyright 2014-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -43,6 +43,9 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	mimetic::MimeVersion mime_version = mimetic::MimeVersion ( "1.0" );
 	text->header().mimeVersion( mime_version );
 
+	std::shared_ptr<BEValueList<std::string> > bcc ( new BEValueList<std::string> ( "" ) );
+	bcc_address_list = bcc;
+	
 }
 
 
@@ -77,11 +80,9 @@ void BESMTPEmailMessage::set_cc_addresses ( const std::string& email_addresses )
 
 void BESMTPEmailMessage::set_bcc_addresses ( const std::string& email_addresses )
 {
-	auto_ptr< BEValueList<string> > bcc ( new BEValueList<string> ( email_addresses ) );
-	if ( bcc->not_empty() ) {
-		message->header().bcc ( bcc->get_as_comma_separated() );
-	}
-
+	bcc_address_list->clear();
+	unique_ptr< BEValueList<string> > bcc ( new BEValueList<string> ( email_addresses ) );
+	bcc_address_list->append ( *bcc );
 }
 
 

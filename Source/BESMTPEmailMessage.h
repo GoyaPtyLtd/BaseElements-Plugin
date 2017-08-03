@@ -2,7 +2,7 @@
  BESMTPEmailMessage.h
  BaseElements Plug-In
  
- Copyright 2014-2016 Goya. All rights reserved.
+ Copyright 2014-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -47,7 +47,7 @@ public:
 	std::string from_address ( ) { return message->header().from().str(); };
 
 	std::auto_ptr< BEValueList<std::string> > cc_addresses ( ) { return get_address_list ( message->header().cc().str() ); };
-	std::auto_ptr< BEValueList<std::string> > bcc_addresses ( ) { return get_address_list ( message->header().bcc().str() ); };
+	std::shared_ptr< BEValueList<std::string> > bcc_addresses ( ) { return bcc_address_list; };
 
 	void set_cc_addresses ( const std::string& email_addresses );
 	void set_bcc_addresses ( const std::string& email_addresses );
@@ -63,6 +63,8 @@ protected:
 	mimetic::MimeEntity * message;
 	mimetic::MimeEntity * text;
 	mimetic::MimeEntity * html;
+
+	std::shared_ptr< BEValueList<std::string> > bcc_address_list;
 
 	BEValueList<boost::filesystem::path> attachments;
 	
