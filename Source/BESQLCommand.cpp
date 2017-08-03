@@ -18,7 +18,7 @@ using namespace std;
 using namespace fmx;
 
 
-extern errcode g_last_ddl_error;
+thread_local extern errcode g_last_ddl_error;
 BESQLCommandUniquePtr g_ddl_command;
 
 
