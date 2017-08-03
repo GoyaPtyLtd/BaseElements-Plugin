@@ -70,7 +70,12 @@ struct host_details g_http_proxy;
 BECurlOptionMap g_curl_options;
 
 extern BEOAuth * g_oauth;
-thread_local extern BEFileMakerPlugin * g_be_plugin;
+#ifdef FMX_IOS_TARGET
+	extern BEFileMakerPlugin * g_be_plugin;
+#else
+	thread_local extern BEFileMakerPlugin * g_be_plugin;	// the plug-in instance
+#endif
+
 
 
 #pragma mark -
