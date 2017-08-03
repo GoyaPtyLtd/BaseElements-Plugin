@@ -129,7 +129,9 @@ const bool SetClipboardData ( std::string& data, std::wstring& atype )
 
 const std::wstring SelectFileOrFolder ( const std::wstring& /* prompt */, const std::wstring& /* in_folder */, bool /* choose_file */ )
 {
-	
+
+	//	https://developer.apple.com/documentation/uikit/uidocumentpickerviewcontroller
+
 	return L"";
 	
 } // SelectFileOrFolder
@@ -150,6 +152,8 @@ const std::wstring SelectFolder ( const std::wstring& prompt, const std::wstring
 const std::wstring SaveFileDialog ( std::wstring& /* prompt */, std::wstring& /* fileName */, std::wstring& /* inFolder */ )
 {
 	
+	//	https://developer.apple.com/documentation/uikit/uidocumentpickerviewcontroller
+	
 	return L"";
 	
 } // SaveFileDialog
@@ -160,6 +164,8 @@ const std::wstring SaveFileDialog ( std::wstring& /* prompt */, std::wstring& /*
 const int DisplayDialog ( std::wstring& /* title */, std::wstring& /* message */, std::wstring& /* ok_button */, std::wstring& /* cancel_button */, std::wstring& /* alternate_button */ )
 {
 
+	//	https://code.tutsplus.com/tutorials/ios-fundamentals-uialertview-and-uialertcontroller--cms-24038
+	
 	return 0;
 
 } // DisplayDialog
@@ -174,6 +180,9 @@ const int DisplayDialog ( std::wstring& /* title */, std::wstring& /* message */
 const fmx::errcode DisplayProgressDialog ( const std::wstring& /* title */, const std::wstring& /* description*/, const long /* maximum */, const bool /* can_cancel */ )
 {
 	fmx::errcode error = kNoError;
+	
+	//	https://agilewarrior.wordpress.com/2012/04/03/how-to-display-uiactivityindicatorview-spinner-for-long-running-operations/
+	
 	return error;
 	
 }

@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleGetInfoString</key>
-	<string>${PRODUCT_NAME} Plugin version ${VERSION_STRING}, Copyright 2010-2016 by Goya.  All rights reserved.</string>
+	<string>${PRODUCT_NAME} Plugin version ${VERSION_STRING}, Copyright 2010-2017 by Goya.  All rights reserved.</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
