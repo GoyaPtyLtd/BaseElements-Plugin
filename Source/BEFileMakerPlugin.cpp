@@ -22,9 +22,6 @@
 using namespace fmx;
 
 
-extern BEFileMakerPlugin * g_be_plugin;		// the plug-in instance
-
-
 #pragma mark -
 #pragma mark Constructors
 #pragma mark -
