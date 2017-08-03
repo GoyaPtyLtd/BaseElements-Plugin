@@ -101,7 +101,7 @@ fmx::errcode ExecuteScript ( const fmx::Text& script_name, const fmx::Text& file
 fmx::errcode NoError ( void );
 fmx::errcode MapError ( const fmx::errcode error = kNoError, const bool map = false );
 
-void set_name_value_pair ( std::map<std::string, std::string>& pair, const std::string name, const std::string value );
+void set_name_value_pair ( const fmx::DataVect& parameters, std::map<std::string, std::string>& pairs );
 
 bool AllowUserAbort ( const fmx::ExprEnv& environment );
 std::string GetFileMakerTemporaryDirectory ( const fmx::ExprEnv& environment );

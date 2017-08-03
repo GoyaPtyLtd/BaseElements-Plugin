@@ -2148,7 +2148,7 @@ fmx::errcode BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* en
 
 		} else {
 
-			auto http_headers = boost::replace_all_copy (g_http_response_headers, "\r\n", "\n");;
+			auto http_headers = boost::replace_all_copy (g_http_response_headers, "\r\n", "\n" );
 
 			BEValueList<string> headers ( http_headers, "\n", false );
 			auto look_for = ParameterAsUTF8String ( parameters );
@@ -2176,13 +2176,10 @@ fmx::errcode BE_Net_Set_Header ( short funcId, const ExprEnv& /* environment */,
 
 	try {
 
-		auto name = ParameterAsUTF8String ( parameters );
-		auto value = ParameterAsUTF8String ( parameters, 1 );
-		
 		if ( funcId == kBE_HTTP_Set_Custom_Header ) {
-			set_name_value_pair ( g_http_custom_headers, name, value );
+			set_name_value_pair ( parameters, g_http_custom_headers );
 		} else {
-			set_name_value_pair ( g_smtp_custom_headers, name, value );
+			set_name_value_pair ( parameters, g_smtp_custom_headers );
 		}
 
 		SetResult ( g_last_error, results );

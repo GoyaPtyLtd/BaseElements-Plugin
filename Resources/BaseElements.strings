@@ -76,7 +76,7 @@
 "180" = "BE_HTTP_POST ( url ; parameters {; username ; password ; filename } )";
 "181" = "BE_HTTP_Response_Code";
 "182" = "BE_HTTP_Response_Headers ( { header } )";
-"183" = "BE_HTTP_Set_Custom_Header ( header ; value )";
+"183" = "BE_HTTP_Set_Custom_Header ( { header ; value } )";
 "184" = "BE_HTTP_DELETE ( url {; username ; password } )";
 "185" = "BE_HTTP_PUT_FILE ( url ; path {; username ; password } )";
 "186" = "BE_HTTP_Set_Proxy ( proxy {; port ; username ; password } )";
@@ -142,7 +142,7 @@
 "400" = "BE_SMTP_Server ( server { ; port ; username ; password } )";
 "401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
 "402" = "BE_SMTP_AddAttachment ( { attachment ; contentType } )";
-"403" = "BE_SMTP_Set_Header ( header ; value )";
+"403" = "BE_SMTP_Set_Header ( { header ; value } )";
 
 "450" = "BE_FMS_Upload_Database ( container ; path )";
 "451" = "BE_FMS_Download_Database ( path )";

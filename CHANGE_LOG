@@ -1,4 +1,17 @@
 ########################################################################
+Version 4.0b5
+########################################################################
+
+August 3, 2017
+
+
+Changes
+
+BE_HTTP_Set_Custom_Header: call with no parameters to delete all Headers
+BE_SMTP_Set_Custom_Header: call with no parameters to delete all Headers
+
+
+########################################################################
 Version 4.0b4
 ########################################################################
 

@@ -966,12 +966,19 @@ errcode MapError ( const errcode error, const bool map )
 #pragma mark -
 
 
-void set_name_value_pair ( std::map<std::string, std::string>& pair, const std::string name, const std::string value ) {
+void set_name_value_pair ( const DataVect& parameters, std::map<std::string, std::string>& pairs )
+{
 	
-	if ( value.empty() ) {
-		pair.erase ( name );
+	if ( parameters.Size() == 0 ) {
+		pairs.clear();
 	} else {
-		pair [ name ] = value;
+		auto name = ParameterAsUTF8String ( parameters );
+		auto value = ParameterAsUTF8String ( parameters, 1 );
+		if ( value.empty() ) {
+			pairs.erase ( name );
+		} else {
+			pairs [ name ] = value;
+		}
 	}
 	
 } // set_name_value_pair
