@@ -71,17 +71,21 @@ T regular_expression ( const T& text, const T& expression, const std::string opt
     T matched;
     
     try {
-        
-        Poco::RegularExpression re ( expression, constructor_options, false );
-            
-        if ( ! replace ) {
-            int match_options = 0;
-            re.extract ( text, matched, match_options );
-        } else {
-            matched = text;
-            re.subst ( matched, replace_with, replace_options ); // int now_many =
-        }
-            
+
+		if ( ! expression.empty() ) { // poco.re hangs when this is true
+			
+			Poco::RegularExpression re ( expression, constructor_options, false );
+			
+			if ( ! replace ) {
+				int match_options = 0;
+				re.extract ( text, matched, match_options );
+			} else {
+				matched = text;
+				re.subst ( matched, replace_with, replace_options ); // int now_many =
+			}
+			
+		}
+		
     } catch ( Poco::RegularExpressionException& e ) {
         throw BEPlugin_Exception ( e.code() );
     }
