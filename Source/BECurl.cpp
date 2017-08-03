@@ -419,8 +419,8 @@ BECurl::~BECurl()
 	g_http_custom_headers.clear();
 
 
-	curl_easy_cleanup ( curl );
 	curl_formfree ( post_data );
+	curl_easy_cleanup ( curl );
 	curl_global_cleanup();
 }
 
