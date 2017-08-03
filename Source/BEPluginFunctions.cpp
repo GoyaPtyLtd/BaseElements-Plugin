@@ -99,7 +99,7 @@ using namespace boost::filesystem;
 
 
 thread_local errcode g_last_error;
-errcode g_last_ddl_error;
+thread_local errcode g_last_ddl_error;
 string g_text_encoding;
 string g_json_error_description;
 BEOAuth * g_oauth;

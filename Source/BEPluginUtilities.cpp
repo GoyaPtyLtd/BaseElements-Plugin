@@ -57,7 +57,7 @@ using namespace fmx;
 using namespace boost::filesystem;
 
 
-extern errcode g_last_ddl_error;
+thread_local extern errcode g_last_ddl_error;
 
 
 #pragma mark -
