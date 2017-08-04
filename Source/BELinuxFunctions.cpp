@@ -283,6 +283,9 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_PDF_PageCount ] = "BE_PDF_PageCount ( pdf )";
 	strings [ kBE_PDF_GetPages ] = "BE_PDF_GetPages ( pdf ; newPDF ; fromPage {; toPage } )";
 	strings [ kBE_XOR ] = "BE_XOR ( text ; xorWith )";
+	strings [ kBE_InstallScriptStep ] = "BE_InstallScriptStep ( name ; definition ; id ; description ; calculation )";
+    strings [ kBE_RemoveScriptStep ] = "BE_RemoveScriptStep ( scriptStepId )";
+    strings [ kBE_PerformScriptStep ] = "BE_PerformScriptStep ( scriptStepId )";
 	strings [ kBE_Vector_DotProduct ] = "BE_Vector_DotProduct ( a ; b )";
 	strings [ kBE_Vector_EuclideanDistance ] = "BE_Vector_EuclideanDistance ( a ; b )";
 	strings [ kBE_Get_Machine_Name ] = "BE_Get_Machine_Name";

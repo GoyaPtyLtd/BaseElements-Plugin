@@ -26,9 +26,9 @@ using namespace fmx;
 #pragma mark Constructors
 #pragma mark -
 
-BEFileMakerPlugin::BEFileMakerPlugin ( fmx::QuadChar& plugin_id )
+BEFileMakerPlugin::BEFileMakerPlugin ( fmx::QuadChar& id )
 {
-	*id = plugin_id;
+	*plugin_id = id;
 }
 
 
@@ -37,7 +37,7 @@ BEFileMakerPlugin::~BEFileMakerPlugin()
 	// un-register all registered functions
 	std::vector<short>::iterator it = registered_functions.begin();
 	while ( it != registered_functions.end() ) {
-		fmx::ExprEnv::UnRegisterExternalFunction ( *id, *it );
+		fmx::ExprEnv::UnRegisterExternalFunction ( *plugin_id, *it );
 		++it;
 	}
 }
@@ -47,7 +47,7 @@ BEFileMakerPlugin::~BEFileMakerPlugin()
 #pragma mark -
 
 
-errcode BEFileMakerPlugin::RegisterHiddenFunction ( short function_id, fmx::ExtPluginType function_pointer, int minimum_parameters, int maximum_parameters )
+const errcode BEFileMakerPlugin::RegisterHiddenFunction ( short function_id, fmx::ExtPluginType function_pointer, int minimum_parameters, int maximum_parameters )
 {
 	FMX_UInt32 function_flags = 0x00000000; // not visisble anywhere
 	
@@ -57,7 +57,7 @@ errcode BEFileMakerPlugin::RegisterHiddenFunction ( short function_id, fmx::ExtP
 
 
 
-errcode BEFileMakerPlugin::RegisterFunction ( short function_id, fmx::ExtPluginType function_pointer, int minimum_parameters, int maximum_parameters )
+const errcode BEFileMakerPlugin::RegisterFunction ( short function_id, fmx::ExtPluginType function_pointer, int minimum_parameters, int maximum_parameters )
 {
 	FMX_UInt32 function_flags = ExprEnv::kDisplayInAllDialogs;
 	
@@ -67,7 +67,7 @@ errcode BEFileMakerPlugin::RegisterFunction ( short function_id, fmx::ExtPluginT
 
 
 
-errcode BEFileMakerPlugin::RegisterPluginFunction ( FMX_UInt32 function_flags, short function_id, ExtPluginType function_pointer, int minimum_parameters, int maximum_parameters )
+const errcode BEFileMakerPlugin::RegisterPluginFunction ( fmx::uint32 function_flags, short function_id, ExtPluginType function_pointer, int minimum_parameters, int maximum_parameters )
 {
 	int max_params = maximum_parameters ? maximum_parameters : minimum_parameters;
 	
@@ -79,9 +79,9 @@ errcode BEFileMakerPlugin::RegisterPluginFunction ( FMX_UInt32 function_flags, s
 	
 	if ( gFMX_ExternCallPtr->extnVersion >= k150ExtnVersion ) {
 		Do_GetString ( function_id, description, kFunctionDescription );
-		error_result = fmx::ExprEnv::RegisterExternalFunctionEx ( *id, function_id, *name, *prototype, *description, (short)minimum_parameters, (short)max_params, function_flags, function_pointer );
+		error_result = fmx::ExprEnv::RegisterExternalFunctionEx ( *plugin_id, function_id, *name, *prototype, *description, (short)minimum_parameters, (short)max_params, function_flags, function_pointer );
 	} else {
-		error_result = fmx::ExprEnv::RegisterExternalFunction ( *id, function_id, *name, *prototype, (short)minimum_parameters, (short)max_params, function_flags, function_pointer );
+		error_result = fmx::ExprEnv::RegisterExternalFunction ( *plugin_id, function_id, *name, *prototype, (short)minimum_parameters, (short)max_params, function_flags, function_pointer );
 	}
 	
 	// keep track of registered functions so that they can be automatically unregistered
@@ -95,14 +95,13 @@ errcode BEFileMakerPlugin::RegisterPluginFunction ( FMX_UInt32 function_flags, s
 }	//	RegisterFunction
 
 
-
 void BEFileMakerPlugin::set_fmx_application ( const FMX_Application fmx_application_value )
 {
 	fmx_application = fmx_application_value;
 }
 
 
-bool BEFileMakerPlugin::running_on_server ( )
+const bool BEFileMakerPlugin::running_on_server ( ) const
 {
 	return (fmx_application == kFMXT_Server) || (fmx_application == kFMXT_Web);
 }

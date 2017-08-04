@@ -181,6 +181,10 @@
 
 "800" = "BE_XOR ( text ; xorWith )";
 
+"850" = "BE_InstallScriptStep ( name ; definition ; id ; description ; calculation )";
+"851" = "BE_RemoveScriptStep ( scriptStepId )";
+"852" = "BE_PerformScriptStep ( scriptStepId )";
+
 "900" = "BE_Vector_DotProduct ( a ; b )";
 "901" = "BE_Vector_EuclideanDistance ( a ; b )";
 

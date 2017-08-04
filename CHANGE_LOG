@@ -2,7 +2,14 @@
 Version 4.0b5
 ########################################################################
 
-August 3, 2017
+August 5, 2017
+
+
+New Functions
+
+BE_InstallScriptStep
+BE_PerformScriptStep
+BE_RemoveScriptStep
 
 
 Changes

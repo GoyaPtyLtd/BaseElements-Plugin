@@ -147,6 +147,10 @@ fmx::errcode BE_PDF_Append ( short funcId, const fmx::ExprEnv& environment, cons
 fmx::errcode BE_PDF_PageCount ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_PDF_GetPages ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
+fmx::errcode BE_InstallScriptStep ( short /* function_id */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& reply );
+fmx::errcode BE_RemoveScriptStep ( short /* function_id */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& reply );
+fmx::errcode BE_PerformScriptStep ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& reply );
+
 
 // Deprecated
 

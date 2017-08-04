@@ -277,6 +277,10 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_PDF_PageCount, BE_PDF_PageCount, 1 );
 	g_be_plugin->RegisterFunction ( kBE_PDF_GetPages, BE_PDF_GetPages, 3, 4 );
 
+	g_be_plugin->RegisterFunction ( kBE_InstallScriptStep, BE_InstallScriptStep, 5 );
+	g_be_plugin->RegisterFunction ( kBE_RemoveScriptStep, BE_RemoveScriptStep, 1 );
+	g_be_plugin->RegisterFunction ( kBE_PerformScriptStep, BE_PerformScriptStep, 1 );
+	
 	g_be_plugin->RegisterFunction ( kBE_XOR, BE_XOR, 2, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_RegularExpression, BE_RegularExpression, 2, 4 );

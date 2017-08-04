@@ -38,6 +38,7 @@
 #include "BEXSLT.h"
 #include "BECurl.h"
 #include "BEFileSystem.h"
+#include "BEFileMakerPlugin.h"
 #include "BEFMS.h"
 #include "BEShell.h"
 #include "BEZlib.h"
@@ -97,6 +98,10 @@ using namespace boost::filesystem;
 
 #define GZIP_FILE_EXTENSION string ( ".gz" )
 
+
+//thread_local std::map<short, std::string> g_script_steps;
+std::map<short, std::string> g_script_steps;
+thread_local extern BEFileMakerPlugin * g_be_plugin;	// the plug-in instance
 
 thread_local errcode g_last_error;
 thread_local errcode g_last_ddl_error;
@@ -3168,6 +3173,144 @@ fmx::errcode BE_PDF_GetPages ( short /* funcId */, const ExprEnv& /* environment
 	return MapError ( error );
 	
 } // BE_PDF_GetPages
+
+
+
+#pragma mark -
+#pragma mark Script Steps
+#pragma mark -
+
+
+fmx::errcode BE_InstallScriptStep ( short /* function_id */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& /* reply */ )
+{
+	
+	errcode error = NoError();
+	
+	try {
+		
+		fmx::TextUniquePtr name;
+		name->SetText ( parameters.AtAsText ( 0 ) );
+		
+		fmx::TextUniquePtr definition;
+		definition->SetText ( parameters.AtAsText ( 1 ) );
+		
+		auto id = ParameterAsLong ( parameters, 2 );
+		
+		fmx::TextUniquePtr description;
+		description->SetText ( parameters.AtAsText ( 3 ) );
+			
+		const fmx::uint32 flags = fmx::ExprEnv::kAllDeviceCompatible;
+		
+		error = environment.RegisterScriptStep ( *g_be_plugin->id(), id, *name, *definition, *description, flags, BE_PerformScriptStep );
+			
+		if ( kNoError == error ) {
+			auto calculation = ParameterAsUTF8String ( parameters, 4 );
+			g_script_steps[(short)id] = calculation;
+		}
+		
+//		SetResult ( error, reply );
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+
+} // BE_InstallScriptStep
+
+
+fmx::errcode BE_RemoveScriptStep ( short /* function_id */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& /* reply */ )
+{
+	errcode error = NoError();
+		
+	try {
+			
+		auto id = ParameterAsLong ( parameters );
+
+		error = environment.UnRegisterScriptStep ( *g_be_plugin->id(), (short)id );
+		if ( kNoError == error ) {
+			g_script_steps.erase ( (short)id );
+		}
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+		
+	return MapError ( error );
+		
+} // BE_RemoveScriptStep
+
+
+fmx::errcode BE_PerformScriptStep ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& reply )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto calculation = g_script_steps [ function_id ];
+		
+		auto number_of_parameters = parameters.Size();
+		for ( fmx::uint32 i = 0 ; i < number_of_parameters ; i++ ) {
+			
+			auto data_type = parameters.At ( i ).GetNativeType();
+			
+			std::string parameter_value = "";
+			
+			switch ( data_type ) {
+					
+				case fmx::Data::kDTDate:
+				case fmx::Data::kDTNumber:
+				case fmx::Data::kDTTime:
+				case fmx::Data::kDTTimeStamp:
+				case fmx::Data::kDTBoolean:
+					
+					parameter_value = std::to_string ( ParameterAsLong ( parameters, i ) );
+					break;
+					
+				case fmx::Data::kDTBinary:
+				case fmx::Data::kDTText:
+				case fmx::Data::kDTInvalid:
+				default:
+					parameter_value = ParameterAsUTF8String ( parameters, i );
+					
+			}
+			
+			const std::string token = "###";
+			auto replace_this = token + std::to_string ( i ) + token;
+			
+			std::string::size_type position = 0;
+			while ( ( position = calculation.find ( replace_this, position ) ) != std::string::npos )
+			{
+				calculation.replace ( position, replace_this.size(), parameter_value );
+				position += parameter_value.size();
+			}
+			
+		}
+		
+		fmx::TextUniquePtr command;
+		command->Assign ( calculation.c_str(), fmx::Text::kEncoding_UTF8 );
+		
+		error = environment.Evaluate ( *command, reply );
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // PerformScriptStep
 
 
 
