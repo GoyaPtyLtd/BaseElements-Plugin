@@ -101,7 +101,11 @@ using namespace boost::filesystem;
 
 //thread_local std::map<short, std::string> g_script_steps;
 std::map<short, std::string> g_script_steps;
-thread_local extern BEFileMakerPlugin * g_be_plugin;	// the plug-in instance
+#ifdef FMX_IOS_TARGET
+	extern BEFileMakerPlugin * g_be_plugin;
+#else
+	thread_local extern BEFileMakerPlugin * g_be_plugin;	// the plug-in instance
+#endif
 
 thread_local errcode g_last_error;
 thread_local errcode g_last_ddl_error;
