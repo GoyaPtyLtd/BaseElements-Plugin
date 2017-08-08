@@ -99,13 +99,8 @@ using namespace boost::filesystem;
 #define GZIP_FILE_EXTENSION string ( ".gz" )
 
 
-//thread_local std::map<short, std::string> g_script_steps;
 std::map<short, std::string> g_script_steps;
-#ifdef FMX_IOS_TARGET
-	extern BEFileMakerPlugin * g_be_plugin;
-#else
-	thread_local extern BEFileMakerPlugin * g_be_plugin;	// the plug-in instance
-#endif
+extern BEFileMakerPlugin * g_be_plugin;
 
 thread_local errcode g_last_error;
 thread_local errcode g_last_ddl_error;
@@ -3065,7 +3060,7 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 			
 			rename ( temporary_file, output_path );
 			
-			//			SetResult ( nothing, results );
+//			SetResult ( nothing, results );
 			
 		}
 		
