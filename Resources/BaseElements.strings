@@ -1,218 +1,145 @@
-
 "1" = "GyBE1nnYYnn";
-"131" = "GyBE1nnYYnn";
-
-"102" = "BE_Version";
-"103" = "BE_VersionAutoUpdate";
-
-"104" = "BE_ClipboardFormats";
-"105" = "BE_ClipboardText ( format )";
-"106" = "BE_SetClipboardText ( text ; format )";
-
-"107" = "BE_CreateFolder ( path )";
-"108" = "BE_DeleteFile ( path )";
-"109" = "BE_FileExists ( path )";
-"110" = "BE_ReadTextFromFile ( path )";
-"111" = "BE_WriteTextToFile ( path ; text {; append} )";
-
-"112" = "BE_SelectFile ( prompt {; inFolder } )";
-"113" = "BE_SelectFolder ( prompt {; inFolder } )";
-
-"114" = "BE_DisplayDialog ( title ; message ; defaultButton {; cancelButton ; alternateButton } )";
-
-"115" = "BE_ApplyXSLT ( xmlPath ; xslt ; outputPath )";
-
-"116" = "BE_ExtractScriptVariables ( calculation )";
-
-"117" = "BE_StripInvalidUTF16CharactersFromXMLFile ( path )";
-
-"118" = "BE_MoveFile ( from ; to )";
-"119" = "BE_CopyFile ( from ; to )";
-
-
-"121" = "BE_ListFilesInFolder ( path {; type ; includeSubdirectories ; useFullPath } )";
-
-
-"124" = "BE_OpenURL ( url )";
-"125" = "BE_OpenFile ( path )";
-"126" = "BE_FileSize ( path )";
-"127" = "BE_File_Modification_Timestamp ( path )";
-
+"102" = "BE_Version|Version|Returns the plugin version number as text, eg 1.1.3";
+"103" = "BE_VersionAutoUpdate|Version Auto Update|The text of the plugin number, formatted as an 8 digit number, eg 00010712";
+"104" = "BE_ClipboardFormats|Clipboard Formats|Returns a return delimited list of the formats of the content of the current clipboard.";
+"105" = "BE_ClipboardText ( format )|Clipboard Text|Tries to convert the item on the current clipboard, designated by the format passed to the function. The function will only deal with text objects, so other clipboard types are ignored.";
+"106" = "BE_SetClipboardText ( text ; format )|Clipboard Text Set|Sets the clipboard to the text and applies a clipboard format. Clipboard formats are usually set by the application and depend on the content types. When setting a type it's best to copy a sample and then use BE_ClipboardFormats to see what types are used. You only need to apply a single format when setting the clipboard.";
+"107" = "BE_CreateFolder ( path )|Folder Create|Creates a new folder at the location path.";
+"108" = "BE_DeleteFile ( path )|File Delete|Deletes the file at location path. This function doesn't send files to the trash or recycle bin, so use with caution. Files deleted are gone.";
+"109" = "BE_FileExists ( path )|File Exists|Checks if the file or folder given in the path exists and returns True or False. For folders it accepts the name of the folder (and reports existence correctly) with or without a trailing / ";
+"110" = "BE_ReadTextFromFile ( path )|Reads the contents of the file at path as text and returns the content.|Not yet documented.";
+"111" = "BE_WriteTextToFile ( path ; text {; append} )|File Text Write|Writes the contents specified in text to the file at the path. Using the optional append parameter you can choose to either write a new file ( or overwrite an existing one ), or to append the text to the end of the file.\n\nDefaults to UTF-8 ( no BOM ) which can be changed using the BE_SetTextEncoding function.";
+"112" = "BE_SelectFile ( prompt {; inFolder } )|File Select|Displays the standard OS select file dialog. Changes the title of the dialog to the prompt specified, and optionally starts with the path given by the inFolder parameter, otherwise uses the most recent application folder.";
+"113" = "BE_SelectFolder ( prompt {; inFolder } )|Folder Select|Displays the standard OS select folder dialog which doesn't allow you to choose a file, only a folder. Changes the title of the dialog to the prompt specified, and optionally starts with the path given by the inFolder parameter, otherwise uses the most recent application folder.";
+"114" = "BE_DisplayDialog ( title ; message ; defaultButton {; cancelButton ; alternateButton } )|Dialog Display|Puts up a dialog almost exactly the same as the one that you can get with the Show Custom Dialog script step, minus the fields.  Use this function when you want to display a dialog from a calculation instead of a script step.";
+"115" = "BE_ApplyXSLT ( xmlPath ; xslt ; outputPath )|XML XSLT Apply|Applies the XSLT given by the xslt parameter, to the XML file at xmlPath, and writes the output to outputPath.";
+"116" = "BE_ExtractScriptVariables ( calculation )||BaseElements Internal : function not documented.";
+"117" = "BE_StripInvalidUTF16CharactersFromXMLFile ( path )||BaseElements Internal : function not documented.";
+"118" = "BE_MoveFile ( from ; to )|File Move|Moves the file specified in the from parameter, to the location in the to parameter.\n\nNote : on Mac OS X, the Move operation only works if the source and Destination are on the same volume. To move files across volumes, use a Copy and then Delete the original.\n";
+"119" = "BE_CopyFile ( from ; to )|File Copy|Copies the file specified in the from path parameter, to the location in the to path parameter.  Both paths are full paths not folders, including the output filename.";
+"121" = "BE_ListFilesInFolder ( path {; type ; includeSubdirectories ; useFullPath } )|Files Folder List|Lists the contents of a folder at the path, both files and folders by default or use a type from BE_FileType_All, BE_FileType_File, or BE_FileType_Folder. With the includeSubdirectories parameter set to true, it will recursively go into every sub folder and return all the results it finds. useFullPath will change the output to include full paths instead of just filenames.\n\nNotes:\n\nThe includeSubdirectories option means that it will try every single subfolder.  Be cautious when using this as it may take a long time to traverse all the sub folders.  \n\nAlso it is more than likely that at some point it will throw an error as it will come across a folder or file it doesn't have access to.  Then the function will stop and return error 13, and no data.  Managing individual errors like that amongst a potentially large set of files is beyond the scope of this function as implemented.\n\nIf you're getting error 13 when using this flag, consider doing without it and traversing the sub folders via script or recursion and ignoring the access error codes instead.";
+"124" = "BE_OpenURL ( url )|URL Open|Sends the url to the users default web browser.";
+"125" = "BE_OpenFile ( path )|File Open|Opens the file or folder at path using the default application.";
+"126" = "BE_FileSize ( path )|File Size|Returns the number of bytes in the file at path.";
+"127" = "BE_File_Modification_Timestamp ( path )|File Modification Timestamp|Returns the OS file modification time.  Usually in seconds, so can be converted to a timestamp like : GetAsTimestamp ( BE_File_Modification_Timestamp ( path ) ). However it is up to the Operating system as to what time it returns, and some OS versions may be more precise ( down to the millisecond ) and so the result could be different in different or future versions.";
 "128" = "BaseElements";
-
-"140" = "BE_WriteTextFileToContainer ( path ; text {; append} )";
-
-"150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
-"151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )";
-"152" = "BE_HTTP_GET ( url {; filename ; username ; password } )";
-"153" = "BE_GetLastError";
-
-"154" = "BE_MessageDigest_Deprecated ( text {; algorithm ; encoding } )";
-
-"155" = "BE_GetLastDDLError";
-
-"156" = "BE_HTTP_GET_File ( url ; path {; username ; password } )";
-
-
-"157" = "BE_ProgressDialog ( title ; description {; maximum } )";
-"158" = "BE_ProgressDialog_Update ( number {; description } )";
-
-"159" = "BE_Pause ( milliseconds )";
-
-
-"160" = "BE_SetPreference ( key ; value {; domain } )";
-"161" = "BE_GetPreference ( key {; domain } )";
-
-"170" = "BE_Unzip ( archive {; output_directory} )";
-"171" = "BE_Zip ( fileList {; archive} )";
-"172" = "BE_Base64_Decode_Deprecated ( text {; name } )";
-"173" = "BE_Base64_Encode_Deprecated ( data )";
-"174" = "BE_SetTextEncoding ( { encoding } )";
-"175" = "BE_Base64_URL_Encode_Deprecated ( data )";
-"176" = "BE_ExportFieldContents ( field {; outputPath } )";
-"177" = "BE_ImportFile ( path {; compress } )";
-
-
-"180" = "BE_HTTP_POST ( url ; parameters {; username ; password ; filename } )";
-"181" = "BE_HTTP_Response_Code";
-"182" = "BE_HTTP_Response_Headers ( { header } )";
-"183" = "BE_HTTP_Set_Custom_Header ( { header ; value } )";
-"184" = "BE_HTTP_DELETE ( url {; username ; password } )";
-"185" = "BE_HTTP_PUT_FILE ( url ; path {; username ; password } )";
-"186" = "BE_HTTP_Set_Proxy ( proxy {; port ; username ; password } )";
-"187" = "BE_Curl_Set_Option ( { option ; value } )";
-"188" = "BE_HTTP_PUT_DATA ( url ; data {; username ; password } )";
-"189" = "BE_FTP_Upload ( url ; data {; username ; password } )";
-"190" = "BE_Curl_Trace";
-"191" = "BE_FTP_Delete ( url {; username ; password } )";
-"192" = "BE_HTTP_PATCH ( url ; parameters {; username ; password } )";
-
-
-"200" = "BE_ApplyXSLTInMemory ( xml ; xslt )";
-"201" = "BE_XPath ( xml ; xpath {; namespaceList ; asText } )";
-"202" = "BE_XPathAll ( xml ; xpath {; namespaceList } )";
-
-"210" = "BE_StripXMLNodes ( inputPath ; outputPath ; nodeNames )";
-"211" = "BE_XML_Parse ( path )";
-"212" = "BE_SplitBEFileNodes ( path )";
-"213" = "BE_XML_Validate ( xml ; schema )";
-
-
-"220" = "BE_CurrentTimeMilliseconds";
-"221" = "BE_UTCMilliseconds";
-"222" = "BE_TimeZoneOffset";
-
-"230" = "BE_SaveFileDialog ( prompt {; fileName ; inFolder } )";
-
-"240" = "BE_RegularExpression ( text ; expression {; options ; replaceString } )";
-
-"250" = "BE_ContainerIsCompressed ( containerField )";
-"251" = "BE_ContainerCompress ( data {; filename } )";
-"252" = "BE_ContainerUncompress ( gzip_data {; filename } )";
-
-"260" = "BE_Gzip ( data {; filename } )";
-"261" = "BE_UnGzip ( gzip_data {; filename } )";
-
-
-// 271 replaces 270 (which is deprecated)
-"270" = "BE_JPEG_Recompress_Deprecated ( jpeg {; compressionLevel ; width ; height } )";
-"271" = "BE_JPEG_Recompress ( jpeg {; compressionLevel ; scale } )";
-
-"300" = "BE_JSONPath_Deprecated ( json ; path )";
-"301" = "BE_JSON_Error_Description_Deprecated";
-"302" = "BE_JSON_ArraySize_Deprecated ( json )";
-"303" = "BE_JSON_Encode_Deprecated ( key {; value ; type } )";
-
-
-"321" = "BE_OAuth_RequestAccessToken ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )";
-
-
-"330" = "BE_Xero_SetTokens ( consumer_key ; private_key )";
-"331" = "BE_Xero_GenerateKeys ( organisation {; organisationalUnit ; country ; state ; suburb ; domain ; emailAddress } )";
-
-
-"350" = "BE_Values_Unique ( listOfValues {; caseSensitive } )";
-"351" = "BE_Values_FilterOut ( textToFilter ; filterValues {; caseSensitive } )";
-"352" = "BE_Values_ContainsDuplicates ( listOfValues  {; caseSensitive } )";
-"353" = "BE_Values_Sort ( listOfValues {; ascending ; type } )";
-"354" = "BE_Values_TimesDuplicated ( listOfValues ; numberOfTimes )";
-"355" = "BE_Values_Trim ( listOfValues )";
-
-
-"400" = "BE_SMTP_Server ( server { ; port ; username ; password } )";
-"401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
-"402" = "BE_SMTP_AddAttachment ( { attachment ; contentType } )";
-"403" = "BE_SMTP_Set_Header ( { header ; value } )";
-
-"450" = "BE_FMS_Upload_Database ( container ; path )";
-"451" = "BE_FMS_Download_Database ( path )";
-"452" = "BE_FMS_List_Files ( username ; password {; showStatistics } )";
-"453" = "BE_FMS_Pause_Files ( username ; password {; files } )";
-"454" = "BE_FMS_Run_Schedule ( username ; password ; scheduleNumber )";
-"455" = "BE_FMS_List_Schedules ( username ; password )";
-"456" = "BE_FMS_List_Clients ( username ; password {; showStatistics } )";
-"457" = "BE_FMS_Resume_Files ( username ; password {; files } )";
-"458" = "BE_FMS_Close_Files ( username ; password {; files } )";
-"459" = "BE_FMS_Remove_Files ( username ; password {; files } )";
-"460" = "BE_FMS_Open_Files ( username ; password {; files } )";
-
-
-
-"500" = "BE_Encrypt_AES_Deprecated ( key ; text )";
-"501" = "BE_Decrypt_AES_Deprecated ( key ; text )";
-
-"550" = "BE_HMAC_Deprecated ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
-
-"600" = "BE_EvaluateJavaScript ( javaScript )";
-
-
-"650" = "BE_ArraySetFromValueList ( valueList )";
-"651" = "BE_ArrayGetSize ( array )";
-"652" = "BE_ArrayGetValue ( array ; valueNumber )";
-"653" = "BE_Array_Delete ( array )";
-"654" = "BE_Array_Find ( array ; value )";
-"655" = "BE_Array_Change_Value ( array ; valueNumber ; newValue )";
-
-"700" = "BE_ConvertContainer ( field {; type ; width ; height } )";
-
-"750" = "BE_PDF_Append ( pdf ; pdfToAppend {; destination } )";
-"751" = "BE_PDF_PageCount ( pdf )";
-"752" = "BE_PDF_GetPages ( pdf ; newPDF ; fromPage {; toPage } )";
-
-"800" = "BE_XOR ( text ; xorWith )";
-
-"850" = "BE_InstallScriptStep ( name ; definition ; id ; description ; calculation )";
-"851" = "BE_RemoveScriptStep ( scriptStepId )";
-"852" = "BE_PerformScriptStep ( scriptStepId )";
-
-"900" = "BE_Vector_DotProduct ( a ; b )";
-"901" = "BE_Vector_EuclideanDistance ( a ; b )";
-
-"950" = "BE_Get_Machine_Name";
-
-
-// replaces 120 BE_ExecuteShellCommand
-"1120" = "BE_ExecuteSystemCommand ( command { ; timeout } )";
-
-
-
-"1001" = "BE_OKButton";
-"1002" = "BE_CancelButton";
-"1003" = "BE_AlternateButton";
-
-"2001" = "BE_MessageDigestAlgorithm_MD5_Deprecated";
-"2002" = "BE_MessageDigestAlgorithm_SHA256_Deprecated";
-"2004" = "BE_MessageDigestAlgorithm_MDC2_Deprecated";
-"2006" = "BE_MessageDigestAlgorithm_SHA_Deprecated";
-"2007" = "BE_MessageDigestAlgorithm_SHA1_Deprecated";
-"2008" = "BE_MessageDigestAlgorithm_SHA224_Deprecated";
-"2009" = "BE_MessageDigestAlgorithm_SHA384_Deprecated";
-"2010" = "BE_MessageDigestAlgorithm_SHA512_Deprecated";
-
-"3000" = "BE_FileType_All";
-"3001" = "BE_FileType_File";
-"3002" = "BE_FileType_Folder";
-
-"4001" = "BE_Encoding_Hex_Deprecated";
-"4002" = "BE_Encoding_Base64_Deprecated";
-
+"131" = "GyBE1nnYYnn";
+"140" = "BE_WriteTextFileToContainer ( path ; text {; append} )||";
+"150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )|Script Execute|Performs the scriptName in the current file ( if no fileName provided, or in fileName if available ). Scripts are run when the current script queue is empty, so you can't have a calculation within a script, call a script and have it start immediately, it will run at the completion of the current script stack. Script results are not set and cannot be returned.";
+"151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )|SQL|Performs SQL commands on the tables inside FileMaker.  All SQL/DDL errors can be obtained via the BE_GetLastDDLError function.";
+"152" = "BE_HTTP_GET ( url {; filename ; username ; password } )|HTTP GET|Does a http GET function and returns the results. This uses the curl library so output will be similar to that. This is used in conjunction with the BE_HTTP_Set_Custom_Header function to set custom headers in advance and the BE_HTTP_Response_Code and BE_HTTP_Response_Headers functions to get the result values after the GET is complete.  Use the BE_Curl_Trace function to debug any errors.";
+"153" = "BE_GetLastError|Error Last Get|Returns the last error generated by the plugin. Each of the libraries we use have their own error codes. Not currently applicable in all situtations.\n\nIn the case of the http functions we're using the curl libraries. You can try looking here : http://curl.haxx.se/libcurl/c/libcurl-errors.html";
+"154" = "BE_MessageDigest_Deprecated ( text {; algorithm ; encoding } )||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"155" = "BE_GetLastDDLError|Error DDL|Returns the last DDL error generated by the plugin.";
+"156" = "BE_HTTP_GET_File ( url ; path {; username ; password } )|HTTP File GET|Does a http GET function and returns the results as a file that is saved to disk or set into a container field if the path is not included.\n\nThis uses the curl library so output will be similar to that. This is used in conjunction with the BE_HTTP_Set_Custom_Header function to set custom headers in advance and the BE_HTTP_Response_Code and BE_HTTP_Response_Headers functions to get the result values after the GET is complete.  Use the BE_Curl_Trace function to debug any errors.";
+"157" = "BE_ProgressDialog ( title ; description {; maximum } )|Dialog Progress|Shows either a barber pole progress dialog, or a regular start to finish progress dialog.  For maximum, use a positive value for a progress dialog, or leave out for a barber pole dialog.  Barber pole dialogs are closed by calling BE_ProgressDialog_Update with a positive integer \"number\" parameter. Regular dialogs are closed with any value greater than maximum.";
+"158" = "BE_ProgressDialog_Update ( number {; description } )|Dialog Progress Update|Used to either close a progress dialog, or advance a progress dialog to the next step.  Does not return a result, however the BE_GetLastError will return 0 for a successful update and 1 when the user has clicked the Cancel button in a progress dialog.";
+"159" = "BE_Pause ( milliseconds )|Pause|Pauses ( within the plugin code, so doesn't return to FMP ) for milliseconds.";
+"160" = "BE_SetPreference ( key ; value {; domain } )|Preference Set|Sets the preference value with the key in the preferences file located at the domain.  If domain is not included, it will be\n\nMac : au.com.goya.baseelements.plugin-user\n\nWindows : Software\\Goya\\BaseElements\\PluginUser ( stored inside HKEY_CURRENT_USER ).\n\nYou can override the domain to specify a different file name on the mac, or a different path on Windows. To respect the various OS conventions you should use something similar to the above.";
+"161" = "BE_GetPreference ( key {; domain } )|Preference Get|Gets the preference value stored by BE_SetPreference that has the matching key.  If domain is not included, it will be";
+"170" = "BE_Unzip ( archive {; output_directory} )|Zip Unzip|Unzips the archive file found at the path archive. The unzipped file(s) are put into the same location as the zip file itself by default, or into the output_directory folder if specified. Any existing file(s) will be overwritten.";
+"171" = "BE_Zip ( fileList {; archive} )|Zip|Compresses the file(s) found at the path file. If the archive parameter is not specified, then the zip file is put into the same folder as file and has the .zip extension appended to the filename. This will overwrite an existing file if it exists with that name already.";
+"172" = "BE_Base64_Decode_Deprecated ( text {; name } )||Deprecated.  Use the FileMaker 16 function Base64Decode(text{;fileNameWithExtension}) instead.";
+"173" = "BE_Base64_Encode_Deprecated ( data )||Deprecated.  Use the FileMaker 16 function Base64Encode(data) or Base64EncodeRFC(RFCnumber;data) instead.";
+"174" = "BE_SetTextEncoding ( { encoding } )|Sets the text encoding format for any function that writes or reads text on disk, for example the BE_WriteTextToFile function. This is using the iconv library so the full list of encoding options can be found at http://www.gnu.org/software/libiconv/ or by typing 'iconv -l' on the command line of a Mac.|Not yet documented.";
+"175" = "BE_Base64_URL_Encode_Deprecated ( data )||Deprecated.  Use the FileMaker 16 function Base64Encode(data) or Base64EncodeRFC(RFCnumber;data) instead.";
+"176" = "BE_ExportFieldContents ( field {; outputPath } )|Export Field Contents |Exports the contents of the container field to disk at the outputPath specified.\n\nContainer fields should be inserted via \"Insert File\". This provides a similar functionality to the Export Field Contents script step, but is also available via FileMaker Server.  Also note that you can convert container types within a container via the BE_ConvertContainer function, so even if you didn\"t originally insert it via Insert File, it can be converted from an image to a file inside the container field itself.";
+"177" = "BE_ImportFile ( path {; compress } )|File Import|Imports the contents of the file into a container field or variable, and optionally compresses the field.   Usually you would use this function with a Set Field step pointing to a container field.";
+"180" = "BE_HTTP_POST ( url ; parameters {; username ; password ; filename } )|HTTP POST|Does a http POST function and returns the results. This uses the curl library so output will be similar to that. This is used in conjunction with the BE_HTTP_Set_Custom_Header function to set custom headers in advance and the BE_HTTP_Response_Code and BE_HTTP_Response_Headers functions to get the result values after the POST is complete.  Use the BE_Curl_Trace function to debug any errors.";
+"181" = "BE_HTTP_Response_Code|HTTP Response Code|Returns the value of the Response code from the previous HTTP call. Eg 403 for not found.";
+"182" = "BE_HTTP_Response_Headers ( { header } )|HTTP Response Headers|Returns the headers set by the server as part of a response to the previous HTTP request.";
+"183" = "BE_HTTP_Set_Custom_Header ( { header ; value } )|HTTP Header Set Custom|Used for setting a header value before a HTTP function call. You can call this function multiple times before the POST to set more than one header, and call it with empty parameters to clear them out.";
+"184" = "BE_HTTP_DELETE ( url {; username ; password } )|HTTP Delete|Does a HTTP DELETE function and returns the results. This uses the curl library so output will be similar to that. This is used in conjunction with the BE_HTTP_Set_Custom_Header function to set custom headers in advance and the BE_HTTP_Response_Code and BE_HTTP_Response_Headers functions to get the result values after the DELETE is complete. Use the BE_Curl_Trace function to debug any errors.";
+"185" = "BE_HTTP_PUT_FILE ( url ; path {; username ; password } )|HTTP PUT File|Does a HTTP PUT function with a referenced file and returns the results. This uses the curl library so output will be similar to that. This is used in conjunction with the BE_HTTP_Set_Custom_Header function to set custom headers in advance and the BE_HTTP_Response_Code and BE_HTTP_Response_Headers functions to get the result values after the PUT is complete. Use the BE_Curl_Trace function to debug any errors.";
+"186" = "BE_HTTP_Set_Proxy ( proxy {; port ; username ; password } )|HTTP Proxy Set|Used for setting the HTTP proxy values values before other HTTP function calls.";
+"187" = "BE_Curl_Set_Option ( { option ; value } )|HTTP Curl Option Set|Sets one of the Curl library optional variables, as used in all of the HTTP functions. The value depends on the type of option. Some require explicit values ( such as CURLOPT_USERAGENT ) and others require a flag. The full list of options and their possible values is in the curl documentation here: http://curl.haxx.se/libcurl/c/curl_easy_setopt.html\n\nRestoring all values to their default can be done with\n\nBE_Curl_Set_Option\n\nTo return an option to it's default call the option name with no parameter :\n\nBE_Curl_Set_Option ( \"CURLOPT_HTTPAUTH\" )\n\nThe CURLOPT_HTTPAUTH and CURLOPT_PROXYAUTH options can also be set with the constants :\n\nCURLAUTH_BASIC\nCURLAUTH_DIGEST\nCURLAUTH_DIGEST_IE\nCURLAUTH_NEGOTIATE\nCURLAUTH_NTLM\nCURLAUTH_NTLM_WB\nCURLAUTH_ANY\nCURLAUTH_ANYSAFE\nCURLAUTH_ONLY";
+"188" = "BE_HTTP_PUT_DATA ( url ; data {; username ; password } )||Does a http PUT function with data and returns the results. This uses the curl library so output will be similar to that. This is used in conjunction with the BE_HTTP_Set_Custom_Header function to set custom headers in advance and the BE_HTTP_Response_Code and BE_HTTP_Response_Headers functions to get the result values after the PUT is complete. Use the BE_Curl_Trace function to debug any errors.";
+"189" = "BE_FTP_Upload ( url ; data {; username ; password } )||Uploads the to the ftp url specified, the container field data.  Authentication types can be set with the BE_Curl_Set_Option function.  \n\nYou can also set it to create folders that don't exist by setting this flag before upload : BE_Curl_Set_Option ( \"CURLOPT_FTP_CREATE_MISSING_DIRS\" ; 1 )\n\nExample : BE_FTP_Upload ( \"ftp://example.com/path/folder/\" & FTPTest::File ; FTPTest::File )";
+"190" = "BE_Curl_Trace|HTTP Curl Trace|Returns a complete trace of the HTTP and SMTP details for the previous BE function call.  This is useful for debugging HTTP or SMTP connection issues.";
+"191" = "BE_FTP_Delete ( url {; username ; password } )||Deletes a file at a specific ftp or sftp url.  Authentication types can be set with the BE_Curl_Set_Option function. \n\nExample : BE_FTP_Delete ( \"ftp://example.com/path/folder/file.txt\" )";
+"192" = "BE_HTTP_PATCH ( url ; parameters {; username ; password } )|HTTP Patch|Does a http PATCH function and returns the results. This uses the curl library so output will be similar to that. This is used in conjunction with the BE_HTTP_Set_Custom_Header function to set custom headers in advance and the BE_HTTP_Response_Code and BE_HTTP_Response_Headers functions to get the result values after the POST is complete. Use the BE_Curl_Trace function to debug any errors.";
+"200" = "BE_ApplyXSLTInMemory ( xml ; xslt )|XML XSLT Memory|Applies the XSLT given by the _xslt_ parameter, to the XML given by the _xml_ parameter, and and returns the result.  Performs the same as the BE_ApplyXSLT but without writing to disk.";
+"201" = "BE_XPath ( xml ; xpath {; namespaceList ; asText } )|XML XPath|This finds the first instance of a node at the path xpath within the text xml. This function is based on the libxml library which only supports XPath 1.0 http://xmlsoft.org";
+"202" = "BE_XPathAll ( xml ; xpath {; namespaceList } )|XML XPath All|This finds all instances of a node at the path xpath within the text xml. This function is based on the libxml library which only supports XPath 1.0 http://xmlsoft.org";
+"210" = "BE_StripXMLNodes ( inputPath ; outputPath ; nodeNames )||BaseElements Internal : function not documented.";
+"211" = "BE_XML_Parse ( path )|XML Parse|Parses an XML file at path to determine if it's properly formed. Does not check XSD details, just whether every tag is properly opened and closed.";
+"212" = "BE_SplitBEFileNodes ( path )||BaseElements Internal : function not documented.";
+"213" = "BE_XML_Validate ( xml ; schema )|XML Validate Schema|Validates an XML file against a schema.";
+"220" = "BE_CurrentTimeMilliseconds||Returns the current time as number of milliseconds. Effectively the same as GetAsNumber ( Get ( CurrentTimestamp ) ).";
+"221" = "BE_UTCMilliseconds|Time UTC Milliseconds|Returns UTC time as number of milliseconds, so allowing for time zone offsets.";
+"222" = "BE_TimeZoneOffset|Time UTC Zone Offset|Returns the difference ( in minutes ) between UTC and local time.";
+"230" = "BE_SaveFileDialog ( prompt {; fileName ; inFolder } )|Dialog File Save|Displays the standard OS save file dialog. Changes the title of the dialog to the prompt specified, and optionally starts with the path given by the inFolder parameter, otherwise uses the most recent application folder.";
+"240" = "BE_RegularExpression ( text ; expression {; options ; replaceString } )|RegularExpression Regular Expression Regex|A perl compatible regular expression testing function. \n\noptions: \n\n  i - case insensitive\n  m - multiline\n  s - dot matches all characters, including newline\n  x - ignore whitespace\n  g - replace all\n  \nreplaceString: if not empty, then a replace is performed rather than a find.\n\nExamples :\n\nBE_RegularExpression ( \"abc 123 def\" ; \"[0-9]+\" ) = 123\n\nBE_RegularExpression ( $list; \"(?:\\S(?![ ]))+$\"; \"igm\" )\n\nMore examples can be found here : http://perldoc.perl.org/perlre.html#Regular-Expressions";
+"250" = "BE_ContainerIsCompressed ( containerField )|Container Compress|Verifies if a FileMaker containerField with a fil, or image in it, was compressed when inserted into the field.";
+"251" = "BE_ContainerCompress ( data {; filename } )|Container Compress|Converts stored container field data between the internal un-compressed and compressed formats.";
+"252" = "BE_ContainerUncompress ( gzip_data {; filename } )|Container Compress Uncompress|Converts stored container field data between the internal compressed and un-compressed formats.\n\nWhen inserting files into containers in FileMaker, you have the option to \"compress\" the file.  This function can change an compressed file into a uncompressed file.";
+"260" = "BE_Gzip ( data {; filename } )|Gzip zip|Compresses the file/text found in data and optionally applies the filename, otherwise uses the container data appended with the .gzip extension.\n\nThis function should be used with a Set Field script step and the results stored as a container field.";
+"261" = "BE_UnGzip ( gzip_data {; filename } )|Gzip zip Ungzip unzip|Uncompresses the file found in gzip_data and optionally applies the filename, otherwise uses the detail found in the container field if it exists.\n\nIf you're unzipping a file, then this function should be used with a Set Field script step and the results stored as a container field.  If you're expecting a text result then this could be used anywhere text is expected.";
+"270" = "BE_JPEG_Recompress_Deprecated ( jpeg {; compressionLevel ; width ; height } )||Deprecated.  Use the  function BE_JPEG_Recompress instead.";
+"271" = "BE_JPEG_Recompress ( jpeg {; compressionLevel ; scale } )|JPEG Compress Recompress|Re-compresses the jpeg image file found at the container field jpeg, using a scaling factor and compression level.  Use this function with a Set Field script step to convert one container to another.  It can be used to set the same field as the one referenced in the field parameter.\n\nValues for the \"scale\" parameter are :\n\n2\n1.875\n1.75\n1.625\n1.5\n1.375\n1.25\n1.125\n1\n0.875\n0.75\n0.625\n0.5\n0.375\n0.25\n0.125\n\nAny other values are rounded down to the nearest value, except values below 0.125 where it will use 0.125.";
+"300" = "BE_JSONPath_Deprecated ( json ; path )||Deprecated.  Use the FileMaker 16 function JSONGetElement(json;keyOrIndexOrPath) instead.";
+"301" = "BE_JSON_Error_Description_Deprecated||Deprecated.  Use the native FileMaker 16 JSON functions instead.";
+"302" = "BE_JSON_ArraySize_Deprecated ( json )||Deprecated.  Use the native FileMaker 16 JSON functions instead.";
+"303" = "BE_JSON_Encode_Deprecated ( key {; value ; type } )||Deprecated.  Use the native FileMaker 16 JSONSetElement(json;keyOrIndexOrPath;value;type) function instead.";
+"321" = "BE_OAuth_RequestAccessToken ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )||BaseElements Internal : function not yet documented.  Uses OAuth 1.0.";
+"330" = "BE_Xero_SetTokens ( consumer_key ; private_key )|HTTP Xero Token Set|Allows authentication to the Xero API using private keys, for use in any subsequent HTTP calls.\n\nNote : if you're making HTTP calls to other urls, you should clear out the Xero parameters, by calling BE_Xero_SetTokens ( \"\" ; \"\" ) before making any other HTTP calls.  Otherwise the Xero authentication will interfere with the HTTP authentication";
+"331" = "BE_Xero_GenerateKeys ( organisation {; organisationalUnit ; country ; state ; suburb ; domain ; emailAddress } )|HTTP Xero Key Generate|BaseElements Internal : function not yet documented.";
+"350" = "BE_Values_Unique ( listOfValues {; caseSensitive } )|Values Unique|Removes duplicate values from listOfValues.";
+"351" = "BE_Values_FilterOut ( textToFilter ; filterValues {; caseSensitive } )|Values Filter Out|Does the opposite of the FilterValues function : it takes the textToFilter parameter, and removes anything in the filterValues list and returns the remaining values.";
+"352" = "BE_Values_ContainsDuplicates ( listOfValues  {; caseSensitive } )|Values Duplicates Contains|Tests a list of values in FileMaker value list format and returns a True ( 1 ) or False ( 0 ) value if it contains duplicate values.";
+"353" = "BE_Values_Sort ( listOfValues {; ascending ; type } )|Values Sort|Sorts a value list in alphanumeric order.  In some situations this sort order won\"t be the same as the order that FileMaker would apply in a sorted field.";
+"354" = "BE_Values_TimesDuplicated ( listOfValues ; numberOfTimes )|Values Duplicates Times|Returns a list of values from listOfValues, where the value has been repeated numberOfTimes.  In other words, filter the list to only those values that are repeated numberOfTimes.  \n\nExample : BE_Values_TimesDuplicated ( \"a¶c¶c¶d¶d\" ; 2 ) = \"c¶d\".";
+"355" = "BE_Values_Trim ( listOfValues )|Values Trim|Trims leading whitespace from each and every value in listOfValues.  Works the same as if you called the regular Trim recursively on each GetValue ( listOfValues ; n ) and then re-assembled the list result.";
+"400" = "BE_SMTP_Server ( server { ; port ; username ; password } )|SMTP Server|Stores the SMTP connections details for future calls to BE_SMTP_Send.  Authentication is controlled with curl, so options can be set with the BE_Curl_Set_Option function.  Any future calls will overwrite the existing details.";
+"401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )|SMTP Send|Sends an email via SMTP.  Use in conjunction with BE_SMTP_Server.  The To, CC, BCC and attachments can be passed value lists in order to send to multiple people or to include multiple attachments.  \n\nEmail addresses are in the format :\n\nname@domain\n<name@domain>\nFullName <name@domain>\n\nIf you're including an actual name, you MUST include angle brackets around the email address.\n\nreplyTo must be an email address only and cannot include a name.\n\nThis function can also use the options in the BE_Curl_Set_Option function, where applicable.";
+"402" = "BE_SMTP_AddAttachment ( { attachment ; contentType } )|SMTP Attachment Add|Stores a list of container field files as attachments for future SMTP_Send functions.  The fields will be sent with the subsequent SMTP_Send and then the stored list of fields cleared out.";
+"403" = "BE_SMTP_Set_Header ( { header ; value } )|SMTP Attachment Add|Not yet documented.";
+"450" = "BE_FMS_Upload_Database ( container ; path )||BaseElements Internal : function not yet documented.";
+"451" = "BE_FMS_Download_Database ( path )||BaseElements Internal : function not yet documented.";
+"452" = "BE_FMS_List_Files ( username ; password {; showStatistics } )||BaseElements Internal : function not yet documented.";
+"453" = "BE_FMS_Pause_Files ( username ; password {; files } )||BaseElements Internal : function not yet documented.";
+"454" = "BE_FMS_Run_Schedule ( username ; password ; scheduleNumber )||BaseElements Internal : function not yet documented.";
+"455" = "BE_FMS_List_Schedules ( username ; password )||BaseElements Internal : function not yet documented.";
+"456" = "BE_FMS_List_Clients ( username ; password {; showStatistics } )||BaseElements Internal : function not yet documented.";
+"457" = "BE_FMS_Resume_Files ( username ; password {; files } )||BaseElements Internal : function not yet documented.";
+"458" = "BE_FMS_Close_Files ( username ; password {; files } )||BaseElements Internal : function not yet documented.";
+"459" = "BE_FMS_Remove_Files ( username ; password {; files } )||BaseElements Internal : function not yet documented.";
+"460" = "BE_FMS_Open_Files ( username ; password {; files } )||BaseElements Internal : function not yet documented.";
+"500" = "BE_Encrypt_AES_Deprecated ( key ; text )||Deprecated.  Use the FileMaker 16 function CryptEncrypt(data;key) instead.";
+"501" = "BE_Decrypt_AES_Deprecated ( key ; text )||Deprecated.  Use the FileMaker 16 function CryptDecrypt(container;key) instead.";
+"550" = "BE_HMAC_Deprecated ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"600" = "BE_EvaluateJavaScript ( javaScript )||BaseElements Internal : function not yet documented.";
+"650" = "BE_ArraySetFromValueList ( valueList )|Array Set ValueList|Stores the ValueList as an array within the plugin memory space and returns an index number that you can use to reference the array via memory.";
+"651" = "BE_ArrayGetSize ( array )|Array Size Get|Returns the size in number of elements in a stored array.  Technically equivalent to ValueCount for the list before it was stored as an array.";
+"652" = "BE_ArrayGetValue ( array ; valueNumber )|Array Value Get|Retrieves a value from the array number specified, at the valueNumber specified.\n\nArrays are stored via BE_ArraySetFromValueList and the index number used as the array parameter is the result of that function call.";
+"653" = "BE_Array_Delete ( array )|Array Delete|Not yet documented.";
+"654" = "BE_Array_Find ( array ; value )||";
+"655" = "BE_Array_Change_Value ( array ; valueNumber ; newValue )||";
+"700" = "BE_ConvertContainer ( field {; type ; width ; height } )|Container Convert|This is to convert container field contents between the internal FileMaker \"image\" format and the internal \"file\" format. So you can do insert from file, but then convert that to an image that will display instead of just seeing the file icon.This is not an image conversion function.  It only converts between the two container formats, of file and image.  So you can't use it to change the format of the contents of an email from PDF to JPEG for example.  When going from file to image, FileMaker needs to be told what sort of image it is, and that's what you need to pass in the parameters.\n\nYou would use this function when you have a image file stored in a container that is showing as a file, rather than a picture.  You use this function to alter the internal storage option to image so that it will display a preview.\n\nUse this function with a Set Field script step to convert from a container field stored as a file into a container image or vice versa.  It can be used to set into the same field as the one referenced in the function parameter.\n\n1. If only the field is supplied then it is converted to \"FILE\"\n2. If \"ZLIB\" is supplied the file is compressed\n3. Other known formats are:\n- \"snd \" *\n- \"JPEG\"\n- \"GIFf\" *\n- \"EPS \" *\n- \"META\" *\n- \"PNGf\"\n- \"BMPf\" *\n- \"PDF \"\n\n* = not tested.\n\nIf the width and height are not supplied FM appears to display the image correctly but GetWidth and GetHeight return 0. However, GetContainerAttribute ( Test::Data ; \"width\" ) and GetContainerAttribute ( Test::Data ; \"height\" ) with both return the correct value so running the following\n\nBE_ConvertContainer ( Test::File ; \"JPEG\" ; GetContainerAttribute ( Test::Data ; \"width\" ) ; GetContainerAttribute ( Test::Data ; \"height\" ) )\n\ntwice from a script will get things set correctly. ( in other words you have a file, insert it as an image with no sizes, then get FMP to tell you the sizes, then insert it again with those sizes, and it will display properly. )";
+"750" = "BE_PDF_Append ( pdf ; pdfToAppend {; destination } )|PDF Append|Not yet documented.";
+"751" = "BE_PDF_PageCount ( pdf )||";
+"752" = "BE_PDF_GetPages ( pdf ; newPDF ; fromPage {; toPage } )||";
+"800" = "BE_XOR ( text ; xorWith )||Not yet documented.";
+"850" = "BE_InstallScriptStep ( name ; definition ; id ; description ; calculation )||";
+"851" = "BE_RemoveScriptStep ( scriptStepId )||";
+"852" = "BE_PerformScriptStep ( scriptStepId )||";
+"900" = "BE_Vector_DotProduct ( a ; b )|Vector DotProduct|Does a dot product of two vectors ( lists ) of numbers.  For more information about vectors, have a look at http://www.mathsisfun.com/algebra/vectors-dot-product.html";
+"901" = "BE_Vector_EuclideanDistance ( a ; b )|Vector EuclideanDistance|The euclidean distance between two vector points.  For more information about this see https://en.wikipedia.org/wiki/Euclidean_distance";
+"950" = "BE_Get_Machine_Name||Not yet documented.";
+"1001" = "BE_OKButton|Button OK|For use with the function BE_DisplayDialog as a flag for the \"type\" parameter.";
+"1002" = "BE_CancelButton|Button Cancel|For use with the function BE_DisplayDialog as a flag for the \"type\" parameter.";
+"1003" = "BE_AlternateButton|Button Alternate|For use with the function BE_DisplayDialog as a flag for the \"type\" parameter.";
+"1120" = "BE_ExecuteSystemCommand ( command { ; timeout } )|Execute System Command Shell|Performs a command line script of the command parameter. Essentially the same as using Terminal on the Mac, or CMD.exe on Windows.\n\nThe timeout is in milliseconds that the plugin should wait for a result before returning. Using a value of -1 will wait forever, until the command finishes. A value of 0 will return to FileMaker immediately, and any other value will wait a maximum of the time in milliseconds or when the command finishes, whichever is first.\n\nOn Windows you need to prefix your command with \"cmd.exe /c\". For example \"cmd.exe /c dir\" will list the directory contents. No prefix is required for Mac.\n\nOn the Mac this uses the \"sh\" shell, which is different from the default Terminal.app shell which is \"bash\". There can be syntax differences between commands using these shells, so if you find a difference between the two, first try running BE_ExecuteSystemCommand ( \"/bin/bash -c \"commandhere\"\" ) to see if that removes the difference.";
+"2001" = "BE_MessageDigestAlgorithm_MD5_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"2002" = "BE_MessageDigestAlgorithm_SHA256_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"2004" = "BE_MessageDigestAlgorithm_MDC2_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"2006" = "BE_MessageDigestAlgorithm_SHA_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"2007" = "BE_MessageDigestAlgorithm_SHA1_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"2008" = "BE_MessageDigestAlgorithm_SHA224_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"2009" = "BE_MessageDigestAlgorithm_SHA384_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"2010" = "BE_MessageDigestAlgorithm_SHA512_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"3000" = "BE_FileType_All|FileType All|For use with the function BE_ListFilesInFolder as a flag for the \"type\" parameter.";
+"3001" = "BE_FileType_File|FileType File|For use with the function BE_ListFilesInFolder as a flag for the \"type\" parameter.";
+"3002" = "BE_FileType_Folder|FileType Folder|For use with the function BE_ListFilesInFolder as a flag for the \"type\" parameter.";
+"4001" = "BE_Encoding_Hex_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"4002" = "BE_Encoding_Base64_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";

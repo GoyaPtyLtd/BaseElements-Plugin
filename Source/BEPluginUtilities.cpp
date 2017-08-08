@@ -1069,30 +1069,41 @@ void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_Pt
 
 void Do_GetString ( const unsigned long whichStringID, TextUniquePtr& function_information, const int which_string )
 {
-	fmx::unichar16 temp_buffer [ PATH_MAX ];
+	const int length = 4096;
+	fmx::unichar16 temp_buffer [ length ];
 
-	Do_GetString ( whichStringID, 0, PATH_MAX, temp_buffer );
+	Do_GetString ( whichStringID, 0, length, temp_buffer );
 	function_information->AssignUnicode ( temp_buffer );
 
-	TextUniquePtr delimiter;
+	TextUniquePtr function_delimiter;
+	function_delimiter->Assign ( " (" );
 
+	TextUniquePtr pipe;
+	pipe->Assign ( "|" );
+	auto pipe_at = function_information->Find ( *pipe, 0 );
+	
 	switch ( which_string ) {
 			
 		case kFunctionName:
 		{
 			// The string for this whichStringID is a Function Prototype, but all the plug-in needs now is the Function Name by itself.
 
-			delimiter->Assign ( " (" );
-			fmx::uint32 wanted = function_information->Find ( *delimiter, 0 );
-			fmx::uint32 length = function_information->GetSize();
-			function_information->DeleteText ( wanted, length - wanted );
-			
+			auto wanted = function_information->Find ( *function_delimiter, 0 );
+			if ( wanted > pipe_at ) {
+				wanted = pipe_at;
+			}
+			function_information->DeleteText ( wanted, fmx::Text::kSize_End );
+			break;
+		}
+		case kFunctionPrototype:
+		{
+			function_information->DeleteText ( pipe_at, fmx::Text::kSize_End );
+			break;
 		}
 		case kFunctionDescription:
 		{
-			delimiter->Assign ( "|" );
-			fmx::uint32 wanted = function_information->Find ( *delimiter, 0 );
-			function_information->DeleteText ( 0, wanted + 1 );
+			function_information->DeleteText ( 0, pipe_at + 1 );
+			break;
 		}
 		default:
 		{
