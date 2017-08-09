@@ -28,6 +28,12 @@
 		4D1D070D1F21C36700BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070E1F21C37A00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070F1F21C37C00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
+		4D25BF971F3A8C580083345B /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* BaseElements.strings */; };
+		4D25BF981F3A8C580083345B /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* BaseElements.strings */; };
+		4D25BF991F3A8C580083345B /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* BaseElements.strings */; };
+		4D25BF9C1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */; };
+		4D25BF9D1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */; };
+		4D25BF9E1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */; };
 		4D35A7441C8D29CB00D6A353 /* BEFMS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D35A7421C8D29CB00D6A353 /* BEFMS.cpp */; };
 		4D3629ED1F20789A0036B751 /* BaseElementsIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D3629EB1F20789A0036B751 /* BaseElementsIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D3629F11F2079A60036B751 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
@@ -85,8 +91,6 @@
 		4D362A3B1F207AE70036B751 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A271F207AE70036B751 /* libturbojpeg.a */; };
 		4D362A3C1F207AE70036B751 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A281F207AE70036B751 /* libxml2.a */; };
 		4D362A3D1F207AE70036B751 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A291F207AE70036B751 /* libxslt.a */; };
-		4D362A3E1F207B430036B751 /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4DFDF4921BF9994000B4C7C4 /* BEPluginVersion.strings */; };
-		4D362A3F1F207B430036B751 /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4D362A4D1F207E8C0036B751 /* BEIOSFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D362A4B1F207E780036B751 /* BEIOSFunctions.mm */; };
 		4D362A531F2081B90036B751 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; };
 		4D362A541F2081B90036B751 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4F1F2081B90036B751 /* libPocoFoundation.a */; };
@@ -154,8 +158,6 @@
 		4D362A9C1F2085880036B751 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A281F207AE70036B751 /* libxml2.a */; };
 		4D362A9D1F2085880036B751 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A291F207AE70036B751 /* libxslt.a */; };
 		4D362A9F1F2085880036B751 /* BaseElementsIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D3629EB1F20789A0036B751 /* BaseElementsIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4D362AA11F2085880036B751 /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4DFDF4921BF9994000B4C7C4 /* BEPluginVersion.strings */; };
-		4D362AA21F2085880036B751 /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4D362AA91F2085AF0036B751 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A411F207B660036B751 /* libPocoFoundation.a */; };
 		4D362AAA1F2085AF0036B751 /* libPocoFoundationd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A421F207B660036B751 /* libPocoFoundationd.a */; };
 		4D362AAB1F2085AF0036B751 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A431F207B660036B751 /* libPocoZip.a */; };
@@ -211,10 +213,8 @@
 		4DCD49641A195B0C00EFCF7F /* BEFileTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D35117A17E1314A00AEDF01 /* BEFileTextReader.cpp */; };
 		4DCD49651A195B0C00EFCF7F /* BESMTPEmailMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */; };
 		4DCD49661A195B0C00EFCF7F /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C918DA773900DFC47A /* BEBase64.cpp */; };
-		4DCD49691A195B0C00EFCF7F /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5C11E9308B0047A453 /* BaseElements.strings */; };
 		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4DD510241DD136F200763F7E /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
-		4DFDF4931BF9994000B4C7C4 /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4DFDF4921BF9994000B4C7C4 /* BEPluginVersion.strings */; };
 		6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
 /* End PBXBuildFile section */
 
@@ -255,6 +255,12 @@
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/Crypto/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
 		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
 		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; };
+		4D25BF9A1F3A8C580083345B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BaseElements.strings; sourceTree = "<group>"; };
+		4D25BF9F1F3A8C5F0083345B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BEPluginVersion.strings; sourceTree = "<group>"; };
+		4D25BFA11F3A8CC90083345B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BEPluginVersion.strings; sourceTree = "<group>"; };
+		4D25BFA21F3A8CC90083345B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BaseElements.strings; sourceTree = "<group>"; };
+		4D25BFA31F3A8CD00083345B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BEPluginVersion.strings; sourceTree = "<group>"; };
+		4D25BFA41F3A8CD10083345B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BaseElements.strings; sourceTree = "<group>"; };
 		4D27C3851861160000E7F4A1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4D2C4EAA1B7C774D00760408 /* BERegularExpression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BERegularExpression.h; path = ../Source/BERegularExpression.h; sourceTree = "<group>"; };
 		4D35117A17E1314A00AEDF01 /* BEFileTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileTextReader.cpp; path = ../Source/BEFileTextReader.cpp; sourceTree = "<group>"; };
@@ -335,8 +341,7 @@
 		4D76243B1E0A37F600266C0D /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/macOS/libpodofo.a; sourceTree = "<group>"; };
 		4D76243F1E0A386F00266C0D /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		4D7624411E0A3FFE00266C0D /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
-		4D7FCA5C11E9308B0047A453 /* BaseElements.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = BaseElements.strings; path = ../Resources/BaseElements.strings; sourceTree = SOURCE_ROOT; };
-		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Info.plist; sourceTree = SOURCE_ROOT; };
+		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Base.lproj/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D807EFE1A9C255000E27E38 /* BEImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEImage.cpp; path = ../Source/Images/BEImage.cpp; sourceTree = "<group>"; };
 		4D807EFF1A9C255000E27E38 /* BEImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEImage.h; path = ../Source/Images/BEImage.h; sourceTree = "<group>"; };
 		4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEJPEG.cpp; path = ../Source/Images/BEJPEG.cpp; sourceTree = "<group>"; };
@@ -370,7 +375,7 @@
 		4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECppUtilities.cpp; path = ../Source/BECppUtilities.cpp; sourceTree = "<group>"; };
 		4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECppUtilities.h; path = ../Source/BECppUtilities.h; sourceTree = "<group>"; };
 		4DD510231DD136F200763F7E /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/macOS/libjansson.a; sourceTree = "<group>"; };
-		4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BEProgressDialog.xib; path = ../Resources/BEProgressDialog.xib; sourceTree = "<group>"; };
+		4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BEProgressDialog.xib; path = ../Resources/Base.lproj/BEProgressDialog.xib; sourceTree = "<group>"; };
 		4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressDialogWindowController.h; path = ../Source/ProgressDialogWindowController.h; sourceTree = "<group>"; };
 		4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressDialogWindowController.m; path = ../Source/ProgressDialogWindowController.m; sourceTree = "<group>"; };
 		4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileMakerPlugin.h; path = ../Source/BEFileMakerPlugin.h; sourceTree = "<group>"; };
@@ -380,7 +385,6 @@
 		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
 		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
 		4DFDF48F1BF992A100B4C7C4 /* BEPluginVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEPluginVersion.h; path = ../Source/BEPluginVersion.h; sourceTree = "<group>"; };
-		4DFDF4921BF9994000B4C7C4 /* BEPluginVersion.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = BEPluginVersion.strings; path = ../Resources/BEPluginVersion.strings; sourceTree = "<group>"; };
 		4DFFF8B11884A0390015B531 /* BEXero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXero.cpp; path = ../Source/BEXero.cpp; sourceTree = "<group>"; };
 		4DFFF8B21884A0390015B531 /* BEXero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXero.h; path = ../Source/BEXero.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -664,8 +668,8 @@
 		C7DEDEFC07E10BF3002283F3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4DFDF4921BF9994000B4C7C4 /* BEPluginVersion.strings */,
-				4D7FCA5C11E9308B0047A453 /* BaseElements.strings */,
+				4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */,
+				4D25BF9B1F3A8C580083345B /* BaseElements.strings */,
 				4D7FCA5E11E9308B0047A453 /* Info.plist */,
 				4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */,
 			);
@@ -847,6 +851,8 @@
 				French,
 				German,
 				en,
+				de,
+				ja,
 			);
 			mainGroup = C7DEDEE707E10BF3002283F3;
 			productRefGroup = C7DEDEE707E10BF3002283F3;
@@ -865,8 +871,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D362A3E1F207B430036B751 /* BEPluginVersion.strings in Resources */,
-				4D362A3F1F207B430036B751 /* BaseElements.strings in Resources */,
+				4D25BF9D1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */,
+				4D25BF981F3A8C580083345B /* BaseElements.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,8 +880,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D362AA11F2085880036B751 /* BEPluginVersion.strings in Resources */,
-				4D362AA21F2085880036B751 /* BaseElements.strings in Resources */,
+				4D25BF9E1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */,
+				4D25BF991F3A8C580083345B /* BaseElements.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -883,8 +889,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DCD49691A195B0C00EFCF7F /* BaseElements.strings in Resources */,
-				4DFDF4931BF9994000B4C7C4 /* BEPluginVersion.strings in Resources */,
+				4D25BF971F3A8C580083345B /* BaseElements.strings in Resources */,
+				4D25BF9C1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */,
 				4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1030,6 +1036,31 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		4D25BF9B1F3A8C580083345B /* BaseElements.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4D25BF9A1F3A8C580083345B /* en */,
+				4D25BFA21F3A8CC90083345B /* de */,
+				4D25BFA41F3A8CD10083345B /* ja */,
+			);
+			name = BaseElements.strings;
+			path = ../Resources/en.lproj;
+			sourceTree = SOURCE_ROOT;
+		};
+		4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4D25BF9F1F3A8C5F0083345B /* en */,
+				4D25BFA11F3A8CC90083345B /* de */,
+				4D25BFA31F3A8CD00083345B /* ja */,
+			);
+			name = BEPluginVersion.strings;
+			path = ../Resources/en.lproj;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		4D3629EE1F20789A0036B751 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1064,7 +1095,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = ../Resources/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1119,7 +1149,6 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = ../Resources/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1171,7 +1200,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = ../Resources/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1226,7 +1254,6 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = ../Resources/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1261,7 +1288,6 @@
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
-				INFOPLIST_FILE = ../Resources/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
@@ -1298,7 +1324,6 @@
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
-				INFOPLIST_FILE = ../Resources/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
@@ -1381,10 +1406,11 @@
 					../Headers/,
 					"/Users/mark/Desktop/jansson-json_path/src/",
 				);
-				INFOPLIST_FILE = ../Resources/Info.plist;
+				INFOPLIST_FILE = ../Resources/en.lproj/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -1479,10 +1505,11 @@
 					../Headers/,
 					"/Users/mark/Desktop/jansson-json_path/src/",
 				);
-				INFOPLIST_FILE = ../Resources/Info.plist;
+				INFOPLIST_FILE = ../Resources/en.lproj/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
