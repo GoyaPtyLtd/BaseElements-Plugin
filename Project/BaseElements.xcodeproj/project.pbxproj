@@ -341,7 +341,7 @@
 		4D76243B1E0A37F600266C0D /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/macOS/libpodofo.a; sourceTree = "<group>"; };
 		4D76243F1E0A386F00266C0D /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		4D7624411E0A3FFE00266C0D /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
-		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Base.lproj/Info.plist; sourceTree = SOURCE_ROOT; };
+		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/en.lproj/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D807EFE1A9C255000E27E38 /* BEImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEImage.cpp; path = ../Source/Images/BEImage.cpp; sourceTree = "<group>"; };
 		4D807EFF1A9C255000E27E38 /* BEImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEImage.h; path = ../Source/Images/BEImage.h; sourceTree = "<group>"; };
 		4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEJPEG.cpp; path = ../Source/Images/BEJPEG.cpp; sourceTree = "<group>"; };
@@ -848,7 +848,6 @@
 			knownRegions = (
 				English,
 				Japanese,
-				French,
 				German,
 				en,
 				de,
@@ -1045,7 +1044,7 @@
 				4D25BFA41F3A8CD10083345B /* ja */,
 			);
 			name = BaseElements.strings;
-			path = ../Resources/en.lproj;
+			path = ../Resources;
 			sourceTree = SOURCE_ROOT;
 		};
 		4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */ = {
@@ -1056,7 +1055,7 @@
 				4D25BFA31F3A8CD00083345B /* ja */,
 			);
 			name = BEPluginVersion.strings;
-			path = ../Resources/en.lproj;
+			path = ../Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
