@@ -82,10 +82,7 @@
 
 #include <iconv.h>
 
-#if ! ( FMX_IOS_TARGET )
-	#include <podofo/podofo.h>
-#endif
-
+#include <podofo/podofo.h>
 
 using namespace std;
 using namespace fmx;
@@ -3035,8 +3032,6 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 {
 	errcode error = NoError();
 	
-#if ! ( FMX_IOS_TARGET )
-	
 	try {
 		
 		auto pdf_document = ParameterAsPDF ( parameters );
@@ -3076,8 +3071,6 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 		error = kErrorUnknown;
 	}
 	
-#endif
-	
 	return MapError ( error );
 	
 } // BE_PDF_Append
@@ -3086,8 +3079,6 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 fmx::errcode BE_PDF_PageCount ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
-	
-#if ! ( FMX_IOS_TARGET )
 	
 	try {
 		
@@ -3107,8 +3098,6 @@ fmx::errcode BE_PDF_PageCount ( short /* funcId */, const ExprEnv& /* environmen
 		error = kErrorUnknown;
 	}
 	
-#endif
-	
 	return MapError ( error );
 	
 } // BE_PDF_PageCount
@@ -3117,8 +3106,6 @@ fmx::errcode BE_PDF_PageCount ( short /* funcId */, const ExprEnv& /* environmen
 fmx::errcode BE_PDF_GetPages ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
-	
-#if ! ( FMX_IOS_TARGET )
 	
 	try {
 		
@@ -3166,8 +3153,6 @@ fmx::errcode BE_PDF_GetPages ( short /* funcId */, const ExprEnv& /* environment
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
-#endif
 	
 	return MapError ( error );
 	

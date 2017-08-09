@@ -25,6 +25,10 @@
 		4D11F40B1F271C3B00D78042 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40A1F271C3B00D78042 /* libcurl.a */; };
 		4D11F40D1F271C5400D78042 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40C1F271C5400D78042 /* libssh2.a */; };
 		4D11F40F1F271C6F00D78042 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40E1F271C6F00D78042 /* libturbojpeg.a */; };
+		4D1BFE561F3AC9A600805CD3 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1BFE551F3AC9A600805CD3 /* libpodofo.a */; };
+		4D1BFE571F3AC9B900805CD3 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1BFE551F3AC9A600805CD3 /* libpodofo.a */; };
+		4D1BFE591F3ACAF200805CD3 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1BFE581F3ACAF200805CD3 /* libbz2.tbd */; };
+		4D1BFE5A1F3ACAFC00805CD3 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1BFE581F3ACAF200805CD3 /* libbz2.tbd */; };
 		4D1D070D1F21C36700BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070E1F21C37A00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070F1F21C37C00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
@@ -253,6 +257,10 @@
 		4D13006716DADD8A0075FE0C /* BEOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEOAuth.h; path = ../Source/BEOAuth.h; sourceTree = "<group>"; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/Crypto/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/Crypto/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
+		4D1BFE501F3AC97C00805CD3 /* iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iOS; path = ../Libraries/iOS; sourceTree = "<group>"; };
+		4D1BFE521F3AC98700805CD3 /* Libraries */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Libraries; path = ../Libraries; sourceTree = "<group>"; };
+		4D1BFE551F3AC9A600805CD3 /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/iOS/libpodofo.a; sourceTree = "<group>"; };
+		4D1BFE581F3ACAF200805CD3 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/usr/lib/libbz2.tbd; sourceTree = DEVELOPER_DIR; };
 		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
 		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; };
 		4D25BF9A1F3A8C580083345B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BaseElements.strings; sourceTree = "<group>"; };
@@ -394,6 +402,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D1BFE5A1F3ACAFC00805CD3 /* libbz2.tbd in Frameworks */,
+				4D1BFE561F3AC9A600805CD3 /* libpodofo.a in Frameworks */,
 				4D42F63F1F283EC90014BDAD /* UIKit.framework in Frameworks */,
 				4D362A5B1F2083CF0036B751 /* libiconv.tbd in Frameworks */,
 				4D362A591F2083C50036B751 /* libz.tbd in Frameworks */,
@@ -428,6 +438,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D1BFE591F3ACAF200805CD3 /* libbz2.tbd in Frameworks */,
+				4D1BFE571F3AC9B900805CD3 /* libpodofo.a in Frameworks */,
 				4D42F63E1F283EBD0014BDAD /* UIKit.framework in Frameworks */,
 				4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */,
 				4D362AA91F2085AF0036B751 /* libPocoFoundation.a in Frameworks */,
@@ -679,6 +691,10 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D1BFE581F3ACAF200805CD3 /* libbz2.tbd */,
+				4D1BFE551F3AC9A600805CD3 /* libpodofo.a */,
+				4D1BFE521F3AC98700805CD3 /* Libraries */,
+				4D1BFE501F3AC97C00805CD3 /* iOS */,
 				4D42F63D1F283EBD0014BDAD /* UIKit.framework */,
 				4D11F40E1F271C6F00D78042 /* libturbojpeg.a */,
 				4D11F40C1F271C5400D78042 /* libssh2.a */,
@@ -1290,7 +1306,6 @@
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.goya.baseelements;
@@ -1326,7 +1341,6 @@
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.goya.baseelements;
@@ -1412,7 +1426,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = (
 					"-Dfopen64=fopen",
 					"-Dftello64=ftello",
@@ -1511,7 +1525,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Dfopen64=fopen",

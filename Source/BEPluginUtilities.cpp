@@ -490,7 +490,6 @@ const std::string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, c
 } // ParameterPathOrContainerAsUTF8
 
 
-#if ! ( FMX_IOS_TARGET )
 std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& parameters, const fmx::uint32 which )
 {
 	std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document ( new PoDoFo::PdfMemDocument ( ) );
@@ -507,7 +506,7 @@ std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& paramet
 	return pdf_document;
 	
 } // ParameterPathOrContainerAsUTF8
-#endif
+
 
 
 #pragma mark -
