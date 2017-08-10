@@ -349,6 +349,10 @@
 		4D76243B1E0A37F600266C0D /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/macOS/libpodofo.a; sourceTree = "<group>"; };
 		4D76243F1E0A386F00266C0D /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		4D7624411E0A3FFE00266C0D /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
+		4D7BD4331F3D0DDD009EFFFA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/BEPluginVersion.strings"; sourceTree = "<group>"; };
+		4D7BD4341F3D0DDD009EFFFA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/BaseElements.strings"; sourceTree = "<group>"; };
+		4D7BD4351F3D0DE7009EFFFA /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/BEPluginVersion.strings"; sourceTree = "<group>"; };
+		4D7BD4361F3D0DE7009EFFFA /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/BaseElements.strings"; sourceTree = "<group>"; };
 		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/en.lproj/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D807EFE1A9C255000E27E38 /* BEImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEImage.cpp; path = ../Source/Images/BEImage.cpp; sourceTree = "<group>"; };
 		4D807EFF1A9C255000E27E38 /* BEImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEImage.h; path = ../Source/Images/BEImage.h; sourceTree = "<group>"; };
@@ -868,6 +872,8 @@
 				en,
 				de,
 				ja,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = C7DEDEE707E10BF3002283F3;
 			productRefGroup = C7DEDEE707E10BF3002283F3;
@@ -1058,6 +1064,8 @@
 				4D25BF9A1F3A8C580083345B /* en */,
 				4D25BFA21F3A8CC90083345B /* de */,
 				4D25BFA41F3A8CD10083345B /* ja */,
+				4D7BD4341F3D0DDD009EFFFA /* zh-Hans */,
+				4D7BD4361F3D0DE7009EFFFA /* zh-Hant */,
 			);
 			name = BaseElements.strings;
 			path = ../Resources;
@@ -1069,6 +1077,8 @@
 				4D25BF9F1F3A8C5F0083345B /* en */,
 				4D25BFA11F3A8CC90083345B /* de */,
 				4D25BFA31F3A8CD00083345B /* ja */,
+				4D7BD4331F3D0DDD009EFFFA /* zh-Hans */,
+				4D7BD4351F3D0DE7009EFFFA /* zh-Hant */,
 			);
 			name = BEPluginVersion.strings;
 			path = ../Resources;
