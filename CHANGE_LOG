@@ -1,4 +1,19 @@
 ########################################################################
+Version 3.3.5
+########################################################################
+
+August 14, 2017
+
+
+Changes
+
+BE_ApplyXSLT: fix errors with some unicode file paths on Windows
+BE_RegularExpression: do not hang when the expression is empty
+BE_HTTP_POST: always use POST (even when no post args are present)
+BE_SMTP_Send: don't show bcc addresses
+
+
+########################################################################
 Version 3.3.4
 ########################################################################
 
