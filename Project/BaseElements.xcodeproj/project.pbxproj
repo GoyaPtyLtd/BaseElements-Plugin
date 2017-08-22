@@ -227,9 +227,6 @@
 		4D0023E313FDD64C00C0B57A /* BEShell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEShell.h; path = ../Source/BEShell.h; sourceTree = SOURCE_ROOT; };
 		4D00CC5816D3279000160030 /* BEJSON.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEJSON.cpp; path = ../Source/BEJSON.cpp; sourceTree = "<group>"; };
 		4D00CC5916D3279000160030 /* BEJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEJSON.h; path = ../Source/BEJSON.h; sourceTree = "<group>"; };
-		4D00CC6516D3357C00160030 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		4D00CC6616D3357C00160030 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		4D00CC6716D3357C00160030 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4D05792C1B3B83550000585F /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/macOS/FMWrapper.framework; sourceTree = "<group>"; };
 		4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPEmailMessage.cpp; path = ../Source/BESMTPEmailMessage.cpp; sourceTree = "<group>"; };
 		4D0BA9B118BEF74D00F8FD45 /* BESMTPEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTPEmailMessage.h; path = ../Source/BESMTPEmailMessage.h; sourceTree = "<group>"; };
@@ -257,8 +254,6 @@
 		4D13006716DADD8A0075FE0C /* BEOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEOAuth.h; path = ../Source/BEOAuth.h; sourceTree = "<group>"; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/Crypto/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/Crypto/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
-		4D1BFE501F3AC97C00805CD3 /* iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iOS; path = ../Libraries/iOS; sourceTree = "<group>"; };
-		4D1BFE521F3AC98700805CD3 /* Libraries */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Libraries; path = ../Libraries; sourceTree = "<group>"; };
 		4D1BFE551F3AC9A600805CD3 /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/iOS/libpodofo.a; sourceTree = "<group>"; };
 		4D1BFE581F3ACAF200805CD3 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/usr/lib/libbz2.tbd; sourceTree = DEVELOPER_DIR; };
 		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
@@ -515,16 +510,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4D00CC6416D3357C00160030 /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				4D00CC6516D3357C00160030 /* AppKit.framework */,
-				4D00CC6616D3357C00160030 /* CoreData.framework */,
-				4D00CC6716D3357C00160030 /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
-			sourceTree = "<group>";
-		};
 		4D3629EA1F20789A0036B751 /* BaseElementsIOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -697,8 +682,6 @@
 			children = (
 				4D1BFE581F3ACAF200805CD3 /* libbz2.tbd */,
 				4D1BFE551F3AC9A600805CD3 /* libpodofo.a */,
-				4D1BFE521F3AC98700805CD3 /* Libraries */,
-				4D1BFE501F3AC97C00805CD3 /* iOS */,
 				4D42F63D1F283EBD0014BDAD /* UIKit.framework */,
 				4D11F40E1F271C6F00D78042 /* libturbojpeg.a */,
 				4D11F40C1F271C5400D78042 /* libssh2.a */,
@@ -766,7 +749,6 @@
 				4D05792C1B3B83550000585F /* FMWrapper.framework */,
 				4D27C3851861160000E7F4A1 /* Cocoa.framework */,
 				4D55C63815EE0F0A008F7FBA /* Carbon.framework */,
-				4D00CC6416D3357C00160030 /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1305,6 +1287,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 16 Advanced/Extensions/";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1395,7 +1378,7 @@
 				GCC_MODEL_TUNING = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_GLOBAL_CONSTRUCTORS = NO;
@@ -1425,10 +1408,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
-				HEADER_SEARCH_PATHS = (
-					../Headers/,
-					"/Users/mark/Desktop/jansson-json_path/src/",
-				);
+				HEADER_SEARCH_PATHS = ../Headers/;
 				INFOPLIST_FILE = ../Resources/en.lproj/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
@@ -1494,7 +1474,7 @@
 				GCC_MODEL_TUNING = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_GLOBAL_CONSTRUCTORS = NO;
@@ -1524,10 +1504,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
-				HEADER_SEARCH_PATHS = (
-					../Headers/,
-					"/Users/mark/Desktop/jansson-json_path/src/",
-				);
+				HEADER_SEARCH_PATHS = ../Headers/;
 				INFOPLIST_FILE = ../Resources/en.lproj/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
