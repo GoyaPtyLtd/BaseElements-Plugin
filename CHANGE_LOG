@@ -2,7 +2,7 @@
 Version 4.0b5
 ########################################################################
 
-August 5, 2017
+August 22, 2017
 
 
 New Functions
@@ -16,6 +16,8 @@ Changes
 
 BE_HTTP_Set_Custom_Header: call with no parameters to delete all Headers
 BE_SMTP_Set_Custom_Header: call with no parameters to delete all Headers
+
+Enable PDF functions on iOS.
 
 
 ########################################################################

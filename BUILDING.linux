@@ -93,17 +93,17 @@ Copy libcrypto.a and libssl.a to Libraries/linux and copy build/include/openssl 
 liboauth - 1.0.3
 =======================================================================
 
-Note: OpenSSL must be built first.
+Note: OpenSSL & cURL must be built first.
 
 Download the source from
 
 	http://liboauth.sourceforge.net/
 
 	cd openssl-1.0.3
-	CFLAGS="-fPIC -I/home/mark/Documents/BaseElements-Plugin.git/trunk/Headers" LDFLAGS="-L/home/mark/Documents/BaseElements-Plugin.git/trunk/Libraries/linux" ./configure --prefix=/home/mark/Desktop/liboauth-1.0.3/build --disable-shared
+	CURL_CFLAGS="-I/home/mark/Dropbox/Development/BaseElements-Plugin/Headers" CURL_LIBS="/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libcurl.a" CFLAGS="-fPIC -I/home/mark/Documents/BaseElements-Plugin.git/trunk/Headers" LDFLAGS="-L/home/mark/Documents/BaseElements-Plugin.git/trunk/Libraries/linux" ./configure --prefix=/home/mark/Desktop/liboauth-1.0.3/build --disable-curl --enable-libcurl --disable-shared
 	make install
 
-Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib  to Libraries\win32 and liboauth\Release\liboauth.lib to Libraries\x64.
+Copy liboauth.h from ./src/ to the Headers directory and liboautha  to Libraries\linux.
 
 
 =======================================================================
@@ -145,7 +145,7 @@ Download the source from
 Then
 
 	cd libssh2-1.7.0
-	CFLAGS="-fPIC -I/home/mark/Documents/BaseElements-Plugin.git/trunk/Headers" LDFLAGS="-L/home/mark/Documents/BaseElements-Plugin.git/trunk/Libraries/linux -ldl" ./configure --prefix=/home/mark/Desktop/libssh2-1.7.0/build --with-openssl --with-libz --without-libgcrypt --disable-examples-build --disable-shared
+	CFLAGS="-fPIC -I/home/mark/Dropbox/Development/BaseElements-Plugin/Headers" LDFLAGS="-L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux -ldl" ./configure --prefix=/home/mark/Desktop/libssh2-1.7.0/build --with-openssl --with-libz --without-libgcrypt --disable-examples-build --disable-shared
 	make install
 	
 Copy
@@ -172,7 +172,7 @@ Download the source from
 and expand it into a directory on the Desktop. Then
 
 	cd curl-7.50.1
-	./configure --with-ssl='/home/mark/Desktop/openssl-1.0.2h/build' --with-libssh2='/home/mark/Desktop/libssh2-1.7.0/build' --disable-shared --with-zlib='/home/mark/Desktop/zlib-1.2.8/build' --prefix='/home/mark/Desktop/curl-7.50.1/build'
+	CPPFLAGS="-I/home/mark/Dropbox/Development/BaseElements-Plugin/Headers" LDFLAGS="-L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libcrypto.a -L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libssl.a -ldl" ./configure --with-ssl='/home/mark/Desktop/openssl-1.0.2h/build' --with-libssh2='/home/mark/Desktop/libssh2-1.7.0/build' --disable-shared --with-zlib='/home/mark/Desktop/zlib-1.2.8/build' --prefix='/home/mark/Desktop/curl-7.50.1/build'
 	make install
 
 Copy
