@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
  
- Copyright 2011-2016 Goya. All rights reserved.
+ Copyright 2011-2017 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -660,7 +660,20 @@ void BECurl::set_parameters ( )
 
 	if ( http_method == kBE_HTTP_METHOD_POST || !parameters.empty() ) {
 
-		if ( std::string::npos == parameters.find ( "=@" ) ) { // let curl do the work unless there's a file path
+		if ( 0 == parameters.find ( "@" ) ) { // let curl do the work unless there's a file path
+			
+			parameters.erase ( parameters.begin() );
+			
+			// slurp up the file contents
+			boost::filesystem::ifstream input_file ( parameters, ios_base::in | ios_base::binary | ios_base::ate );
+			input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
+			input_file.seekg ( 0, ios::beg );
+			vector<char> file_data ( (std::istreambuf_iterator<char> ( input_file ) ), std::istreambuf_iterator<char>() );
+			
+			easy_setopt ( CURLOPT_POSTFIELDS, &file_data[0] );
+			easy_setopt ( CURLOPT_POSTFIELDSIZE, file_data.size() );
+			
+		} else if ( std::string::npos == parameters.find ( "=@" ) ) { // let curl do the work unless there's a file path
 
 			easy_setopt ( CURLOPT_POSTFIELDS, parameters.c_str() );
 			easy_setopt ( CURLOPT_POSTFIELDSIZE, parameters.length() );
