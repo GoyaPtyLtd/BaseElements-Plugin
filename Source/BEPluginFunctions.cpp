@@ -444,12 +444,10 @@ fmx::errcode BE_WriteTextFileToContainer ( short /* funcId */, const ExprEnv& /*
 			
 			// should the text be appended to the file or replace any existing contents
 			
-			//		if ( parameters.Size() == 3 ) {
 			auto append = ParameterAsBoolean ( parameters, 2, false );
 			if ( append && BinaryDataAvailable ( parameters )) {
 				text_to_write = ParameterPathOrContainerAsUTF8 ( parameters );
 			}
-			//		}
 			
 			text_to_write += ParameterAsUTF8String ( parameters, 1 );
 			
