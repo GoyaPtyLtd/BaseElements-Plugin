@@ -37,7 +37,9 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	message->header().subject ( subject );
 
 	text = new mimetic::MimeEntity;
-	text->body().assign ( message_body + "\n\n" );
+	auto message_text = message_body;
+	boost::replace_all ( message_text, FILEMAKER_END_OF_LINE, "\r\n" );
+	text->body().assign ( message_text + "\r\n\r\n" );
 	text->header().contentType() = "text/plain; charset=\"utf-8\"";
 
 	mimetic::MimeVersion mime_version = mimetic::MimeVersion ( "1.0" );
@@ -98,7 +100,9 @@ void BESMTPEmailMessage::set_reply_to ( const std::string& reply_to_address )
 void BESMTPEmailMessage::set_html_alternative ( const std::string& html_part )
 {
 	html = new mimetic::MimeEntity;
-	html->body().assign ( html_part );
+	auto html_text = html_part;
+	boost::replace_all ( html_text, FILEMAKER_END_OF_LINE, "\r\n" );
+	html->body().assign ( html_text );
 	html->header().contentType() = "text/html; charset=\"utf-8\"";
 }
 
