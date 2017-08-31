@@ -2,12 +2,14 @@
 Version 3.3.6
 ########################################################################
 
-August 28, 2017
+August 30, 2017
 
 
 Changes
 
 BE_HTTP_POST: Allow a file (@/path/...) to be specified as the post args for a POST
+BE_SMTP_Send:	do not send bare line feeds
+				use network line endings when encoding base64 attachments
 
 
 ########################################################################
