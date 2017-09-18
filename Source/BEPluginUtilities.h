@@ -60,11 +60,11 @@ const double ParameterAsDouble ( const fmx::DataVect& parameters, const FMX_UInt
 const long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const unsigned long default_value = 0 );
 const long ParameterAsIndex ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const unsigned long default_value = 0 );
 const std::string ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const std::string default_value = "" );
-const std::wstring ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+const std::wstring ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const std::wstring default_value = L"" );
 const std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
-const boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+const boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const boost::filesystem::path default_path = "" );
 const std::string ParameterFileName ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& parameters, const fmx::uint32 which = 0 );
 std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const fmx::DataVect& parameters, const fmx::uint32 which = 0 );

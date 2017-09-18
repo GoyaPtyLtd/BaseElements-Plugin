@@ -313,15 +313,15 @@ const std::string ParameterAsUTF8String ( const DataVect& parameters, const FMX_
 } // ParameterAsUTF8String
 
 
-const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which )
+const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which, const std::wstring default_value )
 {
 
-	std::wstring result;
+	std::wstring result ( default_value );
 
 	try {
 
 		TextUniquePtr raw_data;
-		raw_data->SetText ( parameters.AtAsText(which) );
+		raw_data->SetText ( parameters.AtAsText ( which ) );
 
 		FMX_Int32 text_size = raw_data->GetSize();
 		FMX_UInt16 * text = new FMX_UInt16 [ text_size + 1 ];
@@ -344,7 +344,7 @@ const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX
 
 		#endif
 
-		result.append ( parameter );
+		result.assign ( parameter );
 		delete [] parameter; // parameter == text on Windows
 
 	} catch ( exception& /* e */ ) {
@@ -424,10 +424,10 @@ const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& paramet
 } // ParameterAsVectorDouble
 
 
-const boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which )
+const boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which, const boost::filesystem::path default_path )
 {
 
-	std::wstring file = ParameterAsWideString ( parameters, which );
+	auto file = ParameterAsWideString ( parameters, which, default_path.wstring() );
 	boost::filesystem::path path = file;
 	path.make_preferred();
 
