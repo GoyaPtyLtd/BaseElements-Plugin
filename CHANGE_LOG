@@ -10,6 +10,7 @@ New Functions
 
 Changes
 
+BE_XPath: do not crash when attempting to get a non-existent value as xml
 BE_SMTP_Send: do not send bare line feeds
 BE_StripInvalidUTF16CharactersFromXMLFile: optional parameter, resultPath, added
 
