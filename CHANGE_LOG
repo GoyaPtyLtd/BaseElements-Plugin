@@ -2,7 +2,7 @@
 Version 4.0b6
 ########################################################################
 
-August 29, 2017
+September 18, 2017
 
 
 New Functions
@@ -11,6 +11,7 @@ New Functions
 Changes
 
 BE_SMTP_Send: do not send bare line feeds
+BE_StripInvalidUTF16CharactersFromXMLFile: optional parameter, resultPath, added
 
 
 ########################################################################

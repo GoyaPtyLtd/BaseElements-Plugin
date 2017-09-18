@@ -178,7 +178,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_DisplayDialog ] = "BE_DisplayDialog ( title ; message ; defaultButton {; cancelButton ; alternateButton } )";
 	strings [ kBE_ApplyXSLT ] = "BE_ApplyXSLT ( xmlPath ; xslt ; outputPath )";
 	strings [ kBE_ExtractScriptVariables ] = "BE_ExtractScriptVariables ( calculation )";
-	strings [ kBE_StripInvalidUTF16CharactersFromXMLFile ] = "BE_StripInvalidUTF16CharactersFromXMLFile ( path )";
+	strings [ kBE_StripInvalidUTF16CharactersFromXMLFile ] = "BE_StripInvalidUTF16CharactersFromXMLFile ( path ; { resultPath } )";
 	strings [ kBE_MoveFile ] = "BE_MoveFile ( from ; to )";
 	strings [ kBE_CopyFile ] = "BE_CopyFile ( from ; to )";
 	strings [ kBE_ListFilesInFolder ] = "BE_ListFilesInFolder ( path {; type ; includeSubdirectories ; useFullPath } )";

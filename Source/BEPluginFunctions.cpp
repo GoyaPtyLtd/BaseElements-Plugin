@@ -483,13 +483,17 @@ fmx::errcode BE_WriteTextFileToContainer ( short /* funcId */, const ExprEnv& /*
 fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
+	auto overwriting = false;
 
 	try {
 
-		path source = ParameterAsPath ( parameters );
-
-		path destination = source;
-		destination += TEMPORARY_FILE_SUFFIX;
+		auto source = ParameterAsPath ( parameters );
+		auto destination = ParameterAsPath ( parameters, 1, source );
+		if ( destination == source ) {
+			destination += TEMPORARY_FILE_SUFFIX;
+			overwriting = true;
+		}
+		
 		boost::uintmax_t length = file_size ( source ); // throws if the source does not exist
 
 		boost::filesystem::ifstream input_file ( source, ios_base::in | ios_base::binary | ios_base::ate );
@@ -542,14 +546,20 @@ fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, con
 		 */
 
 		if ( (skipped > 0) && (length == (file_size ( destination ) + skipped)) ) {
-			remove_all ( source );
-			rename ( destination, source );
+			
+			if ( overwriting ) {
+				remove_all ( source );
+				rename ( destination, source );
+			}
+
 		} else {
+
 			remove_all ( destination );
 			if ( skipped > 0 ) {
 				// if characters were skipped and the file size is wrong report an error
 				error = kFileSystemError;
 			}
+
 		}
 
 		SetResult ( skipped, results );
