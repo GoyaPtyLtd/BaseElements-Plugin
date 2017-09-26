@@ -502,7 +502,8 @@ fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, con
 
 		const size_t size = 2; // read (and write) 2 bytes at a time
 		boost::uintmax_t skipped = 0;
-		bool big_endian = true;
+		auto big_endian = true;
+		auto write_output = false;
 
 		for ( boost::uintmax_t i = 0; i < length; i += size ) {
 
@@ -523,22 +524,32 @@ fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, con
 				utf16 = (unichar16 *)byte_swapped;
 			}
 
-			// only check codepoints in the bmp (so no 4-byte codepoints)
+			// only check for 'control characters'
 			if ( (*utf16 == 0x9) || // horizontal tab
 				(*utf16 == 0xA) ||	// line feed
 				(*utf16 == 0xD) ||	// carriage return
-				((*utf16 >= 0x20) && (*utf16 <= 0xD7FF)) ||
-				((*utf16 >= 0xE000) && (*utf16 <= 0xFFFE)) ) {
+				(*utf16 >= 0x20) ) {
 
-				output_file.write ( codepoint, size );
-
+				if ( write_output ) {
+					output_file.write ( codepoint, size );
+				}
+				
 			} else {
-				skipped += size;
+				
+				if ( write_output ) {
+					skipped += size;
+				} else {
+					// reset the loop and start again but writing the output
+					write_output = true;
+					i = -size;
+					input_file.seekg ( 0, ios::beg );
+				}
+				
 			}
 		}
 
 		output_file.close();
-		input_file.close ();
+		input_file.close();
 
 		/*
 		 only replace the file if that we've skipped some characters and
