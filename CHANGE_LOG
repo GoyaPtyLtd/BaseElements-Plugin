@@ -2,7 +2,7 @@
 Version 4.0b6
 ########################################################################
 
-September 18, 2017
+September 26, 2017
 
 
 New Functions
@@ -12,7 +12,8 @@ Changes
 
 BE_XPath: do not crash when attempting to get a non-existent value as xml
 BE_SMTP_Send: do not send bare line feeds
-BE_StripInvalidUTF16CharactersFromXMLFile: optional parameter, resultPath, added
+BE_StripInvalidUTF16CharactersFromXMLFile:	optional parameter, resultPath, added
+											only write the output when characters are stripped
 
 
 ########################################################################
