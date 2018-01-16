@@ -16,7 +16,6 @@
 		4D11F3F91F271BF100D78042 /* liboauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3F61F271BF100D78042 /* liboauth.a */; };
 		4D11F3FA1F271BF100D78042 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3F71F271BF100D78042 /* libPocoFoundation.a */; };
 		4D11F3FB1F271BF100D78042 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3F81F271BF100D78042 /* libPocoZip.a */; };
-		4D11F4021F271C0B00D78042 /* libboost_atomic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FC1F271C0B00D78042 /* libboost_atomic.a */; };
 		4D11F4031F271C0B00D78042 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */; };
 		4D11F4041F271C0B00D78042 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */; };
 		4D11F4051F271C0B00D78042 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FF1F271C0B00D78042 /* libboost_regex.a */; };
@@ -241,7 +240,6 @@
 		4D11F3F61F271BF100D78042 /* liboauth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liboauth.a; path = ../Libraries/macOS/liboauth.a; sourceTree = "<group>"; };
 		4D11F3F71F271BF100D78042 /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = ../Libraries/macOS/libPocoFoundation.a; sourceTree = "<group>"; };
 		4D11F3F81F271BF100D78042 /* libPocoZip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZip.a; path = ../Libraries/macOS/libPocoZip.a; sourceTree = "<group>"; };
-		4D11F3FC1F271C0B00D78042 /* libboost_atomic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_atomic.a; path = ../Libraries/macOS/libboost_atomic.a; sourceTree = "<group>"; };
 		4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../Libraries/macOS/libboost_date_time.a; sourceTree = "<group>"; };
 		4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../Libraries/macOS/libboost_filesystem.a; sourceTree = "<group>"; };
 		4D11F3FF1F271C0B00D78042 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../Libraries/macOS/libboost_regex.a; sourceTree = "<group>"; };
@@ -476,7 +474,6 @@
 				4D11F40F1F271C6F00D78042 /* libturbojpeg.a in Frameworks */,
 				4D11F40D1F271C5400D78042 /* libssh2.a in Frameworks */,
 				4D11F40B1F271C3B00D78042 /* libcurl.a in Frameworks */,
-				4D11F4021F271C0B00D78042 /* libboost_atomic.a in Frameworks */,
 				4D11F4031F271C0B00D78042 /* libboost_date_time.a in Frameworks */,
 				4D11F4041F271C0B00D78042 /* libboost_filesystem.a in Frameworks */,
 				4D11F4051F271C0B00D78042 /* libboost_regex.a in Frameworks */,
@@ -686,7 +683,6 @@
 				4D11F40E1F271C6F00D78042 /* libturbojpeg.a */,
 				4D11F40C1F271C5400D78042 /* libssh2.a */,
 				4D11F40A1F271C3B00D78042 /* libcurl.a */,
-				4D11F3FC1F271C0B00D78042 /* libboost_atomic.a */,
 				4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */,
 				4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */,
 				4D11F3FF1F271C0B00D78042 /* libboost_regex.a */,
