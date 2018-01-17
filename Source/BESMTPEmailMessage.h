@@ -2,7 +2,7 @@
  BESMTPEmailMessage.h
  BaseElements Plug-In
  
- Copyright 2014-2017 Goya. All rights reserved.
+ Copyright 2014-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -17,6 +17,7 @@
 #include "BEPluginGlobalDefines.h"
 #include "BEValueList.h"
 #include "BESMTPContainerAttachments.h"
+#include "Net/BEMimeticMIMEEntity.h"
 
 #include <mimetic/mimetic.h>
 
@@ -48,7 +49,7 @@ public:
 	
 protected:
 
-	mimetic::MimeEntity * message;
+	BEMimeticMIMEEntity * message;
 	mimetic::MimeEntity * text;
 	mimetic::MimeEntity * html;
 

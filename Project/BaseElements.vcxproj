@@ -97,7 +97,7 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\$(Platform)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\FileMaker\FileMaker Pro 16 Advanced\Extensions\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)$(Platform).intermediate\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\mark\Documents\Temp\$(ProjectName)\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\mark\AppData\Local\Temp\MSVC\$(ProjectName)\Build\$(Configuration)\$(Platform)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\FileMaker\FileMaker Pro 16 Advanced\Extensions\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\mark\AppData\Local\Temp\MSVC\$(ProjectName)\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
@@ -109,7 +109,7 @@
     <EmbedManifest>true</EmbedManifest>
     <GenerateManifest>false</GenerateManifest>
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -259,9 +259,9 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>$(OutDir)</AssemblerListingLocation>
-      <ObjectFileName>$(OutDir)</ObjectFileName>
-      <ProgramDataBaseFileName>$(OutDir)</ProgramDataBaseFileName>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -270,7 +270,7 @@
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <EnablePREfast>true</EnablePREfast>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -281,7 +281,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)$(ProjectName)D.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(IntDir)$(ProjectName)D.pdb</ProgramDatabaseFile>
       <ImportLibrary>$(IntDir)$(ProjectName)D.lib</ImportLibrary>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
@@ -295,6 +295,7 @@
       <EntryPointSymbol>
       </EntryPointSymbol>
       <TypeLibraryResourceID>1</TypeLibraryResourceID>
+      <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -374,6 +375,7 @@
     <ClCompile Include="..\Source\duktape\duktape.c" />
     <ClCompile Include="..\Source\Images\BEImage.cpp" />
     <ClCompile Include="..\Source\Images\BEJPEG.cpp" />
+    <ClCompile Include="..\Source\Net\BEMimeticMIMEEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\resource_version.h" />
@@ -420,6 +422,7 @@
     <ClInclude Include="..\Source\duktape\duktape.h" />
     <ClInclude Include="..\Source\Images\BEImage.h" />
     <ClInclude Include="..\Source\Images\BEJPEG.h" />
+    <ClInclude Include="..\Source\Net\BEMimeticMIMEEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

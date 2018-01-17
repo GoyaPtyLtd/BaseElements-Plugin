@@ -168,6 +168,11 @@
 		4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A401F207B660036B751 /* iOSAppSDK.framework */; };
 		4D42F63E1F283EBD0014BDAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D42F63D1F283EBD0014BDAD /* UIKit.framework */; };
 		4D42F63F1F283EC90014BDAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D42F63D1F283EBD0014BDAD /* UIKit.framework */; };
+		4D44BC20200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
+		4D44BC21200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
+		4D44BC22200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
+		4D44BC23200FAD9E0028449D /* BEMimeticMIMEEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D44BC1F200FAD9E0028449D /* BEMimeticMIMEEntity.h */; };
+		4D44BC24200FAD9E0028449D /* BEMimeticMIMEEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D44BC1F200FAD9E0028449D /* BEMimeticMIMEEntity.h */; };
 		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
 		4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06701C23B389006899FE /* libiconv.tbd */; };
 		4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06761C23B3A9006899FE /* libcharset.tbd */; };
@@ -314,6 +319,8 @@
 		4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLReader.cpp; path = ../Source/BEXMLReader.cpp; sourceTree = "<group>"; };
 		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
 		4D42F63D1F283EBD0014BDAD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BEMimeticMIMEEntity.cpp; path = ../Source/Net/BEMimeticMIMEEntity.cpp; sourceTree = "<group>"; };
+		4D44BC1F200FAD9E0028449D /* BEMimeticMIMEEntity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEMimeticMIMEEntity.h; path = ../Source/Net/BEMimeticMIMEEntity.h; sourceTree = "<group>"; };
 		4D4C066C1C23B372006899FE /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		4D4C066E1C23B37E006899FE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		4D4C06701C23B389006899FE /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -575,6 +582,8 @@
 				4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */,
 				4DB857A21C646DF600D0192A /* BESMTPContainerAttachments.h */,
 				4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */,
+				4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */,
+				4D44BC1F200FAD9E0028449D /* BEMimeticMIMEEntity.h */,
 			);
 			name = Net;
 			sourceTree = "<group>";
@@ -757,6 +766,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D3629ED1F20789A0036B751 /* BaseElementsIOS.h in Headers */,
+				4D44BC23200FAD9E0028449D /* BEMimeticMIMEEntity.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,6 +775,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D362A9F1F2085880036B751 /* BaseElementsIOS.h in Headers */,
+				4D44BC24200FAD9E0028449D /* BEMimeticMIMEEntity.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -915,6 +926,7 @@
 				4D362A0E1F2079CA0036B751 /* BECppUtilities.cpp in Sources */,
 				4D362A011F2079BC0036B751 /* BEFileMakerPlugin.cpp in Sources */,
 				4D362A021F2079BC0036B751 /* BEXSLT.cpp in Sources */,
+				4D44BC21200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */,
 				4D362A031F2079BC0036B751 /* BEShell.cpp in Sources */,
 				4D362A041F2079BC0036B751 /* BEZlib.cpp in Sources */,
 				4D362A051F2079BC0036B751 /* BEFileTextReader.cpp in Sources */,
@@ -960,6 +972,7 @@
 				4D362A681F2085880036B751 /* BECppUtilities.cpp in Sources */,
 				4D362A691F2085880036B751 /* BEFileMakerPlugin.cpp in Sources */,
 				4D362A6A1F2085880036B751 /* BEXSLT.cpp in Sources */,
+				4D44BC22200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */,
 				4D362A6B1F2085880036B751 /* BEShell.cpp in Sources */,
 				4D362A6C1F2085880036B751 /* BEZlib.cpp in Sources */,
 				4D362A6D1F2085880036B751 /* BEFileTextReader.cpp in Sources */,
@@ -1019,6 +1032,7 @@
 				4DCD495C1A195B0C00EFCF7F /* BEXMLTextWriter.cpp in Sources */,
 				4DCD495D1A195B0C00EFCF7F /* BEXMLReaderInterface.cpp in Sources */,
 				4DCD495E1A195B0C00EFCF7F /* BETime.cpp in Sources */,
+				4D44BC20200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */,
 				4DCD495F1A195B0C00EFCF7F /* BEJSON.cpp in Sources */,
 				4DCD49601A195B0C00EFCF7F /* BEOAuth.cpp in Sources */,
 				4DCD49611A195B0C00EFCF7F /* BECppUtilities.cpp in Sources */,
