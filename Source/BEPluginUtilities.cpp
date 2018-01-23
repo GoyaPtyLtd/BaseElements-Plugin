@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
 
- Copyright 2010-2017 Goya. All rights reserved.
+ Copyright 2010-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -734,17 +734,17 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 	 */
 
 	const size_t kIconvError = -1;
-	size_t error_result = kIconvError;
+	size_t error_result = EILSEQ; // illegal byte sequence
 	vector<string>::iterator it = codesets.begin();
 
 	vector<char> out;
 
-	while ( error_result == kIconvError && it != codesets.end() ) {
+	while ( error_result == EILSEQ && it != codesets.end() ) {
 
 		char * start = in;
 		size_t start_length = length;
 
-		size_t available = (length * 4) + 1;	// worst case for utf-32 to utf-8 ?
+        size_t available = (length * 4) + 1;	// worst case for utf-32 to utf-8 ?
 		std::vector<char> encoded ( available );
 		char * encoded_start = &encoded[0];
 		size_t remaining = available;
@@ -753,10 +753,14 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 		if ( conversion != (iconv_t)kIconvError ) {
 			error_result = iconv ( conversion, &start, &start_length, &encoded_start, &remaining );
 			if ( error_result != kIconvError ) {
-				iconv_close ( conversion );
+				iconv_close ( conversion ); // int =
 				out.assign ( &encoded[0], &encoded[0] + available - remaining );
 			} else {
-				throw BEPlugin_Exception ( errno );
+                error_result = errno;
+                iconv_close ( conversion ); // int =
+                if ( error_result != EILSEQ ) {
+                    throw BEPlugin_Exception ( error_result );
+                }
 			}
 
 		} else {

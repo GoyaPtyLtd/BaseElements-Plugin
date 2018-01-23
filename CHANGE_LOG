@@ -2,7 +2,7 @@
 Version 4.0b6
 ########################################################################
 
-September 26, 2017
+January 23, 2018
 
 
 New Functions
@@ -10,8 +10,11 @@ New Functions
 
 Changes
 
+BE_ClipboardData: do not crash when there is no text/utf-8 coercion available for a data type (macOS)
 BE_XPath: do not crash when attempting to get a non-existent value as xml
-BE_SMTP_Send: do not send bare line feeds
+BE_ReadTextFromFile: Do not exit after the first invalid from encoding
+BE_SMTP_Send:	do not send bare line feeds
+				do not fold (long) header lines
 BE_StripInvalidUTF16CharactersFromXMLFile:	optional parameter, resultPath, added
 											only write the output when characters are stripped
 
