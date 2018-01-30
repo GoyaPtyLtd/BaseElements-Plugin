@@ -525,7 +525,7 @@ TextAutoPtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjec
 	xmlBufferPtr xml_buffer = xmlBufferCreate();
 	xmlErrorPtr xml_error = xmlGetLastError();
 	
-	if ( xml_buffer && xml_error == NULL ) {
+	if ( xml_buffer && xml_error == NULL && xpathObj->nodesetval != NULL ) {
 			
 		if ( xpathObj->type == XPATH_NODESET && xpathObj->nodesetval->nodeNr > 0 ) {
 
@@ -555,12 +555,14 @@ TextAutoPtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjec
 			result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
 		}
 		
-		xmlFree ( xml_buffer );
-
 	} else {
 		result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
 	}
 
+	if ( xml_buffer ) {
+		xmlFree ( xml_buffer );
+	}
+	
 	return result;
 }
 
