@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
  
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -330,7 +330,7 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt
 WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which, const std::wstring default_value )
 {
 
-	WStringAutoPtr result ( new wstring );
+	WStringAutoPtr result ( new wstring ( default_value ) );
 
 	try {
 

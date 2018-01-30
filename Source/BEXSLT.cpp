@@ -2,7 +2,7 @@
  BEXSLT.cpp
  BaseElements Plug-In
  
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
