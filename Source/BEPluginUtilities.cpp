@@ -327,48 +327,46 @@ StringAutoPtr ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt
 } // ParameterAsUTF8String
 
 
-WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which )
-{	
-	
+WStringAutoPtr ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which, const std::wstring default_value )
+{
+
 	WStringAutoPtr result ( new wstring );
-	
+
 	try {
-		
-		TextAutoPtr raw_data;
-		raw_data->SetText ( parameters.AtAsText(which) );
-		
+
+		TextUniquePtr raw_data;
+		raw_data->SetText ( parameters.AtAsText ( which ) );
+
 		FMX_Int32 text_size = raw_data->GetSize();
 		FMX_UInt16 * text = new FMX_UInt16 [ text_size + 1 ];
 		raw_data->GetUnicode ( text, 0, text_size );
         text[text_size] = 0x0000;
 
 		// wchar_t is 4 bytes on OS X and 2 on Windows
-		
-		#if defined(FMX_MAC_TARGET)
+
+		#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET || defined FMX_LINUX_TARGET
 		
 			wchar_t * parameter = new wchar_t [ text_size + 1 ];
 			for ( long i = 0 ; i <= text_size ; i++ ) {
 				parameter[i] = (wchar_t)text[i];
 			}
 			delete [] text;
-		
-		#endif 
-		
-		#if defined(FMX_WIN_TARGET)
-		
+
+		#elif defined FMX_WIN_TARGET
+
 			wchar_t * parameter = (wchar_t*)text;
-		
+
 		#endif
-		
-		result->append ( parameter );
+
+		result->assign ( parameter );
 		delete [] parameter; // parameter == text on Windows
-				
+
 	} catch ( exception& /* e */ ) {
 		;	// return an empty string
 	}
-	
+
 	return result;
-	
+
 } // ParameterAsUnicodeString
 
 
@@ -440,15 +438,15 @@ std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, c
 } // ParameterAsVectorDouble
 
 
-boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which )
+const boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which, const boost::filesystem::path default_path )
 {
-	
-	WStringAutoPtr file = ParameterAsWideString ( parameters, which );
+
+	WStringAutoPtr file = ParameterAsWideString ( parameters, which, default_path.wstring() );
 	boost::filesystem::path path = *file;
 	path.make_preferred();
-	
+
 	return path;
-	
+
 }
 
 
