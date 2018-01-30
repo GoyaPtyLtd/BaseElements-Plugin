@@ -602,6 +602,7 @@
 				4D362AA61F2085880036B751 /* BaseElementsIOSSimulator.fmplugin */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		C7DEDEF607E10BF3002283F3 /* Sources */ = {
 			isa = PBXGroup;
