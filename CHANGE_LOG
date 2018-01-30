@@ -8,6 +8,7 @@ January 30, 2018
 Changes
 
 BE_XPath: do not crash when attempting to get a non-existent value as xml
+BE_StripInvalidUTF16CharactersFromXMLFile: optional parameter, resultPath, added
 
 
 ########################################################################

@@ -24,7 +24,7 @@
 
 "116" = "BE_ExtractScriptVariables ( calculation )";
 
-"117" = "BE_StripInvalidUTF16CharactersFromXMLFile ( path )";
+"117" = "BE_StripInvalidUTF16CharactersFromXMLFile ( path ; { resultPath } )";
 
 "118" = "BE_MoveFile ( from ; to )";
 "119" = "BE_CopyFile ( from ; to )";

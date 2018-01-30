@@ -427,15 +427,19 @@ FMX_PROC(errcode) BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* env
 FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
-	
-	try {
-		
-		path source = ParameterAsPath ( parameters );
+	bool overwriting = false;
 
-		path destination = source;
-		destination += TEMPORARY_FILE_SUFFIX;
-		boost::uintmax_t length = file_size ( source ); // throws if the source does not exist
+	try {
+
+		path source = ParameterAsPath ( parameters );
+		path destination = ParameterAsPath ( parameters, 1, source );
+		if ( destination == source ) {
+			destination += TEMPORARY_FILE_SUFFIX;
+			overwriting = true;
+		}
 		
+		boost::uintmax_t length = file_size ( source ); // throws if the source does not exist
+
 		boost::filesystem::ifstream input_file ( source, ios_base::in | ios_base::binary | ios_base::ate );
 		input_file.seekg ( 0, ios::beg );
 		boost::filesystem::ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
@@ -448,28 +452,28 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 
 			char codepoint[size];
 			input_file.read ( codepoint, size );
-			
+
 			// check the bom, if present, to determin if the utf-16 if big or little endian
 			if ( (i == 0) && ((unsigned char)codepoint[0] == 0xff && (unsigned char)codepoint[1] == 0xfe ) ) {
 				big_endian = false;
 			}
-			
+
 			// swap the byte order for big-endian files
-			unichar * utf16 = (unichar *)codepoint;
+			unichar16 * utf16 = (unichar16 *)codepoint;
 			char byte_swapped[size];
 			if ( big_endian ) {
 				byte_swapped[0] = codepoint[1];
 				byte_swapped[1] = codepoint[0];
-				utf16 = (unichar *)byte_swapped;
+				utf16 = (unichar16 *)byte_swapped;
 			}
-			
+
 			// only check codepoints in the bmp (so no 4-byte codepoints)
 			if ( (*utf16 == 0x9) || // horizontal tab
 				(*utf16 == 0xA) ||	// line feed
 				(*utf16 == 0xD) ||	// carriage return
 				((*utf16 >= 0x20) && (*utf16 <= 0xD7FF)) ||
 				((*utf16 >= 0xE000) && (*utf16 <= 0xFFFE)) ) {
-				
+
 				output_file.write ( codepoint, size );
 
 			} else {
@@ -479,35 +483,42 @@ FMX_PROC(errcode) BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */
 
 		output_file.close();
 		input_file.close ();
-		
+
 		/*
 		 only replace the file if that we've skipped some characters and
 		 the output file is the right size
 		 */
-		
+
 		if ( (skipped > 0) && (length == (file_size ( destination ) + skipped)) ) {
-			remove_all ( source );
-			rename ( destination, source );
+			
+			if ( overwriting ) {
+				remove_all ( source );
+				rename ( destination, source );
+			}
+
 		} else {
+
 			remove_all ( destination );
 			if ( skipped > 0 ) {
 				// if characters were skipped and the file size is wrong report an error
 				error = kFileSystemError;
 			}
+
 		}
 
 		SetResult ( skipped, results );
-		
+
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return MapError ( error );
-	
 } // BE_StripInvalidUTF16CharactersFromXMLFile
 
 
