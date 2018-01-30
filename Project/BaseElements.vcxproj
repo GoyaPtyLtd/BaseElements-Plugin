@@ -374,6 +374,7 @@
     <ClCompile Include="..\Source\duktape\duktape.c" />
     <ClCompile Include="..\Source\Images\BEImage.cpp" />
     <ClCompile Include="..\Source\Images\BEJPEG.cpp" />
+    <ClCompile Include="..\Source\Net\BEMimeticMIMEEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\resource_version.h" />
@@ -420,6 +421,7 @@
     <ClInclude Include="..\Source\duktape\duktape.h" />
     <ClInclude Include="..\Source\Images\BEImage.h" />
     <ClInclude Include="..\Source\Images\BEJPEG.h" />
+    <ClInclude Include="..\Source\Net\BEMimeticMIMEEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

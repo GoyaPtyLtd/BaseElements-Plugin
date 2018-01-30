@@ -2,7 +2,7 @@
  BESMTPEmailMessage.cpp
  BaseElements Plug-In
  
- Copyright 2014-2017 Goya. All rights reserved.
+ Copyright 2014-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -28,7 +28,7 @@ using namespace std;
 BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::string& to, const std::string& subject, const std::string& message_body )
 {
 	
-	message = new mimetic::MultipartMixed;
+    message = new BEMimeticMIMEEntity;
 
 	auto_ptr< BEValueList<string> > mail_to ( new BEValueList<string> ( to ) );
 	message->header().to ( mail_to->get_as_comma_separated() );
