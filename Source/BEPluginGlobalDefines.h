@@ -221,6 +221,8 @@ enum functions {
 	kBE_FMS_Open_Files = 460,
 	kBE_Encrypt_AES_Deprecated = 500,
 	kBE_Decrypt_AES_Deprecated = 501,
+	kBE_SignatureGenerate_RSA = 502,
+	kBE_SignatureVerify_RSA = 503,
 	kBE_HMAC_Deprecated = 550,
 //	kBE_Encoding_TextToHex = 570, // removed
 //	kBE_Encoding_HexToText = 571, // removed
@@ -288,7 +290,16 @@ enum errors {
     kMessageDigestDecodeKeyError = 16000,
     kMessageDigestDecodeMessageError = 16001,
 	kHexEncodingFailed = 16002,
-	kHexDecodingFailed = 16003
+	kHexDecodingFailed = 16003,
+	kRSALoadBioFailed = 17000,
+	kRSAReadPrivateKeyFailed = 17001,
+	kRSAReadPublicKeyFailed = 17002,
+	kRSASignInitFailed = 17003,
+	kRSASignUpdateFailed = 17003,
+	kRSASignFinalFailed = 17004,
+	kRSAVerifyInitFailed = 17005,
+	kRSAVerifyUpdateFailed = 17006,
+	kRSATranslateDigestFailed = 17007
 };
 
 
