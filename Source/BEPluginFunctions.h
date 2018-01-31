@@ -151,6 +151,8 @@ fmx::errcode BE_InstallScriptStep ( short /* function_id */, const fmx::ExprEnv&
 fmx::errcode BE_RemoveScriptStep ( short /* function_id */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& reply );
 fmx::errcode BE_PerformScriptStep ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& reply );
 
+fmx::errcode BE_SignatureGenerate_RSA ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_SignatureVerify_RSA ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 // Deprecated
 

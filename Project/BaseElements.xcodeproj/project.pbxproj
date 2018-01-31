@@ -224,6 +224,9 @@
 		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4DD510241DD136F200763F7E /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
 		6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
+		B282D74C201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
+		B282D74D201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
+		B282D74E201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -260,7 +263,7 @@
 		4D1BFE551F3AC9A600805CD3 /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/iOS/libpodofo.a; sourceTree = "<group>"; };
 		4D1BFE581F3ACAF200805CD3 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/usr/lib/libbz2.tbd; sourceTree = DEVELOPER_DIR; };
 		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
-		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; };
+		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; usesTabs = 1; };
 		4D25BF9A1F3A8C580083345B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BaseElements.strings; sourceTree = "<group>"; };
 		4D25BF9F1F3A8C5F0083345B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BEPluginVersion.strings; sourceTree = "<group>"; };
 		4D25BFA11F3A8CC90083345B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BEPluginVersion.strings; sourceTree = "<group>"; };
@@ -312,7 +315,7 @@
 		4D362AA61F2085880036B751 /* BaseElementsIOSSimulator.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaseElementsIOSSimulator.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D37E0B11339CF080084730B /* BECurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurl.cpp; path = ../Source/BECurl.cpp; sourceTree = SOURCE_ROOT; };
 		4D37E0B21339CF080084730B /* BECurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECurl.h; path = ../Source/BECurl.h; sourceTree = SOURCE_ROOT; };
-		4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEOpenSSLAES.cpp; sourceTree = "<group>"; };
+		4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEOpenSSLAES.cpp; sourceTree = "<group>"; usesTabs = 1; };
 		4D3969C718DA54CA00DFC47A /* BEOpenSSLAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEOpenSSLAES.h; sourceTree = "<group>"; };
 		4D3969C918DA773900DFC47A /* BEBase64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBase64.cpp; sourceTree = "<group>"; };
 		4D3969CA18DA773900DFC47A /* BEBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBase64.h; sourceTree = "<group>"; };
@@ -371,10 +374,10 @@
 		4D9E26D21B292032002F7DD3 /* BEBio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBio.h; sourceTree = "<group>"; };
 		4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMacFunctions.h; path = ../Source/BEMacFunctions.h; sourceTree = SOURCE_ROOT; };
 		4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEMacFunctions.mm; path = ../Source/BEMacFunctions.mm; sourceTree = SOURCE_ROOT; };
-		4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPlugin.cpp; path = ../Source/BEPlugin.cpp; sourceTree = SOURCE_ROOT; };
-		4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginFunctions.cpp; path = ../Source/BEPluginFunctions.cpp; sourceTree = SOURCE_ROOT; };
+		4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPlugin.cpp; path = ../Source/BEPlugin.cpp; sourceTree = SOURCE_ROOT; usesTabs = 1; };
+		4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginFunctions.cpp; path = ../Source/BEPluginFunctions.cpp; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginFunctions.h; path = ../Source/BEPluginFunctions.h; sourceTree = SOURCE_ROOT; };
-		4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginGlobalDefines.h; path = ../Source/BEPluginGlobalDefines.h; sourceTree = SOURCE_ROOT; };
+		4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginGlobalDefines.h; path = ../Source/BEPluginGlobalDefines.h; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		4DAC555318BDA41E00F365F5 /* BESMTP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTP.cpp; path = ../Source/BESMTP.cpp; sourceTree = "<group>"; };
 		4DAC555418BDA41E00F365F5 /* BESMTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTP.h; path = ../Source/BESMTP.h; sourceTree = "<group>"; };
 		4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPContainerAttachments.cpp; path = ../Source/BESMTPContainerAttachments.cpp; sourceTree = "<group>"; };
@@ -399,6 +402,8 @@
 		4DFDF48F1BF992A100B4C7C4 /* BEPluginVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEPluginVersion.h; path = ../Source/BEPluginVersion.h; sourceTree = "<group>"; };
 		4DFFF8B11884A0390015B531 /* BEXero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXero.cpp; path = ../Source/BEXero.cpp; sourceTree = "<group>"; };
 		4DFFF8B21884A0390015B531 /* BEXero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXero.h; path = ../Source/BEXero.h; sourceTree = "<group>"; };
+		B282D74A201C9B540074C4BE /* BEOpenSSLRSA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BEOpenSSLRSA.h; sourceTree = "<group>"; };
+		B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BEOpenSSLRSA.cpp; sourceTree = "<group>"; usesTabs = 1; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -551,6 +556,8 @@
 				4D3969C918DA773900DFC47A /* BEBase64.cpp */,
 				4D3969C718DA54CA00DFC47A /* BEOpenSSLAES.h */,
 				4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */,
+				B282D74A201C9B540074C4BE /* BEOpenSSLRSA.h */,
+				B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */,
 				4D156AE1135D8BC2001A249B /* BEMessageDigest.h */,
 				4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */,
 				4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */,
@@ -942,6 +949,7 @@
 				4D3629F41F2079A60036B751 /* BECurlOption.cpp in Sources */,
 				4D3629F51F2079A60036B751 /* BESMTPEmailMessage.cpp in Sources */,
 				4D3629F61F2079A60036B751 /* BESMTPContainerAttachments.cpp in Sources */,
+				B282D74C201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */,
 				4D3629F71F2079A60036B751 /* BEBase64.cpp in Sources */,
 				4D3629F81F2079A60036B751 /* BEOpenSSLAES.cpp in Sources */,
 				4D3629F91F2079A60036B751 /* BEMessageDigest.cpp in Sources */,
@@ -988,6 +996,7 @@
 				4D362A761F2085880036B751 /* BECurlOption.cpp in Sources */,
 				4D362A771F2085880036B751 /* BESMTPEmailMessage.cpp in Sources */,
 				4D362A781F2085880036B751 /* BESMTPContainerAttachments.cpp in Sources */,
+				B282D74E201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */,
 				4D362A791F2085880036B751 /* BEBase64.cpp in Sources */,
 				4D362A7A1F2085880036B751 /* BEOpenSSLAES.cpp in Sources */,
 				4D362A7B1F2085880036B751 /* BEMessageDigest.cpp in Sources */,
@@ -1016,6 +1025,7 @@
 				4DCD494B1A195B0C00EFCF7F /* BEPluginFunctions.cpp in Sources */,
 				4DCD494C1A195B0C00EFCF7F /* BEPluginUtilities.cpp in Sources */,
 				4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */,
+				B282D74D201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */,
 				4DCD494D1A195B0C00EFCF7F /* BEFileMakerPlugin.cpp in Sources */,
 				4DCD494E1A195B0C00EFCF7F /* BEXSLT.cpp in Sources */,
 				4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */,

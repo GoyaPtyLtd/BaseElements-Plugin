@@ -53,6 +53,7 @@
 #include "Crypto/BEBase64.h"
 #include "Crypto/BEMessageDigest.h"
 #include "Crypto/BEOpenSSLAES.h"
+#include "Crypto/BEOpenSSLRSA.h"
 #include "Crypto/BEX509.h"
 #include "BEPluginException.h"
 #include "BEQuadChar.h"
@@ -1970,6 +1971,77 @@ fmx::errcode BE_Decrypt_AES_Deprecated ( short /*funcId*/, const ExprEnv& /* env
 	return MapError ( error );
 
 } // BE_Decrypt_AES_Deprecated
+
+
+fmx::errcode BE_SignatureGenerate_RSA ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto data = ParameterAsVectorUnsignedChar ( parameters );
+		auto privateKey = ParameterAsUTF8String ( parameters, 1 );
+		auto privateKeyPassword = ParameterAsUTF8String ( parameters, 2 );
+		auto digestName = ParameterAsUTF8String ( parameters, 3 );
+		auto filename = ParameterAsUTF8String ( parameters, 4 );
+
+		// Line separator of RSA key must be LF.
+		replace( privateKey.begin(), privateKey.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
+
+		vector<char> encrypted_data = SignatureGenerate_RSA ( data, privateKey, digestName, privateKeyPassword );
+		if ( filename.empty() ) {
+			vector<char> v(encrypted_data.begin(), encrypted_data.end());
+			auto base64 = Base64_Encode(v);
+			SetResult ( base64, results );
+		} else {
+			SetResult ( filename, encrypted_data, results );
+		}
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+
+} // BE_SignatureGenerate_RSA
+
+fmx::errcode BE_SignatureVerify_RSA ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto data = ParameterAsVectorUnsignedChar ( parameters );
+		auto publicKey = ParameterAsUTF8String ( parameters, 1 );
+		vector<char> signature;
+		if ( BinaryDataAvailable ( parameters, 2 ) ) {
+			signature = ParameterAsVectorChar ( parameters, 2 );
+		} else {
+			signature = Base64_Decode ( ParameterAsUTF8String ( parameters, 2 ) );
+		}
+		auto digestName = ParameterAsUTF8String ( parameters, 3 );
+
+		// Line separator of RSA key must be LF.
+		replace( publicKey.begin(), publicKey.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
+
+		bool result = SignatureVerify_RSA ( data, publicKey, signature, digestName );
+		SetResult ( result, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_SignatureGenerate_RSA
 
 
 #pragma mark -
