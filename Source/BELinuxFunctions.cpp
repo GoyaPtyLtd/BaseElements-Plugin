@@ -2,7 +2,7 @@
  BELinuxFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2016 Goya. All rights reserved.
+ Copyright 2016-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -270,6 +270,8 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_FMS_Open_Files ] = "BE_FMS_Open_Files ( username ; password {; files } )";
 	strings [ kBE_Encrypt_AES_Deprecated ] = "BE_Encrypt_AES_Deprecated ( key ; text )";
 	strings [ kBE_Decrypt_AES_Deprecated ] = "BE_Decrypt_AES_Deprecated ( key ; text )";
+	strings [ kBE_SignatureGenerate_RSA ] = "BE_SignatureGenerate_RSA ( data ; privateKey {; privateKeyPassword ; algorithm; fileNameWithExtension } )";
+	strings [ kBE_SignatureVerify_RSA ] = "BE_SignatureVerify_RSA ( data ; publicKey ; signature {; algorithm } )";
 	strings [ kBE_HMAC_Deprecated ] = "BE_HMAC_Deprecated ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
 	strings [ kBE_EvaluateJavaScript ] = "BE_EvaluateJavaScript ( javaScript )";
 	strings [ kBE_ArraySetFromValueList ] = "BE_ArraySetFromValueList ( valueList )";

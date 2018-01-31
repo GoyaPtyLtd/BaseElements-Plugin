@@ -371,6 +371,7 @@
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEZlib.cpp" />
+    <ClCompile Include="..\Source\Crypto\BEOpenSSLRSA.cpp" />
     <ClCompile Include="..\Source\Crypto\BEX509.cpp" />
     <ClCompile Include="..\Source\duktape\duktape.c" />
     <ClCompile Include="..\Source\Images\BEImage.cpp" />
@@ -418,6 +419,7 @@
     <ClInclude Include="..\Source\BEXSLT.h" />
     <ClInclude Include="..\Source\BEZlib.h" />
     <ClInclude Include="..\Source\BE_Boost_FileSystem_Additions.hpp" />
+    <ClInclude Include="..\Source\Crypto\BEOpenSSLRSA.h" />
     <ClInclude Include="..\Source\Crypto\BEX509.h" />
     <ClInclude Include="..\Source\duktape\duktape.h" />
     <ClInclude Include="..\Source\Images\BEImage.h" />
