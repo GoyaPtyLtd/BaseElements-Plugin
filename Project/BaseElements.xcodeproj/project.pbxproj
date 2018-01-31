@@ -602,6 +602,7 @@
 				4D362AA61F2085880036B751 /* BaseElementsIOSSimulator.fmplugin */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		C7DEDEF607E10BF3002283F3 /* Sources */ = {
 			isa = PBXGroup;
@@ -1297,7 +1298,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 16 Advanced/Extensions/";
+				CONFIGURATION_BUILD_DIR = "${USER_LIBRARY_DIR}/Application Support/FileMaker/Extensions";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1331,7 +1332,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 16 Advanced/Extensions/";
+				CONFIGURATION_BUILD_DIR = "${USER_LIBRARY_DIR}/Application Support/FileMaker/Extensions";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
