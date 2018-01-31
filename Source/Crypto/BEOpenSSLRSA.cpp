@@ -20,11 +20,12 @@
 
 
 using namespace std;
-using namespace fmx;
 
 
-static const EVP_MD * getDigestByName ( const string &digestName ) {
+static const EVP_MD * getDigestByName ( const string &digestName )
+{
 	const EVP_MD * digest;
+	
 	if ( digestName.empty() ) {
 		digest = EVP_sha256();
 	} else {
@@ -34,18 +35,25 @@ static const EVP_MD * getDigestByName ( const string &digestName ) {
 			throw BEPlugin_Exception ( kRSATranslateDigestFailed );
 		}
 	}
+	
 	return digest;
+
 }
 
-static int passwordCallback(char *buf, int max_len, int /* flag */, void *ctx)
+
+static int passwordCallback ( char *buf, int max_len, int /* flag */, void *ctx )
 {
 	string &s = * static_cast<string *>(ctx);
 	if ( s.length() > (size_t)max_len ) {
 		return 0;
 	}
+	
 	copy ( s.begin(), s.end(), buf ) ;
+	
 	return (int)s.length();
+
 }
+
 
 const vector<char> SignatureGenerate_RSA ( const vector<unsigned char> data, const string privateKey, const string digestName, string privateKeyPassword )
 {
@@ -86,6 +94,7 @@ const vector<char> SignatureGenerate_RSA ( const vector<unsigned char> data, con
 
 	vector<char> result;
 	result.insert ( result.end(), out.get(), out.get() + outlen );
+	
 	return result;
 
 } // SignatureGenerate_RSA
