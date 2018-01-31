@@ -2,10 +2,13 @@
 Version 4.0b6
 ########################################################################
 
-January 23, 2018
+January 31, 2018
 
 
 New Functions
+
+BE_SignatureGenerate_RSA
+BE_SignatureVerify_RSA
 
 
 Changes
