@@ -2,7 +2,7 @@
  BEXSLT.cpp
  BaseElements Plug-In
  
- Copyright 2010-2017 Goya. All rights reserved.
+ Copyright 2010-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -178,7 +178,7 @@ void CleanupLibXSLT ( void )
 ////////////////////////////////////////////////////////////////////////////////////////
 
 
-TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, const boost::filesystem::path csv_path )
+TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, const boost::filesystem::path csv_path, const boost::filesystem::path xml_path )
 {
 	g_last_xslt_error = kNoError;
 	TextUniquePtr result;
@@ -198,7 +198,7 @@ TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, con
 			// to get the line numbers etc in the error the stylesheet must have a file name
 			stylesheet->doc->URL = xmlStrdup ( (xmlChar *)"<FileMaker::Text::XSLT>" );
 			
-			xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), NULL, NULL, options );
+			xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), xml_path.string().c_str(), NULL, options );
 			
 			if ( xml_doc ) {
 				

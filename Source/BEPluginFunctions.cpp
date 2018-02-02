@@ -939,10 +939,11 @@ fmx::errcode BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */
 	try {
 
 		auto xml = ParameterPathOrContainerAsUTF8 ( parameters );
+		auto xml_path = ParameterAsPath ( parameters );
 		auto xslt = ParameterAsUTF8String ( parameters, 1 );
-		path csv_path = ParameterAsPath ( parameters, 2 );
+		auto csv_path = ParameterAsPath ( parameters, 2 );
 	
-		auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path );
+		auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path, xml_path );
 		
 		SetResult ( *csv, results );
 		
