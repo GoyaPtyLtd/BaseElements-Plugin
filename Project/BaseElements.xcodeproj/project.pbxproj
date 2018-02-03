@@ -1456,7 +1456,7 @@
 				SYMROOT = /tmp/Xcode/Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
-				VERSION_STRING = 4.0b5;
+				VERSION_STRING = 4.0b6;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -1553,7 +1553,7 @@
 				SYMROOT = /tmp/Xcode/Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
-				VERSION_STRING = 4.0b5;
+				VERSION_STRING = 4.0b6;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",

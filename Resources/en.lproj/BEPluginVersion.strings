@@ -1,11 +1,14 @@
 /* 
-  BEVersion.strings
-  BaseElements
+ BEVersion.strings
+ BaseElements Plug-In
 
-  Created by Mark Banks on 16/11/2015.
-  Copyright © 2015-2017 Goya. All rights reserved.
-*/
+ Copyright © 2015-2018 Goya. All rights reserved.
+ For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
+ 
+ http://www.goya.com.au/baseelements/plugin
+
+ */
 
 
-"65000" = "Version: 4.0b5\n\nThis plug-in provides additional functionality for BaseElements from Goya";
+"65000" = "Version: 4.0b6\n\nThis plug-in provides additional functionality for BaseElements from Goya";
 
