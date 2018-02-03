@@ -23,6 +23,7 @@ BEOAuth::BEOAuth ( const string key, const string secret ) {
 	
 	consumer_key = key;
 	consumer_secret = secret;
+//	replace ( consumer_secret.begin(), consumer_secret.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
 	
 }
 
@@ -62,9 +63,6 @@ string BEOAuth::http_request ( const string url, const string post_arguments ) {
 	
 	try {
 
-//		boost::scoped_ptr<BECurl> curlx; // no viable overloaded '=' ???
-//		BECurl curl; // crash in the destructor if we do this
-		
 		if ( post_arguments.empty() ) { // no post arguments? make a GET request
 			BECurl curl = BECurl ( url, kBE_HTTP_METHOD_GET );
 			response = curl.download ( );
@@ -73,8 +71,6 @@ string BEOAuth::http_request ( const string url, const string post_arguments ) {
 			response = curl.download ( );
 		}
 		
-//		response = curl.perform_action ( );
-
 	} catch ( BECurl_Exception& /* e */ ) {
 		;// error = e.code(); // we return an empty string on error
 	}

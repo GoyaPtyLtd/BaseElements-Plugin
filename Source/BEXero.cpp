@@ -2,7 +2,7 @@
  BE_Xero.cpp
  BaseElements Plug-In
 
- Copyright (c) 2014~2016 Goya. All rights reserved.
+ Copyright (c) 2014~2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -19,6 +19,9 @@
 #include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/pem.h>
+
+
+extern CustomHeaders g_http_custom_headers;
 
 
 using namespace std;
@@ -65,32 +68,35 @@ int BEXero::sign_url ( string& url, string& post_arguments, const string http_me
 	
 	// ensure srand is always set [oauth call oauth_sign_url2 will always return the same nonce under FMS on Win]
 	srand ( (unsigned)time ( NULL ) );
-
-	char * oauth_url;
-
-	if ( http_method == HTTP_METHOD_POST ) {
-		
-		// also sign the post_arguments
-		string url_to_sign = url + "&" + post_arguments;
-		
-		char * post_args = NULL;
-		oauth_url = oauth_sign_url2 ( url_to_sign.c_str(), &post_args, OA_RSA, http_method.c_str(), consumer_key.c_str(), consumer_secret.c_str(), consumer_key.c_str(), NULL );
-
-		if ( post_args ) {
-			post_arguments = post_args;
-			be_free ( post_args );
-		}
-		
-	} else { // GET, POST, DELETE
-		oauth_url = oauth_sign_url2 ( url.c_str(), NULL, OA_RSA, http_method.c_str(), consumer_key.c_str(), consumer_secret.c_str(), consumer_key.c_str(), NULL );
+	
+	string sign_this = url;
+	if ( ! post_arguments.empty() ) { // if ( HTTP_METHOD_POST == http_method ) ???
+		sign_this += "&" + post_arguments;
 	}
+	
+	char ** parameter_array = NULL;
+	int parameter_array_count = oauth_split_url_parameters ( sign_this.c_str(), &parameter_array );
+	
+	oauth_sign_array2_process (
+							   &parameter_array_count,
+							   &parameter_array,
+							   NULL, // < postargs (unused)
+							   OA_RSA,
+							   http_method.c_str(), // < HTTP method (defaults to "GET")
+							   consumer_key.c_str(),
+							   consumer_secret.c_str(),
+							   consumer_key.c_str(),
+							   NULL
+							   );
+	
+	// we split [x_]oauth_ parameters (for use in HTTP Authorization header)
+	const char * oauth_header_parameters = oauth_serialize_url_sep ( parameter_array_count, 1, parameter_array, (char *)", ", 6 );
+	oauth_free_array ( &parameter_array_count, &parameter_array );
+	
+	const string authorisation = "OAuth " + string ( oauth_header_parameters );
+	be_free ( (char *)oauth_header_parameters );
 
-	if ( oauth_url ) {
-		url = oauth_url;
-		be_free ( oauth_url );
-	} else {
-		error = kBE_OAuth_SignURLFailedError;
-	}
+	g_http_custom_headers [ "Authorization" ] = authorisation;
 	
 	return error;
 	

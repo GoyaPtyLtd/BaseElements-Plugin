@@ -2,7 +2,7 @@
 Version 4.0b6
 ########################################################################
 
-January 31, 2018
+February 3, 2018
 
 
 New Functions
@@ -14,6 +14,7 @@ BE_SignatureVerify_RSA
 Changes
 
 BE_ClipboardData: do not crash when there is no text/utf-8 coercion available for a data type (macOS)
+BE_HTTP_*: use Authorization header for Xero OAuth
 BE_XPath: do not crash when attempting to get a non-existent value as xml
 BE_ReadTextFromFile: Do not exit after the first invalid from encoding
 BE_SMTP_Send:	do not send bare line feeds
