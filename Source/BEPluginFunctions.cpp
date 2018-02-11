@@ -54,6 +54,7 @@
 #include "Crypto/BEMessageDigest.h"
 #include "Crypto/BEOpenSSLAES.h"
 #include "Crypto/BEOpenSSLRSA.h"
+#include "Crypto/BEOpenSSLCipher.h"
 #include "Crypto/BEX509.h"
 #include "BEPluginException.h"
 #include "BEQuadChar.h"
@@ -2043,6 +2044,114 @@ fmx::errcode BE_SignatureVerify_RSA ( short /*funcId*/, const ExprEnv& /* enviro
 	return MapError ( error );
 
 } // BE_SignatureGenerate_RSA
+
+
+fmx::errcode BE_CipherEncrypt ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto cipher_name = ParameterAsUTF8String ( parameters );
+		vector<unsigned char> temp = ParameterAsVectorUnsignedChar ( parameters, 1 );
+		vector<unsigned char> data;
+		if ( BinaryDataAvailable ( parameters, 1 ) ) {
+			data = temp;
+		} else {
+			boost::algorithm::unhex ( temp.begin(), temp.end(), back_inserter ( data ) );
+		}
+		temp = ParameterAsVectorUnsignedChar ( parameters, 2 );
+		vector<unsigned char> key;
+		if ( BinaryDataAvailable ( parameters, 2 ) ) {
+			key = temp;
+		} else {
+			boost::algorithm::unhex ( temp.begin(), temp.end(), back_inserter ( key ) );
+		}
+		temp = ParameterAsVectorUnsignedChar ( parameters, 3 );
+		vector<unsigned char> iv;
+		if ( BinaryDataAvailable ( parameters, 3 ) ) {
+			iv = temp;
+		} else {
+			boost::algorithm::unhex ( temp.begin(), temp.end(), back_inserter ( iv ) );
+		}
+		auto filename = ParameterAsUTF8String ( parameters, 4 );
+		auto padding = ParameterAsBoolean ( parameters, 5, true );
+		
+		vector<char> encrypted_data = CipherEncrypt ( cipher_name, data, key, iv, padding );
+		
+		if ( filename.empty() ) {
+			vector<char> v;
+			boost::algorithm::hex ( encrypted_data.begin(), encrypted_data.end(), back_inserter ( v ) );
+			SetResult ( v, results );
+		} else {
+			SetResult ( filename, encrypted_data, results );
+		}
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Encrypt_Cipher
+
+
+fmx::errcode BE_CipherDecrypt ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto cipher_name = ParameterAsUTF8String ( parameters );
+		vector<unsigned char> temp = ParameterAsVectorUnsignedChar ( parameters, 1 );
+		vector<unsigned char> encrypted_data;
+		if ( BinaryDataAvailable ( parameters, 1 ) ) {
+			encrypted_data = temp;
+		} else {
+			boost::algorithm::unhex ( temp.begin(), temp.end(), back_inserter ( encrypted_data ) );
+		}
+		temp = ParameterAsVectorUnsignedChar ( parameters, 2 );
+		vector<unsigned char> key;
+		if ( BinaryDataAvailable ( parameters, 2 ) ) {
+			key = temp;
+		} else {
+			boost::algorithm::unhex ( temp.begin(), temp.end(), back_inserter( key ) );
+		}
+		temp = ParameterAsVectorUnsignedChar ( parameters, 3 );
+		vector<unsigned char> iv;
+		if ( BinaryDataAvailable ( parameters, 3 ) ) {
+			iv = temp;
+		} else {
+			boost::algorithm::unhex ( temp.begin(), temp.end(), back_inserter( iv ) );
+		}
+		auto filename = ParameterAsUTF8String ( parameters, 4 );
+		auto padding = ParameterAsBoolean ( parameters, 5, true );
+		
+		vector<char> decrypted_data = CipherDecrypt ( cipher_name, encrypted_data, key, iv, padding );
+		
+		if ( filename.empty() ) {
+			vector<char> v;
+			boost::algorithm::hex ( decrypted_data.begin(), decrypted_data.end(), back_inserter ( v ) );
+			SetResult ( v, results );
+		} else {
+			SetResult ( filename, decrypted_data, results );
+		}
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Decrypt_Cipher
 
 
 #pragma mark -

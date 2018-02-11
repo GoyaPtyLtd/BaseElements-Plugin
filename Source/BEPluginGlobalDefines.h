@@ -223,6 +223,8 @@ enum functions {
 	kBE_Decrypt_AES_Deprecated = 501,
 	kBE_SignatureGenerate_RSA = 502,
 	kBE_SignatureVerify_RSA = 503,
+	kBE_CipherEncrypt = 504,
+	kBE_CipherDecrypt = 505,
 	kBE_HMAC_Deprecated = 550,
 //	kBE_Encoding_TextToHex = 570, // removed
 //	kBE_Encoding_HexToText = 571, // removed
@@ -299,7 +301,16 @@ enum errors {
 	kRSASignFinalFailed = 17004,
 	kRSAVerifyInitFailed = 17005,
 	kRSAVerifyUpdateFailed = 17006,
-	kRSATranslateDigestFailed = 17007
+	kRSATranslateDigestFailed = 17007,
+	kCipherTranslateCipherFailed = 17010,
+	kCipherEncryptInitFailed = 17011,
+	kCipherEncryptUpdateFailed = 17012,
+	kCipherEncryptFinalFailed = 17013,
+	kCipherMissingIV = 17014,
+	kCipherDecryptInitFailed = 17015,
+	kCipherDecryptUpdateFailed = 17016,
+	kCipherDecryptFinalFailed = 17017,
+	kCipherDataTooLarge = 17018
 };
 
 
