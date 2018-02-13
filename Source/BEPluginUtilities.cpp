@@ -42,6 +42,7 @@
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <boost/algorithm/hex.hpp>
 
 #include <utf8.h>
 
@@ -506,6 +507,22 @@ std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& paramet
 	return pdf_document;
 	
 } // ParameterPathOrContainerAsUTF8
+
+
+const vector<unsigned char> ParameterHexOrContainerAsVectorUnsignedChar ( const DataVect& parameters, const fmx::uint32 which )
+{
+	vector<unsigned char> output;
+	
+	if ( BinaryDataAvailable ( parameters, which ) ) {
+		output = ParameterAsVectorUnsignedChar ( parameters, which );
+	} else {
+		auto str = ParameterAsUTF8String ( parameters, which );
+		boost::algorithm::unhex ( str.begin(), str.end(), back_inserter ( output ) );
+	}
+	
+	return output;
+	
+} // ParameterHexOrContainerAsVectorUnsignedChar
 
 
 

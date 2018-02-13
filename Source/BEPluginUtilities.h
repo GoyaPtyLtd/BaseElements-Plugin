@@ -68,6 +68,7 @@ const boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters,
 const std::string ParameterFileName ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& parameters, const fmx::uint32 which = 0 );
 std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const fmx::DataVect& parameters, const fmx::uint32 which = 0 );
+const std::vector<unsigned char> ParameterHexOrContainerAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 
 
 const int PreferredContainerType ( const fmx::BinaryData& data );
