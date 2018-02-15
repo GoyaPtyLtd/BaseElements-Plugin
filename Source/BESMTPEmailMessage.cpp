@@ -13,6 +13,7 @@
 #include "BESMTPEmailMessage.h"
 #include "BEPluginException.h"
 #include "BECurl.h"
+#include "Crypto/BEBase64.h"
 
 #include <Poco/Timestamp.h>
 #include <Poco/Timezone.h>
@@ -42,6 +43,9 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	message->header().to ( mail_to->get_as_comma_separated() );
 
 	message->header().from ( from );
+	
+	auto base64_subject = Base64_Encode ( subject );
+	auto encoded_subject = "=?utf-8?B?" + base64_subject + "?=";
 	message->header().subject ( subject );
 
 	text = new mimetic::MimeEntity;

@@ -2,7 +2,7 @@
  BEBase64.cpp
  BaseElements Plug-In
  
- Copyright 2014-2017 Goya. All rights reserved.
+ Copyright 2014-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -84,9 +84,18 @@ const vector<char> Base64_Decode ( const std::string& text )
 
 const std::string Base64_Encode ( const vector<char> data, const bool base64url )
 {
-	std::string base64 ( base64_text(&data[0]), base64_text(&data[0] + data.size()) );
+	const std::string to_encode ( base64_text(&data[0]), base64_text(&data[0] + data.size()) );
 	
-	string padding = "=";
+	return Base64_Encode ( to_encode, base64url );
+	
+}
+
+
+const std::string Base64_Encode ( const std::string to_encode, const bool base64url )
+{
+	std::string base64 = to_encode;
+	
+	auto padding = "=";
 		
 	// if we need base64url convert it
 	if ( base64url ) {
@@ -94,7 +103,7 @@ const std::string Base64_Encode ( const vector<char> data, const bool base64url 
 		// not in rfc4648 but seen in the wild
 		//			padding = ",";
 			
-		string::iterator it = base64.begin();
+		auto it = base64.begin();
 		while ( it < base64.end() ) {
 			switch ( *it ) {
 				case '+':
@@ -111,7 +120,7 @@ const std::string Base64_Encode ( const vector<char> data, const bool base64url 
 			
 	}
 		
-	for ( FMX_UInt32 i = 0 ; i < (base64.length() % 4) ; i ++ ) {
+	for ( fmx::uint32 i = 0 ; i < (base64.length() % 4) ; i ++ ) {
 		base64.append ( padding );
 	}
 		
