@@ -310,7 +310,9 @@ enum errors {
 	kCipherDecryptInitFailed = 17015,
 	kCipherDecryptUpdateFailed = 17016,
 	kCipherDecryptFinalFailed = 17017,
-	kCipherDataTooLarge = 17018
+	kCipherDataTooLarge = 17018,
+	kCipherInvalidKeySize = 17019,
+	kCipherInvalidIvSize = 17020
 };
 
 
