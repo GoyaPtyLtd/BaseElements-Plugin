@@ -2,7 +2,7 @@
  BEMessageDigest.cpp
  BaseElements Plug-In
  
- Copyright 2011-2015 Goya. All rights reserved.
+ Copyright 2011-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -94,7 +94,7 @@ string encode_digest ( const unsigned char * message_digest, const unsigned int 
 	
 	if ( output_encoding == kBE_Encoding_Base64 ) {
 		std::vector<char> data ( message_digest, message_digest + message_digest_length );
-		digest = *Base64_Encode ( data );
+		digest = Base64_Encode ( data );
 	} else {
 		boost::algorithm::hex ( message_digest, message_digest + message_digest_length, std::back_inserter ( digest ) );
 	}

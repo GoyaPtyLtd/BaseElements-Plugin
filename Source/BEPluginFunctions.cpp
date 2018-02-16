@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
  
- Copyright 2010-2017 Goya. All rights reserved.
+ Copyright 2010-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -1404,11 +1404,11 @@ FMX_PROC(errcode) BE_Base64_Decode ( short /*funcId*/, const ExprEnv& /* environ
 	
 	try {
 		
-		StringAutoPtr text = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr text = ParameterAsUTF8String ( parameters );
 		StringAutoPtr filename = ParameterAsUTF8String ( parameters, 1 );
 		
 		// decode it...
-		vector<char> data = Base64_Decode ( text );
+		vector<char> data = Base64_Decode ( *text );
 		if ( filename->empty() ) {
 			SetResult ( data, results );
 		} else {
@@ -1434,7 +1434,7 @@ FMX_PROC(errcode) BE_Base64_Encode ( short funcId, const ExprEnv& /* environment
 	try {
 
 		vector<char> data = ParameterAsVectorChar ( parameters, 0 );
-		StringAutoPtr base64 = Base64_Encode ( data, funcId == kBE_Base64_URL_Encode );
+		string base64 = Base64_Encode ( data, funcId == kBE_Base64_URL_Encode );
 		
 		SetResult ( base64, results );
 				
@@ -1644,7 +1644,7 @@ FMX_PROC(errcode) BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 	
 	try {
 		
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters );
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
 		
 		string key;
@@ -1660,7 +1660,7 @@ FMX_PROC(errcode) BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 		vector<char> encrypted_data = Encrypt_AES ( key, *text, input_vector );
 		output_to_encode.insert ( output_to_encode.end(), encrypted_data.begin(), encrypted_data.end() );
 		
-		StringAutoPtr base64 = Base64_Encode ( output_to_encode );
+		string base64 = Base64_Encode ( output_to_encode );
 		SetResult ( base64, results );
 		
 		
@@ -1684,14 +1684,14 @@ FMX_PROC(errcode) BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environme
 	
 	try {
 		
-		StringAutoPtr password = ParameterAsUTF8String ( parameters, 0 );
+		StringAutoPtr password = ParameterAsUTF8String ( parameters );
 		StringAutoPtr text = ParameterAsUTF8String ( parameters, 1 );
 		
 		string key;
 		vector<char> unwanted;
 		GenerateKeyAndInputVector ( *password, key, unwanted );
 		
-		vector<char> decoded = Base64_Decode ( text );
+		vector<char> decoded = Base64_Decode ( *text );
 		
 		std::vector<char>::iterator it = find ( decoded.begin(), decoded.end(), FILEMAKER_END_OF_LINE_CHAR );
 		if ( it != decoded.end() ) {
