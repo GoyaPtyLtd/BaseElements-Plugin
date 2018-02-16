@@ -122,8 +122,8 @@
 		4D37E0B21339CF080084730B /* BECurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECurl.h; path = ../Source/BECurl.h; sourceTree = SOURCE_ROOT; };
 		4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEOpenSSLAES.cpp; sourceTree = "<group>"; };
 		4D3969C718DA54CA00DFC47A /* BEOpenSSLAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEOpenSSLAES.h; sourceTree = "<group>"; };
-		4D3969C918DA773900DFC47A /* BEBase64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEBase64.cpp; path = ../Source/BEBase64.cpp; sourceTree = "<group>"; };
-		4D3969CA18DA773900DFC47A /* BEBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEBase64.h; path = ../Source/BEBase64.h; sourceTree = "<group>"; };
+		4D3969C918DA773900DFC47A /* BEBase64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBase64.cpp; sourceTree = "<group>"; };
+		4D3969CA18DA773900DFC47A /* BEBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBase64.h; sourceTree = "<group>"; };
 		4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLReader.cpp; path = ../Source/BEXMLReader.cpp; sourceTree = "<group>"; };
 		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
 		4D4153A5120140AF00770E14 /* BEWStringVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEWStringVector.cpp; path = ../Source/BEWStringVector.cpp; sourceTree = SOURCE_ROOT; };
@@ -280,6 +280,8 @@
 		4D9E26CD1B2905D4002F7DD3 /* Crypto */ = {
 			isa = PBXGroup;
 			children = (
+				4D3969CA18DA773900DFC47A /* BEBase64.h */,
+				4D3969C918DA773900DFC47A /* BEBase64.cpp */,
 				4D3969C718DA54CA00DFC47A /* BEOpenSSLAES.h */,
 				4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */,
 				4D156AE1135D8BC2001A249B /* BEMessageDigest.h */,
@@ -383,8 +385,6 @@
 				4D59DAFA16F95E2400F87180 /* BEValueList.h */,
 				4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */,
 				4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */,
-				4D3969CA18DA773900DFC47A /* BEBase64.h */,
-				4D3969C918DA773900DFC47A /* BEBase64.cpp */,
 				4D8E64181917561D00C9F2BE /* BEPluginException.h */,
 				4D668AA71A36BF0300D14592 /* BEJavaScript.h */,
 				4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */,
@@ -573,7 +573,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 16 Advanced/Extensions/";
+				CONFIGURATION_BUILD_DIR = "${USER_LIBRARY_DIR}/Application Support/FileMaker/Extensions";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -616,7 +616,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "/Applications/FileMaker Pro 16 Advanced/Extensions/";
+				CONFIGURATION_BUILD_DIR = "${USER_LIBRARY_DIR}/Application Support/FileMaker/Extensions";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
