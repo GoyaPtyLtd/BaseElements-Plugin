@@ -2,13 +2,14 @@
 Version 3.3.7
 ########################################################################
 
-January 30, 2018
+February 16, 2018
 
 
 Changes
 
 BE_XPath: do not crash when attempting to get a non-existent value as xml
-BE_SMTP_Send: do not fold (long) header lines
+BE_SMTP_Send:	do not fold (long) header lines
+				encode email subjects per rfc 1342 / 2047
 BE_StripInvalidUTF16CharactersFromXMLFile: optional parameter, resultPath, added
 
 
