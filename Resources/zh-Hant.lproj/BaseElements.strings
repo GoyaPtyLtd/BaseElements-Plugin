@@ -24,6 +24,7 @@
 "127" = "BE_File_Modification_Timestamp ( path )|File Modification Timestamp|Returns the OS file modification time.  Usually in seconds, so can be converted to a timestamp like : GetAsTimestamp ( BE_File_Modification_Timestamp ( path ) ). However it is up to the Operating system as to what time it returns, and some OS versions may be more precise ( down to the millisecond ) and so the result could be different in different or future versions.";
 "128" = "BaseElements";
 "131" = "GyBE1nnYYnn";
+"132" = "https://baseelementsplugin.zendesk.com/";
 "140" = "BE_WriteTextFileToContainer ( filename ; text {; append} )||";
 "150" = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )|Script Execute|Performs the scriptName in the current file ( if no fileName provided, or in fileName if available ). Scripts are run when the current script queue is empty, so you can't have a calculation within a script, call a script and have it start immediately, it will run at the completion of the current script stack. Script results are not set and cannot be returned.";
 "151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; databaseName } )|SQL|Performs SQL commands on the tables inside FileMaker.  All SQL/DDL errors can be obtained via the BE_GetLastDDLError function.";

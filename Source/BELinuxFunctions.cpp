@@ -162,7 +162,6 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
     std::map<unsigned long, std::string> strings;
 
     strings [ kBE_OptionsStringID ] = "GyBE1nnYYnn";
-	strings [ 131 ] = "GyBE1nnYYnn";
 	strings [ kBE_Version ] = "BE_Version";
 	strings [ kBE_VersionAutoUpdate ] = "BE_VersionAutoUpdate";
 	strings [ kBE_ClipboardFormats ] = "BE_ClipboardFormats";
@@ -186,7 +185,9 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_OpenFile ] = "BE_OpenFile ( path )";
 	strings [ kBE_FileSize ] = "BE_FileSize ( path )";
 	strings [ kBE_File_Modification_Timestamp ] = "BE_File_Modification_Timestamp ( path )";
-	strings [ 128 ] = "BaseElements";
+	strings [ fmx::kFMXT_NameStr ] = "BaseElements";
+	strings [ fmx::kFMXT_OptionsStr ] = "GyBE1nnYYnn";
+	strings [ fmx::kFMXT_HelpURLStr ] = "https://baseelementsplugin.zendesk.com/"
 	strings [ kBE_WriteTextFileToContainer ] = "BE_WriteTextFileToContainer ( path ; text {; append} )";
 	strings [ kBE_ExecuteScript ] = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
 	strings [ kBE_FileMakerSQL ] = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )";
