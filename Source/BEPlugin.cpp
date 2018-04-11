@@ -191,7 +191,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SignatureGenerate_RSA, BE_SignatureGenerate_RSA, 2, 5 );
 	g_be_plugin->RegisterFunction ( kBE_SignatureVerify_RSA, BE_SignatureVerify_RSA, 3, 4 );
 
-
 	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST_PUT_PATCH, 2, 5 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_DELETE, BE_HTTP_DELETE, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PUT_File, BE_HTTP_POST_PUT_PATCH, 2, 4 );
@@ -275,9 +274,19 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_PDF_PageCount, BE_PDF_PageCount, 1 );
 	g_be_plugin->RegisterFunction ( kBE_PDF_GetPages, BE_PDF_GetPages, 3, 4 );
 
-	g_be_plugin->RegisterFunction ( kBE_InstallScriptStep, BE_InstallScriptStep, 5 );
-	g_be_plugin->RegisterFunction ( kBE_RemoveScriptStep, BE_RemoveScriptStep, 1 );
-	g_be_plugin->RegisterFunction ( kBE_PerformScriptStep, BE_PerformScriptStep, 1 );
+	if ( (gFMX_ExternCallPtr->extnVersion >= k160ExtnVersion) ) { // crash in versions prior to 16
+		
+		g_be_plugin->RegisterFunction ( kBE_InstallScriptStep, BE_InstallScriptStep, 5 );
+		g_be_plugin->RegisterFunction ( kBE_RemoveScriptStep, BE_RemoveScriptStep, 1 );
+		g_be_plugin->RegisterFunction ( kBE_PerformScriptStep, BE_PerformScriptStep, 1 );
+
+	} else {
+		
+		g_be_plugin->RegisterHiddenFunction ( kBE_InstallScriptStep, BE_NotImplemented, 5 );
+		g_be_plugin->RegisterHiddenFunction ( kBE_RemoveScriptStep, BE_NotImplemented, 1 );
+		g_be_plugin->RegisterHiddenFunction ( kBE_PerformScriptStep, BE_NotImplemented, 1 );
+
+	}
 	
 	g_be_plugin->RegisterFunction ( kBE_XOR, BE_XOR, 2, 2 );
 
