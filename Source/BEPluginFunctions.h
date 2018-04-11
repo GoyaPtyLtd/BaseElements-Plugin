@@ -2,7 +2,7 @@
  BEPluginFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2017 Goya. All rights reserved.
+ Copyright 2010-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -104,6 +104,7 @@ fmx::errcode BE_Curl_Trace ( short funcId, const fmx::ExprEnv& environment, cons
 fmx::errcode BE_FTP_Delete ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_ExtractScriptVariables ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_NotImplemented ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* parameters */, fmx::Data& /* results */ );
 fmx::errcode BE_NumericConstants ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 fmx::errcode BE_TimeFunctions ( const short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& /* parameters */, fmx::Data& results );
 fmx::errcode BE_ExecuteSystemCommand ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
@@ -153,6 +154,7 @@ fmx::errcode BE_PerformScriptStep ( short function_id, const fmx::ExprEnv& envir
 
 fmx::errcode BE_SignatureGenerate_RSA ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_SignatureVerify_RSA ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+
 
 // Deprecated
 

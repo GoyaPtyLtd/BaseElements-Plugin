@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2017 Goya. All rights reserved.
+ Copyright 2010-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -3405,6 +3405,14 @@ fmx::errcode BE_PerformScriptStep ( short function_id, const fmx::ExprEnv& envir
  with an offset of x000
 
 */
+
+fmx::errcode BE_NotImplemented ( short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+{
+
+	return MapError ( kCommandIsUnavailableError );
+	
+} // BE_NumericConstants
+
 
 fmx::errcode BE_NumericConstants ( short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
 {
