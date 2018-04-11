@@ -1,0 +1,29 @@
+=======================================================================
+Contributing to the BaseElements Plug-In
+=======================================================================
+
+First off, thanks for taking the time to contribute!
+
+Please take a moment to read the following brief guidelines: if in doubt, please ask first.
+
+As much as possible we’d like to try and avoid too much in the way of explicit guidelines; for the most part it should be possible to determine how to proceed by looking at the existing source. Questions can always be asked when the correct path may not be obvious (or unambiguous) in the current code.
+
+One of the audiences for the plugin is FileMaker developers who may be interested in adding or modifying a function or two: where it is reasonably possible to do so code should be written so that an experience developer can follow (if not necessarily fully understand) what's going on.
+
+A couple of explicit notes:
+
+1. New code should, where it's sensible to do so, look and feel like (recent) existing code. 
+
+2. New code should be based on existing code where possible. Avoid writing new implementations where there is an existing one that can be generalised/modified (but please check first).
+
+3. Unless there is a well established convention in play, for example, i as a loop counter, variables should have meaningful (English language), rather than mathematical, names.
+
+4. Do not modify the files containing the reusable (library) functions without checking first. Please also avoid naming functions so that they might be confused with functions in those files.
+
+5. Writing test cases that cover new/changed functionality in the
+
+	Project/Extras/BaseElements Plugin Tests.fmp12
+	
+is very greatly appreciated (especially when they cover the error failure conditions as well as ones for success).
+
+=======================================================================
