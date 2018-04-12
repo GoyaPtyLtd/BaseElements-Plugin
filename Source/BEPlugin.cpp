@@ -142,7 +142,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_XML_Validate, BE_XML_Validate, 2 );
 
 
-	g_be_plugin->RegisterHiddenFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_OKButton + kBE_ButtonOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_CancelButton + kBE_ButtonOffset, BE_NumericConstants );

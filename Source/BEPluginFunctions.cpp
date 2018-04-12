@@ -3573,17 +3573,20 @@ fmx::errcode BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* e
 
 		auto variables ( new BEValueList<std::wstring> );
 		auto calculation = ParameterAsWideString ( parameters );
+		auto variable_prefix = ParameterAsWideString ( parameters, 1, L"$" ); // look for FM script variables unless otherwise specified
 
-		wstring search_for = L"$/\""; // variables, comments and strings (including escaped strings)
+		wstring search_for = variable_prefix + L"/\""; // variables, comments and strings (including escaped strings)
 		size_t found = calculation.find_first_of ( search_for );
 
 		while ( found != wstring::npos )
 		{
 			size_t end = 0;
 			size_t search_from = found + 1;
-
+			
 			switch ( calculation.at ( found ) ) {
-				case L'$': // variables
+
+				case L'$': // script variables
+				case L'@': // base elements variables
 				{
 					/*
 					 find the end of the variable

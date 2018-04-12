@@ -13,6 +13,7 @@ BE_CipherEncrypt
 
 Changes
 
+BE_ExtractScriptVariables: option parameter to specify the variable prefix (default $)
 BE_SMTP_Send: encode email subjects per rfc 1342 / 2047
 
 
