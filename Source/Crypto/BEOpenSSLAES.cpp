@@ -13,11 +13,46 @@
 #include "BEOpenSSLAES.h"
 #include "BEPluginException.h"
 
-
+#include <boost/algorithm/hex.hpp>
 #include <openssl/evp.h>
 
 
 using namespace std;
+
+
+const vector<unsigned char> HexOrContainer ( const fmx::DataVect& parameters, const fmx::uint32 which )
+{
+	vector<unsigned char> output;
+	
+	if ( BinaryDataAvailable ( parameters, which ) ) {
+		output = ParameterAsVectorUnsignedChar ( parameters, which );
+	} else {
+		auto str = ParameterAsUTF8String ( parameters, which );
+		boost::algorithm::unhex ( str.begin(), str.end(), back_inserter ( output ) );
+	}
+	
+	return output;
+	
+} // HexOrContainer
+
+
+static const EVP_CIPHER * GetCipherByName ( const string &cipher_name )
+{
+	const EVP_CIPHER * cipher;
+	
+	if ( cipher_name.empty() ) {
+		cipher = EVP_aes_256_cfb128();
+	} else {
+		OpenSSL_add_all_ciphers();
+		cipher = EVP_get_cipherbyname( cipher_name.data() );
+		if ( !cipher ) {
+			throw BEPlugin_Exception ( kCipherTranslateCipherFailed );
+		}
+	}
+	
+	return cipher;
+	
+}
 
 
 void GenerateKeyAndInputVector ( const string password, string& key, vector<char>& input_vector )
@@ -126,4 +161,108 @@ const vector<char> Decrypt_AES ( const string key, const vector<char> encrypted_
 	
 } // Decrypt_AES
 
+
+//TODO The funtion pair CipherEncrypt/CipherDecrypt are substantially similar to the AES pair (above) and should be refactored/replaced by them
+
+
+const vector<char> CipherEncrypt ( const string cipher_name, const vector<unsigned char> data, const vector<unsigned char> key, const vector<unsigned char> iv, const bool padding )
+{
+	const EVP_CIPHER * cipher = GetCipherByName ( cipher_name );
+	
+	const int expected_iv_size = EVP_CIPHER_iv_length ( cipher );
+	if ( expected_iv_size > 0 && (unsigned long)expected_iv_size != iv.size() ) {
+		throw BEPlugin_Exception ( kCipherInvalidIvSize );
+	}
+	
+	unique_ptr<EVP_CIPHER_CTX, decltype(&EVP_CIPHER_CTX_free)> ctx ( EVP_CIPHER_CTX_new(), &EVP_CIPHER_CTX_free );
+	if ( EVP_EncryptInit_ex ( ctx.get(), cipher, NULL, key.data(), iv.data() ) < 1 ) {
+		throw BEPlugin_Exception ( kCipherEncryptInitFailed );
+	}
+	
+	EVP_CIPHER_CTX_set_padding ( ctx.get(), padding );
+	
+	if ( EVP_CIPHER_key_length ( cipher ) > 0 && EVP_CIPHER_CTX_set_key_length ( ctx.get(), (int)key.size() ) < 1 ) {
+		throw BEPlugin_Exception ( kCipherInvalidKeySize );
+	}
+	
+	const long max_outlen = data.size() + EVP_MAX_BLOCK_LENGTH;
+	if ( max_outlen > INT_MAX ) {
+		throw BEPlugin_Exception ( kCipherDataTooLarge );
+	}
+	
+	unique_ptr<unsigned char, decltype(&free)> out ( (unsigned char *)malloc ( max_outlen ), free );
+	if ( !out ) {
+		throw BEPlugin_Exception ( kLowMemoryError );
+	}
+	
+	long total_outlen = 0;
+	int outlen;
+	
+	if ( EVP_EncryptUpdate ( ctx.get(), out.get(), &outlen, data.data(), (int)data.size() ) < 1 ) {
+		throw BEPlugin_Exception ( kCipherEncryptUpdateFailed );
+	}
+	total_outlen += outlen;
+	
+	if ( EVP_EncryptFinal_ex ( ctx.get(), out.get() + total_outlen, &outlen ) < 1 ) {
+		throw BEPlugin_Exception ( kCipherEncryptFinalFailed );
+	}
+	total_outlen += outlen;
+	
+	vector<char> result;
+	result.insert ( result.end(), out.get(), out.get() + total_outlen );
+	
+	return result;
+	
+} // CipherEncrypt
+
+
+const vector<char> CipherDecrypt ( const string cipher_name, const vector<unsigned char> data, const vector<unsigned char> key, const vector<unsigned char> iv, const bool padding )
+{
+	const EVP_CIPHER * cipher = GetCipherByName ( cipher_name );
+	
+	const int expected_iv_size = EVP_CIPHER_iv_length ( cipher );
+	if ( expected_iv_size > 0 && (unsigned long)expected_iv_size != iv.size() ) {
+		throw BEPlugin_Exception ( kCipherInvalidIvSize );
+	}
+	
+	unique_ptr<EVP_CIPHER_CTX, decltype(&EVP_CIPHER_CTX_free)> ctx ( EVP_CIPHER_CTX_new(), &EVP_CIPHER_CTX_free );
+	if ( EVP_DecryptInit_ex ( ctx.get(), cipher, NULL, key.data(), iv.data() ) < 1 ) {
+		throw BEPlugin_Exception ( kCipherDecryptInitFailed );
+	}
+	
+	EVP_CIPHER_CTX_set_padding ( ctx.get(), padding );
+	
+	if ( EVP_CIPHER_key_length ( cipher ) > 0 && EVP_CIPHER_CTX_set_key_length ( ctx.get(), (int)key.size() ) < 1 ) {
+		throw BEPlugin_Exception ( kCipherInvalidKeySize );
+	}
+	
+	const long max_outlen = data.size() + EVP_MAX_BLOCK_LENGTH;
+	if ( max_outlen > INT_MAX ) {
+		throw BEPlugin_Exception ( kCipherDataTooLarge );
+	}
+	
+	unique_ptr<unsigned char, decltype(&free)> out ( (unsigned char *)malloc ( max_outlen ), free );
+	if ( !out ) {
+		throw BEPlugin_Exception ( kLowMemoryError );
+	}
+	
+	long total_outlen = 0;
+	int outlen;
+	
+	if ( EVP_DecryptUpdate ( ctx.get(), out.get(), &outlen, data.data(), (int)data.size() ) < 1 ) {
+		throw BEPlugin_Exception ( kCipherDecryptUpdateFailed );
+	}
+	total_outlen += outlen;
+	
+	if ( EVP_DecryptFinal_ex ( ctx.get(), out.get() + total_outlen, &outlen ) < 1 ) {
+		throw BEPlugin_Exception ( kCipherDecryptFinalFailed );
+	}
+	total_outlen += outlen;
+	
+	vector<char> result;
+	result.insert ( result.end(), out.get(), out.get() + total_outlen );
+	
+	return result;
+	
+} // CipherDecrypt
 

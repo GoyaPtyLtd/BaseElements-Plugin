@@ -273,6 +273,8 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_Decrypt_AES_Deprecated ] = "BE_Decrypt_AES_Deprecated ( key ; text )";
 	strings [ kBE_SignatureGenerate_RSA ] = "BE_SignatureGenerate_RSA ( data ; privateKey {; privateKeyPassword ; algorithm; fileNameWithExtension } )";
 	strings [ kBE_SignatureVerify_RSA ] = "BE_SignatureVerify_RSA ( data ; publicKey ; signature {; algorithm } )";
+    strings [ kBE_CipherEncrypt ] = "BE_CipherEncrypt ( cipher ; data ; key ; iv {; padding ; fileNameWithExtension } )";
+    strings [ kBE_CipherDecrypt ] = "BE_CipherDecrypt ( cipher ; encryptedData ; key ; iv {; padding ; fileNameWithExtension } )";
 	strings [ kBE_HMAC_Deprecated ] = "BE_HMAC_Deprecated ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
 	strings [ kBE_EvaluateJavaScript ] = "BE_EvaluateJavaScript ( javaScript )";
 	strings [ kBE_ArraySetFromValueList ] = "BE_ArraySetFromValueList ( valueList )";

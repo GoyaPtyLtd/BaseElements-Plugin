@@ -2,7 +2,13 @@
 Version 4.0b7
 ########################################################################
 
-February 15, 2018
+April 12, 2018
+
+
+New Functions
+
+BE_CipherDecrypt
+BE_CipherEncrypt
 
 
 Changes
