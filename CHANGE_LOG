@@ -2,7 +2,7 @@
 Version 4.0b7
 ########################################################################
 
-April 12, 2018
+April 13, 2018
 
 
 New Functions
@@ -13,7 +13,8 @@ BE_CipherEncrypt
 
 Changes
 
-BE_ExtractScriptVariables: option parameter to specify the variable prefix (default $)
+BE_ExtractScriptVariables: optional parameter to specify the variable prefix (default $)
+BE_ListFilesInFolder: option added to not include hidden files in the result
 BE_SMTP_Send: encode email subjects per rfc 1342 / 2047
 
 

@@ -72,6 +72,11 @@
 			<Add directory="PlugInSDK/Libraries/Linux" />
 			<Add directory="../Libraries/linux" />
 		</Linker>
+		<ExtraCommands>
+			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
+			<Add before="cp /home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
+			<Mode after="always" />
+		</ExtraCommands>
 		<Unit filename="../Headers/FMWrapper/FMXBinaryData.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

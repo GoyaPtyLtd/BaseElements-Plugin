@@ -732,10 +732,11 @@ fmx::errcode BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* enviro
 		const long file_type_wanted = ParameterAsLong ( parameters, 1, kBE_FileType_File );
 		const bool include_subfolders = ParameterAsBoolean ( parameters, 2, false );
 		const bool use_full_path = ParameterAsBoolean ( parameters, 3, false );
+		const bool include_hidden = ParameterAsBoolean ( parameters, 4, true );
 
 		try {
 
-			BEValueListWideStringUniquePtr list_of_files ( list_files_in_directory ( directory, file_type_wanted, include_subfolders ) );
+			BEValueListWideStringUniquePtr list_of_files ( list_files_in_directory ( directory, file_type_wanted, include_subfolders, include_hidden ) );
 			if ( ! use_full_path ) {
 				list_of_files->remove_prefix ( directory.wstring() );
 			}

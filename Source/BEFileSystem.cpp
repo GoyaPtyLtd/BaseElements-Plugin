@@ -2,7 +2,7 @@
  BEFileSystem.cpp
  BaseElements Plug-In
 
- Copyright 2011-2017 Goya. All rights reserved.
+ Copyright 2011-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -14,7 +14,7 @@
 #include "BEPluginException.h"
 
 #include <boost/filesystem/fstream.hpp>
-
+#include <Poco/File.h>
 #include <sys/stat.h>
 
 
@@ -54,7 +54,7 @@ const bool recursive_directory_copy ( const path & from, const path & to  ) {
 } // recursive_directory_copy
 
 
-BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem::path & directory, const long file_type_wanted = kBE_FileType_All, const bool recurse = false )
+BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem::path& directory, const long file_type_wanted = kBE_FileType_All, const bool recurse = false, const bool include_hidden = true )
 {
 
 	BEValueListWideStringUniquePtr list_of_files ( new BEValueList<wstring> );
@@ -75,10 +75,15 @@ BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem
 				it.no_push(); // don't recurse into sub directories.
 			}
 
+			Poco::File this_path(it->path().string());
+			auto visible = !this_path.isHidden();
+
 			if (
-					(!is_folder && (file_type_wanted == kBE_FileType_File)) ||
+					((!is_folder && (file_type_wanted == kBE_FileType_File)) ||
 					(is_folder && (file_type_wanted == kBE_FileType_Folder)) ||
-					(file_type_wanted == kBE_FileType_All)
+					(file_type_wanted == kBE_FileType_All))
+					&&
+					(include_hidden || visible )
 				) {
 				list_of_files->append ( it->path().wstring() );
 			}
@@ -87,6 +92,8 @@ BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem
 
 		}
 
+	} catch ( Poco::FileException& e ) {
+		throw BEPlugin_Exception ( e.code() );
 	} catch ( filesystem_error& e ) {
 		throw BEPlugin_Exception ( e.code().value() );
 	}
