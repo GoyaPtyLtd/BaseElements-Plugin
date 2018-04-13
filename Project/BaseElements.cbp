@@ -43,16 +43,17 @@
 		</Compiler>
 		<Linker>
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
+			<Add option="-Wl,-soname=BaseElements_Plugin_4.0b6" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
+			<Add library="../Libraries/linux/libz.a" />
+			<Add library="../Libraries/linux/libssl.a" />
+			<Add library="../Libraries/linux/libcrypto.a" />
+			<Add library="../Libraries/linux/libssh2.a" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
 			<Add library="../Libraries/linux/libboost_filesystem.a" />
 			<Add library="../Libraries/linux/libboost_regex.a" />
 			<Add library="../Libraries/linux/libboost_system.a" />
 			<Add library="../Libraries/linux/libboost_thread.a" />
-			<Add library="../Libraries/linux/libz.a" />
-			<Add library="../Libraries/linux/libssl.a" />
-			<Add library="../Libraries/linux/libcrypto.a" />
-			<Add library="../Libraries/linux/libssh2.a" />
 			<Add library="../Libraries/linux/libcurl.a" />
 			<Add library="../Libraries/linux/libexslt.a" />
 			<Add library="../Libraries/linux/libjansson.a" />

@@ -172,7 +172,7 @@ Download the source from
 and expand it into a directory on the Desktop. Then
 
 	cd curl-7.50.1
-	CPPFLAGS="-I/home/mark/Dropbox/Development/BaseElements-Plugin/Headers" LDFLAGS="-L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libcrypto.a -L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libssl.a -ldl" ./configure --with-ssl='/home/mark/Desktop/openssl-1.0.2h/build' --with-libssh2='/home/mark/Desktop/libssh2-1.7.0/build' --disable-shared --with-zlib='/home/mark/Desktop/zlib-1.2.8/build' --prefix='/home/mark/Desktop/curl-7.50.1/build'
+	CPPFLAGS="-I/home/mark/Dropbox/Development/BaseElements-Plugin/Headers" LDFLAGS="-L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libssl.a -L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libcrypto.a -L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libssh2.a -lpthread -ldl" ./configure --with-ssl='/home/mark/Desktop/openssl-1.0.2h/build' --with-libssh2='/home/mark/Documents/LibraryBuilds/libssh2-1.7.0/build' --disable-shared --with-zlib --prefix='/home/mark/Documents/LibraryBuilds/curl-7.50.1/build'
 	make install
 
 Copy
