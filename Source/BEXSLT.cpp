@@ -177,6 +177,7 @@ void CleanupLibXSLT ( void )
 
 const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string& xslt_as_filemaker_text, const boost::filesystem::path csv_path, const boost::filesystem::path xml_path )
 {
+	xmlResetLastError();
 	g_last_xslt_error = kNoError;
 	std::string result;
 		
@@ -453,6 +454,7 @@ const std::string NodeSetToValueList ( xmlNodeSetPtr ns )
 
 const std::string ApplyXPathExpression ( const std::string& xml, const std::string& xpath, const std::string& ns_list, const xmlXPathObjectType xpath_object_type )
 {
+	xmlResetLastError();
 	g_last_xslt_error = kNoError;
 	std::string result;
 	
