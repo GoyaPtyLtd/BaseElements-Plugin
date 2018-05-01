@@ -44,14 +44,14 @@ using namespace std;
 using namespace fmx;
 
 
-const TextUniquePtr ReportXSLTError ( const xmlChar * url );
+const std::string ReportXSLTError ( const xmlChar * url );
 std::string ConvertFileMakerEOLs ( std::string& in );
 
 
 int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
-TextUniquePtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
-TextUniquePtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj );
-void NodeSetToValueList ( xmlNodeSetPtr ns, TextUniquePtr& result );
+const std::string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
+const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj );
+const std::string NodeSetToValueList ( xmlNodeSetPtr ns );
 
 
 // globals for error reporting
@@ -91,7 +91,7 @@ static void XSLTErrorFunction ( void *context ATTRIBUTE_UNUSED, const char *mess
 
 // format an error as per xsltproc
 
-const TextUniquePtr ReportXSLTError ( const xmlChar * url )
+const std::string ReportXSLTError ( const xmlChar * url )
 {	
 	if ( url == NULL ) {
 		string unknown = ""; // <unknown>
@@ -109,10 +109,7 @@ const TextUniquePtr ReportXSLTError ( const xmlChar * url )
 	
 	g_last_xslt_error_text.clear();
 	
-	TextUniquePtr error_message;
-	error_message->Assign ( result_text.c_str() );
-	
-	return error_message;
+	return result_text;
 	
 } // ReportXSLTError
 
@@ -178,13 +175,14 @@ void CleanupLibXSLT ( void )
 ////////////////////////////////////////////////////////////////////////////////////////
 
 
-TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, const boost::filesystem::path csv_path, const boost::filesystem::path xml_path )
+const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string& xslt_as_filemaker_text, const boost::filesystem::path csv_path, const boost::filesystem::path xml_path )
 {
 	g_last_xslt_error = kNoError;
-	TextUniquePtr result;
+	std::string result;
 		
 	// parse the stylesheet
-	xslt = ConvertFileMakerEOLs ( xslt ); // otherwise all errors occur on line 1
+	std::string xslt = xslt_as_filemaker_text;
+	ConvertFileMakerEOLs ( xslt ); // otherwise all errors occur on line 1
 	int options = XML_PARSE_HUGE;
 	xmlDocPtr xslt_doc = xmlReadDoc ( (xmlChar *) xslt.c_str(), NULL, NULL, options );
 	
@@ -232,7 +230,7 @@ TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, con
 							
 							if ( outputBufPtr ) {
 								xsltSaveResultTo(outputBufPtr, xslt_result, stylesheet);
-								result->AssignWithLength((char*)(buf->content), buf->use, fmx::Text::kEncoding_UTF8);	// return transformed xml on success
+								result.assign ( (char*)(buf->content), buf->use );	// return transformed xml on success
 							}
 							xmlBufferFree ( buf );
 
@@ -244,7 +242,7 @@ TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, con
 					
 					// there was an error performing the transform
 					
-					result->AppendText ( *ReportXSLTError ( xml_doc->URL ) );					
+					result = ReportXSLTError ( xml_doc->URL );
 				}
 				xsltFreeTransformContext ( context );
 				xmlFreeDoc ( xml_doc );
@@ -326,10 +324,10 @@ int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList )
 
 
 
-TextUniquePtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
+const std::string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 {
 	
-	TextUniquePtr result;
+	std::string result;
 
 	xmlChar* oject_as_string = NULL;
 	
@@ -366,7 +364,7 @@ TextUniquePtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 	}
 	
 	if ( oject_as_string ) {
-		result->AssignWithLength ( (char*)oject_as_string, (FMX_UInt32)strlen ( (char*)oject_as_string ), fmx::Text::kEncoding_UTF8 );
+		result.assign ( (char*)oject_as_string, (FMX_UInt32)strlen ( (char*)oject_as_string ) );
 		xmlFree ( oject_as_string );
 	}
 
@@ -375,9 +373,9 @@ TextUniquePtr XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 
 
 
-TextUniquePtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj )
+const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj )
 {
-	TextUniquePtr result;
+	std::string result;
 	
 	xmlBufferPtr xml_buffer = xmlBufferCreate();
 	xmlErrorPtr xml_error = xmlGetLastError();
@@ -396,39 +394,39 @@ TextUniquePtr XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObj
 				xml_error = xmlGetLastError();
 				
 				if ( node_as_xml && xml_error == NULL ) {
-					result->AssignWithLength ( (char*)node_as_xml, xml_buffer_length, fmx::Text::kEncoding_UTF8 );	// return node set as string on success
+					result.assign ( (char*)node_as_xml, xml_buffer_length ); // return node set as string on success
 					xmlFree ( (xmlChar *)node_as_xml );
 				} else {
-					result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
+					result = ReportXSLTError ( xml_document->URL );
 				}
 				
 			} else {
-				result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
+				result = ReportXSLTError ( xml_document->URL );
 			} // if ( xml_error == NULL )
 
 		} else if ( xpathObj->type == XPATH_NODESET && xpathObj->nodesetval->nodeNr == 0 ) {
 			; // an empty nodeset ... do nothing
 		} else {
-			result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
+			result = ReportXSLTError ( xml_document->URL );
 		}
 		
 	} else {
-		result->AppendText ( *ReportXSLTError ( xml_document->URL ) );
+		result = ReportXSLTError ( xml_document->URL );
 	}
 
 	if ( xml_buffer ) {
 		xmlFree ( xml_buffer );
 	}
-	
+	cout << result << endl;
 	return result;
 }
 
 
-void NodeSetToValueList ( xmlNodeSetPtr ns, TextUniquePtr& result )
+const std::string NodeSetToValueList ( xmlNodeSetPtr ns )
 {
 	
 	if ( (ns == NULL) || (ns->nodeNr == 0) || (ns->nodeTab == NULL) ) {
-		return;
+		return "";
 	}
 	
 	if ( ns->nodeNr > 1 ) {
@@ -445,16 +443,18 @@ void NodeSetToValueList ( xmlNodeSetPtr ns, TextUniquePtr& result )
 			value_list.append ( new_value );
 			xmlFree ( str );
 		}
-		result->Assign ( value_list.get_as_filemaker_string().c_str(), fmx::Text::kEncoding_UTF8 );
+
 	}
 
+	return value_list.get_as_filemaker_string();
+	
 }
 
 
-TextUniquePtr ApplyXPathExpression ( std::string& xml, std::string& xpath, std::string& ns_list, const xmlXPathObjectType xpath_object_type )
+const std::string ApplyXPathExpression ( const std::string& xml, const std::string& xpath, const std::string& ns_list, const xmlXPathObjectType xpath_object_type )
 {
 	g_last_xslt_error = kNoError;
-	TextUniquePtr result;
+	std::string result;
 	
 	// parse the xml
 	int options = XML_PARSE_HUGE;
@@ -464,20 +464,20 @@ TextUniquePtr ApplyXPathExpression ( std::string& xml, std::string& xpath, std::
 		xmlXPathContextPtr xpathCtx = xmlXPathNewContext ( doc );
 		if ( xpathCtx ) {
 			
-			RegisterNamespaces ( xpathCtx, (xmlChar *)ns_list.c_str() );
+			if ( ! ns_list.empty() ) {
+				RegisterNamespaces ( xpathCtx, (xmlChar *)ns_list.c_str() );
+			}
 			
 			xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression ( (xmlChar *)xpath.c_str(), xpathCtx );
 			
 			if ( xpathObj ) {
 				
 				if ( xpath_object_type == XPATH_NODESET && xpathObj->type == XPATH_NODESET ) {
-					TextUniquePtr valueList;
-					NodeSetToValueList ( xpathObj->nodesetval, valueList );
-					result->SetText(*valueList);
+					result = NodeSetToValueList ( xpathObj->nodesetval );
 				} else if ( xpath_object_type == XPATH_NODESET || xpath_object_type == XPATH_STRING ) {
-					result->SetText ( *(XPathObjectAsText ( xpathObj )) );
+					result = XPathObjectAsText ( xpathObj );
 				} else {
-					result->SetText ( *(XPathObjectAsXML ( doc, xpathObj )) );
+					result = XPathObjectAsXML ( doc, xpathObj );
 				}
 				
 				xmlXPathFreeObject ( xpathObj );
@@ -496,7 +496,7 @@ TextUniquePtr ApplyXPathExpression ( std::string& xml, std::string& xpath, std::
 	
 	if ( xml_error != NULL && g_last_xslt_error_text.empty() == 0 ) {
 		g_last_xslt_error_text = xml_error->message;
-		result->AppendText ( *ReportXSLTError ( NULL ) );
+		result = ReportXSLTError ( NULL );
 	}
 	
 	return result;

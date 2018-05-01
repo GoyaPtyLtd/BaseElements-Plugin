@@ -24,8 +24,7 @@
 void InitialiseLibXSLT ( void );
 void CleanupLibXSLT ( void );
 
-//fmx::TextUniquePtr ApplyXSLT ( const boost::filesystem::path& xml_path, std::string& xslt, const boost::filesystem::path& csv_path );
-fmx::TextUniquePtr ApplyXSLTInMemory ( const std::string& xml, std::string& xslt, const boost::filesystem::path csv_path = "", const boost::filesystem::path xml_path = "" );
-fmx::TextUniquePtr ApplyXPathExpression ( std::string& xml, std::string& xpath, std::string& ns_list, const xmlXPathObjectType xpath_object_type = XPATH_STRING );
+const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string& xslt, const boost::filesystem::path csv_path = "", const boost::filesystem::path xml_path = "" );
+const std::string ApplyXPathExpression ( const std::string& xml, const std::string& xpath, const std::string& ns_list, const xmlXPathObjectType xpath_object_type = XPATH_STRING );
 
 #endif // BEXSLT_H

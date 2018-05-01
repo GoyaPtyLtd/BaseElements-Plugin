@@ -946,7 +946,7 @@ fmx::errcode BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */
 	
 		auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path, xml_path );
 		
-		SetResult ( *csv, results );
+		SetResult ( csv, results );
 		
 
 	} catch ( BEPlugin_Exception& e ) {
@@ -971,7 +971,8 @@ fmx::errcode BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* enviro
 		auto xml = ParameterAsUTF8String ( parameters );
 		auto xslt = ParameterAsUTF8String ( parameters, 1 );
 
-		results.SetAsText( *ApplyXSLTInMemory ( xml, xslt ), parameters.At(0).GetLocale() );
+		auto xslt_result = ApplyXSLTInMemory ( xml, xslt );
+		SetResult ( xslt_result, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -1011,7 +1012,8 @@ fmx::errcode BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, co
 
 		}
 
-		results.SetAsText( *ApplyXPathExpression ( xml, xpath, ns_list, xpath_object_type ), parameters.At(0).GetLocale() );
+		auto xpath_result = ApplyXPathExpression ( xml, xpath, ns_list, xpath_object_type );
+		SetResult ( xpath_result, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -1042,7 +1044,8 @@ fmx::errcode BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */,
 			ns_list = ParameterAsUTF8String ( parameters, 2 );
 		}
 
-		results.SetAsText ( *ApplyXPathExpression ( xml, xpath, ns_list, XPATH_NODESET ), parameters.At(0).GetLocale() );
+		auto xpath_result = ApplyXPathExpression ( xml, xpath, ns_list, XPATH_NODESET );
+		SetResult ( xpath_result, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -3480,12 +3483,12 @@ fmx::errcode BE_PerformScriptStep ( short function_id, const fmx::ExprEnv& envir
 
 */
 
-fmx::errcode BE_NotImplemented ( short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+fmx::errcode BE_NotImplemented ( short /* function_id */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& /* results */ )
 {
 
 	return MapError ( kCommandIsUnavailableError );
 	
-} // BE_NumericConstants
+} // BE_NotImplemented
 
 
 fmx::errcode BE_NumericConstants ( short funcId, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
