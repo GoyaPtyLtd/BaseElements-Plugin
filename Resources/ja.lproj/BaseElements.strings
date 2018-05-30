@@ -114,7 +114,7 @@
 "505" = "BE_CipherDecrypt ( cipher ; encryptedData ; key ; iv {; padding ; fileNameWithExtension } )||Decrypt encryptedData using cipher.";
 "550" = "BE_HMAC_Deprecated ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
 "600" = "BE_EvaluateJavaScript ( javaScript )||BaseElements Internal : function not yet documented.";
-"650" = "BE_ArraySetFromValueList ( valueList )|Array Set ValueList|Stores the ValueList as an array within the plugin memory space and returns an index number that you can use to reference the array via memory.";
+"650" = "BE_ArraySetFromValueList ( valueList {; retainEmptyValues } )|Array Set ValueList|Stores the ValueList as an array within the plugin memory space and returns an index number that you can use to reference the array via memory.";
 "651" = "BE_ArrayGetSize ( array )|Array Size Get|Returns the size in number of elements in a stored array.  Technically equivalent to ValueCount for the list before it was stored as an array.";
 "652" = "BE_ArrayGetValue ( array ; valueNumber )|Array Value Get|Retrieves a value from the array number specified, at the valueNumber specified.\n\nArrays are stored via BE_ArraySetFromValueList and the index number used as the array parameter is the result of that function call.";
 "653" = "BE_Array_Delete ( array )|Array Delete|Not yet documented.";

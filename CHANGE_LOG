@@ -2,7 +2,7 @@
 Version 4.0b7
 ########################################################################
 
-May 30, 2018
+May 31, 2018
 
 
 New Functions
@@ -13,6 +13,7 @@ BE_CipherEncrypt
 
 Changes
 
+BE_ArraySetFromValueList: optional parameter, retainEmptyValues (default = false) added
 BE_ClipboardData: retrieve utf-16 in addition to utf-8 on macOS
 BE_ExtractScriptVariables: optional parameter to specify the variable prefix (default $)
 BE_ListFilesInFolder: option added to not include hidden files in the result

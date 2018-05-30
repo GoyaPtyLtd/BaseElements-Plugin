@@ -2,7 +2,7 @@
  BEValueList.h
  BaseElements Plug-In
  
- Copyright 2013-2016 Goya. All rights reserved.
+ Copyright 2013-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -65,9 +65,9 @@ class BEValueList {
 public:
 	
 	BEValueList ( void );
-	BEValueList ( const T& value_list, bool is_case_sensitive = true );
+	BEValueList ( const T& value_list, bool is_case_sensitive = true, bool retain_empty_values = false );
 	BEValueList ( const std::vector<T>& value_list, bool is_case_sensitive = true );
-	BEValueList ( const T& value_list, const T& delimiter, const bool is_case_sensitive = true );
+	BEValueList ( const T& value_list, const T& delimiter, const bool is_case_sensitive = true, bool retain_empty_values = false );
 
 	bool not_empty ( );
 	size_t size ( ) const;
@@ -124,10 +124,17 @@ BEValueList<T>::BEValueList ( void )
 
 
 template <typename T>
-BEValueList<T>::BEValueList ( const T& value_list, const T& delimiter, const bool is_case_sensitive )
+BEValueList<T>::BEValueList ( const T& value_list, const T& delimiter, const bool is_case_sensitive, bool retain_empty_values )
 {
 	if ( !value_list.empty() ) {
-		boost::split ( values, value_list, boost::is_any_of ( delimiter ), boost::token_compress_on );
+		
+		auto token_compress = boost::token_compress_on; // strip empty values
+		if ( retain_empty_values ) {
+			token_compress = boost::token_compress_off;
+		}
+		
+		boost::split ( values, value_list, boost::is_any_of ( delimiter ), token_compress );
+		
 	} else {
 		BEValueList<T> ( );
 	}
@@ -137,13 +144,20 @@ BEValueList<T>::BEValueList ( const T& value_list, const T& delimiter, const boo
 
 
 template <typename T>
-BEValueList<T>::BEValueList ( const T& value_list, const bool is_case_sensitive )
+BEValueList<T>::BEValueList ( const T& value_list, const bool is_case_sensitive, bool retain_empty_values )
 {
 // should be
 //	BEValueList<T> ( value_list, FILEMAKER_END_OF_LINE, is_case_sensitive );
 
 	if ( !value_list.empty() ) {
-		boost::split ( values, value_list, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
+		
+		auto token_compress = boost::token_compress_on; // strip empty values
+		if ( retain_empty_values ) {
+			token_compress = boost::token_compress_off;
+		}
+		
+		boost::split ( values, value_list, boost::is_any_of ( FILEMAKER_END_OF_LINE ), token_compress );
+		
 	} else {
 		BEValueList<T> ( );
 	}

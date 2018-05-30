@@ -1352,7 +1352,8 @@ fmx::errcode BE_ArraySetFromValueList ( short /* funcId */, const fmx::ExprEnv& 
 	try {
 
 		auto value_list = ParameterAsUTF8String ( parameters );
-		BEValueListStringSharedPtr array ( new BEValueList<string> ( value_list ) );
+		auto  retain_empty_values = ParameterAsBoolean ( parameters, 1, false ); // false -> backwards compatibility
+		BEValueListStringSharedPtr array ( new BEValueList<string> ( value_list, false, retain_empty_values ) );
 
 		arrays.push_back ( array );
 		const size_t size = arrays.size();
@@ -2320,7 +2321,7 @@ fmx::errcode BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* en
 
 			auto http_headers = boost::replace_all_copy (g_http_response_headers, "\r\n", "\n" );
 
-			BEValueList<string> headers ( http_headers, "\n", false );
+			BEValueList<string> headers ( http_headers, "\n", false, false );
 			auto look_for = ParameterAsUTF8String ( parameters );
 			auto found = headers.starts_with ( look_for + ": " );
 

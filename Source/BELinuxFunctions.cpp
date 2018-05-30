@@ -277,7 +277,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
     strings [ kBE_CipherDecrypt ] = "BE_CipherDecrypt ( cipher ; encryptedData ; key ; iv {; padding ; fileNameWithExtension } )";
 	strings [ kBE_HMAC_Deprecated ] = "BE_HMAC_Deprecated ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
 	strings [ kBE_EvaluateJavaScript ] = "BE_EvaluateJavaScript ( javaScript )";
-	strings [ kBE_ArraySetFromValueList ] = "BE_ArraySetFromValueList ( valueList )";
+	strings [ kBE_ArraySetFromValueList ] = "BE_ArraySetFromValueList ( valueList {; retainEmptyValues } )";
 	strings [ kBE_ArrayGetSize ] = "BE_ArrayGetSize ( array )";
 	strings [ kBE_ArrayGetValue ] = "BE_ArrayGetValue ( array ; valueNumber )";
 	strings [ kBE_Array_Delete ] = "BE_Array_Delete ( array )";
