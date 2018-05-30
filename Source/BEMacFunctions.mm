@@ -106,8 +106,7 @@ const std::wstring ClipboardFormats ( void )
 const std::string ClipboardData ( std::wstring& atype )
 {
 	NSString * pasteboard_type = NSStringFromWString ( atype );
-	NSData * pasteboard_data = [[[NSPasteboard generalPasteboard] dataForType: pasteboard_type] copy];
-	NSString * clipboard_data = [[NSString alloc] initWithData: pasteboard_data encoding: NSUTF8StringEncoding];
+	NSString * clipboard_data = [[[NSPasteboard generalPasteboard] stringForType: pasteboard_type] copy];
     if ( clipboard_data == nil ) {
         clipboard_data = @"";
     }
