@@ -2,7 +2,7 @@
  BEFileMakerPlugin.cpp
  BaseElements Plug-In
  
- Copyright 2010-2017 Goya. All rights reserved.
+ Copyright 2010-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -103,7 +103,7 @@ void BEFileMakerPlugin::set_fmx_application ( const FMX_Application fmx_applicat
 
 const bool BEFileMakerPlugin::running_on_server ( ) const
 {
-	return (fmx_application == kFMXT_Server) || (fmx_application == kFMXT_Web);
+	return (fmx_application == kFMXT_Server) || (fmx_application == kFMXT_Web) || (fmx_application == kFMXT_SASE);
 }
 
 
