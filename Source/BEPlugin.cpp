@@ -279,15 +279,15 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	
 	if ( (gFMX_ExternCallPtr->extnVersion >= k160ExtnVersion) ) { // crash in versions prior to 16
 		
-		g_be_plugin->RegisterFunction ( kBE_InstallScriptStep, BE_InstallScriptStep, 5 );
-		g_be_plugin->RegisterFunction ( kBE_RemoveScriptStep, BE_RemoveScriptStep, 1 );
-		g_be_plugin->RegisterFunction ( kBE_PerformScriptStep, BE_PerformScriptStep, 1 );
+		g_be_plugin->RegisterFunction ( kBE_ScriptStepInstall, BE_ScriptStepInstall, 5 );
+		g_be_plugin->RegisterFunction ( kBE_ScriptStepRemove, BE_ScriptStepRemove, 1 );
+		g_be_plugin->RegisterFunction ( kBE_ScriptStepPerform, BE_ScriptStepPerform, 1 );
 
 	} else {
 		
-		g_be_plugin->RegisterHiddenFunction ( kBE_InstallScriptStep, BE_NotImplemented, 5 );
-		g_be_plugin->RegisterHiddenFunction ( kBE_RemoveScriptStep, BE_NotImplemented, 1 );
-		g_be_plugin->RegisterHiddenFunction ( kBE_PerformScriptStep, BE_NotImplemented, 1 );
+		g_be_plugin->RegisterHiddenFunction ( kBE_ScriptStepInstall, BE_NotImplemented, 5 );
+		g_be_plugin->RegisterHiddenFunction ( kBE_ScriptStepRemove, BE_NotImplemented, 1 );
+		g_be_plugin->RegisterHiddenFunction ( kBE_ScriptStepPerform, BE_NotImplemented, 1 );
 
 	}
 	

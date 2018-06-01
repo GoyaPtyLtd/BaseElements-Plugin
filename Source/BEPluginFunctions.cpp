@@ -3335,7 +3335,7 @@ fmx::errcode BE_PDF_GetPages ( short /* funcId */, const ExprEnv& /* environment
 #pragma mark -
 
 
-fmx::errcode BE_InstallScriptStep ( short /* function_id */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& /* reply */ )
+fmx::errcode BE_ScriptStepInstall ( short /* function_id */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& /* reply */ )
 {
 	
 	errcode error = NoError();
@@ -3355,7 +3355,7 @@ fmx::errcode BE_InstallScriptStep ( short /* function_id */, const fmx::ExprEnv&
 			
 		const fmx::uint32 flags = fmx::ExprEnv::kAllDeviceCompatible;
 		
-		error = environment.RegisterScriptStep ( *g_be_plugin->id(), id, *name, *definition, *description, flags, BE_PerformScriptStep );
+		error = environment.RegisterScriptStep ( *g_be_plugin->id(), id, *name, *definition, *description, flags, BE_ScriptStepPerform );
 			
 		if ( kNoError == error ) {
 			auto calculation = ParameterAsUTF8String ( parameters, 4 );
@@ -3374,10 +3374,10 @@ fmx::errcode BE_InstallScriptStep ( short /* function_id */, const fmx::ExprEnv&
 	
 	return MapError ( error );
 
-} // BE_InstallScriptStep
+} // BE_ScriptStepInstall
 
 
-fmx::errcode BE_RemoveScriptStep ( short /* function_id */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& /* reply */ )
+fmx::errcode BE_ScriptStepRemove ( short /* function_id */, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& /* reply */ )
 {
 	errcode error = NoError();
 		
@@ -3400,10 +3400,10 @@ fmx::errcode BE_RemoveScriptStep ( short /* function_id */, const fmx::ExprEnv& 
 		
 	return MapError ( error );
 		
-} // BE_RemoveScriptStep
+} // BE_ScriptStepRemove
 
 
-fmx::errcode BE_PerformScriptStep ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& reply )
+fmx::errcode BE_ScriptStepPerform ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& reply )
 {
 	errcode error = NoError();
 	
@@ -3464,7 +3464,7 @@ fmx::errcode BE_PerformScriptStep ( short function_id, const fmx::ExprEnv& envir
 	
 	return MapError ( error );
 	
-} // PerformScriptStep
+} // ScriptStepPerform
 
 
 

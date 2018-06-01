@@ -125,9 +125,9 @@
 "751" = "BE_PDF_PageCount ( pdfPathOrContainer )||";
 "752" = "BE_PDF_GetPages ( pdfPathOrContainer ; newPDFPathOrContainer ; fromPageNum {; toPageNum } )||";
 "800" = "BE_XOR ( text ; xorWith )||Not yet documented.";
-"850" = "BE_InstallScriptStep ( name ; definition ; id ; description ; calculation )||";
-"851" = "BE_RemoveScriptStep ( scriptStepId )||";
-"852" = "BE_PerformScriptStep ( scriptStepId )||";
+"850" = "BE_ScriptStepInstall ( name ; definitionXML ; id ; description ; calculation )||";
+"851" = "BE_ScriptStepRemove ( scriptStepId )||";
+"852" = "BE_ScriptStepPerform ( scriptStepId )||";
 "900" = "BE_Vector_DotProduct ( a ; b )|Vector DotProduct|Does a dot product of two vectors ( lists ) of numbers.  For more information about vectors, have a look at http://www.mathsisfun.com/algebra/vectors-dot-product.html";
 "901" = "BE_Vector_EuclideanDistance ( a ; b )|Vector EuclideanDistance|The euclidean distance between two vector points.  For more information about this see https://en.wikipedia.org/wiki/Euclidean_distance";
 "950" = "BE_Get_Machine_Name||Not yet documented.";
