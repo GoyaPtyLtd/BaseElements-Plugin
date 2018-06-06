@@ -23,6 +23,9 @@
 #endif
 
 
+#include <vector>
+
+
 using namespace std;
 
 
@@ -106,13 +109,19 @@ const std::wstring ClipboardFormats ( void )
 const std::string ClipboardData ( std::wstring& atype )
 {
 	NSString * pasteboard_type = NSStringFromWString ( atype );
-	NSString * clipboard_data = [[[NSPasteboard generalPasteboard] stringForType: pasteboard_type] copy];
+	NSData * pasteboard_data = [[[NSPasteboard generalPasteboard] dataForType: pasteboard_type] copy];
+//	NSString * clipboard_data = [[[NSPasteboard generalPasteboard] stringForType: pasteboard_type] copy];
+	NSStringEncoding string_encoding = NSUTF8StringEncoding;
+	if ( [pasteboard_type containsString: @"public.utf16-plain-text"] ) { // copy fm custom menus
+		string_encoding = NSUTF16LittleEndianStringEncoding;
+	}
+	NSString * clipboard_data = [[NSString alloc] initWithData: pasteboard_data encoding: string_encoding];
     if ( clipboard_data == nil ) {
         clipboard_data = @"";
     }
-    
-	return [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding];
 	
+	return [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding];
+
 } // ClipboardData
 
 
