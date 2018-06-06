@@ -37,7 +37,6 @@
 		4D25BF9C1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */; };
 		4D25BF9D1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */; };
 		4D25BF9E1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */; };
-		4D35A7441C8D29CB00D6A353 /* BEFMS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D35A7421C8D29CB00D6A353 /* BEFMS.cpp */; };
 		4D3629ED1F20789A0036B751 /* BaseElementsIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D3629EB1F20789A0036B751 /* BaseElementsIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D3629F11F2079A60036B751 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
 		4D3629F21F2079A60036B751 /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
@@ -73,7 +72,6 @@
 		4D362A111F2079E30036B751 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4D362A121F2079E30036B751 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
 		4D362A131F2079E30036B751 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
-		4D362A141F2079E30036B751 /* BEFMS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D35A7421C8D29CB00D6A353 /* BEFMS.cpp */; };
 		4D362A151F2079E30036B751 /* BEXMLSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */; };
 		4D362A2B1F207AE70036B751 /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A171F207AE70036B751 /* libboost.a */; };
 		4D362A2C1F207AE70036B751 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A181F207AE70036B751 /* libcrypto.a */; };
@@ -106,7 +104,6 @@
 		4D362A5F1F2085880036B751 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4D362A601F2085880036B751 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
 		4D362A611F2085880036B751 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
-		4D362A621F2085880036B751 /* BEFMS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D35A7421C8D29CB00D6A353 /* BEFMS.cpp */; };
 		4D362A631F2085880036B751 /* BEXMLSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */; };
 		4D362A641F2085880036B751 /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
 		4D362A651F2085880036B751 /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
@@ -274,8 +271,6 @@
 		4D2C4EAA1B7C774D00760408 /* BERegularExpression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BERegularExpression.h; path = ../Source/BERegularExpression.h; sourceTree = "<group>"; };
 		4D35117A17E1314A00AEDF01 /* BEFileTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileTextReader.cpp; path = ../Source/BEFileTextReader.cpp; sourceTree = "<group>"; };
 		4D35117B17E1314A00AEDF01 /* BEFileTextReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileTextReader.h; path = ../Source/BEFileTextReader.h; sourceTree = "<group>"; };
-		4D35A7421C8D29CB00D6A353 /* BEFMS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFMS.cpp; path = ../Source/BEFMS.cpp; sourceTree = "<group>"; };
-		4D35A7431C8D29CB00D6A353 /* BEFMS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFMS.h; path = ../Source/BEFMS.h; sourceTree = "<group>"; };
 		4D3629E91F20789A0036B751 /* BaseElementsIOS.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaseElementsIOS.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D3629EB1F20789A0036B751 /* BaseElementsIOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseElementsIOS.h; sourceTree = "<group>"; };
 		4D3629EC1F20789A0036B751 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -672,8 +667,6 @@
 				4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */,
 				4D8D8E151B167A2C005FEBD3 /* BEQuadChar.h */,
 				4D2C4EAA1B7C774D00760408 /* BERegularExpression.h */,
-				4D35A7421C8D29CB00D6A353 /* BEFMS.cpp */,
-				4D35A7431C8D29CB00D6A353 /* BEFMS.h */,
 				4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */,
 				4D8265E31E70D13D00257462 /* BEXMLSchema.h */,
 			);
@@ -924,7 +917,6 @@
 				4D362A111F2079E30036B751 /* BEImage.cpp in Sources */,
 				4D362A121F2079E30036B751 /* BEJPEG.cpp in Sources */,
 				4D362A131F2079E30036B751 /* BEQuadChar.cpp in Sources */,
-				4D362A141F2079E30036B751 /* BEFMS.cpp in Sources */,
 				4D362A151F2079E30036B751 /* BEXMLSchema.cpp in Sources */,
 				4D1D070E1F21C37A00BCE550 /* BEAppleFunctionsCommon.mm in Sources */,
 				4D362A0A1F2079CA0036B751 /* BETime.cpp in Sources */,
@@ -971,7 +963,6 @@
 				4D362A5F1F2085880036B751 /* BEImage.cpp in Sources */,
 				4D362A601F2085880036B751 /* BEJPEG.cpp in Sources */,
 				4D362A611F2085880036B751 /* BEQuadChar.cpp in Sources */,
-				4D362A621F2085880036B751 /* BEFMS.cpp in Sources */,
 				4D362A631F2085880036B751 /* BEXMLSchema.cpp in Sources */,
 				4D1D070F1F21C37C00BCE550 /* BEAppleFunctionsCommon.mm in Sources */,
 				4D362A641F2085880036B751 /* BETime.cpp in Sources */,
@@ -1031,7 +1022,6 @@
 				4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */,
 				4DCD49501A195B0C00EFCF7F /* BECurl.cpp in Sources */,
 				4DCD49511A195B0C00EFCF7F /* BEMessageDigest.cpp in Sources */,
-				4D35A7441C8D29CB00D6A353 /* BEFMS.cpp in Sources */,
 				4DCD49521A195B0C00EFCF7F /* BEFileSystem.cpp in Sources */,
 				4DCD49531A195B0C00EFCF7F /* BEShell.cpp in Sources */,
 				4DCD49541A195B0C00EFCF7F /* BEZlib.cpp in Sources */,

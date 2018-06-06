@@ -39,7 +39,6 @@
 #include "BECurl.h"
 #include "BEFileSystem.h"
 #include "BEFileMakerPlugin.h"
-#include "BEFMS.h"
 #include "BEShell.h"
 #include "BEZlib.h"
 #include "BESQLCommand.h"
@@ -2675,87 +2674,6 @@ fmx::errcode BE_SMTP_AddAttachment ( short /* funcId */, const fmx::ExprEnv& /* 
 
 } // BE_SMTP_AddAttachment
 
-
-
-#pragma mark -
-#pragma mark FileMaker Server
-#pragma mark -
-
-
-fmx::errcode BE_FMS_Command ( short function_id, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto username = ParameterAsUTF8String ( parameters );
-		std::stringstream quoted_username;
-		quoted_username << boost::io::quoted ( username );
-
-		auto password = ParameterAsUTF8String ( parameters, 1 );
-		std::stringstream quoted_password;
-		quoted_password << boost::io::quoted ( password );
-
-		unique_ptr<BEFMS> fms ( new BEFMS ( quoted_username.str(), quoted_password.str() ) );
-
-		string reply = "";
-
-		switch ( function_id ) {
-
-			case kBE_FMS_Close_Files:
-				reply = fms->close_files ( ParameterAsUTF8String ( parameters, 2 ) );
-				break;
-
-			case kBE_FMS_List_Clients:
-				reply = fms->list_clients ( ParameterAsBoolean ( parameters, 2, false ) );
-				break;
-
-			case kBE_FMS_List_Files:
-				reply = fms->list_files ( ParameterAsBoolean ( parameters, 2, false ) );
-				break;
-
-			case kBE_FMS_List_Schedules:
-				reply = fms->list_schedules();
-				break;
-
-			case kBE_FMS_Open_Files:
-				reply = fms->open_files ( ParameterAsUTF8String ( parameters, 2 ) );
-				break;
-
-			case kBE_FMS_Pause_Files:
-				reply = fms->pause_files ( ParameterAsUTF8String ( parameters, 2 ) );
-				break;
-
-			case kBE_FMS_Remove_Files:
-				reply = fms->remove_files ( ParameterAsUTF8String ( parameters, 2 ) );
-				break;
-
-			case kBE_FMS_Resume_Files:
-				reply = fms->resume_files ( ParameterAsUTF8String ( parameters, 2 ) );
-				break;
-
-			case kBE_FMS_Run_Schedule:
-				reply = fms->run_schedule ( ParameterAsLong ( parameters, 2 ) );
-				break;
-
-			default:
-				;
-
-		}
-
-		SetResult ( reply, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_FMS_Command
 
 
 #pragma mark -

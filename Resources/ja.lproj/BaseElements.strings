@@ -95,17 +95,7 @@
 "401" = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )|SMTP Send|Sends an email via SMTP.  Use in conjunction with BE_SMTP_Server.  The To, CC, BCC and attachments can be passed value lists in order to send to multiple people or to include multiple attachments.  \n\nEmail addresses are in the format :\n\nname@domain\n<name@domain>\nFullName <name@domain>\n\nIf you're including an actual name, you MUST include angle brackets around the email address.\n\nreplyTo must be an email address only and cannot include a name.\n\nThis function can also use the options in the BE_Curl_Set_Option function, where applicable.";
 "402" = "BE_SMTP_AddAttachment ( { attachment ; contentType } )|SMTP Attachment Add|Stores a list of container field files as attachments for future SMTP_Send functions.  The fields will be sent with the subsequent SMTP_Send and then the stored list of fields cleared out.";
 "403" = "BE_SMTP_Set_Header ( { header ; value } )|SMTP Attachment Add|Not yet documented.";
-"450" = "BE_FMS_Upload_Database ( container ; path )||BaseElements Internal : function not yet documented.";
-"451" = "BE_FMS_Download_Database ( path )||BaseElements Internal : function not yet documented.";
-"452" = "BE_FMS_List_Files ( username ; password {; showStatistics } )||BaseElements Internal : function not yet documented.";
-"453" = "BE_FMS_Pause_Files ( username ; password {; files } )||BaseElements Internal : function not yet documented.";
-"454" = "BE_FMS_Run_Schedule ( username ; password ; scheduleNumber )||BaseElements Internal : function not yet documented.";
-"455" = "BE_FMS_List_Schedules ( username ; password )||BaseElements Internal : function not yet documented.";
-"456" = "BE_FMS_List_Clients ( username ; password {; showStatistics } )||BaseElements Internal : function not yet documented.";
-"457" = "BE_FMS_Resume_Files ( username ; password {; files } )||BaseElements Internal : function not yet documented.";
-"458" = "BE_FMS_Close_Files ( username ; password {; files } )||BaseElements Internal : function not yet documented.";
-"459" = "BE_FMS_Remove_Files ( username ; password {; files } )||BaseElements Internal : function not yet documented.";
-"460" = "BE_FMS_Open_Files ( username ; password {; files } )||BaseElements Internal : function not yet documented.";
+
 "500" = "BE_Encrypt_AES_Deprecated ( key ; text )||Deprecated.  Use the FileMaker 16 function CryptEncrypt(data;key) instead.";
 "501" = "BE_Decrypt_AES_Deprecated ( key ; text )||Deprecated.  Use the FileMaker 16 function CryptDecrypt(container;key) instead.";
 "502" = "BE_SignatureGenerate_RSA ( data ; privateKey {; privateKeyPassword ; algorithm; fileNameWithExtension } )||Generate a digital signature of text using privateKey.";

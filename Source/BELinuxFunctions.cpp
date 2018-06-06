@@ -258,17 +258,6 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_SMTP_Send ] = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
 	strings [ kBE_SMTP_AddAttachment ] = "BE_SMTP_AddAttachment ( { attachment ; contentType } )";
 	strings [ kBE_SMTP_Set_Header ] = "BE_SMTP_Set_Header ( { header ; value } )";
-	strings [ kBE_FMS_Upload_Database ] = "BE_FMS_Upload_Database ( container ; path )";
-	strings [ kBE_FMS_Download_Database ] = "BE_FMS_Download_Database ( path )";
-	strings [ kBE_FMS_List_Files ] = "BE_FMS_List_Files ( username ; password {; showStatistics } )";
-	strings [ kBE_FMS_Pause_Files ] = "BE_FMS_Pause_Files ( username ; password {; files } )";
-	strings [ kBE_FMS_Run_Schedule ] = "BE_FMS_Run_Schedule ( username ; password ; scheduleNumber )";
-	strings [ kBE_FMS_List_Schedules ] = "BE_FMS_List_Schedules ( username ; password )";
-	strings [ kBE_FMS_List_Clients ] = "BE_FMS_List_Clients ( username ; password {; showStatistics } )";
-	strings [ kBE_FMS_Resume_Files ] = "BE_FMS_Resume_Files ( username ; password {; files } )";
-	strings [ kBE_FMS_Close_Files ] = "BE_FMS_Close_Files ( username ; password {; files } )";
-	strings [ kBE_FMS_Remove_Files ] = "BE_FMS_Remove_Files ( username ; password {; files } )";
-	strings [ kBE_FMS_Open_Files ] = "BE_FMS_Open_Files ( username ; password {; files } )";
 	strings [ kBE_Encrypt_AES_Deprecated ] = "BE_Encrypt_AES_Deprecated ( key ; text )";
 	strings [ kBE_Decrypt_AES_Deprecated ] = "BE_Decrypt_AES_Deprecated ( key ; text )";
 	strings [ kBE_SignatureGenerate_RSA ] = "BE_SignatureGenerate_RSA ( data ; privateKey {; privateKeyPassword ; algorithm; fileNameWithExtension } )";
