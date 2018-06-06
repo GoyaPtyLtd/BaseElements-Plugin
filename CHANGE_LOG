@@ -14,7 +14,7 @@ BE_CipherEncrypt
 Changes
 
 BE_ArraySetFromValueList: optional parameter, retainEmptyValues (default = false) added
-BE_ClipboardData: retrieve utf-16 in addition to utf-8 on macOS for Custom Menus only
+BE_ClipboardData: retrieve utf-16 in addition to utf-8 on macOS for FileMaker Custom Menus only
 BE_ExtractScriptVariables: optional parameter to specify the variable prefix (default $)
 BE_InstallScriptStep: renamed to BE_ScriptStepInstall
 BE_ListFilesInFolder: option added to not include hidden files in the result
@@ -22,7 +22,6 @@ BE_PerformScriptStep: renamed to BE_ScriptStepPerform
 BE_RemoveScriptStep: renamed to BE_ScriptStepRemove
 BE_SMTP_AddAttachment: use the OS temp directory when running under fms
 BE_SMTP_Send: encode email subjects per rfc 1342 / 2047
-
 
 
 ########################################################################

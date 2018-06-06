@@ -2,7 +2,7 @@
  BESQLCommand.cpp
  BaseElements Plug-In
  
- Copyright 2011-2017 Goya. All rights reserved.
+ Copyright 2011-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -85,14 +85,22 @@ TextUniquePtr BESQLCommand::get_text_result ( void )
 
 void BESQLCommand::set_column_separator ( const Text& new_column_separator )
 {
-	new_column_separator.GetUnicode ( &column_separator, 0, 1 );
+	if ( new_column_separator.GetSize() >= 1 ) {
+		new_column_separator.GetUnicode ( &column_separator, 0, 1 );
+	} else {
+		column_separator = NULL;
+	}
 }
 
 
 
 void BESQLCommand::set_row_separator ( const Text& new_row_separator )
 {
-	new_row_separator.GetUnicode ( &row_separator, 0, 1 );
+	if ( new_row_separator.GetSize() >= 1 ) {
+		new_row_separator.GetUnicode ( &row_separator, 0, 1 );
+	} else {
+		row_separator = NULL;
+	}
 }
 
 
