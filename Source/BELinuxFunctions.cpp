@@ -278,7 +278,7 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 	strings [ kBE_PDF_GetPages ] = "BE_PDF_GetPages ( pdf ; newPDF ; fromPage {; toPage } )";
 	strings [ kBE_XOR ] = "BE_XOR ( text ; xorWith )";
 	strings [ kBE_ScriptStepInstall ] = "BE_ScriptStepInstall ( name ; definitionXML ; id ; description ; calculation )";
-    strings [ kBE_RemoveScriptStep ] = "BE_ScriptStepRemove ( scriptStepId )";
+    strings [ kBE_ScriptStepRemove ] = "BE_ScriptStepRemove ( scriptStepId )";
     strings [ kBE_ScriptStepPerform ] = "BE_ScriptStepPerform ( scriptStepId )";
 	strings [ kBE_Vector_DotProduct ] = "BE_Vector_DotProduct ( a ; b )";
 	strings [ kBE_Vector_EuclideanDistance ] = "BE_Vector_EuclideanDistance ( a ; b )";
