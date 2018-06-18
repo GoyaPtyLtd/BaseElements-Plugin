@@ -259,8 +259,8 @@
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/Crypto/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
 		4D1BFE551F3AC9A600805CD3 /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/iOS/libpodofo.a; sourceTree = "<group>"; };
 		4D1BFE581F3ACAF200805CD3 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/usr/lib/libbz2.tbd; sourceTree = DEVELOPER_DIR; };
-		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
-		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; usesTabs = 1; };
+		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/apple/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
+		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/apple/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; usesTabs = 1; };
 		4D25BF9A1F3A8C580083345B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BaseElements.strings; sourceTree = "<group>"; };
 		4D25BF9F1F3A8C5F0083345B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BEPluginVersion.strings; sourceTree = "<group>"; };
 		4D25BFA11F3A8CC90083345B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BEPluginVersion.strings; sourceTree = "<group>"; };
@@ -298,8 +298,8 @@
 		4D362A421F207B660036B751 /* libPocoFoundationd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundationd.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoFoundationd.a; sourceTree = "<group>"; };
 		4D362A431F207B660036B751 /* libPocoZip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZip.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoZip.a; sourceTree = "<group>"; };
 		4D362A441F207B660036B751 /* libPocoZipd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZipd.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoZipd.a; sourceTree = "<group>"; };
-		4D362A4A1F207E780036B751 /* BEIOSFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEIOSFunctions.h; path = ../Source/BEIOSFunctions.h; sourceTree = "<group>"; };
-		4D362A4B1F207E780036B751 /* BEIOSFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEIOSFunctions.mm; path = ../Source/BEIOSFunctions.mm; sourceTree = "<group>"; };
+		4D362A4A1F207E780036B751 /* BEIOSFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEIOSFunctions.h; path = ../Source/apple/BEIOSFunctions.h; sourceTree = "<group>"; };
+		4D362A4B1F207E780036B751 /* BEIOSFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEIOSFunctions.mm; path = ../Source/apple/BEIOSFunctions.mm; sourceTree = "<group>"; };
 		4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iOSAppSDK.framework; path = ../Libraries/iOS/iPhoneOS/iOSAppSDK.framework; sourceTree = "<group>"; };
 		4D362A4F1F2081B90036B751 /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = ../Libraries/iOS/iPhoneOS/libPocoFoundation.a; sourceTree = "<group>"; };
 		4D362A501F2081B90036B751 /* libPocoFoundationd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundationd.a; path = ../Libraries/iOS/iPhoneOS/libPocoFoundationd.a; sourceTree = "<group>"; };
@@ -367,8 +367,8 @@
 		4D9E26CF1B29069B002F7DD3 /* BEX509.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEX509.h; sourceTree = "<group>"; };
 		4D9E26D11B292032002F7DD3 /* BEBio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBio.cpp; sourceTree = "<group>"; };
 		4D9E26D21B292032002F7DD3 /* BEBio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBio.h; sourceTree = "<group>"; };
-		4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMacFunctions.h; path = ../Source/BEMacFunctions.h; sourceTree = SOURCE_ROOT; };
-		4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEMacFunctions.mm; path = ../Source/BEMacFunctions.mm; sourceTree = SOURCE_ROOT; };
+		4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMacFunctions.h; path = ../Source/apple/BEMacFunctions.h; sourceTree = SOURCE_ROOT; };
+		4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEMacFunctions.mm; path = ../Source/apple/BEMacFunctions.mm; sourceTree = SOURCE_ROOT; };
 		4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPlugin.cpp; path = ../Source/BEPlugin.cpp; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginFunctions.cpp; path = ../Source/BEPluginFunctions.cpp; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginFunctions.h; path = ../Source/BEPluginFunctions.h; sourceTree = SOURCE_ROOT; };
@@ -590,6 +590,19 @@
 			name = Net;
 			sourceTree = "<group>";
 		};
+		4DB90DCF20D731A000D0A367 /* apple */ = {
+			isa = PBXGroup;
+			children = (
+				4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */,
+				4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */,
+				4D362A4A1F207E780036B751 /* BEIOSFunctions.h */,
+				4D362A4B1F207E780036B751 /* BEIOSFunctions.mm */,
+				4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */,
+				4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */,
+			);
+			name = apple;
+			sourceTree = "<group>";
+		};
 		C7DEDEE707E10BF3002283F3 = {
 			isa = PBXGroup;
 			children = (
@@ -611,18 +624,13 @@
 			children = (
 				4DB857A01C646B2800D0192A /* Net */,
 				4D9E26CD1B2905D4002F7DD3 /* Crypto */,
+				4DB90DCF20D731A000D0A367 /* apple */,
 				4D10AD941484202000814440 /* BESQLCommand.h */,
 				4D10AD931484202000814440 /* BESQLCommand.cpp */,
 				4D8824E611E93F6000F94475 /* BEPluginUtilities.h */,
 				4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */,
 				4D70428713BAE5CA00DE4484 /* BEFileSystem.h */,
 				4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */,
-				4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */,
-				4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */,
-				4D362A4A1F207E780036B751 /* BEIOSFunctions.h */,
-				4D362A4B1F207E780036B751 /* BEIOSFunctions.mm */,
-				4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */,
-				4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */,
 				4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */,
 				4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */,
 				4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */,

@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
 
- Copyright 2011-2017 Goya. All rights reserved.
+ Copyright 2011-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -19,20 +19,20 @@
 
 #if defined FMX_MAC_TARGET
 
-	#include "BEMacFunctions.h"
+	#include "apple/BEMacFunctions.h"
 
 #elif FMX_IOS_TARGET
 
-	#include "BEIOSFunctions.h"
+	#include "apple/BEIOSFunctions.h"
 
 #elif defined FMX_WIN_TARGET
 
-	#include "BEWinFunctions.h"
+	#include "win/BEWinFunctions.h"
 	#include <tchar.h>
 
 #elif defined FMX_LINUX_TARGET
 
-	#include "BELinuxFunctions.h"
+	#include "linux/BELinuxFunctions.h"
 
 #endif
 

@@ -355,13 +355,6 @@
     <ClCompile Include="..\Source\BESMTPEmailMessage.cpp" />
     <ClCompile Include="..\Source\BESQLCommand.cpp" />
     <ClCompile Include="..\Source\BETime.cpp" />
-    <ClCompile Include="..\Source\BEWinFunctions.cpp">
-      <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </UndefinePreprocessorDefinitions>
-      <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </UndefinePreprocessorDefinitions>
-    </ClCompile>
-    <ClCompile Include="..\Source\BEWinIFileDialog.cpp" />
     <ClCompile Include="..\Source\BEXero.cpp" />
     <ClCompile Include="..\Source\BEXMLReader.cpp" />
     <ClCompile Include="..\Source\BEXMLReaderInterface.cpp" />
@@ -380,6 +373,8 @@
     <ClCompile Include="..\Source\Images\BEImage.cpp" />
     <ClCompile Include="..\Source\Images\BEJPEG.cpp" />
     <ClCompile Include="..\Source\Net\BEMimeticMIMEEntity.cpp" />
+    <ClCompile Include="..\Source\win\BEWinFunctions.cpp" />
+    <ClCompile Include="..\Source\win\BEWinIFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\resource_version.h" />
@@ -411,8 +406,6 @@
     <ClInclude Include="..\Source\BESQLCommand.h" />
     <ClInclude Include="..\Source\BETime.h" />
     <ClInclude Include="..\Source\BEValueList.h" />
-    <ClInclude Include="..\Source\BEWinFunctions.h" />
-    <ClInclude Include="..\Source\BEWinIFileDialog.h" />
     <ClInclude Include="..\Source\BEXero.h" />
     <ClInclude Include="..\Source\BEXMLReader.h" />
     <ClInclude Include="..\Source\BEXMLReaderInterface.h" />
@@ -427,6 +420,8 @@
     <ClInclude Include="..\Source\Images\BEImage.h" />
     <ClInclude Include="..\Source\Images\BEJPEG.h" />
     <ClInclude Include="..\Source\Net\BEMimeticMIMEEntity.h" />
+    <ClInclude Include="..\Source\win\BEWinFunctions.h" />
+    <ClInclude Include="..\Source\win\BEWinIFileDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\BaseElements.rc" />

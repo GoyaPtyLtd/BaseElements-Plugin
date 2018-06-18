@@ -116,7 +116,6 @@
 		<Unit filename="../Source/BEFileTextReader.cpp" />
 		<Unit filename="../Source/BEJSON.cpp" />
 		<Unit filename="../Source/BEJavaScript.cpp" />
-		<Unit filename="../Source/BELinuxFunctions.cpp" />
 		<Unit filename="../Source/BEOAuth.cpp" />
 		<Unit filename="../Source/BEPlugin.cpp" />
 		<Unit filename="../Source/BEPluginFunctions.cpp" />
@@ -151,6 +150,7 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="../Source/linux/BELinuxFunctions.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

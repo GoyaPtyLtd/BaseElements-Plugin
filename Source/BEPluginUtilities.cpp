@@ -19,17 +19,17 @@
 	#include <Carbon/Carbon.h>
 	#include <CoreFoundation/CoreFoundation.h>
 
-	#include "BEAppleFunctionsCommon.h"
-	#include "BEMacFunctions.h"
+	#include "apple/BEAppleFunctionsCommon.h"
+	#include "apple/BEMacFunctions.h"
 
 #elif defined FMX_IOS_TARGET
 
-	#include "BEAppleFunctionsCommon.h"
-	#include "BEIOSFunctions.h"
+	#include "apple/BEAppleFunctionsCommon.h"
+	#include "apple/BEIOSFunctions.h"
 
 #elif defined FMX_LINUX_TARGET
 
-	#include "BELinuxFunctions.h"
+	#include "linux/BELinuxFunctions.h"
 
 #endif
 
@@ -197,7 +197,7 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 		if ( compress ) {
 			output = CompressContainerStream ( data );
 		}
-		
+
 		resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)&output[0] ); // error =
 		results.SetBinaryData ( *resultBinary, true );
 
@@ -331,7 +331,7 @@ const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX
 		// wchar_t is 4 bytes on OS X and 2 on Windows
 
 		#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET || defined FMX_LINUX_TARGET
-		
+
 			wchar_t * parameter = new wchar_t [ text_size + 1 ];
 			for ( long i = 0 ; i <= text_size ; i++ ) {
 				parameter[i] = (wchar_t)text[i];
@@ -459,7 +459,7 @@ const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt
 			}
 
 			file_name.assign ( name_as_string );
-			
+
 		} else {
 			auto path = ParameterAsPath ( parameters, which );
 			file_name = path.filename().string();
@@ -475,7 +475,7 @@ const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt
 const std::string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, const fmx::uint32 which )
 {
 	std::string file_contents;
-	
+
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 		auto binary_contents = ParameterAsVectorChar ( parameters, which );
 		const std::string temporary_contents ( binary_contents.begin(), binary_contents.end() );
@@ -484,16 +484,16 @@ const std::string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, c
 		auto file = ParameterAsPath ( parameters, which );
 		file_contents = ReadFileAsUTF8 ( file );
 	}
-	
+
 	return file_contents;
-	
+
 } // ParameterPathOrContainerAsUTF8
 
 
 std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& parameters, const fmx::uint32 which )
 {
 	std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document ( new PoDoFo::PdfMemDocument ( ) );
-	
+
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 		auto pdf = ParameterAsVectorChar ( parameters, which );
 		pdf_document->Load ( pdf.data(), pdf.size() );
@@ -502,9 +502,9 @@ std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& paramet
 		pdf_path.make_preferred();
 		pdf_document->Load ( pdf_path.c_str() );
 	}
-	
+
 	return pdf_document;
-	
+
 } // ParameterPathOrContainerAsUTF8
 
 
@@ -653,29 +653,29 @@ const bool StreamIsCompressed ( const BinaryData& data )
 
 const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path )
 {
-	
+
 	std::vector<char> file_data;
-	
+
 	if ( exists ( path ) ) {
 		size_t length = (size_t)file_size ( path ); // boost::uintmax_t
-		
+
 		if ( length > 0 ) {
-			
+
 			// slurp up the file contents
 			boost::filesystem::ifstream input_file ( path, ios_base::in | ios_base::binary | ios_base::ate );
 			input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
 			input_file.seekg ( 0, ios::beg );
 			file_data.resize ( length );
 			input_file.read ( &file_data[0], length );
-			
+
 		}
-		
+
 	} else {
 		throw BEPlugin_Exception ( kNoSuchFileOrDirectoryError );
 	}
-	
+
 	return file_data;
-	
+
 } // ReadFileAsUTF8
 
 
@@ -971,7 +971,7 @@ errcode MapError ( const errcode error, const bool map )
 
 void set_name_value_pair ( const DataVect& parameters, std::map<std::string, std::string>& pairs )
 {
-	
+
 	if ( parameters.Size() == 0 ) {
 		pairs.clear();
 	} else {
@@ -983,7 +983,7 @@ void set_name_value_pair ( const DataVect& parameters, std::map<std::string, std
 			pairs [ name ] = value;
 		}
 	}
-	
+
 } // set_name_value_pair
 
 
@@ -1084,9 +1084,9 @@ void Do_GetString ( const unsigned long whichStringID, TextUniquePtr& function_i
 	TextUniquePtr pipe;
 	pipe->Assign ( "|" );
 	auto pipe_at = function_information->Find ( *pipe, 0 );
-	
+
 	switch ( which_string ) {
-			
+
 		case kFunctionName:
 		{
 			// The string for this whichStringID is a Function Prototype, but all the plug-in needs now is the Function Name by itself.

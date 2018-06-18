@@ -44,13 +44,13 @@
 #include "Crypto/BEMessageDigest.h"
 
 #ifdef FMX_MAC_TARGET
-	#include "BEMacFunctions.h"
+	#include "apple/BEMacFunctions.h"
 #elif FMX_IOS_TARGET
-	#include "BEIOSFunctions.h"
+	#include "apple/BEIOSFunctions.h"
 #elif FMX_WIN_TARGET
-	#include "BEMacFunctions.h"
+	#include "win/BEWinFunctions.h"
 #elif FMX_LINUX_TARGET
-	#include "BELinuxFunctions.h"
+	#include "linux/BELinuxFunctions.h"
 #endif
 
 
@@ -263,22 +263,22 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_PDF_PageCount, BE_PDF_PageCount, 1 );
 	g_be_plugin->RegisterFunction ( kBE_PDF_GetPages, BE_PDF_GetPages, 3, 4 );
 
-	
+
 	if ( (gFMX_ExternCallPtr->extnVersion >= k160ExtnVersion) ) { // crash in versions prior to 16
-		
+
 		g_be_plugin->RegisterFunction ( kBE_ScriptStepInstall, BE_ScriptStepInstall, 5 );
 		g_be_plugin->RegisterFunction ( kBE_ScriptStepRemove, BE_ScriptStepRemove, 1 );
 		g_be_plugin->RegisterFunction ( kBE_ScriptStepPerform, BE_ScriptStepPerform, 1 );
 
 	} else {
-		
+
 		g_be_plugin->RegisterHiddenFunction ( kBE_ScriptStepInstall, BE_NotImplemented, 5 );
 		g_be_plugin->RegisterHiddenFunction ( kBE_ScriptStepRemove, BE_NotImplemented, 1 );
 		g_be_plugin->RegisterHiddenFunction ( kBE_ScriptStepPerform, BE_NotImplemented, 1 );
 
 	}
-	
-	
+
+
 	g_be_plugin->RegisterFunction ( kBE_XOR, BE_XOR, 2, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_RegularExpression, BE_RegularExpression, 2, 4 );
