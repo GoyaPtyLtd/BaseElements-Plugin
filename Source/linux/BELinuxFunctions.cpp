@@ -12,6 +12,7 @@
 
 #include "BEPluginGlobalDefines.h"
 #include "BELinuxFunctions.h"
+#include "BELinuxFunctionStrings.h"
 #include "BEPluginUtilities.h"
 #include "BEPluginException.h"
 
@@ -159,152 +160,9 @@ unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar *
 {
 	unsigned long returnResult = 0;
 
-    std::map<unsigned long, std::string> strings;
-
-    strings [ kBE_OptionsStringID ] = "GyBE1nnYYnn";
-	strings [ kBE_Version ] = "BE_Version";
-	strings [ kBE_VersionAutoUpdate ] = "BE_VersionAutoUpdate";
-	strings [ kBE_ClipboardFormats ] = "BE_ClipboardFormats";
-	strings [ kBE_ClipboardText ] = "BE_ClipboardText ( format )";
-	strings [ kBE_SetClipboardText ] = "BE_SetClipboardText ( text ; format )";
-	strings [ kBE_CreateFolder ] = "BE_CreateFolder ( path )";
-	strings [ kBE_DeleteFile ] = "BE_DeleteFile ( path )";
-	strings [ kBE_FileExists ] = "BE_FileExists ( path )";
-	strings [ kBE_ReadTextFromFile ] = "BE_ReadTextFromFile ( path )";
-	strings [ kBE_WriteTextToFile ] = "BE_WriteTextToFile ( path ; text {; append} )";
-	strings [ kBE_SelectFile ] = "BE_SelectFile ( prompt {; inFolder } )";
-	strings [ kBE_SelectFolder ] = "BE_SelectFolder ( prompt {; inFolder } )";
-	strings [ kBE_DisplayDialog ] = "BE_DisplayDialog ( title ; message ; defaultButton {; cancelButton ; alternateButton } )";
-	strings [ kBE_ApplyXSLT ] = "BE_ApplyXSLT ( xmlPath ; xslt ; outputPath )";
-	strings [ kBE_ExtractScriptVariables ] = "BE_ExtractScriptVariables ( calculationText { ; variablePrefix } )";
-	strings [ kBE_StripInvalidUTF16CharactersFromXMLFile ] = "BE_StripInvalidUTF16CharactersFromXMLFile ( path ; { resultPath } )";
-	strings [ kBE_MoveFile ] = "BE_MoveFile ( from ; to )";
-	strings [ kBE_CopyFile ] = "BE_CopyFile ( from ; to )";
-	strings [ kBE_ListFilesInFolder ] = "BE_ListFilesInFolder ( path {; type ; includeSubdirectories ; useFullPath ; includeHidden } )";
-	strings [ kBE_OpenURL ] = "BE_OpenURL ( url )";
-	strings [ kBE_OpenFile ] = "BE_OpenFile ( path )";
-	strings [ kBE_FileSize ] = "BE_FileSize ( path )";
-	strings [ kBE_File_Modification_Timestamp ] = "BE_File_Modification_Timestamp ( path )";
-	strings [ kFMXT_NameStr ] = "BaseElements";
-	strings [ kFMXT_OptionsStr ] = "GyBE1nnYYnn";
-	strings [ kFMXT_HelpURLStr ] = "https://baseelementsplugin.zendesk.com/";
-	strings [ kBE_WriteTextFileToContainer ] = "BE_WriteTextFileToContainer ( path ; text {; append} )";
-	strings [ kBE_ExecuteScript ] = "BE_ExecuteScript ( scriptName {; fileName ; parameter } )";
-	strings [ kBE_FileMakerSQL ] = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; database } )";
-	strings [ kBE_HTTP_GET_File ] = "BE_HTTP_GET ( url {; filename ; username ; password } )";
-	strings [ kBE_GetLastError ] = "BE_GetLastError";
-	strings [ kBE_MessageDigest_Deprecated ] = "BE_MessageDigest_Deprecated ( text {; algorithm ; encoding } )";
-	strings [ kBE_GetLastDDLError ] = "BE_GetLastDDLError";
-	strings [ kBE_HTTP_GET_File ] = "BE_HTTP_GET_File ( url ; path {; username ; password } )";
-	strings [ kBE_ProgressDialog ] = "BE_ProgressDialog ( title ; description {; maximum } )";
-	strings [ kBE_ProgressDialog_Update ] = "BE_ProgressDialog_Update ( number {; description } )";
-	strings [ kBE_Pause ] = "BE_Pause ( milliseconds )";
-	strings [ kBE_SetPreference ] = "BE_SetPreference ( key ; value {; domain } )";
-	strings [ kBE_GetPreference ] = "BE_GetPreference ( key {; domain } )";
-	strings [ kBE_Unzip ] = "BE_Unzip ( archive {; output_directory} )";
-	strings [ kBE_Zip ] = "BE_Zip ( fileList {; archive} )";
-	strings [ kBE_Base64_Decode_Deprecated ] = "BE_Base64_Decode_Deprecated ( text {; name } )";
-	strings [ kBE_Base64_Encode_Deprecated ] = "BE_Base64_Encode_Deprecated ( data )";
-	strings [ kBE_SetTextEncoding ] = "BE_SetTextEncoding ( { encoding } )";
-	strings [ kBE_Base64_URL_Encode_Deprecated ] = "BE_Base64_URL_Encode_Deprecated ( data )";
-	strings [ kBE_ExportFieldContents ] = "BE_ExportFieldContents ( field {; outputPath } )";
-	strings [ kBE_ImportFile ] = "BE_ImportFile ( path {; compress } )";
-	strings [ kBE_HTTP_POST ] = "BE_HTTP_POST ( url ; parameters {; username ; password ; filename } )";
-	strings [ kBE_HTTP_Response_Code ] = "BE_HTTP_Response_Code";
-	strings [ kBE_HTTP_Response_Headers ] = "BE_HTTP_Response_Headers ( { header } )";
-	strings [ kBE_HTTP_Set_Custom_Header ] = "BE_HTTP_Set_Custom_Header ( { header ; value } )";
-	strings [ kBE_HTTP_DELETE ] = "BE_HTTP_DELETE ( url {; username ; password } )";
-	strings [ kBE_HTTP_PUT_File ] = "BE_HTTP_PUT_File ( url ; path {; username ; password } )";
-	strings [ kBE_HTTP_Set_Proxy ] = "BE_HTTP_Set_Proxy ( proxy {; port ; username ; password } )";
-	strings [ kBE_Curl_Set_Option ] = "BE_Curl_Set_Option ( { option ; value } )";
-	strings [ kBE_HTTP_PUT_Data ] = "BE_HTTP_PUT_Data ( url ; data {; username ; password } )";
-	strings [ kBE_FTP_Upload ] = "BE_FTP_Upload ( url ; data {; username ; password } )";
-	strings [ kBE_Curl_Trace ] = "BE_Curl_Trace";
-	strings [ kBE_FTP_Delete ] = "BE_FTP_Delete ( url {; username ; password } )";
-	strings [ kBE_HTTP_PATCH ] = "BE_HTTP_PATCH ( url ; parameters {; username ; password } )";
-	strings [ kBE_ApplyXSLTInMemory ] = "BE_ApplyXSLTInMemory ( xml ; xslt )";
-	strings [ kBE_XPath ] = "BE_XPath ( xml ; xpath {; namespaceList ; asText } )";
-	strings [ kBE_XPathAll ] = "BE_XPathAll ( xml ; xpath {; namespaceList } )";
-	strings [ kBE_StripXMLNodes ] = "BE_StripXMLNodes ( inputPath ; outputPath ; nodeNames )";
-	strings [ kBE_XML_Parse ] = "BE_XML_Parse ( path )";
-	strings [ kBE_SplitBEFileNodes ] = "BE_SplitBEFileNodes ( path )";
-	strings [ kBE_XML_Validate ] = "BE_XML_Validate ( xml ; schema )";
-	strings [ kBE_CurrentTimeMilliseconds ] = "BE_CurrentTimeMilliseconds";
-	strings [ kBE_UTCMilliseconds ] = "BE_UTCMilliseconds";
-	strings [ kBE_TimeZoneOffset ] = "BE_TimeZoneOffset";
-	strings [ kBE_SaveFileDialog ] = "BE_SaveFileDialog ( prompt {; fileName ; inFolder } )";
-	strings [ kBE_RegularExpression ] = "BE_RegularExpression ( text ; expression {; options ; replaceString } )";
-	strings [ kBE_ContainerIsCompressed ] = "BE_ContainerIsCompressed ( containerField )";
-	strings [ kBE_ContainerCompress ] = "BE_ContainerCompress ( data {; filename } )";
-	strings [ kBE_ContainerUncompress ] = "BE_ContainerUncompress ( gzip_data {; filename } )";
-	strings [ kBE_Gzip ] = "BE_Gzip ( data {; filename } )";
-	strings [ kBE_UnGzip ] = "BE_UnGzip ( gzip_data {; filename } )";
-	strings [ kBE_JPEG_Recompress_Deprecated ] = "BE_JPEG_Recompress_Deprecated ( jpeg {; compressionLevel ; width ; height } )";
-	strings [ kBE_JPEG_Recompress ] = "BE_JPEG_Recompress ( jpeg {; compressionLevel ; scale } )";
-	strings [ kBE_JSONPath_Deprecated ] = "BE_JSONPath_Deprecated ( json ; path )";
-	strings [ kBE_JSON_Error_Description_Deprecated ] = "BE_JSON_Error_Description_Deprecated";
-	strings [ kBE_JSON_ArraySize_Deprecated ] = "BE_JSON_ArraySize_Deprecated ( json )";
-	strings [ kBE_JSON_Encode_Deprecated ] = "BE_JSON_Encode_Deprecated ( key {; value ; type } )";
-	strings [ kBE_OAuth_RequestAccessToken ] = "BE_OAuth_RequestAccessToken ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )";
-	strings [ kBE_Xero_SetTokens ] = "BE_Xero_SetTokens ( consumer_key ; private_key )";
-	strings [ kBE_Xero_GenerateKeys ] = "BE_Xero_GenerateKeys ( organisation {; organisationalUnit ; country ; state ; suburb ; domain ; emailAddress } )";
-	strings [ kBE_Values_Unique ] = "BE_Values_Unique ( listOfValues {; caseSensitive } )";
-	strings [ kBE_Values_FilterOut ] = "BE_Values_FilterOut ( textToFilter ; filterValues {; caseSensitive } )";
-	strings [ kBE_Values_ContainsDuplicates ] = "BE_Values_ContainsDuplicates ( listOfValues  {; caseSensitive } )";
-	strings [ kBE_Values_Sort ] = "BE_Values_Sort ( listOfValues {; ascending ; type } )";
-	strings [ kBE_Values_TimesDuplicated ] = "BE_Values_TimesDuplicated ( listOfValues ; numberOfTimes )";
-	strings [ kBE_Values_Trim ] = "BE_Values_Trim ( listOfValues )";
-	strings [ kBE_SMTP_Server ] = "BE_SMTP_Server ( server { ; port ; username ; password } )";
-	strings [ kBE_SMTP_Send ] = "BE_SMTP_Send ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )";
-	strings [ kBE_SMTP_AddAttachment ] = "BE_SMTP_AddAttachment ( { attachment ; contentType } )";
-	strings [ kBE_SMTP_Set_Header ] = "BE_SMTP_Set_Header ( { header ; value } )";
-	strings [ kBE_Encrypt_AES_Deprecated ] = "BE_Encrypt_AES_Deprecated ( key ; text )";
-	strings [ kBE_Decrypt_AES_Deprecated ] = "BE_Decrypt_AES_Deprecated ( key ; text )";
-	strings [ kBE_SignatureGenerate_RSA ] = "BE_SignatureGenerate_RSA ( data ; privateKey {; privateKeyPassword ; algorithm; fileNameWithExtension } )";
-	strings [ kBE_SignatureVerify_RSA ] = "BE_SignatureVerify_RSA ( data ; publicKey ; signature {; algorithm } )";
-    strings [ kBE_CipherEncrypt ] = "BE_CipherEncrypt ( cipher ; data ; key ; iv {; padding ; fileNameWithExtension } )";
-    strings [ kBE_CipherDecrypt ] = "BE_CipherDecrypt ( cipher ; encryptedData ; key ; iv {; padding ; fileNameWithExtension } )";
-	strings [ kBE_HMAC_Deprecated ] = "BE_HMAC_Deprecated ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )";
-	strings [ kBE_EvaluateJavaScript ] = "BE_EvaluateJavaScript ( javaScript )";
-	strings [ kBE_ArraySetFromValueList ] = "BE_ArraySetFromValueList ( valueList {; retainEmptyValues } )";
-	strings [ kBE_ArrayGetSize ] = "BE_ArrayGetSize ( array )";
-	strings [ kBE_ArrayGetValue ] = "BE_ArrayGetValue ( array ; valueNumber )";
-	strings [ kBE_Array_Delete ] = "BE_Array_Delete ( array )";
-	strings [ kBE_Array_Find ] = "BE_Array_Find ( array ; value )";
-	strings [ kBE_Array_Change_Value ] = "BE_Array_Change_Value ( array ; valueNumber ; newValue )";
-	strings [ kBE_ConvertContainer ] = "BE_ConvertContainer ( field {; type ; width ; height } )";
-	strings [ kBE_PDF_Append ] = "BE_PDF_Append ( pdf ; pdfToAppend {; destination } )";
-	strings [ kBE_PDF_PageCount ] = "BE_PDF_PageCount ( pdf )";
-	strings [ kBE_PDF_GetPages ] = "BE_PDF_GetPages ( pdf ; newPDF ; fromPage {; toPage } )";
-	strings [ kBE_XOR ] = "BE_XOR ( text ; xorWith )";
-	strings [ kBE_ScriptStepInstall ] = "BE_ScriptStepInstall ( name ; definitionXML ; id ; description ; calculation )";
-    strings [ kBE_ScriptStepRemove ] = "BE_ScriptStepRemove ( scriptStepId )";
-    strings [ kBE_ScriptStepPerform ] = "BE_ScriptStepPerform ( scriptStepId )";
-	strings [ kBE_Vector_DotProduct ] = "BE_Vector_DotProduct ( a ; b )";
-	strings [ kBE_Vector_EuclideanDistance ] = "BE_Vector_EuclideanDistance ( a ; b )";
-	strings [ kBE_Get_Machine_Name ] = "BE_Get_Machine_Name";
-	strings [ kBE_ExecuteSystemCommand ] = "BE_ExecuteSystemCommand ( command { ; timeout } )";
-	strings [ 1001 ] = "BE_OKButton";
-	strings [ 1002 ] = "BE_CancelButton";
-	strings [ 1003 ] = "BE_AlternateButton";
-	strings [ 2001 ] = "BE_MessageDigestAlgorithm_MD5_Deprecated";
-	strings [ 2002 ] = "BE_MessageDigestAlgorithm_SHA256_Deprecated";
-	strings [ 2003 ] = "BE_MessageDigestAlgorithm_MDC2_Deprecated";
-	strings [ 2004 ] = "BE_MessageDigestAlgorithm_SHA_Deprecated";
-	strings [ 2005 ] = "BE_MessageDigestAlgorithm_SHA1_Deprecated";
-	strings [ 2006 ] = "BE_MessageDigestAlgorithm_SHA224_Deprecated";
-	strings [ 2007 ] = "BE_MessageDigestAlgorithm_SHA384_Deprecated";
-	strings [ 2008 ] = "BE_MessageDigestAlgorithm_SHA512_Deprecated";
-	strings [ 3001 ] = "BE_FileType_All";
-	strings [ 3002 ] = "BE_FileType_File";
-	strings [ 3003 ] = "BE_FileType_Folder";
-	strings [ 4001 ] = "BE_Encoding_Hex_Deprecated";
-	strings [ 4002 ] = "BE_Encoding_Base64_Deprecated";
-	strings [ PLUGIN_DESCRIPTION_STRING_ID ] = "Version: 4.0b2\n\nThis plug-in provides additional functionality for BaseElements from Goya";
-
 	std::string wanted;
 	try {
-		wanted = strings [ string_id ];
+		wanted = function_strings.at ( string_id );
 	} catch ( exception& /* e */ ) {
 		returnResult = kRequestedDataIsMissingError;
 	}

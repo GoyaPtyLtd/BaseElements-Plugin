@@ -831,6 +831,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4DCD49811A195B0C00EFCF7F /* Build configuration list for PBXNativeTarget "macOS" */;
 			buildPhases = (
+				4DFA3E2B20D8ABFF00A2D858 /* ShellScript */,
 				4DCD49451A195B0C00EFCF7F /* Sources */,
 				4DCD49681A195B0C00EFCF7F /* Resources */,
 				4DCD496B1A195B0C00EFCF7F /* Frameworks */,
@@ -915,6 +916,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4DFA3E2B20D8ABFF00A2D858 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# echo $SRCROOT\n/usr/bin/ruby $SRCROOT/Extras/GenerateStringsFiles.rb $SRCROOT/../";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4D3629E41F20789A0036B751 /* Sources */ = {
