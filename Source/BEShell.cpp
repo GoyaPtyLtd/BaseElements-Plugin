@@ -128,7 +128,7 @@ short ExecuteSystemCommand ( const string command, string& result, const long co
 
 #include <tchar.h>
 
-#include "BEWinFunctions.h"
+#include "win/BEWinFunctions.h"
 
 
 short ExecuteSystemCommand ( const string command, string& result, const long command_timeout )
