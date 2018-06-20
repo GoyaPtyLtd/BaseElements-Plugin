@@ -1,133 +1,26 @@
 ########################################################################
-Version 4.0b7
+Version 4.0
 ########################################################################
 
-June 7, 2018
-
-
-New Functions
-
-BE_CipherDecrypt
-BE_CipherEncrypt
-
-
-Changes
-
-BE_ArraySetFromValueList: optional parameter, retainEmptyValues (default = false) added
-BE_ClipboardData: retrieve utf-16 in addition to utf-8 on macOS for FileMaker Custom Menus only
-BE_ExtractScriptVariables: optional parameter to specify the variable prefix (default $)
-BE_FMS_* functions removed
-BE_InstallScriptStep: renamed to BE_ScriptStepInstall
-BE_ListFilesInFolder: option added to not include hidden files in the result
-BE_PerformScriptStep: renamed to BE_ScriptStepPerform
-BE_RemoveScriptStep: renamed to BE_ScriptStepRemove
-BE_SMTP_AddAttachment: use the OS temp directory when running under fms
-BE_SMTP_Send: encode email subjects per rfc 1342 / 2047
-
-
-########################################################################
-Version 4.0b6
-########################################################################
-
-February 3, 2018
-
-
-New Functions
-
-BE_SignatureGenerate_RSA
-BE_SignatureVerify_RSA
-
-
-Changes
-
-BE_ClipboardData: do not crash when there is no text/utf-8 coercion available for a data type (macOS)
-BE_HTTP_*: use Authorization header for Xero OAuth
-BE_XPath: do not crash when attempting to get a non-existent value as xml
-BE_ReadTextFromFile: Do not exit after the first invalid from encoding
-BE_SMTP_Send:	do not send bare line feeds
-				do not fold (long) header lines
-BE_StripInvalidUTF16CharactersFromXMLFile:	optional parameter, resultPath, added
-											only write the output when characters are stripped
-
-
-########################################################################
-Version 4.0b5
-########################################################################
-
-August 22, 2017
-
-
-New Functions
-
-BE_InstallScriptStep
-BE_PerformScriptStep
-BE_RemoveScriptStep
-
-
-Changes
-
-BE_HTTP_Set_Custom_Header: call with no parameters to delete all Headers
-BE_SMTP_Set_Custom_Header: call with no parameters to delete all Headers
-
-Enable PDF functions on iOS.
-
-
-########################################################################
-Version 4.0b4
-########################################################################
-
-August 3, 2017
+June 20, 2018
 
 
 New Functions
 
 BE_Array_Change_Value
+BE_Array_Delete
 BE_Array_Find
+BE_CipherDecrypt
+BE_CipherEncrypt
+BE_InstallScriptStep
+BE_PDF_Append
 BE_PDF_GetPages
 BE_PDF_PageCount
-BE_WriteTextFileToContainer
-
-
-iOS Implementations for:
-
-BE_ClipboardData
-BE_Get_Machine_Name
-BE_GetPreference
-BE_OpenURL
-BE_SetClipboardData
-BE_SetPreference
-
-
-Changes
-
-BE_ApplyXSLT:	fix errors with some unicode file paths on Windows
-				xml_path parameter may point to a container
-BE_ExportFileContents: return a path to temporary file if one in not specified
-BE_FileSize: return the size for directories in addition to files
-BE_GetLastError: thread safe
-BE_HTTP_POST: allow a file (@/path/...) to be specified instead of post args
-BE_ReadTextFromFile: read text from a file in a container
-BE_SMTP_Send: don't show bcc addresses
-
-XML/XSLT functions thread safe
-Added support for function descriptions when registering functions
-
-Use FMX SDK 16.0.2.205
-
-
-########################################################################
-Version 4.0b3
-########################################################################
-
-July 21, 2017
-
-
-Partial Support for iOS (and iOS Simulator)
-
-
-New Functions
-
+BE_PerformScriptStep
+BE_RemoveScriptStep
 BE_SMTP_Set_Header
+BE_SignatureGenerate_RSA
+BE_SignatureVerify_RSA
 BE_XML_Validate
 
 
@@ -154,66 +47,120 @@ BE_MessageDigestAlgorithm_SHA1
 BE_MessageDigestAlgorithm_SHA224
 BE_MessageDigestAlgorithm_SHA384
 BE_MessageDigestAlgorithm_SHA51
+BE_WriteTextFileToContainer
 
 
 Changes
 
-BE_ExtractScriptVariables: no longer appears in calculation dialogs
+BE_ApplyXSLT: xml_path parameter may point to a container
+BE_ArraySetFromValueList: optional parameter, retainEmptyValues (default = false) added
+BE_ClipboardText:	retrieve utf-16 in addition to utf-8 on macOS for FileMaker Custom Menus only
+					do not crash when there is no text/utf-8 coercion available for a data type (macOS)
+					return error 3, command not available on Linux
+BE_ClipboardFormats: return error 3, command not available on iOS and Linux
+BE_DisplayDialog: return error 3, command not available on iOS, Linux and under FMS
+BE_ExportFieldContents:	allow for images with resource forks
+						return a path to temporary file if one in not specified
+BE_ExtractScriptVariables:	no longer appears in calculation dialogs
+							optional parameter to specify the variable prefix (default $)
+BE_FileSize: return the size for directories in addition to files
+BE_FMS_* functions removed
+BE_GetLastError: thread safe
+BE_GetPreference: return error 3, command not available on Linux
 BE_HMAC: set BE_GetLastError when the key or message encoding is invalid
+BE_HTTP_*: use Authorization header for Xero OAuth
 BE_HTTP_POST:	filename parameter added so that the response can be saved to a container as a file
-				always use POST (even when no post args are present)
-BE_JSON_Path: correct crashing bug when loading json documents
-BE_ListFilesInFolder: do not push directories when not recursing
-BE_PDF_Append: Allow the destination to overwrite the input files
-BE_ReadTextFromFile: read text from a file in a container
-BE_RegularExpression: do not hang when the expression is empty
-BE_SMTP_AddAttachment:	allow the content-type for an attachment to be set
+BE_HTTP_Set_Custom_Header: call with no parameters to delete all Headers
+BE_InstallScriptStep: renamed to BE_ScriptStepInstall
+BE_ListFilesInFolder: option added to not include hidden files in the result
+BE_OpenFile: return error 3, command not available on iOS and Linux
+BE_OpenURL: return error 3, command not available on Linux
+BE_PerformScriptStep: renamed to BE_ScriptStepPerform
+BE_ProgressDialog: return error 3, command not available on iOS, Linux and under FMS
+BE_ProgressDialog_Update: return error 3, command not available on iOS, Linux and under FMS
+BE_ReadTextFromFile:	read text from a file in a container
+						do not exit after the first invalid from encoding
+						read text from a file in a container
+BE_RemoveScriptStep: renamed to BE_ScriptStepRemove
+BE_SaveFileDialog: return error 3, command not available on iOS, Linux and under FMS
+BE_SelectFile: return error 3, command not available on iOS, Linux and under FMS
+BE_SelectFolder: return error 3, command not available on iOS, Linux and under FMS
+BE_SetClipboardText: return error 3, command not available on Linux
+BE_SetPreference: return error 3, command not available on Linux
+BE_SMTP_AddAttachment:	use the OS temp directory when running under fms
+						allow the content-type for an attachment to be set
 						attachment may be either a container or a file
-BE_SMTP_Send:	rfc 1123 date header added
-				use network line endings when encoding base64 attachments
+BE_SMTP_Send: rfc 1123 date header added
 BE_SplitBEFileNodes: no longer appears in calculation dialogs
 BE_StripXMLNodes: no longer appears in calculation dialogs
-BE_StripInvalidUTF16CharactersFromXMLFile:	correctly handle Ascii 26
-											return the number of characters stripped
 
+Other
+
+XML/XSLT functions thread safe
+Added support for function descriptions when registering functions
+
+
+########################################################################
+Version 3.3.7
+########################################################################
+
+February 16, 2018
+
+
+Changes
+
+BE_XPath: do not crash when attempting to get a non-existent value as xml
+BE_SMTP_Send:	do not fold (long) header lines
+				encode email subjects per rfc 1342 / 2047
+BE_StripInvalidUTF16CharactersFromXMLFile: optional parameter, resultPath, added
+
+
+########################################################################
+Version 3.3.6
+########################################################################
+
+August 30, 2017
+
+
+Changes
+
+BE_HTTP_POST: Allow a file (@/path/...) to be specified as the post args for a POST
+BE_SMTP_Send:	do not send bare line feeds
+				use network line endings when encoding base64 attachments
+
+
+########################################################################
+Version 3.3.5
+########################################################################
+
+August 14, 2017
+
+
+Changes
+
+BE_ApplyXSLT: fix errors with some unicode file paths on Windows
+BE_RegularExpression: do not hang when the expression is empty
+BE_HTTP_POST: always use POST (even when no post args are present)
+BE_SMTP_Send: don't show bcc addresses
+
+
+########################################################################
+Version 3.3.4
+########################################################################
+
+March 7, 2017
+
+
+Changes
+
+BE_JSON_Path: correct crashing bug when loading json documents
+BE_ListFilesInFolder: do not push directories when not recursing
+BE_StripInvalidUTF16CharactersFromXMLFile: return the number of characters stripped
+BE_StripInvalidUTF16CharactersFromXMLFile: correctly handle Ascii 26
 
 Use Poco 1.7.8
 Use updated jansson
-
-
-########################################################################
-Version 4.0b2
-########################################################################
-
-December 12, 2016
-
-
-New Functions
-
-BE_PDF_Append
-
-
-Changes
-
-BE_ExportFieldContents: allow for images with resource forks
-
-
-########################################################################
-Version 4.0b1
-########################################################################
-
-November 21, 2016
-
-
-New Functions
-
-BE_Array_Delete
-
-
-Changes
-
-Partial Linux Support
-BE_FMS_*: Allow for FMS credentials containing spaces
+Use libc++11
 
 
 ########################################################################

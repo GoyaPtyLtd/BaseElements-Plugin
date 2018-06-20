@@ -2,7 +2,7 @@
 macOS
 =======================================================================
 
-The build instruction is verified on macOS 10.13.2 and Xcode 9.2.
+The build instruction is verified on macOS 10.13.5 and Xcode 9.4.1.
 Execute the following command to make sure that the Xcode Command Line Tools are installed.
 
 	xcode-select --install

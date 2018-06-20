@@ -2,7 +2,7 @@
 iOS
 =======================================================================
 
-Version 4.0 of the plug-in is built on macOS 10.12.1 using Xcode 8.3. The Xcode Command Line Tools are also needed.
+Version 4.0 of the plug-in is built on macOS 10.13.5 using Xcode 9.4.1. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
