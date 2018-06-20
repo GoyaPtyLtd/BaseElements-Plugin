@@ -765,6 +765,10 @@ fmx::errcode BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* enviro
 
 fmx::errcode BE_SelectFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
+	if ( g_be_plugin->running_on_server() ) {
+		return MapError ( kCommandIsUnavailableError );
+	}
+	
 	errcode error = NoError();
 
 	try {
@@ -791,6 +795,10 @@ fmx::errcode BE_SelectFile ( short /* funcId */, const ExprEnv& /* environment *
 
 fmx::errcode BE_SelectFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
+	if ( g_be_plugin->running_on_server() ) {
+		return MapError ( kCommandIsUnavailableError );
+	}
+	
 	errcode error = NoError();
 
 	try {
@@ -817,6 +825,10 @@ fmx::errcode BE_SelectFolder ( short /* funcId */, const ExprEnv& /* environment
 
 fmx::errcode BE_SaveFileDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
+	if ( g_be_plugin->running_on_server() ) {
+		return MapError ( kCommandIsUnavailableError );
+	}
+	
 	errcode error = NoError();
 
 	try {
@@ -844,6 +856,10 @@ fmx::errcode BE_SaveFileDialog ( short /* funcId */, const ExprEnv& /* environme
 
 fmx::errcode BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
+	if ( g_be_plugin->running_on_server() ) {
+		return MapError ( kCommandIsUnavailableError );
+	}
+	
 	errcode error = NoError();
 
 	try {
@@ -873,6 +889,10 @@ fmx::errcode BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* environmen
 
 fmx::errcode BE_ProgressDialog ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& /* results */ )
 {
+	if ( g_be_plugin->running_on_server() ) {
+		return MapError ( kCommandIsUnavailableError );
+	}
+	
 	errcode error = NoError();
 
 	try {
@@ -902,6 +922,10 @@ fmx::errcode BE_ProgressDialog ( short /* funcId */, const ExprEnv& environment,
 
 fmx::errcode BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
 {
+	if ( g_be_plugin->running_on_server() ) {
+		return MapError ( kCommandIsUnavailableError );
+	}
+	
 	errcode error = NoError();
 
 	try {

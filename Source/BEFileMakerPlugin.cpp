@@ -61,6 +61,10 @@ const errcode BEFileMakerPlugin::RegisterFunction ( short function_id, fmx::ExtP
 {
 	FMX_UInt32 function_flags = ExprEnv::kDisplayInAllDialogs;
 	
+//	if ( gFMX_ExternCallPtr->extnVersion >= k160ExtnVersion ) {
+//		function_flags |= fmx::ExprEnv::kAllDeviceCompatible;
+//	}
+
 	return RegisterPluginFunction ( function_flags, function_id, function_pointer, minimum_parameters, maximum_parameters );
 	
 }	//	RegisterFunction

@@ -221,10 +221,24 @@
 		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4DD510241DD136F200763F7E /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
 		6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A779110F20D8DE230002E09A /* BaseElementsIOSSimulator.fmplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4D362AA61F2085880036B751 /* BaseElementsIOSSimulator.fmplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B282D74C201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 		B282D74D201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 		B282D74E201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A779110E20D8DE0C0002E09A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$SRCROOT/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins";
+			dstSubfolderSpec = 0;
+			files = (
+				A779110F20D8DE230002E09A /* BaseElementsIOSSimulator.fmplugin in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4D0023E213FDD64C00C0B57A /* BEShell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEShell.cpp; path = ../Source/BEShell.cpp; sourceTree = SOURCE_ROOT; };
@@ -817,6 +831,8 @@
 				4D362A831F2085880036B751 /* Frameworks */,
 				4D362A9E1F2085880036B751 /* Headers */,
 				4D362AA01F2085880036B751 /* Resources */,
+				A779110D20D8DCA50002E09A /* ShellScript */,
+				A779110E20D8DE0C0002E09A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -930,6 +946,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# echo $SRCROOT\n/usr/bin/ruby $SRCROOT/Extras/GenerateStringsFiles.rb $SRCROOT/../";
+		};
+		A779110D20D8DCA50002E09A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp $SRCROOT/Extras/BaseElements\\ Plugin\\ Tests.fmp12 $SRCROOT/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution\\ Files/BaseElements\\ Plugin\\ Tests.fmp12";
 		};
 /* End PBXShellScriptBuildPhase section */
 

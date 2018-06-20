@@ -96,9 +96,39 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_GetLastError, BE_GetLastError );
 	g_be_plugin->RegisterFunction ( kBE_GetLastDDLError, BE_GetLastError );
 
-	g_be_plugin->RegisterFunction ( kBE_ClipboardFormats, BE_ClipboardFormats );
+#if ( FMX_MAC_TARGET || FMX_IOS_TARGET || FMX_WIN_TARGET )
 	g_be_plugin->RegisterFunction ( kBE_ClipboardText, BE_ClipboardData, 1 );
 	g_be_plugin->RegisterFunction ( kBE_SetClipboardText, BE_SetClipboardData, 2 );
+	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, 1 );
+	g_be_plugin->RegisterFunction ( kBE_SetPreference, BE_SetPreference, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_GetPreference, BE_GetPreference, 1, 2 );
+#else
+	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardText, BE_NotImplemented, 1 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_SetClipboardText, BE_NotImplemented, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_OpenURL, BE_NotImplemented, 1 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_SetPreference, BE_NotImplemented, 2, 3 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_GetPreference, BE_NotImplemented, 1, 2 );
+#endif
+	
+#if ( FMX_MAC_TARGET || FMX_WIN_TARGET )
+	g_be_plugin->RegisterFunction ( kBE_ClipboardFormats, BE_ClipboardFormats );
+	g_be_plugin->RegisterFunction ( kBE_SelectFile, BE_SelectFile, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_SelectFolder, BE_SelectFolder, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_SaveFileDialog, BE_SaveFileDialog, 1, 3 );
+	g_be_plugin->RegisterFunction ( kBE_DisplayDialog, BE_DisplayDialog, 3, 5 );
+	g_be_plugin->RegisterFunction ( kBE_OpenFile, BE_OpenFile, 1, 1 );
+	g_be_plugin->RegisterFunction ( kBE_ProgressDialog, BE_ProgressDialog, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_ProgressDialog_Update, BE_ProgressDialog_Update, 1, 2 );
+#else
+	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardFormats, BE_NotImplemented );
+	g_be_plugin->RegisterHiddenFunction ( kBE_SelectFile, BE_NotImplemented, 1, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_SelectFolder, BE_NotImplemented, 1, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_SaveFileDialog, BE_NotImplemented, 1, 3 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_DisplayDialog, BE_NotImplemented, 3, 5 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_OpenFile, BE_NotImplemented, 1, 1 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_ProgressDialog, BE_NotImplemented, 2, 3 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_ProgressDialog_Update, BE_NotImplemented, 1, 2 );
+#endif
 
 	g_be_plugin->RegisterFunction ( kBE_CreateFolder, BE_CreateFolder, 1 );
 	g_be_plugin->RegisterFunction ( kBE_DeleteFile, BE_DeleteFile, 1 );
@@ -120,17 +150,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FileType_File + kBE_FileTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_FileType_Folder + kBE_FileTypeOffset, BE_NumericConstants );
 
-	g_be_plugin->RegisterFunction ( kBE_SelectFile, BE_SelectFile, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_SelectFolder, BE_SelectFolder, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_SaveFileDialog, BE_SaveFileDialog, 1, 3 );
-
-	g_be_plugin->RegisterFunction ( kBE_DisplayDialog, BE_DisplayDialog, 3, 5 );
-	g_be_plugin->RegisterFunction ( kBE_OpenFile, BE_OpenFile, 1, 1 );
-	g_be_plugin->RegisterFunction ( kBE_ProgressDialog, BE_ProgressDialog, 2, 3 );
-	g_be_plugin->RegisterFunction ( kBE_ProgressDialog_Update, BE_ProgressDialog_Update, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Pause, BE_Pause, 1 );
-
-
 	g_be_plugin->RegisterFunction ( kBE_ApplyXSLT, BE_ApplyXSLT, 3 );
 
 	g_be_plugin->RegisterFunction ( kBE_ApplyXSLTInMemory, BE_ApplyXSLTInMemory, 2 );
@@ -149,11 +168,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_AlternateButton + kBE_ButtonOffset, BE_NumericConstants );
 
 	g_be_plugin->RegisterFunction ( kBE_ExecuteSystemCommand, BE_ExecuteSystemCommand, 1, 2 );
-
-	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, 1 );
-
 	g_be_plugin->RegisterFunction ( kBE_ExecuteScript, BE_ExecuteScript, 1, 3 );
-
 	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, 1, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_ContainerIsCompressed, BE_ContainerIsCompressed, 1 );
@@ -170,9 +185,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_GET_File, BE_HTTP_GET, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_HTTP_GET_File, 2, 4 );
-
-	g_be_plugin->RegisterFunction ( kBE_SetPreference, BE_SetPreference, 2, 3 );
-	g_be_plugin->RegisterFunction ( kBE_GetPreference, BE_GetPreference, 1, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1, 2 );
@@ -282,6 +294,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_XOR, BE_XOR, 2, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_RegularExpression, BE_RegularExpression, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_Pause, BE_Pause, 1 );
 
 	g_be_plugin->RegisterFunction ( kBE_Vector_DotProduct, BE_Vector_DotProduct, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Vector_EuclideanDistance, BE_Vector_EuclideanDistance, 2 );
