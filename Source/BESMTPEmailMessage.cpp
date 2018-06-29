@@ -95,7 +95,7 @@ BESMTPEmailMessage::~BESMTPEmailMessage ( )
 
 std::unique_ptr< BEValueList<std::string> > BESMTPEmailMessage::get_address_list ( const std::string& addresses )
 {
-	std::unique_ptr< BEValueList<std::string> > addresses_list ( new BEValueList<string> ( addresses, ",", true ) );
+	std::unique_ptr< BEValueList<std::string> > addresses_list ( new BEValueList<string> ( addresses, ",", true, false ) );
 	addresses_list->trim_values();
 	
 	return addresses_list;
