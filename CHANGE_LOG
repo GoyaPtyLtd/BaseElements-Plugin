@@ -1,4 +1,16 @@
 ########################################################################
+Version 4.0.1
+########################################################################
+
+June 29, 2018
+
+
+Changes
+
+BE_SMTP_Send: correct an issue where mail with multiple "to" recipients would cause an error
+
+
+########################################################################
 Version 4.0
 ########################################################################
 
@@ -69,7 +81,7 @@ BE_GetLastError: thread safe
 BE_GetPreference: return error 3, command not available on Linux
 BE_HMAC: set BE_GetLastError when the key or message encoding is invalid
 BE_HTTP_*: use Authorization header for Xero OAuth
-BE_HTTP_POST:	filename parameter added so that the response can be saved to a container as a file
+BE_HTTP_POST: filename parameter added so that the response can be saved to a container as a file
 BE_HTTP_Set_Custom_Header: call with no parameters to delete all Headers
 BE_InstallScriptStep: renamed to BE_ScriptStepInstall
 BE_ListFilesInFolder: option added to not include hidden files in the result
