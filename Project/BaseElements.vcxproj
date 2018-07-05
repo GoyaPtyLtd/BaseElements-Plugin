@@ -95,11 +95,11 @@
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(VC_SourcePath);$(UniversalCRT_SourcePath);</SourcePath>
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(VC_SourcePath);$(UniversalCRT_SourcePath);</SourcePath>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\$(Platform)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\FileMaker\FileMaker Pro 16 Advanced\Extensions\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\FileMaker\FileMaker Pro 17 Advanced\Extensions\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Build\$(Configuration)\$(Platform)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\FileMaker\FileMaker Pro 16 Advanced\Extensions\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\FileMaker\FileMaker Pro 17 Advanced\Extensions\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)</TargetName>
@@ -293,7 +293,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\BEBase64.cpp" />
+    <ClCompile Include="..\Source\Crypto\BEBase64.cpp" />
     <ClCompile Include="..\Source\BECppUtilities.cpp" />
     <ClCompile Include="..\Source\BECurl.cpp" />
     <ClCompile Include="..\Source\BECurlOption.cpp" />
@@ -378,7 +378,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\resource_version.h" />
-    <ClInclude Include="..\Source\BEBase64.h" />
+    <ClInclude Include="..\Source\Crypto\BEBase64.h" />
     <ClInclude Include="..\Source\BECppUtilities.h" />
     <ClInclude Include="..\Source\BECurl.h" />
     <ClInclude Include="..\Source\BECurlOption.h" />

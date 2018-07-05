@@ -44,7 +44,7 @@
 #include "BEValueList.h"
 #include "BECurlOption.h"
 #include "BEXMLTextReader.h"
-#include "BEBase64.h"
+#include "Crypto/BEBase64.h"
 #include "Crypto/BEMessageDigest.h"
 #include "Crypto/BEOpenSSLAES.h"
 #include "Crypto/BEX509.h"
