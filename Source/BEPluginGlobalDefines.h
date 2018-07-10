@@ -51,10 +51,6 @@
 
 	#define PATH_MAX MAX_PATH
 
-//	#ifdef _DEBUG
-		#include <vld.h>
-//	#endif
-
 #elif defined __linux__
 
     #define FMX_LINUX_TARGET 1
