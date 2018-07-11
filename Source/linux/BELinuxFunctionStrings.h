@@ -136,7 +136,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 700, "BE_ConvertContainer ( field {; type ; width ; height } )" },
 	{ 750, "BE_PDFAppend ( pdfPathOrContainer ; appendPathOrContainer {; destinationPath } )" },
 	{ 751, "BE_PDFPageCount ( pdfPathOrContainer )" },
-	{ 752, "BE_PDFGetPages ( pdfPathOrContainer ; newPDFPathOrContainer ; fromPageNum {; toPageNum } )" },
+	{ 752, "BE_PDFGetPages ( pdfPathOrContainer ; newPDFPath ; fromPageNum {; toPageNum } )" },
 	{ 800, "BE_XOR ( text ; xorWith )" },
 	{ 850, "BE_ScriptStepInstall ( name ; definitionXML ; id ; description ; calculation )" },
 	{ 851, "BE_ScriptStepRemove ( scriptStepId )" },
