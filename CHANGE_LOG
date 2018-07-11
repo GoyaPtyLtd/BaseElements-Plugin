@@ -1,4 +1,87 @@
 ########################################################################
+Version 4.0.x
+########################################################################
+
+July 11, 2018
+
+
+Deprecated
+
+BE_WriteTextFileToContainer
+
+
+Renamed
+
+BE_ApplyXSLT => BE_XSLTApply
+BE_ApplyXSLTInMemory => BE_XSLT_ApplyInMemory
+BE_Array_Change_Value => BE_ArrayChangeValue
+BE_Array_Delete => BE_ArrayDelete
+BE_Array_Find => BE_ArrayFind
+BE_ClipboardText => BE_ClipboardGetText
+BE_CopyFile => BE_FileCopy
+BE_CreateFolder => BE_FolderCreate
+BE_Curl_Set_Option => BE_CurlSetOption
+BE_Curl_Trace => BE_CurlTrace
+BE_CurrentTimeMilliseconds => BE_TimeCurrentMilliseconds
+BE_DeleteFile => BE_FileDelete
+BE_DisplayDialog => BE_DialogDisplay
+BE_ExecuteScript => BE_ScriptExecute
+BE_File_Modification_Timestamp => BE_FileModificationTimestamp
+BE_FileType_All => BE_FileTypeAll
+BE_FileType_File => BE_FileTypeFile
+BE_FileType_Folder => BE_FileTypeFolder
+BE_Get_Machine_Name => BE_GetMachineName
+BE_GetPreference => BE_PreferenceGet
+BE_HTTP_PUT_DATA => BE_HTTP_PUTData
+BE_HTTP_PUT_FILE => BE_HTTP_PUTFile
+BE_HTTP_Response_Code => BE_HTTP_ResponseCode
+BE_HTTP_Set_Custom_Header => BE_HTTP_SetCustomHeader
+BE_HTTP_Set_Proxy => BE_HTTP_SetProxy
+BE_ImportFile => BE_FileImport
+BE_JPEG_Recompress => BE_JPEGRecompress
+BE_MoveFile => BE_FileMove
+BE_OAuth_RequestAccessToken => BE_OAuthRequestAccessToken
+BE_OpenFile => BE_FileOpen
+BE_PDF_Append => BE_PDFAppend
+BE_PDF_GetPages => BE_PDFGetPages
+BE_PDF_PageCount => BE_PDFPageCount
+BE_ProgressDialog => BE_DialogProgress
+BE_ProgressDialog_Update => BE_DialogProgressUpdate
+BE_ReadTextFromFile => BE_FileReadText
+BE_SaveFileDialog => BE_FileSaveDialog
+BE_SelectFile => BE_FileSelectDialog
+BE_SelectFolder => BE_FolderSelectDialog
+BE_SetClipboardText => BE_ClipboardSetText
+BE_SetPreference => BE_PreferenceSet
+BE_SignatureGenerate_RSA => BE_SignatureGenerateRSA
+BE_SignatureVerify_RSA => BE_SignatureVerifyRSA
+BE_SMTP_AddAttachment => BE_SMTPAddAttachment
+BE_SMTP_Send => BE_SMTPSend
+BE_SMTP_Server => BE_SMTPServer
+BE_SMTP_Set_Header => BE_SMTPSetHeader
+BE_StripXMLNodes => BE_XMLStripNodes
+BE_UTCMilliseconds => BE_TimeUTCMilliseconds
+BE_Values_ContainsDuplicates => BE_ValuesContainsDuplicates
+BE_Values_FilterOut => BE_ValuesFilterOut
+BE_Values_Sort => BE_ValuesSort
+BE_Values_TimesDuplicated => BE_ValuesTimesDuplicated
+BE_Values_Trim => BE_ValuesTrim
+BE_Values_Unique => BE_ValuesUnique
+BE_Vector_DotProduct => BE_VectorDotProduct
+BE_Vector_EuclideanDistance => BE_VectorEuclideanDistance
+BE_WriteTextToFile => BE_FileWriteText
+BE_Xero_GenerateKeys => BE_XeroGenerateKeys
+BE_Xero_SetTokens => BE_XeroSetTokens
+BE_XML_Parse => BE_XMLParse
+BE_XML_Validate => BE_XMLValidate
+
+
+Changes
+
+BE_SMTP_Send: correct an issue where mail with multiple "to" recipients would cause an error
+
+
+########################################################################
 Version 4.0.1
 ########################################################################
 

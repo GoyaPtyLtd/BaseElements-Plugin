@@ -54,7 +54,7 @@ const bool recursive_directory_copy ( const path & from, const path & to  ) {
 } // recursive_directory_copy
 
 
-BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem::path& directory, const long file_type_wanted = kBE_FileType_All, const bool recurse = false, const bool include_hidden = true )
+BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem::path& directory, const long file_type_wanted = kBE_FileTypeAll, const bool recurse = false, const bool include_hidden = true )
 {
 
 	BEValueListWideStringUniquePtr list_of_files ( new BEValueList<wstring> );
@@ -79,9 +79,9 @@ BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem
 			auto visible = !this_path.isHidden();
 
 			if (
-					((!is_folder && (file_type_wanted == kBE_FileType_File)) ||
-					(is_folder && (file_type_wanted == kBE_FileType_Folder)) ||
-					(file_type_wanted == kBE_FileType_All))
+					((!is_folder && (file_type_wanted == kBE_FileTypeFile)) ||
+					(is_folder && (file_type_wanted == kBE_FileTypeFolder)) ||
+					(file_type_wanted == kBE_FileTypeAll))
 					&&
 					(include_hidden || visible )
 				) {
@@ -144,7 +144,7 @@ const uintmax_t file_or_directory_size ( const boost::filesystem::path& path )
 	BEValueListWideStringUniquePtr list_of_files ( new BEValueList<wstring> );
 	
 	if ( boost::filesystem::is_directory ( path ) ) {
-		auto directory_listing ( list_files_in_directory ( path, kBE_FileType_File, true ) );
+		auto directory_listing ( list_files_in_directory ( path, kBE_FileTypeFile, true ) );
 		list_of_files->append ( *directory_listing );
 	} else {
 		list_of_files->append ( path.wstring() );

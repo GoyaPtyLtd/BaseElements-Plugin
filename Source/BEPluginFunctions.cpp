@@ -173,7 +173,7 @@ fmx::errcode BE_ClipboardFormats ( short /* funcId */, const ExprEnv& /* environ
 }
 
 
-fmx::errcode BE_ClipboardData ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_ClipboardGetText ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -193,10 +193,10 @@ fmx::errcode BE_ClipboardData ( short /* funcId */, const ExprEnv& /* environmen
 
 	return MapError ( error );
 
-} // BE_ClipboardData
+} // BE_ClipboardGetText
 
 
-fmx::errcode BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_ClipboardSetText ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -217,7 +217,7 @@ fmx::errcode BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* environ
 
 	return MapError ( error );
 
-} // BE_SetClipboardData
+} // BE_ClipboardSetText
 
 
 #pragma mark -
@@ -228,7 +228,7 @@ fmx::errcode BE_SetClipboardData ( short /* funcId */, const ExprEnv& /* environ
 #pragma NOTE (consider refactoring some of the detail from the file functions into BEFileSystem)
 
 
-fmx::errcode BE_CreateFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FolderCreate ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -254,10 +254,10 @@ fmx::errcode BE_CreateFolder ( short /* funcId */, const ExprEnv& /* environment
 
 	return MapError ( error );
 
-} // BE_CreateFolder
+} // BE_FolderCreate
 
 
-fmx::errcode BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileDelete ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -283,7 +283,7 @@ fmx::errcode BE_DeleteFile ( short /* funcId */, const ExprEnv& /* environment *
 
 	return MapError ( error );
 
-} // BE_DeleteFile
+} // BE_FileDelete
 
 
 fmx::errcode BE_FileExists ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -340,7 +340,7 @@ fmx::errcode BE_FileSize ( short /* funcId */, const ExprEnv& /* environment */,
 } // BE_FileSize
 
 
-fmx::errcode BE_File_Modification_Timestamp ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileModificationTimestamp ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
     errcode error = NoError();
 
@@ -365,10 +365,10 @@ fmx::errcode BE_File_Modification_Timestamp ( short /* funcId */, const ExprEnv&
 
     return MapError ( error );
 
-} // BE_File_Modification_Timestamp
+} // BE_FileModificationTimestamp
 
 
-fmx::errcode BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileReadText ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -389,10 +389,10 @@ fmx::errcode BE_ReadTextFromFile ( short /* funcId */, const ExprEnv& /* environ
 
 	return MapError ( error );
 
-} // BE_ReadTextFromFile
+} // BE_FileReadText
 
 
-fmx::errcode BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileWriteText ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -427,10 +427,10 @@ fmx::errcode BE_WriteTextToFile ( short /* funcId */, const ExprEnv& /* environm
 
 	return MapError ( error );
 
-} // BE_WriteTextToFile
+} // BE_FileWriteText
 
 
-fmx::errcode BE_WriteTextFileToContainer ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_WriteTextFileToContainer_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -471,7 +471,7 @@ fmx::errcode BE_WriteTextFileToContainer ( short /* funcId */, const ExprEnv& /*
 
 	return MapError ( error );
 
-} // BE_WriteTextFileToContainer
+} // BE_WriteTextFileToContainer_Deprecated
 
 
 /*
@@ -626,7 +626,7 @@ fmx::errcode BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /* envi
 } // BE_ExportFieldContents
 
 
-fmx::errcode BE_ImportFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileImport ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -657,10 +657,10 @@ fmx::errcode BE_ImportFile ( short /* funcId */, const ExprEnv& /* environment *
 
 	return MapError ( error );
 
-} // BE_ImportFile
+} // BE_FileImport
 
 
-fmx::errcode BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileMove ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -687,10 +687,10 @@ fmx::errcode BE_MoveFile ( short /* funcId */, const ExprEnv& /* environment */,
 
 	return MapError ( error );
 
-} // BE_MoveFile
+} // BE_FileMove
 
 
-fmx::errcode BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileCopy ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -717,18 +717,18 @@ fmx::errcode BE_CopyFile ( short /* funcId */, const ExprEnv& /* environment */,
 
 	return MapError ( error );
 
-} // BE_CopyFile
+} // BE_FileCopy
 
 
 
-fmx::errcode BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileListFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
 		const path directory = ParameterAsPath ( parameters );
-		const long file_type_wanted = ParameterAsLong ( parameters, 1, kBE_FileType_File );
+		const long file_type_wanted = ParameterAsLong ( parameters, 1, kBE_FileTypeFile );
 		const bool include_subfolders = ParameterAsBoolean ( parameters, 2, false );
 		const bool use_full_path = ParameterAsBoolean ( parameters, 3, false );
 		const bool include_hidden = ParameterAsBoolean ( parameters, 4, true );
@@ -755,7 +755,7 @@ fmx::errcode BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* enviro
 
 	return MapError ( error );
 
-} // BE_ListFilesInFolder
+} // BE_FileListFolder
 
 
 
@@ -763,7 +763,7 @@ fmx::errcode BE_ListFilesInFolder ( short /* funcId */, const ExprEnv& /* enviro
 #pragma mark Dialogs
 #pragma mark -
 
-fmx::errcode BE_SelectFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileSelect ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
@@ -790,10 +790,10 @@ fmx::errcode BE_SelectFile ( short /* funcId */, const ExprEnv& /* environment *
 
 	return MapError ( error );
 
-} // BE_SelectFile
+} // BE_FileSelect
 
 
-fmx::errcode BE_SelectFolder ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FolderSelect ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
@@ -820,10 +820,10 @@ fmx::errcode BE_SelectFolder ( short /* funcId */, const ExprEnv& /* environment
 
 	return MapError ( error );
 
-} // BE_SelectFolder
+} // BE_FolderSelect
 
 
-fmx::errcode BE_SaveFileDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileSaveDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
@@ -851,10 +851,10 @@ fmx::errcode BE_SaveFileDialog ( short /* funcId */, const ExprEnv& /* environme
 
 	return MapError ( error );
 
-} // BE_SelectFolder
+} // BE_FileSaveDialog
 
 
-fmx::errcode BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_DialogDisplay ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
@@ -883,11 +883,11 @@ fmx::errcode BE_DisplayDialog ( short /* funcId */, const ExprEnv& /* environmen
 
 	return MapError ( error );
 
-} // BE_DisplayDialog
+} // BE_DialogDisplay
 
 
 
-fmx::errcode BE_ProgressDialog ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& /* results */ )
+fmx::errcode BE_DialogProgress ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& /* results */ )
 {
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
@@ -917,10 +917,10 @@ fmx::errcode BE_ProgressDialog ( short /* funcId */, const ExprEnv& environment,
 
 	return MapError ( error, true);
 
-} // BE_ProgressDialog
+} // BE_DialogProgress
 
 
-fmx::errcode BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
+fmx::errcode BE_DialogProgressUpdate ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
 {
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
@@ -947,7 +947,7 @@ fmx::errcode BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& /* en
 
 	return MapError ( error, true );
 
-} // BE_ProgressDialog_Update
+} // BE_DialogProgressUpdate
 
 
 
@@ -956,7 +956,7 @@ fmx::errcode BE_ProgressDialog_Update ( short /* funcId */, const ExprEnv& /* en
 #pragma mark -
 
 
-fmx::errcode BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XSLTApply ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -982,10 +982,10 @@ fmx::errcode BE_ApplyXSLT ( short /* funcId */, const ExprEnv& /* environment */
 
 	return MapError ( error );
 
-} // BE_ApplyXSLT
+} // BE_XSLTApply
 
 
-fmx::errcode BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XSLT_ApplyInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1007,7 +1007,7 @@ fmx::errcode BE_ApplyXSLTInMemory ( short /* funcId */, const ExprEnv& /* enviro
 
 	return MapError ( error );
 
-} // BE_ApplyXSLTInMemory
+} // BE_XSLT_ApplyInMemory
 
 
 fmx::errcode BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -1084,7 +1084,7 @@ fmx::errcode BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */,
 
 
 
-fmx::errcode BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XMLStripNodes ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error =	NoError();
 
@@ -1113,11 +1113,11 @@ fmx::errcode BE_StripXMLNodes ( short /* funcId */, const ExprEnv& /* environmen
 
 	return MapError ( error );
 
-} // BE_StripXMLNodes
+} // BE_XMLStripNodes
 
 
 
-fmx::errcode BE_XML_Parse ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XMLParse ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error =	NoError();
 
@@ -1142,7 +1142,7 @@ fmx::errcode BE_XML_Parse ( short /* funcId */, const ExprEnv& /* environment */
 
 	return MapError ( error );
 
-} // BE_XML_Parse
+} // BE_XMLParse
 
 
 
@@ -1173,7 +1173,7 @@ fmx::errcode BE_SplitBEFileNodes ( short /* funcId */, const ExprEnv& /* environ
 } // BE_SplitBEFileNodes
 
 
-fmx::errcode BE_XML_Validate ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XMLValidate ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error =	NoError();
 
@@ -1198,7 +1198,7 @@ fmx::errcode BE_XML_Validate ( short /* funcId */, const ExprEnv& /* environment
 
 	return MapError ( error );
 
-} // BE_XML_Validate
+} // BE_XMLValidate
 
 
 
@@ -1458,7 +1458,7 @@ fmx::errcode BE_ArrayGetValue ( short /* funcId */, const fmx::ExprEnv& /* envir
 } // BE_ArrayGetValue
 
 
-fmx::errcode BE_Array_Delete ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
+fmx::errcode BE_ArrayDelete ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
 {
 	errcode error = NoError();
 
@@ -1483,10 +1483,10 @@ fmx::errcode BE_Array_Delete ( short /* funcId */, const fmx::ExprEnv& /* enviro
 
 	return MapError ( error );
 
-} // BE_Array_Delete
+} // BE_ArrayDelete
 
 
-fmx::errcode BE_Array_Find ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+fmx::errcode BE_ArrayFind ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
 {
 	errcode error = NoError();
 
@@ -1513,10 +1513,10 @@ fmx::errcode BE_Array_Find ( short /* funcId */, const fmx::ExprEnv& /* environm
 
 	return MapError ( error );
 
-} // BE_Array_Find
+} // BE_ArrayFind
 
 
-fmx::errcode BE_Array_Change_Value ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+fmx::errcode BE_ArrayChangeValue ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
 {
 	errcode error = NoError();
 
@@ -1546,7 +1546,7 @@ fmx::errcode BE_Array_Change_Value ( short /* funcId */, const fmx::ExprEnv& /* 
 
 	return MapError ( error );
 
-} // BE_Array_Change_Value
+} // BE_ArrayChangeValue
 
 
 
@@ -1555,7 +1555,7 @@ fmx::errcode BE_Array_Change_Value ( short /* funcId */, const fmx::ExprEnv& /* 
 #pragma mark -
 
 
-fmx::errcode BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_PreferenceSet ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1581,11 +1581,11 @@ fmx::errcode BE_SetPreference ( short /*funcId*/, const ExprEnv& /* environment 
 
 	return MapError ( error );
 
-} // BE_SetPreference
+} // BE_PreferenceSet
 
 
 
-fmx::errcode BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_PreferenceGet ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1610,7 +1610,7 @@ fmx::errcode BE_GetPreference ( short /*funcId*/, const ExprEnv& /* environment 
 
 	return MapError ( error );
 
-} // BE_GetPreference
+} // BE_PreferenceGet
 
 
 
@@ -2002,7 +2002,7 @@ fmx::errcode BE_Decrypt_AES_Deprecated ( short /*funcId*/, const ExprEnv& /* env
 } // BE_Decrypt_AES_Deprecated
 
 
-fmx::errcode BE_SignatureGenerate_RSA ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_SignatureGenerateRSA ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2036,9 +2036,9 @@ fmx::errcode BE_SignatureGenerate_RSA ( short /*funcId*/, const ExprEnv& /* envi
 
 	return MapError ( error );
 
-} // BE_SignatureGenerate_RSA
+} // BE_SignatureGenerateRSA
 
-fmx::errcode BE_SignatureVerify_RSA ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_SignatureVerifyRSA ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2070,7 +2070,7 @@ fmx::errcode BE_SignatureVerify_RSA ( short /*funcId*/, const ExprEnv& /* enviro
 
 	return MapError ( error );
 
-} // BE_SignatureGenerate_RSA
+} // BE_SignatureVerifyRSA
 
 
 fmx::errcode BE_CipherEncrypt ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -2240,14 +2240,14 @@ fmx::errcode BE_HTTP_POST_PUT_PATCH ( short funcId, const ExprEnv& /* environmen
 			response =  curl.download ( );
 
 
-		} else if ( funcId == kBE_HTTP_PUT_File ) {
+		} else if ( funcId == kBE_HTTP_PUTFile ) {
 
 			path filename = ParameterAsPath ( parameters, 1 );
 			BECurl curl ( url, kBE_HTTP_METHOD_PUT, filename, username, password );
 			response = curl.http_put ( );
 
 
-		} else { // kBE_HTTP_PUT_DATA
+		} else { // kBE_HTTP_PUTData
 
 			vector<char> data = ParameterAsVectorChar ( parameters, 1 );
 			BECurl curl ( url, kBE_HTTP_METHOD_PUT, "", username, password, "", data );
@@ -2305,7 +2305,7 @@ fmx::errcode BE_HTTP_DELETE ( short /* funcId */, const ExprEnv& /* environment 
 
 
 
-fmx::errcode BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+fmx::errcode BE_HTTP_ResponseCode ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
 {
 	errcode error = NoError();
 
@@ -2323,11 +2323,11 @@ fmx::errcode BE_HTTP_Response_Code ( short /* funcId */, const ExprEnv& /* envir
 
 	return MapError ( error );
 
-} // BE_HTTP_Response_Code
+} // BE_HTTP_ResponseCode
 
 
 
-fmx::errcode BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_HTTP_ResponseHeaders ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2361,7 +2361,7 @@ fmx::errcode BE_HTTP_Response_Headers ( short /* funcId */, const ExprEnv& /* en
 
 	return MapError ( error );
 
-} // BE_HTTP_Response_Headers
+} // BE_HTTP_ResponseHeaders
 
 
 fmx::errcode BE_Net_Set_Header ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -2370,7 +2370,7 @@ fmx::errcode BE_Net_Set_Header ( short funcId, const ExprEnv& /* environment */,
 
 	try {
 
-		if ( funcId == kBE_HTTP_Set_Custom_Header ) {
+		if ( funcId == kBE_HTTP_SetCustomHeader ) {
 			set_name_value_pair ( parameters, g_http_custom_headers );
 		} else {
 			set_name_value_pair ( parameters, g_smtp_custom_headers );
@@ -2392,7 +2392,7 @@ fmx::errcode BE_Net_Set_Header ( short funcId, const ExprEnv& /* environment */,
 
 
 
-fmx::errcode BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_HTTP_SetProxy ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2415,10 +2415,10 @@ fmx::errcode BE_HTTP_Set_Proxy ( short /* funcId */, const ExprEnv& /* environme
 
 	return MapError ( error );
 
-} // BE_HTTP_Set_Custom_Header
+} // BE_HTTP_SetCustomHeader
 
 
-fmx::errcode BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
+fmx::errcode BE_CurlSetOption ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
 {
 	errcode error = NoError();
 
@@ -2468,10 +2468,10 @@ fmx::errcode BE_Curl_Set_Option ( short /* funcId */, const fmx::ExprEnv& /* env
 
 	return MapError ( error );
 
-} // BE_Curl_Set_Option
+} // BE_CurlSetOption
 
 
-fmx::errcode BE_Curl_Trace ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* parameters */, fmx::Data& results )
+fmx::errcode BE_CurlTrace ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& /* parameters */, fmx::Data& results )
 {
 	errcode error = kNoError; // do not set the global last error
 
@@ -2491,7 +2491,7 @@ fmx::errcode BE_Curl_Trace ( short /* funcId */, const fmx::ExprEnv& /* environm
 
 	return error;
 
-} // BE_Curl_Trace
+} // BE_CurlTrace
 
 
 fmx::errcode BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -2562,7 +2562,7 @@ fmx::errcode BE_FTP_Delete ( short /* funcId */, const ExprEnv& /* environment *
 #pragma mark -
 
 
-fmx::errcode BE_SMTP_Server ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
+fmx::errcode BE_SMTPServer ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
 {
 	errcode error = NoError();
 
@@ -2594,7 +2594,7 @@ fmx::errcode BE_SMTP_Server ( short /* funcId */, const fmx::ExprEnv& /* environ
 } // BE_Email_SMTP_Server
 
 
-fmx::errcode BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
+fmx::errcode BE_SMTPSend ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
 {
 	errcode error = NoError();
 
@@ -2652,10 +2652,10 @@ fmx::errcode BE_SMTP_Send ( short /* funcId */, const fmx::ExprEnv& /* environme
 
 	return MapError ( error );
 
-} // BE_SMTP_Send
+} // BE_SMTPSend
 
 
-fmx::errcode BE_SMTP_AddAttachment ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
+fmx::errcode BE_SMTPAddAttachment ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )
 {
 	errcode error = NoError();
 
@@ -2696,7 +2696,7 @@ fmx::errcode BE_SMTP_AddAttachment ( short /* funcId */, const fmx::ExprEnv& /* 
 
 	return MapError ( error );
 
-} // BE_SMTP_AddAttachment
+} // BE_SMTPAddAttachment
 
 
 
@@ -2705,7 +2705,7 @@ fmx::errcode BE_SMTP_AddAttachment ( short /* funcId */, const fmx::ExprEnv& /* 
 #pragma mark -
 
 
-fmx::errcode BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_OAuthRequestAccessToken ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2765,7 +2765,7 @@ fmx::errcode BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEnv& /*
 
 	return MapError ( error );
 
-} // BE_OAuth_RequestAccessToken
+} // BE_OAuthRequestAccessToken
 
 
 #pragma mark -
@@ -2773,7 +2773,7 @@ fmx::errcode BE_OAuth_RequestAccessToken ( short /* funcId */, const ExprEnv& /*
 #pragma mark -
 
 
-fmx::errcode BE_Xero_SetTokens ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XeroSetTokens ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2810,10 +2810,10 @@ fmx::errcode BE_Xero_SetTokens ( short /* funcId */, const ExprEnv& /* environme
 
 	return MapError ( error );
 
-} // BE_Xero_SetTokens
+} // BE_XeroSetTokens
 
 
-fmx::errcode BE_Xero_GenerateKeys ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XeroGenerateKeys ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2849,7 +2849,7 @@ fmx::errcode BE_Xero_GenerateKeys ( short /* funcId */, const ExprEnv& /* enviro
 
 	return MapError ( error );
 
-} // BE_Xero_GenerateKeys
+} // BE_XeroGenerateKeys
 
 
 
@@ -2858,7 +2858,7 @@ fmx::errcode BE_Xero_GenerateKeys ( short /* funcId */, const ExprEnv& /* enviro
 #pragma mark -
 
 
-fmx::errcode BE_Values_Unique ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_ValuesUnique ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2882,11 +2882,11 @@ fmx::errcode BE_Values_Unique ( short /* funcId */, const ExprEnv& /* environmen
 
 	return MapError ( error );
 
-} // BE_Values_Unique
+} // BE_ValuesUnique
 
 
 
-fmx::errcode BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_ValuesFilterOut ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2912,10 +2912,10 @@ fmx::errcode BE_Values_FilterOut ( short /* funcId */, const ExprEnv& /* environ
 
 	return MapError ( error );
 
-} // BE_Values_FilterOut
+} // BE_ValuesFilterOut
 
 
-fmx::errcode BE_Values_ContainsDuplicates ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_ValuesContainsDuplicates ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2939,10 +2939,10 @@ fmx::errcode BE_Values_ContainsDuplicates ( short /* funcId */, const ExprEnv& /
 
 	return MapError ( error );
 
-} // BE_Values_ContainsDuplicates
+} // BE_ValuesContainsDuplicates
 
 
-fmx::errcode BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_ValuesSort ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2967,10 +2967,10 @@ fmx::errcode BE_Values_Sort ( short /* funcId */, const ExprEnv& /* environment 
 
 	return MapError ( error );
 
-} // BE_Values_Sort
+} // BE_ValuesSort
 
 
-fmx::errcode BE_Values_TimesDuplicated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_ValuesTimesDuplicated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2994,10 +2994,10 @@ fmx::errcode BE_Values_TimesDuplicated ( short /* funcId */, const ExprEnv& /* e
 
 	return MapError ( error );
 
-} // BE_Values_TimesDuplicated
+} // BE_ValuesTimesDuplicated
 
 
-fmx::errcode BE_Values_Trim ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_ValuesTrim ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3020,7 +3020,7 @@ fmx::errcode BE_Values_Trim ( short /* funcId */, const ExprEnv& /* environment 
 
 	return MapError ( error );
 
-} // BE_Values_Trim
+} // BE_ValuesTrim
 
 
 
@@ -3066,7 +3066,7 @@ fmx::errcode BE_XOR ( short /* funcId */, const fmx::ExprEnv& /* environment */,
 #pragma mark -
 
 
-fmx::errcode BE_Vector_DotProduct ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+fmx::errcode BE_VectorDotProduct ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
 {
 	errcode error = NoError();
 
@@ -3094,7 +3094,7 @@ fmx::errcode BE_Vector_DotProduct ( short /* funcId */, const fmx::ExprEnv& /* e
 
 	return MapError ( error );
 
-} // BE_Vector_DotProduct
+} // BE_VectorDotProduct
 
 
 fmx::errcode BE_Vector_EuclideanDistance ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
@@ -3140,7 +3140,7 @@ fmx::errcode BE_Vector_EuclideanDistance ( short /* funcId */, const fmx::ExprEn
 #pragma mark -
 
 
-fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3185,10 +3185,10 @@ fmx::errcode BE_PDF_Append ( short /* funcId */, const ExprEnv& /* environment *
 
 	return MapError ( error );
 
-} // BE_PDF_Append
+} // BE_PDFAppend
 
 
-fmx::errcode BE_PDF_PageCount ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_PDFPageCount ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3212,10 +3212,10 @@ fmx::errcode BE_PDF_PageCount ( short /* funcId */, const ExprEnv& /* environmen
 
 	return MapError ( error );
 
-} // BE_PDF_PageCount
+} // BE_PDFPageCount
 
 
-fmx::errcode BE_PDF_GetPages ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_PDFGetPages ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3268,7 +3268,7 @@ fmx::errcode BE_PDF_GetPages ( short /* funcId */, const ExprEnv& /* environment
 
 	return MapError ( error );
 
-} // BE_PDF_GetPages
+} // BE_PDFGetPages
 
 
 
@@ -3465,11 +3465,11 @@ fmx::errcode BE_TimeFunctions ( const short funcId, const ExprEnv& /* environmen
 
 		switch ( funcId ) {
 
-			case kBE_CurrentTimeMilliseconds:
+			case kBE_TimeCurrentMilliseconds:
 				reply = ptime_to_milliseconds ( boost::posix_time::microsec_clock::local_time() );
 				break;
 
-			case kBE_UTCMilliseconds:
+			case kBE_TimeUTCMilliseconds:
 				reply = ptime_to_milliseconds ( boost::posix_time::microsec_clock::universal_time() );
 				break;
 
@@ -3668,7 +3668,7 @@ fmx::errcode BE_OpenURL ( short /* funcId */, const ExprEnv& /* environment */, 
 
 
 
-fmx::errcode BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FileOpen ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3690,11 +3690,11 @@ fmx::errcode BE_OpenFile ( short /*funcId*/, const ExprEnv& /* environment */, c
 
 	return MapError ( error );
 
-} // BE_OpenFile
+} // BE_FileOpen
 
 
 
-fmx::errcode BE_ExecuteScript ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
+fmx::errcode BE_ScriptExecute ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3733,7 +3733,7 @@ fmx::errcode BE_ExecuteScript ( short /* funcId */, const ExprEnv& environment, 
 
 	return MapError ( error );
 
-} // BE_ExecuteScript
+} // BE_ScriptExecute
 
 
 
@@ -3842,7 +3842,7 @@ fmx::errcode BE_HMAC_Deprecated ( short /* funcId */, const ExprEnv& /* environm
 } // BE_HMAC_Deprecated
 
 
-fmx::errcode BE_JPEG_Recompress ( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_JPEGRecompress( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3856,7 +3856,7 @@ fmx::errcode BE_JPEG_Recompress ( const short function_id, const ExprEnv& /* env
 			const int quality = (const int)ParameterAsLong ( parameters, 1, 75 ); // percent
 			jpeg->set_compression_level ( quality );
 
-			if ( function_id == kBE_JPEG_Recompress ) {
+			if ( function_id == kBE_JPEGRecompress) {
 
 				const double scale = ParameterAsDouble ( parameters, 2 );
 				jpeg->set_scaling ( scale );
@@ -3984,7 +3984,7 @@ fmx::errcode BE_Pause ( short /* funcId */, const ExprEnv& /* environment */, co
 } // BE_Pause
 
 
-fmx::errcode BE_Get_Machine_Name ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+fmx::errcode BE_GetMachineName ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
 {
 	errcode error = NoError();
 
@@ -4003,6 +4003,6 @@ fmx::errcode BE_Get_Machine_Name ( short /* funcId */, const ExprEnv& /* environ
 
 	return MapError ( error );
 
-} // BE_Get_Machine_Name
+} // BE_GetMachineName
 
 

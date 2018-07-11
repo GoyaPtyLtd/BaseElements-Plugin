@@ -25,44 +25,43 @@ fmx::errcode BE_VersionAutoUpdate ( short funcId, const fmx::ExprEnv& environmen
 fmx::errcode BE_GetLastError ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& /* data_vect */, fmx::Data& results );
 
 fmx::errcode BE_ClipboardFormats ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_ClipboardData ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_SetClipboardData ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_ClipboardGetText ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_ClipboardSetText ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
-fmx::errcode BE_CreateFolder ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_DeleteFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FolderCreate ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FileDelete ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 fmx::errcode BE_FileExists ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 fmx::errcode BE_FileSize ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_File_Modification_Timestamp ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_ReadTextFromFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_WriteTextToFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_WriteTextFileToContainer ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FileModificationTimestamp ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FileReadText ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FileWriteText ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 fmx::errcode BE_ExportFieldContents ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_ImportFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FileImport ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
-fmx::errcode BE_MoveFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_CopyFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_ListFilesInFolder ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-
-
-fmx::errcode BE_SelectFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_SelectFolder ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_SaveFileDialog ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-
-fmx::errcode BE_DisplayDialog ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_ProgressDialog ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_ProgressDialog_Update ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_FileMove ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FileCopy ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FileListFolder ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
 
-fmx::errcode BE_ApplyXSLT ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FileSelect ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FolderSelect ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_FileSaveDialog ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
-fmx::errcode BE_ApplyXSLTInMemory ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_DialogDisplay ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_DialogProgress ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_DialogProgressUpdate ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+
+
+fmx::errcode BE_XSLTApply ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+
+fmx::errcode BE_XSLT_ApplyInMemory ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 fmx::errcode BE_XPath ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 fmx::errcode BE_XPathAll ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_StripXMLNodes ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_XML_Parse ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_XMLStripNodes ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_XMLParse ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_SplitBEFileNodes ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_XML_Validate ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_XMLValidate ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 fmx::errcode BE_ContainerIsCompressed ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
@@ -78,12 +77,12 @@ fmx::errcode BE_EvaluateJavaScript ( short funcId, const fmx::ExprEnv& environme
 fmx::errcode BE_ArraySetFromValueList ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_ArrayGetSize ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_ArrayGetValue ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Array_Delete ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Array_Find ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Array_Change_Value ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ArrayDelete ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ArrayFind ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ArrayChangeValue ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_SetPreference ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_GetPreference ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_PreferenceSet ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_PreferenceGet ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 fmx::errcode BE_Unzip ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
@@ -94,13 +93,13 @@ fmx::errcode BE_HTTP_GET ( short funcId, const fmx::ExprEnv& environment, const 
 fmx::errcode BE_HTTP_GET_File ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_HTTP_POST_PUT_PATCH ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_HTTP_DELETE ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_HTTP_Response_Code ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_HTTP_Response_Headers ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_HTTP_ResponseCode ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_HTTP_ResponseHeaders ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_Net_Set_Header ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_HTTP_Set_Proxy ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Curl_Set_Option ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_HTTP_SetProxy ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_CurlSetOption ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_FTP_Upload ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Curl_Trace ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_CurlTrace ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_FTP_Delete ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_ExtractScriptVariables ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
@@ -109,55 +108,57 @@ fmx::errcode BE_NumericConstants ( short funcId, const fmx::ExprEnv& environment
 fmx::errcode BE_TimeFunctions ( const short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& /* parameters */, fmx::Data& results );
 fmx::errcode BE_ExecuteSystemCommand ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_OpenURL ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_OpenFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_ExecuteScript ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_FileOpen ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ScriptExecute ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_FileMakerSQL ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_JPEG_Recompress ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_JPEGRecompress( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_ConvertContainer ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_OAuth_RequestAccessToken ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Xero_GenerateKeys ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_OAuthRequestAccessToken ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_XeroGenerateKeys ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_Xero_SetTokens ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_XeroSetTokens ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_SMTP_Server ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_SMTP_Send ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_SMTP_AddAttachment ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_SMTPServer ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_SMTPSend ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_SMTPAddAttachment ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_Values_Unique ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Values_FilterOut ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Values_ContainsDuplicates ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Values_Sort ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Values_TimesDuplicated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Values_Trim ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ValuesUnique ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ValuesFilterOut ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ValuesContainsDuplicates ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ValuesSort ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ValuesTimesDuplicated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ValuesTrim ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_XOR ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_Vector_DotProduct ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_VectorDotProduct ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_Vector_EuclideanDistance ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_RegularExpression ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_Pause ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_Get_Machine_Name ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_GetMachineName ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_PDF_Append ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_PDF_PageCount ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_PDF_GetPages ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_PDFAppend ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_PDFPageCount ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_PDFGetPages ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_ScriptStepInstall ( short /* function_id */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& reply );
 fmx::errcode BE_ScriptStepRemove ( short /* function_id */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& reply );
 fmx::errcode BE_ScriptStepPerform ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& reply );
 
-fmx::errcode BE_SignatureGenerate_RSA ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_SignatureVerify_RSA ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_SignatureGenerateRSA ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_SignatureVerifyRSA ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_CipherEncrypt ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_CipherDecrypt ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 // Deprecated
+
+fmx::errcode BE_WriteTextFileToContainer_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
 fmx::errcode BE_JSONPath_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_JSON_Error_Description_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );

@@ -2,7 +2,7 @@
  BEJavaScript.cpp
  BaseElements Plug-In
  
- Copyright 2014-2016 Goya. All rights reserved.
+ Copyright 2014-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -20,7 +20,7 @@
 #pragma mark Prototypes
 #pragma mark -
 
-static duk_ret_t BE_ExecuteScript ( duk_context *context );
+static duk_ret_t BE_ScriptExecute ( duk_context *context );
 static duk_ret_t BE_Evaluate_FileMaker_Calculation ( duk_context *context );
 
 
@@ -49,8 +49,8 @@ std::string Evaluate_JavaScript ( const std::string& javascript )
 	duk_context *context = duk_create_heap_default();
 
 	duk_push_global_object ( context );
-	duk_push_c_function ( context, BE_ExecuteScript, 3 );
-	duk_put_prop_string ( context, -2, "BE_ExecuteScript" );
+	duk_push_c_function ( context, BE_ScriptExecute, 3 );
+	duk_put_prop_string ( context, -2, "BE_ScriptExecute" );
 	
 	duk_push_global_object ( context );
 	duk_push_c_function ( context, BE_Evaluate_FileMaker_Calculation, 1 );
@@ -76,7 +76,7 @@ std::string Evaluate_JavaScript ( const std::string& javascript )
 #pragma mark Calling back into the plugin
 #pragma mark -
 
-static duk_ret_t BE_ExecuteScript ( duk_context *context )
+static duk_ret_t BE_ScriptExecute ( duk_context *context )
 {
 	fmx::errcode error = kNoError;
 	
