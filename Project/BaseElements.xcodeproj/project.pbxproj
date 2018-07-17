@@ -1375,7 +1375,7 @@
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
-				VERSION_STRING = 4.0.1;
+				VERSION_STRING = 4.0.2;
 			};
 			name = Release;
 		};
@@ -1411,7 +1411,7 @@
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
-				VERSION_STRING = 4.0.1;
+				VERSION_STRING = 4.0.2;
 			};
 			name = Debug;
 		};
@@ -1502,7 +1502,7 @@
 				SYMROOT = /tmp/Xcode/Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
-				VERSION_STRING = 4.0.1;
+				VERSION_STRING = 4.0.2;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -1599,7 +1599,7 @@
 				SYMROOT = /tmp/Xcode/Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
-				VERSION_STRING = 4.0.1;
+				VERSION_STRING = 4.0.2;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",

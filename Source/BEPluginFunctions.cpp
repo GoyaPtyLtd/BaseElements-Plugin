@@ -3297,7 +3297,7 @@ fmx::errcode BE_ScriptStepInstall ( short /* function_id */, const fmx::ExprEnv&
 
 		const fmx::uint32 flags = fmx::ExprEnv::kAllDeviceCompatible;
 
-		error = environment.RegisterScriptStep ( *g_be_plugin->id(), id, *name, *definition, *description, flags, BE_ScriptStepPerform );
+		error = environment.RegisterScriptStep ( *g_be_plugin->id(), id, *name, *definition, *description, flags, (fmx::ExtPluginType)BE_ScriptStepPerform);
 
 		if ( kNoError == error ) {
 			auto calculation = ParameterAsUTF8String ( parameters, 4 );
