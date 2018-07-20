@@ -167,7 +167,12 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_CancelButton + kBE_ButtonOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_AlternateButton + kBE_ButtonOffset, BE_NumericConstants );
 
+#if ( FMX_MAC_TARGET || FMX_WIN_TARGET || FMX_LINUX_TARGET )
 	g_be_plugin->RegisterFunction ( kBE_ExecuteSystemCommand, BE_ExecuteSystemCommand, 1, 2 );
+#else
+	g_be_plugin->RegisterHiddenFunction ( kBE_ExecuteSystemCommand, BE_NotImplemented, 1, 2 );
+#endif
+	
 	g_be_plugin->RegisterFunction ( kBE_ScriptExecute, BE_ScriptExecute, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, 1, 4 );
 
