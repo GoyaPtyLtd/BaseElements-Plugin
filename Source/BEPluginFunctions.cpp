@@ -1010,7 +1010,7 @@ fmx::errcode BE_XSLT_ApplyInMemory ( short /* funcId */, const ExprEnv& /* envir
 } // BE_XSLT_ApplyInMemory
 
 
-fmx::errcode BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XPath ( short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1025,12 +1025,14 @@ fmx::errcode BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, co
 			ns_list = ParameterAsUTF8String ( parameters, 2 );
 		}
 
-		xmlXPathObjectType xpath_object_type = XPATH_STRING;
-		if ( number_of_parameters > 3 ) {
-
-			bool as_text = ParameterAsBoolean ( parameters, 3 );
+		xmlXPathObjectType xpath_object_type = XPATH_NODESET; // for kBE_XPathAll
+		if ( function_id == kBE_XPath ) {
+			
+			bool as_text = ParameterAsBoolean ( parameters, 3, true );
 			if ( as_text != true ) {
 				xpath_object_type = XPATH_UNDEFINED; // get the result as xml
+			} else {
+				xpath_object_type = XPATH_STRING;
 			}
 
 		}
@@ -1049,39 +1051,6 @@ fmx::errcode BE_XPath ( short /* funcId */, const ExprEnv& /* environment */, co
 	return MapError ( error );
 
 } // BE_XPath
-
-
-fmx::errcode BE_XPathAll ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-	TextUniquePtr text;
-
-	try {
-
-		auto xml = ParameterAsUTF8String ( parameters );
-		auto xpath = ParameterAsUTF8String ( parameters, 1 );
-
-		const unsigned long number_of_parameters = parameters.Size();
-		std::string ns_list;
-		if ( number_of_parameters > 2 ) {
-			ns_list = ParameterAsUTF8String ( parameters, 2 );
-		}
-
-		auto xpath_result = ApplyXPathExpression ( xml, xpath, ns_list, XPATH_NODESET );
-		SetResult ( xpath_result, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_XPathAll
-
 
 
 fmx::errcode BE_XMLStripNodes ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )

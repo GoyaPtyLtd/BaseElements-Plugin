@@ -154,7 +154,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_XSLT_ApplyInMemory, BE_XSLT_ApplyInMemory, 2 );
 	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, 2, 4 );
-	g_be_plugin->RegisterFunction ( kBE_XPathAll, BE_XPathAll, 2, 3 );
+	g_be_plugin->RegisterFunction ( kBE_XPathAll, BE_XPath, 2, 3 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_XMLStripNodes, BE_XMLStripNodes, 3 );
 	g_be_plugin->RegisterFunction ( kBE_XMLParse, BE_XMLParse, 1 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_SplitBEFileNodes, BE_SplitBEFileNodes, 1 );

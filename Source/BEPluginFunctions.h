@@ -56,8 +56,7 @@ fmx::errcode BE_DialogProgressUpdate ( short funcId, const fmx::ExprEnv& environ
 fmx::errcode BE_XSLTApply ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
 fmx::errcode BE_XSLT_ApplyInMemory ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_XPath ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
-fmx::errcode BE_XPathAll ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_XPath ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 fmx::errcode BE_XMLStripNodes ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_XMLParse ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_SplitBEFileNodes ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
