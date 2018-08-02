@@ -373,7 +373,6 @@ const std::string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 }
 
 
-
 const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj )
 {
 	std::string result;
@@ -418,8 +417,9 @@ const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPat
 	if ( xml_buffer ) {
 		xmlFree ( xml_buffer );
 	}
-	cout << result << endl;
+
 	return result;
+
 }
 
 
