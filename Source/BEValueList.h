@@ -145,25 +145,7 @@ BEValueList<T>::BEValueList ( const T& value_list, const T& delimiter, const boo
 
 template <typename T>
 BEValueList<T>::BEValueList ( const T& value_list, const bool is_case_sensitive, bool retain_empty_values )
-{
-// should be
-//	BEValueList<T> ( value_list, FILEMAKER_END_OF_LINE, is_case_sensitive );
-
-	if ( !value_list.empty() ) {
-		
-		auto token_compress = boost::token_compress_on; // strip empty values
-		if ( retain_empty_values ) {
-			token_compress = boost::token_compress_off;
-		}
-		
-		boost::split ( values, value_list, boost::is_any_of ( FILEMAKER_END_OF_LINE ), token_compress );
-		
-	} else {
-		BEValueList<T> ( );
-	}
-
-	case_sensitive = is_case_sensitive;
-}
+	: BEValueList<T> ( value_list, FILEMAKER_END_OF_LINE, is_case_sensitive, retain_empty_values ) {};
 
 
 template <typename T>
