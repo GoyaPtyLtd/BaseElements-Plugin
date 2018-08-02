@@ -51,7 +51,7 @@ std::string ConvertFileMakerEOLs ( std::string& in );
 int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
 const std::string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
 const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj );
-const std::string NodeSetToValueList ( xmlNodeSetPtr ns );
+const std::string NodeSetToValueList ( xmlNodeSetPtr node_set );
 
 
 // globals for error reporting
@@ -212,10 +212,13 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 				// apply the stylesheet
 				xmlDocPtr xslt_result = xsltApplyStylesheetUser ( stylesheet, xml_doc, NULL, NULL, NULL, context );
 				xmlErrorPtr xml_error = xmlGetLastError();
+				
 				if ( xslt_result && xml_error == NULL ) {
-					xmlBuffer* buf = xmlBufferCreate();
-					if (buf) {
-						xmlOutputBufferPtr outputBufPtr = xmlOutputBufferCreateBuffer(buf, NULL);
+				
+					xmlBufferPtr buffer = xmlBufferCreate();
+					
+					if ( buffer ) {
+						xmlOutputBufferPtr outputBufPtr = xmlOutputBufferCreateBuffer ( buffer, NULL );
 						
 						// save the output
 						
@@ -231,19 +234,21 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 						} else {
 							
 							if ( outputBufPtr ) {
-								xsltSaveResultTo(outputBufPtr, xslt_result, stylesheet);
-								result.assign ( (char*)(buf->content), buf->use );	// return transformed xml on success
+								xsltSaveResultTo ( outputBufPtr, xslt_result, stylesheet );
+								result.assign ( (char*)(buffer->content), buffer->use );	// return transformed xml on success
 							}
-							xmlBufferFree ( buf );
-
+							
 						}
+
+						xmlBufferFree ( buffer );
+						
 					}
+					
 					xmlFreeDoc ( xslt_result );
 					
 				} else {
 					
 					// there was an error performing the transform
-					
 					result = ReportXSLTError ( xml_doc->URL );
 				}
 				
@@ -333,26 +338,25 @@ const std::string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 {
 	
 	std::string result;
+	std::unique_ptr<xmlChar> oject_as_string;
 
-	xmlChar* oject_as_string = NULL;
-	
 	switch ( xpathObj->type ) {
 			
 		case XPATH_BOOLEAN:
-			oject_as_string = xmlXPathCastBooleanToString ( xpathObj->boolval );
+			oject_as_string.reset ( xmlXPathCastBooleanToString ( xpathObj->boolval ) );
 			break;
 			
 		case XPATH_NUMBER:
-			oject_as_string = xmlXPathCastNumberToString ( xpathObj->floatval );
+			oject_as_string.reset ( xmlXPathCastNumberToString ( xpathObj->floatval ) );
 			break;
 			
 		case XPATH_STRING:
-			oject_as_string = xmlStrdup ( xpathObj->stringval );
+			oject_as_string.reset ( xmlStrdup ( xpathObj->stringval ) );
 			break;
 			
 		case XPATH_NODESET:
 			// hope it's a string
-			oject_as_string = xmlXPathCastNodeSetToString ( xpathObj->nodesetval );
+			oject_as_string.reset ( xmlXPathCastNodeSetToString ( xpathObj->nodesetval ) );
 			break;
 			
 //		case XPATH_UNDEFINED:
@@ -369,8 +373,7 @@ const std::string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 	}
 	
 	if ( oject_as_string ) {
-		result.assign ( (char*)oject_as_string, (FMX_UInt32)strlen ( (char*)oject_as_string ) );
-		xmlFree ( oject_as_string );
+		result.assign ( (char*)oject_as_string.get(), (FMX_UInt32)strlen ( (char*)oject_as_string.get() ) );
 	}
 
 	return result;
@@ -389,17 +392,17 @@ const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPat
 		if ( xpathObj->type == XPATH_NODESET && xpathObj->nodesetval->nodeNr > 0 ) {
 
 			xmlNode *node = xpathObj->nodesetval->nodeTab[0];
+			
 			int xml_buffer_length = xmlNodeDump ( xml_buffer, xml_document, node, 0, true );
 			xml_error = xmlGetLastError();
 			
 			if ( xml_error == NULL ) {
 				
-				const xmlChar * node_as_xml = xmlBufferContent ( (xmlBufferPtr)xml_buffer );
+				const std::unique_ptr<const xmlChar> node_as_xml ( xmlBufferContent ( xml_buffer ) );
 				xml_error = xmlGetLastError();
 				
 				if ( node_as_xml && xml_error == NULL ) {
-					result.assign ( (char*)node_as_xml, xml_buffer_length ); // return node set as string on success
-					xmlFree ( (xmlChar *)node_as_xml );
+					result.assign ( (char*)node_as_xml.get(), xml_buffer_length ); // return node set as string on success
 				} else {
 					result = ReportXSLTError ( xml_document->URL );
 				}
@@ -419,35 +422,35 @@ const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPat
 	}
 
 	xmlResetError ( xml_error );
-	if ( xml_buffer ) {
-		xmlFree ( xml_buffer );
-	}
+	xmlFree ( xml_buffer );
 
 	return result;
 
 }
 
 
-const std::string NodeSetToValueList ( xmlNodeSetPtr ns )
+const std::string NodeSetToValueList ( xmlNodeSetPtr node_set )
 {
 	
-	if ( (ns == NULL) || (ns->nodeNr == 0) || (ns->nodeTab == NULL) ) {
+	if ( (node_set == NULL) || (node_set->nodeNr == 0) || (node_set->nodeTab == NULL) ) {
 		return "";
 	}
 	
-	if ( ns->nodeNr > 1 ) {
-		xmlXPathNodeSetSort ( ns );
+	if ( node_set->nodeNr > 1 ) {
+		xmlXPathNodeSetSort ( node_set );
 	}
 	
-	BEValueList<string> value_list = BEValueList<string> ( );
+	BEValueList<string> value_list;// = BEValueList<string> ( );
 
-	for ( int i = 0; i < ns->nodeNr; i++ ) {
-		xmlChar* str = xmlXPathCastNodeToString ( ns->nodeTab[i] );
-		if ( str ) {
+	for ( int i = 0; i < node_set->nodeNr; i++ ) {
+
+		const std::unique_ptr<xmlChar> node_as_string ( xmlXPathCastNodeToString ( node_set->nodeTab[i] ) );
+
+		if ( node_as_string ) {
 			
-			string new_value = string ( (char*)str, (FMX_UInt32)strlen ( (char*)str ) );
+			string new_value = string ( (char*)node_as_string.get(), (FMX_UInt32)strlen ( (char*)node_as_string.get() ) );
 			value_list.append ( new_value );
-			xmlFree ( str );
+
 		}
 
 	}
