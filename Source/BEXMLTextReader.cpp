@@ -1,8 +1,8 @@
-﻿/*
+/*
  BEXMLTextReader.cpp
  BaseElements Plug-In
  
- Copyright 2012-2016 Goya. All rights reserved.
+ Copyright 2012-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -263,7 +263,10 @@ std::string BEXMLTextReader::inner_xml()
 		inner_xml = (char *)raw_xml;
 		xmlFree ( (void *)raw_xml );
 	} else {
-		throw BEXMLReaderInterface_Exception ( xml_error->code );
+		auto error_code = xml_error->code;
+		xmlResetError ( xml_error );
+
+		throw BEXMLReaderInterface_Exception ( error_code );
 	}
 
 	return inner_xml;
@@ -281,7 +284,10 @@ std::string BEXMLTextReader::outer_xml()
 		outer_xml = (char *)raw_xml;
 		xmlFree ( (void *)raw_xml );
 	} else {
-		throw BEXMLReaderInterface_Exception ( xml_error->code );
+		auto error_code = xml_error->code;
+		xmlResetError ( xml_error );
+		
+		throw BEXMLReaderInterface_Exception ( error_code );
 	}
 
 	return outer_xml;

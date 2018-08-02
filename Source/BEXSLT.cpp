@@ -179,6 +179,7 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 {
 	xmlResetLastError();
 	g_last_xslt_error = kNoError;
+	g_last_xslt_error_text = "";
 	std::string result;
 		
 	// parse the stylesheet
@@ -245,8 +246,11 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 					
 					result = ReportXSLTError ( xml_doc->URL );
 				}
+				
+				xmlResetError ( xml_error );
 				xsltFreeTransformContext ( context );
 				xmlFreeDoc ( xml_doc );
+				
 			}
 			xsltFreeStylesheet ( stylesheet );
 		}
@@ -414,6 +418,7 @@ const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPat
 		result = ReportXSLTError ( xml_document->URL );
 	}
 
+	xmlResetError ( xml_error );
 	if ( xml_buffer ) {
 		xmlFree ( xml_buffer );
 	}
@@ -456,6 +461,7 @@ const std::string ApplyXPathExpression ( const std::string& xml, const std::stri
 {
 	xmlResetLastError();
 	g_last_xslt_error = kNoError;
+	g_last_xslt_error_text = "";
 	std::string result;
 	
 	// parse the xml
@@ -499,6 +505,7 @@ const std::string ApplyXPathExpression ( const std::string& xml, const std::stri
 	if ( xml_error != NULL && g_last_xslt_error_text.empty() == 0 ) {
 		g_last_xslt_error_text = xml_error->message;
 		result = ReportXSLTError ( NULL );
+		xmlResetError ( xml_error );
 	}
 	
 	return result;

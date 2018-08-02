@@ -2,7 +2,7 @@
  BEXMLReaderInterface.cpp
  BaseElements Plug-In
  
- Copyright 2012 Goya. All rights reserved.
+ Copyright 2012-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -28,6 +28,7 @@ const int BEXMLReaderInterface::last_error ( const int default_error )
 	int error;
 	if ( xml_error ) {
 		error = xml_error->code;
+		xmlResetError ( xml_error );
 	} else {
 		error = default_error;
 	}
