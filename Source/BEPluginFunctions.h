@@ -53,9 +53,8 @@ fmx::errcode BE_DialogProgress ( short funcId, const fmx::ExprEnv& environment, 
 fmx::errcode BE_DialogProgressUpdate ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 
-fmx::errcode BE_XSLTApply ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
+fmx::errcode BE_XSLTApply ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
-fmx::errcode BE_XSLT_ApplyInMemory ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 fmx::errcode BE_XPath ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 fmx::errcode BE_XMLStripNodes ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_XMLParse ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );

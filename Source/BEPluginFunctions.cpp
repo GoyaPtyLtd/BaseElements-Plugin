@@ -956,16 +956,25 @@ fmx::errcode BE_DialogProgressUpdate ( short /* funcId */, const ExprEnv& /* env
 #pragma mark -
 
 
-fmx::errcode BE_XSLTApply ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XSLTApply ( short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
-		auto xml = ParameterPathOrContainerAsUTF8 ( parameters );
-		auto xml_path = ParameterAsPath ( parameters );
+		std::string xml;
+		boost::filesystem::path xml_path;
+		boost::filesystem::path csv_path;
+
+		if ( function_id == kBE_XSLTApply ) {
+			xml = ParameterPathOrContainerAsUTF8 ( parameters );
+			xml_path = ParameterAsPath ( parameters );
+			csv_path = ParameterAsPath ( parameters, 2 );
+		} else {
+			xml = ParameterAsUTF8String ( parameters );
+		}
+
 		auto xslt = ParameterAsUTF8String ( parameters, 1 );
-		auto csv_path = ParameterAsPath ( parameters, 2 );
 
 		auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path, xml_path );
 
@@ -983,31 +992,6 @@ fmx::errcode BE_XSLTApply ( short /* funcId */, const ExprEnv& /* environment */
 	return MapError ( error );
 
 } // BE_XSLTApply
-
-
-fmx::errcode BE_XSLT_ApplyInMemory ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto xml = ParameterAsUTF8String ( parameters );
-		auto xslt = ParameterAsUTF8String ( parameters, 1 );
-
-		auto xslt_result = ApplyXSLTInMemory ( xml, xslt );
-		SetResult ( xslt_result, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_XSLT_ApplyInMemory
 
 
 fmx::errcode BE_XPath ( short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
