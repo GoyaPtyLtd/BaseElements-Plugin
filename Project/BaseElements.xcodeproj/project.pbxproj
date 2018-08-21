@@ -31,12 +31,10 @@
 		4D1D070D1F21C36700BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070E1F21C37A00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070F1F21C37C00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
-		4D25BF971F3A8C580083345B /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* BaseElements.strings */; };
-		4D25BF981F3A8C580083345B /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* BaseElements.strings */; };
-		4D25BF991F3A8C580083345B /* BaseElements.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* BaseElements.strings */; };
-		4D25BF9C1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */; };
-		4D25BF9D1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */; };
-		4D25BF9E1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */; };
+		4D24C382212A916200DE2546 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5E11E9308B0047A453 /* Info.plist */; };
+		4D25BF971F3A8C580083345B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
+		4D25BF981F3A8C580083345B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
+		4D25BF991F3A8C580083345B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
 		4D3629ED1F20789A0036B751 /* BaseElementsIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D3629EB1F20789A0036B751 /* BaseElementsIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D3629F11F2079A60036B751 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
 		4D3629F21F2079A60036B751 /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
@@ -275,12 +273,6 @@
 		4D1BFE581F3ACAF200805CD3 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/usr/lib/libbz2.tbd; sourceTree = DEVELOPER_DIR; };
 		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/apple/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
 		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/apple/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; usesTabs = 1; };
-		4D25BF9A1F3A8C580083345B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BaseElements.strings; sourceTree = "<group>"; };
-		4D25BF9F1F3A8C5F0083345B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BEPluginVersion.strings; sourceTree = "<group>"; };
-		4D25BFA11F3A8CC90083345B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BEPluginVersion.strings; sourceTree = "<group>"; };
-		4D25BFA21F3A8CC90083345B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BaseElements.strings; sourceTree = "<group>"; };
-		4D25BFA31F3A8CD00083345B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BEPluginVersion.strings; sourceTree = "<group>"; };
-		4D25BFA41F3A8CD10083345B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BaseElements.strings; sourceTree = "<group>"; };
 		4D27C3851861160000E7F4A1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4D2C4EAA1B7C774D00760408 /* BERegularExpression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BERegularExpression.h; path = ../Source/BERegularExpression.h; sourceTree = "<group>"; };
 		4D35117A17E1314A00AEDF01 /* BEFileTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileTextReader.cpp; path = ../Source/BEFileTextReader.cpp; sourceTree = "<group>"; };
@@ -361,11 +353,7 @@
 		4D76243B1E0A37F600266C0D /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/macOS/libpodofo.a; sourceTree = "<group>"; };
 		4D76243F1E0A386F00266C0D /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		4D7624411E0A3FFE00266C0D /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
-		4D7BD4331F3D0DDD009EFFFA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/BEPluginVersion.strings"; sourceTree = "<group>"; };
-		4D7BD4341F3D0DDD009EFFFA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/BaseElements.strings"; sourceTree = "<group>"; };
-		4D7BD4351F3D0DE7009EFFFA /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/BEPluginVersion.strings"; sourceTree = "<group>"; };
-		4D7BD4361F3D0DE7009EFFFA /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/BaseElements.strings"; sourceTree = "<group>"; };
-		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/en.lproj/Info.plist; sourceTree = SOURCE_ROOT; };
+		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Base.lproj/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D807EFE1A9C255000E27E38 /* BEImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEImage.cpp; path = ../Source/Images/BEImage.cpp; sourceTree = "<group>"; };
 		4D807EFF1A9C255000E27E38 /* BEImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEImage.h; path = ../Source/Images/BEImage.h; sourceTree = "<group>"; };
 		4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEJPEG.cpp; path = ../Source/Images/BEJPEG.cpp; sourceTree = "<group>"; };
@@ -377,6 +365,7 @@
 		4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEQuadChar.cpp; path = ../Source/BEQuadChar.cpp; sourceTree = "<group>"; };
 		4D8D8E151B167A2C005FEBD3 /* BEQuadChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEQuadChar.h; path = ../Source/BEQuadChar.h; sourceTree = "<group>"; };
 		4D8E64181917561D00C9F2BE /* BEPluginException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginException.h; path = ../Source/BEPluginException.h; sourceTree = "<group>"; };
+		4D998C452125626E00757E83 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEX509.cpp; sourceTree = "<group>"; };
 		4D9E26CF1B29069B002F7DD3 /* BEX509.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEX509.h; sourceTree = "<group>"; };
 		4D9E26D11B292032002F7DD3 /* BEBio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBio.cpp; sourceTree = "<group>"; };
@@ -698,8 +687,7 @@
 		C7DEDEFC07E10BF3002283F3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */,
-				4D25BF9B1F3A8C580083345B /* BaseElements.strings */,
+				4D25BF9B1F3A8C580083345B /* Localizable.strings */,
 				4D7FCA5E11E9308B0047A453 /* Info.plist */,
 				4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */,
 			);
@@ -847,6 +835,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4DCD49811A195B0C00EFCF7F /* Build configuration list for PBXNativeTarget "macOS" */;
 			buildPhases = (
+				4DCE316921238F3200C7D9C2 /* ShellScript */,
 				4DFA3E2B20D8ABFF00A2D858 /* ShellScript */,
 				4DCD49451A195B0C00EFCF7F /* Sources */,
 				4DCD49681A195B0C00EFCF7F /* Resources */,
@@ -884,11 +873,7 @@
 				English,
 				Japanese,
 				German,
-				en,
-				de,
-				ja,
-				"zh-Hans",
-				"zh-Hant",
+				Base,
 			);
 			mainGroup = C7DEDEE707E10BF3002283F3;
 			productRefGroup = C7DEDEE707E10BF3002283F3;
@@ -907,8 +892,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D25BF9D1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */,
-				4D25BF981F3A8C580083345B /* BaseElements.strings in Resources */,
+				4D25BF981F3A8C580083345B /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -916,8 +900,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D25BF9E1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */,
-				4D25BF991F3A8C580083345B /* BaseElements.strings in Resources */,
+				4D25BF991F3A8C580083345B /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -925,8 +908,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D25BF971F3A8C580083345B /* BaseElements.strings in Resources */,
-				4D25BF9C1F3A8C5F0083345B /* BEPluginVersion.strings in Resources */,
+				4D24C382212A916200DE2546 /* Info.plist in Resources */,
+				4D25BF971F3A8C580083345B /* Localizable.strings in Resources */,
 				4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -934,6 +917,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4DCE316921238F3200C7D9C2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# echo $SRCROOT\n/usr/bin/ruby $SRCROOT/Extras/SetVersionNumber.rb $SRCROOT/../";
+		};
 		4DFA3E2B20D8ABFF00A2D858 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1105,31 +1101,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		4D25BF9B1F3A8C580083345B /* BaseElements.strings */ = {
+		4D25BF9B1F3A8C580083345B /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4D25BF9A1F3A8C580083345B /* en */,
-				4D25BFA21F3A8CC90083345B /* de */,
-				4D25BFA41F3A8CD10083345B /* ja */,
-				4D7BD4341F3D0DDD009EFFFA /* zh-Hans */,
-				4D7BD4361F3D0DE7009EFFFA /* zh-Hant */,
+				4D998C452125626E00757E83 /* Base */,
 			);
-			name = BaseElements.strings;
+			name = Localizable.strings;
 			path = ../Resources;
 			sourceTree = SOURCE_ROOT;
-		};
-		4D25BFA01F3A8C5F0083345B /* BEPluginVersion.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4D25BF9F1F3A8C5F0083345B /* en */,
-				4D25BFA11F3A8CC90083345B /* de */,
-				4D25BFA31F3A8CD00083345B /* ja */,
-				4D7BD4331F3D0DDD009EFFFA /* zh-Hans */,
-				4D7BD4351F3D0DE7009EFFFA /* zh-Hant */,
-			);
-			name = BEPluginVersion.strings;
-			path = ../Resources;
-			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
@@ -1356,11 +1335,13 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
+				INFOPLIST_FILE = "${INFOPLIST_FILE}";
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
@@ -1375,7 +1356,6 @@
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
-				VERSION_STRING = 4.0.2;
 			};
 			name = Release;
 		};
@@ -1391,11 +1371,13 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/libxml2/,
 					/usr/include/,
 				);
+				INFOPLIST_FILE = "${INFOPLIST_FILE}";
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
@@ -1411,7 +1393,6 @@
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
-				VERSION_STRING = 4.0.2;
 			};
 			name = Debug;
 		};
@@ -1474,7 +1455,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = ../Headers/;
-				INFOPLIST_FILE = ../Resources/en.lproj/Info.plist;
+				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
@@ -1502,7 +1483,6 @@
 				SYMROOT = /tmp/Xcode/Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
-				VERSION_STRING = 4.0.2;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
@@ -1570,7 +1550,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = ../Headers/;
-				INFOPLIST_FILE = ../Resources/en.lproj/Info.plist;
+				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
@@ -1599,7 +1579,6 @@
 				SYMROOT = /tmp/Xcode/Build;
 				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
 				VALID_ARCHS = x86_64;
-				VERSION_STRING = 4.0.2;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unknown-pragmas",
