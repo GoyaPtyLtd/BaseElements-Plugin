@@ -59,8 +59,8 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	message->header().mimeVersion ( mime_version );
 	
 	// rfc 1123 (rfc 822) date header
-	Poco::Timestamp now;
-	static const std::string rfc1123_date = Poco::DateTimeFormatter::format ( now, Poco::DateTimeFormat::RFC1123_FORMAT, Poco::Timezone::tzd() );
+	Poco::LocalDateTime now;
+	static const std::string rfc1123_date = Poco::DateTimeFormatter::format ( now.timestamp(), Poco::DateTimeFormat::RFC1123_FORMAT, Poco::Timezone::tzd() );
 	g_smtp_custom_headers [ "Date" ] = rfc1123_date;
 	
 	// custom headers
