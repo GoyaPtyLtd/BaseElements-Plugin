@@ -46,6 +46,7 @@ using namespace fmx;
 
 const std::string ReportXSLTError ( const xmlChar * url );
 std::string ConvertFileMakerEOLs ( std::string& in );
+void ResetXMLErrors ( void );
 
 
 int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
@@ -161,6 +162,14 @@ void CleanupLibXSLT ( void )
 }
 
 
+void ResetXMLErrors ( void )
+{
+	xmlResetLastError();
+	g_last_xslt_error = kNoError;
+	g_last_xslt_error_text = "";
+}
+
+
 /*
  an old version of libxml2, this has no effect libxml2 < 2.7 but means large text
  nodes can be handled in later versions
@@ -174,20 +183,17 @@ void CleanupLibXSLT ( void )
 //	ApplyXSLTInMemory includes code supplied by Magnus Strand, http://www.smartasystem.se/
 ////////////////////////////////////////////////////////////////////////////////////////
 
-
 const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string& xslt_as_filemaker_text, const boost::filesystem::path csv_path, const boost::filesystem::path xml_path )
 {
-	xmlResetLastError();
-	g_last_xslt_error = kNoError;
-	g_last_xslt_error_text = "";
+	ResetXMLErrors();
 	std::string result;
-		
+	
 	// parse the stylesheet
 	std::string xslt = xslt_as_filemaker_text;
 	ConvertFileMakerEOLs ( xslt ); // otherwise all errors occur on line 1
 	int options = XML_PARSE_HUGE;
+
 	xmlDocPtr xslt_doc = xmlReadDoc ( (xmlChar *) xslt.c_str(), NULL, NULL, options );
-	
 	if ( xslt_doc ) {
 		
 		xsltStylesheetPtr stylesheet = xsltParseStylesheetDoc ( xslt_doc );
@@ -197,7 +203,6 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 			
 			// to get the line numbers etc in the error the stylesheet must have a file name
 			stylesheet->doc->URL = xmlStrdup ( (xmlChar *)"<FileMaker::Text::XSLT>" );
-			
 			xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), xml_path.string().c_str(), NULL, options );
 			
 			if ( xml_doc ) {
@@ -208,59 +213,52 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 				xmlSetGenericErrorFunc ( context, XSLTErrorFunction );
 				xsltSetCtxtParseOptions ( context, options );
 				
-				
 				// apply the stylesheet
 				xmlDocPtr xslt_result = xsltApplyStylesheetUser ( stylesheet, xml_doc, NULL, NULL, NULL, context );
 				xmlErrorPtr xml_error = xmlGetLastError();
-				
 				if ( xslt_result && xml_error == NULL ) {
-				
-					xmlBufferPtr buffer = xmlBufferCreate();
 					
-					if ( buffer ) {
-						xmlOutputBufferPtr outputBufPtr = xmlOutputBufferCreateBuffer ( buffer, NULL );
-						
-						// save the output
-						
-						if ( !csv_path.empty() ) {
+					// save the output
+					if ( !csv_path.empty() ) {
 							
-							FILE * csv_file = FOPEN ( csv_path.c_str(), _TEXT ( "w" ) );
+						FILE * csv_file = FOPEN ( csv_path.c_str(), _TEXT ( "w" ) );
 							
-							if ( csv_file ) {
-								xsltSaveResultToFile ( csv_file, xslt_result, stylesheet );
-								fclose ( csv_file );
-							}
-
-						} else {
+						if ( csv_file ) {
+							xsltSaveResultToFile ( csv_file, xslt_result, stylesheet );
+							fclose ( csv_file );
+						}
 							
+					} else {
+							
+						xmlBufferPtr buffer = xmlBufferCreate();
+						if ( buffer ) {
+								
+							xmlOutputBufferPtr outputBufPtr = xmlOutputBufferCreateBuffer ( buffer, NULL );
 							if ( outputBufPtr ) {
 								xsltSaveResultTo ( outputBufPtr, xslt_result, stylesheet );
 								result.assign ( (char*)(buffer->content), buffer->use );	// return transformed xml on success
 							}
 							
 						}
-
 						xmlBufferFree ( buffer );
-						
+
 					}
-					
-					xmlFreeDoc ( xslt_result );
-					
+
 				} else {
-					
-					// there was an error performing the transform
 					result = ReportXSLTError ( xml_doc->URL );
 				}
-				
+				xmlFreeDoc ( xslt_result );
 				xmlResetError ( xml_error );
 				xsltFreeTransformContext ( context );
-				xmlFreeDoc ( xml_doc );
 				
 			}
-			xsltFreeStylesheet ( stylesheet );
+			xmlFreeDoc ( xml_doc );
+
 		}
+		xsltFreeStylesheet ( stylesheet );
+
 	}
-		
+	
 	if ( g_last_xslt_error != kNoError ) {
 		// something has gone very wrong
 		throw exception();
@@ -328,7 +326,7 @@ int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList )
 		}
     }
     
-    xmlFree(nsListDup);
+    xmlFree ( nsListDup );
     return 0;
 }
 
@@ -462,9 +460,7 @@ const std::string NodeSetToValueList ( xmlNodeSetPtr node_set )
 
 const std::string ApplyXPathExpression ( const std::string& xml, const std::string& xpath, const std::string& ns_list, const xmlXPathObjectType xpath_object_type )
 {
-	xmlResetLastError();
-	g_last_xslt_error = kNoError;
-	g_last_xslt_error_text = "";
+	ResetXMLErrors();
 	std::string result;
 	
 	// parse the xml
@@ -480,7 +476,6 @@ const std::string ApplyXPathExpression ( const std::string& xml, const std::stri
 			}
 			
 			xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression ( (xmlChar *)xpath.c_str(), xpathCtx );
-			
 			if ( xpathObj ) {
 				
 				if ( xpath_object_type == XPATH_NODESET && xpathObj->type == XPATH_NODESET ) {
@@ -491,15 +486,11 @@ const std::string ApplyXPathExpression ( const std::string& xml, const std::stri
 					result = XPathObjectAsXML ( doc, xpathObj );
 				}
 				
-				xmlXPathFreeObject ( xpathObj );
-				
 			}
-			
-			xmlXPathFreeContext ( xpathCtx );
+			xmlXPathFreeObject ( xpathObj );
 			
 		}
-		
-		xmlFreeDoc ( doc );
+		xmlXPathFreeContext ( xpathCtx );
 
 	}
 	
@@ -508,9 +499,11 @@ const std::string ApplyXPathExpression ( const std::string& xml, const std::stri
 	if ( xml_error != NULL && g_last_xslt_error_text.empty() == 0 ) {
 		g_last_xslt_error_text = xml_error->message;
 		result = ReportXSLTError ( NULL );
-		xmlResetError ( xml_error );
 	}
-	
+
+	xmlResetError ( xml_error );
+	xmlFreeDoc ( doc );
+
 	return result;
 	
 } // ApplyXPathExpression
