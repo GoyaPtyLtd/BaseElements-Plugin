@@ -55,7 +55,7 @@ const std::wstring get_machine_name ( );
 
 
 // used by Do_GetString
-unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar * string, const long intoHereMax );
+unsigned long Sub_LoadString ( const unsigned long string_id, FMX_Unichar * string, const long intoHereMax );
 
 
 #endif // BELINUXFUNCTIONS_H

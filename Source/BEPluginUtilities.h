@@ -36,6 +36,11 @@ enum {
 extern std::string g_text_encoding;
 
 
+// convert "text literal" into L"text literal"
+#define CAT(A, B)   A##B
+#define WSTRING(A)  CAT(L, A)
+
+
 const fmx::errcode TextConstantFunction ( const std::wstring& text, fmx::Data& results );
 
 void SetResult ( const double number, fmx::Data& results );

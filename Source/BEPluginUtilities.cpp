@@ -27,6 +27,10 @@
 	#include "apple/BEAppleFunctionsCommon.h"
 	#include "apple/BEIOSFunctions.h"
 
+#elif defined FMX_WIN_TARGET
+
+	#include "win/BEWinFunctions.h"
+
 #elif defined FMX_LINUX_TARGET
 
 	#include "linux/BELinuxFunctions.h"
@@ -1026,46 +1030,31 @@ std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
  FileMaker Developer/Pro Advance versions 7 through 10 and are used by permission.
  */
 
-void Do_GetString(unsigned long whichString, FMX_PtrType /* winLangID */, FMX_PtrType resultsize, FMX_Unichar* string)
+void Do_GetString ( unsigned long whichString, FMX_PtrType /* winLangID */, FMX_PtrType resultsize, FMX_Unichar* string )
 {
+	
+	auto string_to_load = whichString;
 
 	switch ( whichString )
 	{
 		case kFMXT_OptionsStr:
 		{
-#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET
-			Sub_OSXLoadString(kBE_OptionsStringID, string, resultsize, BUNDLE_STRINGS_ID);
-#elif defined FMX_WIN_TARGET
-			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), kBE_OptionsStringID, (LPWSTR)string, (uint32)resultsize);
-#elif defined FMX_LINUX_TARGET
-			Sub_LinuxLoadString ( (unsigned long)kBE_OptionsStringID, string, resultsize );
-#endif
+			string_to_load = kBE_OptionsStringID;
 			break;
 		}
 
 		case kFMXT_AppConfigStr:
 		{
-#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET
-			Sub_OSXLoadString ( PLUGIN_DESCRIPTION_STRING_ID, string, resultsize, BUNDLE_VERSION_ID );
-#elif defined FMX_WIN_TARGET
-			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)PLUGIN_DESCRIPTION_STRING_ID, (LPWSTR)string, (uint32)resultsize);
-#elif defined FMX_LINUX_TARGET
-			Sub_LinuxLoadString ( PLUGIN_DESCRIPTION_STRING_ID, string, resultsize );
-#endif
+			string_to_load = PLUGIN_DESCRIPTION_STRING_ID;
 			break;
 		}
 
-		default:
-#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET
-			Sub_OSXLoadString ( whichString, string, resultsize, BUNDLE_STRINGS_ID );
-#elif defined FMX_WIN_TARGET
-			LoadStringW( (HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)whichString, (LPWSTR)string, (uint32)resultsize);
-#elif defined FMX_LINUX_TARGET
-			Sub_LinuxLoadString ( whichString, string, resultsize );
-#endif
+//		default:
+//			string_to_load = whichString;
 
 	} // switch ( whichString )
 
+	Sub_LoadString ( string_to_load, string, resultsize );
 
 } // Do_GetString ( FMX_Unichar* version )
 

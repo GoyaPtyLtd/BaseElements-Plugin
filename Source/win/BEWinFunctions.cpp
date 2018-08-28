@@ -64,6 +64,7 @@ UINT BE_CF_FileNameMapW;
 
 void InitialiseForPlatform ( void )
 {
+
 	_set_fmode ( O_RDONLY | O_BINARY ); // open files as binary by default
 
 	BE_CF_FileGroupDescriptorW = RegisterClipboardFormat ( CFSTR_FILEDESCRIPTORW );
@@ -938,7 +939,6 @@ const wstring utf8toutf16 ( const string& instr )
 }
 
 
-
 const string utf16ToUTF8 ( const wstring& s )
 {
     const int size = ::WideCharToMultiByte( CP_UTF8, 0, s.c_str(), -1, NULL, 0, 0, NULL );
@@ -948,4 +948,25 @@ const string utf16ToUTF8 ( const wstring& s )
 
     return string( &buf[0] );
 }
+
+
+const unsigned long Sub_LoadString ( unsigned long stringID, FMX_Unichar* intoHere, long resultsize )
+{
+	unsigned long returnResult = 0;
+
+	LoadStringW((HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)stringID, (LPWSTR)intoHere, (fmx::uint32)resultsize);
+
+	if (kFMXT_AppConfigStr == stringID) {
+
+		std::wstring plugin_description_string = (LPWSTR)intoHere;
+		plugin_description_string.replace(plugin_description_string.find(L"%@"), 2, WSTRING(VERSION_STRING));
+		boost::replace_all(plugin_description_string, L"\n", L"\r\n");
+		plugin_description_string.copy((WCHAR*)intoHere, plugin_description_string.length(), 0);
+		intoHere[plugin_description_string.length()] = '\0';
+
+	}
+
+	return returnResult;
+
+} // Sub_LoadString
 

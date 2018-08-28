@@ -161,7 +161,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 3002, "BE_FileTypeFolder" },
 	{ 4001, "BE_Encoding_Hex_Deprecated" },
 	{ 4002, "BE_Encoding_Base64_Deprecated" },
-	{ PLUGIN_DESCRIPTION_STRING_ID, "Version: 4.0.2\n\nThis plug-in provides additional functionality for BaseElements from Goya." }
+	{ 65000, "Version: %@\n\nThis plug-in provides additional functionality for BaseElements from Goya." },
 
 };
 

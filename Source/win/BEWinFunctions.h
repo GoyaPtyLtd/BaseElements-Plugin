@@ -56,5 +56,8 @@ const std::wstring get_machine_name ();
 const std::wstring utf8toutf16 ( const std::string& instr );
 const std::string utf16ToUTF8 ( const std::wstring& s );
 
+// used by Do_GetString
+const unsigned long  Sub_LoadString ( unsigned long stringID, FMX_Unichar* intoHere, long resultsize );
+
 
 #endif // BEWINFUNCTIONS_H

@@ -20,7 +20,7 @@ if testing then
   project_directory = '/Users/mark/Dropbox/Development/BaseElements-Plugin/'
 end
 
-macOS = project_directory + 'Resources/en.lproj/BaseElements.strings'
+macOS = project_directory + 'Resources/Base.lproj/Localizable.strings'
 win = project_directory + 'Resources/BaseElements.rc'
 linux = project_directory + 'Source/linux/BELinuxFunctionStrings.h'
 
@@ -164,9 +164,6 @@ strings.each do |id, function|
 end
 
 
-command = "echo $(grep 'define VERSION_STRING' " + version_file + " | awk -F '[^0-9a-z.]*' '{print $3}')"
-version = `#{command}`.chomp
-
 copyright_header = DATA.read
 copyright_start_year = 2018
 unless Time.new.year == copyright_start_year then
@@ -177,7 +174,6 @@ File.open linux, 'wt' do | linux_strings_file |
   
   linux_strings_file.puts copyright_header
   linux_strings_file.puts linux_strings
-  linux_strings_file.puts "\t" + '{ PLUGIN_DESCRIPTION_STRING_ID, "Version: ' + version + '\n\nThis plug-in provides additional functionality for BaseElements from Goya." }' + "\n"
   linux_strings_file.puts "\n};\n\n#endif // BELINUXFUNCTIONSTRINGS_H\n\n"
 
 end

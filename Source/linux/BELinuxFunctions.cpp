@@ -156,13 +156,18 @@ const std::wstring get_machine_name ( )
 }
 
 
-unsigned long Sub_LinuxLoadString ( const unsigned long string_id, FMX_Unichar * intoHere, const long intoHereMax )
+unsigned long Sub_LoadString ( const unsigned long string_id, FMX_Unichar * intoHere, const long intoHereMax )
 {
 	unsigned long returnResult = 0;
 
 	std::string wanted;
 	try {
 		wanted = function_strings.at ( string_id );
+
+		if ( kFMXT_AppConfigStr == string_id ) {
+            wanted.replace ( wanted.find ( "%@" ), 2, PLUGIN_DESCRIPTION_STRING_ID_STRING );
+		}
+
 	} catch ( exception& /* e */ ) {
 		returnResult = kRequestedDataIsMissingError;
 	}

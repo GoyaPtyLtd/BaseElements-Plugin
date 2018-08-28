@@ -121,9 +121,10 @@ extern BECurlOptionMap g_curl_options;
 #pragma mark Version
 #pragma mark -
 
+
 fmx::errcode BE_Version ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
 {
-	return TextConstantFunction ( VERSION_NUMBER_STRING, results );
+	return TextConstantFunction ( WSTRING ( VERSION_STRING ), results );
 }
 
 
@@ -1516,11 +1517,7 @@ fmx::errcode BE_PreferenceSet ( short /*funcId*/, const ExprEnv& /* environment 
 
 		auto key = ParameterAsWideString ( parameters );
 		auto value = ParameterAsWideString ( parameters, 1 );
-		auto domain = ParameterAsWideString ( parameters, 2 );
-
-		if ( domain.empty() ) {
-			domain.assign ( USER_PREFERENCES_DOMAIN );
-		}
+		auto domain = ParameterAsWideString ( parameters, 2, WSTRING(USER_PREFERENCES_DOMAIN) );
 
 		SetResult ( SetPreference ( key, value, domain ), results );
 
@@ -1545,11 +1542,7 @@ fmx::errcode BE_PreferenceGet ( short /*funcId*/, const ExprEnv& /* environment 
 	try {
 
 		auto key = ParameterAsWideString ( parameters );
-		auto domain = ParameterAsWideString ( parameters, 1 );
-
-		if ( domain.empty() ) {
-			domain.assign ( USER_PREFERENCES_DOMAIN );
-		}
+		auto domain = ParameterAsWideString ( parameters, 1, WSTRING(USER_PREFERENCES_DOMAIN) );
 
 		SetResult ( GetPreference ( key, domain ), results );
 

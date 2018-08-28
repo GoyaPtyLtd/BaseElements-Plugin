@@ -34,7 +34,7 @@
 	 */
 	#undef __CONSTANT_CFSTRINGS__
 
-	#define USER_PREFERENCES_DOMAIN L"au.com.goya.baseelements.plugin-user"
+	#define USER_PREFERENCES_DOMAIN BE_PLUGIN_BUNDLE_IDENTIFIER".plugin-user"
 	#define FOPEN fopen
 
 	// tchar
@@ -46,7 +46,7 @@
 	#include <windows.h> // life comes to an end if this is not included before anything else
 
 	#define FMX_WIN_TARGET	1
-	#define USER_PREFERENCES_DOMAIN L"Software\\Goya\\BaseElements\\PluginUser"
+	#define USER_PREFERENCES_DOMAIN "Software\\Goya\\BaseElements\\PluginUser"
 	#define FOPEN _wfopen
 
 	#define PATH_MAX MAX_PATH
@@ -58,7 +58,8 @@
     // tchar
     #define _TEXT(x) x
     #define FOPEN fopen
-    #define USER_PREFERENCES_DOMAIN L"au.com.goya.baseelements.plugin-user"
+	#define BE_PLUGIN_BUNDLE_IDENTIFIER "au.com.goya.baseelements"
+	#define USER_PREFERENCES_DOMAIN BE_PLUGIN_BUNDLE_IDENTIFIER".plugin-user"
 
 #else
 
