@@ -2,12 +2,14 @@
 Version 4.0.3
 ########################################################################
 
-August 21, 2018
+September 10, 2018
 
 
 Changes
 
 BE_SMTPSend: Use local time rather than utc for the rfc1123 date header
+
+Code Signing for Apple platforms
 
 
 ########################################################################
