@@ -132,8 +132,12 @@ BEValueList<T>::BEValueList ( const T& value_list, const T& delimiter, const boo
 		if ( retain_empty_values ) {
 			token_compress = boost::token_compress_off;
 		}
-		
+
 		boost::split ( values, value_list, boost::is_any_of ( delimiter ), token_compress );
+
+		if ( ! retain_empty_values ) {
+			values.erase ( std::remove ( values.begin(), values.end(), "" ), values.end() );
+		}
 		
 	} else {
 		BEValueList<T> ( );
