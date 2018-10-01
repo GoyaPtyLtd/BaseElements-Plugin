@@ -97,7 +97,7 @@ const std::wstring ClipboardFormats ( void )
 } // ClipboardFormats
 
 
-const std::string ClipboardData ( std::wstring& atype )
+const std::string ClipboardText ( const std::wstring& atype )
 {
 	
 	NSString * pasteboard_type = NSStringFromWString ( atype );
@@ -106,20 +106,44 @@ const std::string ClipboardData ( std::wstring& atype )
 	
 	return [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding];
 	
-} // ClipboardData
+} // ClipboardText
 
 
-const bool SetClipboardData ( std::string& data, std::wstring& atype )
+const bool SetClipboardText ( const std::string& data, const std::wstring& atype )
 {
 	
 	NSString * data_to_copy = NSStringFromString ( data );
 	NSString * pasteboard_type = NSStringFromWString ( atype );
-	NSData *clipboard_data = [data_to_copy dataUsingEncoding: NSUTF8StringEncoding];
+	NSData * clipboard_data = [data_to_copy dataUsingEncoding: NSUTF8StringEncoding];
 	[[UIPasteboard generalPasteboard] setData: clipboard_data forPasteboardType: pasteboard_type];
 
-	
 	return true;
 	
+} // SetClipboardText
+
+
+const std::vector<unsigned char> ClipboardFile ( const std::wstring& atype )
+{
+	NSString * pasteboard_type = NSStringFromWString ( atype );
+	NSData * pasteboard_data = [[UIPasteboard generalPasteboard] dataForPasteboardType: pasteboard_type];
+	
+	vector<unsigned char> result;
+	const unsigned char * bytes = (const unsigned char *)[pasteboard_data bytes];
+	result.assign ( bytes, bytes + [pasteboard_data length] );
+	
+	return result;
+	
+} // ClipboardData
+
+
+const bool SetClipboardFile ( const std::vector<unsigned char>& data, const std::wstring& atype )
+{
+	NSData * data_to_copy = [NSData dataWithBytes: data.data() length: data.size()];
+	NSString * data_type = NSStringFromWString ( atype );
+	[[UIPasteboard generalPasteboard] setData: data_to_copy forPasteboardType: data_type];
+	
+	return true;
+
 } // Set_ClipboardData
 
 

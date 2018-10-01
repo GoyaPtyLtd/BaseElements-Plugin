@@ -181,7 +181,8 @@ fmx::errcode BE_ClipboardGetText ( short /* funcId */, const ExprEnv& /* environ
 	try {
 
 		auto atype = ParameterAsWideString ( parameters );
-		auto clipboard_contents = ClipboardData ( atype );
+		auto clipboard_contents = ClipboardText ( atype );
+
 		SetResult ( clipboard_contents, results );
 
 	} catch ( BEPlugin_Exception& e ) {
@@ -203,9 +204,10 @@ fmx::errcode BE_ClipboardSetText ( short /* funcId */, const ExprEnv& /* environ
 
 	try {
 
-		std::string to_copy = ParameterAsUTF8String ( parameters );
-		std::wstring atype = ParameterAsWideString ( parameters, 1 );
-		bool success = SetClipboardData ( to_copy, atype );
+		auto to_copy = ParameterAsUTF8String ( parameters );
+		auto atype = ParameterAsWideString ( parameters, 1 );
+		auto success = SetClipboardText ( to_copy, atype );
+
 		SetResult ( success, results );
 
 	} catch ( BEPlugin_Exception& e ) {
@@ -219,6 +221,60 @@ fmx::errcode BE_ClipboardSetText ( short /* funcId */, const ExprEnv& /* environ
 	return MapError ( error );
 
 } // BE_ClipboardSetText
+
+
+fmx::errcode BE_ClipboardGetFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto atype = ParameterAsWideString ( parameters );
+		auto file_name = ParameterAsUTF8String ( parameters, 1, ParameterAsUTF8String ( parameters ) /* atype */ );
+
+		auto clipboard_contents = ClipboardFile ( atype );
+
+		SetResult ( file_name, clipboard_contents, results, FILE_CONTAINER_TYPE );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_ClipboardGetFile
+
+
+fmx::errcode BE_ClipboardSetFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto to_copy = ParameterAsVectorUnsignedChar ( parameters );
+		auto atype = ParameterAsWideString ( parameters, 1 );
+		auto success = false;
+		if ( ! atype.empty() ) {
+			success = SetClipboardFile ( to_copy, atype );
+		}
+		
+		SetResult ( success, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_ClipboardSetFile
 
 
 #pragma mark -
@@ -769,7 +825,7 @@ fmx::errcode BE_FileSelect ( short /* funcId */, const ExprEnv& /* environment *
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
 	}
-	
+
 	errcode error = NoError();
 
 	try {
@@ -799,7 +855,7 @@ fmx::errcode BE_FolderSelect ( short /* funcId */, const ExprEnv& /* environment
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
 	}
-	
+
 	errcode error = NoError();
 
 	try {
@@ -829,7 +885,7 @@ fmx::errcode BE_FileSaveDialog ( short /* funcId */, const ExprEnv& /* environme
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
 	}
-	
+
 	errcode error = NoError();
 
 	try {
@@ -860,7 +916,7 @@ fmx::errcode BE_DialogDisplay ( short /* funcId */, const ExprEnv& /* environmen
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
 	}
-	
+
 	errcode error = NoError();
 
 	try {
@@ -893,7 +949,7 @@ fmx::errcode BE_DialogProgress ( short /* funcId */, const ExprEnv& environment,
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
 	}
-	
+
 	errcode error = NoError();
 
 	try {
@@ -926,7 +982,7 @@ fmx::errcode BE_DialogProgressUpdate ( short /* funcId */, const ExprEnv& /* env
 	if ( g_be_plugin->running_on_server() ) {
 		return MapError ( kCommandIsUnavailableError );
 	}
-	
+
 	errcode error = NoError();
 
 	try {
@@ -1012,7 +1068,7 @@ fmx::errcode BE_XPath ( short function_id, const ExprEnv& /* environment */, con
 
 		xmlXPathObjectType xpath_object_type = XPATH_NODESET; // for kBE_XPathAll
 		if ( function_id == kBE_XPath ) {
-			
+
 			bool as_text = ParameterAsBoolean ( parameters, 3, true );
 			if ( as_text != true ) {
 				xpath_object_type = XPATH_UNDEFINED; // get the result as xml

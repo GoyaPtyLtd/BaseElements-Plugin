@@ -99,17 +99,21 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 #if ( FMX_MAC_TARGET || FMX_IOS_TARGET || FMX_WIN_TARGET )
 	g_be_plugin->RegisterFunction ( kBE_ClipboardGetText, BE_ClipboardGetText, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ClipboardSetText, BE_ClipboardSetText, 2 );
+	g_be_plugin->RegisterFunction ( kBE_ClipboardGetFile, BE_ClipboardGetFile, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_ClipboardSetFile, BE_ClipboardSetFile, 2 );
 	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, 1 );
 	g_be_plugin->RegisterFunction ( kBE_PreferenceSet, BE_PreferenceSet, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_PreferenceGet, BE_PreferenceGet, 1, 2 );
 #else
 	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardGetText, BE_NotImplemented, 1 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardSetText, BE_NotImplemented, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardGetFile, BE_NotImplemented, 1, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardSetFile, BE_NotImplemented, 2 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_OpenURL, BE_NotImplemented, 1 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceSet, BE_NotImplemented, 2, 3 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceGet, BE_NotImplemented, 1, 2 );
 #endif
-	
+
 #if ( FMX_MAC_TARGET || FMX_WIN_TARGET )
 	g_be_plugin->RegisterFunction ( kBE_ClipboardFormats, BE_ClipboardFormats );
 	g_be_plugin->RegisterFunction ( kBE_FileSelect, BE_FileSelect, 1, 2 );
@@ -172,7 +176,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 #else
 	g_be_plugin->RegisterHiddenFunction ( kBE_ExecuteSystemCommand, BE_NotImplemented, 1, 2 );
 #endif
-	
+
 	g_be_plugin->RegisterFunction ( kBE_ScriptExecute, BE_ScriptExecute, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, 1, 4 );
 

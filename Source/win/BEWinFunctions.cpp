@@ -64,7 +64,6 @@ UINT BE_CF_FileNameMapW;
 
 void InitialiseForPlatform ( void )
 {
-
 	_set_fmode ( O_RDONLY | O_BINARY ); // open files as binary by default
 
 	BE_CF_FileGroupDescriptorW = RegisterClipboardFormat ( CFSTR_FILEDESCRIPTORW );
@@ -433,7 +432,7 @@ const string WideClipboardData ( const wstring& atype )
 } // WideClipboardData
 
 
-const string ClipboardData ( const wstring& atype )
+const string ClipboardText ( const wstring& atype )
 {
 	string reply;
 
@@ -459,7 +458,7 @@ const string ClipboardData ( const wstring& atype )
 	
 	return reply;
 
-} // ClipboardData
+} // ClipboardText
 
 
 
@@ -509,7 +508,7 @@ void * DataForClipboardAsWide ( const string& data )
 
 
 
-const bool SetClipboardData ( const string& data, const wstring& atype )
+const bool SetClipboardText ( const string& data, const wstring& atype )
 {
 	bool ok = FALSE;
 	
@@ -542,7 +541,79 @@ const bool SetClipboardData ( const string& data, const wstring& atype )
 
 	return ok;
 
-}	//	Set_ClipboardData
+}	//	Set_ClipboardText
+
+
+const std::vector<unsigned char> ClipboardFile ( const std::wstring& atype )
+{
+	std::vector<unsigned char> reply;
+
+	if ( SafeOpenClipboard() ) {
+
+		UINT format = ClipboardFormatIDForName ( atype );
+
+		if ( IsClipboardFormatAvailable ( format ) ) {
+
+			const UINT format_wanted = ClipboardFormatIDForName ( atype );
+			const HGLOBAL clipboard_memory = GetClipboardData ( format_wanted );
+
+			const unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( clipboard_memory );
+			const SIZE_T clipboard_size = GlobalSize ( clipboard_memory );
+//			if ( clipboard_size > 0 ) { // keep the msvc debug runtime happy
+				reply.assign ( clipboard_contents, clipboard_contents + clipboard_size );
+//			}
+			GlobalUnlock ( clipboard_memory );
+
+		}
+
+		if (CloseClipboard()) {
+			g_last_error = GetLastErrorAsFMX();
+		}
+
+	}
+
+	return reply;
+
+} // ClipboardFile
+
+
+const bool SetClipboardFile ( const std::vector<unsigned char>& data, const std::wstring& atype )
+{
+	bool ok = FALSE;
+
+	if ( OpenClipboard ( GetActiveWindow() ) ) {
+
+		if ( EmptyClipboard() ) {
+
+			const UINT format = ClipboardFormatIDForName ( atype );
+			const HGLOBAL clipboard_memory = GlobalAlloc ( GMEM_MOVEABLE, data.size() );
+
+//			if ( data.size() > 0 ) { // keep the msvc debug runtime happy
+
+				unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( clipboard_memory );
+				memcpy_s(  clipboard_contents, data.size(), data.data(), data.size() );
+				GlobalUnlock ( clipboard_memory );
+
+				if ( SetClipboardData ( format, clipboard_memory ) ) {
+					ok = TRUE;
+				}
+
+//			}
+
+		} else {
+			g_last_error = GetLastErrorAsFMX();
+		}
+
+		if ( CloseClipboard() ) {
+			g_last_error = g_last_error ? g_last_error : GetLastErrorAsFMX();
+		}
+
+	}
+
+	return ok;
+
+} // SetClipboardFile
+
 
 
 // file dialogs
@@ -957,13 +1028,11 @@ const unsigned long Sub_LoadString ( unsigned long stringID, FMX_Unichar* intoHe
 	LoadStringW((HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)stringID, (LPWSTR)intoHere, (fmx::uint32)resultsize);
 
 	if (kFMXT_AppConfigStr == stringID) {
-
 		std::wstring plugin_description_string = (LPWSTR)intoHere;
 		plugin_description_string.replace(plugin_description_string.find(L"%@"), 2, WSTRING(VERSION_STRING));
 		boost::replace_all(plugin_description_string, L"\n", L"\r\n");
 		plugin_description_string.copy((WCHAR*)intoHere, plugin_description_string.length(), 0);
 		intoHere[plugin_description_string.length()] = '\0';
-
 	}
 
 	return returnResult;

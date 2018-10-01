@@ -22,9 +22,11 @@
 
 void InitialiseForPlatform ( );
 
-std::wstring ClipboardFormats ( void );
-std::string ClipboardData ( std::wstring& atype );
-bool SetClipboardData ( std::string& data, std::wstring& atype );
+const std::wstring ClipboardFormats ( void );
+const std::string ClipboardText ( const std::wstring& atype );
+const bool SetClipboardText ( const std::string& data, const std::wstring& atype );
+const std::vector<unsigned char> ClipboardFile ( const std::wstring& atype );
+const bool SetClipboardFile ( const std::vector<unsigned char>& data, const std::wstring& atype );
 
 std::wstring SelectFile ( std::wstring& prompt, std::wstring& in_folder );
 std::wstring SelectFolder ( std::wstring& prompt, std::wstring& in_folder );

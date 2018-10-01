@@ -2,8 +2,8 @@
 "102" = "BE_Version|Version|Returns the plugin version number as text, eg 1.1.3";
 "103" = "BE_VersionAutoUpdate|Version Auto Update|The text of the plugin number, formatted as an 8 digit number, eg 00010712";
 "104" = "BE_ClipboardFormats|Clipboard Formats|Returns a return delimited list of the formats of the content of the current clipboard.";
-"105" = "BE_ClipboardGetText ( format )|Clipboard Text Get|Tries to convert the item on the current clipboard, designated by the format passed to the function. The function will only deal with text objects, so other clipboard types are ignored.";
-"106" = "BE_ClipboardSetText ( text ; format )|Clipboard Text Set|Sets the clipboard to the text and applies a clipboard format. Clipboard formats are usually set by the application and depend on the content types. When setting a type it's best to copy a sample and then use BE_ClipboardFormats to see what types are used. You only need to apply a single format when setting the clipboard.";
+"105" = "BE_ClipboardGetText ( format )|Clipboard Text Get|Tries to convert the item on the current clipboard, designated by the format passed to the function. The function will only deal with text objects, so other clipboard types are ignored. To get other types use BE_ClipboardGetFile";
+"106" = "BE_ClipboardSetText ( text ; format )|Clipboard Text Set|Sets the clipboard to the text and applies a clipboard format. Clipboard formats are usually set by the application and depend on the content types. When setting a type it's best to copy a sample and then use BE_ClipboardFormats to see what types are used. You only need to apply a single format when setting the clipboard. To set non-text data use BE_ClipboardSetFile";
 "107" = "BE_FolderCreate ( path )|Folder Create|Creates a new folder at the location path.";
 "108" = "BE_FileDelete ( path )|File Delete|Deletes the file at location path. This function doesn't send files to the trash or recycle bin, so use with caution. Files deleted are gone.";
 "109" = "BE_FileExists ( path )|File Exists|Checks if the file or folder given in the path exists and returns True or False. For folders it accepts the name of the folder (and reports existence correctly) with or without a trailing / ";
@@ -25,6 +25,8 @@
 "128" = "BaseElements";
 "131" = "GyBE1nnYYnn";
 "132" = "https://baseelementsplugin.zendesk.com/";
+"135" = "BE_ClipboardGetFile ( format {; fileName } )|Clipboard Data Get|Tries to convert the item on the current clipboard, designated by the format passed to the function. When trying to get text from the clipboard use BE_ClipboardGetText";
+"136" = "BE_ClipboardSetFile ( fileData ; format )|Clipboard Data Set|Sets the clipboard to the text and applies a clipboard format. Clipboard formats are usually set by the application and depend on the content types. When setting a type it's best to copy a sample and then use BE_ClipboardFormats to see what types are used. You only need to apply a single format when setting the clipboard. When setting a text object use BE_ClipboardSetText";
 "140" = "BE_WriteTextFileToContainer_Deprecated ( filename ; text {; append} )|File Write Text Container|Performs the same as the BE_FileWriteText but saves the result in a container field.  Use with a Set Field script step.";
 "150" = "BE_ScriptExecute ( scriptName {; fileName ; parameter } )|Script Execute|Performs the scriptName in the current file ( if no fileName provided, or in fileName if available ). Scripts are run when the current script queue is empty, so you can't have a calculation within a script, call a script and have it start immediately, it will run at the completion of the current script stack. Script results are not set and cannot be returned.";
 "151" = "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; databaseName } )|SQL|Performs SQL commands on the tables inside FileMaker.  All SQL/DDL errors can be obtained via the BE_GetLastDDLError function.";

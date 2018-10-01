@@ -106,11 +106,10 @@ const std::wstring ClipboardFormats ( void )
 } // ClipboardFormats
 
 
-const std::string ClipboardData ( std::wstring& atype )
+const std::string ClipboardText ( const std::wstring& atype )
 {
 	NSString * pasteboard_type = NSStringFromWString ( atype );
-	NSData * pasteboard_data = [[[NSPasteboard generalPasteboard] dataForType: pasteboard_type] copy];
-//	NSString * clipboard_data = [[[NSPasteboard generalPasteboard] stringForType: pasteboard_type] copy];
+	NSData * pasteboard_data = [[NSPasteboard generalPasteboard] dataForType: pasteboard_type];
 	NSStringEncoding string_encoding = NSUTF8StringEncoding;
 	if ( [pasteboard_type containsString: @"public.utf16-plain-text"] ) { // copy fm custom menus
 		string_encoding = NSUTF16LittleEndianStringEncoding;
@@ -122,10 +121,10 @@ const std::string ClipboardData ( std::wstring& atype )
 	
 	return [clipboard_data cStringUsingEncoding: NSUTF8StringEncoding];
 
-} // ClipboardData
+} // ClipboardText
 
 
-const bool SetClipboardData ( std::string& data, std::wstring& atype )
+const bool SetClipboardText ( const std::string& data, const std::wstring& atype )
 {
 	NSString * data_to_copy = NSStringFromString ( data );
 	NSString * data_type = NSStringFromWString ( atype );
@@ -136,6 +135,33 @@ const bool SetClipboardData ( std::string& data, std::wstring& atype )
 	//	[new_types release];
 	
 	return [[NSPasteboard generalPasteboard] setString: data_to_copy forType: data_type];
+	
+} // Set_ClipboardText
+
+
+const std::vector<unsigned char> ClipboardFile ( const std::wstring& atype )
+{
+	NSString * pasteboard_type = NSStringFromWString ( atype );
+	NSData * pasteboard_data = [[NSPasteboard generalPasteboard] dataForType: pasteboard_type];
+	
+	vector<unsigned char> result;
+	const unsigned char * bytes = (const unsigned char *)[pasteboard_data bytes];
+	result.assign ( bytes, bytes + [pasteboard_data length] );
+	
+	return result;
+	
+} // ClipboardData
+
+
+const bool SetClipboardFile ( const std::vector<unsigned char>& data, const std::wstring& atype )
+{
+	NSData * data_to_copy = [NSData dataWithBytes: data.data() length: data.size()];
+	NSString * data_type = NSStringFromWString ( atype );
+	NSArray * new_types = [NSArray arrayWithObject: data_type];
+	
+	[[NSPasteboard generalPasteboard] declareTypes: new_types owner: nil];
+	
+	return [[NSPasteboard generalPasteboard] setData: data_to_copy forType: data_type];
 	
 } // Set_ClipboardData
 

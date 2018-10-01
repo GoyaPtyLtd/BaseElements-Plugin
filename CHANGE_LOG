@@ -2,11 +2,18 @@
 Version 4.0.3
 ########################################################################
 
-September 10, 2018
+October 1, 2018
+
+
+New Functions
+
+BE_ClipboardGetFile
+BE_ClipboardSetFile
 
 
 Changes
 
+BE_ArraySetFromValueList: Correctly remove all empty values
 BE_SMTPSend: Use local time rather than utc for the rfc1123 date header
 
 Code Signing for Apple platforms

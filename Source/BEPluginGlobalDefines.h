@@ -137,6 +137,8 @@ enum functions {
 	kBE_FileOpen = 125,
 	kBE_FileSize = 126,
     kBE_FileModificationTimestamp = 127,
+	kBE_ClipboardGetFile = 135,
+	kBE_ClipboardSetFile = 136,
 	kBE_WriteTextFileToContainer_Deprecated = 140,
 	kBE_ScriptExecute = 150,
 	kBE_FileMakerSQL = 151,

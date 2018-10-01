@@ -30,7 +30,7 @@ void InitialiseForPlatform ( )
 }
 
 
-std::wstring ClipboardFormats ( void )
+const std::wstring ClipboardFormats ( void )
 {
 	throw BEPlugin_Exception ( kCommandIsUnavailableError );
 
@@ -38,7 +38,7 @@ std::wstring ClipboardFormats ( void )
 }
 
 
-std::string ClipboardData ( std::wstring& atype )
+const std::string ClipboardText ( const std::wstring& atype )
 {
 	throw BEPlugin_Exception ( kCommandIsUnavailableError );
 
@@ -46,7 +46,26 @@ std::string ClipboardData ( std::wstring& atype )
 }
 
 
-bool SetClipboardData ( std::string& data, std::wstring& atype )
+const bool SetClipboardText ( const std::string& data, const std::wstring& atype )
+{
+	throw BEPlugin_Exception ( kCommandIsUnavailableError );
+
+	return false;
+}
+
+
+const std::vector<unsigned char> ClipboardFile ( const std::wstring& atype )
+{
+	throw BEPlugin_Exception ( kCommandIsUnavailableError );
+
+    // should never get here
+    const std::vector<unsigned char> empty;
+
+	return empty;
+}
+
+
+const bool SetClipboardFile ( const std::vector<unsigned char>& data, const std::wstring& atype )
 {
 	throw BEPlugin_Exception ( kCommandIsUnavailableError );
 
