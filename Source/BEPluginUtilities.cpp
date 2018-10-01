@@ -160,7 +160,7 @@ void SetResult ( const vector<unsigned char>& data, Data& results )
 }
 
 
-void SetResult ( const std::string& filename, const vector<char>& data, Data& results, std::string data_type )
+void SetResult ( const std::string& filename, const vector<char>& data, Data& results, const std::string data_type )
 {
 	const short width = 0;
 	const short height = 0;
@@ -169,7 +169,7 @@ void SetResult ( const std::string& filename, const vector<char>& data, Data& re
 }
 
 
-void SetResult ( const std::string& filename, const vector<unsigned char>& data, Data& results, std::string data_type )
+void SetResult ( const std::string& filename, const vector<unsigned char>& data, Data& results, const std::string data_type )
 {
 	vector<char> char_data ( data.begin(), data.end() );
 	return SetResult ( filename, char_data, results, data_type );
@@ -202,7 +202,13 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 			output = CompressContainerStream ( data );
 		}
 
-		resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)&output[0] ); // error =
+		if ( !data.empty() ) {
+			resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)output.data() ); // error =
+		} else {
+			void * empty_file = NULL;
+			resultBinary->Add ( *(data_type.get_type()), 0, empty_file ); // error =
+		}
+
 		results.SetBinaryData ( *resultBinary, true );
 
 	} else { // otherwise try sending back text
