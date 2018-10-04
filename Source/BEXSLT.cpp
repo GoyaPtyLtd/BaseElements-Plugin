@@ -45,7 +45,6 @@ using namespace fmx;
 
 
 const std::string ReportXSLTError ( const xmlChar * url );
-std::string ConvertFileMakerEOLs ( std::string& in );
 void ResetXMLErrors ( void );
 
 
@@ -113,29 +112,6 @@ const std::string ReportXSLTError ( const xmlChar * url )
 	return result_text;
 	
 } // ReportXSLTError
-
-
-/*
- filemaker terminates lines with \r, libxml/libxslt prefer \n
- convert filemaker line ending in the text to line feeds
- */
-
-std::string ConvertFileMakerEOLs ( std::string& in )
-{
-    size_t look_here = 0;
-	string from = FILEMAKER_END_OF_LINE;
-	string to = "\n";
-    size_t found_here;
-	
-    while ( (found_here = in.find ( from, look_here )) != string::npos )
-    {
-		in.replace ( found_here, from.size(), to );
-		look_here = found_here + to.size();
-    }
-	
-    return in;
-	
-} // ConvertFileMakerEOLs
 
 
 

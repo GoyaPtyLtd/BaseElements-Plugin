@@ -979,6 +979,29 @@ errcode MapError ( const errcode error, const bool map )
 #pragma mark -
 
 
+/*
+ filemaker terminates lines with \r, libxml/libxslt prefer \n
+ convert filemaker line ending in the text to line feeds
+ */
+
+std::string ConvertFileMakerEOLs ( std::string& in )
+{
+	size_t look_here = 0;
+	string from = FILEMAKER_END_OF_LINE;
+	string to = "\n";
+	size_t found_here;
+	
+	while ( (found_here = in.find ( from, look_here )) != string::npos )
+	{
+		in.replace ( found_here, from.size(), to );
+		look_here = found_here + to.size();
+	}
+	
+	return in;
+	
+} // ConvertFileMakerEOLs
+
+
 void set_name_value_pair ( const DataVect& parameters, std::map<std::string, std::string>& pairs )
 {
 
