@@ -89,7 +89,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 201, "BE_XPath ( xmlText ; xpathText {; namespaceListText ; asTextBoolean } )" },
 	{ 202, "BE_XPathAll ( xmlText ; xpathText {; namespaceListText } )" },
 	{ 210, "BE_XMLStripNodes ( inputPath ; outputPath ; nodeNames )" },
-	{ 211, "BE_XMLParse ( path )" },
+	{ 211, "BE_XMLParse ( pathOrXMLText )" },
 	{ 212, "BE_SplitBEFileNodes ( path )" },
 	{ 213, "BE_XMLValidate ( xml ; schema )" },
 	{ 220, "BE_TimeCurrentMilliseconds" },

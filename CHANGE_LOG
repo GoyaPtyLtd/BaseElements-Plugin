@@ -2,7 +2,7 @@
 Version 4.0.3
 ########################################################################
 
-October 1, 2018
+October 5, 2018
 
 
 New Functions
@@ -15,6 +15,8 @@ Changes
 
 BE_ArraySetFromValueList: Correctly remove all empty values
 BE_SMTPSend: Use local time rather than utc for the rfc1123 date header
+BE_XMLParse: allow the input to be XML Text or a file path
+
 
 Code Signing for Apple platforms
 

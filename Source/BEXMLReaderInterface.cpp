@@ -14,7 +14,6 @@
 
 
 #include "BEXMLReaderInterface.h"
-#include "BEPluginUtilities.h"
 
 #include <libxml/xmlreader.h>
 

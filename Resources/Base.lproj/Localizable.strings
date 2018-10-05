@@ -65,7 +65,7 @@
 "201" = "BE_XPath ( xmlText ; xpathText {; namespaceListText ; asTextBoolean } )|XML XPath|This finds the first instance of a node at the path xpath within the text xml. This function is based on the libxml library which only supports XPath 1.0 http://xmlsoft.org";
 "202" = "BE_XPathAll ( xmlText ; xpathText {; namespaceListText } )|XML XPath All|This finds all instances of a node at the path xpath within the text xml. This function is based on the libxml library which only supports XPath 1.0 http://xmlsoft.org";
 "210" = "BE_XMLStripNodes ( inputPath ; outputPath ; nodeNames )||BaseElements Internal : function not documented.";
-"211" = "BE_XMLParse ( path )|XML Parse|Parses an XML file at path to determine if it's properly formed. Does not check XSD details, just whether every tag is properly opened and closed.";
+"211" = "BE_XMLParse ( pathOrXMLText )|XML Parse|Parses an XML file at path or XML Text to determine if it's properly formed. When the first character of the input is a < the input is treated as XML Text, otherwise it is treated as a file path. Does not check XSD details, just whether every tag is properly opened and closed.";
 "212" = "BE_SplitBEFileNodes ( path )||BaseElements Internal : function not documented.";
 "213" = "BE_XMLValidate ( xml ; schema )|XML Validate Schema|Validates an XML file against a schema.";
 "220" = "BE_TimeCurrentMilliseconds|Time Current Milliseconds|Returns the current time as number of milliseconds. Effectively the same as GetAsNumber ( Get ( CurrentTimestamp ) ).";

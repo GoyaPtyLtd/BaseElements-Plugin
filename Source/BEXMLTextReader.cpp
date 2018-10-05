@@ -18,6 +18,8 @@
 
 #include <boost/filesystem.hpp>
 
+#include <libxml/xmlreader.h>
+
 #if defined ( FMX_WIN_TARGET )
 	#include <fcntl.h>
 	#include <stdio.h>
@@ -30,10 +32,7 @@
 
 BEXMLTextReader::BEXMLTextReader ( const boost::filesystem::path path )
 {
-	LIBXML_TEST_VERSION; // initialise libxml
-	
-	last_node = false;
-	error_report = "";
+	initialise();
 	
 	file = path;
 	bool file_exists = boost::filesystem::exists ( file );
@@ -57,17 +56,36 @@ BEXMLTextReader::BEXMLTextReader ( const boost::filesystem::path path )
 		throw BEXMLReaderInterface_Exception ( kNoSuchFileOrDirectoryError );
 	}
 
-}
+} // ::BEXMLTextReader ( const boost::filesystem::path path )
+
+
+BEXMLTextReader::BEXMLTextReader ( const std::string xml )
+{
+	initialise();
+
+	file = "XML";
+	auto xml_to_parse = xml;
+	ConvertFileMakerEOLs ( xml_to_parse );
+	raw_xml = xmlStrdup ( (const xmlChar *)xml_to_parse.c_str() );
+
+	reader = xmlReaderForDoc ( raw_xml, file.string().c_str(), xmlGetCharEncodingName ( XML_CHAR_ENCODING_UTF8 ), XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC );
+	
+	if ( NULL != reader ) {
+		xml_document = xmlTextReaderCurrentDoc ( reader );
+	} else {
+		throw BEXMLReaderInterface_Exception ( last_error() );
+	}
+		
+} // ::BEXMLTextReader ( const std::string xml )
 
 
 BEXMLTextReader::~BEXMLTextReader()
 {
 	xmlTextReaderClose ( reader );
 	xmlFreeTextReader ( reader );
-	
-	if ( xml_document ) {
-		xmlFreeDoc ( xml_document );
-	}
+
+	xmlFree ( (void *)raw_xml );
+	xmlFreeDoc ( xml_document );
 	
 #if defined ( FMX_WIN_TARGET )
 	if ( file_descriptor ) {
@@ -77,6 +95,17 @@ BEXMLTextReader::~BEXMLTextReader()
 	
 	xmlCleanupParser();
 	
+} // ~BEXMLTextReader
+
+
+void BEXMLTextReader::initialise ( void )
+{
+	LIBXML_TEST_VERSION; // initialise libxml
+	
+	last_node = false;
+	error_report = "";
+	file_descriptor = NULL;
+	raw_xml = NULL;
 }
 
 

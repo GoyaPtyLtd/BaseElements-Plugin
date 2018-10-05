@@ -1133,10 +1133,20 @@ fmx::errcode BE_XMLParse ( short /* funcId */, const ExprEnv& /* environment */,
 
 	try {
 
-		path input_file = ParameterAsPath ( parameters );
-
-		unique_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
-		string result = reader->parse();
+		std::string result;
+		std::unique_ptr<BEXMLTextReader> reader;
+		
+		auto xml_input = ParameterAsUTF8String ( parameters );
+		
+		// if the input begins with < we treat it as xml... if not, treat it as a file path
+		if ( "<" == xml_input.substr ( 0, 1 ) ) {
+			reader.reset ( new BEXMLTextReader ( xml_input ) );
+		} else {
+			auto input_file = ParameterAsPath ( parameters );
+			reader.reset ( new BEXMLTextReader ( input_file ) );
+		}
+		
+		result = reader->parse();
 
 		SetResult ( result, results );
 
