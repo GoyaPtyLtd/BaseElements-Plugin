@@ -66,9 +66,9 @@ BEXMLTextReader::BEXMLTextReader ( const std::string xml )
 	file = "XML";
 	auto xml_to_parse = xml;
 	ConvertFileMakerEOLs ( xml_to_parse );
-	raw_xml = xmlStrdup ( (const xmlChar *)xml_to_parse.c_str() );
+	xml_text = xmlStrdup ( (const xmlChar *)xml_to_parse.c_str() );
 
-	reader = xmlReaderForDoc ( raw_xml, file.string().c_str(), xmlGetCharEncodingName ( XML_CHAR_ENCODING_UTF8 ), XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC );
+	reader = xmlReaderForDoc ( xml_text, file.string().c_str(), xmlGetCharEncodingName ( XML_CHAR_ENCODING_UTF8 ), XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC );
 	
 	if ( NULL != reader ) {
 		xml_document = xmlTextReaderCurrentDoc ( reader );
@@ -84,7 +84,7 @@ BEXMLTextReader::~BEXMLTextReader()
 	xmlTextReaderClose ( reader );
 	xmlFreeTextReader ( reader );
 
-	xmlFree ( (void *)raw_xml );
+	xmlFree ( (void *)xml_text );
 	xmlFreeDoc ( xml_document );
 	
 #if defined ( FMX_WIN_TARGET )
@@ -105,7 +105,7 @@ void BEXMLTextReader::initialise ( void )
 	last_node = false;
 	error_report = "";
 	file_descriptor = NULL;
-	raw_xml = NULL;
+	xml_text = NULL;
 }
 
 

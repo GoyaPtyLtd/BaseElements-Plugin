@@ -69,7 +69,7 @@ protected:
 	xmlTextReaderPtr reader;
 	xmlDocPtr xml_document;
 	int file_descriptor;
-	const xmlChar * raw_xml;
+	const xmlChar * xml_text;
 
 };
 
