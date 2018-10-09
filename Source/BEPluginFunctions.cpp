@@ -1138,8 +1138,9 @@ fmx::errcode BE_XMLParse ( short /* funcId */, const ExprEnv& /* environment */,
 		
 		auto xml_input = ParameterAsUTF8String ( parameters );
 		
-		// if the input begins with < we treat it as xml... if not, treat it as a file path
-		if ( "<" == xml_input.substr ( 0, 1 ) ) {
+		// if the input, excluding whitespace, begins with < we treat it as xml... if not, treat it as a file path
+		auto it = find_if_not ( xml_input.begin(), xml_input.end(), [](int c){ return isspace(c); } );
+		if ( "<" == xml_input.substr ( 0, 1 ) || *it == '<' ) {
 			reader.reset ( new BEXMLTextReader ( xml_input ) );
 		} else {
 			auto input_file = ParameterAsPath ( parameters );
