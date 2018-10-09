@@ -588,17 +588,13 @@ const bool SetClipboardFile ( const std::vector<unsigned char>& data, const std:
 			const UINT format = ClipboardFormatIDForName ( atype );
 			const HGLOBAL clipboard_memory = GlobalAlloc ( GMEM_MOVEABLE, data.size() );
 
-//			if ( data.size() > 0 ) { // keep the msvc debug runtime happy
+			unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( clipboard_memory );
+			memcpy_s (  clipboard_contents, data.size(), data.data(), data.size() );
+			GlobalUnlock ( clipboard_memory );
 
-				unsigned char * clipboard_contents = (unsigned char *)GlobalLock ( clipboard_memory );
-				memcpy_s(  clipboard_contents, data.size(), data.data(), data.size() );
-				GlobalUnlock ( clipboard_memory );
-
-				if ( SetClipboardData ( format, clipboard_memory ) ) {
-					ok = TRUE;
-				}
-
-//			}
+			if ( SetClipboardData ( format, clipboard_memory ) ) {
+				ok = TRUE;
+			}
 
 		} else {
 			g_last_error = GetLastErrorAsFMX();
