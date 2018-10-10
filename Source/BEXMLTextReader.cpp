@@ -1,12 +1,12 @@
 /*
  BEXMLTextReader.cpp
  BaseElements Plug-In
- 
+
  Copyright 2012-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
- 
+
  http://www.goya.com.au/baseelements/plugin
- 
+
  */
 
 #include "BEXMLTextReader.h"
@@ -33,7 +33,7 @@
 BEXMLTextReader::BEXMLTextReader ( const boost::filesystem::path path )
 {
 	initialise();
-	
+
 	file = path;
 	bool file_exists = boost::filesystem::exists ( file );
 
@@ -51,7 +51,7 @@ BEXMLTextReader::BEXMLTextReader ( const boost::filesystem::path path )
 		} else {
 			throw BEXMLReaderInterface_Exception ( last_error() );
 		}
-		
+
 	} else {
 		throw BEXMLReaderInterface_Exception ( kNoSuchFileOrDirectoryError );
 	}
@@ -69,13 +69,13 @@ BEXMLTextReader::BEXMLTextReader ( const std::string xml )
 	xml_text = xmlStrdup ( (const xmlChar *)xml_to_parse.c_str() );
 
 	reader = xmlReaderForDoc ( xml_text, file.string().c_str(), xmlGetCharEncodingName ( XML_CHAR_ENCODING_UTF8 ), XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC );
-	
+
 	if ( NULL != reader ) {
 		xml_document = xmlTextReaderCurrentDoc ( reader );
 	} else {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
-		
+
 } // ::BEXMLTextReader ( const std::string xml )
 
 
@@ -86,25 +86,25 @@ BEXMLTextReader::~BEXMLTextReader()
 
 	xmlFree ( (void *)xml_text );
 	xmlFreeDoc ( xml_document );
-	
+
 #if defined ( FMX_WIN_TARGET )
 	if ( file_descriptor ) {
 		_close ( file_descriptor );
 	}
 #endif
-	
+
 	xmlCleanupParser();
-	
+
 } // ~BEXMLTextReader
 
 
 void BEXMLTextReader::initialise ( void )
 {
 	LIBXML_TEST_VERSION; // initialise libxml
-	
+
 	last_node = false;
 	error_report = "";
-	file_descriptor = NULL;
+	file_descriptor = 0;
 	xml_text = NULL;
 }
 
@@ -122,7 +122,7 @@ void BEXMLTextReader::read ( )
 	} else if ( ok == kBE_XMLReaderError ) {
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
-	
+
 }
 
 
@@ -151,9 +151,9 @@ void BEXMLTextReader::error_reader ( void * arg, const char * msg, xmlParserSeve
 
 std::string BEXMLTextReader::parse ( )
 {
-		
+
 	xmlTextReaderSetErrorHandler ( reader, (xmlTextReaderErrorFunc) BEXMLTextReader::error_reader, &file );
-	
+
 	int result = 1;
 
 	while ( result == 1 ) {
@@ -240,7 +240,7 @@ std::string BEXMLTextReader::get_attribute ( const std::string attribute_name )
 	} else {
 		throw BEXMLReaderInterface_Exception ( last_error ( kBE_XMLReaderAttributeNotFoundError ) );
 	}
-	
+
 	return value;
 }
 
@@ -271,7 +271,7 @@ std::string BEXMLTextReader::value()
 {
 	const xmlChar * reader_value = xmlTextReaderValue ( reader );
 	std::string value;
-	
+
 	if ( reader_value ) {
 		value = (const char *)reader_value;
 		xmlFree ( (void *)reader_value );
@@ -299,7 +299,7 @@ std::string BEXMLTextReader::inner_xml()
 	}
 
 	return inner_xml;
-	
+
 } // inner_xml
 
 
@@ -315,7 +315,7 @@ std::string BEXMLTextReader::outer_xml()
 	} else {
 		auto error_code = xml_error->code;
 		xmlResetError ( xml_error );
-		
+
 		throw BEXMLReaderInterface_Exception ( error_code );
 	}
 
@@ -351,7 +351,7 @@ std::string BEXMLTextReader::as_string()
 void BEXMLTextReader::skip_unwanted_nodes ( )
 {
 	// Skip over unwanted tags (including subtrees)
-	
+
 	const int depth = this->depth();
 
 	do {
@@ -359,7 +359,7 @@ void BEXMLTextReader::skip_unwanted_nodes ( )
 	} while ( this->depth() != depth );
 
 	// consume the element's end tag
-	
+
 	if ( this->node_type() == XML_READER_TYPE_END_ELEMENT ) {
 		this->read();
 	}

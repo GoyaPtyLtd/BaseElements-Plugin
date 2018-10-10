@@ -1,12 +1,12 @@
 /*
  BESQLCommand.cpp
  BaseElements Plug-In
- 
+
  Copyright 2011-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
- 
+
  http://www.goya.com.au/baseelements/plugin
- 
+
  */
 
 
@@ -29,7 +29,7 @@ BESQLCommand::BESQLCommand ( const Text& _expression, const Text& _filename )
 
 	column_separator = '\t';
 	row_separator = FILEMAKER_END_OF_LINE_CHAR;
-	
+
 	waiting = false;
 }
 
@@ -44,21 +44,21 @@ void BESQLCommand::execute ( )
 
 
 void BESQLCommand::execute ( const ExprEnv& environment )
-{	
+{
 	bool ddl = is_ddl_command();
-	
+
 	if ( ddl && !waiting ) {
 
 		// unique_ptrs : do not use the copy constructor
 		BESQLCommandUniquePtr command ( new BESQLCommand ( *expression, *filename ) );
 		command->wait();
-		
+
 		g_ddl_command.swap ( command );
 
 	} else {
-		
+
 		errcode error = environment.ExecuteFileSQLTextResult ( *expression, *filename, *parameters, *result, column_separator, row_separator );
-		
+
 		if ( ddl ) {
 			g_last_ddl_error = error;
 		} else {
@@ -76,7 +76,7 @@ TextUniquePtr BESQLCommand::get_text_result ( void )
 	if ( !waiting ) {
 		text_result->AppendText( result->GetAsText() );
 	}
-	
+
 	return text_result;
 
 }
@@ -88,7 +88,7 @@ void BESQLCommand::set_column_separator ( const Text& new_column_separator )
 	if ( new_column_separator.GetSize() >= 1 ) {
 		new_column_separator.GetUnicode ( &column_separator, 0, 1 );
 	} else {
-		column_separator = NULL;
+		column_separator = '\0';
 	}
 }
 
@@ -99,27 +99,27 @@ void BESQLCommand::set_row_separator ( const Text& new_row_separator )
 	if ( new_row_separator.GetSize() >= 1 ) {
 		new_row_separator.GetUnicode ( &row_separator, 0, 1 );
 	} else {
-		row_separator = NULL;
+		row_separator = '\0';
 	}
 }
 
 
 
-bool BESQLCommand::is_ddl_command ( void ) const 
+bool BESQLCommand::is_ddl_command ( void ) const
 {
 	const TextUniquePtr alter;
 	alter->Assign ( "ALTER" );
-	
+
 	const TextUniquePtr create;
 	create->Assign ( "CREATE" );
-	
+
 	const TextUniquePtr drop;
 	drop->Assign ( "DROP" );
-		
+
 	bool is_ddl = expression->FindIgnoringCase ( *alter, 0 ) == 0 ||
 				expression->FindIgnoringCase ( *create, 0 ) == 0 ||
 				expression->FindIgnoringCase ( *drop, 0 ) == 0;
 
 	return is_ddl;
-	
+
 }

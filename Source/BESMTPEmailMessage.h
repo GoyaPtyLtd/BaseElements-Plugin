@@ -1,12 +1,12 @@
 /*
  BESMTPEmailMessage.h
  BaseElements Plug-In
- 
+
  Copyright 2014-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
- 
+
  http://www.goya.com.au/baseelements/plugin
- 
+
  */
 
 
@@ -19,7 +19,11 @@
 #include "BESMTPContainerAttachments.h"
 #include "Net/BEMimeticMIMEEntity.h"
 
-#include <mimetic/mimetic.h>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-register"
+#pragma GCC diagnostic ignored "-Wunused-private-field"
+    #include <mimetic/mimetic.h>
+#pragma GCC diagnostic pop
 
 #include <string>
 #include <vector>
@@ -28,10 +32,10 @@
 class BESMTPEmailMessage {
 
 public:
-	
+
 	BESMTPEmailMessage ( const std::string& from, const std::string& to, const std::string& subject, const std::string& message_body );
 	~BESMTPEmailMessage ( );
-	
+
 	std::unique_ptr< BEValueList<std::string> > to_address ( ) { return get_address_list ( message->header().to().str() ); };
 	std::string from_address ( ) { return message->header().from().str(); };
 
@@ -45,8 +49,8 @@ public:
 	void set_attachments ( const BESMTPContainerAttachmentVector& attachment_list );
 
 	std::string as_string ( );
-	
-	
+
+
 protected:
 
 	BEMimeticMIMEEntity * message;
@@ -54,14 +58,14 @@ protected:
 	mimetic::MimeEntity * html;
 
 	std::shared_ptr< BEValueList<std::string> > bcc_address_list;
-	
+
 	BESMTPContainerAttachmentVector attachments;
-	
+
 	std::unique_ptr< BEValueList<std::string> > get_address_list ( const std::string& addresses );
 	void add_attachment ( const BESMTPContainerAttachment new_attachment );
 	void add_attachments ( void );
 	void build_message ( );
-	
+
 };
 
 
