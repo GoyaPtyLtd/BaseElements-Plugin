@@ -506,7 +506,7 @@ std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& paramet
 
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 		auto pdf = ParameterAsVectorChar ( parameters, which );
-		pdf_document->Load ( pdf.data(), pdf.size() );
+		pdf_document->Load ( pdf.data(), (long)pdf.size() );
 	} else {
 		auto pdf_path = ParameterAsPath ( parameters, which );
 		pdf_path.make_preferred();
@@ -769,7 +769,7 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
                 error_result = errno;
                 iconv_close ( conversion ); // int =
                 if ( error_result != EILSEQ ) {
-                    throw BEPlugin_Exception ( error_result );
+                    throw BEPlugin_Exception ( (fmx::errcode)error_result );
                 }
 			}
 

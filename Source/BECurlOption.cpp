@@ -45,7 +45,7 @@ void BECurlOption::set ( const fmx::Data& option_value )
 			break;
 			
 		case type_curl_off_t:
-			curl_off_t_value = DataAsDouble ( option_value );
+			curl_off_t_value = (curl_off_t)DataAsDouble ( option_value );
 			break;
 			
 		case type_named_constant:

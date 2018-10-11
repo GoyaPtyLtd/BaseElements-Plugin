@@ -380,7 +380,7 @@ fmx::errcode BE_FileSize ( short /* funcId */, const ExprEnv& /* environment */,
 		auto path = ParameterAsPath ( parameters );
 		auto size = file_or_directory_size ( path );
 
-		SetResult ( size, results );
+		SetResult ( (double)size, results );
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -408,7 +408,7 @@ fmx::errcode BE_FileModificationTimestamp ( short /* funcId */, const ExprEnv& /
         const std::time_t last_modified = boost::filesystem::last_write_time ( path );
 		const fmx::int64 timestamp = std_time_to_timestamp ( last_modified );
 
-		SetResult ( timestamp, results );
+		SetResult ( (double)timestamp, results );
 
 	} catch ( filesystem_error& e ) {
         g_last_error = e.code().value();
@@ -630,7 +630,7 @@ fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, con
 
 		}
 
-		SetResult ( skipped, results );
+		SetResult ( (double)skipped, results );
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -1402,7 +1402,7 @@ fmx::errcode BE_ArraySetFromValueList ( short /* funcId */, const fmx::ExprEnv& 
 		arrays.push_back ( array );
 		const size_t size = arrays.size();
 
-		SetResult ( size, results );
+		SetResult ( (double)size, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -1428,7 +1428,7 @@ fmx::errcode BE_ArrayGetSize ( short /* funcId */, const fmx::ExprEnv& /* enviro
 		try {
 
 			const size_t array_size = ( arrays.at ( array_id ) )->size();
-			SetResult ( array_size, results );
+			SetResult ( (double)array_size, results );
 
 		} catch ( out_of_range& /* e */ ) {
 			; // we not returnin' anyting
@@ -3310,7 +3310,7 @@ fmx::errcode BE_ScriptStepInstall ( short /* function_id */, const fmx::ExprEnv&
 
 		const fmx::uint32 flags = fmx::ExprEnv::kAllDeviceCompatible;
 
-		error = environment.RegisterScriptStep ( *g_be_plugin->id(), id, *name, *definition, *description, flags, (fmx::ExtPluginType)BE_ScriptStepPerform);
+		error = (fmx::errcode)environment.RegisterScriptStep ( *g_be_plugin->id(), (const short)id, *name, *definition, *description, flags, (fmx::ExtPluginType)BE_ScriptStepPerform);
 
 		if ( kNoError == error ) {
 			auto calculation = ParameterAsUTF8String ( parameters, 4 );
@@ -3501,7 +3501,7 @@ fmx::errcode BE_TimeFunctions ( const short funcId, const ExprEnv& /* environmen
 
 		}
 
-		SetResult ( reply, results );
+		SetResult ( (double)reply, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -3925,7 +3925,7 @@ fmx::errcode BE_ConvertContainer ( short /* funcId */, const ExprEnv& /* environ
 			const unsigned long width = ParameterAsLong ( parameters, 2, kErrorUnknown );
 			const unsigned long height = ParameterAsLong ( parameters, 3, kErrorUnknown );
 
-			SetResult ( filename, container_data, type, width, height, results );
+			SetResult ( filename, container_data, type, (const short)width, (const short)height, results );
 
 		} else {
 			error = kInvalidFieldType;

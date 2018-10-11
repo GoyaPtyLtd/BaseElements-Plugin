@@ -2,7 +2,7 @@
  BEMessageDigest.cpp
  BaseElements Plug-In
  
- Copyright 2011-2017 Goya. All rights reserved.
+ Copyright 2011-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -144,7 +144,7 @@ string HMAC ( const string message, const unsigned long algorithm, const unsigne
             const std::vector<char> decoded_key = Base64_Decode ( key );
             HMAC_Init_ex ( &hmac_context, &decoded_key[0], (int)decoded_key.size(), &type, NULL );
 
-		} catch ( std::exception& e ) {
+		} catch ( std::exception& /* e */ ) {
 			throw BEPlugin_Exception ( kMessageDigestDecodeKeyError );
 		}
 
@@ -154,7 +154,7 @@ string HMAC ( const string message, const unsigned long algorithm, const unsigne
 			const std::vector<char> decoded_message = Base64_Decode ( message );
 			HMAC_Update ( &hmac_context, (const unsigned char *)&decoded_message[0], decoded_message.size() );
 
-		} catch ( std::exception& e ) {
+		} catch ( std::exception& /* e */ ) {
 			throw BEPlugin_Exception ( kMessageDigestDecodeMessageError );
 		}
 
@@ -166,7 +166,7 @@ string HMAC ( const string message, const unsigned long algorithm, const unsigne
 			boost::algorithm::unhex ( key, std::back_inserter ( decoded_key ) );
 			HMAC_Init_ex ( &hmac_context, &decoded_key[0], (int)decoded_key.size(), &type, NULL );
 
-		} catch ( std::exception& e ) {
+		} catch ( std::exception& /* e */ ) {
 			throw BEPlugin_Exception ( kMessageDigestDecodeKeyError );
 		}
 
@@ -176,7 +176,7 @@ string HMAC ( const string message, const unsigned long algorithm, const unsigne
 			boost::algorithm::unhex ( message, std::back_inserter ( decoded_message ) );
 			HMAC_Update ( &hmac_context, (const unsigned char *)&decoded_message[0], decoded_message.size() );
 
-		} catch ( std::exception& e ) {
+		} catch ( std::exception& /* e */ ) {
 			throw BEPlugin_Exception ( kMessageDigestDecodeMessageError );
 		}
 

@@ -90,7 +90,7 @@ void BEJSON::json_path_query ( const std::string& json_path, fmx::Data& results 
 
 void BEJSON::array_size ( fmx::Data& results ) {
 	
-	SetResult ( json_array_size ( document ), results );
+	SetResult ( (double)json_array_size ( document ), results );
 
 } // array_size
 
@@ -134,7 +134,7 @@ std::string BEJSON::encode ( const std::string& key, const fmx::Data& value, con
 			if ( json_text.empty() ) {
 				json_text = "0";
 			}
-			json_value = json_integer_with_string( number->AsFloat ( ), json_text.c_str() ); // AsLong returns an int (which overflows)
+			json_value = json_integer_with_string ( (json_int_t)number->AsFloat ( ), json_text.c_str() ); // AsLong returns an int (which overflows)
 		} else {
 
 			// put it in as string and rip out the unwanted quotes below

@@ -50,11 +50,11 @@ const std::string xero_generate_key_pair ( BEX509 * x509 )
 			EVP_PKEY_free ( private_key );
 
 		} else {
-			throw BEPlugin_Exception ( ERR_get_error() );
+			throw BEPlugin_Exception ( (fmx::errcode)ERR_get_error() );
 		}
 
 	} else {
-		throw BEPlugin_Exception ( ERR_get_error() );
+		throw BEPlugin_Exception ( (fmx::errcode)ERR_get_error() );
 	}
 
 	return generated_key;

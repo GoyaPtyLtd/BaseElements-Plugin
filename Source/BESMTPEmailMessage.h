@@ -19,12 +19,6 @@
 #include "BESMTPContainerAttachments.h"
 #include "Net/BEMimeticMIMEEntity.h"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-register"
-#pragma GCC diagnostic ignored "-Wunused-private-field"
-    #include <mimetic/mimetic.h>
-#pragma GCC diagnostic pop
-
 #include <string>
 #include <vector>
 

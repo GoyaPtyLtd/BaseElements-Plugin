@@ -43,7 +43,7 @@ extern std::string g_text_encoding;
 
 const fmx::errcode TextConstantFunction ( const std::wstring& text, fmx::Data& results );
 
-void SetResult ( const double number, fmx::Data& results );
+void SetResult(const double number, fmx::Data& results);
 void SetResultAsDoubleAsText ( const double number, fmx::Data& results );
 void SetResult ( const fmx::Text& text, fmx::Data& results );
 

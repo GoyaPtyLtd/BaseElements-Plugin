@@ -139,7 +139,7 @@ const long Zip ( const BEValueList<std::string> * filenames, const std::string& 
 
 const std::vector<char> CompressContainerStream ( const std::vector<char> data )
 {
-	size_t size_required = compressBound ( data.size() );
+	auto size_required = compressBound ( (unsigned long)data.size() );
 
 	z_stream stream;
 	stream.next_in = (unsigned char *)&data[0];

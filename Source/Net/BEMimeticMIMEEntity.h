@@ -17,12 +17,21 @@
  A simple class to allow overriding write so that (long) header lines are not folded.
  */
 
+#ifdef FMX_WIN_TARGET
+
+#pragma warning(push, 0)
+#include <mimetic/mimetic.h>
+#pragma warning(pop)
+
+#else
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-register"
 #pragma GCC diagnostic ignored "-Wunused-private-field"
-    #include <mimetic/mimetic.h>
+#include <mimetic/mimetic.h>
 #pragma GCC diagnostic pop
+
+#endif
 
 
 class BEMimeticMIMEEntity : public mimetic::MultipartMixed {

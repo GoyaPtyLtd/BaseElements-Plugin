@@ -185,7 +185,7 @@ const vector<char> CipherEncrypt ( const string cipher_name, const vector<unsign
 		throw BEPlugin_Exception ( kCipherInvalidKeySize );
 	}
 	
-	const long max_outlen = data.size() + EVP_MAX_BLOCK_LENGTH;
+	const long max_outlen = (long)data.size() + EVP_MAX_BLOCK_LENGTH;
 	if ( max_outlen > INT_MAX ) {
 		throw BEPlugin_Exception ( kCipherDataTooLarge );
 	}
@@ -236,7 +236,7 @@ const vector<char> CipherDecrypt ( const string cipher_name, const vector<unsign
 		throw BEPlugin_Exception ( kCipherInvalidKeySize );
 	}
 	
-	const long max_outlen = data.size() + EVP_MAX_BLOCK_LENGTH;
+	const long max_outlen = (long)data.size() + EVP_MAX_BLOCK_LENGTH;
 	if ( max_outlen > INT_MAX ) {
 		throw BEPlugin_Exception ( kCipherDataTooLarge );
 	}

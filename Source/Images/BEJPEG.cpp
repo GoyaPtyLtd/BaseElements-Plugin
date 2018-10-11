@@ -2,7 +2,7 @@
  BEJPEG.cpp
  BaseElements Plug-In
 
- Copyright 2015 Goya. All rights reserved.
+ Copyright 2015-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -83,15 +83,15 @@ void BEJPEG::adjust_dimensions ( const int image_width, const int image_height )
 		width = image_width;
 		height = image_height;
 	} else if ( width > 0 && height < 1 ) {
-		height = ceil ( ((double)width / (double)image_width) * image_height );
+		height = (int)ceil ( ((double)width / (double)image_width) * image_height );
 	} else if ( width < 1 && height > 0 ) {
-		width = ceil ( ((double)height / (double)image_width) * image_height );
+		width = (int)ceil ( ((double)height / (double)image_width) * image_height );
 	}
 
 	if ( scale != 0.0 ) {
 		
-		width = ceil ( (double)width * scale );
-		height = ceil ( (double)height * scale );
+		width = (int)ceil ( (double)width * scale );
+		height =(int) ceil ( (double)height * scale );
 		
 	}
 	
@@ -119,7 +119,7 @@ void BEJPEG::read_header ( void )
 
 		if ( data.size() > 0) {
 
-			int error = tjDecompressHeader3 ( jpeg_decompressor, &data[0], data.size(), &image_width, &image_height, &chrominance_subsampling, &pixel_format );
+			int error = tjDecompressHeader3 ( jpeg_decompressor, &data[0], (unsigned long)data.size(), &image_width, &image_height, &chrominance_subsampling, &pixel_format );
 			tjDestroy(jpeg_decompressor); // error =
 
 			if ( 0 == error ) {
@@ -150,7 +150,7 @@ void BEJPEG::decompress ( void )
 
 		if ( data.size() > 0) {
 			
-			int error = tjDecompress2 ( jpeg_decompressor, &data[0], data.size(), &decompressed_image[0], width, 0, height, pixel_format, 0 );
+			int error = tjDecompress2 ( jpeg_decompressor, &data[0], (unsigned long)data.size(), &decompressed_image[0], width, 0, height, pixel_format, 0 );
 			tjDestroy ( jpeg_decompressor ); // error =
 
 			if ( 0 == error ) {

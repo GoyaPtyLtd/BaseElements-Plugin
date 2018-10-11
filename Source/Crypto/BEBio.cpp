@@ -2,7 +2,7 @@
  BEBio.cpp
  BaseElements Plug-In
 
- Copyright 2015 Goya. All rights reserved.
+ Copyright 2015-2018 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -24,7 +24,7 @@ BEBio::BEBio ( )
 	bio = BIO_new ( BIO_s_mem() );
 
 	if ( ! bio ) {
-		throw BEPlugin_Exception ( ERR_get_error() );
+		throw BEPlugin_Exception ( (fmx::errcode)ERR_get_error() );
 	}
 
 }
@@ -63,7 +63,7 @@ const std::string BEBio::extract ( X509 * x509 )
 	if ( PEM_write_bio_X509 ( bio, x509 ) ) {
 		out = extract();
 	} else {
-		throw BEPlugin_Exception ( ERR_get_error() );
+		throw BEPlugin_Exception ((fmx::errcode)ERR_get_error() );
 	}
 
 	return out;
@@ -78,7 +78,7 @@ const std::string BEBio::extract ( RSA * rsa_key_pair )
 	if ( PEM_write_bio_RSAPrivateKey ( bio, rsa_key_pair, NULL, NULL, 0, NULL, NULL ) ) {
 		out = extract();
 	} else {
-		throw BEPlugin_Exception ( ERR_get_error() );
+		throw BEPlugin_Exception ((fmx::errcode)ERR_get_error() );
 	}
 
 	return out;
@@ -93,7 +93,7 @@ const std::string BEBio::extract ( EVP_PKEY * private_key )
 	if ( PEM_write_bio_PrivateKey ( bio, private_key, NULL, NULL, 0, NULL, NULL ) ) {
 		out = extract();
 	} else {
-		throw BEPlugin_Exception ( ERR_get_error() );
+		throw BEPlugin_Exception ((fmx::errcode)ERR_get_error() );
 	}
 
 	return out;
