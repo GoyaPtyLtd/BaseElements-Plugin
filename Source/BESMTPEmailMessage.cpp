@@ -60,7 +60,7 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	
 	// rfc 1123 (rfc 822) date header
 	Poco::LocalDateTime now;
-	static const std::string rfc1123_date = Poco::DateTimeFormatter::format ( now.timestamp(), Poco::DateTimeFormat::RFC1123_FORMAT, Poco::Timezone::tzd() );
+	auto rfc1123_date = Poco::DateTimeFormatter::format ( now.timestamp(), Poco::DateTimeFormat::RFC1123_FORMAT, Poco::Timezone::tzd() );
 	g_smtp_custom_headers [ "Date" ] = rfc1123_date;
 	
 	// custom headers
