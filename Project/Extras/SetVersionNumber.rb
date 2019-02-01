@@ -20,6 +20,8 @@ if testing then
 end
 
 win = project_directory + 'Resources/BEPluginVersion.rc'
+win_project = project_directory + 'Resources/BaseElements.rc'
+linux_project = project_directory + 'Project/BaseElements.cbp'
 
 version_file = project_directory + 'Source/BEPluginVersion.h'
 info_plist_file = project_directory + 'Resources/Base.lproj/Info.plist'
@@ -173,12 +175,11 @@ Encoding.default_internal = Encoding::UTF_8
 ########################################################################
 
 version = nil
+version_string = ''
+version_autoupdate = ''  
 
 File.open version_file do | macos_strings_file |
 
-  version_string = ''
-  version_autoupdate = ''
-  
   macos_strings_file.each do | line |
     
     fields = line.split ' ', 3
@@ -216,7 +217,26 @@ win_version.write_version_file win
 # linux
 ########################################################################
 
-# just works... it's done anyway when the function strings file is built
+# except for the project file... just works... it's done anyway when the function strings file is built
+
+lines = ''
+
+File.open linux_project do | linux_project_file |
+  
+  linux_project_file.each do | line |
+        
+    if line['-soname'] then
+            lines += '			<Add option="-Wl,-soname=BaseElements_Plugin_' + version_string + '" />' + "\n"
+    else
+      lines += line
+    end
+      
+  end
+  
+end
+
+File.write linux_project, lines, :encoding => Encoding::UTF_8
+
 
 ########################################################################
 
