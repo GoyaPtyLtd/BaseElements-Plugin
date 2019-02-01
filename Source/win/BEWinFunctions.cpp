@@ -2,7 +2,7 @@
  BEWinFunctions.cpp
  BaseElements Plug-in
 	
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -1023,7 +1023,7 @@ const unsigned long Sub_LoadString ( unsigned long stringID, FMX_Unichar* intoHe
 
 	LoadStringW((HINSTANCE)(gFMX_ExternCallPtr->instanceID), (unsigned int)stringID, (LPWSTR)intoHere, (fmx::uint32)resultsize);
 
-	if (kFMXT_AppConfigStr == stringID) {
+	if (kFMXT_AppConfigStr == stringID || PLUGIN_DESCRIPTION_STRING_ID == stringID) {
 		std::wstring plugin_description_string = (LPWSTR)intoHere;
 		plugin_description_string.replace(plugin_description_string.find(L"%@"), 2, WSTRING(VERSION_STRING));
 		boost::replace_all(plugin_description_string, L"\n", L"\r\n");

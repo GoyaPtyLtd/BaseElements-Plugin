@@ -2,7 +2,7 @@
  BELinuxFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2016-2018 Goya. All rights reserved.
+ Copyright 2016-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -183,7 +183,7 @@ unsigned long Sub_LoadString ( const unsigned long string_id, FMX_Unichar * into
 	try {
 		wanted = function_strings.at ( string_id );
 
-		if ( kFMXT_AppConfigStr == string_id ) {
+		if ( kFMXT_AppConfigStr == string_id  || PLUGIN_DESCRIPTION_STRING_ID == stringID ) {
             wanted.replace ( wanted.find ( "%@" ), 2, PLUGIN_DESCRIPTION_STRING_ID_STRING );
 		}
 
