@@ -2,7 +2,7 @@
  BEPluginVersion.h
  BaseElements Plug-In
  
- Copyright 2015-2018 Goya. All rights reserved.
+ Copyright 2015-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -19,7 +19,7 @@
 
 // this is the only place the version information is set
 
-#define	AUTO_UPDATE_VERSION L"04000300"
+#define	AUTO_UPDATE_VERSION L"04000302"
 #define VERSION_STRING "4.0.3"
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/" VERSION_STRING
