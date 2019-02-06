@@ -104,6 +104,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, 1 );
 	g_be_plugin->RegisterFunction ( kBE_PreferenceSet, BE_PreferenceSet, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_PreferenceGet, BE_PreferenceGet, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, 1 );
 #else
 	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardGetText, BE_NotImplemented, 1 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardSetText, BE_NotImplemented, 2 );
@@ -112,6 +113,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_OpenURL, BE_NotImplemented, 1 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceSet, BE_NotImplemented, 2, 3 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceGet, BE_NotImplemented, 1, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_EvaluateJavaScript, BE_NotImplemented, 1 );
 #endif
 
 #if ( FMX_MAC_TARGET || FMX_WIN_TARGET )
@@ -266,9 +268,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_XeroSetTokens, BE_XeroSetTokens, 2 );
 	g_be_plugin->RegisterFunction ( kBE_XeroGenerateKeys, BE_XeroGenerateKeys, 1, 7 );
-
-	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, 1 );
-
 
 	g_be_plugin->RegisterFunction ( kBE_ArraySetFromValueList, BE_ArraySetFromValueList, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_ArrayGetSize, BE_ArrayGetSize, 1 );
