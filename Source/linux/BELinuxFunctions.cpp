@@ -183,7 +183,7 @@ unsigned long Sub_LoadString ( const unsigned long string_id, FMX_Unichar * into
 	try {
 		wanted = function_strings.at ( string_id );
 
-		if ( kFMXT_AppConfigStr == string_id  || PLUGIN_DESCRIPTION_STRING_ID == stringID ) {
+		if ( kFMXT_AppConfigStr == string_id  || PLUGIN_DESCRIPTION_STRING_ID == string_id ) {
             wanted.replace ( wanted.find ( "%@" ), 2, PLUGIN_DESCRIPTION_STRING_ID_STRING );
 		}
 
