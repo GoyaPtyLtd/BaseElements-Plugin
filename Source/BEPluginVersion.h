@@ -19,7 +19,7 @@
 
 // this is the only place the version information is set
 
-#define	AUTO_UPDATE_VERSION L"04000302"
+#define	AUTO_UPDATE_VERSION L"04000303"
 #define VERSION_STRING "4.0.3"
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/" VERSION_STRING
