@@ -43,12 +43,12 @@
 		</Compiler>
 		<Linker>
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
-			<Add option="-Wl,-soname=BaseElements_Plugin_4.0b6" />
+			<Add option="-Wl,-soname=BaseElements_Plugin_4.0.3" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="../Libraries/linux/libz.a" />
 			<Add library="../Libraries/linux/libssl.a" />
 			<Add library="../Libraries/linux/libcrypto.a" />
-			<Add library="../Libraries/linux/libssh2.a" />
+			<Add library="/usr/lib64/libssh2.so.1" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
 			<Add library="../Libraries/linux/libboost_filesystem.a" />
 			<Add library="../Libraries/linux/libboost_regex.a" />
@@ -65,7 +65,7 @@
 			<Add library="../Libraries/linux/libxml2.a" />
 			<Add library="../Libraries/linux/libxslt.a" />
 			<Add library="../Libraries/linux/libPocoFoundation.a" />
-			<Add library="/lib64/libbz2.so.1" />
+			<Add library="/lib64/libbz2.so" />
 			<Add library="../Libraries/linux/libexpat.a" />
 			<Add library="../Libraries/linux/libfreetype.a" />
 			<Add library="../Libraries/linux/libfontconfig.a" />
@@ -75,7 +75,7 @@
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
-			<Add before="cp /home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
+			<Add before="cp /home/mark/Documents/BaseElements-Plugin/Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="../Headers/FMWrapper/FMXBinaryData.h">
@@ -129,6 +129,7 @@
 		<Unit filename="../Source/BETime.cpp" />
 		<Unit filename="../Source/BEXMLReader.cpp" />
 		<Unit filename="../Source/BEXMLReaderInterface.cpp" />
+		<Unit filename="../Source/BEXMLSchema.cpp" />
 		<Unit filename="../Source/BEXMLTextReader.cpp" />
 		<Unit filename="../Source/BEXMLTextWriter.cpp" />
 		<Unit filename="../Source/BEXSLT.cpp" />
