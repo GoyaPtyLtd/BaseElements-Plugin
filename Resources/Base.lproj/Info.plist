@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>FMXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>${PRODUCT_NAME} version 4.0.3</string>
+	<string>4.0.3</string>
 	<key>CFBundleSignature</key>
 	<string>GyBE</string>
 	<key>CFBundleVersion</key>
