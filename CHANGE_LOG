@@ -2,11 +2,13 @@
 Version 4.0.4
 ########################################################################
 
-November 6, 2018
+February 8, 2019
 
 
 Changes
 
+BE_EvaluateJavaScript: not implemented on FMS/Cloud
+BE_MessageDigest: no longer deprecated
 BE_SMTPSend: Don't store the date for the rfc1123 date header
 
 

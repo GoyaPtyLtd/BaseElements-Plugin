@@ -18,9 +18,10 @@
 #define PLUGIN_DESCRIPTION_STRING_ID_STRING "PLUGIN_DESCRIPTION_STRING_ID"
 
 // this is the only place the version information is set
+// building the macOS version will automatically set the version information for win/linux
 
-#define	AUTO_UPDATE_VERSION L"04000303"
-#define VERSION_STRING "4.0.3"
+#define	AUTO_UPDATE_VERSION L"04000400"
+#define VERSION_STRING "4.0.4"
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/" VERSION_STRING
 
