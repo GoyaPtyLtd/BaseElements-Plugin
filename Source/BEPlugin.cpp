@@ -2,7 +2,7 @@
  BEPlugin.cpp
  BaseElements Plug-in
 
- Copyright 2010-2018 Goya. All rights reserved.
+ Copyright 2010-2019 Goya. All rights reserved.
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -231,16 +231,21 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PATCH, BE_HTTP_POST_PUT_PATCH, 2, 4 );
 
 
-	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigest_Deprecated, BE_MessageDigest_Deprecated, 1, 3 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_MD5 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
-	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA256 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
-	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_MDC2 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
-	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
-	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA1 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
-	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA224 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
-	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
-	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset_Deprecated, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigest, BE_MessageDigest, 1, 3 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_MD5 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA256 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_MDC2 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA1 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA224 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterHiddenFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+
+#if defined FMX_LINUX_TARGET
+	g_be_plugin->RegisterHiddenFunction ( kBE_HMAC_Deprecated, BE_NotImplemented, 2, 5 );
+#else
 	g_be_plugin->RegisterHiddenFunction ( kBE_HMAC_Deprecated, BE_HMAC_Deprecated, 2, 5 );
+#endif
 
 	g_be_plugin->RegisterHiddenFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
 	g_be_plugin->RegisterHiddenFunction ( kBE_Encoding_Base64 + kBE_EncodingOffset, BE_NumericConstants );

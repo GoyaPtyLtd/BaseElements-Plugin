@@ -200,7 +200,7 @@ File.open version_file do | macos_strings_file |
   
 end
 
-`/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString #{version.short_version_string}" #{info_plist_file}`
+`/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString #{version.string}" #{info_plist_file}`
 `/usr/libexec/PlistBuddy -c "Set :CFBundleGetInfoString #{version.get_info_string}" #{info_plist_file}`
 `/usr/libexec/PlistBuddy -c "Set :CFBundleVersion #{version.string}" #{info_plist_file}`
 

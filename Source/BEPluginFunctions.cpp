@@ -3798,7 +3798,7 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 
 
 
-fmx::errcode BE_MessageDigest_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 

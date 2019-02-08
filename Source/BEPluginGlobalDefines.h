@@ -144,7 +144,7 @@ enum functions {
 	kBE_FileMakerSQL = 151,
 	kBE_HTTP_GET_File = 152,
 	kBE_GetLastError = 153,
-	kBE_MessageDigest_Deprecated = 154,
+	kBE_MessageDigest = 154,
 	kBE_GetLastDDLError = 155,
 	kBE_SaveURLToFile = 156,
 	kBE_DialogProgress = 157,
@@ -322,7 +322,7 @@ enum errors {
 enum {
 	kBE_NumericConstantOffset = 1000,
 	kBE_ButtonOffset = 1000,
-	kBE_MessageDigestAlgorithmOffset_Deprecated = 2000,
+	kBE_MessageDigestAlgorithmOffset = 2000,
 	kBE_FileTypeOffset = 3000,
 	kBE_EncodingOffset = 4000
 };

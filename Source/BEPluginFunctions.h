@@ -2,7 +2,7 @@
  BEPluginFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2018 Goya. All rights reserved.
+ Copyright 2010-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -167,7 +167,9 @@ fmx::errcode BE_JSON_Encode_Deprecated ( short funcId, const fmx::ExprEnv& envir
 
 fmx::errcode BE_Base64_Decode_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_Base64_Encode_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_MessageDigest_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+
+fmx::errcode BE_MessageDigest ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+
 fmx::errcode BE_HMAC_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_Encrypt_AES_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
