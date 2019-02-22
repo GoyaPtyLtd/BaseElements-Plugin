@@ -33,24 +33,25 @@ info_plist_file = project_directory + 'Resources/Base.lproj/Info.plist'
 
 class Version
 
-  def initialize version_string, version_autoupdate
+  def initialize version_string, version_number_string, version_autoupdate
 
       @string = version_string
+      @version_number = version_number_string
       @autoupdate = version_autoupdate
       
       @eol = '\n'
       
    end
    
-   attr_reader :string, :autoupdate
+   attr_reader :string, :version_number, :autoupdate
 
 
    def description
-     "Version: #{@string}#{@eol}#{@eol}This plug-in provides additional functionality for BaseElements from Goya."
+     "Version: #{@version_number}#{@eol}#{@eol}This plug-in provides additional functionality for BaseElements from Goya."
    end
    
    def short_version_string
-     '\${PRODUCT_NAME} version ' + @string
+     '\${PRODUCT_NAME} version ' + @version_number
    end
    
    def copyright_string
@@ -67,8 +68,8 @@ end
 
 class WindowsVersion < Version
 
-  def initialize version_string, version_autoupdate
-    super version_string, version_autoupdate 
+  def initialize version_string, version_number_string, version_autoupdate
+    super version_string, version_number, version_autoupdate 
     @eol = '\r\n'    
   end
 
@@ -176,6 +177,7 @@ Encoding.default_internal = Encoding::UTF_8
 
 version = nil
 version_string = ''
+version_number_string = ''
 version_autoupdate = ''  
 
 File.open version_file do | macos_strings_file |
@@ -188,6 +190,8 @@ File.open version_file do | macos_strings_file |
       
       if fields[1] == 'VERSION_STRING'
         version_string = fields.last.scan(/"([^"\\]*(?:\\.[^"\\]*)*)"/).flatten.first
+      elsif fields[1] == 'VERSION_NUMBER_STRING'
+        version_number_string = fields.last.scan(/"([^"\\]*(?:\\.[^"\\]*)*)"/).flatten.first
       elsif fields[1] == 'AUTO_UPDATE_VERSION'
         version_autoupdate = fields.last.scan(/"([^"\\]*(?:\\.[^"\\]*)*)"/).flatten.first
       end
@@ -196,7 +200,7 @@ File.open version_file do | macos_strings_file |
       
   end
 
-  version = Version.new version_string, version_autoupdate
+  version = Version.new version_string, version_number_string, version_autoupdate
   
 end
 
@@ -209,7 +213,7 @@ end
 # windows
 ########################################################################
 
-win_version = WindowsVersion.new version.string, version.autoupdate
+win_version = WindowsVersion.new version.string, version.version_number, version.autoupdate
 win_version.write_version_file win
 
 
@@ -226,7 +230,7 @@ File.open linux_project do | linux_project_file |
   linux_project_file.each do | line |
         
     if line['-soname'] then
-            lines += '			<Add option="-Wl,-soname=BaseElements_Plugin_' + version_string + '" />' + "\n"
+            lines += '			<Add option="-Wl,-soname=BaseElements_Plugin_' + version_number_string + '" />' + "\n"
     else
       lines += line
     end

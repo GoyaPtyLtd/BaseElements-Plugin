@@ -1,4 +1,15 @@
 ########################################################################
+Version 4.1b1
+########################################################################
+
+February 22, 2019
+
+
+Changes
+
+
+
+########################################################################
 Version 4.0.4
 ########################################################################
 
@@ -111,11 +122,6 @@ BE_Xero_GenerateKeys => BE_XeroGenerateKeys
 BE_Xero_SetTokens => BE_XeroSetTokens
 BE_XML_Parse => BE_XMLParse
 BE_XML_Validate => BE_XMLValidate
-
-
-Changes
-
-BE_SMTP_Send: correct an issue where mail with multiple "to" recipients would cause an error
 
 
 ########################################################################

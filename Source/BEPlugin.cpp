@@ -64,7 +64,7 @@ using namespace fmx;
 #pragma mark Globals
 #pragma mark -
 
-FMX_ExternCallPtr gFMX_ExternCallPtr;				// required by the FMX API
+FMX_ExternCallPtr gFMX_ExternCallPtr; // required by the FMX API
 BEFileMakerPlugin * g_be_plugin;
 
 extern BESQLCommandUniquePtr g_ddl_command;
