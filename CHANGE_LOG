@@ -7,6 +7,8 @@ February 22, 2019
 
 Changes
 
+BE_FileSaveDialog: Set the message rather than the title (which is no longer shown)
+
 Improved support for running in multi-threaded applications
 
 
