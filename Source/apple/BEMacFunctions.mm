@@ -242,10 +242,10 @@ const std::wstring SaveFileDialog ( std::wstring& prompt, std::wstring& fileName
 	NSSavePanel* file_dialog = [NSSavePanel savePanel];
 	
 	NSString * prompt_string = NSStringFromWString ( prompt );
-	[file_dialog setTitle: prompt_string ];
+	[file_dialog setMessage: prompt_string];
 
 	NSString * filename_string = NSStringFromWString ( fileName );
-	[file_dialog setNameFieldStringValue: filename_string ];
+	[file_dialog setNameFieldStringValue: filename_string];
 		
 	NSString * default_directory = NSStringFromWString ( inFolder );
 	if ( [default_directory length] != 0 ) {
