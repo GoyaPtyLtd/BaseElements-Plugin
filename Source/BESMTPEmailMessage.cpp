@@ -2,7 +2,7 @@
  BESMTPEmailMessage.cpp
  BaseElements Plug-In
  
- Copyright 2014-2018 Goya. All rights reserved.
+ Copyright 2014-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -26,7 +26,7 @@
 using namespace std;
 
 
-CustomHeaders g_smtp_custom_headers;
+thread_local CustomHeaders g_smtp_custom_headers;
 
 
 #pragma mark -

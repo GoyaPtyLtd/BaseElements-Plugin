@@ -2,7 +2,7 @@
  BESQLCommand.cpp
  BaseElements Plug-In
 
- Copyright 2011-2018 Goya. All rights reserved.
+ Copyright 2011-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -18,7 +18,8 @@ using namespace std;
 using namespace fmx;
 
 
-thread_local extern errcode g_last_ddl_error;
+extern thread_local errcode g_last_ddl_error;
+
 BESQLCommandUniquePtr g_ddl_command;
 
 
@@ -36,7 +37,7 @@ BESQLCommand::BESQLCommand ( const Text& _expression, const Text& _filename )
 
 void BESQLCommand::execute ( )
 {
-	const ExprEnvUniquePtr environment;
+	ExprEnvUniquePtr environment;
 	FMX_SetToCurrentEnv ( &(*environment) );
 	execute ( *environment );
 }

@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2018 Goya. All rights reserved.
+ Copyright 2010-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -96,25 +96,25 @@ using namespace boost::filesystem;
 #define GZIP_FILE_EXTENSION string ( ".gz" )
 
 
-std::map<short, std::string> g_script_steps;
-extern BEFileMakerPlugin * g_be_plugin;
-
+thread_local std::map<short, std::string> g_script_steps;
 thread_local errcode g_last_error;
 thread_local errcode g_last_ddl_error;
-string g_text_encoding;
-string g_json_error_description;
-BEOAuth * g_oauth;
-struct host_details g_smtp_host;
-BESMTPContainerAttachments g_smtp_attachments;
-vector<BEValueListStringSharedPtr> arrays;
+thread_local string g_text_encoding;
+thread_local string g_json_error_description;
+thread_local BEOAuth * g_oauth;
+thread_local struct host_details g_smtp_host;
+thread_local BESMTPContainerAttachments g_smtp_attachments;
+thread_local vector<BEValueListStringSharedPtr> arrays;
 
-extern int g_http_response_code;
-extern string g_http_response_headers;
-extern CustomHeaders g_http_custom_headers;
-extern CustomHeaders g_smtp_custom_headers;
-extern std::stringstream g_curl_trace;
-extern struct host_details g_http_proxy;
-extern BECurlOptionMap g_curl_options;
+extern BEFileMakerPlugin * g_be_plugin;
+
+extern thread_local int g_http_response_code;
+extern thread_local string g_http_response_headers;
+extern thread_local CustomHeaders g_http_custom_headers;
+extern thread_local CustomHeaders g_smtp_custom_headers;
+extern thread_local std::stringstream g_curl_trace;
+extern thread_local struct host_details g_http_proxy;
+extern thread_local BECurlOptionMap g_curl_options;
 
 
 #pragma mark -

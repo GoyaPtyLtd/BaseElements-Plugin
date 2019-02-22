@@ -2,7 +2,7 @@
  BEPluginUtilities.h
  BaseElements Plug-In
 	
- Copyright 2010-2017 Goya. All rights reserved.
+ Copyright 2010-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -33,7 +33,7 @@ enum {
 };
 
 
-extern std::string g_text_encoding;
+extern thread_local std::string g_text_encoding;
 
 
 // convert "text literal" into L"text literal"

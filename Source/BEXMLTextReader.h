@@ -2,7 +2,7 @@
  BEXMLTextReader.h
  BaseElements Plug-In
  
- Copyright 2012-2018 Goya. All rights reserved.
+ Copyright 2012-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -23,7 +23,7 @@
 #include <libxml/xmlreader.h>
 
 
-static std::string error_report;
+static thread_local std::string error_report;
 
 
 // Partial wrapper for the libxml2 XMLTextReader interface to simplify error handling

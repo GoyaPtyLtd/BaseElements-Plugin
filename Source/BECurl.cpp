@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
 
- Copyright 2011-2018 Goya. All rights reserved.
+ Copyright 2011-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -62,14 +62,15 @@ using namespace boost::filesystem;
 #pragma mark Globals
 #pragma mark -
 
-int g_http_response_code;
-string g_http_response_headers;
-std::stringstream g_curl_trace;
-CustomHeaders g_http_custom_headers;
-struct host_details g_http_proxy;
-BECurlOptionMap g_curl_options;
+thread_local int g_http_response_code;
+thread_local string g_http_response_headers;
+thread_local std::stringstream g_curl_trace;
+thread_local CustomHeaders g_http_custom_headers;
+thread_local struct host_details g_http_proxy;
+thread_local BECurlOptionMap g_curl_options;
 
-extern BEOAuth * g_oauth;
+extern thread_local BEOAuth * g_oauth;
+
 extern BEFileMakerPlugin * g_be_plugin;
 
 

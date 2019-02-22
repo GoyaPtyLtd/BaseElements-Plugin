@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
  
- Copyright 2010-2018 Goya. All rights reserved.
+ Copyright 2010-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -86,7 +86,7 @@
 #include "BECppUtilities.h"
 
 
-thread_local extern fmx::errcode g_last_error;
+extern thread_local fmx::errcode g_last_error;
 
 
 #endif // __cplusplus

@@ -2,7 +2,7 @@
  BESMTP.cpp
  BaseElements Plug-In
  
- Copyright 2014-2017 Goya. All rights reserved.
+ Copyright 2014-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,8 +13,8 @@
 #include "BESMTP.h"
 
 
-extern BECurlOptionMap g_curl_options;
-extern CustomHeaders g_http_custom_headers;
+extern thread_local BECurlOptionMap g_curl_options;
+extern thread_local CustomHeaders g_http_custom_headers;
 
 
 using namespace std;

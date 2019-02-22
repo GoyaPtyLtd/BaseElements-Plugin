@@ -37,11 +37,11 @@ const UINT32 ClipboardOffset ( const wstring& atype );
 static int CALLBACK SelectFolderCallback ( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData );
 LRESULT CALLBACK DialogCallback ( int nCode, WPARAM wParam, LPARAM lParam );
 
-HHOOK g_window_hook;
+thread_local HHOOK g_window_hook;
 
-wstring g_button1_name;
-wstring g_button2_name;
-wstring g_button3_name;
+thread_local wstring g_button1_name;
+thread_local wstring g_button2_name;
+thread_local wstring g_button3_name;
 
 // globals for the progress dialog
 
@@ -53,13 +53,13 @@ wstring g_button3_name;
 #define PROGDLG_NOCANCEL         0x00000040
 #endif
 
-IProgressDialog * progress_dialog;
-DWORD progress_dialog_maximum;
+thread_local IProgressDialog * progress_dialog;
+thread_local DWORD progress_dialog_maximum;
 
 // undocumented/private(?) system clipboard formats
-UINT BE_CF_FileGroupDescriptorW;
-UINT BE_CF_FileNameW;
-UINT BE_CF_FileNameMapW;
+thread_local UINT BE_CF_FileGroupDescriptorW;
+thread_local UINT BE_CF_FileNameW;
+thread_local UINT BE_CF_FileNameMapW;
 
 
 void InitialiseForPlatform ( void )

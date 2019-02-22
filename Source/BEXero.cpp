@@ -2,7 +2,7 @@
  BE_Xero.cpp
  BaseElements Plug-In
 
- Copyright (c) 2014~2018 Goya. All rights reserved.
+ Copyright (c) 2014~2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -21,7 +21,7 @@
 #include <openssl/pem.h>
 
 
-extern CustomHeaders g_http_custom_headers;
+extern thread_local CustomHeaders g_http_custom_headers;
 
 
 using namespace std;
