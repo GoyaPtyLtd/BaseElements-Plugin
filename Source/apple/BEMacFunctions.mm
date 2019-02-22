@@ -2,7 +2,7 @@
  BEMacFunctions.cpp
  BaseElements Plug-In
  
- Copyright 2010-2018 Goya. All rights reserved.
+ Copyright 2010-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -283,19 +283,14 @@ const int DisplayDialog ( std::wstring& title, std::wstring& message, std::wstri
 	NSString * alternate_button_string = NSStringFromWString ( alternate_button );
 	NSString * message_string = NSStringFromWString ( message );
 	
-	NSInteger response = NSRunAlertPanel (  ( title_string ),
-									@"%@", 
-									( ok_button_string ), 
-									( cancel_button_string ), 
-									( alternate_button_string ), 
-									( message_string )
-									);
-	
-	//	[title_string release];
-	//	[ok_button_string release];
-	//	[cancel_button_string release];
-	//	[alternate_button_string release];
-	//	[message_string release];
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert addButtonWithTitle: ok_button_string];
+	[alert addButtonWithTitle: cancel_button_string];
+	[alert addButtonWithTitle: alternate_button_string];
+	[alert setMessageText: title_string];
+	[alert setInformativeText: message_string];
+	[alert setAlertStyle:NSWarningAlertStyle];
+	NSInteger response = [alert runModal];
 	
 	/*
 	 translate the response so that the plug-in returns the same value for the same action
@@ -304,19 +299,21 @@ const int DisplayDialog ( std::wstring& title, std::wstring& message, std::wstri
 	
 	switch ( response ) {
 			
-		case NSAlertDefaultReturn:    /* user pressed OK */
+		case NSAlertFirstButtonReturn:    /* user pressed OK */
 			button_pressed = kBE_OKButton;
 			break;
 			
-		case NSAlertAlternateReturn:  /* user pressed Cancel */
+		case NSAlertSecondButtonReturn:  /* user pressed Cancel */
 			button_pressed = kBE_CancelButton;
 			break;
 			
-		case NSAlertOtherReturn:      /* user pressed the third button */
+		case NSAlertThirdButtonReturn:      /* user pressed the third button */
 			button_pressed = kBE_AlternateButton;
 			break;
 			
-		case NSAlertErrorReturn:      /* an error occurred */
+		case NSModalResponseCancel:
+		case NSModalResponseStop:
+		case NSModalResponseAbort:
 			break;
 			
 	}
