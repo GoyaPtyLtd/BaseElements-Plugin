@@ -155,6 +155,8 @@ fmx::errcode BE_SignatureVerifyRSA ( short funcId, const fmx::ExprEnv& environme
 fmx::errcode BE_CipherEncrypt ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_CipherDecrypt ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
+fmx::errcode BE_DebugInformation ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+
 
 // Deprecated
 

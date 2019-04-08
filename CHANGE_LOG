@@ -2,12 +2,18 @@
 Version 4.1b1
 ########################################################################
 
-February 22, 2019
+April 8, 2019
+
+
+New Functions
+
+BE_DebugInformation
 
 
 Changes
 
 BE_FileSaveDialog: Set the message rather than the title (which is no longer shown)
+BE_SetTextEncoding: correct function description
 
 Improved support for running in multi-threaded applications
 

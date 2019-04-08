@@ -2,7 +2,7 @@
  BEFileMakerPlugin.h
  BaseElements Plug-In
  
- Copyright 2010-2017 Goya. All rights reserved.
+ Copyright 2010-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -39,11 +39,17 @@ public:
 	const fmx::QuadCharUniquePtr id ( void ) const { fmx::QuadCharUniquePtr id_copy ( *plugin_id ); return id_copy; };
 
 	void set_fmx_application ( const FMX_Application fmx_application_value );
+	const FMX_Application get_fmx_application ( void ) { return fmx_application; }
+	
+	void set_fmx_application_version ( const std::string fmx_application_version_value ) { fmx_application_version = fmx_application_version_value; };
+	const std::string get_fmx_application_version ( void ) { return fmx_application_version; }
+	
 	const bool running_on_server ( ) const;
 
 protected:
 	
 	FMX_Application fmx_application;
+	std::string fmx_application_version;
 
 };
 

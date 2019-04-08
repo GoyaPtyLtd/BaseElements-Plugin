@@ -2,7 +2,7 @@
 iOS
 =======================================================================
 
-Version 4.0 of the plug-in is built on macOS 10.14 using Xcode 10.0. The Xcode Command Line Tools are also needed.
+Version 4.0 of the plug-in is built on macOS 10.14.4 using Xcode 10.2. The Xcode Command Line Tools are also needed.
 
 Download the FileMaker External Plug-In API from
 
@@ -202,7 +202,7 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.8
+Poco 1.9.0
 =======================================================================
 
 Download the source from
@@ -211,12 +211,26 @@ Download the source from
 
 Copy the compile_for_ios.sh to the distribution directory and
 
-	cd poco-1.7.8-all
-	./configure --cflags=-fPIC --config=iPhone --static --no-tests --no-samples --omit=Data,MongoDB,Crypto,XML,JSON,Net,PageCompiler,Util --prefix=/Users/mark/Downloads/poco-1.7.8p2-all/_build
-	make -s -j4 install
+	cd poco-1.9.0-all
+	./configure --config=iPhone-clang-libc++ --prefix=_build_iphone --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler,Redis,Encodings,Util --no-tests --no-samples
+	make -s -j install
 	make distclean
-	./configure --cflags=-fPIC --config=iPhoneSimulator --static --no-tests --no-samples --omit=Data,MongoDB,Crypto,XML,JSON,Net,PageCompiler,Util --prefix=/Users/mark/Downloads/poco-1.7.8p2-all/_buildSim
-	make -s -j4 install
+	./configure --config=iPhoneSimulator-clang-libc++ --prefix=_build_iphone_simulator --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler,Redis,Encodings,Util --no-tests --no-samples
+	make -s -j install
+
+Copy
+
+	libPocoFoundation.a
+	libPocoZip.a
+	libPocoJSON.a
+
+from the build directories to 
+
+	"${SRCROOT}/Libraries/iOS/iPhoneOS"
+
+and
+
+	"${SRCROOT}/Libraries/iOS/iPhoneOSSimulator"
 
 If necessary, copy output/<platform>/include/Poco to Headers.
 

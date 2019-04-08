@@ -25,6 +25,7 @@
 "128" = "BaseElements";
 "131" = "GyBE1nnYYnn";
 "132" = "https://baseelementsplugin.zendesk.com/";
+"134" = "BE_DebugInformation|Debug Information|Returns state information for the plug-in";
 "135" = "BE_ClipboardGetFile ( format {; fileName } )|Clipboard Data Get|Tries to convert the item on the current clipboard, designated by the format passed to the function. When trying to get text from the clipboard use BE_ClipboardGetText";
 "136" = "BE_ClipboardSetFile ( fileData ; format )|Clipboard Data Set|Sets the clipboard to the text and applies a clipboard format. Clipboard formats are usually set by the application and depend on the content types. When setting a type it's best to copy a sample and then use BE_ClipboardFormats to see what types are used. You only need to apply a single format when setting the clipboard. When setting a text object use BE_ClipboardSetText";
 "140" = "BE_WriteTextFileToContainer_Deprecated ( filename ; text {; append} )|File Write Text Container|Performs the same as the BE_FileWriteText but saves the result in a container field.  Use with a Set Field script step.";

@@ -2,7 +2,7 @@
 Linux
 =======================================================================
 
-The plug-in was built using Code::Blocks 13.12 on Centos 7 (64-bit).
+The plug-in was built using Code::Blocks svn11417 on Centos 7 (64-bit).
 
 Download the FileMaker External Plug-In API from
 
@@ -294,7 +294,7 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.8
+Poco 1.9.0
 =======================================================================
 
 Download the source from
@@ -303,11 +303,11 @@ Download the source from
 
 Then
 
-	cd poco-1.7.8-all
-	./configure --cflags=-fPIC --config=Linux-clang --static --no-tests --no-samples --omit=Data,MongoDB,Crypto,Net,XML,JSON,PageCompiler --prefix=build
+	cd poco-1.9.0-all
+	./configure --cflags=-fPIC --config=Linux-clang --static --no-tests --no-samples --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler --prefix=build
 	make install
 
-Copy the libraries libPocoFoundation.a & libPocoZip.a from build/lib to the Libraries/linux directory and copy the build/include/Poco to Headers.
+Copy the libraries libPocoFoundation.a, libPocoJSON.a & libPocoZip.a from build/lib to the Libraries/linux directory and copy the build/include/Poco to Headers.
 
 
 =======================================================================

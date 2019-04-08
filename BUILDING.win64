@@ -425,7 +425,7 @@ and place the source/utf8.h file and source/utf8 directory in the project Header
 
 
 =======================================================================
-Poco 1.7.8
+Poco 1.9.0
 =======================================================================
 
 Download the source from
@@ -436,9 +436,9 @@ Then, after extracting the archive set
 
 	Configuration Properties -> General -> Project Defaults -> Character Set = Use Unicode Character Set
 
-Then build the Zip and Foundation MT Release and Debug libraries using the projects in the respective directories.
+Then build the Zip, JSON and Foundation MT Release and Debug libraries using the projects in the respective directories.
 
-Copy PocoFoundationmt.lib/PocoFoundationmtd.lib & PocoZipmt.lib/PocoZipmtd.lib libraries from the lib and lib64 driectories into the Libraries/win32 and Libraries/win64 directory and copy the include/Poco directory to Headers.
+Copy PocoFoundationmt.lib/PocoFoundationmtd.lib, libPocoJSON.a/libPocoJSONd.a & PocoZipmt.lib/PocoZipmtd.lib libraries from the lib and lib64 driectories into the Libraries/win32 and Libraries/win64 directory and copy the include/Poco directory to Headers.
 
 
 =======================================================================

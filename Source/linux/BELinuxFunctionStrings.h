@@ -49,6 +49,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 128, "BaseElements" },
 	{ 131, "GyBE1nnYYnn" },
 	{ 132, "https://baseelementsplugin.zendesk.com/" },
+	{ 134, "BE_DebugInformation" },
 	{ 135, "BE_ClipboardGetFile ( format {; fileName } )" },
 	{ 136, "BE_ClipboardSetFile ( fileData ; format )" },
 	{ 140, "BE_WriteTextFileToContainer_Deprecated ( filename ; text {; append} )" },

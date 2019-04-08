@@ -111,6 +111,7 @@
 		<Unit filename="../Source/BECppUtilities.cpp" />
 		<Unit filename="../Source/BECurl.cpp" />
 		<Unit filename="../Source/BECurlOption.cpp" />
+		<Unit filename="../Source/BEDebugInformation.cpp" />
 		<Unit filename="../Source/BEFileMakerPlugin.cpp" />
 		<Unit filename="../Source/BEFileSystem.cpp" />
 		<Unit filename="../Source/BEFileTextReader.cpp" />

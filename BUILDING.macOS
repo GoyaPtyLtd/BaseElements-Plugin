@@ -2,7 +2,7 @@
 macOS
 =======================================================================
 
-On macOS the plugin is built using macOS 10.14 and Xcode 10.0.
+On macOS the plugin is built using macOS 10.14.4 and Xcode 10.2.
 Execute the following command to make sure that the Xcode Command Line Tools are installed.
 
 	xcode-select --install
@@ -233,24 +233,24 @@ Extract the archive and copy the header files.
 
 
 =======================================================================
-Poco 1.7.8
+Poco 1.9.0
 =======================================================================
 
 Download the source from
 
-	http://pocoproject.org/download/index.html
+	http://pocoproject.org/download/
 
 and extract the archive. Then
 
-	cd poco-1.7.8-all
+	cd poco-1.9.0-all
 
-	./configure --cflags="-stdlib=libc++ -mmacosx-version-min=10.7" --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,JSON,PageCompiler --no-tests --no-samples
-	make install DESTDIR=./Poco
+	./configure --config=Darwin64-clang-libc++ --prefix=_build_macos --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler,Redis,Encodings,Util --no-tests --no-samples
+	make -s -j install
 
 Copy the header and library files.
 
-	cp -R ./Poco/usr/local/include/Poco "${SRCROOT}/Headers"
-	cp ./Poco/usr/local/lib/libPocoFoundation.a ./Poco/usr/local/lib/libPocoZip.a "${SRCROOT}/Libraries/macOS"
+	cp -R ./_build_macos/usr/local/include/Poco "${SRCROOT}/Headers"
+	cp ./_build_macos/usr/local/lib/libPocoFoundation.a ./_build_macos/usr/local/lib/libPocoZip.a ./_build_macos/usr/local/lib/libPocoJSON.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
