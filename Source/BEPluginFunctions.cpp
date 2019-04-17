@@ -3236,37 +3236,38 @@ fmx::errcode BE_PDFGetPages ( short /* funcId */, const ExprEnv& /* environment 
 	try {
 
 		auto pdf_document = ParameterAsPDF ( parameters );
-		auto from = ParameterAsIndex ( parameters, 2 );
-		auto to = ParameterAsIndex ( parameters, 3 );
-		to = to < from ? from : to;
+		auto from = (int)ParameterAsIndex ( parameters, 2 );
+		from = 0 > from ? 0 : from;
+		auto to = (const int)ParameterAsLong ( parameters, 3 );
+		const auto number_of_pages = to == 0 ? pdf_document->GetPageCount() : to - from;
 
-		std::unique_ptr<PoDoFo::PdfMemDocument> new_pdf ( new PoDoFo::PdfMemDocument() );
+		if ( number_of_pages > 0 ) {
 
-		for ( auto i = from ; i <= to ; i++ ) {
-			new_pdf->InsertExistingPageAt ( *pdf_document, (int)i, new_pdf->GetPageCount() );
+			std::unique_ptr<PoDoFo::PdfMemDocument> new_pdf ( new PoDoFo::PdfMemDocument() );
+			new_pdf->InsertPages ( *pdf_document, from, number_of_pages );
+
+			pdf_document.reset(); // make sure to close the file
+			
+			// write out a temporary file
+			auto temporary_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
+			new_pdf->Write ( temporary_file.c_str() );
+			new_pdf.reset(); // make sure to close the file
+			
+			auto output_path = ParameterAsPath ( parameters, 1 );
+			if ( output_path.empty() ) {
+				
+				auto file_data = ReadFileAsBinary ( temporary_file );
+				auto destination = ParameterFileName ( parameters );
+				SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
+				
+			} else {
+				
+				rename ( temporary_file, output_path );
+				//	SetResult ( nothing, results );
+				
+			}
 		}
-
-		pdf_document.reset(); // make sure to close the file
-
-		// write out a temporary file
-		auto temporary_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
-		new_pdf->Write ( temporary_file.c_str() );
-		new_pdf.reset(); // make sure to close the file
-
-		auto output_path = ParameterAsPath ( parameters, 1 );
-		if ( output_path.empty() ) {
-
-			auto file_data = ReadFileAsBinary ( temporary_file );
-			auto destination = ParameterFileName ( parameters );
-			SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
-
-		} else {
-
-			rename ( temporary_file, output_path );
-
-			//			SetResult ( nothing, results );
-
-		}
+		
 
 	} catch ( filesystem_error& e ) {
 		error = e.code().value();

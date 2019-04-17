@@ -52,7 +52,6 @@
 			<Add library="../Libraries/linux/libboost_date_time.a" />
 			<Add library="../Libraries/linux/libboost_filesystem.a" />
 			<Add library="../Libraries/linux/libboost_regex.a" />
-			<Add library="../Libraries/linux/libboost_system.a" />
 			<Add library="../Libraries/linux/libboost_thread.a" />
 			<Add library="../Libraries/linux/libcurl.a" />
 			<Add library="../Libraries/linux/libexslt.a" />
