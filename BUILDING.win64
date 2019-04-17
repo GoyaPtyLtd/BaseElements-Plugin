@@ -22,7 +22,7 @@ Another note: when doing both debug and release builds clean the project when sw
 
 
 =======================================================================
-Boost - 1.61_0
+Boost - 1.70_0
 =======================================================================
 
 The Boost FileSystem and System libraries are required.
@@ -35,7 +35,7 @@ See
 
 for instructions on compiling the Boost libraries. From the command prompt try
 
-	cd boost_1_61_0
+	cd boost_1_70_0
 	bootstrap.bat
 	b2 address-model=64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex --prefix=build install
 

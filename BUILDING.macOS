@@ -17,7 +17,7 @@ In this guide, ${SRCROOT} is the path to the project root (i.e. BaseElements-Plu
 
 
 =======================================================================
-Boost - 1.61_0
+Boost - 1.70_0
 =======================================================================
 
 Boost is available from
@@ -26,7 +26,7 @@ Boost is available from
 
 and extract the archive. Then
 
-	cd boost_1_61_0
+	cd boost_1_70_0
 	./bootstrap.sh
 	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.7 -stdlib=libc++" linkflags="-stdlib=libc++"
 

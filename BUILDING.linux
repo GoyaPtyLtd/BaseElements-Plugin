@@ -13,7 +13,7 @@ and place the FMWrapper directory inside the SDK's Headers directory in the Head
 The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries.
 
 =======================================================================
-Boost - 1.61_0
+Boost - 1.70_0
 =======================================================================
 
 The Boost FileSystem and System libraries are required.
@@ -26,7 +26,7 @@ See
 
 for instructions on compiling the Boost libraries. From the command prompt try
 
-	cd boost_1_61_0
+	cd boost_1_70_0
 	./bootstrap.sh
 	./b2 link=static cflags=-fPIC cxxflags=-fPIC runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread
 

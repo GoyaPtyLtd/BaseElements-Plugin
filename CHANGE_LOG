@@ -2,7 +2,7 @@
 Version 4.1b1
 ########################################################################
 
-April 8, 2019
+April 16, 2019
 
 
 New Functions
@@ -16,6 +16,10 @@ BE_FileSaveDialog: Set the message rather than the title (which is no longer sho
 BE_SetTextEncoding: correct function description
 
 Improved support for running in multi-threaded applications
+
+
+Update to Boost 1.7.0
+Update to Poco 1.9.0
 
 
 ########################################################################
