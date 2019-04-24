@@ -1,10 +1,14 @@
-//
-//  BERegularExpression.h
-//  BaseElements
-//
-//  Created by Mark Banks on 13/08/2015.
-//  Copyright (c) 2015 Goya. All rights reserved.
-//
+/*
+ BERegularExpression.h
+ BaseElements Plug-In
+ 
+ Copyright 2015-2019 Goya. All rights reserved.
+ For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
+ 
+ http://www.goya.com.au/baseelements/plugin
+ 
+ */
+
 
 #ifndef BaseElements_BERegularExpression_h
 #define BaseElements_BERegularExpression_h
@@ -37,8 +41,8 @@ template <typename T>
 T regular_expression ( const T& text, const T& expression, const std::string options = "", const T& replace_with = "", const bool replace = false )
 {
     
-    int constructor_options = 0;
-    int replace_options = 0;
+	int constructor_options = 0;
+    int replace_options = Poco::RegularExpression::RE_NOTEMPTY; // poco.re hangs when the expression evalutes as "empty" unless this is set;
     
     T regex_options = options;
     Poco::toLowerInPlace ( regex_options );
@@ -71,19 +75,15 @@ T regular_expression ( const T& text, const T& expression, const std::string opt
     T matched;
     
     try {
+	
+		Poco::RegularExpression re ( expression, constructor_options, false );
 		
-		if ( ! expression.empty() ) { // poco.re hangs when this is true
-		
-			Poco::RegularExpression re ( expression, constructor_options, false );
-            
-			if ( ! replace ) {
-				int match_options = 0;
-				re.extract ( text, matched, match_options );
-			} else {
-				matched = text;
-				re.subst ( matched, replace_with, replace_options ); // int now_many =
-			}
-
+		if ( ! replace ) {
+			int match_options = 0;
+			re.extract ( text, matched, match_options );
+		} else {
+			matched = text;
+			re.subst ( matched, replace_with, replace_options ); // int how_many =
 		}
 
     } catch ( Poco::RegularExpressionException& e ) {

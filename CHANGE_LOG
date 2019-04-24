@@ -2,7 +2,7 @@
 Version 4.1b1
 ########################################################################
 
-April 17, 2019
+April 24, 2019
 
 
 New Functions
@@ -15,6 +15,7 @@ Changes
 BE_FileSaveDialog: Set the message rather than the title (which is no longer shown)
 BE_PDFGetPages: "to" parameter behaves as documented
 BE_PDFGetPages: output files should be smaller in some cases
+BE_RegularExpression: handle the expression "()"
 BE_SetTextEncoding: correct function description
 
 Improved support for running in multi-threaded applications
