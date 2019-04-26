@@ -1,12 +1,12 @@
 /*
  BEDebugInformation.cpp
  BaseElements Plug-In
- 
+
  Copyright (c) 2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
- 
+
  http://www.goya.com.au/baseelements/plugin
- 
+
  */
 
 
@@ -53,15 +53,15 @@ const std::string protect_text ( const std::string& text );
 const std::string protect_text ( const std::string& text ) {
 
 	auto protected_text = text;
-	
+
 	const size_t offset = 2;
 	auto minimum_length = offset * 2;
-	
+
 	if ( protected_text.length() > minimum_length ) {
 		auto replacing = protected_text.length() - minimum_length;
 		protected_text.replace ( offset, replacing, replacing, '*' );
 	}
-	
+
 	return protected_text;
 }
 
@@ -69,7 +69,7 @@ const std::string protect_text ( const std::string& text ) {
 const string debug_information ( const ExprEnv& environment ) {
 
 	Poco::JSON::Object::Ptr json = new Poco::JSON::Object();
-	
+
 	Poco::JSON::Object::Ptr plugin_information = new Poco::JSON::Object();
 	plugin_information->set ( "Auto Update Version", AUTO_UPDATE_VERSION );
 	plugin_information->set ( "Version", VERSION_STRING );
@@ -110,7 +110,7 @@ const string debug_information ( const ExprEnv& environment ) {
 	http_proxy_information->set ( "Username", g_http_proxy.username );
 	http_proxy_information->set ( "Password", protect_text ( g_http_proxy.password ) );
 	curl_information->set ( "HTTP Proxy Information", http_proxy_information );
-	
+
 	Poco::JSON::Object::Ptr oauth_information = new Poco::JSON::Object();
 	if ( g_oauth ) {
 		oauth_information->set ( "Request Key", g_oauth->get_request_key() );
@@ -147,7 +147,7 @@ const string debug_information ( const ExprEnv& environment ) {
 
 	json->set ( "Curl Information", curl_information );
 
-	
+
 	Poco::JSON::Object::Ptr script_steps = new Poco::JSON::Object();
 	for ( auto const &step : g_script_steps ) {
 		script_steps->set ( step.second, step.first );
@@ -160,6 +160,6 @@ const string debug_information ( const ExprEnv& environment ) {
 	json->stringify ( output, indent );
 
 	return output.str();
-	
+
 }
 
