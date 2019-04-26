@@ -4027,42 +4027,6 @@ fmx::errcode BE_DebugInformation ( short /* funcId */, const ExprEnv& environmen
 	
 	try {
 		
-//		std::stringstream debug_inforamtion;
-//		debug_inforamtion << "BaseElements Plug-In: " << AUTO_UPDATE_VERSION << " (" << VERSION_STRING << ")" << FILEMAKER_END_OF_LINE;
-//
-//		auto now = std::chrono::system_clock::to_time_t ( std::chrono::system_clock::now() );
-//		debug_inforamtion << "Date: " << std::ctime ( &now ) << FILEMAKER_END_OF_LINE;
-//
-//		debug_inforamtion << "Application: " << g_be_plugin->get_fmx_application() << FILEMAKER_END_OF_LINE;
-//		debug_inforamtion << "Version: " << g_be_plugin->get_fmx_application_version() << FILEMAKER_END_OF_LINE;
-//
-//		debug_inforamtion << "Session Id: " << environment.SessionID() << FILEMAKER_END_OF_LINE;
-//		debug_inforamtion << "File Id: " << environment.FileID() << FILEMAKER_END_OF_LINE;
-//
-//		if ( !g_text_encoding.empty() ) {
-//			debug_inforamtion << "Text encoding: " << g_text_encoding << FILEMAKER_END_OF_LINE;
-//		}
-//
-//		if ( kNoError != g_last_error ) {
-//			debug_inforamtion << "Last Error: " << g_last_error << FILEMAKER_END_OF_LINE;
-//		}
-//
-//		if ( kNoError != g_last_ddl_error ) {
-//			debug_inforamtion << "Last DDL Error: " << g_last_ddl_error << FILEMAKER_END_OF_LINE;
-//		}
-//
-//		if ( !g_curl_trace.str().empty() ) {
-//			debug_inforamtion << "Curl trace: " << FILEMAKER_END_OF_LINE << g_curl_trace.str() << FILEMAKER_END_OF_LINE;
-//		}
-//
-//		if ( !g_json_error_description.empty() ) {
-//			debug_inforamtion << "Text encoding: " << g_json_error_description << FILEMAKER_END_OF_LINE;
-//		}
-		
-//		WRITE TESTS !!!
-		
-//		SetResult ( debug_inforamtion.str(), results );
-
 		SetResult ( debug_information ( environment ), results );
 		
 	} catch ( BEPlugin_Exception& e ) {

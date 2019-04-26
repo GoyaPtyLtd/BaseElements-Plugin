@@ -248,8 +248,10 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 #if defined FMX_LINUX_TARGET
 	g_be_plugin->RegisterHiddenFunction ( kBE_HMAC_Deprecated, BE_NotImplemented, 2, 5 );
+	g_be_plugin->RegisterFunction ( kBE_DebugInformation, BE_NotImplemented );
 #else
 	g_be_plugin->RegisterHiddenFunction ( kBE_HMAC_Deprecated, BE_HMAC_Deprecated, 2, 5 );
+	g_be_plugin->RegisterFunction ( kBE_DebugInformation, BE_DebugInformation );
 #endif
 
 	g_be_plugin->RegisterHiddenFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
@@ -318,7 +320,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Vector_EuclideanDistance, BE_Vector_EuclideanDistance, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_GetMachineName, BE_GetMachineName );
-	g_be_plugin->RegisterFunction ( kBE_DebugInformation, BE_DebugInformation );
 
 
 	// still alpha
