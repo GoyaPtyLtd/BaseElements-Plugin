@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleGetInfoString</key>
-	<string>${PRODUCT_NAME} version 4.0.5, Copyright 2010-2019 by Goya. All rights reserved.</string>
+	<string>${PRODUCT_NAME} version 4.0.99, Copyright 2010-2019 by Goya. All rights reserved.</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -17,10 +17,10 @@
 	<key>CFBundlePackageType</key>
 	<string>FMXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.0.5</string>
+	<string>4.1b1</string>
 	<key>CFBundleSignature</key>
 	<string>GyBE</string>
 	<key>CFBundleVersion</key>
-	<string>4.0.5</string>
+	<string>4.1b1</string>
 </dict>
 </plist>

@@ -99,8 +99,8 @@
 "402" = "BE_SMTPAddAttachment ( { attachment ; contentType } )|SMTP Attachment Add|Stores a list of container field files as attachments for future SMTP_Send functions.  The fields will be sent with the subsequent SMTP_Send and then the stored list of fields cleared out.";
 "403" = "BE_SMTPSetHeader ( { header ; value } )|SMTP Header Set|Adds a header to the email, much like the HTTP header.  Can be used to set Reply-To or Priority for example.";
 
-"500" = "BE_Encrypt_AES_Deprecated ( key ; text )||Deprecated.  Use the FileMaker 16 function CryptEncrypt(data;key) instead.";
-"501" = "BE_Decrypt_AES_Deprecated ( key ; text )||Deprecated.  Use the FileMaker 16 function CryptDecrypt(container;key) instead.";
+"500" = "BE_Encrypt_AES ( key ; text )||Note: the FileMaker 16 function CryptEncrypt(data;key) also provides this functionality.";
+"501" = "BE_Decrypt_AES ( key ; text )||Note: the FileMaker 16 function CryptDecrypt(container;key)  also provides this functionality.";
 "502" = "BE_SignatureGenerateRSA ( data ; privateKey {; privateKeyPassword ; algorithm; fileNameWithExtension } )|Signature RSA|Generate a digital signature of text using privateKey.";
 "503" = "BE_SignatureVerifyRSA ( data ; publicKey ; signature {; algorithm } )|Signature RSA Verify|Verify singature using publicKey.";
 "504" = "BE_CipherEncrypt ( cipher ; data ; key ; iv {; padding ; fileNameWithExtension } )|Cipher Encrypt|Encrypt data using cipher.";

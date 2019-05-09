@@ -223,8 +223,8 @@ enum functions {
 //	kBE_FMS_Close_Files = 458, // removed
 //	kBE_FMS_Remove_Files = 459, // removed
 //	kBE_FMS_Open_Files = 460, // removed
-	kBE_Encrypt_AES_Deprecated = 500,
-	kBE_Decrypt_AES_Deprecated = 501,
+	kBE_Encrypt_AES = 500,
+	kBE_Decrypt_AES = 501,
 	kBE_SignatureGenerateRSA = 502,
 	kBE_SignatureVerifyRSA = 503,
 	kBE_CipherEncrypt = 504,

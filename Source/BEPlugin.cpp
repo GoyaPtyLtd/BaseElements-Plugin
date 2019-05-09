@@ -213,9 +213,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_JPEG_Recompress_Deprecated, BE_JPEGRecompress, 1, 4 ); // deprecated
 	g_be_plugin->RegisterFunction ( kBE_JPEGRecompress, BE_JPEGRecompress, 1, 3 );
 
-
-	g_be_plugin->RegisterHiddenFunction ( kBE_Encrypt_AES_Deprecated, BE_Encrypt_AES_Deprecated, 2 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_Decrypt_AES_Deprecated, BE_Decrypt_AES_Deprecated, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Encrypt_AES, BE_Encrypt_AES, 2 );
+	g_be_plugin->RegisterFunction ( kBE_Decrypt_AES, BE_Decrypt_AES, 2 );
 	g_be_plugin->RegisterFunction ( kBE_SignatureGenerateRSA, BE_SignatureGenerateRSA, 2, 5 );
 	g_be_plugin->RegisterFunction ( kBE_SignatureVerifyRSA, BE_SignatureVerifyRSA, 3, 4 );
 	g_be_plugin->RegisterFunction ( kBE_CipherEncrypt, BE_CipherEncrypt, 3, 6 );

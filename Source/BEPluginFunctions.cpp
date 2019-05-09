@@ -1571,7 +1571,6 @@ fmx::errcode BE_ArrayChangeValue ( short /* funcId */, const fmx::ExprEnv& /* en
 } // BE_ArrayChangeValue
 
 
-
 #pragma mark -
 #pragma mark User Preferences
 #pragma mark -
@@ -1935,7 +1934,7 @@ fmx::errcode BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */, con
 #pragma mark -
 
 
-fmx::errcode BE_Encrypt_AES_Deprecated ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -1971,11 +1970,11 @@ fmx::errcode BE_Encrypt_AES_Deprecated ( short /*funcId*/, const ExprEnv& /* env
 
 	return MapError ( error );
 
-} // BE_Encrypt_AES_Deprecated
+} // BE_Encrypt_AES
 
 
 
-fmx::errcode BE_Decrypt_AES_Deprecated ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2013,7 +2012,7 @@ fmx::errcode BE_Decrypt_AES_Deprecated ( short /*funcId*/, const ExprEnv& /* env
 
 	return MapError ( error );
 
-} // BE_Decrypt_AES_Deprecated
+} // BE_Decrypt_AES
 
 
 fmx::errcode BE_SignatureGenerateRSA ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )

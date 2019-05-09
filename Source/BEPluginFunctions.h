@@ -174,8 +174,8 @@ fmx::errcode BE_MessageDigest ( short funcId, const fmx::ExprEnv& environment, c
 
 fmx::errcode BE_HMAC_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_Encrypt_AES_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Decrypt_AES_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_Encrypt_AES ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_Decrypt_AES ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 #endif // BEPLUGINFUNCTIONS_H
