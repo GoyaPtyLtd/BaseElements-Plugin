@@ -1386,7 +1386,7 @@ fmx::errcode BE_EvaluateJavaScript ( short /* funcId */, const fmx::ExprEnv& /* 
 
 
 #pragma mark -
-#pragma mark Arrays
+#pragma mark Arrays & Variables
 #pragma mark -
 
 
@@ -1569,6 +1569,130 @@ fmx::errcode BE_ArrayChangeValue ( short /* funcId */, const fmx::ExprEnv& /* en
 	return MapError ( error );
 
 } // BE_ArrayChangeValue
+
+
+fmx::errcode BE_Variable ( short function_id, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto name = ParameterAsUTF8String ( parameters );
+		
+		if ( !name.empty() ) {
+			
+			static thread_local map<string,string> variables;
+
+			switch ( function_id ) {
+					
+				case kBE_VariableSet:
+				{
+					auto set_this = ParameterAsUTF8String ( parameters, 1 );
+					if ( !set_this.empty() ) {
+						variables [ name ] = set_this;
+						SetResult ( set_this, results );
+					} else {
+						variables.erase ( name );
+					}
+					break;
+				}
+					
+				case kBE_VariableGet:
+				{
+					auto value = variables [ name ];
+					SetResult ( value, results );
+					break;
+				}
+					
+				default:
+					; // should never get here
+					
+			} // switch
+			
+		}
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Variable
+
+
+fmx::errcode BE_Stack ( short function_id, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto name = ParameterAsUTF8String ( parameters );
+		if ( !name.empty() ) {
+			
+			static thread_local map<string,stack<string>> stacks;
+			
+			stack<string> the_stack;
+			auto it = stacks.find ( name );
+			if (  it != stacks.end() ) {
+				the_stack = stacks [ name ];
+			}
+			
+			switch ( function_id ) {
+					
+				case kBE_StackPush:
+				{
+					auto push_this = ParameterAsUTF8String ( parameters, 1 );
+					the_stack.push ( push_this );
+					stacks [ name ] = the_stack;
+					SetResult ( push_this, results );
+					break;
+				}
+					
+				case kBE_StackPop:
+				{
+					if ( !the_stack.empty() ) {
+						auto value = the_stack.top();
+						the_stack.pop();
+						stacks [ name ] = the_stack;
+						SetResult ( value, results );
+					}
+					break;
+				}
+					
+				case kBE_StackCount:
+				{
+					auto size = the_stack.size();
+					SetResult ( size, results );
+					break;
+				}
+					
+				case kBE_StackDelete:
+					stacks.erase ( name );
+					break;
+
+				default:
+					; // should never get here
+					
+			} // switch
+			
+		}
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_Stack
+
 
 
 #pragma mark -

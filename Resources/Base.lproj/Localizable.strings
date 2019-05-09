@@ -99,6 +99,12 @@
 "402" = "BE_SMTPAddAttachment ( { attachment ; contentType } )|SMTP Attachment Add|Stores a list of container field files as attachments for future SMTP_Send functions.  The fields will be sent with the subsequent SMTP_Send and then the stored list of fields cleared out.";
 "403" = "BE_SMTPSetHeader ( { header ; value } )|SMTP Header Set|Adds a header to the email, much like the HTTP header.  Can be used to set Reply-To or Priority for example.";
 
+"470" = "BE_VariableSet ( name ; { value } )|Variable Set|Set a plugin variable to called name to value. Setting an empty value deletes the variable. Note: binary data types (containers) are not supported.";
+"471" = "BE_VariableGet ( name )|Variable Get|Get the value of a plugin variable to called name. Getting the value of a variable that does not exist returns an empty string.";
+"472" = "BE_StackPush ( name ; value )|Stack Push|Add a value to the top of the stack name. If the stack does not exist it is created.";
+"473" = "BE_StackPop ( name )|Stack Pop|Remove a value from the top of the stack name. If the stack does not exist an empty string is returned.";
+"474" = "BE_StackCount ( name )|Stack Count|The number of items in the stack.";
+"475" = "BE_StackDelete ( name )|Stack Delete|Delete the stack and all values.";
 "500" = "BE_Encrypt_AES ( key ; text )||Note: the FileMaker 16 function CryptEncrypt(data;key) also provides this functionality.";
 "501" = "BE_Decrypt_AES ( key ; text )||Note: the FileMaker 16 function CryptDecrypt(container;key)  also provides this functionality.";
 "502" = "BE_SignatureGenerateRSA ( data ; privateKey {; privateKeyPassword ; algorithm; fileNameWithExtension } )|Signature RSA|Generate a digital signature of text using privateKey.";

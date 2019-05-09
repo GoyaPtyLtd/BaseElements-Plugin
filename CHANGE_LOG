@@ -5,6 +5,16 @@ Version 4.1b1
 May 9, 2019
 
 
+New Functions
+
+BE_VariableSet
+BE_VariableGet
+BE_StackPush
+BE_StackPop
+BE_StackCount
+BE_StackDelete
+
+
 Changes
 
 BE_Encrypt_AES: reverse deprecation
