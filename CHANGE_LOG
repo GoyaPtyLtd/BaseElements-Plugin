@@ -2,17 +2,19 @@
 Version 4.1b1
 ########################################################################
 
-May 9, 2019
+May 10, 2019
 
 
 New Functions
 
-BE_VariableSet
-BE_VariableGet
+BE_ContainerGetType
+BE_ContainerListTypes
 BE_StackPush
 BE_StackPop
 BE_StackCount
 BE_StackDelete
+BE_VariableGet
+BE_VariableSet
 
 
 Changes

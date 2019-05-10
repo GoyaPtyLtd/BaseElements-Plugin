@@ -190,6 +190,10 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_ContainerIsCompressed, BE_ContainerIsCompressed, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ContainerCompress, BE_ContainerCompress, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_ContainerUncompress, BE_ContainerUncompress, 1, 2 );
+
+	g_be_plugin->RegisterFunction ( kBE_ContainerListTypes, BE_ContainerListTypes, 1 );
+	g_be_plugin->RegisterFunction ( kBE_ContainerGetType, BE_ContainerGetType, 2 );
+
 	g_be_plugin->RegisterFunction ( kBE_Gzip, BE_Gzip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_UnGzip, BE_UnGzip, 1, 2 );
 

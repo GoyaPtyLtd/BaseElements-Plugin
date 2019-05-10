@@ -77,6 +77,10 @@
 "250" = "BE_ContainerIsCompressed ( containerField )|Container Compress|Verifies if a FileMaker containerField with a fil, or image in it, was compressed when inserted into the field.";
 "251" = "BE_ContainerCompress ( data {; filename } )|Container Compress|Converts stored container field data between the internal un-compressed and compressed formats.";
 "252" = "BE_ContainerUncompress ( gzip_data {; filename } )|Container Compress Uncompress|Converts stored container field data between the internal compressed and un-compressed formats.\n\nWhen inserting files into containers in FileMaker, you have the option to \"compress\" the file.  This function can change an compressed file into a uncompressed file.";
+
+"253" = "BE_ContainerListTypes ( container )|Container List Types|Returns a value list of the types stored in the container";
+"254" = "BE_ContainerGetType ( container ; type )|Container Get Type|Return the data for the requested type from a container.";
+
 "260" = "BE_Gzip ( data {; filename } )|Gzip zip|Compresses the file/text found in data and optionally applies the filename, otherwise uses the container data appended with the .gzip extension.\n\nThis function should be used with a Set Field script step and the results stored as a container field.";
 "261" = "BE_UnGzip ( gzip_data {; filename } )|Gzip zip Ungzip unzip|Uncompresses the file found in gzip_data and optionally applies the filename, otherwise uses the detail found in the container field if it exists.\n\nIf you're unzipping a file, then this function should be used with a Set Field script step and the results stored as a container field.  If you're expecting a text result then this could be used anywhere text is expected.";
 "270" = "BE_JPEG_Recompress_Deprecated ( jpeg {; compressionLevel ; width ; height } )||Deprecated.  Use the  function BE_JPEGRecompressinstead.";

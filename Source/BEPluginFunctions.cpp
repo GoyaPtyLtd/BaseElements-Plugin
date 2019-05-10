@@ -1982,6 +1982,102 @@ fmx::errcode BE_ContainerUncompress ( short /*funcId*/, const ExprEnv& /* enviro
 } // BE_ContainerUncompress
 
 
+fmx::errcode BE_ContainerListTypes ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		const BinaryDataUniquePtr container ( parameters.AtAsBinaryData ( 0 ) );
+		fmx::int32 count = container->GetCount();
+		auto types ( new BEValueList<string> ( "" ) );
+		
+		for ( fmx::int32 i = 0 ; i < count ; i++ ) {
+			
+			BEQuadChar stream_type ( *container, i );
+			types->append ( stream_type.as_string() );
+			
+		} // for
+
+		SetResult ( types->get_as_filemaker_string(), results );
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_ContainerListTypes
+
+
+fmx::errcode BE_ContainerGetType ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		const BinaryDataUniquePtr container ( parameters.AtAsBinaryData ( 0 ) );
+		auto stream_type = ParameterAsUTF8String ( parameters, 1 );
+		auto stream_index = StreamIndex ( *container, stream_type );
+
+		if ( kBE_DataType_Not_Found != stream_index ) {
+			
+			fmx::TextUniquePtr file_name;
+			auto fnam_error = container->GetFNAMData( *file_name );
+
+			short width = 0;
+			short height = 0;
+			auto size_error = container->GetSIZEData ( width, height );
+
+			if ( stream_type == SIZE_CONTAINER_TYPE ) {
+				
+				error = size_error;
+				stringstream size;
+				size << width << FILEMAKER_END_OF_LINE << height;
+				SetResult ( size.str(), results );
+				
+			} else if ( stream_type == FILENAME_CONTAINER_TYPE ) {
+				
+				error = fnam_error;
+				SetResult ( *file_name, results );
+				
+			} else if ( stream_type == MAIN_CONTAINER_TYPE ) {
+				
+				char quad_char[4] = {};
+				error = container->GetData ( stream_index, 0, 4, quad_char );
+				SetResult ( quad_char, results );
+				
+			} else {
+
+				auto stream_data = DataAsVectorChar ( *container, stream_index );
+				auto name_of_file = TextAsUTF8String ( *file_name );
+				if ( name_of_file.empty() ) {
+					name_of_file = stream_type;
+				}
+				
+				SetResult ( name_of_file, stream_data, stream_type, width, height, results );
+
+			}
+
+		}
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_ContainerGetType
+
+
 fmx::errcode BE_Gzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
