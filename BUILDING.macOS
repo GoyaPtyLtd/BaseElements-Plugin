@@ -184,7 +184,7 @@ Copy the header and library files.
 
 
 =======================================================================
-duktape - 1.2.2
+duktape - 2.3.0
 =======================================================================
 
 Download the source from
@@ -193,7 +193,7 @@ Download the source from
 
 and extract the archive and copy and rename the src directory.
 
-	cd duktape-1.2.2
+	cd duktape-2.3.0
 	cp -R src "${SRCROOT}/Source/duktape"
 
 

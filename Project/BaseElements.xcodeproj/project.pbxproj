@@ -169,6 +169,8 @@
 		4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4DB857A31C646DF600D0192A /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
+		4DB9C6CB228539E400BAA17F /* duk_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DB9C6CA228539E400BAA17F /* duk_config.h */; };
+		4DB9C6CC228539E400BAA17F /* duk_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DB9C6CA228539E400BAA17F /* duk_config.h */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
@@ -368,6 +370,7 @@
 		4DAC555418BDA41E00F365F5 /* BESMTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTP.h; path = ../Source/BESMTP.h; sourceTree = "<group>"; };
 		4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPContainerAttachments.cpp; path = ../Source/BESMTPContainerAttachments.cpp; sourceTree = "<group>"; };
 		4DB857A21C646DF600D0192A /* BESMTPContainerAttachments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTPContainerAttachments.h; path = ../Source/BESMTPContainerAttachments.h; sourceTree = "<group>"; };
+		4DB9C6CA228539E400BAA17F /* duk_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_config.h; sourceTree = "<group>"; };
 		4DC182C8144CEC0900E27CAA /* BEZlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEZlib.h; path = ../Source/BEZlib.h; sourceTree = SOURCE_ROOT; };
 		4DC182C9144CEC0900E27CAA /* BEZlib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEZlib.cpp; path = ../Source/BEZlib.cpp; sourceTree = SOURCE_ROOT; };
 		4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurlOption.cpp; path = ../Source/BECurlOption.cpp; sourceTree = "<group>"; };
@@ -532,6 +535,7 @@
 			children = (
 				4D668AA31A36BC8900D14592 /* duktape.c */,
 				4D668AA41A36BC8900D14592 /* duktape.h */,
+				4DB9C6CA228539E400BAA17F /* duk_config.h */,
 			);
 			name = duktape;
 			path = ../Source/duktape;
@@ -783,6 +787,7 @@
 				4D2C95002223B32400372093 /* BEDebugInformation.h in Headers */,
 				4D3629ED1F20789A0036B751 /* BaseElementsIOS.h in Headers */,
 				4D44BC23200FAD9E0028449D /* BEMimeticMIMEEntity.h in Headers */,
+				4DB9C6CB228539E400BAA17F /* duk_config.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -793,6 +798,7 @@
 				4D2C95012223B32400372093 /* BEDebugInformation.h in Headers */,
 				4D362A9F1F2085880036B751 /* BaseElementsIOS.h in Headers */,
 				4D44BC24200FAD9E0028449D /* BEMimeticMIMEEntity.h in Headers */,
+				4DB9C6CC228539E400BAA17F /* duk_config.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

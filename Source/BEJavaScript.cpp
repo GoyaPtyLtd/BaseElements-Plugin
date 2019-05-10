@@ -2,7 +2,7 @@
  BEJavaScript.cpp
  BaseElements Plug-In
  
- Copyright 2014-2018 Goya. All rights reserved.
+ Copyright 2014-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,6 +13,7 @@
 #include "BEJavaScript.h"
 #include "BEPluginUtilities.h"
 
+//#include "duktape/duk_config.h"
 #include "duktape/duktape.h"
 
 
@@ -28,7 +29,7 @@ static duk_ret_t BE_Evaluate_FileMaker_Calculation ( duk_context *context );
 #pragma mark Functions
 #pragma mark -
 
-static duk_ret_t evaluate_raw ( duk_context *context ) {
+static duk_ret_t evaluate_raw ( duk_context * context, void * /* udata */ ) {
 	
 	duk_eval ( context );
 	return 1;
@@ -36,7 +37,7 @@ static duk_ret_t evaluate_raw ( duk_context *context ) {
 }
 
 
-static duk_ret_t tostring_raw ( duk_context *context ) {
+static duk_ret_t tostring_raw ( duk_context *context, void * /* udata */ ) {
 	
 	duk_to_string ( context, -1 );
 	return 1;
@@ -46,7 +47,7 @@ static duk_ret_t tostring_raw ( duk_context *context ) {
 
 std::string Evaluate_JavaScript ( const std::string& javascript )
 {
-	duk_context *context = duk_create_heap_default();
+	duk_context * context = duk_create_heap_default();
 
 	duk_push_global_object ( context );
 	duk_push_c_function ( context, BE_ScriptExecute, 3 );
@@ -59,8 +60,9 @@ std::string Evaluate_JavaScript ( const std::string& javascript )
 	// the scipt itself must be pushed after the c++ functions
 	
 	duk_push_string ( context, javascript.c_str() );
-	duk_safe_call ( context, evaluate_raw, 1, 1 );
-	duk_safe_call ( context, tostring_raw, 1, 1 );
+	
+	duk_safe_call ( context, evaluate_raw, NULL, 1, 1 );
+	duk_safe_call ( context, tostring_raw, NULL, 1, 1 );
 	
 	std::string out ( duk_get_string ( context, -1 ) );
 	
