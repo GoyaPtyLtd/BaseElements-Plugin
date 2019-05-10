@@ -2,7 +2,7 @@
  BEQuadChar.h
  BaseElements Plug-In
 
- Copyright 2015-2016 Goya. All rights reserved.
+ Copyright 2015-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -54,7 +54,8 @@ class BEQuadChar {
 		const bool is_image ( ) const;
 		const bool is_image_attribute ( ) const;
 
-		fmx::QuadCharUniquePtr get_type ( );
+		fmx::QuadCharUniquePtr get_type ( ) const;
+		const std::string as_string ( ) const;
 
 	private:
 

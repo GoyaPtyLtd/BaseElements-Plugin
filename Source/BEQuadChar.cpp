@@ -2,7 +2,7 @@
  BEQuadChar.cpp
  BaseElements Plug-In
 
- Copyright 2015-2016 Goya. All rights reserved.
+ Copyright 2015-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -11,6 +11,7 @@
 
 
 #include "BEQuadChar.h"
+#include "BEPluginUtilities.h"
 
 
 BEQuadChar::BEQuadChar ( const std::string new_type )
@@ -31,11 +32,34 @@ BEQuadChar::BEQuadChar ( const fmx::BinaryData& data, const fmx::int32 which )
 };
 
 
-fmx::QuadCharUniquePtr BEQuadChar::get_type ( )
+fmx::QuadCharUniquePtr BEQuadChar::get_type ( ) const
 {
 	fmx::QuadCharUniquePtr out ( *type );
 	return out;
 }
+
+
+const std::string BEQuadChar::as_string ( ) const
+{
+	fmx::TextUniquePtr stream_type;
+	
+	for ( int i = 0 ; i < 4 ; i++ ) {
+		
+		auto character = (*type)[i];
+		fmx::uint16 * cc = new fmx::uint16[2];
+		cc[0] = character;
+		cc[1] = '\0';
+
+		fmx::TextUniquePtr type_character;
+		type_character->AssignUnicode ( cc );
+		delete[] cc;
+		stream_type->AppendText ( *type_character );
+		
+	}
+
+	return TextAsUTF8String ( *stream_type );
+	
+};
 
 
 const bool BEQuadChar::is_file ( ) const
