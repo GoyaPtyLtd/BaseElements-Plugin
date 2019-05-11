@@ -166,6 +166,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\BEDebugInformation.cpp" />
+    <ClCompile Include="..\Source\BESystemCommand.cpp" />
     <ClCompile Include="..\Source\BEXMLSchema.cpp" />
     <ClCompile Include="..\Source\Crypto\BEBase64.cpp" />
     <ClCompile Include="..\Source\BECppUtilities.cpp" />
@@ -202,7 +203,6 @@
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEQuadChar.cpp" />
-    <ClCompile Include="..\Source\BEShell.cpp" />
     <ClCompile Include="..\Source\BESMTP.cpp" />
     <ClCompile Include="..\Source\BESMTPEmailMessage.cpp" />
     <ClCompile Include="..\Source\BESQLCommand.cpp" />
@@ -229,6 +229,7 @@
   <ItemGroup>
     <ClInclude Include="..\Resources\resource_version.h" />
     <ClInclude Include="..\Source\BEDebugInformation.h" />
+    <ClInclude Include="..\Source\BESystemCommand.h" />
     <ClInclude Include="..\Source\BEXMLSchema.h" />
     <ClInclude Include="..\Source\Crypto\BEBase64.h" />
     <ClInclude Include="..\Source\BECppUtilities.h" />
@@ -251,7 +252,6 @@
     <ClInclude Include="..\Source\BEPluginGlobalDefines.h" />
     <ClInclude Include="..\Source\BEPluginUtilities.h" />
     <ClInclude Include="..\Source\BEQuadChar.h" />
-    <ClInclude Include="..\Source\BEShell.h" />
     <ClInclude Include="..\Source\BESMTP.h" />
     <ClInclude Include="..\Source\BESMTPEmailMessage.h" />
     <ClInclude Include="..\Source\BESQLCommand.h" />

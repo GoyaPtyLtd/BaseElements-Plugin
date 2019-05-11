@@ -40,7 +40,7 @@
 #include "BEDebugInformation.h"
 #include "BEFileSystem.h"
 #include "BEFileMakerPlugin.h"
-#include "BEShell.h"
+#include "BESystemCommand.h"
 #include "BEZlib.h"
 #include "BESQLCommand.h"
 #include "BEXMLReader.h"
@@ -3845,13 +3845,27 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 
 	try {
 
-		auto command = ParameterAsUTF8String ( parameters );
+		auto shell_command = ParameterAsUTF8String ( parameters );
 		const long timeout = ParameterAsLong ( parameters, 1, kBE_Never );
 
-		std::string response;
-		error = ExecuteSystemCommand ( command, response, timeout );
+		SystemCommand command;
+		Poco::ActiveResult<string> result = command.execute ( shell_command );
 
-		SetResult ( response, results );
+		if ( kBE_Never == timeout ) {
+			result.wait ( );
+		} else {
+
+			try {
+				result.wait ( timeout );
+			} catch ( Poco::TimeoutException& /* e */ ) {
+				; // error = e.code();
+			}
+			
+		}
+
+		if ( result.available() ) {
+			SetResult ( result.data(), results );
+		}
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -3859,14 +3873,6 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
-	}
-
-	// return a result and set last error when there is a timeout
-	if ( error == kCommandTimeout ) {
-		g_last_error = kCommandTimeout;
-		error = kNoError;
-	} else {
-		error = MapError ( error );
 	}
 
 	return error;

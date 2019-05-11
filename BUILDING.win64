@@ -37,7 +37,7 @@ for instructions on compiling the Boost libraries. From the command prompt try
 
 	cd boost_1_70_0
 	bootstrap.bat
-	b2 address-model=64 link=static runtime-link=static --with-thread --with-filesystem --with-date_time --with-chrono --with-regex --prefix=build install
+	b2 address-model=64 link=static runtime-link=static --with-program_options --with-thread --with-filesystem --with-date_time --with-chrono --with-regex --prefix=build install
 
 Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib to Libraries/win64.
 

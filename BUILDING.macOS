@@ -28,7 +28,7 @@ and extract the archive. Then
 
 	cd boost_1_70_0
 	./bootstrap.sh
-	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.7 -stdlib=libc++" linkflags="-stdlib=libc++"
+	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build --with-program_options --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.7 -stdlib=libc++" linkflags="-stdlib=libc++"
 
 Copy the header and library files.
 

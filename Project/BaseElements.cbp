@@ -51,6 +51,7 @@
 			<Add library="/usr/lib64/libssh2.so.1" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
 			<Add library="../Libraries/linux/libboost_filesystem.a" />
+			<Add library="../Libraries/linux/libboost_program_options.a" />
 			<Add library="../Libraries/linux/libboost_regex.a" />
 			<Add library="../Libraries/linux/libboost_thread.a" />
 			<Add library="../Libraries/linux/libcurl.a" />
@@ -125,7 +126,7 @@
 		<Unit filename="../Source/BESMTPContainerAttachments.cpp" />
 		<Unit filename="../Source/BESMTPEmailMessage.cpp" />
 		<Unit filename="../Source/BESQLCommand.cpp" />
-		<Unit filename="../Source/BEShell.cpp" />
+		<Unit filename="../Source/BESystemCommand.cpp" />
 		<Unit filename="../Source/BETime.cpp" />
 		<Unit filename="../Source/BEXMLReader.cpp" />
 		<Unit filename="../Source/BEXMLReaderInterface.cpp" />

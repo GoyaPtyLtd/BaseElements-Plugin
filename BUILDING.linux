@@ -28,7 +28,7 @@ for instructions on compiling the Boost libraries. From the command prompt try
 
 	cd boost_1_70_0
 	./bootstrap.sh
-	./b2 link=static cflags=-fPIC cxxflags=-fPIC runtime-link=static install --prefix=build --with-regex --with-date_time --with-filesystem --with-thread
+	./b2 link=static cflags=-fPIC cxxflags=-fPIC runtime-link=static install --prefix=build --with-program_options --with-regex --with-date_time --with-filesystem --with-thread
 
 
 Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib to Libraries/linux.

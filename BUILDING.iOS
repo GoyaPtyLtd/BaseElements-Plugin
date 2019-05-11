@@ -30,16 +30,18 @@ Change the lines
 
 	BOOST_V1=1.60.0
 	BOOST_V2=1_60_0
+	: ${BOOST_LIBS:="random regex graph random chrono thread signals filesystem system date_time"}
 
 to
 
 	BOOST_V1=1.70.0
 	BOOST_V2=1_70_0
+	: ${BOOST_LIBS:="program_options random regex graph random chrono thread filesystem system date_time"}
 
 
 Build the library using
 
-	./build-libc++.sh BOOST_LIBS="regex,date_time,filesystem,thread" IPHONE_SDKVERSION=10.0
+	./build-libc++.sh BOOST_LIBS="program_options,regex,date_time,filesystem,thread" IPHONE_SDKVERSION=10.0
 
 Copy the directory containing the boost headers from the libs/boost/include directory to the Headers directory and copy libbosst.a from libs/boost/ios to the Libraries/iOS directory.
 
