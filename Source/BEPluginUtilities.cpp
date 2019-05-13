@@ -437,13 +437,12 @@ const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& paramet
 
 const boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which, const boost::filesystem::path default_path )
 {
-
-	auto file = ParameterAsWideString ( parameters, which, default_path.wstring() );
-	boost::filesystem::path path = file;
+	
+	boost::filesystem::path path = ParameterAsWideString ( parameters, which, default_path.wstring() );
 	path.make_preferred();
-
+	
 	return path;
-
+	
 }
 
 
