@@ -87,6 +87,7 @@ const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path );
 std::string ReadFileAsUTF8 ( const boost::filesystem::path path );
 std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from = g_text_encoding );
 std::string ConvertTextEncoding ( std::string& in, const std::string& to, const std::string& from = g_text_encoding );
+const bool IsValidUTF8 ( const std::string& utf8 );
 std::string ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from = g_text_encoding );
 
 void SetTextEncoding ( const std::string& encoding = UTF8 );

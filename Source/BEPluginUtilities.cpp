@@ -47,18 +47,15 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 
-#include <utf8.h>
-
+#include <iconv.h>
 #include <zlib.h>
 
 #include <sstream>
 #include <iostream>
-#include <iconv.h>
 
 
 using namespace std;
 using namespace fmx;
-using namespace boost::filesystem;
 
 
 thread_local extern errcode g_last_ddl_error;
@@ -124,15 +121,19 @@ void SetResult ( const Text& text, Data& results )
 }
 
 
-void SetResult ( const string& text, Data& results )
+void SetResult ( const std::string& text, Data& results )
 {
-	if ( ! utf8::is_valid ( text.begin(), text.end() ) ) {
+
+	if ( IsValidUTF8 ( text ) ) {
+
+		TextUniquePtr result_text;
+		result_text->Assign ( text.c_str(), Text::kEncoding_UTF8 );
+		SetResult ( *result_text, results );
+
+	} else {
 		throw BEPlugin_Exception ( kInvalidUTF8 );
 	}
 
-	TextUniquePtr result_text;
-	result_text->Assign ( text.c_str(), Text::kEncoding_UTF8 );
-	SetResult ( *result_text, results );
 }
 
 
@@ -794,18 +795,30 @@ std::string ConvertTextEncoding ( std::string& in, const string& to, const std::
 }
 
 
+const bool IsValidUTF8 ( const std::string& utf8 )
+{
+	auto valid = true;
+
+	try {
+		auto bit_bucket = ConvertTextToUTF8 ( (char *)utf8.c_str(), utf8.size(), UTF8 );
+	} catch ( BEPlugin_Exception& /* e */ ) {
+		valid = false;
+	}
+	
+	return valid;
+	
+}
+
+
 // convert text to utf-8
 // currently handles utf-16, ascii and utf-8 text
 
 std::string ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from )
 {
-	vector<char> text = ConvertTextEncoding ( in, length, UTF8, from );
-	if ( ! utf8::is_valid ( text.begin(), text.end() ) ) {
-		throw BEPlugin_Exception ( kInvalidUTF8 );
-	}
+	auto text = ConvertTextEncoding ( in, length, UTF8, from );
+	std::string utf8 ( text.begin(), text.end() );
 
-	std::string out ( text.begin(), text.end() );
-	return out;
+	return utf8;
 
 } // ConvertToUTF8
 

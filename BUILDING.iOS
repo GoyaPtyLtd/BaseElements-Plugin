@@ -193,17 +193,6 @@ Copy output/<platform>/include into Headers/libturbojpeg if necessary.
 
 
 =======================================================================
-utf8-cpp
-=======================================================================
-
-Download from
-
-	http://utfcpp.sourceforge.net/
-
-and place the source/utf8.h file and source/utf8 directory in the project Headers directory.
-
-
-=======================================================================
 Poco 1.9.0
 =======================================================================
 

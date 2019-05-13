@@ -198,7 +198,7 @@ and extract the archive and copy and rename the src directory.
 
 
 =======================================================================
-libjpeg-turbo - 1.4.2
+libjpeg-turbo - 2.0.2
 =======================================================================
 
 Download the source from
@@ -207,7 +207,7 @@ Download the source from
 
 and extract the archive. Then
 
-	cd libjpeg-turbo-1.4.2
+	cd libjpeg-turbo-master
 	autoreconf -fiv
 	./configure --host x86_64-apple-darwin CFLAGS='-mmacosx-version-min=10.7' --without-simd
 	make install prefix="$(pwd)/build"
@@ -216,20 +216,6 @@ Copy the header and library files.
 
 	cp -R ./build/include "${SRCROOT}/Headers/libturbojpeg"
 	cp ./build/lib/libturbojpeg.a "${SRCROOT}/Libraries/macOS"
-
-
-=======================================================================
-utf8-cpp
-=======================================================================
-
-Download from
-
-	http://utfcpp.sourceforge.net/
-
-Extract the archive and copy the header files.
-
-	cd utf8_v2_3_4
-	cp -R source/utf8 source/utf8.h "${SRCROOT}/Headers/"
 
 
 =======================================================================
