@@ -16,7 +16,7 @@
 
 BEQuadChar::BEQuadChar ( const std::string new_type )
 {
-	if ( new_type.length() != 4 ) {
+	if ( QUAD_CHAR_SIZE != new_type.length() ) {
 		throw std::out_of_range ( "Type must be exactly 4 characters long" );
 	}
 
@@ -43,7 +43,7 @@ const std::string BEQuadChar::as_string ( ) const
 {
 	fmx::TextUniquePtr stream_type;
 	
-	for ( int i = 0 ; i < 4 ; i++ ) {
+	for ( int i = 0 ; i < QUAD_CHAR_SIZE ; i++ ) {
 		
 		auto character = (*type)[i];
 		fmx::uint16 * cc = new fmx::uint16[2];

@@ -38,6 +38,8 @@
 #define BMP_CONTAINER_TYPE "BMPf"
 #define PDF_CONTAINER_TYPE "PDF "
 
+#define QUAD_CHAR_SIZE 4
+
 
 class BEQuadChar {
 
