@@ -2022,12 +2022,12 @@ fmx::errcode BE_ContainerGetType ( short /* funcId */, const fmx::ExprEnv& /* en
 		
 		const BinaryDataUniquePtr container ( parameters.AtAsBinaryData ( 0 ) );
 		auto stream_type = ParameterAsUTF8String ( parameters, 1 );
-		auto stream_index = StreamIndex ( *container, stream_type );
+		auto stream_index = IndexForStream ( *container, stream_type, false );
 
 		if ( kBE_DataType_Not_Found != stream_index ) {
 			
 			fmx::TextUniquePtr file_name;
-			auto fnam_error = container->GetFNAMData( *file_name );
+			auto fnam_error = container->GetFNAMData ( *file_name );
 
 			short width = 0;
 			short height = 0;
@@ -2047,8 +2047,7 @@ fmx::errcode BE_ContainerGetType ( short /* funcId */, const fmx::ExprEnv& /* en
 				
 			} else if ( stream_type == MAIN_CONTAINER_TYPE ) {
 				
-				char quad_char[4] = {};
-				error = container->GetData ( stream_index, 0, 4, quad_char );
+				auto quad_char = DataAsVectorChar ( *container, stream_index );
 				SetResult ( quad_char, results );
 				
 			} else {

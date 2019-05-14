@@ -597,33 +597,29 @@ const bool BinaryDataAvailable ( const DataVect& parameters, const FMX_UInt32 wh
 #pragma mark -
 
 
-const fmx::int32 StreamIndex ( const BinaryData& data, const std::string stream_type )
+const fmx::int32 IndexForStream ( const BinaryData& data, const std::string stream_type, const bool resolve_main_stream )
 {
-
-	QuadCharUniquePtr type ( stream_type[0], stream_type[1], stream_type[2], stream_type[3] );
-
-	fmx::int32 stream_index = data.GetIndex ( *type );
-
-	return stream_index;
-
-}
-
-
-const fmx::int32 IndexForStream ( const BinaryData& data, const std::string stream_type )
-{
-
-	fmx::int32 stream_index = StreamIndex ( data, stream_type );
-
-	if ( stream_index != kErrorUnknown && stream_type == MAIN_CONTAINER_TYPE ) {
-
-		char quad_char[4] = {};
-		data.GetData ( stream_index, 0, 4, quad_char ); // error =
-		stream_index = StreamIndex ( data, quad_char );
-
+	
+	fmx::int32 stream_index = kBE_DataType_Not_Found;
+	
+	try {
+		unique_ptr<BEQuadChar> quad_char ( new BEQuadChar ( stream_type ) );
+		stream_index = data.GetIndex ( *(quad_char->get_type()) );
+	} catch ( std::out_of_range& /* e */ ) {
+		; // do nothing, we return an error
 	}
 
+	if ( resolve_main_stream && stream_index != kBE_DataType_Not_Found && stream_type == MAIN_CONTAINER_TYPE ) {
+		
+		// the type we want is stored in the first 4 bytes of MAIN
+		char quad_char [ QUAD_CHAR_SIZE + 1 ] = {0};
+		data.GetData ( stream_index, 0, QUAD_CHAR_SIZE, quad_char ); // error =
+		stream_index = IndexForStream ( data, quad_char );
+		
+	}
+	
 	return stream_index;
-
+	
 }
 
 
