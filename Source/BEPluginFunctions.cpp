@@ -3850,24 +3850,18 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 		SystemCommand command;
 		Poco::ActiveResult<string> result = command.execute ( shell_command );
 
-		switch ( timeout ) {
-				
-			case kBE_Never:
-				result.wait ( );
-				break;
-				
-			case kBE_Immediate:
-				error = kCommandTimeout;
-				// fall through
-				
-			default:
+		if ( kBE_Never == timeout ) {
+			result.wait ( );
+		} else if ( kBE_Immediate == timeout ) {
+			error = kCommandTimeout;
+		} else {
 
-				try {
-					result.wait ( timeout );
-				} catch ( Poco::TimeoutException& /* e */ ) {
-					error = kCommandTimeout;
-				}
-				
+			try {
+				result.wait ( timeout );
+			} catch ( Poco::TimeoutException& /* e */ ) {
+				error = kCommandTimeout;
+			}
+			
 		}
 
 		if ( result.available() ) {
