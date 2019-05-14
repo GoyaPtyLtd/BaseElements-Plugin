@@ -3852,12 +3852,14 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 
 		if ( kBE_Never == timeout ) {
 			result.wait ( );
+		} else if ( kBE_Immediate == timeout ) {
+			error = kCommandTimeout;
 		} else {
 
 			try {
 				result.wait ( timeout );
 			} catch ( Poco::TimeoutException& /* e */ ) {
-				; // error = e.code();
+				error = kCommandTimeout;
 			}
 			
 		}
@@ -3865,7 +3867,7 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 		if ( result.available() ) {
 			SetResult ( result.data(), results );
 		}
-
+		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -3874,7 +3876,7 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 		error = kErrorUnknown;
 	}
 
-	return error;
+	return MapError ( error );
 
 } // BE_ExecuteSystemCommand
 
