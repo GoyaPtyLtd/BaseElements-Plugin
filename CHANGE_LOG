@@ -2,7 +2,7 @@
 Version 4.1b1
 ########################################################################
 
-May 10, 2019
+May 14, 2019
 
 
 New Functions
@@ -20,6 +20,7 @@ BE_VariableSet
 Changes
 
 BE_Encrypt_AES: reverse deprecation
+BE_ExecuteSystemCommand: error on timeout
 BE_Decrypt_AES: reverse deprecation
 
 Update to Duktape 2.3.0
