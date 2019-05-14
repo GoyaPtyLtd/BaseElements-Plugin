@@ -22,6 +22,7 @@ Changes
 BE_Encrypt_AES: reverse deprecation
 BE_ExecuteSystemCommand: error on timeout
 BE_Decrypt_AES: reverse deprecation
+BE_RegularExpression: new option, v, to treat the input as a value list
 
 Update to Duktape 2.3.0
 

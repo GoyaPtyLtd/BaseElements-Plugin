@@ -4190,10 +4190,27 @@ fmx::errcode BE_RegularExpression ( short /* funcId */, const ExprEnv& /* enviro
         auto replace_with = ParameterAsUTF8String ( parameters, 3 );
         const bool replace = parameters.Size() == 4 ;
 
-        BEValueList<std::string> matched = regular_expression ( text, expression, options, replace_with, replace );
-        std::string matched_text = matched.get_as_filemaker_string();
-        // add new setresult for value lists
-        SetResult ( matched_text, results );
+		// should the input be treated as a value list ???
+		auto treat_input_as_value_list = false;
+		auto found = options.find ( "v" );
+		if ( found != std::string::npos ) {
+			treat_input_as_value_list = true;
+		}
+
+		std::vector<std::string> values;
+		if ( treat_input_as_value_list ) {
+			boost::split ( values, text, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_off );
+		} else {
+			values.push_back ( text );
+		}
+
+		// and match
+		BEValueListStringUniquePtr matched_text ( new BEValueList<std::string> );
+		for ( auto& each_value : values ) {
+			matched_text->append ( regular_expression ( each_value, expression, options, replace_with, replace ) );
+		}
+
+        SetResult ( matched_text->get_as_filemaker_string(), results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
