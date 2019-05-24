@@ -64,3 +64,6 @@ Project/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution File
 Project/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/*
 Project/Extras/BaseElementsIOSPluginTest
 Project/Extras/Import.log
+Project/Extras/build_libraries.rb
+Project/CodeSigning/GoyaPtyLtd.pfx
+Project/CodeSigning/Certificates - goya.p12
