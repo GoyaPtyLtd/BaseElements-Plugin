@@ -52,6 +52,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 134, "BE_DebugInformation" },
 	{ 135, "BE_ClipboardGetFile ( format {; fileName } )" },
 	{ 136, "BE_ClipboardSetFile ( fileData ; format )" },
+	{ 137, "BE_GetSystemDrive" },
 	{ 140, "BE_WriteTextFileToContainer_Deprecated ( filename ; text {; append} )" },
 	{ 150, "BE_ScriptExecute ( scriptName {; fileName ; parameter } )" },
 	{ 151, "BE_FileMakerSQL ( sqlStatement {; columnSeparator ; rowSeparator ; databaseName } )" },

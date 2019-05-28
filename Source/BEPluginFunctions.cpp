@@ -4291,5 +4291,26 @@ fmx::errcode BE_DebugInformation ( short /* funcId */, const ExprEnv& environmen
 } // BE_DebugInformation
 
 
+fmx::errcode BE_GetSystemDrive ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+{
+	errcode error = NoError();
+	
+	try {
+		
+		auto system_drive = get_system_drive();
+		SetResult ( system_drive, results );
+		
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_GetSystemDrive
+
 
 

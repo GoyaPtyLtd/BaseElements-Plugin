@@ -2,7 +2,7 @@
  BEMacFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2017 Goya. All rights reserved.
+ Copyright 2010-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -53,6 +53,7 @@ const bool OpenURL ( std::wstring& url );
 const bool OpenFile ( std::wstring& path );
 
 const std::wstring get_machine_name ( );
+const std::string get_system_drive ( );
 
 
 #endif // BEMACFUNCTIONS_H

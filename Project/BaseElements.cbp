@@ -65,7 +65,6 @@
 			<Add library="../Libraries/linux/libxml2.a" />
 			<Add library="../Libraries/linux/libxslt.a" />
 			<Add library="../Libraries/linux/libPocoFoundation.a" />
-			<Add library="/lib64/libbz2.so" />
 			<Add library="../Libraries/linux/libexpat.a" />
 			<Add library="../Libraries/linux/libfreetype.a" />
 			<Add library="../Libraries/linux/libfontconfig.a" />

@@ -2,7 +2,7 @@
  BEWinFunctions.h
  BaseElements Plug-in
 
- Copyright 2010-2016 Goya. All rights reserved.
+ Copyright 2010-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -52,6 +52,8 @@ const std::wstring GetPreference ( const std::wstring& key, const std::wstring& 
 const bool OpenURL ( const std::wstring& url );
 const bool OpenFile ( const std::wstring& file );
 const std::wstring get_machine_name ();
+const std::string get_system_drive();
+
 
 // utilities
 

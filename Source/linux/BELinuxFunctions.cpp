@@ -175,6 +175,12 @@ const std::wstring get_machine_name ( )
 }
 
 
+const std::string get_system_drive ( )
+{
+	return ""; // matching Get ( SystemDrive )
+}
+
+
 unsigned long Sub_LoadString ( const unsigned long string_id, FMX_Unichar * intoHere, const long intoHereMax )
 {
 	unsigned long returnResult = 0;

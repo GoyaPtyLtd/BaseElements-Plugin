@@ -2,13 +2,14 @@
 Version 4.1b1
 ########################################################################
 
-May 14, 2019
+May 28, 2019
 
 
 New Functions
 
 BE_ContainerGetType
 BE_ContainerListTypes
+BE_GetSystemDrive
 BE_StackPush
 BE_StackPop
 BE_StackCount

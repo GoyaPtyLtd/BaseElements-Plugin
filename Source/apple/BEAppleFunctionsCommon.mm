@@ -2,7 +2,7 @@
  BEAppleFunctionsCommon.cpp
  BaseElements Plug-In
  
- Copyright 2017-2018 Goya. All rights reserved.
+ Copyright 2017-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -30,7 +30,6 @@ const unsigned long Sub_LoadString ( unsigned long stringID, FMX_Unichar* intoHe
 			
 		} else {
 			
-//			NSString * string_table = [NSString stringWithCString: bundleId.c_str() encoding: NSUTF8StringEncoding];
 			NSString * which_string = [NSString stringWithFormat:@"%lu", stringID];
 			message = [thisBundle localizedStringForKey: which_string value: @"" table: nil];
 

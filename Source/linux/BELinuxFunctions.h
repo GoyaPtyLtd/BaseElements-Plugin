@@ -2,7 +2,7 @@
  BELinuxFunctions.h
  BaseElements Plug-In
 
- Copyright 2016 Goya. All rights reserved.
+ Copyright 2016-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -54,6 +54,7 @@ bool OpenFile ( std::wstring& path );
 
 
 const std::wstring get_machine_name ( );
+const std::string get_system_drive ( );
 
 
 // used by Do_GetString

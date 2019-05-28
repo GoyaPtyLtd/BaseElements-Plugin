@@ -471,3 +471,24 @@ const std::wstring get_machine_name ( )
 }
 
 
+const std::string get_system_drive ( )
+{
+	
+	const DASessionRef session = DASessionCreate ( kCFAllocatorDefault );
+	const CFURLRef url = CFURLCreateWithFileSystemPath ( kCFAllocatorDefault, CFSTR("/"), kCFURLPOSIXPathStyle, true );
+	const DADiskRef disk = DADiskCreateFromVolumePath ( kCFAllocatorDefault, session, url );
+	CFRelease ( url );
+	CFRelease ( session );
+
+	const CFDictionaryRef description = DADiskCopyDescription ( disk );
+	CFRelease ( disk );
+
+	const CFStringRef volume_name = (CFStringRef)CFDictionaryGetValue ( description, kDADiskDescriptionVolumeNameKey );
+	CFRelease ( description );
+
+	const std::string system_drive = [CFBridgingRelease(volume_name) UTF8String];
+	
+	return "/" + system_drive + "/";
+	
+}
+

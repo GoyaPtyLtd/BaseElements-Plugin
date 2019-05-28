@@ -122,6 +122,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 #endif
 
 #if ( FMX_MAC_TARGET || FMX_WIN_TARGET )
+	g_be_plugin->RegisterFunction ( kBE_GetSystemDrive, BE_GetSystemDrive );
 	g_be_plugin->RegisterFunction ( kBE_ClipboardFormats, BE_ClipboardFormats );
 	g_be_plugin->RegisterFunction ( kBE_FileSelect, BE_FileSelect, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_FolderSelect, BE_FolderSelect, 1, 2 );
@@ -131,6 +132,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_DialogProgress, BE_DialogProgress, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_DialogProgressUpdate, BE_DialogProgressUpdate, 1, 2 );
 #else
+	g_be_plugin->RegisterFunction ( kBE_GetSystemDrive, BE_NotImplemented );
 	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardFormats, BE_NotImplemented );
 	g_be_plugin->RegisterHiddenFunction ( kBE_FileSelect, BE_NotImplemented, 1, 2 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_FolderSelect, BE_NotImplemented, 1, 2 );

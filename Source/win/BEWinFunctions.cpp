@@ -980,6 +980,17 @@ const std::wstring get_machine_name ()
 }
 
 
+const std::string get_system_drive ( )
+{
+	char system_directory[PATH_MAX];
+	const UINT length = GetSystemDirectoryA ( (LPSTR)system_directory, PATH_MAX );
+	auto system_path = new boost::filesystem::path ( system_directory );
+	auto system_drive = system_path->root_name();
+
+	return "/" + system_drive.string() + "/";
+}
+
+
 #pragma mark -
 #pragma mark Utilities
 #pragma mark -
