@@ -201,7 +201,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterHiddenFunction ( kBE_JSONPath_Deprecated, BE_JSONPath_Deprecated, 2 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_JSON_Error_Description_Deprecated, BE_JSON_Error_Description_Deprecated );
-	g_be_plugin->RegisterHiddenFunction ( kBE_JSON_ArraySize_Deprecated, BE_JSON_ArraySize_Deprecated, 1 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_JSON_ArraySize, BE_JSON_ArraySize, 1 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_JSON_Encode_Deprecated, BE_JSON_Encode_Deprecated, 1, 3 );
 
 

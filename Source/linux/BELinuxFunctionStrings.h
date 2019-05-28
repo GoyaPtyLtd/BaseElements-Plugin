@@ -110,7 +110,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 271, "BE_JPEGRecompress ( jpeg {; compressionLevel ; scale } )" },
 	{ 300, "BE_JSONPath_Deprecated ( json ; path )" },
 	{ 301, "BE_JSON_Error_Description_Deprecated" },
-	{ 302, "BE_JSON_ArraySize_Deprecated ( json )" },
+	{ 302, "BE_JSON_ArraySize ( json )" },
 	{ 303, "BE_JSON_Encode_Deprecated ( key {; value ; type } )" },
 	{ 321, "BE_OAuthRequestAccessToken ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )" },
 	{ 330, "BE_XeroSetTokens ( consumer_key ; private_key )" },

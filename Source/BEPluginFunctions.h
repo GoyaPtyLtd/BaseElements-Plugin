@@ -170,6 +170,8 @@ fmx::errcode BE_MessageDigest ( short funcId, const fmx::ExprEnv& environment, c
 fmx::errcode BE_Encrypt_AES ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_Decrypt_AES ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
+fmx::errcode BE_JSON_ArraySize ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+
 
 // Deprecated
 
@@ -177,7 +179,6 @@ fmx::errcode BE_WriteTextFileToContainer_Deprecated ( short funcId, const fmx::E
 
 fmx::errcode BE_JSONPath_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_JSON_Error_Description_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_JSON_ArraySize_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_JSON_Encode_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_Base64_Decode_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );

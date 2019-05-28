@@ -198,7 +198,7 @@ enum functions {
 	kBE_JPEGRecompress= 271,
 	kBE_JSONPath_Deprecated = 300,
 	kBE_JSON_Error_Description_Deprecated = 301,
-	kBE_JSON_ArraySize_Deprecated = 302,
+	kBE_JSON_ArraySize = 302,
 	kBE_JSON_Encode_Deprecated = 303,
 //	kBE_OAuth_RequestToken = 320,
 	kBE_OAuthRequestAccessToken = 321,

@@ -1284,7 +1284,7 @@ fmx::errcode BE_JSON_Error_Description_Deprecated ( short /* funcId */, const Ex
 
 
 
-fmx::errcode BE_JSON_ArraySize_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
