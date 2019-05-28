@@ -10,6 +10,17 @@
  */
 
 
+// need (Parser) to go before BEPluginGlobalDefines.h or we not happy
+
+#include <Poco/Dynamic/Var.h>
+#include <Poco/Exception.h>
+#include <Poco/JSON/JSON.h>
+#include <Poco/JSON/Array.h>
+#include <Poco/JSON/Parser.h>
+#include <Poco/RegularExpression.h>
+#include <Poco/String.h>
+
+
 #include "BEPluginGlobalDefines.h"
 
 
@@ -76,10 +87,6 @@
 #include <boost/algorithm/hex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
-
-#include <Poco/Exception.h>
-#include <Poco/RegularExpression.h>
-#include <Poco/String.h>
 
 #include <iconv.h>
 
@@ -1294,12 +1301,26 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 
 		auto json = ParameterAsUTF8String ( parameters );
 
-		std::unique_ptr<BEJSON> json_document ( new BEJSON ( json ) );
-		json_document->array_size ( results );
+		std::size_t array_size = 0;
 
-	} catch ( BEJSON_Exception& e ) {
+		try {
+
+			Poco::JSON::Parser json_parser;
+			const auto json_object = json_parser.parse ( json );
+			Poco::JSON::Array::Ptr json_array = json_object.extract<Poco::JSON::Array::Ptr>();
+			array_size = json_array->size();
+			
+		} catch ( Poco::BadCastException& /* e */ ) {
+			; // not an array... don't error... array_size = 0;
+		} catch ( Poco::Exception& e ) {
+			error = e.code();
+			g_json_error_description = e.what();
+		}
+
+		SetResult ( array_size, results );
+
+	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
-		g_json_error_description = e.description();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
 	} catch ( exception& /* e */ ) {

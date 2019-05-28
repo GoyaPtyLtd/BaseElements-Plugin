@@ -2,7 +2,7 @@
  BEJSON.h
  BaseElements Plug-In
 
- Copyright (c) 2013-2016 Goya. All rights reserved.
+ Copyright (c) 2013-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -79,7 +79,6 @@ public:
 		~BEJSON ( );
 
 	void json_path_query ( const std::string& json_path, fmx::Data& results );
-	void array_size ( fmx::Data& results );
 	std::string encode ( const std::string& format, const fmx::Data& value, const std::string& type );
 	
 protected:
