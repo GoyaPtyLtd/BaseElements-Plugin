@@ -17,6 +17,7 @@
 #include <Poco/JSON/JSON.h>
 #include <Poco/JSON/Array.h>
 #include <Poco/JSON/Parser.h>
+#include <Poco/JSON/Query.h>
 #include <Poco/RegularExpression.h>
 #include <Poco/String.h>
 
@@ -1290,35 +1291,37 @@ fmx::errcode BE_JSON_Error_Description_Deprecated ( short /* funcId */, const Ex
 } // BE_JSON_Error_Description_Deprecated
 
 
-
 fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
-
 	g_json_error_description.clear();
 
 	try {
 
+		std::size_t array_size = 0; // if there's no array or the path cannot be found...
 		auto json = ParameterAsUTF8String ( parameters );
-
-		std::size_t array_size = 0;
 
 		try {
 
 			Poco::JSON::Parser json_parser;
 			const auto json_object = json_parser.parse ( json );
-			Poco::JSON::Array::Ptr json_array = json_object.extract<Poco::JSON::Array::Ptr>();
+
+			auto path = ParameterAsUTF8String ( parameters, 1 );
+			const auto json_query = Poco::JSON::Query ( json_object );
+			const auto json_array = json_query.findArray ( path ); // empty path gives the whole thing
 			array_size = json_array->size();
 			
 		} catch ( Poco::BadCastException& /* e */ ) {
 			; // not an array... don't error... array_size = 0;
+		} catch ( Poco::InvalidAccessException& /* e */ ) {
+			; // didn't find path... don't error... array_size = 0;
 		} catch ( Poco::Exception& e ) {
 			error = e.code();
-			g_json_error_description = e.what();
+//			g_json_error_description = e.what(); // deprecated
 		}
 
 		SetResult ( array_size, results );
-
+		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -1330,7 +1333,6 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 	return MapError ( error );
 
 } // BE_JSON_ArraySize_Deprecated
-
 
 
 fmx::errcode BE_JSON_Encode_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
