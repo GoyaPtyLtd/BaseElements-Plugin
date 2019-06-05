@@ -114,7 +114,7 @@ static duk_ret_t BE_ScriptExecute ( duk_context *context )
 
 static duk_ret_t BE_Evaluate_FileMaker_Calculation ( duk_context *context )
 {
-	fmx::errcode error = kNoError;
+//	fmx::errcode error = kNoError;
 
 	std::string calculation = duk_require_string ( context, 0 );
 
@@ -125,7 +125,7 @@ static duk_ret_t BE_Evaluate_FileMaker_Calculation ( duk_context *context )
 	const fmx::ExprEnvUniquePtr environment;
 	FMX_SetToCurrentEnv ( &(*environment) );
 
-	error = environment->Evaluate ( *command, *result );
+	environment->Evaluate ( *command, *result ); // error =
 	
 	fmx::TextUniquePtr reply;
 	reply->SetText ( result->GetAsText() );
