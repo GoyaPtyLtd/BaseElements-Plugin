@@ -198,7 +198,7 @@ const std::wstring SelectFileOrFolder ( const std::wstring& prompt, const std::w
 	
 	NSMutableString * file_path = [NSMutableString stringWithString: @""];
 	
-	if ( [file_dialog runModal ] == NSFileHandlingPanelOKButton ) {
+	if ( [file_dialog runModal ] == NSModalResponseOK ) {
 		
 		NSArray* files = [file_dialog URLs];
 		NSUInteger number_of_files = [files count];
@@ -257,7 +257,7 @@ const std::wstring SaveFileDialog ( std::wstring& prompt, std::wstring& fileName
 	
 	NSMutableString * file_path = [NSMutableString stringWithString: @""];
 	
-	if ( [file_dialog runModal ] == NSFileHandlingPanelOKButton ) {
+	if ( [file_dialog runModal ] == NSModalResponseOK ) {
 		file_path = (NSMutableString *)[[file_dialog URL] path];
 	} else {
 		// the user cancelled
@@ -289,7 +289,7 @@ const int DisplayDialog ( std::wstring& title, std::wstring& message, std::wstri
 	[alert addButtonWithTitle: alternate_button_string];
 	[alert setMessageText: title_string];
 	[alert setInformativeText: message_string];
-	[alert setAlertStyle:NSWarningAlertStyle];
+	[alert setAlertStyle: NSAlertStyleWarning];
 	NSInteger response = [alert runModal];
 	
 	/*
