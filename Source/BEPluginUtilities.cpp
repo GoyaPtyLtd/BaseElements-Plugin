@@ -818,13 +818,6 @@ std::string ConvertTextToUTF8 ( char * in, const size_t length, const std::strin
 } // ConvertToUTF8
 
 
-void SetTextEncoding ( const string& encoding )
-{
-	g_text_encoding = encoding;
-}
-
-
-
 std::string TextAsUTF8String ( const Text& fmx_text )
 {
 

@@ -108,7 +108,7 @@ using namespace boost::filesystem;
 thread_local std::map<short, std::string> g_script_steps;
 thread_local errcode g_last_error;
 thread_local errcode g_last_ddl_error;
-thread_local string g_text_encoding;
+thread_local string g_text_encoding = UTF8;
 thread_local string g_json_error_description;
 thread_local BEOAuth * g_oauth;
 thread_local struct host_details g_smtp_host;
@@ -1904,7 +1904,7 @@ fmx::errcode BE_SetTextEncoding ( short /*funcId*/, const ExprEnv& /* environmen
 
 		iconv_t conversion = iconv_open ( encoding.c_str(), encoding.c_str() );
 		if ( conversion != (iconv_t)-1 ) {
-			SetTextEncoding ( encoding );
+			g_text_encoding = encoding;
 			iconv_close ( conversion );
 		 } else {
 			error = errno;

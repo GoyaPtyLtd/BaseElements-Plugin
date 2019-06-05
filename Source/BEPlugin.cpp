@@ -80,8 +80,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 {
 #pragma unused ( plugin_call )
 
-	SetTextEncoding ( );
-
 	InitialiseForPlatform ( );
 	InitialiseLibXSLT();
 
@@ -91,7 +89,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->set_fmx_application ( plugin_call->parm1 );
 
 	fmx::TextUniquePtr fmx_application_version;
-	fmx_application_version->AssignUnicode( (unichar16 *)plugin_call->parm2 );
+	fmx_application_version->AssignUnicode ( (unichar16 *)plugin_call->parm2 );
 	const std::string application_version ( TextAsUTF8String ( *fmx_application_version ) );
 	g_be_plugin->set_fmx_application_version ( application_version );
 

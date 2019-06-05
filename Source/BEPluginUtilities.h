@@ -89,7 +89,6 @@ std::string ConvertTextEncoding ( std::string& in, const std::string& to, const 
 const bool IsValidUTF8 ( const std::string& utf8 );
 std::string ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from = g_text_encoding );
 
-void SetTextEncoding ( const std::string& encoding = UTF8 );
 std::string TextAsUTF8String ( const fmx::Text& fmx_text );
 std::string TextAsNumberString ( const fmx::Text& fmx_text );
 std::string DataAsUTF8String ( const fmx::Data& data );
