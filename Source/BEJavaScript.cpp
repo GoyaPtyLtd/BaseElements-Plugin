@@ -13,7 +13,6 @@
 #include "BEJavaScript.h"
 #include "BEPluginUtilities.h"
 
-//#include "duktape/duk_config.h"
 #include "duktape/duktape.h"
 
 
