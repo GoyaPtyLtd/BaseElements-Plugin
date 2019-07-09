@@ -2,7 +2,7 @@
 Version 4.1b1
 ########################################################################
 
-May 29, 2019
+July 9, 2019
 
 
 New Functions
@@ -25,6 +25,7 @@ BE_ExecuteSystemCommand: error on timeout
 BE_Decrypt_AES: reverse deprecation
 BE_JSON_ArraySize: optional path parameter added
 BE_RegularExpression: new option, v, to treat the input as a value list
+BE_ScriptExecute: returns not implemented for server versions
 
 Update to Duktape 2.3.0
 

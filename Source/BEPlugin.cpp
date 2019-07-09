@@ -108,6 +108,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_PreferenceSet, BE_PreferenceSet, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_PreferenceGet, BE_PreferenceGet, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, 1 );
+	g_be_plugin->RegisterFunction ( kBE_ScriptExecute, BE_ScriptExecute, 1, 3 );
 #else
 	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardGetText, BE_NotImplemented, 1 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardSetText, BE_NotImplemented, 2 );
@@ -117,6 +118,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceSet, BE_NotImplemented, 2, 3 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceGet, BE_NotImplemented, 1, 2 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_EvaluateJavaScript, BE_NotImplemented, 1 );
+	g_be_plugin->RegisterFunction ( kBE_ScriptExecute, BE_NotImplemented, 1, 3 );
 #endif
 
 #if ( FMX_MAC_TARGET || FMX_WIN_TARGET )
@@ -184,7 +186,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_ExecuteSystemCommand, BE_NotImplemented, 1, 2 );
 #endif
 
-	g_be_plugin->RegisterFunction ( kBE_ScriptExecute, BE_ScriptExecute, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, 1, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_ContainerIsCompressed, BE_ContainerIsCompressed, 1 );
