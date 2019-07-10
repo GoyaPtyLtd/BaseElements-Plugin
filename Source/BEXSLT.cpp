@@ -175,8 +175,19 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 			
 			// to get the line numbers etc in the error the stylesheet must have a file name
 			stylesheet->doc->URL = xmlStrdup ( (xmlChar *)"<FileMaker::Text::XSLT>" );
-			xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), xml_path.string().c_str(), NULL, options );
-			
+
+#if defined ( FMX_WIN_TARGET )
+				// aaaarrrgggghhhhhh!!!!!
+				auto wide_path = xml_path.wstring();
+				int size = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, NULL, 0, NULL, NULL );
+				std::vector<char> utf8_data ( size );
+				auto bytesConverted = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, &utf8_data[0], (int)utf8_data.size(), NULL, NULL );
+				std::string utf8 ( utf8_data.begin(), utf8_data.end() );
+				xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), utf8.c_str(), NULL, options );
+#else
+				xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), xml_path.string().c_str(), NULL, options );
+#endif
+
 			if ( xml_doc ) {
 				
 				// let the processor know to use our error handler and options
