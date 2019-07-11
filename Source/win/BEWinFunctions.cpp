@@ -17,6 +17,8 @@
 
 #include <boost/algorithm/string.hpp>
 
+#include <Poco/Util/WinRegistryKey.h>
+
 #include "BEWinFunctions.h"
 #include "BEWinIFileDialog.h"
 
@@ -856,94 +858,56 @@ const fmx::errcode UpdateProgressDialog ( const unsigned long value, const wstri
 #pragma mark -
 
 
-const bool SetPreference ( const wstring& key, const wstring& value, const wstring& domain )
-{
-	HKEY registry_key;
- 
-	LSTATUS status;
-
-	status = RegCreateKeyEx ( HKEY_CURRENT_USER,
-								domain.c_str(),
-								0,
-								NULL,
-								REG_OPTION_NON_VOLATILE,
-								KEY_WRITE,
-								NULL,
-								&registry_key,
-								NULL
-								);
-
-	if ( status == ERROR_SUCCESS ) {
-
-		status = RegSetValueEx ( registry_key,
-								key.c_str(),
-								0,
-								REG_SZ,
-								(PBYTE)value.c_str(),
-								(DWORD)(value.size() * sizeof(wchar_t)) + 1
-								);
-		RegCloseKey ( registry_key );
-	}
-
-	g_last_error = (fmx::errcode)status;
-
-	return ( status == ERROR_SUCCESS );
-
-}
-
-
-const wstring GetPreference ( const wstring& key, const wstring& domain )
+const bool SetPreference ( const string& key, const string& value, const string& domain )
 {
 
-	HKEY registry_key;
-	DWORD buffer_size = 1024;
-	wchar_t * preference_data = new wchar_t[buffer_size]();
+	Poco::Util::WinRegistryKey registry_key ( HKEY_CURRENT_USER, domain );
+	registry_key.setString ( key, value );
 
-	LSTATUS status;
+	return true;
 
-	status = RegOpenKeyEx ( HKEY_CURRENT_USER, 
-							domain.c_str(),
-							NULL,
-							KEY_READ,
-							&registry_key
-							);
- 
-	if ( status == ERROR_SUCCESS ) {
+} // SetPreference
 
-		status = RegQueryValueEx ( registry_key,
-									key.c_str(),
-									NULL,
-									NULL,
-									(LPBYTE)preference_data,
-									&buffer_size
-									);
 
-		// if preference_data isn't big enough resize it and try again
-		if ( status == ERROR_MORE_DATA ) {
+const string GetPreference ( const string& key, const string& domain )
+{
+	Poco::Util::WinRegistryKey registry_key ( HKEY_CURRENT_USER, domain );
 
-			delete [] preference_data;
-			preference_data = new wchar_t[buffer_size + 1]();
+	std::string value;
 
-			status = RegQueryValueEx ( registry_key,
-										key.c_str(),
-										NULL,
-										NULL,
-										(LPBYTE)preference_data,
-										&buffer_size
-										);
+	if ( registry_key.exists() ) {
+
+		try {
+			value = registry_key.getString(key);
 		}
-		RegCloseKey ( registry_key );
+		catch ( Poco::NotFoundException& /* e */ ) {
+			; // do nothing we happy to return an empty string
+		}
+
 	}
-
-	const wstring value ( preference_data );
-  
-	delete [] preference_data;
-
-	g_last_error = (fmx::errcode)status;
 
 	return value;
 
-}
+} // GetPreference
+
+
+void DeletePreference ( const string& key, const string& domain )
+{
+	Poco::Util::WinRegistryKey registry_key ( HKEY_CURRENT_USER, domain );
+
+	if ( registry_key.exists() ) {
+
+		try {
+			registry_key.deleteValue ( key );
+		}
+		catch ( Poco::NotFoundException& /* e */ ) {
+			; // don't worry, be happy
+		}
+
+	}
+
+} // DeletePreference
+
 
 
 #pragma mark -

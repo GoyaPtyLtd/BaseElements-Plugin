@@ -154,6 +154,7 @@ enum functions {
 	kBE_Pause = 159,
 	kBE_PreferenceSet = 160,
 	kBE_PreferenceGet = 161,
+	kBE_PreferenceDelete = 162,
 	kBE_Unzip = 170,
 	kBE_Zip = 171,
 	kBE_Base64_Decode_Deprecated = 172,

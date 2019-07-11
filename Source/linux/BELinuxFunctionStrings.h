@@ -66,6 +66,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 159, "BE_Pause ( milliseconds )" },
 	{ 160, "BE_PreferenceSet ( key ; value {; domain } )" },
 	{ 161, "BE_PreferenceGet ( key {; domain } )" },
+	{ 162, "BE_PreferenceDelete ( key {; domain } )" },
 	{ 170, "BE_Unzip ( archivePath {; outputFolderPath } )" },
 	{ 171, "BE_Zip ( fileList {; archiveFilePath } )" },
 	{ 172, "BE_Base64_Decode_Deprecated ( text {; name } )" },

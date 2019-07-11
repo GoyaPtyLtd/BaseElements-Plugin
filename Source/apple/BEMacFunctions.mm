@@ -395,7 +395,7 @@ const fmx::errcode UpdateProgressDialog ( const long value, const std::wstring& 
 #pragma mark -
 
 
-const bool SetPreference ( std::wstring& key, std::wstring& value, std::wstring& domain )
+const bool SetPreference ( std::string& key, std::string& value, std::string& domain )
 {
 	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
 	
@@ -403,11 +403,11 @@ const bool SetPreference ( std::wstring& key, std::wstring& value, std::wstring&
 	
 	if ( standardUserDefaults ) {
 
-		NSString * domain_name = NSStringFromWString ( domain );
+		NSString * domain_name = NSStringFromString ( domain );
 		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];		
 		
-		NSString * preference_key = NSStringFromWString ( key );
-		NSString * preference_value = NSStringFromWString ( value );
+		NSString * preference_key = NSStringFromString ( key );
+		NSString * preference_value = NSStringFromString ( value );
 		
 		NSMutableDictionary * new_preferences = [NSMutableDictionary dictionaryWithCapacity: [preferences count] + 1];
 		[new_preferences addEntriesFromDictionary: preferences];
@@ -424,25 +424,51 @@ const bool SetPreference ( std::wstring& key, std::wstring& value, std::wstring&
 }
 
 
-const std::wstring GetPreference ( std::wstring& key, std::wstring& domain )
+const std::string GetPreference ( std::string& key, std::string& domain )
 {
 	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-	NSString * preference_value = nil;
+	NSString * preference_value = @"";
 	
 	if ( standardUserDefaults ) {
 		
 		[standardUserDefaults synchronize];
 		
-		NSString * domain_name = NSStringFromWString ( domain );
+		NSString * domain_name = NSStringFromString ( domain );
 		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];		
 
-		NSString * preference_key = NSStringFromWString ( key );
-		preference_value = [preferences objectForKey: preference_key];
+		NSString * preference_key = NSStringFromString ( key );
+		if ( [preferences objectForKey: preference_key] != nil ) {
+			preference_value = [preferences objectForKey: preference_key];
+		}
 	}
 	
-	std::wstring preference = WStringFromNSString ( preference_value );
+	std::string preference ( [preference_value UTF8String] );
 	
 	return preference;
+}
+
+
+void DeletePreference ( std::string& key, std::string& domain )
+{
+	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+	
+	if ( standardUserDefaults ) {
+		
+		[standardUserDefaults synchronize];
+		
+		NSString * domain_name = NSStringFromString ( domain );
+		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];
+
+		NSMutableDictionary * new_preferences = [NSMutableDictionary dictionaryWithCapacity: [preferences count]];
+		[new_preferences addEntriesFromDictionary: preferences];
+
+		NSString * preference_key = NSStringFromString ( key );
+		[new_preferences removeObjectForKey: preference_key];
+
+		[standardUserDefaults setPersistentDomain: new_preferences forName: domain_name];
+		[standardUserDefaults synchronize];
+	}
+	
 }
 
 

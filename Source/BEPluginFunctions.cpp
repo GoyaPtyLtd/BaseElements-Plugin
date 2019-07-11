@@ -1729,9 +1729,9 @@ fmx::errcode BE_PreferenceSet ( short /*funcId*/, const ExprEnv& /* environment 
 
 	try {
 
-		auto key = ParameterAsWideString ( parameters );
-		auto value = ParameterAsWideString ( parameters, 1 );
-		auto domain = ParameterAsWideString ( parameters, 2, WSTRING(USER_PREFERENCES_DOMAIN) );
+		auto key = ParameterAsUTF8String ( parameters );
+		auto value = ParameterAsUTF8String ( parameters, 1 );
+		auto domain = ParameterAsUTF8String ( parameters, 2, USER_PREFERENCES_DOMAIN );
 
 		SetResult ( SetPreference ( key, value, domain ), results );
 
@@ -1748,17 +1748,23 @@ fmx::errcode BE_PreferenceSet ( short /*funcId*/, const ExprEnv& /* environment 
 } // BE_PreferenceSet
 
 
+// BE_PreferenceGet
+// BE_PreferenceDelete
 
-fmx::errcode BE_PreferenceGet ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_Preference ( short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
-		auto key = ParameterAsWideString ( parameters );
-		auto domain = ParameterAsWideString ( parameters, 1, WSTRING(USER_PREFERENCES_DOMAIN) );
+		auto key = ParameterAsUTF8String ( parameters );
+		auto domain = ParameterAsUTF8String ( parameters, 1, USER_PREFERENCES_DOMAIN );
 
-		SetResult ( GetPreference ( key, domain ), results );
+		if ( kBE_PreferenceGet == function_id ) {
+			SetResult ( GetPreference ( key, domain ), results );
+		} else {
+			DeletePreference ( key, domain );
+		}
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -1770,7 +1776,7 @@ fmx::errcode BE_PreferenceGet ( short /*funcId*/, const ExprEnv& /* environment 
 
 	return MapError ( error );
 
-} // BE_PreferenceGet
+} // BE_Preference
 
 
 

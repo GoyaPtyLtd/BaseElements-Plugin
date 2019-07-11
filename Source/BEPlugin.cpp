@@ -106,7 +106,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_ClipboardSetFile, BE_ClipboardSetFile, 2 );
 	g_be_plugin->RegisterFunction ( kBE_OpenURL, BE_OpenURL, 1 );
 	g_be_plugin->RegisterFunction ( kBE_PreferenceSet, BE_PreferenceSet, 2, 3 );
-	g_be_plugin->RegisterFunction ( kBE_PreferenceGet, BE_PreferenceGet, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_PreferenceGet, BE_Preference, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_PreferenceDelete, BE_Preference, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ScriptExecute, BE_ScriptExecute, 1, 3 );
 #else
@@ -117,6 +118,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_OpenURL, BE_NotImplemented, 1 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceSet, BE_NotImplemented, 2, 3 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceGet, BE_NotImplemented, 1, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceDelete, BE_NotImplemented, 1, 2 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_EvaluateJavaScript, BE_NotImplemented, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ScriptExecute, BE_NotImplemented, 1, 3 );
 #endif
