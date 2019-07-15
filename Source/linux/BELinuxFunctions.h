@@ -43,8 +43,9 @@ fmx::errcode UpdateProgressDialog ( const long value, const std::wstring& descri
 
 // user preferences
 
-bool SetPreference ( std::wstring& key, std::wstring& value, std::wstring& domain );
-std::wstring GetPreference ( std::wstring& key, std::wstring& domain );
+bool SetPreference ( std::string& key, std::string& value, std::string& domain );
+std::string GetPreference ( std::string& key, std::string& domain );
+void DeletePreference ( std::string& key, std::string& domain );
 
 
 // other
