@@ -11,6 +11,7 @@
 
 
 #include "BEPluginGlobalDefines.h"
+#include "BECppUtilities.h"
 #include "BECurl.h"
 #include "BEOAuth.h"
 #include "BEFileMakerPlugin.h"

@@ -2,7 +2,7 @@
  BEPluginException.h
  BaseElements Plug-In
  
- Copyright 2014-2015 Goya. All rights reserved.
+ Copyright 2014-2019 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -15,6 +15,8 @@
 
 
 #include "BEPluginGlobalDefines.h"
+
+#include <string>
 
 
 class BEPlugin_Exception : public std::runtime_error {

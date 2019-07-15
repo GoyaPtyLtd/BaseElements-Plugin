@@ -83,11 +83,8 @@
 #include <FMWrapper/FMXTypes.h>
 
 #include "BEPluginVersion.h"
-#include "BECppUtilities.h"
-
 
 extern thread_local fmx::errcode g_last_error;
-
 
 #endif // __cplusplus
 

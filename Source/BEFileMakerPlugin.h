@@ -16,7 +16,7 @@
 
 #include "BEPluginGlobalDefines.h"
 
-
+#include <string>
 #include <vector>
 
 

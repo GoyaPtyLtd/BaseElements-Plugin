@@ -11,6 +11,7 @@
 
 
 #include "BESMTP.h"
+#include "BECppUtilities.h"
 
 
 extern thread_local BECurlOptionMap g_curl_options;

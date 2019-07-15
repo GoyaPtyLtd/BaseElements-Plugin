@@ -11,6 +11,7 @@
 
 
 #include "BEXero.h"
+#include "BECppUtilities.h"
 #include "BECurl.h"
 #include "BEPluginException.h"
 #include "Crypto/BEBio.h"
