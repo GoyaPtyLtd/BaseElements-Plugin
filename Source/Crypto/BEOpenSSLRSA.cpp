@@ -141,7 +141,7 @@ const bool SignatureVerify_RSA ( const vector<unsigned char> data, const string 
 		throw BEPlugin_Exception ( kRSAVerifyUpdateFailed );
 	}
 
-	return EVP_VerifyFinal ( ctx.get(), (unsigned char *)signature.data(), (unsigned int)signature.size(), evpPkey.get() );
+	return (bool)EVP_VerifyFinal ( ctx.get(), (unsigned char *)signature.data(), (unsigned int)signature.size(), evpPkey.get() );
 
 } // SignatureGenerate_RSA
 

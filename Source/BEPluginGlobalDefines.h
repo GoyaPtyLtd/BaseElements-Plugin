@@ -340,7 +340,7 @@ enum file_type {
 enum data_type {
 	kBE_DataType_Not_Found = -1, 
 	kBE_DataType_String = 0,
-	kBE_DataType_Long = 0
+	kBE_DataType_Long = 1
 };
 
 

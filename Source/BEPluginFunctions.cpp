@@ -1320,7 +1320,7 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 //			g_json_error_description = e.what(); // deprecated
 		}
 
-		SetResult ( array_size, results );
+		SetResult ( (double)array_size, results );
 		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -1540,10 +1540,13 @@ fmx::errcode BE_ArrayFind ( short /* funcId */, const fmx::ExprEnv& /* environme
 		auto array_id = ParameterAsIndex ( parameters );
 
 		try {
+			
 			auto wanted = arrays.at ( array_id ); // so we throw if the index is invalid
 			auto find_this = ParameterAsUTF8String ( parameters, 1 );
 			auto found = wanted->find ( find_this );
+			
 			SetResult ( found.get_as_filemaker_string(), results );
+			
 		} catch ( out_of_range& /* e */ ) {
 			; // if we don't find it don't error
 		}
@@ -1575,6 +1578,7 @@ fmx::errcode BE_ArrayChangeValue ( short /* funcId */, const fmx::ExprEnv& /* en
 			auto find_this = ParameterAsIndex ( parameters, 1 );
 			auto replace_with = ParameterAsUTF8String ( parameters, 2 );
 			auto changed = wanted->change_value ( find_this, replace_with );
+			
 			SetResult ( changed, results );
 
 		} catch ( out_of_range& /* e */ ) {
@@ -1689,7 +1693,7 @@ fmx::errcode BE_Stack ( short function_id, const fmx::ExprEnv& /* environment */
 				case kBE_StackCount:
 				{
 					auto size = the_stack.size();
-					SetResult ( size, results );
+					SetResult ( (double)size, results );
 					break;
 				}
 					
@@ -3210,11 +3214,11 @@ fmx::errcode BE_ValuesSort ( short /* funcId */, const ExprEnv& /* environment *
 	try {
 
 		auto value_list = ParameterAsUTF8String ( parameters );
-		const bool ascending = ParameterAsBoolean ( parameters, 1, true );
-		const long type = ParameterAsLong ( parameters, 2, kBE_DataType_String );
+		auto ascending = ParameterAsBoolean ( parameters, 1, true );
+		auto type = ParameterAsBoolean ( parameters, 2, kBE_DataType_String );
 
 		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
-		string sorted_values = values->sort ( ascending, type );
+		auto sorted_values = values->sort ( ascending, type );
 
 		SetResult ( sorted_values, results );
 

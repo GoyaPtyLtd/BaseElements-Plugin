@@ -618,7 +618,7 @@ const bool curl_force_tls ( const BECurlOptionMap options )
 	std::map<std::string, std::shared_ptr<BECurlOption> >::const_iterator it = options.find ( "BE_CURLOPT_FORCE_STARTTLS" );
 	if ( it != options.end() ) {
 		auto force_tls_option = it->second;
-		force = force_tls_option->as_long();
+		force = (bool)force_tls_option->as_long();
 	}
 	
 	return force;
