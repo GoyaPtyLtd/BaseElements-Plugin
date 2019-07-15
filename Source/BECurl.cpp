@@ -446,7 +446,7 @@ void BECurl::Init ( )
 	// set up curl as much as we can
 
 	error = curl_global_init ( CURL_GLOBAL_ALL );
-	if ( error != kNoError ) {
+	if ( error != (CURLcode)kNoError ) {
 		throw BECurl_Exception ( error );
 	}
 
