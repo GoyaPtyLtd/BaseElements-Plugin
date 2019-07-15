@@ -981,7 +981,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp $SRCROOT/Extras/BaseElements\\ Plugin\\ Tests.fmp12 $SRCROOT/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution\\ Files/BaseElements\\ Plugin\\ Tests.fmp12";
+			shellScript = "cp $SRCROOT/Extras/BaseElements\\ Plugin\\ Tests.fmp12 $SRCROOT/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution\\ Files/BaseElements\\ Plugin\\ Tests.fmp12\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1305,6 +1305,7 @@
 					../Libraries/iOS/iPhoneOSSimulator,
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.baseelements-plugin.BaseElementsIOS";
 				PRODUCT_NAME = BaseElementsIOSSimulator;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1313,7 +1314,7 @@
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = arm64;
+				VALID_ARCHS = x86_64;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1365,7 +1366,7 @@
 					../Libraries/iOS/iPhoneOSSimulator,
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.baseelements-plugin.BaseElementsIOS";
 				PRODUCT_NAME = BaseElementsIOSSimulator;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1373,7 +1374,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = arm64;
+				VALID_ARCHS = x86_64;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
