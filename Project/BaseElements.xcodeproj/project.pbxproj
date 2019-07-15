@@ -33,16 +33,11 @@
 		4D2C94FD2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
 		4D2C94FE2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
 		4D2C94FF2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
-		4D2C95002223B32400372093 /* BEDebugInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D2C94FC2223B32400372093 /* BEDebugInformation.h */; };
-		4D2C95012223B32400372093 /* BEDebugInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D2C94FC2223B32400372093 /* BEDebugInformation.h */; };
 		4D33C6BC229BC8A900CEA53F /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
 		4D33C6BD229BC8A900CEA53F /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
 		4D33C6BE229BC8A900CEA53F /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
-		4D33C6BF229BC8A900CEA53F /* BESystemCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D33C6BB229BC8A900CEA53F /* BESystemCommand.h */; };
-		4D33C6C0229BC8A900CEA53F /* BESystemCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D33C6BB229BC8A900CEA53F /* BESystemCommand.h */; };
 		4D33C6C2229BC8E800CEA53F /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D33C6C1229BC8E800CEA53F /* DiskArbitration.framework */; };
 		4D33C6C4229BC90200CEA53F /* libboost_program_options.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D33C6C3229BC90200CEA53F /* libboost_program_options.a */; };
-		4D3629ED1F20789A0036B751 /* BaseElementsIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D3629EB1F20789A0036B751 /* BaseElementsIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D3629F11F2079A60036B751 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
 		4D3629F21F2079A60036B751 /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4D3629F31F2079A60036B751 /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
@@ -144,13 +139,10 @@
 		4D362A9B1F2085880036B751 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A271F207AE70036B751 /* libturbojpeg.a */; };
 		4D362A9C1F2085880036B751 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A281F207AE70036B751 /* libxml2.a */; };
 		4D362A9D1F2085880036B751 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A291F207AE70036B751 /* libxslt.a */; };
-		4D362A9F1F2085880036B751 /* BaseElementsIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D3629EB1F20789A0036B751 /* BaseElementsIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A401F207B660036B751 /* iOSAppSDK.framework */; };
 		4D44BC20200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
 		4D44BC21200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
 		4D44BC22200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
-		4D44BC23200FAD9E0028449D /* BEMimeticMIMEEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D44BC1F200FAD9E0028449D /* BEMimeticMIMEEntity.h */; };
-		4D44BC24200FAD9E0028449D /* BEMimeticMIMEEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D44BC1F200FAD9E0028449D /* BEMimeticMIMEEntity.h */; };
 		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
 		4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06701C23B389006899FE /* libiconv.tbd */; };
 		4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06761C23B3A9006899FE /* libcharset.tbd */; };
@@ -174,8 +166,6 @@
 		4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4DB857A31C646DF600D0192A /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
-		4DB9C6CB228539E400BAA17F /* duk_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DB9C6CA228539E400BAA17F /* duk_config.h */; };
-		4DB9C6CC228539E400BAA17F /* duk_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DB9C6CA228539E400BAA17F /* duk_config.h */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
@@ -789,33 +779,6 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		4D3629E61F20789A0036B751 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4D33C6BF229BC8A900CEA53F /* BESystemCommand.h in Headers */,
-				4D2C95002223B32400372093 /* BEDebugInformation.h in Headers */,
-				4D3629ED1F20789A0036B751 /* BaseElementsIOS.h in Headers */,
-				4D44BC23200FAD9E0028449D /* BEMimeticMIMEEntity.h in Headers */,
-				4DB9C6CB228539E400BAA17F /* duk_config.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4D362A9E1F2085880036B751 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4D33C6C0229BC8A900CEA53F /* BESystemCommand.h in Headers */,
-				4D2C95012223B32400372093 /* BEDebugInformation.h in Headers */,
-				4D362A9F1F2085880036B751 /* BaseElementsIOS.h in Headers */,
-				4D44BC24200FAD9E0028449D /* BEMimeticMIMEEntity.h in Headers */,
-				4DB9C6CC228539E400BAA17F /* duk_config.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
 		4D3629E81F20789A0036B751 /* iOS */ = {
 			isa = PBXNativeTarget;
@@ -823,7 +786,6 @@
 			buildPhases = (
 				4D3629E41F20789A0036B751 /* Sources */,
 				4D3629E51F20789A0036B751 /* Frameworks */,
-				4D3629E61F20789A0036B751 /* Headers */,
 				4D3629E71F20789A0036B751 /* Resources */,
 			);
 			buildRules = (
@@ -841,7 +803,6 @@
 			buildPhases = (
 				4D362A5D1F2085880036B751 /* Sources */,
 				4D362A831F2085880036B751 /* Frameworks */,
-				4D362A9E1F2085880036B751 /* Headers */,
 				4D362AA01F2085880036B751 /* Resources */,
 				A779110D20D8DCA50002E09A /* ShellScript */,
 				A779110E20D8DE0C0002E09A /* CopyFiles */,
