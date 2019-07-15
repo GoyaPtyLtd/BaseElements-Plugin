@@ -28,12 +28,6 @@
 
 	#endif
 
-	/*
-	 Unloadable modules can not use the new style constant strings that Apple introduced
-	 in 10.4. So we have to turn if off in the headers and the project file with
-	 */
-	#undef __CONSTANT_CFSTRINGS__
-
 	#define USER_PREFERENCES_DOMAIN BE_PLUGIN_BUNDLE_IDENTIFIER".plugin-user"
 	#define FOPEN fopen
 
