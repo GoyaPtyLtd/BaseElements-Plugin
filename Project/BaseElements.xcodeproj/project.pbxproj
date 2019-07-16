@@ -927,7 +927,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp $SRCROOT/Extras/BaseElements\\ Plugin\\ Tests.fmp12 $SRCROOT/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution\\ Files/BaseElements\\ Plugin\\ Tests.fmp12\ncp -r /tmp/Xcode/Build/Debug-iphonesimulator/BaseElementsIOSSimulator.fmplugin $SRCROOT/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/BaseElementsIOSSimulator.fmplugin\n";
+			shellScript = "cp $SRCROOT/Extras/BaseElements\\ Plugin\\ Tests.fmp12 $SRCROOT/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution\\ Files/BaseElements\\ Plugin\\ Tests.fmp12\ncp -r $BUILT_PRODUCTS_DIR/BaseElementsIOSSimulator.fmplugin $SRCROOT/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/BaseElementsIOSSimulator.fmplugin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
