@@ -342,8 +342,8 @@
 		4D9E26CF1B29069B002F7DD3 /* BEX509.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEX509.h; sourceTree = "<group>"; };
 		4D9E26D11B292032002F7DD3 /* BEBio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBio.cpp; sourceTree = "<group>"; };
 		4D9E26D21B292032002F7DD3 /* BEBio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBio.h; sourceTree = "<group>"; };
-		4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMacFunctions.h; path = ../Source/apple/BEMacFunctions.h; sourceTree = SOURCE_ROOT; };
-		4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEMacFunctions.mm; path = ../Source/apple/BEMacFunctions.mm; sourceTree = SOURCE_ROOT; };
+		4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMacFunctions.h; path = ../Source/apple/BEMacFunctions.h; sourceTree = "<group>"; };
+		4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEMacFunctions.mm; path = ../Source/apple/BEMacFunctions.mm; sourceTree = "<group>"; };
 		4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPlugin.cpp; path = ../Source/BEPlugin.cpp; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginFunctions.cpp; path = ../Source/BEPluginFunctions.cpp; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginFunctions.h; path = ../Source/BEPluginFunctions.h; sourceTree = SOURCE_ROOT; };

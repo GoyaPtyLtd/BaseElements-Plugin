@@ -19,12 +19,10 @@
 	#include <Carbon/Carbon.h>
 	#include <CoreFoundation/CoreFoundation.h>
 
-	#include "apple/BEAppleFunctionsCommon.h"
 	#include "apple/BEMacFunctions.h"
 
 #elif defined FMX_IOS_TARGET
 
-	#include "apple/BEAppleFunctionsCommon.h"
 	#include "apple/BEIOSFunctions.h"
 
 #elif defined FMX_WIN_TARGET

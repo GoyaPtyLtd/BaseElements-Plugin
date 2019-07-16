@@ -9,32 +9,14 @@
  
  */
 
-#import "BEPluginGlobalDefines.h"
 
 #import "BEIOSFunctions.h"
-#import "BEPluginUtilities.h"
-
-#import <Foundation/Foundation.h>
+#import "BEPluginGlobalDefines.h"
 
 #import <UIKit/UIKit.h>
 
 
-#if TARGET_RT_BIG_ENDIAN
-	#define ENCODING kCFStringEncodingUTF32BE
-#else
-	#define ENCODING kCFStringEncodingUTF32LE
-#endif
-
-
 using namespace std;
-
-
-const NSStringEncoding kEncoding_wchar_t = CFStringConvertEncodingToNSStringEncoding ( ENCODING );
-
-
-NSString * NSStringFromString ( const std::string& text );
-NSString * NSStringFromWString ( const std::wstring& text );
-std::wstring WStringFromNSString ( const NSString * text );
 
 
 const std::wstring SelectFileOrFolder ( const std::wstring& prompt, const std::wstring& in_folder, bool choose_file );
@@ -43,45 +25,6 @@ const std::wstring SelectFileOrFolder ( const std::wstring& prompt, const std::w
 void InitialiseForPlatform ( )
 {
 //	progressDialog = nil;
-}
-
-
-#pragma mark -
-#pragma mark String Utilities
-#pragma mark -
-
-NSString * NSStringFromString ( const std::string& text )
-{
-	NSString * new_string = [NSString stringWithCString: text.c_str() encoding: NSUTF8StringEncoding];
-	
-	return new_string;
-}
-
-
-/*
- NSStringFromWStringAutoPtr & WStringAutoPtrFromNSString from code at
- 
- http://www.cocoabuilder.com/archive/cocoa/200434-nsstring-from-wstring.html
- */
-
-NSString * NSStringFromWString ( const std::wstring& text )
-{
-	char * string_data = (char *)text.data();
-	unsigned long size = text.size() * sizeof ( wchar_t );
-	
-	NSString* new_string = [[NSString alloc] initWithBytes: string_data length: size encoding: kEncoding_wchar_t];
-
-//	return [new_string autorelease];
-	return new_string;
-}
-
-
-std::wstring WStringFromNSString ( const NSString * text )
-{
-	NSData * string_data = [text dataUsingEncoding: kEncoding_wchar_t];
-	size_t size = [string_data length] / sizeof ( wchar_t );
-	
-	return wstring ( (wchar_t *)[string_data bytes], size );
 }
 
 
@@ -218,88 +161,6 @@ const fmx::errcode UpdateProgressDialog ( const long /* value */, const std::wst
 	return error;
 }
 
-
-
-#pragma mark -
-#pragma mark User Preferences
-#pragma mark -
-
-
-const bool SetPreference ( std::string& key, std::string& value, std::string& domain )
-{
-	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-	
-	bool result = true;
-	
-	if ( standardUserDefaults ) {
-		
-		NSString * domain_name = NSStringFromString ( domain );
-		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];
-		
-		NSString * preference_key = NSStringFromString ( key );
-		NSString * preference_value = NSStringFromString ( value );
-		
-		NSMutableDictionary * new_preferences = [NSMutableDictionary dictionaryWithCapacity: [preferences count] + 1];
-		[new_preferences addEntriesFromDictionary: preferences];
-		[new_preferences setObject: preference_value forKey: preference_key];
-		
-		[standardUserDefaults setPersistentDomain: new_preferences forName: domain_name];
-		[standardUserDefaults synchronize];
-		
-	} else {
-		result = false;
-	}
-	
-	return result;
-}
-
-
-const std::string GetPreference ( std::string& key, std::string& domain )
-{
-	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-	NSString * preference_value = @"";
-	
-	if ( standardUserDefaults ) {
-		
-		[standardUserDefaults synchronize];
-		
-		NSString * domain_name = NSStringFromString ( domain );
-		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];
-		
-		NSString * preference_key = NSStringFromString ( key );
-		if ( [preferences objectForKey: preference_key] != nil ) {
-			preference_value = [preferences objectForKey: preference_key];
-		}
-	}
-	
-	std::string preference ( [preference_value UTF8String] );
-	
-	return preference;
-}
-
-
-void DeletePreference ( std::string& key, std::string& domain )
-{
-	NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-	
-	if ( standardUserDefaults ) {
-		
-		[standardUserDefaults synchronize];
-		
-		NSString * domain_name = NSStringFromString ( domain );
-		NSDictionary * preferences = [standardUserDefaults persistentDomainForName: domain_name];
-		
-		NSMutableDictionary * new_preferences = [NSMutableDictionary dictionaryWithCapacity: [preferences count]];
-		[new_preferences addEntriesFromDictionary: preferences];
-		
-		NSString * preference_key = NSStringFromString ( key );
-		[new_preferences removeObjectForKey: preference_key];
-		
-		[standardUserDefaults setPersistentDomain: new_preferences forName: domain_name];
-		[standardUserDefaults synchronize];
-	}
-	
-}
 
 
 #pragma mark -

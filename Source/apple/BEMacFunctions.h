@@ -13,8 +13,9 @@
 #if !defined(BEMACFUNCTIONS_H)
 	#define BEMACFUNCTIONS_H
 
+
 #include "BEPluginGlobalDefines.h"
-#include "BEPluginUtilities.h"
+#include "BEAppleFunctionsCommon.h"
 
 #include <string>
 #include <vector>
@@ -39,13 +40,6 @@ const int DisplayDialog ( std::wstring& title, std::wstring& message, std::wstri
 
 const fmx::errcode DisplayProgressDialog ( const std::wstring& title, const std::wstring& description, const long maximum, const bool can_cancel );
 const fmx::errcode UpdateProgressDialog ( const long value, const std::wstring& description );
-
-
-// user preferences
-
-const bool SetPreference ( std::string& key, std::string& value, std::string& domain );
-const std::string GetPreference ( std::string& key, std::string& domain );
-void DeletePreference ( std::string& key, std::string& domain );
 
 
 // other
