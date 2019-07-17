@@ -361,22 +361,43 @@ const std::wstring get_machine_name ( )
 
 const std::string get_system_drive ( )
 {
+	std::string system_drive;
 	
 	const DASessionRef session = DASessionCreate ( kCFAllocatorDefault );
-	const CFURLRef url = CFURLCreateWithFileSystemPath ( kCFAllocatorDefault, CFSTR("/"), kCFURLPOSIXPathStyle, true );
-	const DADiskRef disk = DADiskCreateFromVolumePath ( kCFAllocatorDefault, session, url );
-	CFRelease ( url );
-	CFRelease ( session );
+	if ( session ) {
+		
+		const CFURLRef url = CFURLCreateWithFileSystemPath ( kCFAllocatorDefault, CFSTR("/"), kCFURLPOSIXPathStyle, true );
+		if ( url ) {
+			
+			const DADiskRef disk = DADiskCreateFromVolumePath ( kCFAllocatorDefault, session, url );
+			if ( disk ) {
+				
+				const CFDictionaryRef description = DADiskCopyDescription ( disk );
+				if ( description ) {
+					
+					const CFStringRef volume_name = (CFStringRef)CFDictionaryGetValue ( description, kDADiskDescriptionVolumeNameKey );
+					if ( volume_name ) {
+						system_drive = "/";
+						system_drive.append ( [(__bridge NSString *)volume_name UTF8String] );
+						system_drive.append ( "/" );
+					}
+					
+					CFRelease ( description );
+				}
+				
+				CFRelease ( disk );
 
-	const CFDictionaryRef description = DADiskCopyDescription ( disk );
-	CFRelease ( disk );
+			}
+			
+			CFRelease ( url );
 
-	const CFStringRef volume_name = (CFStringRef)CFDictionaryGetValue ( description, kDADiskDescriptionVolumeNameKey );
-	CFRelease ( description );
+		}
 
-	const std::string system_drive = [CFBridgingRelease(volume_name) UTF8String];
+		CFRelease ( session );
+
+	}
 	
-	return "/" + system_drive + "/";
+	return system_drive;
 	
 }
 
