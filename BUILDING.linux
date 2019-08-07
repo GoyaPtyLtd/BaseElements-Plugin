@@ -283,7 +283,7 @@ Rename build/include to libturbojpeg and copy the directory to Headers. Copy bui
 
 
 =======================================================================
-Poco 1.9.0
+Poco 1.9.2
 =======================================================================
 
 Download the source from
@@ -292,7 +292,7 @@ Download the source from
 
 Then
 
-	cd poco-1.9.0-all
+	cd poco-1.9.2-all
 	./configure --cflags=-fPIC --config=Linux-clang --static --no-tests --no-samples --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler --prefix=build
 	make install
 

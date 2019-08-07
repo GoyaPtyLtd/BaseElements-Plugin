@@ -193,7 +193,7 @@ Copy output/<platform>/include into Headers/libturbojpeg if necessary.
 
 
 =======================================================================
-Poco 1.9.0
+Poco 1.9.2
 =======================================================================
 
 Download the source from
@@ -202,11 +202,11 @@ Download the source from
 
 Copy the compile_for_ios.sh to the distribution directory and
 
-	cd poco-1.9.0-all
-	./configure --config=iPhone-clang-libc++ --prefix=_build_iphone --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler,Redis,Encodings,Util --no-tests --no-samples
+	cd poco-1.9.2-all
+	./configure --config=iPhone-clang-libc++ --prefix=_build_iphone --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler,Redis,Encodings --no-tests --no-samples
 	make -s -j install
 	make distclean
-	./configure --config=iPhoneSimulator-clang-libc++ --prefix=_build_iphone_simulator --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler,Redis,Encodings,Util --no-tests --no-samples
+	./configure --config=iPhoneSimulator-clang-libc++ --prefix=_build_iphone_simulator --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler,Redis,Encodings --no-tests --no-samples
 	make -s -j install
 
 Copy
