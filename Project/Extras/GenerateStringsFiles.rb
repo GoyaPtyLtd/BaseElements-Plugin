@@ -126,7 +126,7 @@ File.open win, :encoding => Encoding::UTF_16LE, :binmode => true do | strings_fi
       
       rescue => e
 
-        unless id.is_a? Fixnum and id > 0 then # function removed
+        unless id.is_a? Integer and id > 0 then # function removed
           windows_strings += line
         end
     
