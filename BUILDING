@@ -7,6 +7,6 @@ The following notes describe the process for building the the plugin and the thi
 See the platform specific BUILDING.platform files for platform specific instructions.
 
 Notes:
-- these instructions apply to version 4.0 of the BaseElements Plugin
-- version 15.0.1.119 of the FileMaker plug-in SDK is required
+- these instructions apply to version 4.2 of the BaseElements Plugin
+- version 17.0.1.143 of the FileMaker plug-in SDK is required
 - the instructions contain some full paths and also paths containing version numbers that will likely need to be changed

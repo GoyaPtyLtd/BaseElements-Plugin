@@ -38,10 +38,6 @@
 	#include <locale.h>
 	#include "win/BEWinFunctions.h"
 
-#elif defined FMX_LINUX_TARGET
-
-	#include "linux/BELinuxFunctions.h"
-
 #endif
 
 

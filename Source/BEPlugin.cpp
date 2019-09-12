@@ -49,8 +49,6 @@
 	#include "apple/BEIOSFunctions.h"
 #elif FMX_WIN_TARGET
 	#include "win/BEWinFunctions.h"
-#elif FMX_LINUX_TARGET
-	#include "linux/BELinuxFunctions.h"
 #endif
 
 
@@ -182,7 +180,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_CancelButton + kBE_ButtonOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_AlternateButton + kBE_ButtonOffset, BE_NumericConstants );
 
-#if ( FMX_MAC_TARGET || FMX_WIN_TARGET || FMX_LINUX_TARGET )
+#if ( FMX_MAC_TARGET || FMX_WIN_TARGET )
 	g_be_plugin->RegisterFunction ( kBE_ExecuteSystemCommand, BE_ExecuteSystemCommand, 1, 2 );
 #else
 	g_be_plugin->RegisterHiddenFunction ( kBE_ExecuteSystemCommand, BE_NotImplemented, 1, 2 );
@@ -259,13 +257,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 
-#if defined FMX_LINUX_TARGET
-	g_be_plugin->RegisterHiddenFunction ( kBE_HMAC_Deprecated, BE_NotImplemented, 2, 5 );
-	g_be_plugin->RegisterFunction ( kBE_DebugInformation, BE_NotImplemented );
-#else
 	g_be_plugin->RegisterHiddenFunction ( kBE_HMAC_Deprecated, BE_HMAC_Deprecated, 2, 5 );
 	g_be_plugin->RegisterFunction ( kBE_DebugInformation, BE_DebugInformation );
-#endif
 
 	g_be_plugin->RegisterHiddenFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
 	g_be_plugin->RegisterHiddenFunction ( kBE_Encoding_Base64 + kBE_EncodingOffset, BE_NumericConstants );

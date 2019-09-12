@@ -31,10 +31,6 @@
 	#include "win/BEWinFunctions.h"
 	#include <tchar.h>
 
-#elif defined FMX_LINUX_TARGET
-
-	#include "linux/BELinuxFunctions.h"
-
 #endif
 
 #include <iostream>
