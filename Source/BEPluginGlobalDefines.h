@@ -45,6 +45,16 @@
 
 	#define PATH_MAX MAX_PATH
 
+#elif defined __linux__
+
+    #define FMX_LINUX_TARGET 1
+
+    // tchar
+    #define _TEXT(x) x
+    #define FOPEN fopen
+	#define BE_PLUGIN_BUNDLE_IDENTIFIER "au.com.goya.baseelements"
+	#define USER_PREFERENCES_DOMAIN BE_PLUGIN_BUNDLE_IDENTIFIER".plugin-user"
+
 #else
 
    error "Unknown compiler"

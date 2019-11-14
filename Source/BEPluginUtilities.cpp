@@ -29,6 +29,10 @@
 
 	#include "win/BEWinFunctions.h"
 
+#elif defined FMX_LINUX_TARGET
+
+	#include "linux/BELinuxFunctions.h"
+
 #endif
 
 
@@ -168,14 +172,6 @@ void SetResult ( const std::string& filename, const vector<unsigned char>& data,
 {
 	vector<char> char_data ( data.begin(), data.end() );
 	return SetResult ( filename, char_data, results, data_type );
-}
-
-
-void SetResult ( const std::shared_ptr<BEImage> image, Data& results )
-{
-	auto image_data = image->get_data();
-	const std::vector<char> char_data ( image_data.begin(), image_data.end() );
-	return SetResult ( image->get_filename(), char_data, image->get_type(), image->get_width(), image->get_height(), results );
 }
 
 
@@ -343,7 +339,7 @@ const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX
 
 		// wchar_t is 4 bytes on OS X and 2 on Windows
 
-		#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET
+		#if defined FMX_MAC_TARGET || defined FMX_IOS_TARGET || defined FMX_LINUX_TARGET
 
 			wchar_t * parameter = new wchar_t [ text_size + 1 ];
 			for ( long i = 0 ; i <= text_size ; i++ ) {

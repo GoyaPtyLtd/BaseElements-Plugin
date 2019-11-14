@@ -21,6 +21,7 @@ end
 
 win = project_directory + 'Resources/BEPluginVersion.rc'
 win_project = project_directory + 'Resources/BaseElements.rc'
+linux_project = project_directory + 'Project/BaseElements.cbp'
 
 version_file = project_directory + 'Source/BEPluginVersion.h'
 info_plist_file = project_directory + 'Resources/Base.lproj/Info.plist'
@@ -214,6 +215,31 @@ end
 
 win_version = WindowsVersion.new version.string, version.version_number, version.autoupdate
 win_version.write_version_file win
+
+
+########################################################################
+# linux
+########################################################################
+
+# except for the project file... just works... it's done anyway when the function strings file is built
+
+lines = ''
+
+File.open linux_project do | linux_project_file |
+  
+  linux_project_file.each do | line |
+        
+    if line['-soname'] then
+            lines += '			<Add option="-Wl,-soname=BaseElements_Plugin_' + version_number_string + '" />' + "\n"
+    else
+      lines += line
+    end
+      
+  end
+  
+end
+
+File.write linux_project, lines, :encoding => Encoding::UTF_8
 
 
 ########################################################################
