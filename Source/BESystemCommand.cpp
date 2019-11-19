@@ -34,23 +34,27 @@ std::string SystemCommand::execute_implementation ( const std::string& shell_com
 		auto command_and_arguments = boost::program_options::split_unix ( shell_command );
 #endif
 		
-		auto command = command_and_arguments.front();
-		
-		std::vector<std::string> arguments;
-		command_and_arguments.erase ( command_and_arguments.begin() ); // auto it = new first element
-		for ( auto& each_argument : command_and_arguments ){
-			arguments.push_back ( each_argument );
+		if ( command_and_arguments.size() > 0 ) { // otherwise we return the empty string.
+			
+			auto command = command_and_arguments.front();
+			
+			std::vector<std::string> arguments;
+			command_and_arguments.erase ( command_and_arguments.begin() ); // auto it = new first element
+			for ( auto& each_argument : command_and_arguments ){
+				arguments.push_back ( each_argument );
+			}
+			
+			Poco::Pipe output_pipe;
+			Poco::ProcessHandle process = Poco::Process::launch ( command, arguments, 0, &output_pipe, &output_pipe );
+			Poco::PipeInputStream istr ( output_pipe );
+			error = process.wait();
+			
+			std::ostringstream output;
+			Poco::StreamCopier::copyStream ( istr, output );
+			
+			result = output.str();
+
 		}
-		
-		Poco::Pipe output_pipe;
-		Poco::ProcessHandle process = Poco::Process::launch ( command, arguments, 0, &output_pipe, &output_pipe );
-		Poco::PipeInputStream istr ( output_pipe );
-		error = process.wait();
-		
-		std::ostringstream output;
-		Poco::StreamCopier::copyStream ( istr, output );
-		
-		result = output.str();
 		
 	} catch ( Poco::SystemException& e ) {
 		error = e.code();
