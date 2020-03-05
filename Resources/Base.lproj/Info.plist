@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleGetInfoString</key>
-	<string>${PRODUCT_NAME} version 4.1.2, Copyright 2010-2019 by Goya. All rights reserved.</string>
+	<string>${PRODUCT_NAME} version 4.1.2, Copyright 2010-2020 by Goya. All rights reserved.</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>

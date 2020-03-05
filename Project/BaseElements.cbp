@@ -74,7 +74,7 @@
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
-			<Add before="cp /home/mark/Documents/BaseElements-Plugin/Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
+			<Add before="cp /home/goya/Documents/BaseElements-Plugin/Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="../Headers/FMWrapper/FMXBinaryData.h">
