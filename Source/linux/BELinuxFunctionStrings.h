@@ -95,6 +95,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 211, "BE_XMLParse ( pathOrXMLText )" },
 	{ 212, "BE_SplitBEFileNodes ( path )" },
 	{ 213, "BE_XMLValidate ( xml ; schema )" },
+	{ 214, "BE_XML_Canonical ( xml )" },
 	{ 220, "BE_TimeCurrentMilliseconds" },
 	{ 221, "BE_TimeUTCMilliseconds" },
 	{ 222, "BE_TimeZoneOffset" },

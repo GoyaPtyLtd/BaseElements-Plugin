@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
  
- Copyright 2010-2019 Goya. All rights reserved.
+ Copyright 2010-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -174,6 +174,7 @@ enum functions {
 	kBE_XMLParse = 211,
 	kBE_SplitBEFileNodes = 212,
 	kBE_XMLValidate = 213,
+	kBE_XML_Canonical = 214,
 	kBE_TimeCurrentMilliseconds = 220,
 	kBE_TimeUTCMilliseconds = 221,
 	kBE_TimeZoneOffset = 222,

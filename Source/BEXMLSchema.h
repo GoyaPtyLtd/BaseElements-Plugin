@@ -2,7 +2,7 @@
  BEXMLSchema.h
  BaseElements Plug-In
  
- Copyright (c) 2017 Goya. All rights reserved.
+ Copyright (c) 2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -18,6 +18,7 @@
 
 
 const std::string validate_xml ( const std::string xml, const std::string schema );
+const std::string canonical_xml ( const std::string xml );
 
 
 

@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2019 Goya. All rights reserved.
+ Copyright 2010-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -1229,6 +1229,34 @@ fmx::errcode BE_XMLValidate ( short /* funcId */, const ExprEnv& /* environment 
 	return MapError ( error );
 
 } // BE_XMLValidate
+
+
+
+fmx::errcode BE_XML_Canonical ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error =	NoError();
+	
+	try {
+		
+		auto xml = ParameterAsUTF8String ( parameters );
+		
+		auto canonized_xml = canonical_xml ( xml );
+		
+		SetResult ( canonized_xml, results );
+		
+	} catch ( BEXMLReaderInterface_Exception& e ) {
+		error = e.code();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_XML_Canonical
 
 
 

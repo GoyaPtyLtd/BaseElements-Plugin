@@ -2,7 +2,7 @@
  BEPluginFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2019 Goya. All rights reserved.
+ Copyright 2010-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -62,6 +62,7 @@ fmx::errcode BE_XMLStripNodes ( short funcId, const fmx::ExprEnv& environment, c
 fmx::errcode BE_XMLParse ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_SplitBEFileNodes ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_XMLValidate ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_XML_Canonical ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 
 fmx::errcode BE_ContainerIsCompressed ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
