@@ -5,6 +5,7 @@ Build/*
 # Libraries
 
 Libraries/iOS
+Libraries/macOS
 Libraries/Win64
 
 
