@@ -1,2 +1,11 @@
 # use text diffs for .rc files
 *.rc diff
+
+# Git LFS
+
+.a filter=lfs diff=lfs merge=lfs -text
+.lib filter=lfs diff=lfs merge=lfs -text
+
+Libraries/* filter=lfs diff=lfs merge=lfs -text
+Project/Extras/BaseElementsIOSPluginTest/iOSAppSDKResources/Libraries_iphoneos/* filter=lfs diff=lfs merge=lfs -text
+Project/Extras/BaseElementsIOSPluginTest/iOSAppSDKResources/Libraries_iphonesimulator/* filter=lfs diff=lfs merge=lfs -text
