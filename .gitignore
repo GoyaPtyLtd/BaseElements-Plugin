@@ -23,7 +23,6 @@ xcuserdata
 *.pyc
 *~.nib/
 
-Source/duktape*
 .com.apple.timemachine.supported
 Project/BaseElements.xcodeproj/xcuserdata/mark.xcuserdatad/xcschemes/xcschememanagement.plist
 Project/BaseElements.xcodeproj/project.xcworkspace/xcshareddata/BaseElements.xccheckout
@@ -31,7 +30,6 @@ Project/BaseElements.xcodeproj/xcuserdata/mark.xcuserdatad/xcschemes/xcschememan
 Project/BaseElements.vcxproj.filters
 Project/.vs/BaseElements/v14/.suo
 Project/BaseElements.opensdf
-Source/minizip/*
 Project/Extras/Recover.log
 Project/BaseElements.VC.opendb
 Project/BaseElements.VC.db
