@@ -272,6 +272,7 @@ enum errors {
 	kLowMemoryError = 7,
 	kRequestedDataIsMissingError = 10,
 	kNameIsNotValid = 11,
+	kNameAlreadyExists = 12,
 	kFileOrObjectIsInUse = 13,
 	kFileExistsError = 17,
 	kErrorParameterMissing = 102,

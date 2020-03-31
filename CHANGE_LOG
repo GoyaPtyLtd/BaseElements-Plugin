@@ -2,7 +2,7 @@
 Version 4.1.3
 ########################################################################
 
-March 18, 2020
+March 24, 2020
 
 
 New Functions
@@ -15,7 +15,8 @@ Changes
 BE_ExecuteSystemCommand: do not crash when attempting to execute an empty command
 BE_FileListFolder: Correctly handle file names containing Unicode Characters on Windows
 BE_Zip: don't crash when there's nothing to archive
-
+		return an error if more than one file with the same name is added to the archive
+		
 
 ########################################################################
 Version 4.1.2

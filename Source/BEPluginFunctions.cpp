@@ -18,6 +18,7 @@
 #include <Poco/JSON/Array.h>
 #include <Poco/JSON/Parser.h>
 #include <Poco/JSON/Query.h>
+#include <Poco/Path.h>
 #include <Poco/RegularExpression.h>
 #include <Poco/String.h>
 
@@ -49,6 +50,7 @@
 
 #include "BECurl.h"
 #include "BECurlOption.h"
+#include "BECppUtilities.h"
 #include "BEDebugInformation.h"
 #include "BEFileMakerPlugin.h"
 #include "BEFileSystem.h"
@@ -81,13 +83,13 @@
 #include <numeric> // for inner_product
 #include <thread>
 
+#include <boost/algorithm/hex.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/date_time/c_local_time_adjustor.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/foreach.hpp>
 #include <boost/tokenizer.hpp>
-#include <boost/algorithm/hex.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/date_time/c_local_time_adjustor.hpp>
 
 #include <iconv.h>
 
@@ -1851,11 +1853,37 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 	errcode error = NoError();
 
 	try {
+		
+		// should there be multiple files with the same name... keep only the last one
+		auto file_value_list  = new const BEValueList<string> ( ParameterAsUTF8String ( parameters ) );
+		auto values  = file_value_list->get_values();
 
-		auto files  = new const BEValueList<string> ( ParameterAsUTF8String ( parameters ) );
+		std::map<std::string, std::string> unique_file_names;
+
+		for ( typename std::vector<string>::iterator it = values.begin() ; it != values.end(); ++it ) {
+			
+			boost::filesystem::path file_path ( *it );
+			auto file_name = boost::algorithm::to_lower_copy ( file_path.filename().string() );
+			auto inserted = unique_file_names.insert ( { file_name, file_path.string() } );
+
+			if ( ! inserted.second ) {
+				error = kNameAlreadyExists;
+				auto next = unique_file_names.erase ( inserted.first );
+				if ( next == unique_file_names.end() ) {
+					unique_file_names.insert ( { file_name, file_path.string() } ); // auto replaced =
+				}
+			}
+			
+		} // for...
+
+		auto files  = new const BEValueList<string> ( map_values ( unique_file_names ) );
 		auto output_directory = ParameterAsUTF8String ( parameters, 1 );
 
-		error = (fmx::errcode)Zip ( files, output_directory );
+		auto zip_error = (fmx::errcode)Zip ( files, output_directory );
+		if ( kNoError != zip_error ) {
+			error = zip_error;
+		}
+		
 		SetResult ( error, results );
 
 		delete files;
