@@ -10,7 +10,6 @@ Headers/*
 Libraries/*
 !Libraries/README
 !Libraries/macOS
-!Libraries/linux
 
 # *.a
 # *.dylib
