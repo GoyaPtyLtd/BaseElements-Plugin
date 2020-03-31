@@ -2,9 +2,6 @@
 
 Build/*
 
-Headers/*
-!Headers/README
-
 # Libraries
 
 *.a
