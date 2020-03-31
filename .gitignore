@@ -7,15 +7,11 @@ Headers/*
 
 # Libraries
 
-Libraries/*
-!Libraries/README
-!Libraries/macOS
-
-# *.a
-# *.dylib
-# *.framework
-# *.lib
-# *.so
+*.a
+*.dylib
+*.framework
+*.lib
+*.so
 
 # Ignore generated Visual Studio files
 
