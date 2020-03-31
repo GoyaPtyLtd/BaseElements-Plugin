@@ -1,12 +1,3 @@
-# Ignore anything in the Build, Headers & Libraries directories other than README files
-
-Build/*
-
-# Libraries
-
-Libraries/win64/*
-
-
 # Ignore generated Visual Studio files
 
 Project/BaseElements.sdf
