@@ -2,7 +2,7 @@
  BEZlib.cpp
  BaseElements Plug-In
  
- Copyright 2011-2016 Goya. All rights reserved.
+ Copyright 2011-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -90,38 +90,44 @@ const long Zip ( const BEValueList<std::string> * filenames, const std::string& 
 
     long error = 0;
 	
-	const Poco::File file = filenames->first();
-	if ( file.exists() ) {
+	if ( filenames->size() > 0 ) { // ensure there's a file to archive
 		
-		Poco::Path archive_path = archive;
-		if ( archive.empty() ) {
-			archive_path = file.path() + ".zip";
-		}
-
-		std::ofstream out ( archive_path.toString().c_str(), std::ios::binary );
-		Poco::Zip::Compress to_compress ( out, true );
-
-		for ( size_t i = 0 ; i < filenames->size() ; i++ ) {
-				
-			Poco::Path archive_this ( filenames->at ( i ) );
-			Poco::File file_to_archive ( archive_this );
-
-			if ( file_to_archive.exists() ) {
-
-				if ( file_to_archive.isDirectory() ) {
-					to_compress.addRecursive ( archive_this, Poco::Zip::ZipCommon::CL_MAXIMUM, false, archive_this.getFileName() );
-				} else {
-					to_compress.addFile ( archive_this, archive_this.getFileName() );
-				}
-
-			} else {
-				error = kNoSuchFileOrDirectoryError;
-				break;
+		const Poco::File file = filenames->first();
+		if ( file.exists() ) {
+			
+			Poco::Path archive_path = archive;
+			if ( archive.empty() ) {
+				archive_path = file.path() + ".zip";
 			}
-				
-		}
 
-		to_compress.close();
+			std::ofstream out ( archive_path.toString().c_str(), std::ios::binary );
+			Poco::Zip::Compress to_compress ( out, true );
+
+			for ( size_t i = 0 ; i < filenames->size() ; i++ ) {
+					
+				Poco::Path archive_this ( filenames->at ( i ) );
+				Poco::File file_to_archive ( archive_this );
+
+				if ( file_to_archive.exists() ) {
+
+					if ( file_to_archive.isDirectory() ) {
+						to_compress.addRecursive ( archive_this, Poco::Zip::ZipCommon::CL_MAXIMUM, false, archive_this.getFileName() );
+					} else {
+						to_compress.addFile ( archive_this, archive_this.getFileName() );
+					}
+
+				} else {
+					error = kNoSuchFileOrDirectoryError;
+					break;
+				}
+					
+			}
+
+			to_compress.close();
+
+		} else {
+			error = kNoSuchFileOrDirectoryError;
+		}
 
 	} else {
 		error = kNoSuchFileOrDirectoryError;
