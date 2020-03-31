@@ -4,10 +4,11 @@ Build/*
 
 # Libraries
 
-Libraries/iOS
-Libraries/macOS
-Libraries/Win64
-
+*.a
+*.dylib
+*.framework
+*.lib
+*.so
 
 # Ignore generated Visual Studio files
 
