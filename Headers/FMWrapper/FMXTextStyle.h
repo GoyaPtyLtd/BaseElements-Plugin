@@ -1,6 +1,6 @@
 /*
  
- Copyright © 1998 - 2016  FileMaker, Inc.
+ Copyright © 1998 - 2018  FileMaker, Inc.
  All rights reserved.
  
  FileMaker, Inc. grants you a non-exclusive limited license to use this file solely to enable
@@ -171,6 +171,7 @@ extern "C++"
 
         };
 
+#if FMX_USE_AUTO_PTR
         // DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
         class DEPRECATED ColorAutoPtr : public std::auto_ptr<CharacterStyle::Color>
         {
@@ -194,6 +195,7 @@ extern "C++"
             inline CharacterStyleAutoPtr ( const CharacterStyle &style );
 
         };
+#endif
         
 #if FMX_USE_UNIQUE_PTR
         class ColorUniquePtr : public std::unique_ptr<CharacterStyle::Color>
@@ -406,6 +408,7 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline ColorAutoPtr::ColorAutoPtr ()
         {
             _fmxcpt _x;
@@ -424,7 +427,8 @@ extern "C++"
             reset ( FM_Color_Constructor3 ( color, _x ) );
             _x.Check ();
         }
-
+#endif
+        
 #if FMX_USE_UNIQUE_PTR
         inline ColorUniquePtr::ColorUniquePtr ()
         {
@@ -641,6 +645,7 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline CharacterStyleAutoPtr::CharacterStyleAutoPtr ()
         {
             _fmxcpt _x;
@@ -659,7 +664,8 @@ extern "C++"
             reset ( FM_CharacterStyle_Constructor3 ( style, _x ) );
             _x.Check ();
         }
-
+#endif
+        
 #if FMX_USE_UNIQUE_PTR
         inline CharacterStyleUniquePtr::CharacterStyleUniquePtr ()
         {

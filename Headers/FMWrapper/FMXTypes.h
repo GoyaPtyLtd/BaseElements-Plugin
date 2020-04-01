@@ -1,6 +1,6 @@
 /*
  
- Copyright © 1998 - 2016  FileMaker, Inc.
+ Copyright © 1998 - 2018  FileMaker, Inc.
  All rights reserved.
  
  FileMaker, Inc. grants you a non-exclusive limited license to use this file solely to enable
@@ -159,6 +159,7 @@ extern "C++"
 
         };
 
+#if FMX_USE_AUTO_PTR
         // DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
         class DEPRECATED QuadCharAutoPtr : public std::auto_ptr<QuadChar>
         {
@@ -179,7 +180,8 @@ extern "C++"
             inline LocaleAutoPtr ( const Locale &copyConstruct );
 
         };
-
+#endif
+        
 #if FMX_USE_UNIQUE_PTR
         class QuadCharUniquePtr : public std::unique_ptr<QuadChar>
         {
@@ -318,6 +320,7 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline QuadCharAutoPtr::QuadCharAutoPtr ()
         {
             _fmxcpt _x;
@@ -336,7 +339,8 @@ extern "C++"
             reset ( FM_QuadChar_Constructor3 ( value, _x ) );
             _x.Check ();
         }
-
+#endif
+        
 #if FMX_USE_UNIQUE_PTR
         inline QuadCharUniquePtr::QuadCharUniquePtr ()
         {
@@ -371,6 +375,7 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline LocaleAutoPtr::LocaleAutoPtr ( Locale::Type inputType )
         {
             _fmxcpt _x;
@@ -383,7 +388,8 @@ extern "C++"
             reset ( FM_Locale_Constructor2 ( copyConstruct, _x ) );
             _x.Check ();
         }
-
+#endif
+        
 #if FMX_USE_UNIQUE_PTR
         inline LocaleUniquePtr::LocaleUniquePtr ( Locale::Type inputType )
         {

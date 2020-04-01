@@ -1,6 +1,6 @@
 /*
  
- Copyright © 1998 - 2016  FileMaker, Inc.
+ Copyright © 1998 - 2018  FileMaker, Inc.
  All rights reserved.
  
  FileMaker, Inc. grants you a non-exclusive limited license to use this file solely to enable
@@ -50,6 +50,12 @@
         #define DEPRECATED              __attribute__((deprecated))
     #endif
 
+    #if defined (_LIBCPP_STD_VER) && _LIBCPP_STD_VER > 14
+        #define FMX_USE_AUTO_PTR    0
+    #else
+        #define FMX_USE_AUTO_PTR    1
+    #endif
+
     #if defined(_UNIQUE_PTR_H) || defined(_LIBCPP_VERSION)
         #define FMX_USE_UNIQUE_PTR      1
     #endif
@@ -71,6 +77,10 @@
     #if !defined(DEPRECATED)
         #define DEPRECATED              __declspec(deprecated)
     #endif
+
+	#if defined(_MSVC_LANG) && _MSVC_LANG <= 201402
+		#define FMX_USE_AUTO_PTR    1
+	#endif
 
     #if _MSC_VER >= 1800
         #define FMX_USE_UNIQUE_PTR      1
@@ -242,7 +252,9 @@ enum
     k140ExtnVersion     = 55,
     k150ExtnVersion     = 56,
     k160ExtnVersion     = 57,
-    kCurrentExtnVersion = 57,
+    k170ExtnVersion     = 59,
+    k180ExtnVersion     = 60,
+    kCurrentExtnVersion = 60,
     kMinExtnVersion     = 4,
     kMaxExtnVersion     = 255
 };

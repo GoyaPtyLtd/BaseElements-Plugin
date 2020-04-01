@@ -84,6 +84,7 @@ extern "C++"
 
         };
 
+#if FMX_USE_AUTO_PTR
         // DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
         class DEPRECATED FixPtAutoPtr : public std::auto_ptr<FixPt>
         {
@@ -93,6 +94,7 @@ extern "C++"
             inline FixPtAutoPtr ( fmx::int32 val, const FixPt &precisionExample );
 
         };
+#endif
         
 #if FMX_USE_UNIQUE_PTR
         class FixPtUniquePtr : public std::unique_ptr<FixPt>
@@ -316,6 +318,7 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline FixPtAutoPtr::FixPtAutoPtr ( fmx::int32 val, int precision )
         {
             _fmxcpt _x;
@@ -328,7 +331,8 @@ extern "C++"
             reset ( FM_FixPt_Constructor2 ( val, precisionExample, _x ) );
             _x.Check ();
         }
-
+#endif
+        
 #if FMX_USE_UNIQUE_PTR
         inline FixPtUniquePtr::FixPtUniquePtr ( fmx::int32 val, int precision )
         {

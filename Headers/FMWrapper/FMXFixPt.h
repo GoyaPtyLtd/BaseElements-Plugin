@@ -1,6 +1,6 @@
 /*
  
- Copyright © 1998 - 2016  FileMaker, Inc.
+ Copyright © 1998 - 2018  FileMaker, Inc.
  All rights reserved.
  
  FileMaker, Inc. grants you a non-exclusive limited license to use this file solely to enable
@@ -70,6 +70,12 @@ extern "C++"
             inline fmx::int32 AsLong () const;
             inline double AsFloat () const;
 
+            // New to FileMaker Pro 17 (API VERSION 59) and later
+            inline void AssignInt64 ( fmx::int64 that );
+            inline void Increment64 ( fmx::int64 n );
+            inline void Decrement64 ( fmx::int64 n );
+            inline fmx::int64 AsLong64 () const;
+
             inline void operator delete ( void *obj );
 
         private:
@@ -78,6 +84,7 @@ extern "C++"
 
         };
 
+#if FMX_USE_AUTO_PTR
         // DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
         class DEPRECATED FixPtAutoPtr : public std::auto_ptr<FixPt>
         {
@@ -87,6 +94,7 @@ extern "C++"
             inline FixPtAutoPtr ( fmx::int32 val, const FixPt &precisionExample );
 
         };
+#endif
         
 #if FMX_USE_UNIQUE_PTR
         class FixPtUniquePtr : public std::unique_ptr<FixPt>
@@ -108,6 +116,7 @@ extern "C"
     fmx::FixPt FMX_API *FM_FixPt_Constructor1 ( fmx::int32 val, int precision, fmx::_fmxcpt &_x ) throw ();
     fmx::FixPt FMX_API *FM_FixPt_Constructor2 ( fmx::int32 val, const fmx::FixPt &precisionExample, fmx::_fmxcpt &_x ) throw ();
     void FMX_API FM_FixPt_AssignInt ( void *_self, fmx::int32 that, fmx::_fmxcpt &_x ) throw ();
+    void FMX_API FM_FixPt_AssignInt64 ( void *_self, fmx::int64 that, fmx::_fmxcpt &_x ) throw ();
     void FMX_API FM_FixPt_AssignDouble ( void *_self, double that, fmx::_fmxcpt &_x ) throw ();
     void FMX_API FM_FixPt_AssignFixPt ( void *_self, const fmx::FixPt &that, fmx::_fmxcpt &_x ) throw ();
     bool FMX_API FM_FixPt_operatorEQ ( const void *_self, const fmx::FixPt &that, fmx::_fmxcpt &_x ) throw ();
@@ -117,7 +126,9 @@ extern "C"
     bool FMX_API FM_FixPt_operatorGT ( const void *_self, const fmx::FixPt &that, fmx::_fmxcpt &_x ) throw ();
     bool FMX_API FM_FixPt_operatorGE ( const void *_self, const fmx::FixPt &that, fmx::_fmxcpt &_x ) throw ();
     void FMX_API FM_FixPt_Increment ( void *_self, fmx::int32 n, fmx::_fmxcpt &_x ) throw ();
+    void FMX_API FM_FixPt_Increment64 ( void *_self, fmx::int64 n, fmx::_fmxcpt &_x ) throw ();
     void FMX_API FM_FixPt_Decrement ( void *_self, fmx::int32 n, fmx::_fmxcpt &_x ) throw ();
+    void FMX_API FM_FixPt_Decrement64 ( void *_self, fmx::int64 n, fmx::_fmxcpt &_x ) throw ();
     void FMX_API FM_FixPt_Negate ( void *_self, fmx::_fmxcpt &_x ) throw ();
     int FMX_API FM_FixPt_GetPrecision ( const void *_self, fmx::_fmxcpt &_x ) throw ();
     void FMX_API FM_FixPt_SetPrecision ( void *_self, int precision, fmx::_fmxcpt &_x ) throw ();
@@ -127,6 +138,7 @@ extern "C"
     fmx::errcode FMX_API FM_FixPt_Divide ( const void *_self, const fmx::FixPt &arg, fmx::FixPt &result, fmx::_fmxcpt &_x ) throw ();
     bool FMX_API FM_FixPt_AsBool ( const void *_self, fmx::_fmxcpt &_x ) throw ();
     fmx::int32 FMX_API FM_FixPt_AsLong ( const void *_self, fmx::_fmxcpt &_x ) throw ();
+    fmx::int64 FMX_API FM_FixPt_AsLong64 ( const void *_self, fmx::_fmxcpt &_x ) throw ();
     double FMX_API FM_FixPt_AsFloat ( const void *_self, fmx::_fmxcpt &_x ) throw ();
     void FMX_API FM_FixPt_Delete ( void *_self, fmx::_fmxcpt &_x ) throw ();
 
@@ -143,6 +155,12 @@ extern "C++"
             FM_FixPt_AssignInt ( this, that, _x );
             _x.Check ();
         }
+		inline void FixPt::AssignInt64 ( fmx::int64 that )
+		{
+			_fmxcpt _x;
+			FM_FixPt_AssignInt64 ( this, that, _x );
+			_x.Check ();
+		}
         inline void FixPt::AssignDouble ( double that )
         {
             _fmxcpt _x;
@@ -203,12 +221,24 @@ extern "C++"
             FM_FixPt_Increment ( this, n, _x );
             _x.Check ();
         }
+		inline void FixPt::Increment64 ( fmx::int64 n )
+		{
+			_fmxcpt _x;
+			FM_FixPt_Increment64 ( this, n, _x );
+			_x.Check ();
+		}
         inline void FixPt::Decrement ( fmx::int32 n )
         {
             _fmxcpt _x;
             FM_FixPt_Decrement ( this, n, _x );
             _x.Check ();
         }
+		inline void FixPt::Decrement64 ( fmx::int64 n )
+		{
+			_fmxcpt _x;
+			FM_FixPt_Decrement64 ( this, n, _x );
+			_x.Check ();
+		}
         inline void FixPt::Negate ()
         {
             _fmxcpt _x;
@@ -267,6 +297,13 @@ extern "C++"
             _x.Check ();
             return _rtn;
         }
+		inline fmx::int64 FixPt::AsLong64 () const
+		{
+			_fmxcpt _x;
+			fmx::int64 _rtn = FM_FixPt_AsLong64 ( this, _x );
+			_x.Check ();
+			return _rtn;
+		}
         inline double FixPt::AsFloat () const
         {
             _fmxcpt _x;
@@ -281,6 +318,7 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline FixPtAutoPtr::FixPtAutoPtr ( fmx::int32 val, int precision )
         {
             _fmxcpt _x;
@@ -293,7 +331,8 @@ extern "C++"
             reset ( FM_FixPt_Constructor2 ( val, precisionExample, _x ) );
             _x.Check ();
         }
-
+#endif
+        
 #if FMX_USE_UNIQUE_PTR
         inline FixPtUniquePtr::FixPtUniquePtr ( fmx::int32 val, int precision )
         {

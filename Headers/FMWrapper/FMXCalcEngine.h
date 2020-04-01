@@ -1,6 +1,6 @@
 /*
  
- Copyright © 1998 - 2017  FileMaker, Inc.
+ Copyright © 1998 - 2018  FileMaker, Inc.
  All rights reserved.
  
  FileMaker, Inc. grants you a non-exclusive limited license to use this file solely to enable
@@ -131,10 +131,137 @@ extern "C++"
                 kPluginErrResult5       = 1556,
                 kPluginErrResult6       = 1557,
                 kPluginErrResult7       = 1558,
-                kPluginErrResult8       = 1559
+                kPluginErrResult8       = 1559,
+
+                // New to FileMaker Pro 18 (API VERSION 60) and later. Values for each of the calculation engine's Get() functions
+				kGet_ApplicationVersion = 1001,
+                kGet_CurrentDate        = 1002,
+                kGet_LastError          = 1003,
+                kGet_ActiveFieldName    = 1004,
+                kGet_FileName           = 1005,
+                kGet_FileSize           = 1006,
+                kGet_FoundCount         = 1007,
+                kGet_HostName           = 1008,
+                kGet_LayoutCount        = 1009,
+                kGet_LayoutName         = 1010,
+                kGet_LayoutNumber       = 1011,
+                kGet_SystemLanguage     = 1012,
+                kGet_WindowMode         = 1013,
+                kGet_MultiUserState     = 1014,
+                kGet_PageNumber         = 1015,
+                kGet_SystemPlatform     = 1016,
+                kGet_ActivePortalRowNumber = 1017,
+                kGet_PrinterName        = 1018,
+                kGet_TotalRecordCount   = 1019,
+                kGet_RecordNumber       = 1020,
+                kGet_ActiveRepetitionNumber = 1021,
+                kGet_RequestCount       = 1022,
+                kGet_ScreenDepth        = 1023,
+                kGet_ScreenHeight       = 1024,
+                kGet_ScreenWidth        = 1025,
+                kGet_ScriptName         = 1026,
+                kGet_SortState          = 1027,
+                kGet_SystemVersion      = 1028,
+                kGet_CurrentTime        = 1029,
+                kGet_UserCount          = 1030,
+                kGet_UserName           = 1031,
+                kGet_AccountName        = 1032,
+                kGet_LastMessageChoice  = 1033,
+                kGet_CurrentPrivilegeSetName = 1034,
+                kGet_ActiveModifierKeys = 1035,
+                kGet_NetworkProtocol    = 1036,
+                kGet_RecordID           = 1037,
+                kGet_RecordModificationCount = 1038,
+                kGet_ActiveFieldContents = 1039,
+                kGet_FilePath           = 1040,
+                kGet_LastExternalErrorDetail = 1041,
+                kGet_LayoutAccess       = 1042,
+                kGet_RecordAccess       = 1043,
+                kGet_HighContrastState  = 1044,
+                kGet_HighContrastColor  = 1045,
+                kGet_StatusAreaState    = 1046,
+                kGet_LayoutViewState    = 1047,
+                kGet_WindowName         = 1048,
+                kGet_WindowHeight       = 1049,
+                kGet_WindowLeft         = 1050,
+                kGet_WindowTop          = 1051,
+                kGet_WindowVisible      = 1052,
+                kGet_WindowWidth        = 1053,
+                kGet_SystemNICAddress   = 1054,
+                kGet_SystemIpAddress    = 1055,
+                kGet_ActiveFieldTableName = 1056,
+                kGet_ActiveSelectionSize = 1057,
+                kGet_ActiveSelectionStart = 1058,
+                kGet_ApplicationLanguage = 1059,
+                kGet_CurrentHostTimestamp = 1060,
+                kGet_LayoutTableName    = 1061,
+                kGet_ScriptParameter    = 1062,
+                kGet_CurrentTimeStamp   = 1063,
+                kGet_WindowDesktopHeight = 1064,
+                kGet_WindowDesktopWidth = 1065,
+                kGet_WindowContentHeight = 1066,
+                kGet_WindowContentWidth = 1067,
+                kGet_CalculationRepetitionNumber = 1068,
+                kGet_CurrentExtendedPrivileges = 1069,
+                kGet_AllowAbortState    = 1070,
+                kGet_ErrorCaptureState  = 1071,
+                kGet_DesktopPath        = 1072,
+                kGet_DocumentsPath      = 1073,
+                kGet_FileMakerPath      = 1074,
+                kGet_HostIPAddress      = 1075,
+                kGet_RequestOmitState   = 1076,
+                kGet_PreferencesPath    = 1077,
+                kGet_RecordOpenCount    = 1078,
+                kGet_RecordOpenState    = 1079,
+                kGet_ScriptResult       = 1080,
+                kGet_SystemDrive        = 1081,
+                kGet_TextRulerVisible   = 1082,
+                kGet_AllowFormattingBarState = 1083,
+                kGet_UseSystemFormatsState = 1084,
+                kGet_WindowZoomLevel    = 1085,
+                kGet_CustomMenuSetName  = 1086,
+                kGet_ActiveLayoutObjectName = 1088,
+                kGet_TemporaryPath      = 1089,
+                kGet_HostApplicationVersion = 1090,
+                kGet_TriggerModifierKeys = 1091,
+                kGet_TriggerKeystroke   = 1092,
+                kGet_DocumentsPathListing = 1093,
+                kGet_AccountPrivilegeSet  = 1094,
+                kGet_AccountExtendedPrivileges = 1095,
+                kGet_QuickFindText      = 1096,
+                kGet_TriggerCurrentPanel = 1097,
+                kGet_TriggerTargetPanel = 1098,
+                kGet_WindowStyle        = 1099,
+                kGet_InstalledFMPlugins = 1100,
+                kGet_UUID               = 1101,
+                kGet_PersistentID       = 1102,
+                kGet_ConnectionState    = 1103,
+                kGet_CurrentTimeUTCMilliseconds = 1104,
+                kGet_Device             = 1105,
+                kGet_WindowOrientation  = 1106,
+                kGet_TriggerGestureInfo = 1107,
+                kGet_EncryptionState    = 1108,
+                kGet_ScriptAnimation    = 1109,
+                kGet_ModifiedFields     = 1110,
+                kGet_NetworkType        = 1111,
+                kGet_ConnectionAttributes = 1112,
+                kGet_ScreenScaleFactor  = 1113,
+                kGet_ApplicationArchitecture = 1115,
+                kGet_TriggerExternalEvent = 1116,
+                kGet_TouchKeyboardState = 1117,
+                kGet_MenubarState       = 1118,
+                kGet_RegionMonitorEvents = 1119,
+                kGet_AccountGroupName   = 1120,
+                kGet_ActiveRecordNumber = 1121,
+                kGet_UUIDNumber         = 1122,
+                kGet_OpenDataFileInfo   = 1123,
+                kGet_AccountType        = 1124
             };
 
             inline errcode Evaluate ( const Text &expression, Data &result ) const;
+
+            // New to FileMaker Pro 18 (API VERSION 60) and later. Retrieve the results of a calculation engine's Get() function
+            inline errcode EvaluateGetFunction ( short functionValue, Data &result ) const;
 
             inline errcode ExecuteFileSQL ( const Text &expression, const Text &filename, const DataVect &parameters, RowVect& result ) const;
 
@@ -217,6 +344,7 @@ extern "C++"
 
         };
 
+#if FMX_USE_AUTO_PTR
         // DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
         class DEPRECATED DataVectAutoPtr : public std::auto_ptr<DataVect>
         {
@@ -240,6 +368,7 @@ extern "C++"
         public:
             inline ExprEnvAutoPtr ();
         };
+#endif
         
 #if FMX_USE_UNIQUE_PTR
         class DataVectUniquePtr : public std::unique_ptr<DataVect>
@@ -295,6 +424,7 @@ extern "C"
 
     fmx::ExprEnv FMX_API *FM_ExprEnv_Constructor1 ( fmx::_fmxcpt &_x ) throw ();
     fmx::errcode FMX_API FM_ExprEnv_Evaluate ( const void *_self, const fmx::Text &expression, fmx::Data &result, fmx::_fmxcpt &_x ) throw ();
+    fmx::errcode FMX_API FM_ExprEnv_EvaluateGetFunction ( const void *_self, short functionValue, fmx::Data &result, fmx::_fmxcpt &_x ) throw ();
 #if FMX_OBSOLETE_API
     DEPRECATED fmx::errcode FMX_API FM_ExprEnv_ExecuteSQL ( const void *_self, const fmx::Text &expression, fmx::Data &result, fmx::uint16 colSep, fmx::uint16 rowSep, fmx::_fmxcpt &_x ) throw ();
 #endif  
@@ -411,13 +541,14 @@ extern "C++"
             _x.Check ();
         }
 
-
+#if FMX_USE_AUTO_PTR
         inline DataVectAutoPtr::DataVectAutoPtr ()
         {
             _fmxcpt _x;
             reset ( FM_DataVect_Constructor1 ( _x ) );
             _x.Check ();
         }
+#endif
         
 #if FMX_USE_UNIQUE_PTR
         inline DataVectUniquePtr::DataVectUniquePtr ()
@@ -456,12 +587,14 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline RowVectAutoPtr::RowVectAutoPtr ()
         {
             _fmxcpt _x;
             reset ( FM_RowVect_Constructor1 ( _x ) );
             _x.Check ();
         }
+#endif
 
 #if FMX_USE_UNIQUE_PTR
         inline RowVectUniquePtr::RowVectUniquePtr ()
@@ -476,6 +609,13 @@ extern "C++"
         {
             _fmxcpt _x;
             errcode _rtn = FM_ExprEnv_Evaluate ( this, expression, result, _x );
+            _x.Check ();
+            return _rtn;
+        }
+        inline errcode ExprEnv::EvaluateGetFunction ( short functionValue, Data &result ) const
+        {
+            _fmxcpt _x;
+            errcode _rtn = FM_ExprEnv_EvaluateGetFunction ( this, functionValue, result, _x );
             _x.Check ();
             return _rtn;
         }
@@ -549,12 +689,14 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline ExprEnvAutoPtr::ExprEnvAutoPtr ()
         {
             _fmxcpt _x;
             reset ( FM_ExprEnv_Constructor1 ( _x ) );
             _x.Check ();
         }
+#endif
         
 #if FMX_USE_UNIQUE_PTR
         inline ExprEnvUniquePtr::ExprEnvUniquePtr ()

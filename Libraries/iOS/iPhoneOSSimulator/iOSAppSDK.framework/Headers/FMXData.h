@@ -1,6 +1,6 @@
 /*
  
- Copyright © 1998 - 2016  FileMaker, Inc.
+ Copyright © 1998 - 2018  FileMaker, Inc.
  All rights reserved.
  
  FileMaker, Inc. grants you a non-exclusive limited license to use this file solely to enable
@@ -108,6 +108,7 @@ extern "C++"
 
         };
 
+#if FMX_USE_AUTO_PTR
         // DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
         class DEPRECATED DataAutoPtr : public std::auto_ptr<Data>
         {
@@ -116,6 +117,7 @@ extern "C++"
             inline DataAutoPtr ();
 
         };
+#endif
         
 #if FMX_USE_UNIQUE_PTR
         class DataUniquePtr : public std::unique_ptr<Data>
@@ -316,12 +318,14 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline DataAutoPtr::DataAutoPtr ()
         {
             _fmxcpt _x;
             reset ( FM_Data_Constructor1 ( _x ) );
             _x.Check ();
         }
+#endif
         
 #if FMX_USE_UNIQUE_PTR
         inline DataUniquePtr::DataUniquePtr ()

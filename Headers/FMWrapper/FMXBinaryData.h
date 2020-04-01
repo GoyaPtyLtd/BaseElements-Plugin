@@ -1,6 +1,6 @@
 /*
  
- Copyright © 1998 - 2016  FileMaker, Inc.
+ Copyright © 1998 - 2018  FileMaker, Inc.
  All rights reserved.
  
  FileMaker, Inc. grants you a non-exclusive limited license to use this file solely to enable
@@ -130,6 +130,7 @@ extern "C++"
 
         };
 
+#if FMX_USE_AUTO_PTR
         // DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
         class DEPRECATED BinaryDataAutoPtr : public std::auto_ptr<BinaryData>
         {
@@ -149,6 +150,7 @@ extern "C++"
             // Same as the above constructor except use AddAppend/AddFinish for the data
             inline BinaryDataAutoPtr ( const Text &name, uint32* context );
         };
+#endif
         
 #if FMX_USE_UNIQUE_PTR
         class BinaryDataUniquePtr : public std::unique_ptr<BinaryData>
@@ -291,6 +293,7 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline BinaryDataAutoPtr::BinaryDataAutoPtr ()
         {
             _fmxcpt _x;
@@ -315,7 +318,8 @@ extern "C++"
             reset ( FM_BinaryData_Constructor4 ( name, context, _x ) );
             _x.Check ();
         }
-
+#endif
+        
 #if FMX_USE_UNIQUE_PTR
         inline BinaryDataUniquePtr::BinaryDataUniquePtr ()
         {

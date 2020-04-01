@@ -1,6 +1,6 @@
 /*
 
- Copyright © 1998 - 2016  FileMaker, Inc.
+ Copyright © 1998 - 2018  FileMaker, Inc.
  All rights reserved.
  
  FileMaker, Inc. grants you a non-exclusive limited license to use this file solely to enable
@@ -80,6 +80,7 @@ extern "C++"
 
         };
 
+#if FMX_USE_AUTO_PTR
         // DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
         class DEPRECATED DateTimeAutoPtr : public std::auto_ptr<DateTime>
         {
@@ -89,6 +90,7 @@ extern "C++"
             inline DateTimeAutoPtr ( const unichar16* dateString, uint32 dateLength, const Locale& intl );
             inline DateTimeAutoPtr ( const Text &dateText, const Locale &intl );
         };
+#endif
         
 #if FMX_USE_UNIQUE_PTR
         class DateTimeUniquePtr : public std::unique_ptr<DateTime>
@@ -334,6 +336,7 @@ extern "C++"
             _x.Check ();
         }
 
+#if FMX_USE_AUTO_PTR
         inline DateTimeAutoPtr::DateTimeAutoPtr ()
         {
             _fmxcpt _x;
@@ -352,7 +355,8 @@ extern "C++"
             reset ( FM_DateTime_Constructor3 ( dateText, intl, _x ) );
             _x.Check ();
         }
-
+#endif
+        
 #if FMX_USE_UNIQUE_PTR
         inline DateTimeUniquePtr::DateTimeUniquePtr ()
         {
