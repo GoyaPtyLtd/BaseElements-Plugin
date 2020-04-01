@@ -1,0 +1,66 @@
+#
+# Configuration file for iOSAppSDK 18.0.3
+#
+
+#
+# Note that this file is encoded using the UTF-8 character encoding. Do not change this character encoding, or your
+# application may not build correctly.
+#
+
+# Launch Solution (required)
+# This is the file to open when your app is launched.
+# It should be in the Solution Files folder along with the rest of the files for your solution.
+launchSolution = BaseElements Plugin Tests.fmp12
+
+# Help URL (optional)
+# Specify a URL where help can be found.
+# If not specified, the help menu item will be removed from the generated app.
+# Example:  helpURL = https://com.myCompany.myApp/help
+helpURL =
+
+# Solution Files Copy Option (required)
+# The value of this flag controls under what circumstances the solution files are copied into the Documents directory
+# on the device. The value can be either the number or the string.
+#   1 - always              The solution files are always copied every time the application is run.
+#   2 - once                The solution files are copied the first time the application is run, and are never copied again.
+#   3 - versionChange       The solution files are copied the first time the application is run, or if the application's
+#                           externally visible version number changes. (See the discussion of CFBundleShortVersionString
+#                           in Xcode's help.)
+#   4 - buildVersionChange  The solution files are copied the first time the application is run, or if the application's
+#                           build number changes.
+#
+# The following two examples have the same effect.
+# Example: solutionCopyOption = versionChange
+# Example: solutionCopyOption = 3
+solutionCopyOption = always
+
+# Encryption Password Obfuscation (optional) To protect your solution files from unauthorized access, you can use
+# FileMaker Pro Advanced to encrypt the files, then include the encryption passwords in configFile.txt. The passwords will
+# be embedded in the app, but they will be obfuscated to make it difficult to reconstruct them.  Note: Obfuscation doesn't
+# provide complete security, but it hides sensitive data.
+#
+# Example 1: A simple password used for all solutions:
+#    dbePassword default = "Hello World"
+# The password in this example is:
+#    Hello World
+#
+# Example 2: A password with embedded quotation marks:
+#    dbePassword default = "Hello \"World\""
+# The password in this example is:
+#    Hello "World"
+#
+# Example 3: A password with embedded backslash characters
+#    dbePassword default = "\\Hello\\ World"
+# The password in this example is:
+#    \Hello\ World
+#
+# Example 4: One password for a specific file and another password for all other files:
+#    dbePassword "A Specific File.fmp12" = "Specific File Password"
+#    dbePassword default = "All Files Password"
+
+# App Delegate Class (optional)
+# Specify the name of the class that defines your app delegate. When the app launches, 
+# an instance of the class is created to receive the UIApplicationDelegate messages.
+# Your delegate needs to implement only the messages it wants to receive.
+# Example: applicationDelegateClass = myAppDelegate
+# applicationDelegateClass =
