@@ -3937,6 +3937,13 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 		const long timeout = ParameterAsLong ( parameters, 1, kBE_Never );
 
 		SystemCommand command;
+        
+#if defined FMX_MAC_TARGET || FMX_LINUX_TARGET || FMX_IOS_TARGET
+        SetResult ( command.run_with_popen( shell_command, timeout ), results );
+#endif
+        
+#if defined FMX_WIN_TARGET
+        
 		Poco::ActiveResult<string> result = command.execute ( shell_command );
 
 		switch ( timeout ) {
@@ -3962,6 +3969,7 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 		if ( result.available() ) {
 			SetResult ( result.data(), results );
 		}
+#endif
 		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
