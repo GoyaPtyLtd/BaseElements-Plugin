@@ -54,10 +54,10 @@
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(VC_SourcePath);$(UniversalCRT_SourcePath);</SourcePath>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">c:\Users\mark\AppData\Local\FileMaker\FileMaker Pro Advanced\18.0\Extensions\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\mark\Documents\Temp\$(ProjectName)\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">c:\Users\mark\AppData\Local\FileMaker\FileMaker Pro Advanced\18.0\Extensions\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\mark\Documents\Temp\$(ProjectName)\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">c:\Users\$(username)\AppData\Local\FileMaker\FileMaker Pro Advanced\18.0\Extensions\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\$(username)\Documents\Temp\$(ProjectName)\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">c:\Users\$(username)\AppData\Local\FileMaker\FileMaker Pro Advanced\18.0\Extensions\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\$(username)\Documents\Temp\$(ProjectName)\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)</TargetName>
   </PropertyGroup>
