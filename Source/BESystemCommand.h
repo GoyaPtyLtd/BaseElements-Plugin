@@ -15,22 +15,25 @@
 
 
 #include "BEPluginUtilities.h"
-
+#include <errno.h>
+#include "BEPluginException.h"
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <Poco/ActiveMethod.h>
-
 
 class SystemCommand
 {
 	public:
 	
-		SystemCommand(): execute(this, &SystemCommand::execute_implementation) {}
-	
-		Poco::ActiveMethod<std::string, std::string, SystemCommand> execute;
-	
+    SystemCommand():execute(this, &SystemCommand::execute_implementation) {}
+    
+            Poco::ActiveMethod<std::string, std::string, SystemCommand> execute;
+    
+    std::string run_with_popen( const std::string& shell_command, const long command_timeout = kBE_Never  ) ;
+    
 	protected:
 	
-	std::string execute_implementation ( const std::string& shell_command );// {
-	
+        std::string execute_implementation ( const std::string& shell_command ); //
+    
 };
 
 
