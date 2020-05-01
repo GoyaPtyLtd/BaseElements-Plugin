@@ -33,12 +33,6 @@ ios-release-clean:
 
 ios-clean: ios-debug-clean ios-release-clean
 	
-windows-release:
-	msbuild /p:Configuration=Release
-windows-debug:
-	msbuild /p:Configuration=Debug
-
-	
 
 	
 	

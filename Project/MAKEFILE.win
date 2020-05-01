@@ -1,0 +1,4 @@
+release:
+	msbuild /p:Configuration=Release
+debug:
+	msbuild /p:Configuration=Debug

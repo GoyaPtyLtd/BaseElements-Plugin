@@ -53,3 +53,5 @@ Project/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution File
 Project/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/*
 Project/Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Solution Files/BaseElements Plugin Tests.fmp12
 Project/Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Plug-Ins/*
+
+.env*
