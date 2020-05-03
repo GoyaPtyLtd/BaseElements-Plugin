@@ -1009,7 +1009,7 @@ void set_name_value_pair ( const DataVect& parameters, std::map<std::string, std
 	} else {
 		auto name = ParameterAsUTF8String ( parameters );
 		auto value = ParameterAsUTF8String ( parameters, 1 );
-		if ( value.empty() ) {
+		if ( value.empty() && parameters.Size() == 1 ) {
 			pairs.erase ( name );
 		} else {
 			pairs [ name ] = value;

@@ -2,7 +2,7 @@
 Version 4.1.3
 ########################################################################
 
-May 1, 2020
+May 3, 2020
 
 
 New Functions
@@ -19,6 +19,12 @@ BE_Zip: don't crash when there's nothing to archive
 		return an error if more than one file with the same name is added to the archive
 		
 Update to v18 of the FMX SDK
+
+
+Breaking Change:
+
+BE_HTTP_SetCustomHeader: Setting a header with ( "HeaderName"; "") now sets the header to "".
+To remove the header call BE_HTTP_SetCustomHeader with ( "HeaderName" ) as before.
 
 
 ########################################################################
