@@ -21,7 +21,7 @@ ios-debug: ios-plugin-clean
 	codesign -s "$(CODESIGN_CERTIFICATE_NAME)" Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Plug-Ins/BaseElementsIOS.fmplugin
 
 ios-plugin-clean:
-	rm -r Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Plug-Ins/BaseElementsIOS.fmplugin
+	rm -r Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Plug-Ins/BaseElementsIOS.fmplugin || true
 	
 ios-debug-clean:
 	rm -r /tmp/Xcode/Build/BaseElements.build/Debug-iphoneos
@@ -34,7 +34,17 @@ ios-release-clean:
 	rm -r /tmp/Xcode/Build/BaseElements.build/Release-iphoneos
 
 ios-clean: ios-debug-clean ios-release-clean
-	
+
+ios-simulator-debug: ios-plugin-clean
+	rm -r Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/BaseElementsIOSSimulator.fmplugin || true
+	xcodebuild -project BaseElements.xcodeproj -target iOSSimulator -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO 
+	codesign -s "$(CODESIGN_CERTIFICATE_NAME)" Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/BaseElementsIOSSimulator.fmplugin
+
+ios-simulator-release: ios-plugin-clean
+	rm -r Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/BaseElementsIOSSimulator.fmplugin || true
+	xcodebuild -project BaseElements.xcodeproj -target iOSSimulator -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO 
+	codesign -s "$(CODESIGN_CERTIFICATE_NAME)" Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/BaseElementsIOSSimulator.fmplugin	
+
 windows-release:
 	msbuild /p:Configuration=Release
 windows-debug:
