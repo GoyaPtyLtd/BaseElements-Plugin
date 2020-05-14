@@ -1,4 +1,17 @@
 ########################################################################
+Version 4.1.4
+########################################################################
+
+May 15, 2020
+
+Changes
+
+BE_FileReadText ( pathOrContainer {; from ; to ; eolChar } ): Added option to pull only some lines from a file.
+	Use `start`, `to` and `eolChar` to extract a portion of the file. 
+	Pass `eolChar` as empty to read characters. 
+	Pass `start` as empty or greater than `to` to read from the end of the file
+
+########################################################################
 Version 4.1.3
 ########################################################################
 
