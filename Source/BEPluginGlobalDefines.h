@@ -322,15 +322,13 @@ enum errors {
 	kCipherInvalidIvSize = 17020
 };
 
-
 enum {
 	kBE_NumericConstantOffset = 1000,
 	kBE_ButtonOffset = 1000,
 	kBE_MessageDigestAlgorithmOffset = 2000,
 	kBE_FileTypeOffset = 3000,
-	kBE_EncodingOffset = 4000
+	kBE_EncodingOffset = 4000,
 };
-
 
 enum file_type {
 	kBE_FileTypeAll = 0,
@@ -338,13 +336,15 @@ enum file_type {
 	kBE_FileTypeFolder = 2
 };
 
-
 enum data_type {
 	kBE_DataType_Not_Found = -1, 
 	kBE_DataType_String = 0,
 	kBE_DataType_Long = 1
 };
 
+enum input_output {
+    kBufferSize = 16 * 1024 // 16 * 1024 16384
+} ;
 
 enum timeout {
 	kBE_Never = -1,

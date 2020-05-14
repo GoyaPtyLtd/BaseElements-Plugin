@@ -441,10 +441,20 @@ fmx::errcode BE_FileReadText ( short /* funcId */, const ExprEnv& /* environment
 	errcode error = NoError();
 
 	try {
-
-		auto file_contents = ParameterPathOrContainerAsUTF8 ( parameters );
-		SetResult ( file_contents, results );
-
+		long start = ParameterAsLong ( parameters, 1, 0) ;
+		if ( start < 0 ) {
+			start = 0 ;
+		}
+		long to = ParameterAsLong ( parameters, 2, 0 ) ;
+		if ( to < 0 ) {
+			to = 0 ;
+		}
+		std::string delimiter = ParameterAsUTF8String ( parameters, 3, "" ) ;
+		if ( delimiter.length() > 1 ) {
+			delimiter = delimiter.substr(0,1) ;
+		}
+		const std::string file_contents = ParameterPathOrContainerAsUTF8 ( parameters, 0, start, to, delimiter ) ;
+        SetResult ( file_contents, results ) ;
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {

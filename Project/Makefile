@@ -1,9 +1,9 @@
 macos-debug: 
-	rm -r /Users/$(USER)/Library/Application\ Support/FileMaker/Extensions/BaseElements.fmplugin
+	rm -r /Users/$(USER)/Library/Application\ Support/FileMaker/Extensions/BaseElements.fmplugin || true
 	xcodebuild -project BaseElements.xcodeproj -target macOS -configuration Debug  
 
 macos-debug-custom-sign: 
-	rm -r /Users/$(USER)/Library/Application\ Support/FileMaker/Extensions/BaseElements.fmplugin
+	rm -r /Users/$(USER)/Library/Application\ Support/FileMaker/Extensions/BaseElements.fmplugin || true
 	xcodebuild -project BaseElements.xcodeproj -target macOS -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO 
 	codesign -s "$(CODESIGN_CERTIFICATE_NAME)" /Users/$(USER)/Library/Application\ Support/FileMaker/Extensions/BaseElements.fmplugin
 
@@ -12,11 +12,11 @@ macos-debug-clean:
 	rm -r  /tmp/Xcode/Build/BaseElements.build/Debug
 
 macos-release: 
-	rm -r /Users/$(USER)/Library/Application\ Support/FileMaker/Extensions/BaseElements.fmplugin
+	rm -r /Users/$(USER)/Library/Application\ Support/FileMaker/Extensions/BaseElements.fmplugin || true
 	xcodebuild -project BaseElements.xcodeproj -target macOS -configuration Release 
 
 macos-release-custom-sign: 
-	rm -r /Users/$(USER)/Library/Application\ Support/FileMaker/Extensions/BaseElements.fmplugin
+	rm -r /Users/$(USER)/Library/Application\ Support/FileMaker/Extensions/BaseElements.fmplugin || true
 	xcodebuild -project BaseElements.xcodeproj -target macOS -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO 
 	codesign -s "$(CODESIGN_CERTIFICATE_NAME)" /Users/$(USER)/Library/Application\ Support/FileMaker/Extensions/BaseElements.fmplugin
 
@@ -55,6 +55,3 @@ windows-release:
 	msbuild /p:Configuration=Release
 windows-debug:
 	msbuild /p:Configuration=Debug
-
-	
-	

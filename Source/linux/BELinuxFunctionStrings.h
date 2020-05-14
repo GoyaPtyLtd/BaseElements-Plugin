@@ -31,7 +31,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 107, "BE_FolderCreate ( path )" },
 	{ 108, "BE_FileDelete ( path )" },
 	{ 109, "BE_FileExists ( path )" },
-	{ 110, "BE_FileReadText ( pathOrContainer )" },
+	{ 110, "BE_FileReadText ( pathOrContainer {; {start}; {to}; {eolChar} })" },
 	{ 111, "BE_FileWriteText ( path ; text {; appendBoolean } )" },
 	{ 112, "BE_FileSelectDialog ( prompt {; inFolderPath } )" },
 	{ 113, "BE_FolderSelectDialog ( prompt {; inFolderPath } )" },

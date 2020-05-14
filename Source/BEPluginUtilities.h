@@ -17,7 +17,9 @@
 #include "BEPluginGlobalDefines.h"
 #include "Images/BEImage.h"
 
+#include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 #include <map>
 #include <vector>
@@ -71,7 +73,9 @@ const std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::Data
 const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const boost::filesystem::path default_path = "" );
 const std::string ParameterFileName ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
-const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& parameters, const fmx::uint32 which = 0 );
+
+const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& parameters, const fmx::uint32 which = 0, const long start = 0, const long to = 0, const std::string delimiter = "" );
+
 std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const fmx::DataVect& parameters, const fmx::uint32 which = 0 );
 
 
@@ -84,10 +88,15 @@ const bool StreamIsCompressed ( const fmx::BinaryData& data );
 
 const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path );
 std::string ReadFileAsUTF8 ( const boost::filesystem::path path );
+void ReadFileAsUTF8Extract( const boost::filesystem::path path, const size_t from, const size_t to, std::string& results) ;
+void ReadFileAsUTF8Extract( const boost::filesystem::path path, const size_t from, const size_t to, const size_t buffer_size, const std::string& delimiter, std::string& results) ;
+
 std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from = g_text_encoding );
 std::string ConvertTextEncoding ( std::string& in, const std::string& to, const std::string& from = g_text_encoding );
 const bool IsValidUTF8 ( const std::string& utf8 );
 std::string ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from = g_text_encoding );
+
+bool DetermineOffsetAndDepth( const size_t& length, const size_t& from, const size_t& to, size_t& offset, size_t& depth) ;
 
 std::string TextAsUTF8String ( const fmx::Text& fmx_text );
 std::string TextAsNumberString ( const fmx::Text& fmx_text );
@@ -114,5 +123,17 @@ std::string GetFileMakerTemporaryDirectory ( const fmx::ExprEnv& environment );
 void Do_GetString ( unsigned long whichString, FMX_PtrType winLangID, FMX_PtrType resultsize, FMX_Unichar* string );
 void Do_GetString ( const unsigned long whichStringID, fmx::TextUniquePtr& function_information, const int which_string = kFunctionName );
 
+
+void AppendToStringInReverse( const std::vector<std::string>& source, std::string& target ) ;
+
+void FindDelimiterStart( const std::string& text, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset ) ;
+
+void FindDelimiterEnd( const std::string& text, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset ) ;
+
+void ReverseFindDelimiter( const std::string& text, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset ) ;
+
+void ReadBufferedFileFromStart(boost::filesystem::ifstream& inFile, const size_t& from, const size_t& to, const size_t& buffer_size, const std::string& delimiter, std::string& result ) ;
+
+void ReadBufferedFileFromEnd(boost::filesystem::ifstream& inFile, const size_t& from, const size_t& to, const size_t& buffer_size, const std::string& delimiter, std::string& result ) ;
 
 #endif // BEPLUGINUTILITIES_H
