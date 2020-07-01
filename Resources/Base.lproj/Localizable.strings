@@ -24,7 +24,7 @@
 "127" = "BE_FileModificationTimestamp ( path )|File Modification Timestamp|Returns the OS file modification time.  Usually in seconds, so can be converted to a timestamp like : GetAsTimestamp ( BE_FileModificationTimestamp ( path ) ). However it is up to the Operating system as to what time it returns, and some OS versions may be more precise ( down to the millisecond ) and so the result could be different in different or future versions.";
 "128" = "BaseElements";
 "131" = "GyBE1nnYYnn";
-"132" = "https://baseelementsplugin.zendesk.com/";
+"132" = "https://docs.baseelementsplugin.com/";
 "134" = "BE_DebugInformation|Debug Information|Returns state information for the plug-in";
 "135" = "BE_ClipboardGetFile ( format {; fileName } )|Clipboard Data Get|Tries to convert the item on the current clipboard, designated by the format passed to the function. When trying to get text from the clipboard use BE_ClipboardGetText";
 "136" = "BE_ClipboardSetFile ( fileData ; format )|Clipboard Data Set|Sets the clipboard to the text and applies a clipboard format. Clipboard formats are usually set by the application and depend on the content types. When setting a type it's best to copy a sample and then use BE_ClipboardFormats to see what types are used. You only need to apply a single format when setting the clipboard. When setting a text object use BE_ClipboardSetText";
