@@ -117,7 +117,7 @@
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.comodoca.com "$(TargetPath)"
+      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"
 signtool verify /pa "$(TargetPath)"
 </Command>
     </PostBuildEvent>
@@ -181,7 +181,7 @@ signtool verify /pa "$(TargetPath)"
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.comodoca.com "$(TargetPath)"
+      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"
 signtool verify /pa "$(TargetPath)"
 </Command>
     </PostBuildEvent>
