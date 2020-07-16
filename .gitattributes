@@ -9,8 +9,6 @@
 *.lib filter=lfs diff=lfs merge=lfs -text
 *.so filter=lfs diff=lfs merge=lfs -text
 
-Libraries/* filter=lfs diff=lfs merge=lfs -text
-
 Project/Extras/BaseElements_iOS_Test/iOSAppSDKResources/Libraries_iphoneos/* filter=lfs diff=lfs merge=lfs -text
 Project/Extras/BaseElements_iOS_Test/iOSAppSDKResources/Libraries_iphonesimulator/* filter=lfs diff=lfs merge=lfs -text
 
