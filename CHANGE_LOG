@@ -14,6 +14,8 @@ BE_OAuthRequestAccessToken: Deprecated
 BE_XeroGenerateKeys: Deprecated
 BE_XeroSetTokens: Deprecated
 
+Update Project files & FMX SDK to v19
+
 
 ########################################################################
 Version 4.1.3

@@ -3,14 +3,17 @@ FMMiniPlugIn Sample Plug-In
 
 A sample plug-in is now included with the FileMaker Plug-In SDK. The environments used to build this small sample plug-in include:
 
-macOS & iOS: OS Version 10.13 Xcode 9.0
-Win: OS Version 10 Visual Studio 2015 Update 3
+macOS & iOS: macOS Version 10.14 with Xcode 10.2, targeting iOS 12.2
+Win: OS Version 10 Visual Studio 2017 15.8
 Linux: CentOS 7.3 Code::Blocks 16.01
 
 Digitally Signing Plug-Ins
 --------------------------
 
-<not done yet, Peter?>
+Check out these two blogs for how one can sign plug-ins
+
+https://www.troi.com/plug-in-development/code-signing-filemaker-plugins/
+http://fmplugins.idma.nz/index.php?title=Code_Signing
 
 Plug-in version returned by Get(InstalledFMPlugins)
 ---------------------------------------------------
@@ -84,11 +87,17 @@ FMMiniPlugIn.fmplugin
     Info.plist
     PkgInfo
 
-The reason the Linux and Windows folders are inside the Resources folder is due to how Mac bundles are signed by Xcode. Note that plug-ins are now required to be signed by their development environments. Currently only the Mac can import this bundle format into a container folder directly with the Insert File command. Insert from URL can be used on other platforms by creating a properly compressed Mac plug-in bundle via these two commands that come with the macOS:
+The reason the Linux and Windows folders are inside the Resources folder is due to how Mac bundles are signed by Xcode. Note that plug-ins are now required to be signed by their development environments and the bundle has to be signed after the non-Mac plug-ins are added to it. Currently only the Mac can import this bundle format into a container folder directly with the Insert File command. Insert from URL can be used on other platforms by creating a properly compressed Mac plug-in bundle via these two commands that come with the macOS:
 
   xar -cf MyCoolPlugin.fmplugin.xar MyCoolPlugin.fmplugin
   gzip -c MyCoolPlugin.fmplugin.xar > MyCoolPlugin.fmplugin.gz
 
+
+List of changes for 19
+----------------------
+
+FMXCalcEngine.h
+  New fmx::ExprEnv::EvaluateConvertToFileMakerPath and fmx::ExprEnv::EvaluateConvertFromFileMakerPath methods plus fmx::ExprEnv::kConvert_XXX enums to be able to call the new ConvertToFileMakerPath and ConvertFromFileMakerPath calculation functions directly
 
 List of changes for 18
 ----------------------
@@ -124,6 +133,11 @@ Install Plug-In File script step errors
 
 FMXExtern.h
   If C++17 mode is enabled in Xcode or Visual C++, the various ...AutoPtr helper classes based on std::auto_ptr<> will be disabled, as C++17 fully deprecated std::auto_ptr<>.
+
+FMMiniPlugIn.xcodeproj
+  Xcode 10 has deprecated 32-bit builds, so the project file has removed the i386 architecture.
+  Our switch to Xcode 10 also means that the FMWrapper.framework that plug-ins link against is also now 64-bit only.
+  Use a prior release of the Plug-in SDK if support for 32-bit architectures on macOS is required.
 
 List of changes for 17
 ----------------------
