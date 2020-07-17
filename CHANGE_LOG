@@ -2,14 +2,18 @@
 Version 4.1.4
 ########################################################################
 
-May 15, 2020
+July 17, 2020
+
 
 Changes
 
-BE_FileReadText ( pathOrContainer {; from ; to ; eolChar } ): Added option to pull only some lines from a file.
-	Use `start`, `to` and `eolChar` to extract a portion of the file. 
-	Pass `eolChar` as empty to read characters. 
-	Pass `start` as empty or greater than `to` to read from the end of the file
+BE_Encoding_Base64: Reinstated
+BE_Encoding_Hex: Reinstated
+BE_FileReadText: Added option to pull only some lines from a file
+BE_OAuthRequestAccessToken: Deprecated
+BE_XeroGenerateKeys: Deprecated
+BE_XeroSetTokens: Deprecated
+
 
 ########################################################################
 Version 4.1.3
