@@ -152,6 +152,6 @@
 "3000" = "BE_FileTypeAll|FileType All|For use with the function BE_FileListFolder as a flag for the \"type\" parameter.";
 "3001" = "BE_FileTypeFile|FileType File|For use with the function BE_FileListFolder as a flag for the \"type\" parameter.";
 "3002" = "BE_FileTypeFolder|FileType Folder|For use with the function BE_FileListFolder as a flag for the \"type\" parameter.";
-"4001" = "BE_Encoding_Hex_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
-"4002" = "BE_Encoding_Base64_Deprecated||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
+"4001" = "BE_Encoding_Hex||Named contstant, = 1, for use with BE_MessageDigest";
+"4002" = "BE_Encoding_Base64||Named contstant, = 2, for use with BE_MessageDigest";
 "65000" = "Version: %@\n\nThis plug-in provides additional functionality for BaseElements from Goya.";
