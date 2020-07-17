@@ -338,10 +338,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	// still alpha
 
-//	g_be_plugin->RegisterFunction ( kBE_OAuth_RequestToken, BE_OAuthRequestAccessToken, true, 3 );
-//	g_be_plugin->RegisterFunction ( kBE_OAuthRequestAccessToken, BE_OAuthRequestAccessToken, true, 3, 5 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_OAuthRequestAccessToken, BE_OAuthRequestAccessToken, 3, 5 );
-//	g_be_plugin->RegisterFunction ( kBE_OAuth_ClearToken, BE_OAuthRequestAccessToken, true );
+	g_be_plugin->RegisterHiddenFunction ( kBE_OAuthRequestAccessToken_Deprecated, BE_OAuthRequestAccessToken_Deprecated, 3, 5 );
 
 	return kCurrentExtnVersion;	// enable the plug-in
 

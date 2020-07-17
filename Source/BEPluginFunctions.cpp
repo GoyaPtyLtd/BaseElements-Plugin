@@ -3036,7 +3036,7 @@ fmx::errcode BE_SMTPAddAttachment ( short /* funcId */, const fmx::ExprEnv& /* e
 #pragma mark -
 
 
-fmx::errcode BE_OAuthRequestAccessToken ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_OAuthRequestAccessToken_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3096,7 +3096,7 @@ fmx::errcode BE_OAuthRequestAccessToken ( short /* funcId */, const ExprEnv& /* 
 
 	return MapError ( error );
 
-} // BE_OAuthRequestAccessToken
+} // BE_OAuthRequestAccessToken_Deprecated
 
 
 #pragma mark -

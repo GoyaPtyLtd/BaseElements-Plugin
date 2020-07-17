@@ -193,9 +193,9 @@ enum functions {
 	kBE_JSON_Error_Description_Deprecated = 301,
 	kBE_JSON_ArraySize = 302,
 	kBE_JSON_Encode_Deprecated = 303,
-//	kBE_OAuth_RequestToken = 320,
-	kBE_OAuthRequestAccessToken = 321,
-//	kBE_OAuth_SetToken = 322,
+//	kBE_OAuth_RequestToken = 320, // Never Implemented
+	kBE_OAuthRequestAccessToken_Deprecated = 321,
+//	kBE_OAuth_SetToken = 322, // Never Implemented
 	kBE_XeroSetTokens = 330,
 	kBE_XeroGenerateKeys = 331,
 	kBE_ValuesUnique = 350,
