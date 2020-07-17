@@ -3100,11 +3100,11 @@ fmx::errcode BE_OAuthRequestAccessToken_Deprecated ( short /* funcId */, const E
 
 
 #pragma mark -
-#pragma mark Xero
+#pragma mark Xero (Deprecated)
 #pragma mark -
 
 
-fmx::errcode BE_XeroSetTokens ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XeroSetTokens_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3141,10 +3141,10 @@ fmx::errcode BE_XeroSetTokens ( short /* funcId */, const ExprEnv& /* environmen
 
 	return MapError ( error );
 
-} // BE_XeroSetTokens
+} // BE_XeroSetTokens_Deprecated
 
 
-fmx::errcode BE_XeroGenerateKeys ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XeroGenerateKeys_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3180,7 +3180,7 @@ fmx::errcode BE_XeroGenerateKeys ( short /* funcId */, const ExprEnv& /* environ
 
 	return MapError ( error );
 
-} // BE_XeroGenerateKeys
+} // BE_XeroGenerateKeys_Deprecated
 
 
 

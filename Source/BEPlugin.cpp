@@ -292,8 +292,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SMTPSetHeader, BE_Net_Set_Header, 0, 2 );
 
 
-	g_be_plugin->RegisterFunction ( kBE_XeroSetTokens, BE_XeroSetTokens, 2 );
-	g_be_plugin->RegisterFunction ( kBE_XeroGenerateKeys, BE_XeroGenerateKeys, 1, 7 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_XeroSetTokens_Deprecated, BE_XeroSetTokens_Deprecated, 2 );
+	g_be_plugin->RegisterHiddenFunction ( kBE_XeroGenerateKeys_Deprecated, BE_XeroGenerateKeys_Deprecated, 1, 7 );
 
 	g_be_plugin->RegisterFunction ( kBE_ArraySetFromValueList, BE_ArraySetFromValueList, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_ArrayGetSize, BE_ArrayGetSize, 1 );
