@@ -2,7 +2,7 @@
 Version 4.1.4
 ########################################################################
 
-July 17, 2020
+August 7, 2020
 
 
 Changes
@@ -11,10 +11,11 @@ BE_Encoding_Base64: Reinstated
 BE_Encoding_Hex: Reinstated
 BE_FileReadText: Added option to pull only some lines from a file
 BE_OAuthRequestAccessToken: Deprecated
+BE_DialogProgress: force immediate display on macOS
 BE_XeroGenerateKeys: Deprecated
 BE_XeroSetTokens: Deprecated
 
-Update Project files & FMX SDK to v19
+Update to v19 of the FMX SDK
 
 
 ########################################################################
