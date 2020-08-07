@@ -2,7 +2,7 @@
  BESystemCommand.cpp
  BaseElements Plug-In
 
- Copyright 2011-2019 Goya. All rights reserved.
+ Copyright 2011-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -64,7 +64,8 @@ std::string SystemCommand::execute_implementation ( const std::string& shell_com
 
 }
 
-#if defined FMX_MAC_TARGET || FMX_LINUX_TARGET || FMX_IOS_TARGET
+// Note: not implemented on iOS
+#if ( FMX_MAC_TARGET || FMX_LINUX_TARGET || FMX_IOS_TARGET )
 
 std::string SystemCommand::run_with_popen ( const std::string& shell_command, const long command_timeout ) {
     

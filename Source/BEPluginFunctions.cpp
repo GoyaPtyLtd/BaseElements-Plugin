@@ -3948,7 +3948,8 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 
 		SystemCommand command;
         
-#if defined FMX_MAC_TARGET || FMX_LINUX_TARGET || FMX_IOS_TARGET
+// Note: not implemented on iOS
+#if ( FMX_MAC_TARGET || FMX_LINUX_TARGET || FMX_IOS_TARGET )
         SetResult ( command.run_with_popen( shell_command, timeout ), results );
 #endif
         
