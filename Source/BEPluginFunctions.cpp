@@ -3478,8 +3478,33 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 	try {
 
 		auto pdf_document = ParameterAsPDF ( parameters );
-		auto pdf_document_to_append = ParameterAsPDF ( parameters, 1 );
-		pdf_document->Append ( *pdf_document_to_append );
+		
+		std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
+		auto which = 1;
+		
+		 if ( BinaryDataAvailable ( parameters, which ) ) {
+			 
+			 auto pdf = ParameterAsVectorChar ( parameters, which );
+			 pdf_document_to_append->Load ( pdf.data(), (long)pdf.size() );
+			 pdf_document->Append ( *pdf_document_to_append );
+
+		 } else {
+			 
+			 auto paths = ParameterAsUTF8String ( parameters, which );
+			 unique_ptr< BEValueList<string> > path_list ( new BEValueList<string> ( paths ) );
+			 auto file_list  = path_list->get_values();
+
+			 for ( typename std::vector<string>::iterator it = file_list.begin() ; it != file_list.end(); ++it ) {
+				 
+				 boost::filesystem::path pdf_path ( *it );
+				 pdf_path.make_preferred();
+				 pdf_document_to_append->Load ( pdf_path.c_str() );
+				 pdf_document->Append ( *pdf_document_to_append );
+
+			 } // for...
+			 
+		 }
+		
 		pdf_document_to_append.reset(); // make sure to close the file
 
 		// write out a temporary file
