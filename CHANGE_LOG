@@ -2,7 +2,7 @@
 Version 4.1.4
 ########################################################################
 
-August 12, 2020
+August 12=4, 2020
 
 
 Changes
@@ -15,6 +15,8 @@ BE_DialogProgress: force immediate display on macOS
 BE_PDFAppend: appendPathOrContainer may now specify a value list of paths
 BE_XeroGenerateKeys: Deprecated
 BE_XeroSetTokens: Deprecated
+BE_XPath: ignore xml text encoding hint
+BE_XSLTApply: ignore xml text encoding hint
 
 Update to v19 of the FMX SDK
 
