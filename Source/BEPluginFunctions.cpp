@@ -1541,9 +1541,8 @@ fmx::errcode BE_ArraySetFromValueList ( short /* funcId */, const fmx::ExprEnv& 
 
 	try {
 
-		auto value_list = ParameterAsUTF8String ( parameters );
 		auto  retain_empty_values = ParameterAsBoolean ( parameters, 1, false ); // false -> backwards compatibility
-		BEValueListStringSharedPtr array ( new BEValueList<string> ( value_list, false, retain_empty_values ) );
+		BEValueListStringSharedPtr array = ParameterAsStringValueList ( parameters, 0, false, retain_empty_values );
 
 		arrays.push_back ( array );
 		const size_t size = arrays.size();
@@ -1947,12 +1946,11 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 	try {
 		
 		// should there be multiple files with the same name... keep only the last one
-		auto file_value_list  = new const BEValueList<string> ( ParameterAsUTF8String ( parameters ) );
-		auto values  = file_value_list->get_values();
+		auto values = ParameterAsStringValueList ( parameters );
 
 		std::map<std::string, std::string> unique_file_names;
 
-		for ( typename std::vector<string>::iterator it = values.begin() ; it != values.end(); ++it ) {
+		for ( typename BEValueList<string>::iterator it = values->begin() ; it != values->end(); ++it ) {
 			
 			boost::filesystem::path file_path ( *it );
 			auto file_name = boost::algorithm::to_lower_copy ( file_path.filename().string() );
@@ -1968,17 +1966,15 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 			
 		} // for...
 
-		auto files  = new const BEValueList<string> ( map_values ( unique_file_names ) );
+		BEValueListStringUniquePtr files ( new BEValueList<string> ( map_values ( unique_file_names ) ) );
 		auto output_directory = ParameterAsUTF8String ( parameters, 1 );
 
-		auto zip_error = (fmx::errcode)Zip ( files, output_directory );
+		auto zip_error = (fmx::errcode)Zip ( files.get(), output_directory );
 		if ( kNoError != zip_error ) {
 			error = zip_error;
 		}
 		
 		SetResult ( error, results );
-
-		delete files;
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -3277,10 +3273,8 @@ fmx::errcode BE_ValuesUnique ( short /* funcId */, const ExprEnv& /* environment
 
 	try {
 
-		auto value_list = ParameterAsUTF8String ( parameters );
-		const bool case_sensitive = ParameterAsBoolean ( parameters, 1 );
-
-		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list, case_sensitive ) );
+		auto case_sensitive = ParameterAsBoolean ( parameters, 1 );
+		auto values = ParameterAsStringValueList ( parameters, 0, case_sensitive );
 		string unique_values = values->unique();
 
 		SetResult ( unique_values, results );
@@ -3415,9 +3409,7 @@ fmx::errcode BE_ValuesTrim ( short /* funcId */, const ExprEnv& /* environment *
 
 	try {
 
-		auto value_list = ParameterAsUTF8String ( parameters );
-
-		BEValueListStringUniquePtr values ( new BEValueList<string> ( value_list ) );
+		auto values = ParameterAsStringValueList ( parameters );
 		values->trim_values();
 		SetResult ( *values, results );
 
@@ -3570,11 +3562,9 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 
 		 } else {
 			 
-			 auto paths = ParameterAsUTF8String ( parameters, which );
-			 unique_ptr< BEValueList<string> > path_list ( new BEValueList<string> ( paths ) );
-			 auto file_list  = path_list->get_values();
+			 auto file_list = ParameterAsStringValueList ( parameters, which, true, false );
 
-			 for ( typename std::vector<string>::iterator it = file_list.begin() ; it != file_list.end(); ++it ) {
+			 for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
 				 
 				 boost::filesystem::path pdf_path ( *it );
 				 pdf_path.make_preferred();

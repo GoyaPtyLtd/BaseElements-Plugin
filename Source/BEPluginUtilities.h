@@ -71,7 +71,7 @@ const long ParameterAsLong ( const fmx::DataVect& parameters, const FMX_UInt32 w
 const long ParameterAsIndex ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const unsigned long default_value = 0 );
 const std::string ParameterAsUTF8String ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const std::string default_value = "" );
 const std::wstring ParameterAsWideString ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const std::wstring default_value = L"" );
-const BEValueListStringSharedPtr ParameterAsStringValueList ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
+const BEValueListStringSharedPtr ParameterAsStringValueList ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const bool is_case_sensitive = true, const bool retain_empty_values = true );
 const std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );

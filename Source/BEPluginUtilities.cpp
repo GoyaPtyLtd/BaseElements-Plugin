@@ -371,11 +371,11 @@ const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX
 } // ParameterAsUnicodeString
 
 
-const BEValueListStringSharedPtr ParameterAsStringValueList ( const DataVect& parameters, const FMX_UInt32 which )
+const BEValueListStringSharedPtr ParameterAsStringValueList ( const DataVect& parameters, const FMX_UInt32 which, const bool is_case_sensitive, const bool retain_empty_values )
 {
 	
 	auto text = ParameterAsUTF8String ( parameters, which );
-	BEValueListStringSharedPtr value_list ( new BEValueList<string> ( text ) );
+	BEValueListStringSharedPtr value_list ( new BEValueList<string> ( text, is_case_sensitive, retain_empty_values ) );
 	
 	return value_list;
 
@@ -443,7 +443,7 @@ const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& paramet
 {
 
 	std::string value_list = ParameterAsUTF8String ( parameters, which );
-	unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
+	BEValueListStringUniquePtr values ( new BEValueList<string> ( value_list ) );
 
 	return values->get_as_vector_double();
 
