@@ -1667,7 +1667,7 @@ fmx::errcode BE_ArrayFind ( short /* funcId */, const fmx::ExprEnv& /* environme
 			auto find_this = ParameterAsUTF8String ( parameters, 1 );
 			auto found = wanted->find ( find_this );
 			
-			SetResult ( found.get_as_filemaker_string(), results );
+			SetResult ( found, results );
 			
 		} catch ( out_of_range& /* e */ ) {
 			; // if we don't find it don't error
@@ -2171,7 +2171,7 @@ fmx::errcode BE_ContainerListTypes ( short /* funcId */, const fmx::ExprEnv& /* 
 		
 		const BinaryDataUniquePtr container ( parameters.AtAsBinaryData ( 0 ) );
 		fmx::int32 count = container->GetCount();
-		auto types ( new BEValueList<string> ( "" ) );
+		BEValueListStringUniquePtr types ( new BEValueList<string> ( "" ) );
 		
 		for ( fmx::int32 i = 0 ; i < count ; i++ ) {
 			
@@ -2180,7 +2180,7 @@ fmx::errcode BE_ContainerListTypes ( short /* funcId */, const fmx::ExprEnv& /* 
 			
 		} // for
 
-		SetResult ( types->get_as_filemaker_string(), results );
+		SetResult ( *types, results );
 		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -3394,8 +3394,7 @@ fmx::errcode BE_ValuesTimesDuplicated ( short /* funcId */, const ExprEnv& /* en
 
 		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
 		BEValueList<std::string> times_duplicated = values->times_duplicated ( numberOfTimes );
-		std::string found = times_duplicated.get_as_filemaker_string();
-		SetResult ( found, results );
+		SetResult ( times_duplicated, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -3418,10 +3417,9 @@ fmx::errcode BE_ValuesTrim ( short /* funcId */, const ExprEnv& /* environment *
 
 		auto value_list = ParameterAsUTF8String ( parameters );
 
-		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
+		BEValueListStringUniquePtr values ( new BEValueList<string> ( value_list ) );
 		values->trim_values();
-//		std::string found = values.get_as_filemaker_string();
-		SetResult ( values->get_as_filemaker_string(), results );
+		SetResult ( *values, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -4425,7 +4423,7 @@ fmx::errcode BE_RegularExpression ( short /* funcId */, const ExprEnv& /* enviro
 			matched_text->append ( regular_expression ( each_value, expression, options, replace_with, replace ) );
 		}
 
-        SetResult ( matched_text->get_as_filemaker_string(), results );
+        SetResult ( *matched_text, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
