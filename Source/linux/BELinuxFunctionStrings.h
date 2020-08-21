@@ -75,6 +75,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 175, "BE_Base64_URL_Encode_Deprecated ( data )" },
 	{ 176, "BE_ExportFieldContents ( field {; outputPath } )" },
 	{ 177, "BE_FileImport ( path {; compressBoolean } )" },
+	{ 178, "BE_FilePatternCount ( path ; searchText )" },
 	{ 180, "BE_HTTP_POST ( url ; parameters {; username ; password ; filename } )" },
 	{ 181, "BE_HTTP_ResponseCode" },
 	{ 182, "BE_HTTP_ResponseHeaders ( { header } )" },

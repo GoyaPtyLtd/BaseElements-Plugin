@@ -156,6 +156,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_StripInvalidUTF16CharactersFromXMLFile, BE_StripInvalidUTF16CharactersFromXMLFile, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_ExportFieldContents, BE_ExportFieldContents, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_FileImport, BE_FileImport, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_FilePatternCount, BE_FilePatternCount, 2, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_FileMove, BE_FileMove, 2 );
 	g_be_plugin->RegisterFunction ( kBE_FileCopy, BE_FileCopy, 2 );

@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
 
- Copyright 2010-2019 Goya. All rights reserved.
+ Copyright 2010-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -258,6 +258,12 @@ void SetResult ( const std::string& filename, const std::vector<unsigned char>& 
 }
 
 
+void SetResult ( const BEValueList<string>& value_list, fmx::Data& results )
+{
+	SetResult ( value_list.get_as_filemaker_string(), results );
+}
+
+
 
 #pragma mark -
 #pragma mark ParameterAs
@@ -363,6 +369,17 @@ const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX
 	return result;
 
 } // ParameterAsUnicodeString
+
+
+const BEValueListStringSharedPtr ParameterAsStringValueList ( const DataVect& parameters, const FMX_UInt32 which )
+{
+	
+	auto text = ParameterAsUTF8String ( parameters, which );
+	BEValueListStringSharedPtr value_list ( new BEValueList<string> ( text ) );
+	
+	return value_list;
+
+}
 
 
 const vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX_UInt32 which )

@@ -91,6 +91,7 @@
 #include <boost/foreach.hpp>
 #include <boost/tokenizer.hpp>
 
+#include <algorithm>
 #include <iconv.h>
 
 #include <podofo/podofo.h>
@@ -736,6 +737,87 @@ fmx::errcode BE_FileImport ( short /* funcId */, const ExprEnv& /* environment *
 	return MapError ( error );
 
 } // BE_FileImport
+
+
+fmx::errcode BE_FilePatternCount ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto file_list = ParameterAsStringValueList ( parameters );
+
+		auto search_strings = ParameterAsStringValueList ( parameters, 1 );
+		search_strings->to_lower(); // case insensitve
+
+		BEValueList<string> needle_counts;
+
+		// we need a 0 count for an empty search
+		if ( search_strings->not_empty() ) {
+
+			// we're searching for needles in a haystack
+			std::vector<string> haystack;
+					
+			try {
+				
+				// gather the hay
+
+				for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
+							
+					boost::filesystem::path text_file_path ( *it );
+					text_file_path.make_preferred();
+					auto hay = ReadFileAsUTF8 ( text_file_path );
+					std::transform ( hay.begin(), hay.end(), hay.begin(), ::tolower ); // case insensitive
+					haystack.push_back ( hay );
+
+				}
+
+			} catch ( boost::filesystem::ifstream::failure& /* e */ ) {
+				error = errno; // cannot read the file
+			} catch ( boost::filesystem::filesystem_error& e ) {
+				error = e.code().value();
+			}
+		
+			// search for needles
+					
+			for ( typename BEValueList<string>::iterator it = search_strings->begin() ; it != search_strings->end(); ++it ) {
+				
+				auto needle = *it;
+				auto found_count = 0;
+
+				for ( typename std::vector<string>::iterator jt = haystack.begin() ; jt != haystack.end(); ++jt ) {
+						
+					auto hay = *jt;
+						
+					auto found_at = hay.find ( needle, 0 );
+					while ( found_at != std::string::npos ) {
+						found_at = hay.find ( needle, found_at + needle.length() );
+						++found_count;
+					}
+
+				} // for... haystack...
+
+				needle_counts.append ( to_string ( found_count ) );
+
+			} // for... search_strings...
+
+		} else {
+			needle_counts.append ( "0" );
+		}
+
+		SetResult ( needle_counts, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_FilePatternCount
 
 
 fmx::errcode BE_FileMove ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )

@@ -154,6 +154,7 @@ enum functions {
 	kBE_Base64_URL_Encode_Deprecated = 175,
 	kBE_ExportFieldContents = 176,
 	kBE_FileImport = 177,
+	kBE_FilePatternCount = 178,
 	kBE_HTTP_POST = 180,
 	kBE_HTTP_ResponseCode = 181,
 	kBE_HTTP_ResponseHeaders = 182,
