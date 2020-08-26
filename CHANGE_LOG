@@ -5,11 +5,15 @@ Version 4.1.4
 August 21, 2020
 
 
+New Functions
+
+BE_FilePatternCount: a PatternCount that works with text files
+
+
 Changes
 
 BE_Encoding_Base64: Reinstated
 BE_Encoding_Hex: Reinstated
-BE_FilePatternCount: a PatternCount that works with text files
 BE_FileReadText: Added option to pull only some lines from a file
 BE_OAuthRequestAccessToken: Deprecated
 BE_DialogProgress: force immediate display on macOS
