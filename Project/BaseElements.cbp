@@ -8,7 +8,7 @@
 		<Build>
 			<Target title="Debug">
 				<Option platforms="Unix;" />
-				<Option output="~/Documents/CodeBlocks/BaseElements/Build/Debug/BaseElements.fmx" prefix_auto="0" extension_auto="0" />
+				<Option output="/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx" prefix_auto="0" extension_auto="0" />
 				<Option object_output="~/Documents/CodeBlocks/BaseElements/Build/obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="clang" />
@@ -19,7 +19,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="~/Documents/CodeBlocks/BaseElements/Build/Release/BaseElements.fmx" prefix_auto="0" extension_auto="0" />
+				<Option output="/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx" prefix_auto="0" extension_auto="0" />
 				<Option object_output="~/Documents/CodeBlocks/BaseElements/Build/obj/Release/" />
 				<Option type="3" />
 				<Option compiler="clang" />
