@@ -60,6 +60,7 @@
 			<Add library="../Libraries/linux/libjpeg.a" />
 			<Add library="../Libraries/linux/libmimetic.a" />
 			<Add library="../Libraries/linux/liboauth.a" />
+			<Add library="../Libraries/linux/libPocoJSON.a" />
 			<Add library="../Libraries/linux/libPocoZip.a" />
 			<Add library="../Libraries/linux/libturbojpeg.a" />
 			<Add library="../Libraries/linux/libxml2.a" />
