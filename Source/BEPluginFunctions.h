@@ -121,11 +121,6 @@ fmx::errcode BE_FileMakerSQL ( short funcId, const fmx::ExprEnv& environment, co
 fmx::errcode BE_JPEGRecompress( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_ConvertContainer ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_OAuthRequestAccessToken_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_XeroGenerateKeys_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-
-fmx::errcode BE_XeroSetTokens_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-
 fmx::errcode BE_SMTPServer ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_SMTPSend ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_SMTPAddAttachment ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
@@ -176,6 +171,11 @@ fmx::errcode BE_JSON_ArraySize ( short funcId, const fmx::ExprEnv& environment, 
 
 
 // Deprecated
+
+fmx::errcode BE_OAuthRequestAccessToken_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_XeroGenerateKeys_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+
+fmx::errcode BE_XeroSetTokens_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_WriteTextFileToContainer_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 
