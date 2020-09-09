@@ -46,8 +46,6 @@
 			<Add option="-Wl,-soname=BaseElements_Plugin_4.1.4" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="../Libraries/linux/libz.a" />
-			<Add library="../Libraries/linux/libssl.a" />
-			<Add library="../Libraries/linux/libcrypto.a" />
 			<Add library="/usr/lib64/libssh2.so.1" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
 			<Add library="../Libraries/linux/libboost_filesystem.a" />
@@ -70,6 +68,8 @@
 			<Add library="../Libraries/linux/libfreetype.a" />
 			<Add library="../Libraries/linux/libfontconfig.a" />
 			<Add library="../Libraries/linux/libpodofo.a" />
+			<Add library="/usr/lib64/libcrypto.so" />
+			<Add library="/usr/lib64/libssl.so" />
 			<Add directory="PlugInSDK/Libraries/Linux" />
 			<Add directory="../Libraries/linux" />
 		</Linker>
@@ -154,9 +154,6 @@
 		</Unit>
 		<Unit filename="../Source/linux/BELinuxFunctions.cpp" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>
