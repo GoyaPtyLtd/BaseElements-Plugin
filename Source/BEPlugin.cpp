@@ -261,11 +261,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 
-#if defined FMX_LINUX_TARGET
-	g_be_plugin->RegisterHiddenFunction ( kBE_HMAC_Deprecated, BE_NotImplemented, 2, 5 );
-#else
 	g_be_plugin->RegisterHiddenFunction ( kBE_HMAC_Deprecated, BE_HMAC_Deprecated, 2, 5 );
-#endif
 
 	g_be_plugin->RegisterFunction ( kBE_DebugInformation, BE_DebugInformation );
 
