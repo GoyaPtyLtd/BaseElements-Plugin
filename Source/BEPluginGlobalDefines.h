@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
  
- Copyright 2010-2019 Goya. All rights reserved.
+ Copyright 2010-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -154,6 +154,7 @@ enum functions {
 	kBE_Base64_URL_Encode_Deprecated = 175,
 	kBE_ExportFieldContents = 176,
 	kBE_FileImport = 177,
+	kBE_FilePatternCount = 178,
 	kBE_HTTP_POST = 180,
 	kBE_HTTP_ResponseCode = 181,
 	kBE_HTTP_ResponseHeaders = 182,
@@ -174,6 +175,7 @@ enum functions {
 	kBE_XMLParse = 211,
 	kBE_SplitBEFileNodes = 212,
 	kBE_XMLValidate = 213,
+	kBE_XML_Canonical = 214,
 	kBE_TimeCurrentMilliseconds = 220,
 	kBE_TimeUTCMilliseconds = 221,
 	kBE_TimeZoneOffset = 222,
@@ -192,11 +194,11 @@ enum functions {
 	kBE_JSON_Error_Description_Deprecated = 301,
 	kBE_JSON_ArraySize = 302,
 	kBE_JSON_Encode_Deprecated = 303,
-//	kBE_OAuth_RequestToken = 320,
-	kBE_OAuthRequestAccessToken = 321,
-//	kBE_OAuth_SetToken = 322,
-	kBE_XeroSetTokens = 330,
-	kBE_XeroGenerateKeys = 331,
+//	kBE_OAuth_RequestToken = 320, // Never Implemented
+	kBE_OAuthRequestAccessToken_Deprecated = 321, // Deprecated in 4.1.4
+//	kBE_OAuth_SetToken = 322, // Never Implemented
+	kBE_XeroSetTokens_Deprecated = 330, // Deprecated in 4.1.4
+	kBE_XeroGenerateKeys_Deprecated = 331, // Deprecated in 4.1.4
 	kBE_ValuesUnique = 350,
 	kBE_ValuesFilterOut = 351,
 	kBE_ValuesContainsDuplicates = 352,
@@ -271,6 +273,7 @@ enum errors {
 	kLowMemoryError = 7,
 	kRequestedDataIsMissingError = 10,
 	kNameIsNotValid = 11,
+	kNameAlreadyExists = 12,
 	kFileOrObjectIsInUse = 13,
 	kFileExistsError = 17,
 	kErrorParameterMissing = 102,
@@ -320,15 +323,13 @@ enum errors {
 	kCipherInvalidIvSize = 17020
 };
 
-
 enum {
 	kBE_NumericConstantOffset = 1000,
 	kBE_ButtonOffset = 1000,
 	kBE_MessageDigestAlgorithmOffset = 2000,
 	kBE_FileTypeOffset = 3000,
-	kBE_EncodingOffset = 4000
+	kBE_EncodingOffset = 4000,
 };
-
 
 enum file_type {
 	kBE_FileTypeAll = 0,
@@ -336,13 +337,15 @@ enum file_type {
 	kBE_FileTypeFolder = 2
 };
 
-
 enum data_type {
 	kBE_DataType_Not_Found = -1, 
 	kBE_DataType_String = 0,
 	kBE_DataType_Long = 1
 };
 
+enum input_output {
+    kBufferSize = 16 * 1024 // 16 * 1024 16384
+} ;
 
 enum timeout {
 	kBE_Never = -1,

@@ -8,7 +8,7 @@
 		<Build>
 			<Target title="Debug">
 				<Option platforms="Unix;" />
-				<Option output="~/Documents/CodeBlocks/BaseElements/Build/Debug/BaseElements.fmx" prefix_auto="0" extension_auto="0" />
+				<Option output="/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx" prefix_auto="0" extension_auto="0" />
 				<Option object_output="~/Documents/CodeBlocks/BaseElements/Build/obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="clang" />
@@ -19,7 +19,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="~/Documents/CodeBlocks/BaseElements/Build/Release/BaseElements.fmx" prefix_auto="0" extension_auto="0" />
+				<Option output="/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx" prefix_auto="0" extension_auto="0" />
 				<Option object_output="~/Documents/CodeBlocks/BaseElements/Build/obj/Release/" />
 				<Option type="3" />
 				<Option compiler="clang" />
@@ -43,11 +43,9 @@
 		</Compiler>
 		<Linker>
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
-			<Add option="-Wl,-soname=BaseElements_Plugin_4.1.2" />
+			<Add option="-Wl,-soname=BaseElements_Plugin_4.1.4" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="../Libraries/linux/libz.a" />
-			<Add library="../Libraries/linux/libssl.a" />
-			<Add library="../Libraries/linux/libcrypto.a" />
 			<Add library="/usr/lib64/libssh2.so.1" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
 			<Add library="../Libraries/linux/libboost_filesystem.a" />
@@ -60,6 +58,7 @@
 			<Add library="../Libraries/linux/libjpeg.a" />
 			<Add library="../Libraries/linux/libmimetic.a" />
 			<Add library="../Libraries/linux/liboauth.a" />
+			<Add library="../Libraries/linux/libPocoJSON.a" />
 			<Add library="../Libraries/linux/libPocoZip.a" />
 			<Add library="../Libraries/linux/libturbojpeg.a" />
 			<Add library="../Libraries/linux/libxml2.a" />
@@ -69,12 +68,14 @@
 			<Add library="../Libraries/linux/libfreetype.a" />
 			<Add library="../Libraries/linux/libfontconfig.a" />
 			<Add library="../Libraries/linux/libpodofo.a" />
+			<Add library="/usr/lib64/libcrypto.so" />
+			<Add library="/usr/lib64/libssl.so" />
 			<Add directory="PlugInSDK/Libraries/Linux" />
 			<Add directory="../Libraries/linux" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
-			<Add before="cp /home/mark/Documents/BaseElements-Plugin/Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
+			<Add before="cp /home/goya/Documents/BaseElements-Plugin/Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="../Headers/FMWrapper/FMXBinaryData.h">
@@ -153,9 +154,6 @@
 		</Unit>
 		<Unit filename="../Source/linux/BELinuxFunctions.cpp" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>

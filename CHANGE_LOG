@@ -1,4 +1,61 @@
 ########################################################################
+Version 4.1.4
+########################################################################
+
+September 9, 2020
+
+
+New Functions
+
+BE_FilePatternCount: a PatternCount that works with text files
+
+
+Changes
+
+BE_Encoding_Base64: Reinstated
+BE_Encoding_Hex: Reinstated
+BE_FileReadText: Added option to pull only some lines from a file
+BE_OAuthRequestAccessToken: Deprecated
+BE_DialogProgress: force immediate display on macOS
+BE_PDFAppend: appendPathOrContainer may now specify a value list of paths
+BE_XeroGenerateKeys: Deprecated
+BE_XeroSetTokens: Deprecated
+BE_XPath: ignore xml text encoding hint
+BE_XSLTApply: ignore xml text encoding hint
+
+Update to v19 of the FMX SDK
+
+
+########################################################################
+Version 4.1.3
+########################################################################
+
+May 3, 2020
+
+
+New Functions
+
+BE_XML_Canonical: create the canonized image of the XML input
+
+
+Changes
+
+BE_ExecuteSystemCommand: Do not crash when attempting to execute an empty command
+BE_ExecuteSystemCommand: MacOS, Linux and iOS enable multiple calls to shell like version 4.0.5
+BE_FileListFolder: Correctly handle file names containing Unicode Characters on Windows
+BE_Zip: don't crash when there's nothing to archive
+		return an error if more than one file with the same name is added to the archive
+		
+Update to v18 of the FMX SDK
+
+
+Breaking Change:
+
+BE_HTTP_SetCustomHeader: Setting a header with ( "HeaderName"; "") now sets the header to ""
+To remove the header call BE_HTTP_SetCustomHeader with ( "HeaderName" ) as before.
+
+
+########################################################################
 Version 4.1.2
 ########################################################################
 

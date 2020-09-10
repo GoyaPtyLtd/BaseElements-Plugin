@@ -1,18 +1,3 @@
-# Ignore anything in the Build, Headers & Libraries directories other than README files
-
-Build/*
-
-Headers/*
-!Headers/README
-
-# Libraries
-
-*.a
-*.dylib
-*.framework
-*.lib
-*.so
-
 # Ignore generated Visual Studio files
 
 Project/BaseElements.sdf
@@ -38,7 +23,6 @@ xcuserdata
 *.pyc
 *~.nib/
 
-Source/duktape*
 .com.apple.timemachine.supported
 Project/BaseElements.xcodeproj/xcuserdata/mark.xcuserdatad/xcschemes/xcschememanagement.plist
 Project/BaseElements.xcodeproj/project.xcworkspace/xcshareddata/BaseElements.xccheckout
@@ -46,7 +30,6 @@ Project/BaseElements.xcodeproj/xcuserdata/mark.xcuserdatad/xcschemes/xcschememan
 Project/BaseElements.vcxproj.filters
 Project/.vs/BaseElements/v14/.suo
 Project/BaseElements.opensdf
-Source/minizip/*
 Project/Extras/Recover.log
 Project/BaseElements.VC.opendb
 Project/BaseElements.VC.db
@@ -60,10 +43,15 @@ Project/._BaseElements.xcodeproj
 Resources/RCa05636
 Project/BaseElements.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 .dropbox
-Project/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution Files/BaseElements Plugin Tests.fmp12
-Project/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/*
 Project/Extras/BaseElementsIOSPluginTest
 Project/Extras/Import.log
 Project/Extras/build_libraries.rb
 Project/CodeSigning/GoyaPtyLtd.pfx
 Project/CodeSigning/Certificates - goya.p12
+
+Project/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution Files/BaseElements Plugin Tests.fmp12
+Project/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/*
+Project/Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Solution Files/BaseElements Plugin Tests.fmp12
+Project/Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Plug-Ins/*
+
+.env*

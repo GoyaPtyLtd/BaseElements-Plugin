@@ -138,7 +138,7 @@ void ResetXMLErrors ( void )
 {
 	xmlResetLastError();
 	g_last_xslt_error = kNoError;
-	g_last_xslt_error_text = "";
+	g_last_xslt_error_text.clear();
 }
 
 
@@ -163,9 +163,9 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 	// parse the stylesheet
 	std::string xslt = xslt_as_filemaker_text;
 	ConvertFileMakerEOLs ( xslt ); // otherwise all errors occur on line 1
-	int options = XML_PARSE_HUGE;
+	auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC;
 
-	xmlDocPtr xslt_doc = xmlReadDoc ( (xmlChar *) xslt.c_str(), NULL, NULL, options );
+	xmlDocPtr xslt_doc = xmlReadDoc ( (xmlChar *) xslt.c_str(), NULL, UTF8, options );
 	if ( xslt_doc ) {
 		
 		xsltStylesheetPtr stylesheet = xsltParseStylesheetDoc ( xslt_doc );
@@ -183,9 +183,9 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 				std::vector<char> utf8_data ( size );
 				auto bytesConverted = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, &utf8_data[0], (int)utf8_data.size(), NULL, NULL );
 				std::string utf8 ( utf8_data.begin(), utf8_data.end() );
-				xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), utf8.c_str(), NULL, options );
+				xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), utf8.c_str(), UTF8, options );
 #else
-				xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), xml_path.string().c_str(), NULL, options );
+				xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), xml_path.string().c_str(), UTF8, options );
 #endif
 
 			if ( xml_doc ) {
@@ -447,8 +447,8 @@ const std::string ApplyXPathExpression ( const std::string& xml, const std::stri
 	std::string result;
 	
 	// parse the xml
-	int options = XML_PARSE_HUGE;
-	xmlDocPtr doc = xmlReadDoc ( (xmlChar *)xml.c_str(), NULL, NULL, options );
+	auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC;
+	xmlDocPtr doc = xmlReadDoc ( (xmlChar *)xml.c_str(), NULL, UTF8, options );
 	if ( doc ) {
 		
 		xmlXPathContextPtr xpathCtx = xmlXPathNewContext ( doc );
@@ -479,7 +479,7 @@ const std::string ApplyXPathExpression ( const std::string& xml, const std::stri
 	
 	xmlErrorPtr xml_error = xmlGetLastError();
 	
-	if ( xml_error != NULL && g_last_xslt_error_text.empty() == 0 ) {
+	if ( xml_error != NULL ) {
 		g_last_xslt_error_text = xml_error->message;
 		result = ReportXSLTError ( NULL );
 	}

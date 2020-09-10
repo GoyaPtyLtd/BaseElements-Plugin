@@ -2,7 +2,7 @@
  BEXMLSchema.cpp
  BaseElements Plug-In
  
- Copyright (c) 2017-2019 Goya. All rights reserved.
+ Copyright (c) 2017-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -11,10 +11,13 @@
 
 
 #include "BEXMLSchema.h"
+#include "BEPluginException.h"
 #include "BEPluginGlobalDefines.h"
 
 #include <libxml/parser.h>
 #include <libxml/xmlschemas.h>
+
+#include <libxml/c14n.h>
 
 
 // globals for error reporting
@@ -53,7 +56,7 @@ const std::string validate_xml ( const std::string xml, const std::string schema
 {
 	g_xsd_errors.clear( );
 	
-	xmlInitMemory();	
+	xmlInitMemory();
 	xmlSubstituteEntitiesDefault ( 1 );
 	xmlLoadExtDtdDefaultValue = 1;
 	xmlLineNumbersDefault ( 1 );
@@ -100,6 +103,45 @@ const std::string validate_xml ( const std::string xml, const std::string schema
 	
 	return g_xsd_errors;
 
+}
+
+
+const std::string canonical_xml ( const std::string xml )
+{
+	
+	xmlInitMemory();
+    xmlSubstituteEntitiesDefault ( 1 );
+	xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+	xmlLineNumbersDefault ( 1 );
+	
+	const int options = XML_PARSE_HUGE;
+		
+	xmlDocPtr xml_document = xmlReadDoc ( (xmlChar *) xml.c_str(), NULL, NULL, options );
+	
+	std::string canonized_xml;
+	
+	if ( xml_document ) {
+						
+		xmlChar * canonical_xml_document = NULL;
+		auto result = xmlC14NDocDumpMemory ( xml_document, NULL, XML_C14N_1_1, NULL, 1, &canonical_xml_document );
+		xmlFreeDoc ( xml_document );
+		
+		if ( result > 0 ) {
+			canonized_xml = (char *) canonical_xml_document;
+			xmlFree ( canonical_xml_document );
+		} else {
+			throw BEPlugin_Exception ( result );
+		}
+		
+//	} else {
+//		throw BEPlugin_Exception ( result );
+	}
+
+	
+	xmlCleanupParser();
+	
+	return canonized_xml;
+		
 }
 
 

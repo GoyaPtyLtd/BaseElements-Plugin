@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2019 Goya. All rights reserved.
+ Copyright 2010-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -18,6 +18,7 @@
 #include <Poco/JSON/Array.h>
 #include <Poco/JSON/Parser.h>
 #include <Poco/JSON/Query.h>
+#include <Poco/Path.h>
 #include <Poco/RegularExpression.h>
 #include <Poco/String.h>
 
@@ -49,6 +50,7 @@
 
 #include "BECurl.h"
 #include "BECurlOption.h"
+#include "BECppUtilities.h"
 #include "BEDebugInformation.h"
 #include "BEFileMakerPlugin.h"
 #include "BEFileSystem.h"
@@ -81,14 +83,15 @@
 #include <numeric> // for inner_product
 #include <thread>
 
+#include <boost/algorithm/hex.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/date_time/c_local_time_adjustor.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/foreach.hpp>
 #include <boost/tokenizer.hpp>
-#include <boost/algorithm/hex.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/date_time/c_local_time_adjustor.hpp>
 
+#include <algorithm>
 #include <iconv.h>
 
 #include <podofo/podofo.h>
@@ -439,10 +442,20 @@ fmx::errcode BE_FileReadText ( short /* funcId */, const ExprEnv& /* environment
 	errcode error = NoError();
 
 	try {
-
-		auto file_contents = ParameterPathOrContainerAsUTF8 ( parameters );
-		SetResult ( file_contents, results );
-
+		long start = ParameterAsLong ( parameters, 1, 0) ;
+		if ( start < 0 ) {
+			start = 0 ;
+		}
+		long to = ParameterAsLong ( parameters, 2, 0 ) ;
+		if ( to < 0 ) {
+			to = 0 ;
+		}
+		std::string delimiter = ParameterAsUTF8String ( parameters, 3, "" ) ;
+		if ( delimiter.length() > 1 ) {
+			delimiter = delimiter.substr(0,1) ;
+		}
+		const std::string file_contents = ParameterPathOrContainerAsUTF8 ( parameters, 0, start, to, delimiter ) ;
+        SetResult ( file_contents, results ) ;
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
@@ -724,6 +737,87 @@ fmx::errcode BE_FileImport ( short /* funcId */, const ExprEnv& /* environment *
 	return MapError ( error );
 
 } // BE_FileImport
+
+
+fmx::errcode BE_FilePatternCount ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto file_list = ParameterAsStringValueList ( parameters );
+
+		auto search_strings = ParameterAsStringValueList ( parameters, 1 );
+		search_strings->to_lower(); // case insensitve
+
+		BEValueList<string> needle_counts;
+
+		// we need a 0 count for an empty search
+		if ( search_strings->not_empty() ) {
+
+			// we're searching for needles in a haystack
+			std::vector<string> haystack;
+					
+			try {
+				
+				// gather the hay
+
+				for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
+							
+					boost::filesystem::path text_file_path ( *it );
+					text_file_path.make_preferred();
+					auto hay = ReadFileAsUTF8 ( text_file_path );
+					std::transform ( hay.begin(), hay.end(), hay.begin(), ::tolower ); // case insensitive
+					haystack.push_back ( hay );
+
+				}
+
+			} catch ( boost::filesystem::ifstream::failure& /* e */ ) {
+				error = errno; // cannot read the file
+			} catch ( boost::filesystem::filesystem_error& e ) {
+				error = e.code().value();
+			}
+		
+			// search for needles
+					
+			for ( typename BEValueList<string>::iterator it = search_strings->begin() ; it != search_strings->end(); ++it ) {
+				
+				auto needle = *it;
+				auto found_count = 0;
+
+				for ( typename std::vector<string>::iterator jt = haystack.begin() ; jt != haystack.end(); ++jt ) {
+						
+					auto hay = *jt;
+						
+					auto found_at = hay.find ( needle, 0 );
+					while ( found_at != std::string::npos ) {
+						found_at = hay.find ( needle, found_at + needle.length() );
+						++found_count;
+					}
+
+				} // for... haystack...
+
+				needle_counts.append ( to_string ( found_count ) );
+
+			} // for... search_strings...
+
+		} else {
+			needle_counts.append ( "0" );
+		}
+
+		SetResult ( needle_counts, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_FilePatternCount
 
 
 fmx::errcode BE_FileMove ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -1232,6 +1326,34 @@ fmx::errcode BE_XMLValidate ( short /* funcId */, const ExprEnv& /* environment 
 
 
 
+fmx::errcode BE_XML_Canonical ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error =	NoError();
+	
+	try {
+		
+		auto xml = ParameterAsUTF8String ( parameters );
+		
+		auto canonized_xml = canonical_xml ( xml );
+		
+		SetResult ( canonized_xml, results );
+		
+	} catch ( BEXMLReaderInterface_Exception& e ) {
+		error = e.code();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+	
+	return MapError ( error );
+	
+} // BE_XML_Canonical
+
+
+
 #pragma mark -
 #pragma mark JSON
 #pragma mark -
@@ -1419,9 +1541,8 @@ fmx::errcode BE_ArraySetFromValueList ( short /* funcId */, const fmx::ExprEnv& 
 
 	try {
 
-		auto value_list = ParameterAsUTF8String ( parameters );
 		auto  retain_empty_values = ParameterAsBoolean ( parameters, 1, false ); // false -> backwards compatibility
-		BEValueListStringSharedPtr array ( new BEValueList<string> ( value_list, false, retain_empty_values ) );
+		BEValueListStringSharedPtr array = ParameterAsStringValueList ( parameters, 0, false, retain_empty_values );
 
 		arrays.push_back ( array );
 		const size_t size = arrays.size();
@@ -1545,7 +1666,7 @@ fmx::errcode BE_ArrayFind ( short /* funcId */, const fmx::ExprEnv& /* environme
 			auto find_this = ParameterAsUTF8String ( parameters, 1 );
 			auto found = wanted->find ( find_this );
 			
-			SetResult ( found.get_as_filemaker_string(), results );
+			SetResult ( found, results );
 			
 		} catch ( out_of_range& /* e */ ) {
 			; // if we don't find it don't error
@@ -1823,14 +1944,37 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 	errcode error = NoError();
 
 	try {
+		
+		// should there be multiple files with the same name... keep only the last one
+		auto values = ParameterAsStringValueList ( parameters );
 
-		auto files  = new const BEValueList<string> ( ParameterAsUTF8String ( parameters ) );
+		std::map<std::string, std::string> unique_file_names;
+
+		for ( typename BEValueList<string>::iterator it = values->begin() ; it != values->end(); ++it ) {
+			
+			boost::filesystem::path file_path ( *it );
+			auto file_name = boost::algorithm::to_lower_copy ( file_path.filename().string() );
+			auto inserted = unique_file_names.insert ( { file_name, file_path.string() } );
+
+			if ( ! inserted.second ) {
+				error = kNameAlreadyExists;
+				auto next = unique_file_names.erase ( inserted.first );
+				if ( next == unique_file_names.end() ) {
+					unique_file_names.insert ( { file_name, file_path.string() } ); // auto replaced =
+				}
+			}
+			
+		} // for...
+
+		BEValueListStringUniquePtr files ( new BEValueList<string> ( map_values ( unique_file_names ) ) );
 		auto output_directory = ParameterAsUTF8String ( parameters, 1 );
 
-		error = (fmx::errcode)Zip ( files, output_directory );
+		auto zip_error = (fmx::errcode)Zip ( files.get(), output_directory );
+		if ( kNoError != zip_error ) {
+			error = zip_error;
+		}
+		
 		SetResult ( error, results );
-
-		delete files;
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
@@ -2023,7 +2167,7 @@ fmx::errcode BE_ContainerListTypes ( short /* funcId */, const fmx::ExprEnv& /* 
 		
 		const BinaryDataUniquePtr container ( parameters.AtAsBinaryData ( 0 ) );
 		fmx::int32 count = container->GetCount();
-		auto types ( new BEValueList<string> ( "" ) );
+		BEValueListStringUniquePtr types ( new BEValueList<string> ( "" ) );
 		
 		for ( fmx::int32 i = 0 ; i < count ; i++ ) {
 			
@@ -2032,7 +2176,7 @@ fmx::errcode BE_ContainerListTypes ( short /* funcId */, const fmx::ExprEnv& /* 
 			
 		} // for
 
-		SetResult ( types->get_as_filemaker_string(), results );
+		SetResult ( *types, results );
 		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -2970,7 +3114,7 @@ fmx::errcode BE_SMTPAddAttachment ( short /* funcId */, const fmx::ExprEnv& /* e
 #pragma mark -
 
 
-fmx::errcode BE_OAuthRequestAccessToken ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_OAuthRequestAccessToken_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3030,15 +3174,15 @@ fmx::errcode BE_OAuthRequestAccessToken ( short /* funcId */, const ExprEnv& /* 
 
 	return MapError ( error );
 
-} // BE_OAuthRequestAccessToken
+} // BE_OAuthRequestAccessToken_Deprecated
 
 
 #pragma mark -
-#pragma mark Xero
+#pragma mark Xero (Deprecated)
 #pragma mark -
 
 
-fmx::errcode BE_XeroSetTokens ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XeroSetTokens_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3075,10 +3219,10 @@ fmx::errcode BE_XeroSetTokens ( short /* funcId */, const ExprEnv& /* environmen
 
 	return MapError ( error );
 
-} // BE_XeroSetTokens
+} // BE_XeroSetTokens_Deprecated
 
 
-fmx::errcode BE_XeroGenerateKeys ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XeroGenerateKeys_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3114,7 +3258,7 @@ fmx::errcode BE_XeroGenerateKeys ( short /* funcId */, const ExprEnv& /* environ
 
 	return MapError ( error );
 
-} // BE_XeroGenerateKeys
+} // BE_XeroGenerateKeys_Deprecated
 
 
 
@@ -3129,10 +3273,8 @@ fmx::errcode BE_ValuesUnique ( short /* funcId */, const ExprEnv& /* environment
 
 	try {
 
-		auto value_list = ParameterAsUTF8String ( parameters );
-		const bool case_sensitive = ParameterAsBoolean ( parameters, 1 );
-
-		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list, case_sensitive ) );
+		auto case_sensitive = ParameterAsBoolean ( parameters, 1 );
+		auto values = ParameterAsStringValueList ( parameters, 0, case_sensitive );
 		string unique_values = values->unique();
 
 		SetResult ( unique_values, results );
@@ -3246,8 +3388,7 @@ fmx::errcode BE_ValuesTimesDuplicated ( short /* funcId */, const ExprEnv& /* en
 
 		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
 		BEValueList<std::string> times_duplicated = values->times_duplicated ( numberOfTimes );
-		std::string found = times_duplicated.get_as_filemaker_string();
-		SetResult ( found, results );
+		SetResult ( times_duplicated, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -3268,12 +3409,9 @@ fmx::errcode BE_ValuesTrim ( short /* funcId */, const ExprEnv& /* environment *
 
 	try {
 
-		auto value_list = ParameterAsUTF8String ( parameters );
-
-		unique_ptr< BEValueList<string> > values ( new BEValueList<string> ( value_list ) );
+		auto values = ParameterAsStringValueList ( parameters );
 		values->trim_values();
-//		std::string found = values.get_as_filemaker_string();
-		SetResult ( values->get_as_filemaker_string(), results );
+		SetResult ( *values, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -3412,8 +3550,31 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 	try {
 
 		auto pdf_document = ParameterAsPDF ( parameters );
-		auto pdf_document_to_append = ParameterAsPDF ( parameters, 1 );
-		pdf_document->Append ( *pdf_document_to_append );
+		
+		std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
+		auto which = 1;
+		
+		 if ( BinaryDataAvailable ( parameters, which ) ) {
+			 
+			 auto pdf = ParameterAsVectorChar ( parameters, which );
+			 pdf_document_to_append->Load ( pdf.data(), (long)pdf.size() );
+			 pdf_document->Append ( *pdf_document_to_append );
+
+		 } else {
+			 
+			 auto file_list = ParameterAsStringValueList ( parameters, which, true, false );
+
+			 for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
+				 
+				 boost::filesystem::path pdf_path ( *it );
+				 pdf_path.make_preferred();
+				 pdf_document_to_append->Load ( pdf_path.c_str() );
+				 pdf_document->Append ( *pdf_document_to_append );
+
+			 } // for...
+			 
+		 }
+		
 		pdf_document_to_append.reset(); // make sure to close the file
 
 		// write out a temporary file
@@ -3881,6 +4042,14 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 		const long timeout = ParameterAsLong ( parameters, 1, kBE_Never );
 
 		SystemCommand command;
+        
+// Note: not implemented on iOS
+#if ( FMX_MAC_TARGET || FMX_LINUX_TARGET || FMX_IOS_TARGET )
+        SetResult ( command.run_with_popen( shell_command, timeout ), results );
+#endif
+        
+#if defined FMX_WIN_TARGET
+        
 		Poco::ActiveResult<string> result = command.execute ( shell_command );
 
 		switch ( timeout ) {
@@ -3906,6 +4075,7 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 		if ( result.available() ) {
 			SetResult ( result.data(), results );
 		}
+#endif
 		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -4243,7 +4413,7 @@ fmx::errcode BE_RegularExpression ( short /* funcId */, const ExprEnv& /* enviro
 			matched_text->append ( regular_expression ( each_value, expression, options, replace_with, replace ) );
 		}
 
-        SetResult ( matched_text->get_as_filemaker_string(), results );
+        SetResult ( *matched_text, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();

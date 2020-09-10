@@ -2,7 +2,7 @@
 macOS
 =======================================================================
 
-On macOS the plugin is built using macOS 10.14.4 and Xcode 10.2.
+On macOS the plugin is built using macOS 10.14.4 and Xcode 11.4.
 Execute the following command to make sure that the Xcode Command Line Tools are installed.
 
 	xcode-select --install

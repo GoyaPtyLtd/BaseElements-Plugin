@@ -19,6 +19,17 @@
 
 using namespace std;
 
+/*
+  resolve issue openssl with simulator build
+ 
+  Undefined symbols for architecture x86_64: "_OPENSSL_ia32cap_P",
+ 
+  https://stackoverflow.com/a/59674427/162358
+ 
+  https://boringssl.googlesource.com/boringssl/+/517073cd4b/crypto/cpu-intel.c#76
+ 
+ */
+uint32_t OPENSSL_ia32cap_P[4] = { 0 };
 
 const vector<unsigned char> HexOrContainer ( const fmx::DataVect& parameters, const fmx::uint32 which )
 {

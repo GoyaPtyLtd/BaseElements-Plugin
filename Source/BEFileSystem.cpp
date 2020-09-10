@@ -2,7 +2,7 @@
  BEFileSystem.cpp
  BaseElements Plug-In
 
- Copyright 2011-2018 Goya. All rights reserved.
+ Copyright 2011-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -15,6 +15,7 @@
 
 #include <boost/filesystem/fstream.hpp>
 #include <Poco/File.h>
+#include <Poco/UnicodeConverter.h>
 #include <sys/stat.h>
 
 
@@ -75,7 +76,19 @@ BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem
 				it.no_push(); // don't recurse into sub directories.
 			}
 
-			Poco::File this_path(it->path().string());
+
+#ifdef FMX_WIN_TARGET
+
+			std::string utf8_path;
+			Poco::UnicodeConverter::convert ( it->path().wstring(), utf8_path );
+			Poco::File this_path ( utf8_path );
+
+#else
+
+			Poco::File this_path ( it->path().string() );
+
+#endif
+
 			auto visible = !this_path.isHidden();
 
 			if (

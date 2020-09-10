@@ -2,7 +2,7 @@
  BEMessageDigest.cpp
  BaseElements Plug-In
  
- Copyright 2011-2018 Goya. All rights reserved.
+ Copyright 2011-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -112,7 +112,9 @@ string message_digest ( const string message, const unsigned long algorithm, con
 {
 	EVP_MD type = message_digest_algorithm ( algorithm );
 	EVP_MD_CTX context;
-	
+	EVP_MD_CTX_init ( &context );
+
+
 	EVP_DigestInit ( &context, &type );
 	EVP_DigestUpdate ( &context, message.data(), message.size() );
 	

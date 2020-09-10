@@ -2,7 +2,7 @@
  BEValueList.h
  BaseElements Plug-In
  
- Copyright 2013-2018 Goya. All rights reserved.
+ Copyright 2013-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -26,10 +26,6 @@
 
 #include <boost/bind.hpp>
 #include <boost/algorithm/string.hpp>
-
-
-//template <typename T>
-//bool numeric_sort ( const T i, const T j );
 
 
 template<typename T>
@@ -90,7 +86,8 @@ public:
 	BEValueList<T> times_duplicated ( const long numberOfDuplicates ) const;
 	T sort ( const bool ascending = true, const bool numeric = false ) const;
 	void remove_prefix ( const T& prefix );
-	
+	void to_lower ( void );
+
 	std::vector<T> get_values ( void ) const { return values; }
 	T get_as_comma_separated ( void ) const;
 	T get_as_filemaker_string ( void ) const;
@@ -99,6 +96,16 @@ public:
 	BEValueList<T> apply_regular_expression ( const T expression, const std::string options, const T replace_with, const bool replace = false ) const;
 
 	void trim_values ( );
+	
+	
+    typedef typename std::vector<T> be_value_list_type;
+    typedef typename be_value_list_type::iterator iterator;
+    typedef typename be_value_list_type::const_iterator const_iterator;
+
+	inline iterator begin() noexcept { return values.begin(); }
+    inline const_iterator cbegin() const noexcept { return values.cbegin(); }
+    inline iterator end() noexcept { return values.end(); }
+    inline const_iterator cend() const noexcept { return values.cend(); }
 
 protected:
 	
@@ -421,6 +428,17 @@ void BEValueList<T>::remove_prefix ( const T& prefix )
 	}
 	
 } // remove_prefix
+
+
+template <typename T>
+void BEValueList<T>::to_lower ( void )
+{
+	
+	for ( typename std::vector<T>::iterator it = values.begin() ; it != values.end(); ++it ) {
+		std::transform ( it->begin(), it->end(), it->begin(), ::tolower );
+	}
+	
+} // to_lower
 
 
 template <typename T>
