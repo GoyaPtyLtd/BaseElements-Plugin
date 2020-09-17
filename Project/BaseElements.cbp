@@ -43,7 +43,7 @@
 		</Compiler>
 		<Linker>
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
-			<Add option="-Wl,-soname=BaseElements_Plugin_4.1.4" />
+			<Add option="-Wl,-soname=BaseElements_Plugin_4.2.0" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="../Libraries/linux/libz.a" />
 			<Add library="/usr/lib64/libssh2.so.1" />
