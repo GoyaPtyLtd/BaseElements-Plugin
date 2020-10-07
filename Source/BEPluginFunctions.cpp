@@ -4263,35 +4263,6 @@ fmx::errcode BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environmen
 
 
 
-fmx::errcode BE_HMAC_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto message = ParameterAsUTF8String ( parameters );
-		auto key = ParameterAsUTF8String ( parameters, 1 );
-		const unsigned long algorithm = ParameterAsLong ( parameters, 2, kBE_MessageDigestAlgorithm_SHA1 );
-		const unsigned long output_type = ParameterAsLong ( parameters, 3, kBE_Encoding_Hex );
-		const unsigned long input_type = ParameterAsLong ( parameters, 4, kBE_Encoding_None );
-
-		string hmac = HMAC ( message, algorithm, output_type, key, input_type );
-
-		SetResult ( hmac, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_HMAC_Deprecated
-
-
 fmx::errcode BE_JPEGRecompress( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();

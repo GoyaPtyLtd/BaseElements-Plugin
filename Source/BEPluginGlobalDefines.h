@@ -232,7 +232,7 @@ enum functions {
 	kBE_SignatureVerifyRSA = 503,
 	kBE_CipherEncrypt = 504,
 	kBE_CipherDecrypt = 505,
-	kBE_HMAC_Deprecated = 550,
+//	kBE_HMAC_Deprecated = 550,, // removed in version 4.2
 //	kBE_Encoding_TextToHex = 570, // removed
 //	kBE_Encoding_HexToText = 571, // removed
 	kBE_EvaluateJavaScript = 600,

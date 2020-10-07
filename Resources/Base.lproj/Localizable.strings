@@ -119,7 +119,6 @@
 "503" = "BE_SignatureVerifyRSA ( data ; publicKey ; signature {; algorithm } )|Signature RSA Verify|Verify singature using publicKey.";
 "504" = "BE_CipherEncrypt ( cipher ; data ; key ; iv {; padding ; fileNameWithExtension } )|Cipher Encrypt|Encrypt data using cipher.";
 "505" = "BE_CipherDecrypt ( cipher ; encryptedData ; key ; iv {; padding ; fileNameWithExtension } )|Cipher Decrypt|Decrypt encryptedData using cipher.";
-"550" = "BE_HMAC_Deprecated ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )||Deprecated.  Use the FileMaker 16 function CryptAuthCode(data;algorithm;key) instead.";
 "600" = "BE_EvaluateJavaScript ( javaScript )||BaseElements Internal : function not yet documented.";
 "650" = "BE_ArraySetFromValueList ( valueList {; retainEmptyBoolean } )|Array Set ValueList|Stores the ValueList as an array within the plugin memory space and returns an index number that you can use to reference the array via memory.";
 "651" = "BE_ArrayGetSize ( array )|Array Size Get|Returns the size in number of elements in a stored array.  Technically equivalent to ValueCount for the list before it was stored as an array.";

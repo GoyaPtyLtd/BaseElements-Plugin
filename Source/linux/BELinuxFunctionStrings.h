@@ -140,7 +140,6 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 503, "BE_SignatureVerifyRSA ( data ; publicKey ; signature {; algorithm } )" },
 	{ 504, "BE_CipherEncrypt ( cipher ; data ; key ; iv {; padding ; fileNameWithExtension } )" },
 	{ 505, "BE_CipherDecrypt ( cipher ; encryptedData ; key ; iv {; padding ; fileNameWithExtension } )" },
-	{ 550, "BE_HMAC_Deprecated ( text ; key {; algorithm ; outputEncoding ; inputEncoding } )" },
 	{ 600, "BE_EvaluateJavaScript ( javaScript )" },
 	{ 650, "BE_ArraySetFromValueList ( valueList {; retainEmptyBoolean } )" },
 	{ 651, "BE_ArrayGetSize ( array )" },

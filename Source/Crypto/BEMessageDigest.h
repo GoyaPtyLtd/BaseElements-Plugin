@@ -2,7 +2,7 @@
  BEMessageDigest.h
  BaseElements Plug-In
  
- Copyright 2011-2015 Goya. All rights reserved.
+ Copyright 2011-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -44,7 +44,6 @@ enum message_digest_error {
 
 
 std::string message_digest ( const std::string message, const unsigned long algorithm = kBE_MessageDigestAlgorithm_SHA256, const unsigned long output_encoding = kBE_Encoding_Hex );
-std::string HMAC ( const std::string message, const unsigned long algorithm = kBE_MessageDigestAlgorithm_SHA1, const unsigned long output_encoding = kBE_Encoding_Hex, const std::string key = "", const unsigned long input_encoding = kBE_Encoding_None );
 
 
 #endif // BEMESSAGEDIGEST_H

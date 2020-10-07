@@ -17,7 +17,6 @@
 #include <sys/types.h>
 
 #include <openssl/engine.h>
-#include <openssl/hmac.h>
 #include <openssl/sha.h>
 
 #include <vector>
@@ -127,77 +126,4 @@ string message_digest ( const string message, const unsigned long algorithm, con
 	return digest;
 	
 } // message_digest
-
-
-string HMAC ( const string message, const unsigned long algorithm, const unsigned long output_encoding, const string key, const unsigned long input_encoding )
-{
-	ENGINE_load_builtin_engines();
-	ENGINE_register_all_complete();
-
-	HMAC_CTX hmac_context;
-	HMAC_CTX_init ( &hmac_context );
-
-	EVP_MD type = message_digest_algorithm ( algorithm );
-
-	if ( input_encoding == kBE_Encoding_Base64 ) {
-
-        try {
-
-            const std::vector<char> decoded_key = Base64_Decode ( key );
-            HMAC_Init_ex ( &hmac_context, &decoded_key[0], (int)decoded_key.size(), &type, NULL );
-
-		} catch ( std::exception& /* e */ ) {
-			throw BEPlugin_Exception ( kMessageDigestDecodeKeyError );
-		}
-
-
-		try {
-			
-			const std::vector<char> decoded_message = Base64_Decode ( message );
-			HMAC_Update ( &hmac_context, (const unsigned char *)&decoded_message[0], decoded_message.size() );
-
-		} catch ( std::exception& /* e */ ) {
-			throw BEPlugin_Exception ( kMessageDigestDecodeMessageError );
-		}
-
-	} else if ( input_encoding == kBE_Encoding_Hex ) {
-
-		try {
-
-			std::vector<char> decoded_key;
-			boost::algorithm::unhex ( key, std::back_inserter ( decoded_key ) );
-			HMAC_Init_ex ( &hmac_context, &decoded_key[0], (int)decoded_key.size(), &type, NULL );
-
-		} catch ( std::exception& /* e */ ) {
-			throw BEPlugin_Exception ( kMessageDigestDecodeKeyError );
-		}
-
-		try {
-
-			std::vector<char> decoded_message;
-			boost::algorithm::unhex ( message, std::back_inserter ( decoded_message ) );
-			HMAC_Update ( &hmac_context, (const unsigned char *)&decoded_message[0], decoded_message.size() );
-
-		} catch ( std::exception& /* e */ ) {
-			throw BEPlugin_Exception ( kMessageDigestDecodeMessageError );
-		}
-
-	} else {
-
-		HMAC_Init_ex ( &hmac_context, key.data(), (int)key.size(), &type, NULL );
-		HMAC_Update ( &hmac_context, (const unsigned char *)message.data(), message.size() );
-
-	}
-
-	unsigned char hmac [ HMAC_MAX_MD_CBLOCK ];
-	unsigned int hmac_length;
-	HMAC_Final ( &hmac_context, hmac, &hmac_length );
-
-	HMAC_CTX_cleanup ( &hmac_context );
-
-	string digest = encode_digest ( hmac, hmac_length, output_encoding );
-
-	return digest;
-	
-} // HMAC
 
