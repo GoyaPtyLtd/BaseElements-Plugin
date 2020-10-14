@@ -1065,7 +1065,7 @@ double DataAsDouble ( const Data& data )
 #pragma mark FMX
 #pragma mark -
 
-errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Data& parameter, const ExprEnv& environment )
+errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Data& parameter, const FMX_ScriptControl script_control, const ExprEnv& environment )
 {
 	errcode error = kNoError;
 
@@ -1086,8 +1086,23 @@ errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Da
 			database->SetText ( name->GetAsText() );
 
 		}
+		
+		// if the action is invalid we pause
+		auto script_control_action = script_control;
+		switch ( script_control ) {
+				
+			case kFMXT_Halt:
+			case kFMXT_Exit:
+			case kFMXT_Resume:
+			case kFMXT_Pause:
+				break;
+				
+			default:
+				script_control_action = kFMXT_Pause;
+				
+		}
 
-		error = FMX_StartScript ( &(*database), &script_name, kFMXT_Pause, &parameter );
+		error = FMX_StartScript ( &(*database), &script_name, script_control_action, &parameter );
 
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;

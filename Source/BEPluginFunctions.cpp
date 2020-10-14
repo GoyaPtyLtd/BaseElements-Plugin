@@ -4047,7 +4047,7 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 #if ( FMX_MAC_TARGET || FMX_LINUX_TARGET || FMX_IOS_TARGET )
         SetResult ( command.run_with_popen( shell_command, timeout ), results );
 #endif
-        
+
 #if defined FMX_WIN_TARGET
         
 		Poco::ActiveResult<string> result = command.execute ( shell_command );
@@ -4075,8 +4075,9 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 		if ( result.available() ) {
 			SetResult ( result.data(), results );
 		}
+
 #endif
-		
+
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -4169,7 +4170,9 @@ fmx::errcode BE_ScriptExecute ( short /* funcId */, const ExprEnv& environment, 
 
 		}
 
-		error = ExecuteScript ( *script_name, *file_name, *parameter, environment );
+		auto script_control = ParameterAsLong ( parameters, 3, kFMXT_Pause );
+		
+		error = ExecuteScript ( *script_name, *file_name, *parameter, script_control, environment );
 
 		SetResult ( error, results );
 
