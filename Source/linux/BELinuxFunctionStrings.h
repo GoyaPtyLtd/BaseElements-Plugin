@@ -161,7 +161,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 1001, "BE_OKButton" },
 	{ 1002, "BE_CancelButton" },
 	{ 1003, "BE_AlternateButton" },
-	{ 1120, "BE_ExecuteSystemCommand ( command { ; timeout } )" },
+	{ 1120, "BE_ExecuteSystemCommand ( command { ; timeout ; executeUsingShell } )" },
 	{ 2001, "BE_MessageDigestAlgorithm_MD5" },
 	{ 2002, "BE_MessageDigestAlgorithm_SHA256" },
 	{ 2004, "BE_MessageDigestAlgorithm_MDC2" },

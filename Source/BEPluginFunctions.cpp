@@ -4038,29 +4038,20 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 
 	try {
 
-		auto shell_command = ParameterAsUTF8String ( parameters );
-		const long timeout = ParameterAsLong ( parameters, 1, kBE_Never );
+		SystemCommand::system_command command_to_execute;
+
+		command_to_execute.command_text = ParameterAsUTF8String ( parameters );
+		auto timeout = ParameterAsLong ( parameters, 1, kBE_Never );
+		command_to_execute.execute_using_shell = ParameterAsBoolean ( parameters, 2, true );
 
 		SystemCommand command;
-        
-// Note: not implemented on iOS
-#if ( FMX_MAC_TARGET || FMX_LINUX_TARGET || FMX_IOS_TARGET )
-        SetResult ( command.run_with_popen( shell_command, timeout ), results );
-#endif
-
-#if defined FMX_WIN_TARGET
-        
-		Poco::ActiveResult<string> result = command.execute ( shell_command );
+		auto result = command.execute ( command_to_execute );
 
 		switch ( timeout ) {
 				
 			case kBE_Never:
 				result.wait ( );
 				break;
-				
-			case kBE_Immediate:
-				error = kCommandTimeout;
-				// fall through
 				
 			default:
 				
@@ -4075,8 +4066,6 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 		if ( result.available() ) {
 			SetResult ( result.data(), results );
 		}
-
-#endif
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
