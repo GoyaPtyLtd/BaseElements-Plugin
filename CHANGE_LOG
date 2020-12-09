@@ -2,7 +2,7 @@
 Version 4.2b1
 ########################################################################
 
-November 25, 2020
+December 9, 2020
 
 
 New Functions
@@ -17,6 +17,8 @@ Changes
 
 BE_ExecuteSystemCommand: executeUsingShell parameter added
 BE_ScriptExecute: scriptControl Parameter added
+
+Freetype library updated from 2.7 to 2.10.4
 
 
 ########################################################################

@@ -300,7 +300,7 @@ Copy the libraries libPocoFoundation.a, libPocoJSON.a & libPocoZip.a from build/
 
 
 =======================================================================
-freetype - 2.7
+freetype - 2.10.4
 =======================================================================
 
 Download freetype from
@@ -309,7 +309,7 @@ Download freetype from
 	
 and expand it into a directory on the Desktop.
 
-	cd freetype-2.7
+	cd freetype-2.10.4
 	CFLAGS="-fPIC" ./configure --disable-shared --prefix=build
 	make install
 

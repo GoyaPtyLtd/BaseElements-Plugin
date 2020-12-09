@@ -431,7 +431,7 @@ Copy PocoFoundationmt.lib/PocoFoundationmtd.lib, libPocoJSON.a/libPocoJSONd.a & 
 
 
 =======================================================================
-freetype - 2.7
+freetype - 2.10.4
 =======================================================================
 
 Download freetype from
@@ -444,14 +444,9 @@ Open the project file at
 
 	builds/windows/vc2010
 	
-and set the following Configuration Properties:
+and build the x64 Release Static configuration.
 
-	Project Defaults -> Character Set == Use Unicode Character Set
-	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
-
-and build the x64 Release configuration.
-
-then copy objs/vc2010/x64/freetype27.lib to Libraries/Win64 and rename include to freetype2 and copy to Headers.
+then copy objs/x64/Release Static/freetype.lib to Libraries/Win64 and rename include to freetype2 and copy to Headers.
 
 
 =======================================================================

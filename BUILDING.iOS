@@ -259,7 +259,7 @@ If necessary, copy the output/<platform>/libxslt & libexslt directories to Heade
 
 
 =======================================================================
-freetype - 2.7
+freetype - 2.10.4
 =======================================================================
 
 Download freetype from
@@ -268,9 +268,20 @@ Download freetype from
 	
 Copy the compile_for_ios.sh to the distribution directory and
 
-	cd freetype-2.7
-	sh ./compile_for_ios.sh
+	cd freetype-2.10.4
+
+	./configure --host="aarch64-apple-darwin" --enable-static=yes --enable-shared=no
+	make clean
+	make
+	cp objs/.libs/libfreetype.a "build/libfreetype-arm64.a"
 	
+	./configure --disable-shared --enable-static --host="x86_64-apple-darwin"
+	make clean
+	make
+	cp objs/.libs/libfreetype.a "build/libfreetype-x86_64.a"
+
+	lipo -create "build/libfreetype-arm64.a" "build/libfreetype-x86_64.a" -output "build/libfreetype.a"
+
 If necessary, copy the output/<platform>/freetype2 directory to Headers.
 
 

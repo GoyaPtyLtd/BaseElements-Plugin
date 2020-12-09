@@ -280,7 +280,7 @@ Copy the header and library files.
 
 
 =======================================================================
-freetype - 2.7
+freetype - 2.10.4
 =======================================================================
 
 Download freetype from
@@ -289,8 +289,8 @@ Download freetype from
 
 and extract the archive. Then
 
-	cd freetype-2.7
-	CFLAGS="-mmacosx-version-min=10.7" ./configure --disable-shared --with-png=no --with-bzip2=no --with-harfbuzz=no --with-png=no --with-zlib=no --prefix="$(pwd)/build"
+	cd freetype-2.10.4
+	CFLAGS="-mmacosx-version-min=10.12" ./configure --disable-shared --with-png=no --with-bzip2=no --with-harfbuzz=no --with-png=no --with-zlib=no --prefix="$(pwd)/build"
 	make install
 
 Copy the header and library files.
