@@ -2,7 +2,7 @@
 Version 4.2b1
 ########################################################################
 
-December 9, 2020
+January 5, 2021
 
 
 New Functions
@@ -15,6 +15,7 @@ BE_HMAC_Deprecated
 
 Changes
 
+BE_ConvertContainer: convert images types from container files natively
 BE_ExecuteSystemCommand: executeUsingShell parameter added
 BE_ScriptExecute: scriptControl Parameter added
 

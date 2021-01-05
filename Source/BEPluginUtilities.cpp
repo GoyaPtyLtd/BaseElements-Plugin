@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
 
- Copyright 2010-2020 Goya. All rights reserved.
+ Copyright 2010-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -177,38 +177,44 @@ void SetResult ( const std::string& filename, const vector<unsigned char>& data,
 
 void SetResult ( const std::string& filename, const vector<char>& data, const std::string& type, const short width, const short height, Data& results )
 {
-	bool as_binary = !filename.empty();
+	auto as_binary = !filename.empty();
 
 	vector<char> output = data;
-
+	
 	BEQuadChar data_type ( type );
-	bool compress = data_type.is_zlib();
+	auto compress = data_type.is_zlib();
+	auto is_file = data_type.is_file();
 
 	if ( as_binary ) {	// if a file name is supplied send back a file
 
-		BinaryDataUniquePtr resultBinary;
 		TextUniquePtr file;
 		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
-		resultBinary->AddFNAMData ( *file ); // error =
 
-		//          { "snd " }
+		if ( !data_type.is_defined_type() || compress || is_file ) {
+			
+			BinaryDataUniquePtr resultBinary;
+			resultBinary->AddFNAMData ( *file ); // error =
 
-		if ( data_type.is_image() && (width != kErrorUnknown && height != kErrorUnknown ) ) {
-			resultBinary->AddSIZEData ( width, height ); // error =
-		}
+			if ( compress ) {
+				output = CompressContainerStream ( data );
+			}
 
-		if ( compress ) {
-			output = CompressContainerStream ( data );
-		}
+			if ( !data.empty() ) {
+				resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)output.data() ); // error =
+			} else {
+				void * empty_file = NULL;
+				resultBinary->Add ( *(data_type.get_type()), 0, empty_file ); // error =
+			}
 
-		if ( !data.empty() ) {
-			resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)output.data() ); // error =
+			results.SetBinaryData ( *resultBinary, true );
+
 		} else {
-			void * empty_file = NULL;
-			resultBinary->Add ( *(data_type.get_type()), 0, empty_file ); // error =
+			
+			BinaryDataUniquePtr resultBinary ( *file, (FMX_UInt32)output.size(), (void *)output.data() );
+			results.SetBinaryData ( *resultBinary, true );
+
 		}
 
-		results.SetBinaryData ( *resultBinary, true );
 
 	} else { // otherwise try sending back text
 

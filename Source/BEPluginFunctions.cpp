@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2020 Goya. All rights reserved.
+ Copyright 2010-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -4322,8 +4322,8 @@ fmx::errcode BE_ConvertContainer ( short /* funcId */, const ExprEnv& /* environ
 
 			auto type = ParameterAsUTF8String ( parameters, 1, FILE_CONTAINER_TYPE );
 
-			const unsigned long width = ParameterAsLong ( parameters, 2, kErrorUnknown );
-			const unsigned long height = ParameterAsLong ( parameters, 3, kErrorUnknown );
+			auto width = ParameterAsLong ( parameters, 2, kErrorUnknown );
+			auto height = ParameterAsLong ( parameters, 3, kErrorUnknown );
 
 			SetResult ( filename, container_data, type, (const short)width, (const short)height, results );
 

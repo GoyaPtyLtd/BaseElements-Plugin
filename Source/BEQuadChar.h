@@ -2,7 +2,7 @@
  BEQuadChar.h
  BaseElements Plug-In
 
- Copyright 2015-2019 Goya. All rights reserved.
+ Copyright 2015-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -21,14 +21,16 @@
 
 
 #define MAIN_CONTAINER_TYPE "MAIN"
+
 #define FILE_CONTAINER_TYPE "FILE"
 #define COMPRESSED_CONTAINER_TYPE "ZLIB"
+#define FORK_CONTAINER_TYPE "FORK"
 
-#define SOUND_CONTAINER_TYPE "snd "
 #define DPI_CONTAINER_TYPE "DPI_"
 #define FILENAME_CONTAINER_TYPE "FNAM"
 #define SIZE_CONTAINER_TYPE "SIZE"
-#define FORK_CONTAINER_TYPE "FORK"
+
+#define SOUND_CONTAINER_TYPE "snd "
 
 #define JPEG_CONTAINER_TYPE "JPEG"
 #define GIF_CONTAINER_TYPE "GIFf"
@@ -54,7 +56,10 @@ class BEQuadChar {
 		const bool is_jpeg ( ) const;
 		const bool is_fork ( ) const;
 		const bool is_image ( ) const;
+		const bool is_media ( ) const;
+		const bool is_container_attribute ( ) const;
 		const bool is_image_attribute ( ) const;
+		const bool is_defined_type ( ) const;
 
 		fmx::QuadCharUniquePtr get_type ( ) const;
 		const std::string as_string ( ) const;
