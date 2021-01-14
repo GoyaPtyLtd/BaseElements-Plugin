@@ -358,14 +358,14 @@ into the Libraries\win64 directory.
 
 
 =======================================================================
-duktape - 2.3.0
+duktape - 2.6.0
 =======================================================================
 
 Download the source from
 
 	http://duktape.org/
 
-and extract the archive to the desktop and copy the src directory to the Source directory and rename it to duktape.
+and extract the archive to the desktop and copy the src directory to the Source directory and rename it to tape.
 
 
 =======================================================================

@@ -184,7 +184,7 @@ Copy the header and library files.
 
 
 =======================================================================
-duktape - 2.3.0
+duktape - 2.6.0
 =======================================================================
 
 Download the source from
@@ -193,7 +193,7 @@ Download the source from
 
 and extract the archive and copy and rename the src directory.
 
-	cd duktape-2.3.0
+	cd duktape-2.6.0
 	cp -R src "${SRCROOT}/Source/duktape"
 
 
@@ -300,7 +300,7 @@ Copy the header and library files.
 
 
 =======================================================================
-fontconfig - 2.12.1
+fontconfig - 2.13.1
 =======================================================================
 
 Download fontconfig from
@@ -309,7 +309,7 @@ Download fontconfig from
 
 and extract the archive. Then
 
-	cd fontconfig-2.12.1
+	cd fontconfig-2.13.1
 	CFLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" ./configure --disable-shared --prefix="$(pwd)/build" FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2" FREETYPE_LIBS="-L${SRCROOT}/Libraries/macOS -lfreetype" LDFLAGS="-L${SRCROOT}/Libraries/macOS"
 	make install
 

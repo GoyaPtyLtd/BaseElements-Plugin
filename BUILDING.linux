@@ -12,6 +12,9 @@ and place the FMWrapper directory inside the SDK's Headers directory in the Head
 
 The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries.
 
+In this guide, ${SRCROOT} is the path to the project root (i.e. BaseElements-Plugin) directory.
+
+
 =======================================================================
 Boost - 1.70_0
 =======================================================================
@@ -254,7 +257,7 @@ into the Libraries/linux directory.
 
 
 =======================================================================
-duktape - 2.3.0
+duktape - 2.6.0
 =======================================================================
 
 Download the source from
@@ -310,14 +313,14 @@ Download freetype from
 and expand it into a directory on the Desktop.
 
 	cd freetype-2.10.4
-	CFLAGS="-fPIC" ./configure --disable-shared --prefix=build
+	CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)build
 	make install
 
 then copy build/lib/libfreetype.a to Libraries/linux and build/include/freetype2 to Headers.
 
 
 =======================================================================
-expat - 2.20.0
+fontconfig - 2.13.1
 =======================================================================
 
 Download fontconfig from
@@ -326,25 +329,8 @@ Download fontconfig from
 	
 and expand it into a directory on the Desktop.
 
-	cd fontconfig-2.20.0
-	CFLAGS="-fPIC" ./configure --disable-shared --prefix=build
-	make install
-
-then copy build/lib/libexpat.a to Libraries/linux directory.
-
-
-=======================================================================
-fontconfig - 2.12.1
-=======================================================================
-
-Download fontconfig from
-
-	https://www.freedesktop.org/wiki/Software/fontconfig/
-	
-and expand it into a directory on the Desktop.
-
-	cd fontconfig-2.12.1
-	CFLAGS="-fPIC" ./configure --disable-shared --prefix=build FREETYPE_CFLAGS="-I<path to /BaseElements-Plugin/Headers>/freetype2" FREETYPE_LIBS="<path to /BaseElements-Plugin/Libraries/macOS>" LDFLAGS="-L<path to /BaseElements-Plugin/Libraries/macOS>" --with-expat='~/Desktop/expat-2.2.0/build'
+	cd fontconfig-2.13.1
+	CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)/build FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2" FREETYPE_LIBS="${SRCROOT}/Libraries/linux" LDFLAGS="-L${SRCROOT}/Libraries/linux" --with-expat=/usr/lib64/libexpat.so.1
 	make install
 
 then copy build/lib/libfontconfig.a to Libraries/linux and build/include/fontconfig to Headers.
