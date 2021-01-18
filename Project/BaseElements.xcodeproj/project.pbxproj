@@ -194,6 +194,8 @@
 		4DCD49651A195B0C00EFCF7F /* BESMTPEmailMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */; };
 		4DCD49661A195B0C00EFCF7F /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C918DA773900DFC47A /* BEBase64.cpp */; };
 		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
+		4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
+		4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DD510241DD136F200763F7E /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
 		4DFA0D6C222E3211006EF9FB /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D69222E3211006EF9FB /* libPocoZip.a */; };
 		4DFA0D6D222E3211006EF9FB /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */; };
@@ -398,6 +400,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */,
 				4D362A531F2081B90036B751 /* iOSAppSDK.framework in Frameworks */,
 				4DFA0D7D222E35C1006EF9FB /* UIKit.framework in Frameworks */,
 				4D1BFE561F3AC9A600805CD3 /* libpodofo.a in Frameworks */,
@@ -432,6 +435,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */,
 				4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */,
 				4DFA0D7E222E3603006EF9FB /* UIKit.framework in Frameworks */,
 				4DFA0D85222E361C006EF9FB /* libPocoJSON.a in Frameworks */,

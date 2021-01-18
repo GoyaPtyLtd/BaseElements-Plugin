@@ -2,7 +2,7 @@
 Version 4.2b1
 ########################################################################
 
-January 15, 2021
+January 18, 2021
 
 
 New Functions
@@ -20,6 +20,7 @@ BE_ExecuteSystemCommand: executeUsingShell parameter added
 BE_ScriptExecute: scriptControl Parameter added
 
 duktape updated from 2.3.0 to 2.6.0
+Fontconfig library updated from 2.12.1 to 2.13.1
 Freetype library updated from 2.7 to 2.10.4
 
 
