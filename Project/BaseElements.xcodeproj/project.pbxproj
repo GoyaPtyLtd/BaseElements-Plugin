@@ -72,7 +72,6 @@
 		4D362A121F2079E30036B751 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
 		4D362A131F2079E30036B751 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
 		4D362A151F2079E30036B751 /* BEXMLSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */; };
-		4D362A2B1F207AE70036B751 /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A171F207AE70036B751 /* libboost.a */; };
 		4D362A2C1F207AE70036B751 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A181F207AE70036B751 /* libcrypto.a */; };
 		4D362A2D1F207AE70036B751 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A191F207AE70036B751 /* libcurl.a */; };
 		4D362A2E1F207AE70036B751 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1A1F207AE70036B751 /* libexslt.a */; };
@@ -124,7 +123,6 @@
 		4D362A801F2085880036B751 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
 		4D362A811F2085880036B751 /* BEPluginFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */; };
 		4D362A821F2085880036B751 /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
-		4D362A8B1F2085880036B751 /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A171F207AE70036B751 /* libboost.a */; };
 		4D362A8C1F2085880036B751 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A181F207AE70036B751 /* libcrypto.a */; };
 		4D362A8D1F2085880036B751 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A191F207AE70036B751 /* libcurl.a */; };
 		4D362A8E1F2085880036B751 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1A1F207AE70036B751 /* libexslt.a */; };
@@ -140,6 +138,8 @@
 		4D362A9C1F2085880036B751 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A281F207AE70036B751 /* libxml2.a */; };
 		4D362A9D1F2085880036B751 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A291F207AE70036B751 /* libxslt.a */; };
 		4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A401F207B660036B751 /* iOSAppSDK.framework */; };
+		4D42B4E025CB802F007C120E /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D42B4DC25CB8014007C120E /* libboost.a */; };
+		4D42B4E525CB8074007C120E /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D42B4E425CB8064007C120E /* libboost.a */; };
 		4D44BC20200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
 		4D44BC21200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
 		4D44BC22200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
@@ -294,6 +294,20 @@
 		4D3969CA18DA773900DFC47A /* BEBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBase64.h; sourceTree = "<group>"; };
 		4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLReader.cpp; path = ../Source/BEXMLReader.cpp; sourceTree = "<group>"; };
 		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
+		4D42B4AC25CB798F007C120E /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../Libraries/iOS/libboost_date_time.a; sourceTree = "<group>"; };
+		4D42B4AD25CB798F007C120E /* libboost_atomic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_atomic.a; path = ../Libraries/iOS/libboost_atomic.a; sourceTree = "<group>"; };
+		4D42B4AE25CB798F007C120E /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../Libraries/iOS/libboost_filesystem.a; sourceTree = "<group>"; };
+		4D42B4AF25CB798F007C120E /* libboost_program_options.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_program_options.a; path = ../Libraries/iOS/libboost_program_options.a; sourceTree = "<group>"; };
+		4D42B4B025CB798F007C120E /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../Libraries/iOS/libboost_thread.a; sourceTree = "<group>"; };
+		4D42B4B125CB798F007C120E /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../Libraries/iOS/libboost_regex.a; sourceTree = "<group>"; };
+		4D42B4C725CB7A44007C120E /* libboost_program_options.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_program_options.a; path = ../../../../../Downloads/build/boost/1.75.0/macos/release/prefix/lib/libboost_program_options.a; sourceTree = "<group>"; };
+		4D42B4C825CB7A44007C120E /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../../../../../Downloads/build/boost/1.75.0/macos/release/prefix/lib/libboost_thread.a; sourceTree = "<group>"; };
+		4D42B4C925CB7A44007C120E /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../../../../../Downloads/build/boost/1.75.0/macos/release/prefix/lib/libboost_date_time.a; sourceTree = "<group>"; };
+		4D42B4CA25CB7A44007C120E /* libboost_atomic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_atomic.a; path = ../../../../../Downloads/build/boost/1.75.0/macos/release/prefix/lib/libboost_atomic.a; sourceTree = "<group>"; };
+		4D42B4CB25CB7A44007C120E /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../../../../../Downloads/build/boost/1.75.0/macos/release/prefix/lib/libboost_filesystem.a; sourceTree = "<group>"; };
+		4D42B4CC25CB7A44007C120E /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../../../../../Downloads/build/boost/1.75.0/macos/release/prefix/lib/libboost_regex.a; sourceTree = "<group>"; };
+		4D42B4DC25CB8014007C120E /* libboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost.a; path = ../Libraries/iOS/iPhoneOS/libboost.a; sourceTree = "<group>"; };
+		4D42B4E425CB8064007C120E /* libboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost.a; path = ../Libraries/iOS/iPhoneOSSimulator/libboost.a; sourceTree = "<group>"; };
 		4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BEMimeticMIMEEntity.cpp; path = ../Source/Net/BEMimeticMIMEEntity.cpp; sourceTree = "<group>"; };
 		4D44BC1F200FAD9E0028449D /* BEMimeticMIMEEntity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEMimeticMIMEEntity.h; path = ../Source/Net/BEMimeticMIMEEntity.h; sourceTree = "<group>"; };
 		4D4C066C1C23B372006899FE /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
@@ -407,10 +421,10 @@
 				4DFA0D6D222E3211006EF9FB /* libPocoFoundation.a in Frameworks */,
 				4DFA0D73222E3287006EF9FB /* libPocoFoundationd.a in Frameworks */,
 				4DFA0D6E222E3211006EF9FB /* libPocoJSON.a in Frameworks */,
+				4D42B4E025CB802F007C120E /* libboost.a in Frameworks */,
 				4DFA0D74222E3287006EF9FB /* libPocoJSONd.a in Frameworks */,
 				4DFA0D6C222E3211006EF9FB /* libPocoZip.a in Frameworks */,
 				4DFA0D72222E3287006EF9FB /* libPocoZipd.a in Frameworks */,
-				4D362A2B1F207AE70036B751 /* libboost.a in Frameworks */,
 				4D362A2C1F207AE70036B751 /* libcrypto.a in Frameworks */,
 				4D362A2D1F207AE70036B751 /* libcurl.a in Frameworks */,
 				4D362A2E1F207AE70036B751 /* libexslt.a in Frameworks */,
@@ -442,10 +456,10 @@
 				4DFA0D86222E361C006EF9FB /* libPocoJSONd.a in Frameworks */,
 				4DFA0D87222E361C006EF9FB /* libPocoZip.a in Frameworks */,
 				4DFA0D88222E361C006EF9FB /* libPocoZipd.a in Frameworks */,
+				4D42B4E525CB8074007C120E /* libboost.a in Frameworks */,
 				4DFA0D89222E361C006EF9FB /* libPocoFoundationd.a in Frameworks */,
 				4DFA0D8A222E361C006EF9FB /* libPocoFoundation.a in Frameworks */,
 				4D1BFE571F3AC9B900805CD3 /* libpodofo.a in Frameworks */,
-				4D362A8B1F2085880036B751 /* libboost.a in Frameworks */,
 				4D362A8C1F2085880036B751 /* libcrypto.a in Frameworks */,
 				4D362A8D1F2085880036B751 /* libcurl.a in Frameworks */,
 				4D362A8E1F2085880036B751 /* libexslt.a in Frameworks */,
@@ -692,7 +706,21 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D42B4DC25CB8014007C120E /* libboost.a */,
+				4D42B4E425CB8064007C120E /* libboost.a */,
+				4D42B4CA25CB7A44007C120E /* libboost_atomic.a */,
+				4D42B4C925CB7A44007C120E /* libboost_date_time.a */,
+				4D42B4CB25CB7A44007C120E /* libboost_filesystem.a */,
 				4D33C6C3229BC90200CEA53F /* libboost_program_options.a */,
+				4D42B4AD25CB798F007C120E /* libboost_atomic.a */,
+				4D42B4AC25CB798F007C120E /* libboost_date_time.a */,
+				4D42B4AE25CB798F007C120E /* libboost_filesystem.a */,
+				4D42B4AF25CB798F007C120E /* libboost_program_options.a */,
+				4D42B4B125CB798F007C120E /* libboost_regex.a */,
+				4D42B4CC25CB7A44007C120E /* libboost_regex.a */,
+				4D42B4B025CB798F007C120E /* libboost_thread.a */,
+				4D42B4C725CB7A44007C120E /* libboost_program_options.a */,
+				4D42B4C825CB7A44007C120E /* libboost_thread.a */,
 				4D33C6C1229BC8E800CEA53F /* DiskArbitration.framework */,
 				4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */,
 				4D703AD32230D803007632BA /* libPocoFoundation.a */,

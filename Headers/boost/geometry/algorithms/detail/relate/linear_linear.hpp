@@ -2,8 +2,8 @@
 
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 
-// This file was modified by Oracle on 2013, 2014, 2015, 2017, 2018.
-// Modifications copyright (c) 2013-2018 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2013, 2014, 2015, 2017, 2018, 2019.
+// Modifications copyright (c) 2013-2019 Oracle and/or its affiliates.
 
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -127,13 +127,18 @@ struct linear_linear
                              Result & result,
                              IntersectionStrategy const& intersection_strategy)
     {
+        typedef typename IntersectionStrategy::cs_tag cs_tag;
+
         // The result should be FFFFFFFFF
         relate::set<exterior, exterior, result_dimension<Geometry1>::value>(result);// FFFFFFFFd, d in [1,9] or T
         if ( BOOST_GEOMETRY_CONDITION( result.interrupt ) )
             return;
 
         // get and analyse turns
-        typedef typename turns::get_turns<Geometry1, Geometry2>::turn_info turn_type;
+        typedef typename turns::get_turns
+            <
+                Geometry1, Geometry2
+            >::template turn_info_type<IntersectionStrategy>::type turn_type;
         std::vector<turn_type> turns;
 
         interrupt_policy_linear_linear<Result> interrupt_policy(result);
@@ -183,7 +188,7 @@ struct linear_linear
           || may_update<boundary, boundary, '0'>(result)
           || may_update<boundary, exterior, '0'>(result) )
         {
-            typedef turns::less<0, turns::less_op_linear_linear<0> > less;
+            typedef turns::less<0, turns::less_op_linear_linear<0>, cs_tag> less;
             std::sort(turns.begin(), turns.end(), less());
 
             turns_analyser<turn_type, 0> analyser;
@@ -203,7 +208,7 @@ struct linear_linear
           || may_update<boundary, boundary, '0', true>(result)
           || may_update<boundary, exterior, '0', true>(result) )
         {
-            typedef turns::less<1, turns::less_op_linear_linear<1> > less;
+            typedef turns::less<1, turns::less_op_linear_linear<1>, cs_tag> less;
             std::sort(turns.begin(), turns.end(), less());
 
             turns_analyser<turn_type, 1> analyser;

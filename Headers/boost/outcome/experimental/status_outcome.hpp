@@ -1,5 +1,5 @@
 /* A less simple result type
-(C) 2018-2019 Niall Douglas <http://www.nedproductions.biz/> (59 commits)
+(C) 2018-2020 Niall Douglas <http://www.nedproductions.biz/> (17 commits)
 File Created: Apr 2018
 
 
@@ -57,37 +57,6 @@ template <class DomainType> inline std::exception_ptr basic_outcome_failure_exce
 BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE_END
 
 BOOST_OUTCOME_V2_NAMESPACE_EXPORT_BEGIN
-
-namespace trait
-{
-  namespace detail
-  {
-    // Shortcut this for lower build impact
-    template <class DomainType> struct _is_error_code_available<BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE::status_code<DomainType>>
-    {
-      static constexpr bool value = true;
-    };
-    template <class DomainType> struct _is_error_code_available<BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE::errored_status_code<DomainType>>
-    {
-      static constexpr bool value = true;
-    };
-  }  // namespace detail
-#if 0
-  template <class DomainType> struct is_error_type<BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE::status_code<DomainType>>
-  {
-    static constexpr bool value = true;
-  };
-  template <> struct is_error_type<BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE::errc>
-  {
-    static constexpr bool value = true;
-  };
-  template <class DomainType, class Enum> struct is_error_type_enum<BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE::status_code<DomainType>, Enum>
-  {
-    static constexpr bool value = boost::system::is_error_condition_enum<Enum>::value;
-  };
-#endif
-}  // namespace trait
-
 
 namespace experimental
 {

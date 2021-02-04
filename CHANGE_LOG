@@ -2,7 +2,7 @@
 Version 4.2b1
 ########################################################################
 
-January 18, 2021
+February 4, 2021
 
 
 New Functions
@@ -19,6 +19,7 @@ BE_ConvertContainer: convert images types from container files natively
 BE_ExecuteSystemCommand: executeUsingShell parameter added
 BE_ScriptExecute: scriptControl Parameter added
 
+boost libraries updated to 1.75_0 from 1.70_0
 duktape updated from 2.3.0 to 2.6.0
 Fontconfig library updated from 2.12.1 to 2.13.1
 Freetype library updated from 2.7 to 2.10.4

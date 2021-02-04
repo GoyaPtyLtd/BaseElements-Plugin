@@ -13,37 +13,28 @@ and place the FMWrapper.framework in the Libraries directory.
 On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built the Boost FileSystem, System and Thread libraries.
 
 =======================================================================
-Boost - 1.70_0
+Boost - 1.75_0
 =======================================================================
 
 Boost is available from
 
 	http://www.boost.org/
 
-Get the script from
+Get a build script from
 
-	https://github.com/danoli3/ofxiOSBoost/blob/build-yourself/scripts/build-libc%2B%2B
+	https://raw.githubusercontent.com/faithfracture/Apple-Boost-BuildScript/master/boost.sh
 	
 and place it in the same directory as the boost archive download.
-	
-Change the lines
-
-	BOOST_V1=1.60.0
-	BOOST_V2=1_60_0
-	: ${BOOST_LIBS:="random regex graph random chrono thread signals filesystem system date_time"}
-
-to
-
-	BOOST_V1=1.70.0
-	BOOST_V2=1_70_0
-	: ${BOOST_LIBS:="program_options random regex graph random chrono thread filesystem system date_time"}
-
 
 Build the library using
 
-	./build-libc++.sh BOOST_LIBS="program_options,regex,date_time,filesystem,thread" IPHONE_SDKVERSION=10.0
+	./boost.sh -ios --boost-version 1.75.0 --boost-libs "program_options regex date_time filesystem thread"
 
-Copy the directory containing the boost headers from the libs/boost/include directory to the Headers directory and copy libbosst.a from libs/boost/ios to the Libraries/iOS directory.
+and copy the headers and libraries to the project directory
+
+	cp -R ./dist/boost.xcframework/Headers/boost "${SRCROOT}/Headers/"
+	cp ./dist/boost.xcframework/ios-arm64/libboost.a "${SRCROOT}/Libraries/iOS/iPhoneOS"
+	cp ./dist/boost.xcframework/ios-x86_64-simulator/libboost.a "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator"
 
 
 =======================================================================

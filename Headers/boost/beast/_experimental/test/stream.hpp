@@ -141,7 +141,9 @@ class stream
         status code = status::ok;
         fail_count* fc = nullptr;
         std::size_t nread = 0;
+        std::size_t nread_bytes = 0;
         std::size_t nwrite = 0;
+        std::size_t nwrite_bytes = 0;
         std::size_t read_max =
             (std::numeric_limits<std::size_t>::max)();
         std::size_t write_max =
@@ -361,11 +363,25 @@ public:
         return in_->nread;
     }
 
+    /// Return the number of bytes read
+    std::size_t
+    nread_bytes() const noexcept
+    {
+        return in_->nread_bytes;
+    }
+
     /// Return the number of writes
     std::size_t
     nwrite() const noexcept
     {
         return in_->nwrite;
+    }
+
+    /// Return the number of bytes written
+    std::size_t
+    nwrite_bytes() const noexcept
+    {
+        return in_->nwrite_bytes;
     }
 
     /** Close the stream.
@@ -459,9 +475,12 @@ public:
         to ensure that the requested amount of data is read before the asynchronous
         operation completes.
     */
-    template<class MutableBufferSequence, class ReadHandler>
+    template<
+        class MutableBufferSequence,
+        BOOST_BEAST_ASYNC_TPARAM2 ReadHandler>
     BOOST_BEAST_ASYNC_RESULT2(ReadHandler)
-    async_read_some(MutableBufferSequence const& buffers,
+    async_read_some(
+        MutableBufferSequence const& buffers,
         ReadHandler&& handler);
 
     /** Write some data to the stream.
@@ -534,9 +553,12 @@ public:
         the peer. Consider using the function `net::async_write` if you need
         to ensure that all data is written before the asynchronous operation completes.
     */
-    template<class ConstBufferSequence, class WriteHandler>
+    template<
+        class ConstBufferSequence,
+        BOOST_BEAST_ASYNC_TPARAM2 WriteHandler>
     BOOST_BEAST_ASYNC_RESULT2(WriteHandler)
-    async_write_some(ConstBufferSequence const& buffers,
+    async_write_some(
+        ConstBufferSequence const& buffers,
         WriteHandler&& handler);
 
 #if ! BOOST_BEAST_DOXYGEN

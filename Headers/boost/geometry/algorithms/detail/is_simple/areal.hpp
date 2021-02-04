@@ -1,6 +1,6 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2017, Oracle and/or its affiliates.
+// Copyright (c) 2014-2020, Oracle and/or its affiliates.
 
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
@@ -11,7 +11,10 @@
 #ifndef BOOST_GEOMETRY_ALGORITHMS_DETAIL_IS_SIMPLE_AREAL_HPP
 #define BOOST_GEOMETRY_ALGORITHMS_DETAIL_IS_SIMPLE_AREAL_HPP
 
-#include <boost/range.hpp>
+#include <boost/range/begin.hpp>
+#include <boost/range/empty.hpp>
+#include <boost/range/end.hpp>
+#include <boost/range/value_type.hpp>
 
 #include <boost/geometry/core/closure.hpp>
 #include <boost/geometry/core/exterior_ring.hpp>
@@ -35,28 +38,22 @@ namespace detail { namespace is_simple
 {
 
 
-template <typename Ring>
+template <typename Ring, typename CSTag>
 struct is_simple_ring
 {
-    template <typename Strategy>
-    static inline bool apply(Ring const& ring, Strategy const&)
-    {
-        return apply(ring);
-    }
-
     static inline bool apply(Ring const& ring)
     {
         simplicity_failure_policy policy;
         return ! boost::empty(ring)
             && ! detail::is_valid::has_duplicates
                     <
-                        Ring, geometry::closure<Ring>::value
+                        Ring, geometry::closure<Ring>::value, CSTag
                     >::apply(ring, policy);
     }
 };
 
 
-template <typename Polygon>
+template <typename Polygon, typename CSTag>
 class is_simple_polygon
 {
 private:
@@ -69,25 +66,21 @@ private:
                 <
                     is_simple_ring
                         <
-                            typename boost::range_value<InteriorRings>::type
+                            typename boost::range_value<InteriorRings>::type,
+                            CSTag
                         >
                 >::apply(boost::begin(interior_rings),
                          boost::end(interior_rings));
     }
 
 public:
-    template <typename Strategy>
-    static inline bool apply(Polygon const& polygon, Strategy const&)
-    {
-        return apply(polygon);
-    }
-
     static inline bool apply(Polygon const& polygon)
     {
         return
             is_simple_ring
                 <
-                    typename ring_type<Polygon>::type
+                    typename ring_type<Polygon>::type,
+                    CSTag
                 >::apply(exterior_ring(polygon))
             &&
             are_simple_interior_rings(geometry::interior_rings(polygon));
@@ -112,8 +105,17 @@ namespace dispatch
 // Reference (for polygon validity): OGC 06-103r4 (6.1.11.1)
 template <typename Ring>
 struct is_simple<Ring, ring_tag>
-    : detail::is_simple::is_simple_ring<Ring>
-{};
+{
+    template <typename Strategy>
+    static inline bool apply(Ring const& ring, Strategy const&)
+    {
+        return detail::is_simple::is_simple_ring
+            <
+                Ring,
+                typename Strategy::cs_tag
+            >::apply(ring);
+    }
+};
 
 
 // A Polygon is always a simple geometric object provided that it is valid.
@@ -121,8 +123,17 @@ struct is_simple<Ring, ring_tag>
 // Reference (for validity of Polygons): OGC 06-103r4 (6.1.11.1)
 template <typename Polygon>
 struct is_simple<Polygon, polygon_tag>
-    : detail::is_simple::is_simple_polygon<Polygon>
-{};
+{
+    template <typename Strategy>
+    static inline bool apply(Polygon const& polygon, Strategy const&)
+    {
+        return detail::is_simple::is_simple_polygon
+            <
+                Polygon,
+                typename Strategy::cs_tag
+            >::apply(polygon);
+    }
+};
 
 
 // Not clear what the definition is.
@@ -140,7 +151,8 @@ struct is_simple<MultiPolygon, multi_polygon_tag>
                 <
                     detail::is_simple::is_simple_polygon
                         <
-                            typename boost::range_value<MultiPolygon>::type
+                            typename boost::range_value<MultiPolygon>::type,
+                            typename Strategy::cs_tag
                         >,
                     true // allow empty multi-polygon
                 >::apply(boost::begin(multipolygon), boost::end(multipolygon));

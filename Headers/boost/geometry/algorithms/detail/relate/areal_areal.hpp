@@ -2,8 +2,8 @@
 
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 
-// This file was modified by Oracle on 2013, 2014, 2015, 2017, 2018.
-// Modifications copyright (c) 2013-2018 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2013, 2014, 2015, 2017, 2018, 2019.
+// Modifications copyright (c) 2013-2019 Oracle and/or its affiliates.
 
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -223,7 +223,10 @@ struct areal_areal
             return;
 
         // get and analyse turns
-        typedef typename turns::get_turns<Geometry1, Geometry2>::turn_info turn_type;
+        typedef typename turns::get_turns
+            <
+                Geometry1, Geometry2
+            >::template turn_info_type<IntersectionStrategy>::type turn_type;
         std::vector<turn_type> turns;
 
         interrupt_policy_areal_areal<Result> interrupt_policy(geometry1, geometry2, result);
@@ -231,6 +234,8 @@ struct areal_areal
         turns::get_turns<Geometry1, Geometry2>::apply(turns, geometry1, geometry2, interrupt_policy, intersection_strategy);
         if ( BOOST_GEOMETRY_CONDITION(result.interrupt) )
             return;
+
+        typedef typename IntersectionStrategy::cs_tag cs_tag;
 
         typedef typename IntersectionStrategy::template point_in_geometry_strategy
             <
@@ -267,7 +272,7 @@ struct areal_areal
           || may_update<exterior, interior, '2'>(result) )
         {
             // sort turns
-            typedef turns::less<0, turns::less_op_areal_areal<0> > less;
+            typedef turns::less<0, turns::less_op_areal_areal<0>, cs_tag> less;
             std::sort(turns.begin(), turns.end(), less());
 
             /*if ( may_update<interior, exterior, '2'>(result)
@@ -308,7 +313,7 @@ struct areal_areal
           || may_update<exterior, interior, '2', true>(result) )
         {
             // sort turns
-            typedef turns::less<1, turns::less_op_areal_areal<1> > less;
+            typedef turns::less<1, turns::less_op_areal_areal<1>, cs_tag> less;
             std::sort(turns.begin(), turns.end(), less());
 
             /*if ( may_update<interior, exterior, '2', true>(result)
