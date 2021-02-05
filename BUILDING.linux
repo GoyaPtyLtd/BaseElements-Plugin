@@ -268,21 +268,23 @@ and extract the archive to the desktop and copy the src directory to the Source 
 
 
 =======================================================================
-libjpeg-turbo - 1.5
+libjpeg-turbo - 2.0.6
 =======================================================================
 
 Download the source from
 
 	http://www.libjpeg-turbo.org/
 
-and extract the archive to the desktop. Then
+and extract the archive. Then
 
-	cd libjpeg-turbo-1.5.0
-	autoreconf -fiv
-	CFLAGS=-fPIC ./configure --prefix=build
-	make install
-	
-Rename build/include to libturbojpeg and copy the directory to Headers. Copy build/lib/libjpeg.a & libturbojpeg.a to Libraries/linux.
+	cd libjpeg-turbo-2.0.6
+	cmake -G"Unix Makefiles"
+	make install DESTDIR="./build" -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+
+Copy the header and library files.
+
+	cp -R ./build/opt/libjpeg-turbo/include "${SRCROOT}/Headers/libturbojpeg"
+	cp ./build/opt/libjpeg-turbo/lib64/libturbojpeg.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================

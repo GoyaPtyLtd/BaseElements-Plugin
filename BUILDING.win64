@@ -369,7 +369,7 @@ and extract the archive to the desktop and copy the src directory to the Source 
 
 
 =======================================================================
-libjpeg-turbo - 1.4.2
+libjpeg-turbo - 2.0.6
 =======================================================================
 
 To build first download and install NASM from

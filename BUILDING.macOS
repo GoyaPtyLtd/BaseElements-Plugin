@@ -198,7 +198,7 @@ and extract the archive and copy and rename the src directory.
 
 
 =======================================================================
-libjpeg-turbo - 2.0.2
+libjpeg-turbo - 2.0.6
 =======================================================================
 
 Download the source from
@@ -207,15 +207,14 @@ Download the source from
 
 and extract the archive. Then
 
-	cd libjpeg-turbo-master
-	autoreconf -fiv
-	./configure --host x86_64-apple-darwin CFLAGS='-mmacosx-version-min=10.7' --without-simd
-	make install prefix="$(pwd)/build"
+	cd libjpeg-turbo-2.0.6
+	cmake -G"Unix Makefiles"
+	make install DESTDIR="./build"
 
 Copy the header and library files.
 
-	cp -R ./build/include "${SRCROOT}/Headers/libturbojpeg"
-	cp ./build/lib/libturbojpeg.a "${SRCROOT}/Libraries/macOS"
+	cp -R ./build/opt/libjpeg-turbo/include "${SRCROOT}/Headers/libturbojpeg"
+	cp ./build/opt/libjpeg-turbo/lib/libturbojpeg.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================

@@ -168,20 +168,21 @@ and extract the archive to the desktop and copy the src directory to the Source 
 
 
 =======================================================================
-libjpeg-turbo - 1.4.2
+libjpeg-turbo - 2.0.6
 =======================================================================
 
-Download the source from
+Download a build script from
 
-	http://www.libjpeg-turbo.org/
+	https://github.com/jeremyfa/libturbojpeg-ios/blob/master/libturbojpeg-ios.sh
 
-Copy the compile_for_ios.sh to the distribution directory and
+From the command line run
 
-	autoreconf -fiv
-	./compile_for_ios.sh "--without-simd"
+	zsh libturbojpeg-ios.sh
+	
+to download and build the library and then copy the library to the project directory
 
-Copy output/<platform>/include into Headers/libturbojpeg if necessary.
-
+	cp libjpeg-turbo/libs/ios/universal/libturbojpeg.a  ${SRCROOT}/BaseElements/Libraries/iOS/libturbojpeg.a
+	
 
 =======================================================================
 Poco 1.9.2
