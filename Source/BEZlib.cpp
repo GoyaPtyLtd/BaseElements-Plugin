@@ -2,7 +2,7 @@
  BEZlib.cpp
  BaseElements Plug-In
  
- Copyright 2011-2020 Goya. All rights reserved.
+ Copyright 2011-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -15,6 +15,7 @@
 
 #include "BEZlib.h"
 #include "BE_Boost_FileSystem_Additions.hpp"
+#include "BECppUtilities.h"
 #include "BEPluginException.h"
 
 #include <sys/stat.h>
@@ -174,6 +175,8 @@ const std::vector<char> CompressContainerStream ( const std::vector<char> data )
 			}
 		
 		}
+		
+		be_free ( output_buffer );
 		
 	}
 	
