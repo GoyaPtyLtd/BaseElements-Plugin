@@ -2,7 +2,7 @@
  BEJSON.cpp
  BaseElements Plug-In
  
- Copyright 2013-2019 Goya. All rights reserved.
+ Copyright 2013-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -53,9 +53,13 @@ void BEJSON::json_path_query ( const std::string& json_path, fmx::Data& results 
 				
 			case JSON_OBJECT:
 			case JSON_ARRAY:
-				string_result = (char *)json_dumps ( node, 0 );
+			{
+				char * json_value = json_dumps ( node, 0 );
+				string_result = json_value;
+				be_free ( json_value );
 				SetResult ( string_result, results );
 				break;
+			}
 				
 			case JSON_STRING:
 				string_result = (char *)json_string_value ( node );
@@ -152,12 +156,15 @@ std::string BEJSON::encode ( const std::string& key, const fmx::Data& value, con
 	
 	json_t * json = json_object ( );
 	int result = json_object_set ( json, key.c_str(), json_value );
+	json_decref ( json_value );
 	if ( result ) {
+		json_decref ( json );
 		throw BEJSON_Exception ( result );
 	}
 	
 	size_t flags = JSON_COMPACT;
 	char * text = json_dumps ( json, flags );
+	json_decref ( json );
 	std::string out ( text );
 	be_free ( text );
 	
