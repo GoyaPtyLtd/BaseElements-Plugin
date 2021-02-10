@@ -3331,7 +3331,7 @@ fmx::errcode BE_ValuesContainsDuplicates ( short /* funcId */, const ExprEnv& /*
 		auto value_list = ParameterAsUTF8String ( parameters );
 		auto case_sensitive = ParameterAsBoolean ( parameters, 1 );
 
-		auto values ( new BEValueList<string> ( value_list, case_sensitive ) );
+		BEValueListStringUniquePtr values ( new BEValueList<string> ( value_list, case_sensitive ) );
 		auto contains_duplicates = values->contains_duplicates();
 
 		SetResult ( contains_duplicates, results );
@@ -3945,7 +3945,7 @@ fmx::errcode BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* e
 
 	try {
 
-		auto variables ( new BEValueList<std::wstring> );
+		BEValueListWideStringUniquePtr variables ( new BEValueList<std::wstring> );
 		auto calculation = ParameterAsWideString ( parameters );
 		auto variable_prefix = ParameterAsWideString ( parameters, 1, L"$" ); // look for FM script variables unless otherwise specified
 
