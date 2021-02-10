@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
 
- Copyright 2011-2019 Goya. All rights reserved.
+ Copyright 2011-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -155,9 +155,9 @@ MemoryStruct InitalizeCallbackMemory ( void )
 {
 	struct MemoryStruct data;
 
-	data.memory = (char *)malloc(1);  // this is grown as needed by WriteMemoryCallback
-	data.memory[0] = '\0';
+	data.memory = NULL;  // allocated/grown as needed by WriteMemoryCallback
 	data.size = 0;
+	data.origin = NULL;
 
 	return data;
 
