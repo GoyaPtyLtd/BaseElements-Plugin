@@ -35,6 +35,11 @@
 #endif
 
 
+@implementation AppDelegate : NSObject  {
+	ProgressDialogWindowController* progressDialog;
+}
+
+
 NSString * NSStringFromString ( const std::string& text );
 NSString * NSStringFromWString ( const std::wstring& text );
 std::wstring WStringFromNSString ( const NSString * text );

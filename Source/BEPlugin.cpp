@@ -190,7 +190,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_ExecuteSystemCommand, BE_NotImplemented, 1, 2 );
 #endif
 
-	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_FileMakerSQL, BE_FileMakerSQL, 1, 5 );
 
 	g_be_plugin->RegisterFunction ( kBE_ContainerIsCompressed, BE_ContainerIsCompressed, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ContainerCompress, BE_ContainerCompress, 1, 2 );

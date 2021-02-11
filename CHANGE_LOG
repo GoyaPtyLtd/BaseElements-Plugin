@@ -2,7 +2,7 @@
 Version 4.2b1
 ########################################################################
 
-February 5, 2021
+February 11, 2021
 
 
 New Functions
@@ -15,9 +15,20 @@ BE_HMAC_Deprecated
 
 Changes
 
-BE_ConvertContainer: convert images types from container files natively
+BE_ConvertContainer: convert images types from container files natively, plug memory leak
+BE_ContainerCompress: plug memory leak
 BE_ExecuteSystemCommand: executeUsingShell parameter added
+BE_ExtractScriptVariables: plug memory leak
+BE_FileImport: plug memory leak
+BE_HTTP_PUTData: plug memory leak
+BE_JSON_Encode_Deprecated: plug memory leak
+BE_JSONPath_Deprecated: plug memory leak
 BE_ScriptExecute: scriptControl Parameter added
+BE_FileMakerSQL: return container/binary data in addition to text (new asText parameter) 
+BE_ValuesContainsDuplicates: plug memory leak
+BE_XPath: plug memory leak
+BE_XSLTApply: plug memory leak
+
 
 boost libraries updated to 1.75_0 from 1.70_0
 duktape updated from 2.3.0 to 2.6.0

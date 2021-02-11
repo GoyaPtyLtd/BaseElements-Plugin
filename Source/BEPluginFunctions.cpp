@@ -4191,7 +4191,7 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 		FMX_UInt32 number_of_paramters = parameters.Size();
 
 		TextUniquePtr filename;
-		if ( number_of_paramters == 4 ) {
+		if ( number_of_paramters >= 4 ) {
 			filename->SetText ( parameters.AtAsText(3) );
 		}
 
@@ -4209,10 +4209,21 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 			sql->set_row_separator ( *row_separator );
 		}
 
-		sql->execute ( environment );
+		auto text_result_wanted = ParameterAsBoolean ( parameters, 4, true );
+		sql->execute ( environment, text_result_wanted );
 
-		SetResult ( *(sql->get_text_result()), results );
+		if ( text_result_wanted ) {
+		
+			auto sql_result = sql->get_text_result();
+			SetResult ( *sql_result, results );
+		
+		} else {
+			
+			auto sql_result = sql->get_data_result();
+			results.SetBinaryData ( sql_result->GetBinaryData() );
 
+		}
+		
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
