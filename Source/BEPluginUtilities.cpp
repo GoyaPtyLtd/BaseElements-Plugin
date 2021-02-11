@@ -1520,7 +1520,7 @@ void ReadBufferedFileFromStart(boost::filesystem::ifstream& inFile, const size_t
 void ReadBufferedFileFromEnd(boost::filesystem::ifstream& inFile, const size_t& from, const size_t& to, const size_t& buffer_size, const std::string& delimiter, std::string& result) {
 
 	std::vector<char> buffer ( buffer_size ) ;
-	size_t count = 0, offset, from_delimiter = 0, to_delimiter = 0, length = 0, i, delimiter_length = delimiter.length();
+	size_t count = 0, offset, from_delimiter = 0, to_delimiter = 0, length = 0, delimiter_length = delimiter.length();
 	
 	std::string slice ;
 	std::vector<std::string> hold ;
