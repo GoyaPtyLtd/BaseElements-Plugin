@@ -280,7 +280,7 @@ const fmx::errcode DisplayProgressDialog ( const std::wstring& title, const std:
 	fmx::errcode error = kNoError;
 
 	if ( (progressDialog != nil) && ([progressDialog closed] == YES) ) {
-			progressDialog = nil;
+		progressDialog = nil;
 	}
 	
 	if ( progressDialog == nil ) {

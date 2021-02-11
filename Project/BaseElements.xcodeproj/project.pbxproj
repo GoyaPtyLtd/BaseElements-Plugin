@@ -378,8 +378,8 @@
 		4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECppUtilities.h; path = ../Source/BECppUtilities.h; sourceTree = "<group>"; };
 		4DD510231DD136F200763F7E /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/macOS/libjansson.a; sourceTree = "<group>"; };
 		4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BEProgressDialog.xib; path = ../Resources/Base.lproj/BEProgressDialog.xib; sourceTree = "<group>"; };
-		4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressDialogWindowController.h; path = ../Source/ProgressDialogWindowController.h; sourceTree = "<group>"; };
-		4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressDialogWindowController.m; path = ../Source/ProgressDialogWindowController.m; sourceTree = "<group>"; };
+		4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressDialogWindowController.h; path = ../Source/apple/ProgressDialogWindowController.h; sourceTree = "<group>"; };
+		4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressDialogWindowController.m; path = ../Source/apple/ProgressDialogWindowController.m; sourceTree = "<group>"; };
 		4DD780D711FFCD2500CFC8B4 /* BEFileMakerPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileMakerPlugin.h; path = ../Source/BEFileMakerPlugin.h; sourceTree = "<group>"; };
 		4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileMakerPlugin.cpp; path = ../Source/BEFileMakerPlugin.cpp; sourceTree = "<group>"; };
 		4DD7831E120005AE00CFC8B4 /* BEXSLT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEXSLT.h; path = ../Source/BEXSLT.h; sourceTree = "<group>"; };
@@ -609,6 +609,8 @@
 				4D362A4B1F207E780036B751 /* BEIOSFunctions.mm */,
 				4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */,
 				4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */,
+				4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */,
+				4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */,
 			);
 			name = apple;
 			sourceTree = "<group>";
@@ -676,8 +678,6 @@
 				4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */,
 				4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */,
 				4D59DAFA16F95E2400F87180 /* BEValueList.h */,
-				4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */,
-				4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */,
 				4D8E64181917561D00C9F2BE /* BEPluginException.h */,
 				4D668AA71A36BF0300D14592 /* BEJavaScript.h */,
 				4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */,
