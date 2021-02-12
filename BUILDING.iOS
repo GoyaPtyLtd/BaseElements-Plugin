@@ -185,37 +185,27 @@ to download and build the library and then copy the library to the project direc
 	
 
 =======================================================================
-Poco 1.9.2
+Poco 1.10.1
 =======================================================================
 
 Download the source from
 
 	http://pocoproject.org/download/index.html
 
-Copy the compile_for_ios.sh to the distribution directory and
+Then
 
-	cd poco-1.9.2-all
-	./configure --config=iPhone-clang-libc++ --prefix=_build_iphone --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler,Redis,Encodings --no-tests --no-samples
+	cd poco-poco-1.10.1-release
+	CFLAGS="-miphoneos-version-min=11" ./configure --config=iPhone-clang-libc++ --prefix="${$(pwd)}/_build_iphone" --no-sharedlibs --static --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util,XML --no-tests --no-samples
 	make -s -j install
 	make distclean
-	./configure --config=iPhoneSimulator-clang-libc++ --prefix=_build_iphone_simulator --no-sharedlibs --static --poquito --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler,Redis,Encodings --no-tests --no-samples
+	CFLAGS="-miphoneos-version-min=11" ./configure --config=iPhoneSimulator-clang-libc++ --prefix="${$(pwd)}/_build_iphone_simulator" --no-sharedlibs --static --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util,XML --no-tests --no-samples
 	make -s -j install
 
-Copy
+Copy the libraries (and, if necessary, the headers) to the project directory
 
-	libPocoFoundation.a
-	libPocoZip.a
-	libPocoJSON.a
-
-from the build directories to 
-
-	"${SRCROOT}/Libraries/iOS/iPhoneOS"
-
-and
-
-	"${SRCROOT}/Libraries/iOS/iPhoneOSSimulator"
-
-If necessary, copy output/<platform>/include/Poco to Headers.
+	cp -R ./_build_iphone/include/Poco "${SRCROOT}/Headers"
+	cp ./_build_iphone/lib/libPocoFoundation.a ./_build_iphone/lib/libPocoZip.a ./_build_iphone/lib/libPocoJSON.a "${SRCROOT}/Libraries/iOS/iPhoneOS"
+	cp ./_build_iphone_simulator/lib/libPocoFoundation.a ./_build_iphone_simulator/lib/libPocoZip.a ./_build_iphone_simulator/lib/libPocoJSON.a "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator"
 
 
 =======================================================================

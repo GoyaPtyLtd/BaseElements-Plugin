@@ -288,7 +288,7 @@ Copy the header and library files.
 
 
 =======================================================================
-Poco 1.9.2
+Poco 1.10.1
 =======================================================================
 
 Download the source from
@@ -297,12 +297,14 @@ Download the source from
 
 Then
 
-	cd poco-1.9.2-all
-	./configure --cflags=-fPIC --config=Linux-clang --static --no-tests --no-samples --omit=Data,MongoDB,Crypto,Net,XML,PageCompiler --prefix=build
-	make install
+	cd poco-master
+	./configure --cflags="-std=c++11 -fPIC" --static --no-tests --no-samples --prefix="$(pwd)/_build" --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util,XML
+	make -s -j install
 
-Copy the libraries libPocoFoundation.a, libPocoJSON.a & libPocoZip.a from build/lib to the Libraries/linux directory and copy the build/include/Poco to Headers.
+Copy the libraries libPocoFoundation.a, libPocoJSON.a & libPocoZip.a from _build/lib to the Libraries/linux directory and copy the _build/include/Poco to Headers.
 
+	cp -R ./_build_macos/include/Poco "${SRCROOT}/Headers"
+	cp ./_build/lib/libPocoFoundation.a ./_build/lib/libPocoZip.a ./_build/lib/libPocoJSON.a "${SRCROOT}/Libraries/Linux"
 
 =======================================================================
 freetype - 2.10.4
@@ -315,7 +317,7 @@ Download freetype from
 and expand it into a directory on the Desktop.
 
 	cd freetype-2.10.4
-	CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)build
+	CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)/build
 	make install
 
 then copy build/lib/libfreetype.a to Libraries/linux and build/include/freetype2 to Headers.
