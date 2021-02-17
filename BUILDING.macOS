@@ -2,10 +2,7 @@
 macOS
 =======================================================================
 
-On macOS the plugin is built using macOS 10.14.4 and Xcode 11.4.
-Execute the following command to make sure that the Xcode Command Line Tools are installed.
-
-	xcode-select --install
+On macOS the plugin is built using macOS 11.2.1 and Xcode 12.4.
 
 Download the FileMaker External Plug-In API from
 
@@ -208,13 +205,13 @@ Download the source from
 and extract the archive. Then
 
 	cd libjpeg-turbo-2.0.6
-	cmake -G"Unix Makefiles"
-	make install DESTDIR="./build"
+	CFLAGS="-mmacosx-version-min=10.13" cmake -G"Unix Makefiles"
+	make install DESTDIR="./_build_macos"
 
 Copy the header and library files.
 
-	cp -R ./build/opt/libjpeg-turbo/include "${SRCROOT}/Headers/libturbojpeg"
-	cp ./build/opt/libjpeg-turbo/lib/libturbojpeg.a "${SRCROOT}/Libraries/macOS"
+	cp -R ./_build_macos/opt/libjpeg-turbo/include "${SRCROOT}/Headers/libturbojpeg"
+	cp ./_build_macos/opt/libjpeg-turbo/lib/libturbojpeg.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
