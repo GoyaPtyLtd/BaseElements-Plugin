@@ -247,7 +247,27 @@ Copy the header and library files.
 
 
 =======================================================================
-libxml2 - 2.9.4
+libiconv - 1.16
+=======================================================================
+
+Download the source for libiconv from
+
+	https://www.gnu.org/software/libiconv/#downloading
+
+and extract the archive. Then
+
+	cd libiconv-1.16
+	CFLAGS="-mmacosx-version-min=10.12" ./configure --disable-shared  --prefix="${$(pwd)}/_build_macos"
+	make install
+
+Copy the Headers and libraries to the project directory
+
+	cp -R _build_macos/include/*.h "${SRCROOT}/Headers/iconv"
+	cp _build_macos/lib/libiconv.a  _build_macos/lib/libcharset.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+libxml2 - 2.9.10
 =======================================================================
 
 Download the source for libxml2 from
@@ -256,18 +276,18 @@ Download the source for libxml2 from
 
 and extract the archive. Then
 
-	cd libxml2-2.9.4
-	./configure CFLAGS="-mmacosx-version-min=10.7" --disable-shared --with-threads --without-python --without-zlib --without-lzma --prefix="$(pwd)/build"
+	cd libxml2-2.9.10
+	CFLAGS="-mmacosx-version-min=10.12" ./configure --disable-shared --with-threads --without-python --without-zlib --without-lzma --with-iconv=../libiconv-1.16/_build_macos --prefix="${$(pwd)}/_build"
 	make install
 
-Copy the header and library files.
+Copy the Headers and libraries to the project directory
 
-	cp -R ./build/include/libxml2 "${SRCROOT}/Headers"
-	cp ./build/lib/libxml2.a "${SRCROOT}/Libraries/macOS"
+	cp -R ./_build/include/libxml2 "${SRCROOT}/Headers"
+	cp ./_build/lib/libxml2.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
-libxslt - 1.1.29
+libxslt - 1.1.34
 =======================================================================
 
 Download the source from
@@ -276,14 +296,14 @@ Download the source from
 
 and extract the archive. Then
 
-	cd libxslt-1.1.29
-	./configure CFLAGS="-mmacosx-version-min=10.7" --disable-shared --without-python --without-crypto --prefix="$(pwd)/build"
+	cd libxslt-1.1.34
+	./configure CFLAGS="-mmacosx-version-min=10.12" --disable-shared --without-python --without-crypto --prefix="${$(pwd)}/_build"
 	make install
 
-Copy the header and library files.
+Copy the Headers and libraries to the project directory
 
-	cp -R ./build/include/libxslt ./build/include/libexslt "${SRCROOT}/Headers"
-	cp ./build/lib/libexslt.a ./build/lib/libxslt.a "${SRCROOT}/Libraries/macOS"
+	cp -R ./_build/include/libxslt "${SRCROOT}/Headers"
+	cp ./_build/lib/libxslt.a ./_build/lib/libexslt.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
@@ -317,7 +337,7 @@ Download fontconfig from
 and extract the archive. Then
 
 	cd fontconfig-2.13.1
-	CFLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" ./configure --disable-shared --prefix="$(pwd)/build" FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2" FREETYPE_LIBS="-L${SRCROOT}/Libraries/macOS -lfreetype" LDFLAGS="-L${SRCROOT}/Libraries/macOS"
+	CFLAGS="-mmacosx-version-min=10.13 -stdlib=libc++" ./configure --disable-shared --prefix="$(pwd)/build" FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2" FREETYPE_LIBS="-L${SRCROOT}/Libraries/macOS -lfreetype" LDFLAGS="-L${SRCROOT}/Libraries/macOS"
 	make install
 
 Copy the header and library files.
@@ -344,7 +364,7 @@ Edit
 
 to remove references to CMP0033 and the PNG library. Then
 
-CFLAGS="-mmacosx-version-min=10.10" && CPPFLAGS="-mmacosx-version-min=10.10" && cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="${SRCROOT}/Headers/freetype2" -DFREETYPE_LIBRARY_RELEASE="${SRCROOT}/Libraries/macOS/libfreetype.a"  -DFONTCONFIG_LIBRARIES="${SRCROOT}/Libraries" -DFONTCONFIG_INCLUDE_DIR="${SRCROOT}/Headers/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="${SRCROOT}/Libraries/macOS/libfontconfig.a" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_C_FLAGS="-mmacosx-version-min=10.10 -stdlib=libc++" -DCMAKE_CXX_FLAGS="-mmacosx-version-min=10.10 -stdlib=libc++" ./
+CFLAGS="-mmacosx-version-min=10.13" && CPPFLAGS="-mmacosx-version-min=10.13" && cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="${SRCROOT}/Headers/freetype2" -DFREETYPE_LIBRARY_RELEASE="${SRCROOT}/Libraries/macOS/libfreetype.a"  -DFONTCONFIG_LIBRARIES="${SRCROOT}/Libraries" -DFONTCONFIG_INCLUDE_DIR="${SRCROOT}/Headers/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="${SRCROOT}/Libraries/macOS/libfontconfig.a" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_C_FLAGS="-mmacosx-version-min=10.10 -stdlib=libc++" -DCMAKE_CXX_FLAGS="-mmacosx-version-min=10.10 -stdlib=libc++" ./
 	make install
 
 Copy the header and library files.

@@ -69,12 +69,13 @@
 			<Add library="../Libraries/linux/libpodofo.a" />
 			<Add library="/usr/lib64/libcrypto.so" />
 			<Add library="/usr/lib64/libssl.so" />
+			<Add library="../Libraries/linux/libiconv.a" />
 			<Add directory="PlugInSDK/Libraries/Linux" />
 			<Add directory="../Libraries/linux" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
-			<Add before="cp /home/goya/Documents/BaseElements-Plugin/Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
+			<Add before="cp ../Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="../Headers/FMWrapper/FMXBinaryData.h">

@@ -209,7 +209,26 @@ Copy the libraries (and, if necessary, the headers) to the project directory
 
 
 =======================================================================
-libxml2 - 2.9.4
+libiconv - 1.16
+=======================================================================
+
+Download the source for libiconv from
+
+	https://www.gnu.org/software/libiconv/#downloading
+
+and extract the archive. Then
+
+	cd libiconv-1.16
+	zsh ./build_libiconv.sh
+
+Copy the Headers and libraries to the project directory
+
+	cp -R _build_ios/include/*.h "${SRCROOT}/Headers/iconv"
+	cp libiconv_iOS_Release/libiconv.a  libiconv_iOS_Release/libcharset.a "${SRCROOT}/Libraries/iOS"
+
+
+=======================================================================
+libxml2 - 2.9.10
 =======================================================================
 
 Download the source for libxml2 from
@@ -218,14 +237,17 @@ Download the source for libxml2 from
 
 Copy the compile_for_ios.sh to the distribution directory and
 
-	cd libxml2-2.9.4
-	sh ./compile_for_ios.sh "--disable-shared --without-python --without-zlib"
+	cd libxml2-2.9.10
+	sh ./build_libxml2.sh
 		
-If necessary, copy the output/<platform>/libxml2 directory to Headers.
+Copy the Headers and libraries to the project directory
+
+	cp -R ./_build/include/libxml2 "${SRCROOT}/Headers"
+	cp libxml2_iOS_Release/libxml2.a "${SRCROOT}/Libraries/iOS"
 
 
 =======================================================================
-libxslt - 1.1.29
+libxslt - 1.1.34
 =======================================================================
 
 Download the source from
@@ -234,10 +256,13 @@ Download the source from
 
 Copy the compile_for_ios.sh to the distribution directory and
 
-	cd libxslt-1.1.29
-	sh ./compile_for_ios.sh "--disable-shared --without-python --without-crypto"
+	cd libxslt-1.1.34
+	sh ./build_libxslt.sh
 	
-If necessary, copy the output/<platform>/libxslt & libexslt directories to Headers.
+Copy the Headers and libraries to the project directory
+
+	cp -R ./_build/include/libxslt "${SRCROOT}/Headers"
+	cp libxslt_iOS_Release/libxslt.a libxslt_iOS_Release/libexslt.a "${SRCROOT}/Libraries/iOS"
 
 
 =======================================================================

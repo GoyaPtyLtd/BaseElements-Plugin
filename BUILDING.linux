@@ -190,29 +190,28 @@ into Headers.
 
 
 =======================================================================
-libiconv - 1.14 & libxml2 - 2.9.4
+libiconv - 1.16
 =======================================================================
 
-Download the libiconv source from
+Download the source for libiconv from
 
-	http://www.gnu.org/software/libiconv/
+	https://www.gnu.org/software/libiconv/#downloading
 
-Then
+and extract the archive. Then
 
-	cd libiconv-1.14
-
-Change line  682 from
-
-	#if @GNULIB_GETS@
-
-to
-
-	#if 0
-
-then...
-
-	CFLAGS=-fPIC ./configure --prefix=build
+	cd libiconv-1.16
+	CFLAGS=-fPIC ./configure --disable-shared  --prefix="$(pwd)/_build_linux"
 	make install
+
+Copy the Headers and libraries to the project directory
+
+	cp -R _build_linux/include/*.h "${SRCROOT}/Headers/iconv"
+	cp _build_linux/lib/libiconv.a  _build_linux/lib/libcharset.a "${SRCROOT}/Libraries/linux"
+
+
+=======================================================================
+libxml2 - 2.9.10
+=======================================================================
 
 Download the source for libxml2 from
 
@@ -220,19 +219,18 @@ Download the source for libxml2 from
 
 and expand it into a directory on the Desktop.
 
-	cd libxml2-2.9.4
-	CFLAGS=-fPIC ./configure --with-threads --without-python --prefix=build
+	cd libxml2-2.9.10
+	CFLAGS=-fPIC ./configure --disable-shared --with-threads --without-python --without-zlib --without-lzma --prefix="$(pwd)/_build"
 	make install
 
-Copy build/libxml2.a to Libraries/linux folder and, copy
+Copy the Headers and libraries to the project directory
 
-	build/include/libxml
-
-into the BE Plugin Headers folder.
+	cp -R ./_build/include/libxml2 "${SRCROOT}/Headers"
+	cp ./_build/lib/libxml2.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
-libxslt & libexslt - 1.1.29
+libxslt & libexslt - 1.1.34
 =======================================================================
 
 Download the source from
@@ -241,19 +239,15 @@ Download the source from
 
 and expand it into a directory on the Desktop.
 
-	cd libxslt-1.1.29
-	CFLAGS=-fPIC ./configure --prefix='/home/mark/Desktop/libxslt-1.1.29/build' --with-libxml-prefix='/home/mark/Desktop/libxml2-2.9.4/build'
+	cd libxslt-1.1.34
+	CFLAGS=-fPIC ./configure --with-libxml-prefix="$(pwd)/../libxml2-2.9.10/_build" --prefix="$(pwd)/_build"
+
 	make install
 
 Finally, place the headers
 
-	build/include/libxslt & build/include/libexslt
-
-in the Headers directory and copy the libraries
-
-	build/lib/libxslt.a & build/lib/libexslt.a
-
-into the Libraries/linux directory.
+	cp -R ./_build/include/libxslt "${SRCROOT}/Headers"
+	cp ./_build/lib/libxslt.a ./_build/lib/libexslt.a "${SRCROOT}/Libraries/Linux"
 
 
 =======================================================================

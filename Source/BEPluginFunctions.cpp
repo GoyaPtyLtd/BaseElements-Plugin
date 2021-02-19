@@ -46,6 +46,8 @@
 #endif
 
 
+#include <../Headers/iconv/iconv.h>
+
 #include "BEPluginFunctions.h"
 
 #include "BECurl.h"
@@ -79,6 +81,7 @@
 #include "Crypto/BEX509.h"
 #include "Images/BEJPEG.h"
 
+#include <algorithm>
 #include <list>
 #include <numeric> // for inner_product
 #include <thread>
@@ -90,9 +93,6 @@
 #include <boost/filesystem/fstream.hpp>
 #include <boost/foreach.hpp>
 #include <boost/tokenizer.hpp>
-
-#include <algorithm>
-#include <iconv.h>
 
 #include <podofo/podofo.h>
 

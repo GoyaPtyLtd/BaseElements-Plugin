@@ -229,112 +229,94 @@ to the Headers directory.
 
 
 =======================================================================
-libiconv - 1.14 & libxml2 - 2.9.4
+libxml2 - 2.9.10
 =======================================================================
 
 Download the libiconv source from
 
-	http://www.gnu.org/software/libiconv/
+	https://github.com/kiyolee/libiconv-win-build
+	
+open
 
-Download a patch to provide Visual Studio support from
-
-	https://sites.google.com/site/kontr0kontradiktion/software/patches
-
-and download the Windows port of the patch from
-
-	http://gnuwin32.sourceforge.net/packages/patch.htm
-
-Then, in a terminal prompt
-
-	cd libiconv-1.14
-	patch.exe -p1 -i ..\libiconv-1.14.vc10.patch --binary
-
-Download the source for libxml2 from
-
-	http://xmlsoft.org/downloads.html
-
-and expand it into a directory on the Desktop.
-
-Note: the full path of the directory should not contain any spaces.
-
-Rename the folder libiconv-1.14 to libiconv-1.14.vc10
-
-The Visual Studio solution file is in
-
-	libxml2-2.9.4\win32\VC10
-
-From the "Build" menu select "Configuration Manager" and then set "Active solution configuration" to Release and in the "Build" column, uncheck "runsuite".
-
-In the Property Pages
-
-	libxml2 -> Configuration Properties -> VC++ Directories -> Include Directories
-
-add paths to the following directories
-
-	libxml2-2.9.4\win32\VC10
-	libxml2-2.9.4\include
-	libiconv-1.14.vc10\include
-
-and in
-
-	libxml2 -> Configuration Properties -> General -> Project Defaults
+	build-VS2019-MT/libiconv.sln
 
 set
 
-	Configuration Type = Static Library (.lib)
-	Character Set = Use Unicode Character Set
+	Configuration Properties -> C/C++ -> Optimization -> Whole Program Optimization
+	
+to
 
-And also
+	No
+	
+Build the libiconv-static, Release, x64 configuration and copy
 
-	... -> C++ -> Preprocessor -> Preprocessor Definitions = WIN32
-	... -> Linker -> Input -> Additional Dependencies = ws2_32.lib
+	inlcude\iconv.h
+	
+to
 
-In the Property Pages of both libxml2 & iconv set
+	Headers\iconv\iconv.h
+	
+and the library from
 
-	... -> Configuration Properties -> C/C++ -> Code Generation -> Runtime Library = Multi-threaded (/MT)
-
-Change the line
-
-	#elif defined(_WIN32_WCE)
+	build-VS2019-MT\x64\Release\libiconv-static.lib
 
 to
 
-	#elif defined(_MSC_VER)
-
-For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK". Set the "Active solution configuration" to "Release" and uncheck "Build" for "runsuite".
-
-Make the changes to the configuration properties as per the x86 instructions, above, and then build the project. Move
-
-	win32/VC10/x64/Release/iconv.lib
-	win32/VC10/x64/Release/libxml2.lib
-
-to the Libraries/win64 directory and copy
-
-	libxml2-2.9.4\include\libxml
-
-into the BE Plugin Headers folder and create a folder, iconv, in the BE Plugin Headers folder and copy
-
-	libiconv-1.14.vc10\include\iconv.h
-
-into that.
-
+	Libraries\win64\iconv.lib
+		
+		
 =======================================================================
-libxslt & libexslt - 1.1.29
+libxml2 - 2.9.10
 =======================================================================
 
 Download the source from
 
-	http://xmlsoft.org/XSLT/downloads.html
+	https://gitlab.gnome.org/GNOME/libxml2/
 
 and expand it into a directory on the Desktop.
 
-Note: the full path of the directory should not contain any spaces.
 
-For Win32 builds use the "VS2015 x86 Native Command Prompt" and for x64 builds the "VS2015 x64 Native Command Prompt".
+Launch the "VS2019 x64 Native Command Prompt" then
 
-Move to the win32 directory in the archive
+	cd Desktop\libxml2-2.9.10\win32
 
-	cd Desktop\libxslt-1.1.29\win32
+Run the commands (changing the include= & lib= paths as appropriate)
+
+	cscript configure.js static=yes debug=no cruntime=-MT include="<path to BaseElements-Plugin\Headers\iconv>" lib="<patjh tp BaseElements-Plugin>\Libraries\win64"
+
+Then
+
+	nmake -f Makefile.msvc MFLAGS=-MT
+
+to configure and build the source.
+
+Finally, copy the headers directory
+
+	include\libxml2
+
+into the project Headers directory and copy the library
+
+	bin.msvc\libxml2_a.lib
+
+into the project Libraries\win64 directory as
+
+	libxml2.lib
+
+
+=======================================================================
+libxslt - 1.1.34
+=======================================================================
+
+Download the source from
+
+	https://gitlab.gnome.org/GNOME/libxslt/
+
+and expand it into a directory on the Desktop.
+
+
+Launch the "VS2019 x64 Native Command Prompt" then
+
+	cd Desktop\libxslt-1.1.34\win32
 
 Run the commands (changing the include= & lib= paths as appropriate)
 
@@ -348,7 +330,7 @@ to configure and build the source.
 
 Finally, place the headers from the directories
 
-	libxslt-1.1.29\libxslt & libxslt-1.1.29\libexslt
+	libxslt-1.1.34\libxslt & libxslt-1.1.34\libexslt
 
 into directories, libxslt & libexslt, in the Headers directory and copy the libraries
 

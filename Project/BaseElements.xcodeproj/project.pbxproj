@@ -144,9 +144,11 @@
 		4D44BC21200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
 		4D44BC22200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D44BC1E200FAD9E0028449D /* BEMimeticMIMEEntity.cpp */; };
 		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
-		4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06701C23B389006899FE /* libiconv.tbd */; };
-		4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06761C23B3A9006899FE /* libcharset.tbd */; };
 		4D4C06791C23B3B6006899FE /* libldap.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06781C23B3B6006899FE /* libldap.tbd */; };
+		4D5668A625DCD3F700BB450F /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A425DCD3F600BB450F /* libcharset.a */; };
+		4D5668A725DCD3F700BB450F /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A525DCD3F600BB450F /* libiconv.a */; };
+		4D5668AB25DCD42F00BB450F /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A425DCD3F600BB450F /* libcharset.a */; };
+		4D5668AC25DCD42F00BB450F /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A525DCD3F600BB450F /* libiconv.a */; };
 		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
 		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
 		4D703AD42230D803007632BA /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD12230D803007632BA /* libPocoZip.a */; };
@@ -166,6 +168,8 @@
 		4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4DB857A31C646DF600D0192A /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
+		4DBCCD1D25DB76BA0000017C /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1B25DB76BA0000017C /* libiconv.a */; };
+		4DBCCD1E25DB76BA0000017C /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1C25DB76BA0000017C /* libcharset.a */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
@@ -204,7 +208,6 @@
 		4DFA0D73222E3287006EF9FB /* libPocoFoundationd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D70222E3287006EF9FB /* libPocoFoundationd.a */; };
 		4DFA0D74222E3287006EF9FB /* libPocoJSONd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D71222E3287006EF9FB /* libPocoJSONd.a */; };
 		4DFA0D77222E34A8006EF9FB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D75222E3493006EF9FB /* libz.tbd */; };
-		4DFA0D79222E34D3006EF9FB /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D78222E34D3006EF9FB /* libiconv.tbd */; };
 		4DFA0D7B222E34E1006EF9FB /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7A222E34E1006EF9FB /* libbz2.tbd */; };
 		4DFA0D7D222E35C1006EF9FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7C222E35C1006EF9FB /* UIKit.framework */; };
 		4DFA0D7E222E3603006EF9FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7C222E35C1006EF9FB /* UIKit.framework */; };
@@ -214,10 +217,9 @@
 		4DFA0D88222E361C006EF9FB /* libPocoZipd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D82222E361C006EF9FB /* libPocoZipd.a */; };
 		4DFA0D89222E361C006EF9FB /* libPocoFoundationd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D83222E361C006EF9FB /* libPocoFoundationd.a */; };
 		4DFA0D8A222E361C006EF9FB /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
-		4DFA0D8B222E369C006EF9FB /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D78222E34D3006EF9FB /* libiconv.tbd */; };
 		4DFA0D8C222E36A6006EF9FB /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7A222E34E1006EF9FB /* libbz2.tbd */; };
 		4DFA0D8D222E36A6006EF9FB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D75222E3493006EF9FB /* libz.tbd */; };
-		6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
 		B282D74C201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 		B282D74D201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 		B282D74E201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
@@ -319,6 +321,8 @@
 		4D4C06781C23B3B6006899FE /* libldap.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libldap.tbd; path = usr/lib/libldap.tbd; sourceTree = SDKROOT; };
 		4D55C63815EE0F0A008F7FBA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
+		4D5668A425DCD3F600BB450F /* libcharset.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcharset.a; path = ../Libraries/iOS/libcharset.a; sourceTree = "<group>"; };
+		4D5668A525DCD3F600BB450F /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = ../Libraries/iOS/libiconv.a; sourceTree = "<group>"; };
 		4D59DAFA16F95E2400F87180 /* BEValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEValueList.h; path = ../Source/BEValueList.h; sourceTree = "<group>"; };
 		4D668AA31A36BC8900D14592 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
 		4D668AA41A36BC8900D14592 /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
@@ -369,6 +373,8 @@
 		4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPContainerAttachments.cpp; path = ../Source/BESMTPContainerAttachments.cpp; sourceTree = "<group>"; };
 		4DB857A21C646DF600D0192A /* BESMTPContainerAttachments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTPContainerAttachments.h; path = ../Source/BESMTPContainerAttachments.h; sourceTree = "<group>"; };
 		4DB9C6CA228539E400BAA17F /* duk_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_config.h; sourceTree = "<group>"; };
+		4DBCCD1B25DB76BA0000017C /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = ../Libraries/macOS/libiconv.a; sourceTree = "<group>"; };
+		4DBCCD1C25DB76BA0000017C /* libcharset.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcharset.a; path = ../Libraries/macOS/libcharset.a; sourceTree = "<group>"; };
 		4DC182C8144CEC0900E27CAA /* BEZlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEZlib.h; path = ../Source/BEZlib.h; sourceTree = SOURCE_ROOT; };
 		4DC182C9144CEC0900E27CAA /* BEZlib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEZlib.cpp; path = ../Source/BEZlib.cpp; sourceTree = SOURCE_ROOT; };
 		4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECurlOption.cpp; path = ../Source/BECurlOption.cpp; sourceTree = "<group>"; };
@@ -414,6 +420,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D5668A625DCD3F700BB450F /* libcharset.a in Frameworks */,
+				4D5668A725DCD3F700BB450F /* libiconv.a in Frameworks */,
 				4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */,
 				4D362A531F2081B90036B751 /* iOSAppSDK.framework in Frameworks */,
 				4DFA0D7D222E35C1006EF9FB /* UIKit.framework in Frameworks */,
@@ -441,7 +449,6 @@
 				4D362A3D1F207AE70036B751 /* libxslt.a in Frameworks */,
 				4DFA0D77222E34A8006EF9FB /* libz.tbd in Frameworks */,
 				4DFA0D7B222E34E1006EF9FB /* libbz2.tbd in Frameworks */,
-				4DFA0D79222E34D3006EF9FB /* libiconv.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,6 +456,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D5668AB25DCD42F00BB450F /* libcharset.a in Frameworks */,
+				4D5668AC25DCD42F00BB450F /* libiconv.a in Frameworks */,
 				4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */,
 				4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */,
 				4DFA0D7E222E3603006EF9FB /* UIKit.framework in Frameworks */,
@@ -476,7 +485,6 @@
 				4D362A9D1F2085880036B751 /* libxslt.a in Frameworks */,
 				4DFA0D8C222E36A6006EF9FB /* libbz2.tbd in Frameworks */,
 				4DFA0D8D222E36A6006EF9FB /* libz.tbd in Frameworks */,
-				4DFA0D8B222E369C006EF9FB /* libiconv.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,8 +492,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DBCCD1D25DB76BA0000017C /* libiconv.a in Frameworks */,
+				4DBCCD1E25DB76BA0000017C /* libcharset.a in Frameworks */,
 				4D33C6C4229BC90200CEA53F /* libboost_program_options.a in Frameworks */,
-				4D33C6C2229BC8E800CEA53F /* DiskArbitration.framework in Frameworks */,
 				4D703AD42230D803007632BA /* libPocoZip.a in Frameworks */,
 				4D703AD52230D803007632BA /* libPocoJSON.a in Frameworks */,
 				4D703AD62230D803007632BA /* libPocoFoundation.a in Frameworks */,
@@ -504,18 +513,17 @@
 				4D11F3ED1F271B5100D78042 /* libexslt.a in Frameworks */,
 				4D11F3EB1F271B1F00D78042 /* libcrypto.a in Frameworks */,
 				4D11F3E91F271B0C00D78042 /* libssl.a in Frameworks */,
-				4D7624421E0A3FFE00266C0D /* libexpat.tbd in Frameworks */,
-				4D7624401E0A386F00266C0D /* libbz2.tbd in Frameworks */,
-				4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */,
 				4D76243D1E0A37F600266C0D /* libfreetype.a in Frameworks */,
 				4D76243C1E0A37F600266C0D /* libfontconfig.a in Frameworks */,
 				4D76243E1E0A37F600266C0D /* libpodofo.a in Frameworks */,
-				6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */,
 				4DD510241DD136F200763F7E /* libjansson.a in Frameworks */,
-				4D7613871C460D7300FC651E /* Security.framework in Frameworks */,
+				4D7624421E0A3FFE00266C0D /* libexpat.tbd in Frameworks */,
+				4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */,
+				4D7624401E0A386F00266C0D /* libbz2.tbd in Frameworks */,
 				4D4C06791C23B3B6006899FE /* libldap.tbd in Frameworks */,
-				4D4C06771C23B3A9006899FE /* libcharset.tbd in Frameworks */,
-				4D4C06711C23B389006899FE /* libiconv.tbd in Frameworks */,
+				6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */,
+				4D33C6C2229BC8E800CEA53F /* DiskArbitration.framework in Frameworks */,
+				4D7613871C460D7300FC651E /* Security.framework in Frameworks */,
 				4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -706,6 +714,10 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4DBCCD1C25DB76BA0000017C /* libcharset.a */,
+				4DBCCD1B25DB76BA0000017C /* libiconv.a */,
+				4D5668A425DCD3F600BB450F /* libcharset.a */,
+				4D5668A525DCD3F600BB450F /* libiconv.a */,
 				4D42B4DC25CB8014007C120E /* libboost.a */,
 				4D42B4E425CB8064007C120E /* libboost.a */,
 				4D42B4CA25CB7A44007C120E /* libboost_atomic.a */,
@@ -1174,7 +1186,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INSTALL_PATH = /Library/Frameworks;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					../Libraries/iOS,
@@ -1234,7 +1246,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INSTALL_PATH = /Library/Frameworks;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					../Libraries/iOS,
@@ -1291,7 +1303,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INSTALL_PATH = /Library/Frameworks;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					../Libraries/iOS,
@@ -1351,7 +1363,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INSTALL_PATH = /Library/Frameworks;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					../Libraries/iOS,
