@@ -2,7 +2,7 @@
 macOS
 =======================================================================
 
-On macOS the plugin is built using macOS 11.2.1 and Xcode 12.4.
+On macOS the plugin is built using macOS 11.2.2 and Xcode 12.4.
 
 Download the FileMaker External Plug-In API from
 
@@ -55,26 +55,6 @@ Copy the header and library files.
 
 
 =======================================================================
-liboauth - 1.0.3
-=======================================================================
-
-Download the source from
-
-	http://liboauth.sourceforge.net/
-
-and extract the archive. Then
-
-	cd liboauth-1.0.3
-	./configure CFLAGS="-mmacosx-version-min=10.7"
-	make
-
-Copy the header and library files.
-
-	cp ./src/oauth.h "${SRCROOT}/Headers/"
-	cp ./src/.libs/liboauth.a "${SRCROOT}/Libraries/macOS"
-
-
-=======================================================================
 mimetic - 0.9.8
 =======================================================================
 
@@ -118,7 +98,7 @@ with
 
 
 =======================================================================
-OpenSSL - 1.0.2g
+OpenSSL - 1.1.1
 =======================================================================
 
 Download the latest openssl source from
@@ -127,18 +107,18 @@ Download the latest openssl source from
 
 and extract the archive. Then
 
-	cd openssl-1.0.2g
-	./Configure darwin64-x86_64-cc -mmacosx-version-min=10.7 --prefix="$(pwd)/build"
+	cd openssl-OpenSSL_1_1_1-stable 
+	./configure darwin64-x86_64-cc -mmacosx-version-min=10.13 no-engine no-hw no-shared --prefix="${$(pwd)}/_build_macos"
 	make install
 
 Copy the header and library files.
 
-	cp -R ./build/include/openssl "${SRCROOT}/Headers/"
-	cp ./build/lib/libcrypto.a ./build/lib/libssl.a "${SRCROOT}/Libraries/macOS/"
+	cp -R _build_macos/include/openssl "${SRCROOT}/Headers/"
+	cp _build_macos/lib/libcrypto.a ./_build_macos/lib/libssl.a "${SRCROOT}/Libraries/macOS/"
 
 
 =======================================================================
-libssh2 - 1.7.0
+libssh2 - 1.9.0
 =======================================================================
 
 Download the source from
@@ -147,19 +127,18 @@ Download the source from
 
 and extract the archive. Then
 
-	cd libssh2-1.7.0
-	CFLAGS="-mmacosx-version-min=10.7 -I<path_to_openssl/include>" LDFLAGS="-L<path_to_openssl/lib>" ./configure --with-openssl --with-libz --without-libgcrypt --prefix="$(pwd)/build" -exec-prefix="$(pwd)/build" --disable-shared && make install
-
-(replacing <paths> as appropriate).
+	cd libssh2-1.9.0
+	CFLAGS="-mmacosx-version-min=10.13 -I${SRCROOT}/Headers/" LDFLAGS="-L${SRCROOT}/Libraries/macOS/" ./configure --with-openssl --with-libz --without-libgcrypt --prefix="${$(pwd)}/_build_macos" -exec-prefix="${$(pwd)}/_build_macos" --disable-shared
+	make install
 
 Copy the header and library files.
 
-	cp -R ./build/include "${SRCROOT}/Headers/libssh2"
-	cp ./build/lib/libssh2.a "${SRCROOT}/Libraries/macOS"
+	cp -R _build_macos/include "${SRCROOT}/Headers/libssh2"
+	cp _build_macos/lib/libssh2.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
-libcurl - 7.48
+libcurl - 7.75.0
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -168,16 +147,36 @@ Download the source from
 
 	http://curl.haxx.se/download.html
 
-and extract the archive. Then
+and expand it into a directory on the Desktop. Then
 
-	cd curl-7.48.0
-	./configure CFLAGS="-mmacosx-version-min=10.7 -I${SRCROOT}/Headers/libssh2" LDFLAGS="-L${SRCROOT}/Libraries/macOS" --disable-dependency-tracking --disable-shared --with-libz --prefix="$(pwd)/build" --with-libssh2
+	cd curl-7.75.0
+	./configure CFLAGS="-mmacosx-version-min=10.13" CPPFLAGS="-I${SRCROOT}/Headers -I${SRCROOT}/Headers/libssh2 -I${SRCROOT}/Headers/openssl" LIBS="-L${SRCROOT}/Libraries/macOS" --disable-dependency-tracking --enable-static --disable-shared --with-libz --prefix="${$(pwd)}/_build_macos" --with-libssh2 --with-ssl
 	make install
 
 Copy the header and library files.
 
-	cp -R ./build/include/curl "${SRCROOT}/Headers/"
-	cp ./build/lib/libcurl.a "${SRCROOT}/Libraries/macOS"
+	cp -R _build_macos/include/curl "${SRCROOT}/Headers/"
+	cp _build_macos/lib/libcurl.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+liboauth - 1.0.3
+=======================================================================
+
+Download the source from
+
+	http://liboauth.sourceforge.net/
+
+and extract the archive. Then
+
+	cd liboauth-1.0.3
+	./configure CFLAGS="-mmacosx-version-min=10.13 -I${SRCROOT}/Headers" LDFLAGS="-L${SRCROOT}/Libraries/macOS" --prefix="${$(pwd)}/_build_macos"
+	make install
+
+Copy the header and library files.
+
+	cp _build_macos/include/oauth.h "${SRCROOT}/Headers/"
+	cp _build_macos/lib/liboauth.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================

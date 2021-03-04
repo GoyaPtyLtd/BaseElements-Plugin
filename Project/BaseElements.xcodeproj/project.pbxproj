@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -72,7 +72,6 @@
 		4D362A121F2079E30036B751 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
 		4D362A131F2079E30036B751 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
 		4D362A151F2079E30036B751 /* BEXMLSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */; };
-		4D362A2C1F207AE70036B751 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A181F207AE70036B751 /* libcrypto.a */; };
 		4D362A2D1F207AE70036B751 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A191F207AE70036B751 /* libcurl.a */; };
 		4D362A2E1F207AE70036B751 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1A1F207AE70036B751 /* libexslt.a */; };
 		4D362A2F1F207AE70036B751 /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1B1F207AE70036B751 /* libfontconfig.a */; };
@@ -81,8 +80,6 @@
 		4D362A321F207AE70036B751 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1E1F207AE70036B751 /* libjpeg.a */; };
 		4D362A331F207AE70036B751 /* libmimetic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1F1F207AE70036B751 /* libmimetic.a */; };
 		4D362A341F207AE70036B751 /* liboauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A201F207AE70036B751 /* liboauth.a */; };
-		4D362A391F207AE70036B751 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A251F207AE70036B751 /* libssh2.a */; };
-		4D362A3A1F207AE70036B751 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A261F207AE70036B751 /* libssl.a */; };
 		4D362A3B1F207AE70036B751 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A271F207AE70036B751 /* libturbojpeg.a */; };
 		4D362A3C1F207AE70036B751 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A281F207AE70036B751 /* libxml2.a */; };
 		4D362A3D1F207AE70036B751 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A291F207AE70036B751 /* libxslt.a */; };
@@ -201,21 +198,18 @@
 		4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DD510241DD136F200763F7E /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
+		4DE1231525E89F3F00518D6D /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A251F207AE70036B751 /* libssh2.a */; };
+		4DE1233E25E8A58900518D6D /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A181F207AE70036B751 /* libcrypto.a */; };
+		4DE1234525E8A5B200518D6D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A261F207AE70036B751 /* libssl.a */; };
 		4DFA0D6C222E3211006EF9FB /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D69222E3211006EF9FB /* libPocoZip.a */; };
 		4DFA0D6D222E3211006EF9FB /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */; };
 		4DFA0D6E222E3211006EF9FB /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */; };
-		4DFA0D72222E3287006EF9FB /* libPocoZipd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6F222E3287006EF9FB /* libPocoZipd.a */; };
-		4DFA0D73222E3287006EF9FB /* libPocoFoundationd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D70222E3287006EF9FB /* libPocoFoundationd.a */; };
-		4DFA0D74222E3287006EF9FB /* libPocoJSONd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D71222E3287006EF9FB /* libPocoJSONd.a */; };
 		4DFA0D77222E34A8006EF9FB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D75222E3493006EF9FB /* libz.tbd */; };
 		4DFA0D7B222E34E1006EF9FB /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7A222E34E1006EF9FB /* libbz2.tbd */; };
 		4DFA0D7D222E35C1006EF9FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7C222E35C1006EF9FB /* UIKit.framework */; };
 		4DFA0D7E222E3603006EF9FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7C222E35C1006EF9FB /* UIKit.framework */; };
 		4DFA0D85222E361C006EF9FB /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7F222E361C006EF9FB /* libPocoJSON.a */; };
-		4DFA0D86222E361C006EF9FB /* libPocoJSONd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D80222E361C006EF9FB /* libPocoJSONd.a */; };
 		4DFA0D87222E361C006EF9FB /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D81222E361C006EF9FB /* libPocoZip.a */; };
-		4DFA0D88222E361C006EF9FB /* libPocoZipd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D82222E361C006EF9FB /* libPocoZipd.a */; };
-		4DFA0D89222E361C006EF9FB /* libPocoFoundationd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D83222E361C006EF9FB /* libPocoFoundationd.a */; };
 		4DFA0D8A222E361C006EF9FB /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
 		4DFA0D8C222E36A6006EF9FB /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7A222E34E1006EF9FB /* libbz2.tbd */; };
 		4DFA0D8D222E36A6006EF9FB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D75222E3493006EF9FB /* libz.tbd */; };
@@ -392,6 +386,8 @@
 		4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXSLT.cpp; path = ../Source/BEXSLT.cpp; sourceTree = "<group>"; };
 		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
 		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
+		4DE1233125E8A4B500518D6D /* libcrypto-arm64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcrypto-arm64.a"; path = "../Libraries/iOS/iPhoneOS/libcrypto-arm64.a"; sourceTree = "<group>"; };
+		4DE1233225E8A4B500518D6D /* libssl-arm64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libssl-arm64.a"; path = "../Libraries/iOS/iPhoneOS/libssl-arm64.a"; sourceTree = "<group>"; };
 		4DFA0D69222E3211006EF9FB /* libPocoZip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZip.a; path = ../Libraries/iOS/iPhoneOS/libPocoZip.a; sourceTree = "<group>"; };
 		4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = ../Libraries/iOS/iPhoneOS/libPocoFoundation.a; sourceTree = "<group>"; };
 		4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoJSON.a; path = ../Libraries/iOS/iPhoneOS/libPocoJSON.a; sourceTree = "<group>"; };
@@ -420,6 +416,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DE1234525E8A5B200518D6D /* libssl.a in Frameworks */,
+				4DE1233E25E8A58900518D6D /* libcrypto.a in Frameworks */,
 				4D5668A625DCD3F700BB450F /* libcharset.a in Frameworks */,
 				4D5668A725DCD3F700BB450F /* libiconv.a in Frameworks */,
 				4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */,
@@ -427,13 +425,10 @@
 				4DFA0D7D222E35C1006EF9FB /* UIKit.framework in Frameworks */,
 				4D1BFE561F3AC9A600805CD3 /* libpodofo.a in Frameworks */,
 				4DFA0D6D222E3211006EF9FB /* libPocoFoundation.a in Frameworks */,
-				4DFA0D73222E3287006EF9FB /* libPocoFoundationd.a in Frameworks */,
+				4DE1231525E89F3F00518D6D /* libssh2.a in Frameworks */,
 				4DFA0D6E222E3211006EF9FB /* libPocoJSON.a in Frameworks */,
 				4D42B4E025CB802F007C120E /* libboost.a in Frameworks */,
-				4DFA0D74222E3287006EF9FB /* libPocoJSONd.a in Frameworks */,
 				4DFA0D6C222E3211006EF9FB /* libPocoZip.a in Frameworks */,
-				4DFA0D72222E3287006EF9FB /* libPocoZipd.a in Frameworks */,
-				4D362A2C1F207AE70036B751 /* libcrypto.a in Frameworks */,
 				4D362A2D1F207AE70036B751 /* libcurl.a in Frameworks */,
 				4D362A2E1F207AE70036B751 /* libexslt.a in Frameworks */,
 				4D362A2F1F207AE70036B751 /* libfontconfig.a in Frameworks */,
@@ -442,8 +437,6 @@
 				4D362A321F207AE70036B751 /* libjpeg.a in Frameworks */,
 				4D362A331F207AE70036B751 /* libmimetic.a in Frameworks */,
 				4D362A341F207AE70036B751 /* liboauth.a in Frameworks */,
-				4D362A391F207AE70036B751 /* libssh2.a in Frameworks */,
-				4D362A3A1F207AE70036B751 /* libssl.a in Frameworks */,
 				4D362A3B1F207AE70036B751 /* libturbojpeg.a in Frameworks */,
 				4D362A3C1F207AE70036B751 /* libxml2.a in Frameworks */,
 				4D362A3D1F207AE70036B751 /* libxslt.a in Frameworks */,
@@ -462,11 +455,8 @@
 				4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */,
 				4DFA0D7E222E3603006EF9FB /* UIKit.framework in Frameworks */,
 				4DFA0D85222E361C006EF9FB /* libPocoJSON.a in Frameworks */,
-				4DFA0D86222E361C006EF9FB /* libPocoJSONd.a in Frameworks */,
 				4DFA0D87222E361C006EF9FB /* libPocoZip.a in Frameworks */,
-				4DFA0D88222E361C006EF9FB /* libPocoZipd.a in Frameworks */,
 				4D42B4E525CB8074007C120E /* libboost.a in Frameworks */,
-				4DFA0D89222E361C006EF9FB /* libPocoFoundationd.a in Frameworks */,
 				4DFA0D8A222E361C006EF9FB /* libPocoFoundation.a in Frameworks */,
 				4D1BFE571F3AC9B900805CD3 /* libpodofo.a in Frameworks */,
 				4D362A8C1F2085880036B751 /* libcrypto.a in Frameworks */,
@@ -714,6 +704,8 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4DE1233125E8A4B500518D6D /* libcrypto-arm64.a */,
+				4DE1233225E8A4B500518D6D /* libssl-arm64.a */,
 				4DBCCD1C25DB76BA0000017C /* libcharset.a */,
 				4DBCCD1B25DB76BA0000017C /* libiconv.a */,
 				4D5668A425DCD3F600BB450F /* libcharset.a */,
@@ -887,7 +879,7 @@
 				};
 			};
 			buildConfigurationList = 6FD50587097C3165009399BF /* Build configuration list for PBXProject "BaseElements" */;
-			compatibilityVersion = "Xcode 8.0";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -1155,6 +1147,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1187,7 +1181,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
@@ -1200,6 +1198,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = arm64;
@@ -1212,6 +1211,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1247,7 +1248,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
@@ -1261,6 +1266,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1272,6 +1278,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1304,7 +1311,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
@@ -1329,6 +1340,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1364,7 +1376,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
@@ -1417,7 +1433,11 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				TEST_AFTER_BUILD = NO;
-				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
+				USER_HEADER_SEARCH_PATHS = (
+					"-isystem",
+					"\"$(SRCROOT)/../Headers\"",
+					"\"$(SRCROOT)/../Source\"",
+				);
 				VALID_ARCHS = x86_64;
 			};
 			name = Release;
@@ -1456,7 +1476,11 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				TEST_AFTER_BUILD = NO;
-				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
+				USER_HEADER_SEARCH_PATHS = (
+					"-isystem",
+					"\"$(SRCROOT)/../Headers\"",
+					"\"$(SRCROOT)/../Source\"",
+				);
 				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
@@ -1536,7 +1560,7 @@
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
@@ -1558,7 +1582,11 @@
 				SEPARATE_STRIP = YES;
 				STRIP_STYLE = "non-global";
 				SYMROOT = /tmp/Xcode/Build;
-				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
+				USER_HEADER_SEARCH_PATHS = (
+					"-isystem",
+					"\"$(SRCROOT)/../Headers\"",
+					"\"$(SRCROOT)/../Source\"",
+				);
 				VALID_ARCHS = "";
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -1643,7 +1671,7 @@
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
@@ -1666,7 +1694,11 @@
 				SEPARATE_STRIP = NO;
 				STRIP_STYLE = "non-global";
 				SYMROOT = /tmp/Xcode/Build;
-				USER_HEADER_SEARCH_PATHS = "-isystem \"$(SRCROOT)/../Headers\" \"$(SRCROOT)/../Source\"";
+				USER_HEADER_SEARCH_PATHS = (
+					"-isystem",
+					"\"$(SRCROOT)/../Headers\"",
+					"\"$(SRCROOT)/../Source\"",
+				);
 				VALID_ARCHS = "";
 				WARNING_CFLAGS = (
 					"-Wall",

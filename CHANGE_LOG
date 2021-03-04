@@ -2,7 +2,7 @@
 Version 4.2b1
 ########################################################################
 
-February 19, 2021
+February 23, 2021
 
 
 New Functions
@@ -30,14 +30,44 @@ BE_XPath: plug memory leak
 BE_XSLTApply: plug memory leak
 
 
+Curl Options Changes
+
+Added
+- CURLOPT_CONNECT_TO
+- CURLOPT_TCP_FASTOPEN
+- CURLOPT_KEEP_SENDING_ON_ERROR
+- CURLOPT_SUPPRESS_CONNECT_HEADERS
+- CURLOPT_SOCKS5_AUTH
+- CURLOPT_REQUEST_TARGET
+- CURLOPT_SSH_COMPRESSION
+- CURLOPT_HAPPY_EYEBALLS_TIMEOUT_MS
+- CURLOPT_DNS_SHUFFLE_ADDRESSES
+- CURLOPT_HAPROXYPROTOCOL
+- CURLOPT_DISALLOW_USERNAME_IN_URL
+- CURLOPT_TLS13_CIPHERS
+- CURLOPT_PROXY_TLS13_CIPHERS
+- CURLOPT_UPLOAD_BUFFERSIZE
+- CURLOPT_DOH_URL
+- CURLOPT_MAXAGE_CONN
+- CURLOPT_MAIL_RCPT_ALLLOWFAILS
+- CURLOPT_PROXY_ISSUERCERT
+- CURLOPT_AWS_SIGV4
+
+Removed
+- CURLOPT_DNS_USE_GLOBAL_CACHE
+
+
 boost libraries updated to 1.75_0 from 1.70_0
 duktape updated from 2.3.0 to 2.6.0
 Fontconfig library updated from 2.12.1 to 2.13.1
 Freetype library updated from 2.7 to 2.10.4
+libcurl updated from 7.48.0 to 7.75.0
 libiconv updated from 1.14 to 1.16 (and build our own for all platforms)
 libjpeg-turbo updated from 1.4.2 to 2.0.6
+libssh2 upated from 1.7.0 to 1.9.0
 libxml2 updated from 2.9.4 to 2.9.10
 lib(e)xslt updated from 1.1.29 to 1.1.34
+OpenSSL updated from 1.0.2g to 1.1.1
 poco updated from 1.9.2 to 1.10.1
 
 

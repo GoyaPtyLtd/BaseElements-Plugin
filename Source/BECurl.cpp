@@ -463,7 +463,6 @@ void BECurl::Init ( )
 	easy_setopt ( CURLOPT_DEBUGFUNCTION, trace_callback );
 	//	easy_setopt ( CURLOPT_DEBUGDATA, &config );
 	easy_setopt ( CURLOPT_VERBOSE, 1L ); // DEBUGFUNCTION has no effect unless enabled
-	g_curl_trace.str ( "" );
 	g_curl_trace.clear();
 
 	headers = InitalizeCallbackMemory();

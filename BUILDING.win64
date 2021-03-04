@@ -81,21 +81,6 @@ Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win
 
 
 =======================================================================
-liboauth - 1.0.3
-=======================================================================
-
-Note: OpenSSL should be built first.
-
-Download the source from
-
-	http://liboauth.sourceforge.net/
-
-Unpack directory containing the Visual Studio solution files (from the BaseElements-Plugin Projects/Extras), open the Solution make sure the project can find the BaseElements plug-in Header and Libraries directories. Then, from Build->Batch Build build the two "Release" configurations.
-
-Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib to Libraries\win64.
-
-
-=======================================================================
 mimetic - 0.9.8
 =======================================================================
 
@@ -132,44 +117,7 @@ Copy the directory containing the mimetic headers from the build/include directo
 
 
 =======================================================================
-libssh2 - 1.7.0
-=======================================================================
-
-Download the source from
-
-	http://www.libssh2.org/
-
-Open
-
-	win32\libssh2.vcproj
-
-and set the following Configuration Properties:
-
-	Project Defaults -> Character Set == Use Unicode Character Set
-	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
-	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
-
-Comment out the line
-
-	#define snprintf _snprintf
-
-in libssh2_config.h.
-
-For x64 builds select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK".
-
-Copy the library from
-
-	win32\Release_lib\libssl2.lib
-
-into the Libraries\win64 directory and copy
-
-	include
-
-to the Headers directory and rename it libssh2.
-
-
-=======================================================================
-OpenSSL - 1.0.2g
+OpenSSL - 1.1.1
 =======================================================================
 
 Building OpenSSL requires that perl is installed. The ActiveState perl (Community Edition) is a good
@@ -182,18 +130,58 @@ Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-Unpack the archive and, in a "VS2015 x64 Native Command Prompt":
+Unpack the archive and, in a "VS2019 x64 Native Command Prompt":
 
-	cd openssl-1.0.2g
+	cd openssl-OpenSSL_1_1_1-stable 
 	perl Configure VC-WIN64A enable-static-engine no-asm
+	nmake
+	
+	
 	ms\do_win64a
 	nmake -f ms\nt.mak
 
-Copy out32\libeay32.lib and out32\ssleay32.lib to Libraries\win64 and copy inc32\openssl to Headers.
+Copy libcrypto_static.lib and libssl_static.lib to Libraries\win64 and copy include\openssl to Headers.
 
 
 =======================================================================
-libcurl - 7.48
+libssh2 - 1.9.0
+=======================================================================
+
+Download the source from
+
+	http://www.libssh2.org/
+
+Open
+
+	win32\libssh2.dsw
+
+and set the following Configuration Properties for OpenSSL Lib Release:
+
+	Project Defaults -> Character Set == Use Unicode Character Set
+	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
+	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
+
+Comment out the line
+
+	#define snprintf _snprintf
+
+in libssh2_config.h.
+
+Select <New…> in the "Active Solution Platform" pop-up in the "Configuration Manager". Then select x64 in "Type or select the new platform", "Copy settings from" should be Win32 and check "Create New project platforms" and click "OK".
+
+Build the library and copy it from
+
+	win32\Release_lib\libssl2.lib
+
+into the Libraries\win64 directory and copy
+
+	include
+
+to the Headers directory and rename it libssh2.
+
+
+=======================================================================
+libcurl - 7.75.0
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -206,20 +194,19 @@ and expand it into a directory on the Desktop.
 
 Open
 
-	projects\Windows\VC14\lib\libcurl.vcproj
+	projects\Windows\VC15\curl-all.sln
 
-and set the following Configuration Properties for all projects/platforms:
+and set the following Configuration Properties for the libssh "LIB Release - LIB OpenSSL - LIB LibSSH2" configuration:
 
-	Project Defaults -> Character Set == Use Unicode Character Set
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers/libssh directory
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
 	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
 
-In Visual Studio and select "Batch Build" and select both the x86 & x64 "LIB Release - LIB OpenSSL - LIB LibSSH2" configurations and then "Build".
+In Visual Studio and select "Batch Build" and select the x64 "LIB Release - LIB OpenSSL - LIB LibSSH2" configuration and "Build" it.
 
 Copy the library from
 
-	build\Win64\VC14\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
+	build\Win64\VC15\LIB Release - LIB OpenSSL - LIB LibSSH2\libcurl.lib
 
 into the Libraries\win64 directory and copy
 
@@ -229,7 +216,22 @@ to the Headers directory.
 
 
 =======================================================================
-libxml2 - 2.9.10
+liboauth - 1.0.3
+=======================================================================
+
+Note: OpenSSL should be built first.
+
+Download the source from
+
+	http://liboauth.sourceforge.net/
+
+Unpack directory containing the Visual Studio solution files (from the BaseElements-Plugin Projects/Extras), open the Solution make sure the project can find the BaseElements plug-in Header and Libraries directories and then the "Release" configuration.
+
+Copy liboauth.h from ./src/ to the Headers directory and liboauth\Release\liboauth.lib to Libraries\win64.
+
+
+=======================================================================
+libiconv - 1.16
 =======================================================================
 
 Download the libiconv source from

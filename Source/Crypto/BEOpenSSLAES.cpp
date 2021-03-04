@@ -2,7 +2,7 @@
  BEOpenSSLAES.cpp
  BaseElements Plug-In
  
- Copyright 2014-2018 Goya. All rights reserved.
+ Copyright 2014-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -93,9 +93,8 @@ const vector<char> Encrypt_AES ( const string key, const string text, const vect
 {
 	vector<char> result;
 	
-	EVP_CIPHER_CTX context;
-	EVP_CIPHER_CTX_init ( &context );
-	int reply = EVP_EncryptInit_ex ( &context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), (unsigned char *)&input_vector[0] );
+	EVP_CIPHER_CTX * context = EVP_CIPHER_CTX_new();
+	auto reply = EVP_EncryptInit_ex ( context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), (unsigned char *)&input_vector[0] );
 	
 	if ( reply ) {
 		
@@ -106,14 +105,14 @@ const vector<char> Encrypt_AES ( const string key, const string text, const vect
 		int output_length = 0;
 		int final_output_length = 0;
 		
-		reply = EVP_EncryptUpdate ( &context, encrypted_data, &output_length, (unsigned char *)text.c_str(), (int)input_size );
+		reply = EVP_EncryptUpdate ( context, encrypted_data, &output_length, (unsigned char *)text.c_str(), (int)input_size );
 		if ( reply ) {
-			EVP_EncryptFinal_ex ( &context, encrypted_data + output_length, &final_output_length ); // reply =			
+			EVP_EncryptFinal_ex ( context, encrypted_data + output_length, &final_output_length ); // reply =
 		} else {
 			throw BEPlugin_Exception ( kEncryptionUpdateFailed );
 		}
 		
-		EVP_CIPHER_CTX_cleanup ( &context );
+		EVP_CIPHER_CTX_free ( context );
 		
 		result.insert ( result.end(), encrypted_data, encrypted_data + output_length + final_output_length );
 		
@@ -134,9 +133,8 @@ const vector<char> Decrypt_AES ( const string key, const vector<char> encrypted_
 	
 	if ( !encrypted_data.empty() ) {
 		
-		EVP_CIPHER_CTX context;
-		EVP_CIPHER_CTX_init ( &context );
-		int reply = EVP_DecryptInit_ex ( &context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), (unsigned char *)&input_vector[0] );
+		EVP_CIPHER_CTX * context = EVP_CIPHER_CTX_new();
+		auto reply = EVP_DecryptInit_ex ( context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), (unsigned char *)&input_vector[0] );
 		
 		if ( reply ) {
 			
@@ -147,16 +145,16 @@ const vector<char> Decrypt_AES ( const string key, const vector<char> encrypted_
 			int output_length = 0;
 			int final_output_length = 0;
 			
-			reply = EVP_DecryptUpdate ( &context, decrypted_data, &output_length, (unsigned char *)&encrypted_data[0], (int)input_size );
+			reply = EVP_DecryptUpdate ( context, decrypted_data, &output_length, (unsigned char *)&encrypted_data[0], (int)input_size );
 			if ( reply ) {
 				
-				EVP_DecryptFinal_ex ( &context, decrypted_data + output_length, &final_output_length );
+				EVP_DecryptFinal_ex ( context, decrypted_data + output_length, &final_output_length );
 				
 			} else {
 				throw BEPlugin_Exception ( kDecryptionUpdateFailed );
 			}
 			
-			EVP_CIPHER_CTX_cleanup ( &context );
+			EVP_CIPHER_CTX_free ( context );
 			
 			result.insert ( result.end(), decrypted_data, decrypted_data + output_length + final_output_length );
 			

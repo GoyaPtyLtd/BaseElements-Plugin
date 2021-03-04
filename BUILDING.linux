@@ -75,22 +75,6 @@ Then
 
 Copy jansson.h and jansson_config.h from build/include to the Headers directory and  build/lib/libjansson.a to Libraries/linux.
 
-=======================================================================
-OpenSSL - 1.0.2g
-=======================================================================
-
-Download the latest openssl source from
-
-	http://www.openssl.org/source/
-
-	cd openssl-1.0.2h
-	export CFLAGS=-fPIC
-	export CXXFLAGS=-fPIC
-	./config --prefix=build no-shared -fPIC
-	make depend
-	make install
-
-Copy libcrypto.a and libssl.a to Libraries/linux and copy build/include/openssl to Headers.
 
 =======================================================================
 liboauth - 1.0.3
@@ -103,10 +87,13 @@ Download the source from
 	http://liboauth.sourceforge.net/
 
 	cd openssl-1.0.3
-	CURL_CFLAGS="-I/home/mark/Dropbox/Development/BaseElements-Plugin/Headers" CURL_LIBS="/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libcurl.a" CFLAGS="-fPIC -I/home/mark/Documents/BaseElements-Plugin.git/trunk/Headers" LDFLAGS="-L/home/mark/Documents/BaseElements-Plugin.git/trunk/Libraries/linux" ./configure --prefix=/home/mark/Desktop/liboauth-1.0.3/build --disable-curl --enable-libcurl --disable-shared
+	CURL_CFLAGS="-I${SRCROOT}/Headers" CURL_LIBS="${SRCROOT}/Libraries/linux/libcurl.a" CFLAGS="-fPIC -I${SRCROOT}/Headers" LDFLAGS="-L${SRCROOT}/Libraries/linux" ./configure --prefix=$(pwd)/_build_linux --disable-curl --enable-libcurl --disable-shared
 	make install
 
-Copy liboauth.h from ./src/ to the Headers directory and liboautha  to Libraries\linux.
+Copy the header and library files.
+
+	cp _build_linux/include/oauth.h "${SRCROOT}/Headers/"
+	cp _build_linux/lib/liboauth.a "${SRCROOT}/Libraries/linux"
 
 
 =======================================================================
@@ -136,34 +123,47 @@ Copy the directory containing the mimetic headers from the build/include directo
 
 
 =======================================================================
-libssh2 - 1.7.0
+OpenSSL - 1.1.1
 =======================================================================
 
-Note: OpenSSL & zlib must be built first.
+Download the latest openssl source from
+
+	http://www.openssl.org/source/
+
+and extract the archive. Then
+
+	cd openssl-OpenSSL_1_1_1-stable 
+	./Configure linux-generic64 no-engine no-hw no-shared --prefix="$(pwd)/_build_linux"
+	make install
+
+Copy the header and library files.
+
+	cp -R _build_linux/include/openssl "${SRCROOT}/Headers/"
+	cp _build_linux/lib/libcrypto.a ./_build_linux/lib/libssl.a "${SRCROOT}/Libraries/linux/"
+
+
+=======================================================================
+libssh2 - 1.9.0
+=======================================================================
 
 Download the source from
 
 	http://www.libssh2.org/
 
-Then
+and extract the archive. Then
 
-	cd libssh2-1.7.0
-	CFLAGS="-fPIC -I/home/mark/Dropbox/Development/BaseElements-Plugin/Headers" LDFLAGS="-L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux -ldl" ./configure --prefix=/home/mark/Desktop/libssh2-1.7.0/build --with-openssl --with-libz --without-libgcrypt --disable-examples-build --disable-shared
+	cd libssh2-1.9.0
+	CFLAGS="-fPIC -I${SRCROOT}/Headers/" LDFLAGS="-L${SRCROOT}/Libraries/linux/" ./configure --with-openssl --with-libz --without-libgcrypt --prefix="$(pwd)/_build_linux" -exec-prefix="$(pwd)/_build_linux" --disable-shared
 	make install
-	
-Copy
 
-	build/lib/libssh2.a
+Copy the header and library files.
 
-into the Libraries/osx directory and copy
-
-	build/include
-
-to Headers/libssh
+	cp -R _build_linux/include "${SRCROOT}/Headers/libssh2"
+	cp _build_linux/lib/libssh2.a "${SRCROOT}/Libraries/linux"
 
 
 =======================================================================
-libcurl - 7.50.1
+libcurl - 7.75.0
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -174,19 +174,14 @@ Download the source from
 
 and expand it into a directory on the Desktop. Then
 
-	cd curl-7.50.1
-	CPPFLAGS="-I/home/mark/Dropbox/Development/BaseElements-Plugin/Headers" LDFLAGS="-L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libssl.a -L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libcrypto.a -L/home/mark/Dropbox/Development/BaseElements-Plugin/Libraries/linux/libssh2.a -lpthread -ldl" ./configure --with-ssl='/home/mark/Desktop/openssl-1.0.2h/build' --with-libssh2='/home/mark/Documents/LibraryBuilds/libssh2-1.7.0/build' --disable-shared --with-zlib --prefix='/home/mark/Documents/LibraryBuilds/curl-7.50.1/build'
+	cd curl-7.75.0
+	./configure CFLAGS="-I${SRCROOT}/Headers/libssh2" LDFLAGS="-L${SRCROOT}/Libraries/linux/libcrypto.a -L${SRCROOT}/Libraries/linux/libssl.a -L${SRCROOT}/Libraries/linux/libssh2.a" --disable-dependency-tracking --enable-shared --disable-shared --with-libz --prefix="$(pwd)/_build_linux" --with-libssh2
 	make install
 
-Copy
+Copy the header and library files.
 
-	build/lib/curl.a
-
-into the Libraries/linux directory and
-
-	build/inlcude/curl
-
-into Headers.
+	cp -R _build_linux/include/curl "${SRCROOT}/Headers/"
+	cp _build_linux/lib/libcurl.a "${SRCROOT}/Libraries/linux"
 
 
 =======================================================================

@@ -46,7 +46,6 @@
 			<Add option="-Wl,-soname=BaseElements_Plugin_4.2.0" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="../Libraries/linux/libz.a" />
-			<Add library="/usr/lib64/libssh2.so.1" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
 			<Add library="../Libraries/linux/libboost_filesystem.a" />
 			<Add library="../Libraries/linux/libboost_program_options.a" />
@@ -67,9 +66,10 @@
 			<Add library="../Libraries/linux/libfreetype.a" />
 			<Add library="../Libraries/linux/libfontconfig.a" />
 			<Add library="../Libraries/linux/libpodofo.a" />
-			<Add library="/usr/lib64/libcrypto.so" />
-			<Add library="/usr/lib64/libssl.so" />
 			<Add library="../Libraries/linux/libiconv.a" />
+			<Add library="../Libraries/linux/libcrypto.a" />
+			<Add library="../Libraries/linux/libssl.a" />
+			<Add library="../Libraries/linux/libssh2.a" />
 			<Add directory="PlugInSDK/Libraries/Linux" />
 			<Add directory="../Libraries/linux" />
 		</Linker>

@@ -2,7 +2,7 @@
  BEOpenSSLRSA.cpp
  BaseElements Plug-In
  
- Copyright 2018 Goya. All rights reserved.
+ Copyright 2018-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -69,8 +69,8 @@ const vector<char> SignatureGenerate_RSA ( const vector<unsigned char> data, con
 		throw BEPlugin_Exception ( kRSAReadPrivateKeyFailed );
 	}
 
-	unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_destroy)> ctx ( EVP_MD_CTX_create(), &EVP_MD_CTX_destroy );
-	unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)> evpPkey ( EVP_PKEY_new(), &EVP_PKEY_free );
+	unique_ptr<EVP_MD_CTX, decltype ( &EVP_MD_CTX_free )> ctx ( EVP_MD_CTX_create(), &EVP_MD_CTX_free );
+	unique_ptr<EVP_PKEY, decltype ( &EVP_PKEY_free )> evpPkey ( EVP_PKEY_new(), &EVP_PKEY_free );
 
 	if ( EVP_PKEY_set1_RSA( evpPkey.get(), priKeyRsa.get() ) <= 0 ) {
 		throw BEPlugin_Exception ( kRSAReadPrivateKeyFailed );
@@ -129,7 +129,7 @@ const bool SignatureVerify_RSA ( const vector<unsigned char> data, const string 
 		}
 	}
 
-	unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_destroy)> ctx ( EVP_MD_CTX_create(), &EVP_MD_CTX_destroy );
+	unique_ptr<EVP_MD_CTX, decltype ( &EVP_MD_CTX_free )> ctx ( EVP_MD_CTX_create(), &EVP_MD_CTX_free );
 
 	const EVP_MD * digest = getDigestByName ( digestName );
 

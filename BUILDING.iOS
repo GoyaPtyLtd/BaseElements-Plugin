@@ -2,7 +2,7 @@
 iOS
 =======================================================================
 
-Version 4.0 of the plug-in is built on macOS 10.14.4 using Xcode 10.2. The Xcode Command Line Tools are also needed.
+On macOS the plugin is built using macOS 11.2.1 and Xcode 12.4.
 
 Download the FileMaker External Plug-In API from
 
@@ -55,40 +55,6 @@ Copy jansson.h and jansson_config.h from output/<platform>/include to the Header
 
 
 =======================================================================
-OpenSSL - 1.0.2g
-=======================================================================
-
-Download the build script from
-
-	https://gist.github.com/armadsen/b30f352a8d6f6c87a146#file-openssl-build-sh
-	
-Change the OPENSSL_VERSION in script to "openssl-1.0.2g"
-
-and add buildIOS and lipo entries for arm7s.
-
-Then run
-
-	sh ./openssl-build.sh
-
-Copy lib/libcrypto.a and lib/libssl.a to Libraries/iOS and copy include/openssl to Headers.
-
-
-=======================================================================
-liboauth - 1.0.3
-=======================================================================
-
-Download the source from
-
-	http://liboauth.sourceforge.net/
-
-and follow the supplied building instructions but with the following ./configure command (to build a universal binary)
-
-	./compile_for_ios.sh
-
-Copy oauth.h from ./src/ to the Headers directory if necessary.
-
-
-=======================================================================
 mimetic - 0.9.8
 =======================================================================
 
@@ -113,7 +79,25 @@ If necessary copy the directory containing the mimetic headers from the output/<
 
 
 =======================================================================
-libssh2 - 1.7.0
+OpenSSL - 1.1.1j
+=======================================================================
+
+Download the latest openssl source from
+
+	http://www.openssl.org/source/
+
+and extract the archive. Then
+
+	sh ./build_openssl.sh
+
+Copy the header and library files.
+
+	cp -R openssl-OpenSSL_1_1_1-stable/include/openssl "${SRCROOT}/Headers/"
+	cp openssl_iOS_Release/libcrypto.a openssl_iOS_Release/libssl.a "${SRCROOT}/Libraries/iOS"
+
+
+=======================================================================
+libssh2 - 1.9.0
 =======================================================================
 
 Note: OpenSSL & zlib must be built first.
@@ -122,20 +106,22 @@ Download the source from
 
 	http://www.libssh2.org/
 
-Copy the compile_for_ios.sh to the distribution directory and
+Download the latest openssl source from
 
-	cd libssh2-1.7.0
-	./compile_for_ios.sh "--with-openssl --with-libz --without-libgcrypt --disable-examples-build -without-libssl-prefix"	
+	http://www.openssl.org/source/
 
-If necessary, copy
+and extract the archive. Then
 
-	output/<platform>/include
+	sh ./build_openssh2.sh
 
-to Headers/libssh
+Copy the header and library files.
+
+	cp -R libssh2-1.9.0/include/openssl "${SRCROOT}/Headers/"
+	cp libssh2_iOS_Release/libssh2.a "${SRCROOT}/Libraries/iOS"
 
 
 =======================================================================
-libcurl - 7.48
+libcurl - 7.75.0
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -144,16 +130,32 @@ Download the source from
 
 	http://curl.haxx.se/download.html
 
-Copy the compile_for_ios.sh to the distribution directory and
+Copy build_libcurl.sh to the same directory as the expanded source and
 
-	cd curl-7.48.0
-	./compile_for_ios.sh "--with-ssl --with-libz -- with-libssh2"	
+	sh ./build_libcurl.sh
 
-If necessary Copy
+Copy the header and library files.
 
-	output/<platform>/inlcude/curl
+	cp -R curl-7.75.0/include/curl "${SRCROOT}/Headers/"
+	cp libcurl_iOS_Release/libcurl.a "${SRCROOT}/Libraries/iOS"
 
-into Headers.
+
+=======================================================================
+liboauth - 1.0.3
+=======================================================================
+
+Download the source from
+
+	http://liboauth.sourceforge.net/
+
+Copy build_libcurl.sh to the same directory as the expanded source and
+
+	./compile_for_ios.sh
+
+Copy the header and library files.
+
+	cp liboauth-1.0.3/src/oauth.h "${SRCROOT}/Headers/"
+	cp liboauth_iOS_Release/liboauth.a "${SRCROOT}/Libraries/iOS"
 
 
 =======================================================================
@@ -329,7 +331,7 @@ Edit
 to remove references to CMP0033 and the PNG library. Then copy the compile_for_ios.sh to the distribution directory and
 
 	PATH="/Applications/CMake.app/Contents/bin":"$PATH"
-	CFLAGS="-mmacosx-version-min=10.7" && CPPFLAGS="-mmacosx-version-min=10.7" && cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/freetype2" -DFREETYPE_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/macOS>/libfreetype.a" -DFONTCONFIG_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/macOS>/libfontconfig.a" -DFONTCONFIG_LIBRARIES="<path to /BaseElements-Plugin/Libraries/macOS>" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_C_FLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" -DCMAKE_CXX_FLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" ./
+	CFLAGS="-mmacosx-version-min=10.13" && CPPFLAGS="-mmacosx-version-min=10.13" && cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/freetype2" -DFREETYPE_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/macOS>/libfreetype.a" -DFONTCONFIG_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/macOS>/libfontconfig.a" -DFONTCONFIG_LIBRARIES="<path to /BaseElements-Plugin/Libraries/macOS>" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_C_FLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" -DCMAKE_CXX_FLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" ./
 	make install
 
 then copy _build/lib/libpodofo.a to Libraries/macOS and _build/include/podofo to Headers.
