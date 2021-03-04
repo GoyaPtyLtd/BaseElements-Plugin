@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
  
- Copyright 2010-2020 Goya. All rights reserved.
+ Copyright 2010-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -195,10 +195,10 @@ enum functions {
 	kBE_JSON_ArraySize = 302,
 	kBE_JSON_Encode_Deprecated = 303,
 //	kBE_OAuth_RequestToken = 320, // Never Implemented
-	kBE_OAuthRequestAccessToken_Deprecated = 321, // Deprecated in 4.1.4
+	kBE_OAuthRequestAccessToken_Deprecated = 321, // Deprecated in 4.1.4 => Removed in 4.2
 //	kBE_OAuth_SetToken = 322, // Never Implemented
-	kBE_XeroSetTokens_Deprecated = 330, // Deprecated in 4.1.4
-	kBE_XeroGenerateKeys_Deprecated = 331, // Deprecated in 4.1.4
+	kBE_XeroSetTokens_Deprecated = 330, // Deprecated in 4.1.4 => Removed in 4.2
+	kBE_XeroGenerateKeys_Deprecated = 331, // Deprecated in 4.1.4 => Removed in 4.2
 	kBE_ValuesUnique = 350,
 	kBE_ValuesFilterOut = 351,
 	kBE_ValuesContainsDuplicates = 352,

@@ -2,7 +2,7 @@
  BEPluginFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2020 Goya. All rights reserved.
+ Copyright 2010-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -171,11 +171,6 @@ fmx::errcode BE_JSON_ArraySize ( short funcId, const fmx::ExprEnv& environment, 
 
 
 // Deprecated
-
-fmx::errcode BE_OAuthRequestAccessToken_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_XeroGenerateKeys_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-
-fmx::errcode BE_XeroSetTokens_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_WriteTextFileToContainer_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& data_vect, fmx::Data& results );
 

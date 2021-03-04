@@ -2,7 +2,7 @@
  BEPlugin.cpp
  BaseElements Plug-in
 
- Copyright 2010-2020 Goya. All rights reserved.
+ Copyright 2010-2021 Goya. All rights reserved.
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -286,10 +286,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SMTPAddAttachment, BE_SMTPAddAttachment, 0, 2 );
 	g_be_plugin->RegisterFunction ( kBE_SMTPSetHeader, BE_Net_Set_Header, 0, 2 );
 
-
-	g_be_plugin->RegisterHiddenFunction ( kBE_XeroSetTokens_Deprecated, BE_XeroSetTokens_Deprecated, 2 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_XeroGenerateKeys_Deprecated, BE_XeroGenerateKeys_Deprecated, 1, 7 );
-
 	g_be_plugin->RegisterFunction ( kBE_ArraySetFromValueList, BE_ArraySetFromValueList, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_ArrayGetSize, BE_ArrayGetSize, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ArrayGetValue, BE_ArrayGetValue, 2 );
@@ -330,10 +326,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_GetMachineName, BE_GetMachineName );
 
-
-	// still alpha
-
-	g_be_plugin->RegisterHiddenFunction ( kBE_OAuthRequestAccessToken_Deprecated, BE_OAuthRequestAccessToken_Deprecated, 3, 5 );
 
 	return kCurrentExtnVersion;	// enable the plug-in
 

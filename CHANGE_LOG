@@ -2,7 +2,7 @@
 Version 4.2b1
 ########################################################################
 
-February 23, 2021
+March 5, 2021
 
 
 New Functions
@@ -11,7 +11,9 @@ New Functions
 Functions Removed
 
 BE_HMAC_Deprecated
-
+BE_OAuthRequestAccessToken_Deprecated
+BE_XeroGenerateKeys_Deprecated
+BE_XeroSetTokens_Deprecated
 
 Changes
 

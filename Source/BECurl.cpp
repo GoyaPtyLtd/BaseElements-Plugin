@@ -13,7 +13,6 @@
 #include "BEPluginGlobalDefines.h"
 #include "BECppUtilities.h"
 #include "BECurl.h"
-#include "BEOAuth.h"
 #include "BEFileMakerPlugin.h"
 
 #include "BEPluginUtilities.h"
@@ -69,8 +68,6 @@ thread_local std::stringstream g_curl_trace;
 thread_local CustomHeaders g_http_custom_headers;
 thread_local struct host_details g_http_proxy;
 thread_local BECurlOptionMap g_curl_options;
-
-extern thread_local BEOAuth * g_oauth;
 
 extern BEFileMakerPlugin * g_be_plugin;
 
@@ -356,16 +353,7 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	password = _password;
 	parameters = post_parameters;
 
-	if ( g_oauth ) {
-
-		int oauth_error = g_oauth->sign_url ( url, parameters, http_method_as_string() );
-		if ( oauth_error != kNoError ) {
-			throw BECurl_Exception ( CURLE_LOGIN_DENIED );
-		}
-
-	} else {
-		set_username_and_password ( );
-	}
+	set_username_and_password();
 
 	// send all headers & data to these functions
 
@@ -463,6 +451,7 @@ void BECurl::Init ( )
 	easy_setopt ( CURLOPT_DEBUGFUNCTION, trace_callback );
 	//	easy_setopt ( CURLOPT_DEBUGDATA, &config );
 	easy_setopt ( CURLOPT_VERBOSE, 1L ); // DEBUGFUNCTION has no effect unless enabled
+	g_curl_trace.str ( "" );
 	g_curl_trace.clear();
 
 	headers = InitalizeCallbackMemory();

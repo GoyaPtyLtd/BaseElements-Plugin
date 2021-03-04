@@ -93,9 +93,6 @@
 "301" = "BE_JSON_Error_Description_Deprecated||Deprecated.  Use the native FileMaker 16 JSON functions instead.";
 "302" = "BE_JSON_ArraySize ( json {; path } )|JSON Array Size|Returns the size of the JSON array";
 "303" = "BE_JSON_Encode_Deprecated ( key {; value ; type } )||Deprecated.  Use the native FileMaker 16 JSONSetElement(json;keyOrIndexOrPath;value;type) function instead.";
-"321" = "BE_OAuthRequestAccessToken_Deprecated ( url ; consumer_key ; consumer_secret ; request_key ; request_secret )||Deprecated. Do not use. BaseElements Internal : function not yet documented.  Uses OAuth 1.0.";
-"330" = "BE_XeroSetTokens_Deprecated ( consumer_key ; private_key )|HTTP Xero Token Set|Deprecated. Do not use. Allows authentication to the Xero API using private keys, for use in any subsequent HTTP calls.\n\nNote : if you're making HTTP calls to other urls, you should clear out the Xero parameters, by calling BE_XeroSetTokens ( \"\" ; \"\" ) before making any other HTTP calls.  Otherwise the Xero authentication will interfere with the HTTP authentication";
-"331" = "BE_XeroGenerateKeys_Deprecated ( organisation {; organisationalUnit ; country ; state ; suburb ; domain ; emailAddress } )|HTTP Xero Key Generate|Deprecated. Do not use. BaseElements Internal : function not yet documented.";
 "350" = "BE_ValuesUnique ( listOfValues {; caseSensitiveBoolean } )|Values Unique|Removes duplicate values from listOfValues.";
 "351" = "BE_ValuesFilterOut ( textToFilter ; filterValues {; caseSensitiveBoolean } )|Values Filter Out|Does the opposite of the FilterValues function : it takes the textToFilter parameter, and removes anything in the filterValues list and returns the remaining values.";
 "352" = "BE_ValuesContainsDuplicates ( listOfValues  {; caseSensitiveBoolean } )|Values Duplicates Contains|Tests a list of values in FileMaker value list format and returns a True ( 1 ) or False ( 0 ) value if it contains duplicate values.";

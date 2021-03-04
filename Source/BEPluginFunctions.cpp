@@ -58,7 +58,6 @@
 #include "BEFileSystem.h"
 #include "BEJavaScript.h"
 #include "BEJSON.h"
-#include "BEOAuth.h"
 #include "BEPluginException.h"
 #include "BEQuadChar.h"
 #include "BERegularExpression.h"
@@ -68,7 +67,6 @@
 #include "BESystemCommand.h"
 #include "BETime.h"
 #include "BEValueList.h"
-#include "BEXero.h"
 #include "BEXMLReader.h"
 #include "BEXMLSchema.h"
 #include "BEXMLTextReader.h"
@@ -113,7 +111,6 @@ thread_local errcode g_last_error;
 thread_local errcode g_last_ddl_error;
 thread_local string g_text_encoding = UTF8;
 thread_local string g_json_error_description;
-thread_local BEOAuth * g_oauth;
 thread_local struct host_details g_smtp_host;
 thread_local BESMTPContainerAttachments g_smtp_attachments;
 thread_local vector<BEValueListStringSharedPtr> arrays;
@@ -3106,159 +3103,6 @@ fmx::errcode BE_SMTPAddAttachment ( short /* funcId */, const fmx::ExprEnv& /* e
 	return MapError ( error );
 
 } // BE_SMTPAddAttachment
-
-
-
-#pragma mark -
-#pragma mark OAuth
-#pragma mark -
-
-
-fmx::errcode BE_OAuthRequestAccessToken_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto uri = ParameterAsUTF8String ( parameters );
-		auto consumer_key = ParameterAsUTF8String ( parameters, 1 );
-		auto consumer_secret = ParameterAsUTF8String ( parameters, 2 );
-		auto request_key = ParameterAsUTF8String ( parameters, 3 );
-		auto request_secret = ParameterAsUTF8String ( parameters, 4 );
-
-		if ( g_oauth ) {
-			delete g_oauth;
-			g_oauth = NULL;
-		}
-
-		string response;
-
-		// if the uri is empty then we are only clearing out any set oauth data
-
-		if ( !uri.empty() ) {
-
-			BEOAuth * oauth = new BEOAuth ( consumer_key, consumer_secret );
-			error = oauth->oauth_request ( uri, request_key, request_secret );
-
-			// argh, nasty
-			if ( error == kNoError ) {
-
-				const unsigned long number_of_parameters = parameters.Size();
-
-				if ( number_of_parameters == 3 ) {
-					response = oauth->get_request_key() + FILEMAKER_END_OF_LINE + oauth->get_request_secret();
-				} else {
-					response = oauth->get_access_key() + FILEMAKER_END_OF_LINE + oauth->get_access_secret();
-				}
-
-				g_oauth = oauth; // must assign after the authorisation request otherwise BECurl will try and use g_oauth
-
-			} else {
-				response = oauth->get_last_error();
-				if ( !response.empty() ) {
-					error = kNoError;
-				}
-			}
-
-		}
-
-		SetResult ( response, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_OAuthRequestAccessToken_Deprecated
-
-
-#pragma mark -
-#pragma mark Xero (Deprecated)
-#pragma mark -
-
-
-fmx::errcode BE_XeroSetTokens_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		if ( g_oauth ) {
-			delete g_oauth;
-			g_oauth = NULL;
-		}
-
-		auto consumer_key = ParameterAsUTF8String ( parameters );
-		auto consumer_secret = ParameterAsUTF8String ( parameters, 1 );
-
-		// if the consumer_key is empty then we are only clearing out any set oauth data
-
-		if ( !consumer_key.empty() ) {
-
-			boost::algorithm::replace_all ( consumer_secret, FILEMAKER_END_OF_LINE, "\r\n" );
-
-			BEXero * xero = new BEXero ( consumer_key, consumer_secret );
-			g_oauth = xero; // must assign after the authorisation request otherwise BECurl will try and use g_oauth
-
-		}
-
-		SetResult ( "", results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_XeroSetTokens_Deprecated
-
-
-fmx::errcode BE_XeroGenerateKeys_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto organisation = ParameterAsUTF8String ( parameters );
-		auto organisational_unit = ParameterAsUTF8String ( parameters, 1 );
-		auto country = ParameterAsUTF8String ( parameters, 2 );
-		auto state = ParameterAsUTF8String ( parameters, 3 );
-		auto suburb = ParameterAsUTF8String ( parameters, 4 );
-		auto domain = ParameterAsUTF8String ( parameters, 5 );
-		auto email = ParameterAsUTF8String ( parameters, 6 );
-
-		unique_ptr<BEX509> x509 ( new BEX509 );
-
-		x509->add_name_entry ( "O", organisation );
-		x509->add_name_entry ( "OU", organisational_unit );
-		x509->add_name_entry ( "C", country );
-		x509->add_name_entry ( "ST", state );
-		x509->add_name_entry ( "L", suburb );
-		x509->add_name_entry ( "CN", domain );
-		x509->add_name_entry ( "emailAddress", email );
-
-		SetResult ( xero_generate_key_pair ( x509.get() ), results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_XeroGenerateKeys_Deprecated
 
 
 

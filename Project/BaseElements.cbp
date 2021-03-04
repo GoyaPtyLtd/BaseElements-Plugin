@@ -56,7 +56,6 @@
 			<Add library="../Libraries/linux/libjansson.a" />
 			<Add library="../Libraries/linux/libjpeg.a" />
 			<Add library="../Libraries/linux/libmimetic.a" />
-			<Add library="../Libraries/linux/liboauth.a" />
 			<Add library="../Libraries/linux/libPocoJSON.a" />
 			<Add library="../Libraries/linux/libPocoZip.a" />
 			<Add library="../Libraries/linux/libturbojpeg.a" />
@@ -117,7 +116,6 @@
 		<Unit filename="../Source/BEFileTextReader.cpp" />
 		<Unit filename="../Source/BEJSON.cpp" />
 		<Unit filename="../Source/BEJavaScript.cpp" />
-		<Unit filename="../Source/BEOAuth.cpp" />
 		<Unit filename="../Source/BEPlugin.cpp" />
 		<Unit filename="../Source/BEPluginFunctions.cpp" />
 		<Unit filename="../Source/BEPluginUtilities.cpp" />
@@ -134,7 +132,6 @@
 		<Unit filename="../Source/BEXMLTextReader.cpp" />
 		<Unit filename="../Source/BEXMLTextWriter.cpp" />
 		<Unit filename="../Source/BEXSLT.cpp" />
-		<Unit filename="../Source/BEXero.cpp" />
 		<Unit filename="../Source/BEZlib.cpp" />
 		<Unit filename="../Source/Crypto/BEBase64.cpp" />
 		<Unit filename="../Source/Crypto/BEBio.cpp" />
