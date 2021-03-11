@@ -576,7 +576,7 @@ std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& paramet
 
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 		auto pdf = ParameterAsVectorChar ( parameters, which );
-		pdf_document->Load ( pdf.data(), (long)pdf.size() );
+		pdf_document->LoadFromBuffer ( pdf.data(), (long)pdf.size() );
 	} else {
 		auto pdf_path = ParameterAsPath ( parameters, which );
 		pdf_path.make_preferred();

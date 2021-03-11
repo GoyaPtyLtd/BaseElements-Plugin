@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2010 by Dominik Seichter                                *
+ *   Copyright (C) 2006 by Dominik Seichter                                *
  *   domseichter@web.de                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,54 +31,60 @@
  *   files in the program, then also delete it here.                       *
  ***************************************************************************/
 
-#ifndef _PODOFO_BASE_H_
-#define _PODOFO_BASE_H_
+#ifndef _PDF_OWNED_DATATYPE_H_
+#define _PDF_OWNED_DATATYPE_H_
 
-// Include files from PoDoFo-base
+#include "PdfDataType.h"
 
-#include "base/PdfVersion.h"
-#include "base/PdfDefines.h"
-#include "base/Pdf3rdPtyForwardDecl.h"
-#include "base/PdfArray.h"
-#include "base/PdfCanvas.h"
-#include "base/PdfColor.h"
-#include "base/PdfContentsTokenizer.h"
-#include "base/PdfData.h"
-#include "base/PdfDataType.h"
-#include "base/PdfDate.h"
-#include "base/PdfDictionary.h"
-#include "base/PdfEncodingFactory.h"
-#include "base/PdfEncoding.h"
-#include "base/PdfEncrypt.h"
-#include "base/PdfError.h"
-#include "base/PdfExtension.h"
-#include "base/PdfFileStream.h"
-#include "base/PdfFilter.h"
-#include "base/PdfImmediateWriter.h"
-#include "base/PdfInputDevice.h"
-#include "base/PdfInputStream.h"
-#include "base/PdfLocale.h"
-#include "base/PdfMemoryManagement.h"
-#include "base/PdfMemStream.h"
-#include "base/PdfName.h"
-#include "base/PdfObject.h"
-#include "base/PdfObjectStreamParserObject.h"
-#include "base/PdfOutputDevice.h"
-#include "base/PdfOutputStream.h"
-#include "base/PdfParser.h"
-#include "base/PdfParserObject.h"
-#include "base/PdfRect.h"
-#include "base/PdfRefCountedBuffer.h"
-#include "base/PdfRefCountedInputDevice.h"
-#include "base/PdfReference.h"
-#include "base/PdfStream.h"
-#include "base/PdfString.h"
-#include "base/PdfTokenizer.h"
-#include "base/PdfVariant.h"
-#include "base/PdfVecObjects.h"
-#include "base/PdfWriter.h"
-#include "base/PdfXRef.h"
-#include "base/PdfXRefStream.h"
-#include "base/PdfXRefStreamParserObject.h"
+namespace PoDoFo {
 
-#endif // _PODOFO_BASE_H_
+class PdfObject;
+class PdfVecObjects;
+class PdfReference;
+
+/**
+ * A PdfDataType object with PdfObject owner
+ */
+class PODOFO_API PdfOwnedDataType : public PdfDataType {
+    friend class PdfObject;
+protected:
+    /** Create a new PdfDataOwnedType.
+     *  Can only be called by subclasses
+     */
+    PdfOwnedDataType();
+
+    PdfOwnedDataType( const PdfOwnedDataType &rhs );
+
+public:
+
+    /** \returns a pointer to a PdfVecObjects that is the
+     *           owner of this data type.
+     *           Might be NULL if the data type has no owner.
+     */
+    inline const PdfObject* GetOwner() const;
+    inline PdfObject* GetOwner();
+
+    PdfOwnedDataType & operator=( const PdfOwnedDataType &rhs );
+
+protected:
+    PdfObject * GetIndirectObject( const PdfReference &rReference ) const;
+    PdfVecObjects * GetObjectOwner();
+    virtual void SetOwner( PdfObject *pOwner );
+
+private:
+    PdfObject *m_pOwner;
+};
+
+inline const PdfObject* PdfOwnedDataType::GetOwner() const
+{
+    return m_pOwner;
+}
+
+inline PdfObject* PdfOwnedDataType::GetOwner()
+{
+    return m_pOwner;
+}
+
+}; // namespace PoDoFo
+
+#endif /* _PDF_OWNED_DATATYPE_H_ */

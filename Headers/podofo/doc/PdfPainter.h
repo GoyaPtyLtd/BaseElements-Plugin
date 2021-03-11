@@ -406,10 +406,11 @@ class PODOFO_DOC_API PdfPainter {
      *  \param eAlignment alignment of the individual text lines in the given bounding box
      *  \param eVertical vertical alignment of the text in the given bounding box
      *  \param bClip set the clipping rectangle to the given rRect, otherwise no clipping is performed
+     *  \param bSkipSpaces whether the trailing whitespaces should be skipped, so that next line doesn't start with whitespace
      */
     void DrawMultiLineText( double dX, double dY, double dWidth, double dHeight, 
                             const PdfString & rsText, EPdfAlignment eAlignment = ePdfAlignment_Left,
-                            EPdfVerticalAlignment eVertical = ePdfVerticalAlignment_Top, bool bClip = true );
+                            EPdfVerticalAlignment eVertical = ePdfVerticalAlignment_Top, bool bClip = true, bool bSkipSpaces = true );
 
     /** Draw multiline text into a rectangle doing automatic wordwrapping.
      *  The current font is used and SetFont has to be called at least once
@@ -420,16 +421,18 @@ class PODOFO_DOC_API PdfPainter {
      *  \param eAlignment alignment of the individual text lines in the given bounding box
      *  \param eVertical vertical alignment of the text in the given bounding box
      *  \param bClip set the clipping rectangle to the given rRect, otherwise no clipping is performed
+     *  \param bSkipSpaces whether the trailing whitespaces should be skipped, so that next line doesn't start with whitespace
      */
     inline void DrawMultiLineText( const PdfRect & rRect, const PdfString & rsText, EPdfAlignment eAlignment = ePdfAlignment_Left,
-                                   EPdfVerticalAlignment eVertical = ePdfVerticalAlignment_Top, bool bClip = true );
+                                   EPdfVerticalAlignment eVertical = ePdfVerticalAlignment_Top, bool bClip = true, bool bSkipSpaces = true );
 
     /** Gets the text divided into individual lines, using the current font and clipping rectangle.
      *
      *  \param dWidth width of the text area
      *  \param rsText the text which should be drawn
+     *  \param bSkipSpaces whether the trailing whitespaces should be skipped, so that next line doesn't start with whitespace
      */
-    std::vector<PdfString> GetMultiLineTextAsLines( double dWidth, const PdfString & rsText);
+    std::vector<PdfString> GetMultiLineTextAsLines( double dWidth, const PdfString & rsText, bool bSkipSpaces = true);
 
     /** Draw a single line of text horizontally aligned.
      *  \param dX the x coordinate of the text line
@@ -765,6 +768,15 @@ class PODOFO_DOC_API PdfPainter {
      */
     inline std::ostringstream &GetCurrentPath(void);
 
+    /** Set rgb color that depend on color space setting, "cs" tag.
+     *
+     * \param rColor a PdfColor object
+     * \param pCSTag a CS tag used in PdfPage::SetICCProfile
+     *
+     * \see PdfPage::SetICCProfile()
+     */
+    void SetDependICCProfileColor( const PdfColor & rColor, const std::string & pCSTag );
+
  protected:
  
     /** Coverts a rectangle to an array of points which can be used 
@@ -864,6 +876,13 @@ class PODOFO_DOC_API PdfPainter {
     /** current path
      */
     std::ostringstream  m_curPath;
+
+    /** True if should use color with ICC Profile
+     */
+    bool m_isCurColorICCDepend;
+    /** ColorSpace tag
+     */
+    std::string m_CSTag;
 
     EPdfTextRenderingMode currentTextRenderingMode;
     void SetCurrentTextRenderingMode( void );
@@ -966,10 +985,10 @@ void PdfPainter::Rectangle( const PdfRect & rRect, double dRoundX, double dRound
 // 
 // -----------------------------------------------------
 void PdfPainter::DrawMultiLineText( const PdfRect & rRect, const PdfString & rsText, 
-                                    EPdfAlignment eAlignment, EPdfVerticalAlignment eVertical, bool bClip)
+                                    EPdfAlignment eAlignment, EPdfVerticalAlignment eVertical, bool bClip, bool bSkipSpaces )
 {
     this->DrawMultiLineText( rRect.GetLeft(), rRect.GetBottom(), rRect.GetWidth(), rRect.GetHeight(), 
-                             rsText, eAlignment, eVertical, bClip );
+                             rsText, eAlignment, eVertical, bClip, bSkipSpaces );
 }
 
 };

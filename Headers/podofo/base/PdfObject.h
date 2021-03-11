@@ -48,6 +48,9 @@ class PdfObject;
 class PdfOutputDevice;
 class PdfStream;
 class PdfVecObjects;
+class PdfDictionary;
+class PdfArray;
+class PdfDocument;
 
 /**
  * This class represents a PDF indirect Object in memory
@@ -63,6 +66,9 @@ class PdfVecObjects;
  */
 class PODOFO_API PdfObject : public PdfVariant {
     friend class PdfVecObjects;
+    friend class PdfArray;
+    friend class PdfDictionary;
+    friend class PdfDocument;
 
  public:
 
@@ -74,8 +80,8 @@ class PODOFO_API PdfObject : public PdfVariant {
     /** Construct a new PDF object of type PdfDictionary.
      *
      *  \param rRef reference of this object
-     *  \param pszType if type is not null a key "/Type" will be added to the dictionary with
-     *                 the value of type.
+     *  \param pszType if this parameter is not null a key "/Type" will
+     *                 be added to the dictionary with the parameter's value.
      */
     PdfObject( const PdfReference & rRef, const char* pszType);
 
@@ -148,15 +154,15 @@ class PODOFO_API PdfObject : public PdfVariant {
      */        
     PdfObject( const PdfDictionary & rDict );
 
-    /** Creates a copy of an existing PdfObject
-     *  All assosiated objects and streams will be copied along with the PdfObject
+    /** Creates a copy of an existing PdfObject.
+     *  All associated objects and streams will be copied along with the PdfObject.
      *  \param rhs PdfObject to clone
      */
     PdfObject( const PdfObject & rhs );
 
     virtual ~PdfObject();
 
-    /** Get the keys value out of the dictionary. If the key is a reference, 
+    /** Get the key's value out of the dictionary. If the key is a reference, 
      *  the reference is resolved and the object pointed to by the reference is returned.
      *
      *  \param key look for the key named key in the dictionary
@@ -177,6 +183,14 @@ class PODOFO_API PdfObject : public PdfVariant {
      */
     inline PdfObject* MustGetIndirectKey( const PdfName & key ) const;
 
+    pdf_int64 GetIndirectKeyAsLong( const PdfName & key, pdf_int64 lDefault = 0 ) const;
+
+    double GetIndirectKeyAsReal( const PdfName & key, double dDefault = 0.0 ) const;
+
+    bool GetIndirectKeyAsBool( const PdfName & key, bool bDefault = false ) const;
+
+    PdfName GetIndirectKeyAsName( const PdfName & key ) const;
+
     /** Write the complete object to a file.
      *  \param pDevice write the object to this device
      *  \param pEncrypt an encryption object which is used to encrypt this object
@@ -194,12 +208,12 @@ class PODOFO_API PdfObject : public PdfVariant {
      */
     pdf_long GetObjectLength( EPdfWriteMode eWriteMode );
 
-    /** Get a indirect reference to this object
+    /** Get an indirect reference to this object.
      *  \returns a PdfReference pointing to this object.
      */
     inline const PdfReference & Reference() const;
 
-    /** Get a handle to a PDF stream object
+    /** Get a handle to a PDF stream object.
      *  If the PDF object does not have a stream,
      *  one will be created.
      *  \returns a PdfStream object
@@ -209,9 +223,9 @@ class PODOFO_API PdfObject : public PdfVariant {
      */
     PdfStream* GetStream();
 
-    /** Get a handle to a const PDF stream object
+    /** Get a handle to a const PDF stream object.
      *  If the PDF object does not have a stream,
-     *  null is returned
+     *  null is returned.
      *  \returns a PdfStream object or null
      */
     const PdfStream* GetStream() const;
@@ -224,30 +238,23 @@ class PODOFO_API PdfObject : public PdfVariant {
     inline bool HasStream() const;
 
     /** This operator is required for sorting a list of 
-     *  PdfObjects. It compares the objectnumber. If objectnumbers
+     *  PdfObject instances. It compares the object number. If object numbers
      *  are equal, the generation number is compared.
      */
     PODOFO_NOTHROW inline bool operator<( const PdfObject & rhs ) const;
 
-    /** Comperasion operator.
-     *  Compares two PDF object only based on their object and generation number
+    /** Comparison operator.
+     *  Compares two PDF object instances only based on their object and generation number.
      */
     PODOFO_NOTHROW inline bool operator==( const PdfObject & rhs ) const;
 
-    /** Set the owner of this object, i.e. the PdfVecObjects to which
-     *  this object belongs.
-     *
-     *  \param pVecObjects a vector of pdf objects
-     */
-    inline void SetOwner( PdfVecObjects* pVecObjects );
-
     /** Get the owner of this object.
-     *  \return the creator of this object
+     *  \return the owner (if it wasn't changed anywhere, creator) of this object
      */
     inline PdfVecObjects* GetOwner() const;
 
-    /** Creates a copy of an existing PdfObject
-     *  All assosiated objects and streams will be copied along with the PdfObject
+    /** Creates a copy of an existing PdfObject.
+     *  All associated objects and streams will be copied along with the PdfObject.
      *  \param rhs PdfObject to clone
      *  \returns a reference to this object
      */
@@ -265,7 +272,7 @@ class PODOFO_API PdfObject : public PdfVariant {
      *
      *  This function is very calculation intensive!
      *
-     *  \param pszKey  key to calculate the byte offset
+     *  \param pszKey  key to calculate the byte offset of
      *  \param eWriteMode additional options for writing the PDF
      *  \returns the offset of the key 
      */
@@ -282,7 +289,7 @@ class PODOFO_API PdfObject : public PdfVariant {
      *                       |
      *                       --> DelayedStreamLoadImpl()
      *
-     * For objects complete created in memory this function does nothing.
+     * For objects created in memory completely, this function does nothing.
      */
     inline void DelayedStreamLoad() const;
 
@@ -291,9 +298,9 @@ class PODOFO_API PdfObject : public PdfVariant {
      *  so that DelayedStreamLoad() will be called when needed.
      *
      *  All constructors initialize a PdfObject with delayed loading of streams
-     *  disabled .  If you want delayed loading of streams you must ask for it.
+     *  disabled.  If you want delayed loading of streams you must ask for it.
      *  If you do so, call this method early in your ctor and be sure to
-     *  override DelayedStreamLoadImpl()
+     *  override DelayedStreamLoadImpl().
      *
      *  Note that it is quite possible to have a PdfObject that requires a
      *  delayed-load of its stream but does an immediate load of the PdfVariant
@@ -318,13 +325,19 @@ class PODOFO_API PdfObject : public PdfVariant {
      */
     PdfStream* GetStream_NoDL();
 
- protected:
-    PdfReference   m_reference;
-    
-    PdfStream*     m_pStream;
-    PdfVecObjects* m_pOwner;
+    virtual void AfterDelayedLoad( EPdfDataType eDataType );
 
-    PODOFO_NOTHROW inline bool DelayedStreamLoadDone() const;
+    /** Set the owner of this object variant
+     */
+    void SetVariantOwner( EPdfDataType eDataType );
+
+ private:
+     /** Set the owner of this object, i.e. the PdfVecObjects to which
+      *  this object belongs.
+      *
+      *  \param pVecObjects a vector of pdf objects
+      */
+     void SetOwner(PdfVecObjects* pVecObjects);
 
  private:
     /* See PdfVariant.h for a detailed explanation of this member, which is
@@ -336,9 +349,9 @@ class PODOFO_API PdfObject : public PdfVariant {
     // Shared initialization between all the ctors
     void InitPdfObject();
 
-    // No touchy. Only for manipulation by PdfObject private routines.
+    // No touchy. Only for manipulation by PdfObject-private routines.
     // Tracks whether deferred loading is still pending (in which case it'll be
-    // false). If true, deferred loading is not requried or has been completed.
+    // false). If true, deferred loading is not required or has been completed.
     mutable bool m_bDelayedStreamLoadDone;
 
 #if defined(PODOFO_EXTRA_CHECKS)
@@ -347,6 +360,18 @@ class PODOFO_API PdfObject : public PdfVariant {
 private:
     mutable bool m_bDelayedStreamLoadInProgress;
 #endif
+
+	// Order of member variables has significant effect on sizeof(PdfObject) which
+	// is important in PDFs with many objects (PDF32000_2008.pdf has 750,000 PdfObjects),
+	// be very careful to test class sizes on 32-bit and 64-bit platforms when adding 
+	// or re-ordering objects.
+ protected:
+	 PdfReference   m_reference;
+
+	 PdfStream*     m_pStream;
+	 PdfVecObjects* m_pOwner;
+
+	 PODOFO_NOTHROW inline bool DelayedStreamLoadDone() const;
 };
 
 // -----------------------------------------------------
@@ -372,14 +397,6 @@ void PdfObject::EnableDelayedStreamLoading()
 const PdfReference & PdfObject::Reference() const
 {
     return m_reference;
-}
-
-// -----------------------------------------------------
-// 
-// -----------------------------------------------------
-inline void PdfObject::SetOwner( PdfVecObjects* pVecObjects )
-{
-    m_pOwner = pVecObjects;
 }
 
 // -----------------------------------------------------

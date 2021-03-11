@@ -25,12 +25,12 @@ and extract the archive. Then
 
 	cd boost_1_75_0
 	./bootstrap.sh
-	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=build --with-program_options --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.13 -stdlib=libc++" linkflags="-stdlib=libc++"
+	./b2 architecture=x86 address-model=64 link=static runtime-link=static install --prefix=_build_macos --with-program_options --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.13 -stdlib=libc++" linkflags="-stdlib=libc++"
 
 Copy the header and library files.
 
-	cp -R ./build/include/boost "${SRCROOT}/Headers/"
-	cp ./build/lib/*.a "${SRCROOT}/Libraries/macOS"
+	cp -R _build_macos/include/boost "${SRCROOT}/Headers/"
+	cp _build_macos/lib/*.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
@@ -45,13 +45,13 @@ and extract the archive. Then
 
 	cd jansson-master
 	autoreconf -i
-	./configure --prefix="$(pwd)/build" CFLAGS="-mmacosx-version-min=10.7"
+	./configure --prefix="$(pwd)/_build_macos" CFLAGS="-mmacosx-version-min=10.13"
 	make install
 
 Copy the header and library files.
 
-	cp ./build/include/jansson.h ./build/include/jansson_config.h "${SRCROOT}/Headers/"
-	cp ./build/lib/libjansson.a "${SRCROOT}/Libraries/macOS/"
+	cp _build_macos/include/jansson.h ./build/include/jansson_config.h "${SRCROOT}/Headers/"
+	cp _build_macos/lib/libjansson.a "${SRCROOT}/Libraries/macOS/"
 
 
 =======================================================================
@@ -77,12 +77,12 @@ with
 
 Then build the library.
 
-	./configure CXXFLAGS="-stdlib=libc++ -mmacosx-version-min=10.7" LDFLAGS="-stdlib=libc++" --prefix="$(pwd)/build" && make install
+	./configure CXXFLAGS="-stdlib=libc++ -mmacosx-version-min=10.13" LDFLAGS="-stdlib=libc++" --prefix="$(pwd)/_build_macos" && make install
 
 Copy the header and library files.
 
-	cp -R ./build/include/mimetic "${SRCROOT}/Headers/"
-	cp ./build/lib/libmimetic.a "${SRCROOT}/Libraries/macOS/"
+	cp -R _build_macos/include/mimetic "${SRCROOT}/Headers/"
+	cp _build_macos/lib/libmimetic.a "${SRCROOT}/Libraries/macOS/"
 
 Note: If make failed with the following error,
 
@@ -256,7 +256,7 @@ Download the source for libiconv from
 and extract the archive. Then
 
 	cd libiconv-1.16
-	CFLAGS="-mmacosx-version-min=10.12" ./configure --disable-shared  --prefix="${$(pwd)}/_build_macos"
+	CFLAGS="-mmacosx-version-min=10.13" ./configure --disable-shared  --prefix="${$(pwd)}/_build_macos"
 	make install
 
 Copy the Headers and libraries to the project directory
@@ -276,13 +276,13 @@ Download the source for libxml2 from
 and extract the archive. Then
 
 	cd libxml2-2.9.10
-	CFLAGS="-mmacosx-version-min=10.12" ./configure --disable-shared --with-threads --without-python --without-zlib --without-lzma --with-iconv=../libiconv-1.16/_build_macos --prefix="${$(pwd)}/_build"
+	CFLAGS="-mmacosx-version-min=10.13" ./configure --disable-shared --with-threads --without-python --without-zlib --without-lzma --with-iconv=../libiconv-1.16/_build_macos --prefix="${$(pwd)}/_build_macos"
 	make install
 
 Copy the Headers and libraries to the project directory
 
-	cp -R ./_build/include/libxml2 "${SRCROOT}/Headers"
-	cp ./_build/lib/libxml2.a "${SRCROOT}/Libraries/macOS"
+	cp -R _build_macos/include/libxml2 "${SRCROOT}/Headers"
+	cp _build_macos/lib/libxml2.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
@@ -296,13 +296,13 @@ Download the source from
 and extract the archive. Then
 
 	cd libxslt-1.1.34
-	./configure CFLAGS="-mmacosx-version-min=10.12" --disable-shared --without-python --without-crypto --prefix="${$(pwd)}/_build"
+	./configure CFLAGS="-mmacosx-version-min=10.13" --disable-shared --without-python --without-crypto --prefix="${$(pwd)}/_build_macos"
 	make install
 
 Copy the Headers and libraries to the project directory
 
-	cp -R ./_build/include/libxslt "${SRCROOT}/Headers"
-	cp ./_build/lib/libxslt.a ./_build/lib/libexslt.a "${SRCROOT}/Libraries/macOS"
+	cp -R _build_macos/include/libxslt "${SRCROOT}/Headers"
+	cp _build_macos/lib/libxslt.a ./_build/lib/libexslt.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
@@ -316,13 +316,13 @@ Download freetype from
 and extract the archive. Then
 
 	cd freetype-2.10.4
-	CFLAGS="-mmacosx-version-min=10.12" ./configure --disable-shared --with-png=no --with-bzip2=no --with-harfbuzz=no --with-png=no --with-zlib=no --prefix="$(pwd)/build"
+	CFLAGS="-mmacosx-version-min=10.13" ./configure --disable-shared --with-png=no --with-bzip2=no --with-harfbuzz=no --with-png=no --with-zlib=no --prefix="$(pwd)/_build_macos"
 	make install
 
 Copy the header and library files.
 
-	cp -R ./build/include/freetype2 "${SRCROOT}/Headers"
-	cp ./build/lib/libfreetype.a "${SRCROOT}/Libraries/macOS"
+	cp -R _build_macos/include/freetype2 "${SRCROOT}/Headers"
+	cp _build_macos/lib/libfreetype.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
@@ -336,13 +336,13 @@ Download fontconfig from
 and extract the archive. Then
 
 	cd fontconfig-2.13.1
-	CFLAGS="-mmacosx-version-min=10.13 -stdlib=libc++" ./configure --disable-shared --prefix="$(pwd)/build" FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2" FREETYPE_LIBS="-L${SRCROOT}/Libraries/macOS -lfreetype" LDFLAGS="-L${SRCROOT}/Libraries/macOS"
+	CFLAGS="-mmacosx-version-min=10.13 -stdlib=libc++" ./configure --disable-shared --prefix="$(pwd)/_build_macos" FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2" FREETYPE_LIBS="-L${SRCROOT}/Libraries/macOS -lfreetype" LDFLAGS="-L${SRCROOT}/Libraries/macOS"
 	make install
 
 Copy the header and library files.
 
-	cp -R ./build/include/fontconfig "${SRCROOT}/Headers"
-	cp ./build/lib/libfontconfig.a "${SRCROOT}/Libraries/macOS"
+	cp -R _build_macos/include/fontconfig "${SRCROOT}/Headers"
+	cp _build_macos/lib/libfontconfig.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================
@@ -356,20 +356,13 @@ Download podofo from
 and extract the archive. Then
 
 	cd podofo-0.9.7
-
-Edit
-
-	CMakeLists.txt
-
-to remove references to CMP0033 and the PNG library. Then
-
-CFLAGS="-mmacosx-version-min=10.13" && CPPFLAGS="-mmacosx-version-min=10.13" && cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="${SRCROOT}/Headers/freetype2" -DFREETYPE_LIBRARY_RELEASE="${SRCROOT}/Libraries/macOS/libfreetype.a"  -DFONTCONFIG_LIBRARIES="${SRCROOT}/Libraries" -DFONTCONFIG_INCLUDE_DIR="${SRCROOT}/Headers/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="${SRCROOT}/Libraries/macOS/libfontconfig.a" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_C_FLAGS="-mmacosx-version-min=10.10 -stdlib=libc++" -DCMAKE_CXX_FLAGS="-mmacosx-version-min=10.10 -stdlib=libc++" ./
+	cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build_macos" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="${SRCROOT}/Headers/freetype2" -DFREETYPE_LIBRARY_RELEASE="${SRCROOT}/Libraries/macOS/libfreetype.a" -DFONTCONFIG_LIBRARIES="${SRCROOT}/Libraries" -DFONTCONFIG_INCLUDE_DIR="${SRCROOT}/Headers" -DFONTCONFIG_LIBRARY_RELEASE="${SRCROOT}/Libraries/macOS/libfontconfig.a" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_C_FLAGS="-mmacosx-version-min=10.13 -stdlib=libc++" -DCMAKE_CXX_FLAGS="-mmacosx-version-min=10.13 -stdlib=libc++" -DCMAKE_CXX_STANDARD=11 -DCXX_STANDARD_REQUIRED=ON ./
 	make install
 
 Copy the header and library files.
 
-	cp -R ./_build/include/podofo "${SRCROOT}/Headers"
-	cp ./_build/lib/libpodofo.a "${SRCROOT}/Libraries/macOS"
+	cp -R _build_macos/include/podofo "${SRCROOT}/Headers"
+	cp _build_macos/lib/libpodofo.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================

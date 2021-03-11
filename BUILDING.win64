@@ -434,42 +434,38 @@ then copy objs/x64/Release Static/freetype.lib to Libraries/Win64 and rename inc
 
 
 =======================================================================
-podofo - 0.9.4
+podofo - 0.9.7
 =======================================================================
 
-Download freetype from
+Download podofo from
 
-	https://www.freetype.org/download.html
+	http://podofo.sourceforge.net/download.html
 	
 and expand it into a directory on the Desktop.
+
+	set SRCROOT=<the path to the plugin directory>
 	
-		cd podofo-0.9.4
+	cd podofo-0.9.7
+	cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="_build_windows" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_INCLUDE_PATH=%SRCROOT%\Headers -DCMAKE_LIBRARY_PATH=%SRCROOT%\Libraries\Win64 -DZLIB_LIBRARY_RELEASE=%SRCROOT%\Libraries\Win64\libstat.lib -DWANT_LIB64:BOOL=TRUE -DFREETYPE_INCLUDE_DIR="%SRCROOT%\Headers\freetype2" -DFREETYPE_LIBRARY_RELEASE="%SRCROOT%\Libraries\Win64\freetype27.lib" ./
 
-Edit
+Open the ALL_BUILD project and for the "podofo-static" release target set the Configuration Properties
 
-	CMakeLists.txt
-	
-to remove references to CMP0033 and the PNG library. Then
-
-	cmake -G "Visual Studio 14 2015" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_INCLUDE_PATH=<path to /BaseElements-Plugin/Headers> -DCMAKE_LIBRARY_PATH=<path to /BaseElements-Plugin/Libraries/Win64> -DZLIB_LIBRARY_RELEASE=<path to /BaseElements-Plugin/Libraries/Win64>\zlibstat.lib -DWANT_LIB64:BOOL=TRUE -DFREETYPE_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/freetype2" -DFREETYPE_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/Win64>/freetype27.lib" ./
-
-Open the PoDoFo project and
-
-	Project Defaults -> Character Set == Use Unicode Character Set
-	Librarian -> Command Line -> Additional Options ... delete /machine:X386
-
-and for release builds
-
+	Advanced -> Character Set == Use Unicode Character Set
 	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
+	
+For the debug target set
 
-and for debug builds
-
-	General -> Target Name == podofod
+	General -> Target Name -> podofod
+	Advanced -> Character Set == Use Unicode Character Set
 	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MTd)
 
-then batch build the podofo_static debug and release targets.
 
-Copy _build/lib/podofod.lib and _build/lib/podofod.lib to Libraries/Win64 and _build/include/podofo to Headers.
+then batch build the INSTALL targets.
+
+Copy the header and library files.
+
+	copy _build_windows\include\podofo "${SRCROOT}\Headers"
+	copy _build_windows\lib64\podofo.lib _build_windows\lib64\podofod.lib %SRCROOT%\Libraries\Win64"
 
 
 =======================================================================

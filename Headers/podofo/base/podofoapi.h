@@ -1,3 +1,36 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Dominik Seichter                                *
+ *   domseichter@web.de                                                    *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Library General Public License as       *
+ *   published by the Free Software Foundation; either version 2 of the    *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this program; if not, write to the                 *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *                                                                         *
+ *   In addition, as a special exception, the copyright holders give       *
+ *   permission to link the code of portions of this program with the      *
+ *   OpenSSL library under certain conditions as described in each         *
+ *   individual source file, and distribute linked combinations            *
+ *   including the two.                                                    *
+ *   You must obey the GNU General Public License in all respects          *
+ *   for all of the code used other than OpenSSL.  If you modify           *
+ *   file(s) with this exception, you may extend this exception to your    *
+ *   version of the file(s), but you are not obligated to do so.  If you   *
+ *   do not wish to do so, delete this exception statement from your       *
+ *   version.  If you delete this exception statement from all source      *
+ *   files in the program, then also delete it here.                       *
+ ***************************************************************************/
+
 #ifndef PODOFO_API_H_20061017
 #define PODOFO_API_H_20061017
 
@@ -140,9 +173,22 @@
 
 /* Set up some other compiler-specific but not platform-specific macros */
 
-#if defined(__GNUC__)
-    /* gcc will issue a warning if a function or variable so annotated is used */
-    #define PODOFO_DEPRECATED       __attribute__((deprecated))
+#ifdef __GNU__
+  #define PODOFO_HAS_GCC_ATTRIBUTE_DEPRECATED 1
+#elif defined(__has_attribute)
+  #if __has_attribute(__deprecated__)
+    #define PODOFO_HAS_GCC_ATTRIBUTE_DEPRECATED 1
+  #endif
+#endif
+
+#ifdef PODOFO_HAS_GCC_ATTRIBUTE_DEPRECATED
+    /* gcc (or compat. clang) will issue a warning if a function or variable so annotated is used */
+    #define PODOFO_DEPRECATED       __attribute__((__deprecated__))
+#else
+    #define PODOFO_DEPRECATED
+#endif
+
+#ifdef __GNU__
     /* gcc can do some additional optimisations on functions annotated as pure.
      * See the documentation on __attribute__((pure)) in the gcc docs. */
     #define PODOFO_PURE_FUNCTION    __attribute__((pure))
@@ -152,9 +198,12 @@
      * (see CODINGSTYLE.txt) .*/
     #define PODOFO_NOTHROW          __attribute__((nothrow))
 #else
-    #define PODOFO_DEPRECATED
-    #define PODOFO_PURE_FUNCTION
-    #define PODOFO_NOTHROW          __declspec(nothrow)
+  #define PODOFO_PURE_FUNCTION
+    #ifdef _MSC_VER
+      #define PODOFO_NOTHROW        __declspec(nothrow)
+    #else
+      #define PODOFO_NOTHROW
+    #endif
 #endif
 
 // Peter Petrov 27 April 2008

@@ -3401,7 +3401,7 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 		 if ( BinaryDataAvailable ( parameters, which ) ) {
 			 
 			 auto pdf = ParameterAsVectorChar ( parameters, which );
-			 pdf_document_to_append->Load ( pdf.data(), (long)pdf.size() );
+			 pdf_document_to_append->LoadFromBuffer ( pdf.data(), (long)pdf.size() );
 			 pdf_document->Append ( *pdf_document_to_append );
 
 		 } else {

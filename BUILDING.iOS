@@ -313,27 +313,21 @@ If necessary, copy the output/<platform>/fontconfig directory to Headers.
 
 
 =======================================================================
-podofo - 0.9.4
+podofo - 0.9.7
 =======================================================================
 
 Download podofo from
 
 	http://podofo.sourceforge.net/download.html
 	
-and expand it into a directory on the Desktop.
+and expand it. In the same directory run the build script
 
-	cd podofo-0.9.4
+	sh ./build_libpodofo.sh
 	
-Edit
+Copy the header and library files.
 
-	CMakeLists.txt
-	
-to remove references to CMP0033 and the PNG library. Then copy the compile_for_ios.sh to the distribution directory and
-
-	PATH="/Applications/CMake.app/Contents/bin":"$PATH"
-	CFLAGS="-mmacosx-version-min=10.13" && CPPFLAGS="-mmacosx-version-min=10.13" && cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/freetype2" -DFREETYPE_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/macOS>/libfreetype.a" -DFONTCONFIG_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/macOS>/libfontconfig.a" -DFONTCONFIG_LIBRARIES="<path to /BaseElements-Plugin/Libraries/macOS>" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_C_FLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" -DCMAKE_CXX_FLAGS="-mmacosx-version-min=10.7 -stdlib=libc++" ./
-	make install
-
-then copy _build/lib/libpodofo.a to Libraries/macOS and _build/include/podofo to Headers.
+	cd podofo-0.9.7
+	cp -R _build_ios/include/podofo "${SRCROOT}/Headers"
+	cp _build_ios/libpodofo.a "${SRCROOT}/Libraries/iOS"
 
 =======================================================================

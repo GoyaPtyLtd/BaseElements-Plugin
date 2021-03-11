@@ -31,10 +31,10 @@ for instructions on compiling the Boost libraries. From the command prompt try
 
 	cd boost_1_75_0
 	./bootstrap.sh
-	./b2 link=static cflags=-fPIC cxxflags=-fPIC runtime-link=static install --prefix=build --with-program_options --with-regex --with-date_time --with-filesystem --with-thread
+	./b2 link=static cflags=-fPIC cxxflags=-fPIC runtime-link=static install --prefix=_build_linux --with-program_options --with-regex --with-date_time --with-filesystem --with-thread
 
 
-Copy the directory containing the boost headers from the build/include directory to the Headers directory and copy the files in the build/lib to Libraries/linux.
+Copy the directory containing the boost headers from the _build_linux/include directory to the Headers directory and copy the files in the _build_linux/lib to Libraries/linux.
 
 
 =======================================================================
@@ -48,12 +48,12 @@ Building zlib is straightforward. Download the zlib source from
 and extract the folder zlib-1.2.8 to the desktop.
 
 	cd zlib-1.2.8
-	CFLAGS="-fPIC" ./configure --static --prefix=build
+	CFLAGS="-fPIC" ./configure --static --prefix=_build_linux
 	make install
 
 Move
 
-	buld/libz.a
+	_build_linux/libz.a
 
 into the Libraries/linux directory and copy zip.h and zconf.h from the root directory of the distribution to the Headers directory.
 
@@ -70,10 +70,10 @@ Then
 
 	cd jansson-json_path
 	autoreconf -i
-	CFLAGS=-fPIC ./configure --prefix=build
+	CFLAGS=-fPIC ./configure --prefix=_build_linux
 	make install
 
-Copy jansson.h and jansson_config.h from build/include to the Headers directory and  build/lib/libjansson.a to Libraries/linux.
+Copy jansson.h and jansson_config.h from build/include to the Headers directory and  _build_linux/lib/libjansson.a to Libraries/linux.
 
 
 =======================================================================
@@ -106,20 +106,20 @@ Download the source from
 
 Edit the file mimetic/base64.h to replace the line
 
-                *out = NL; ++out;
+	*out = NL; ++out;
 
 with
 
-				*out = CR; ++out;
-				*out = LF; ++out;
+	*out = CR; ++out;
+	*out = LF; ++out;
 
 Then
 
 	cd mimetic-0.9.8
-	CFLAGS=-fPIC ./configure --prefix=build
+	CFLAGS=-fPIC ./configure --prefix=_build_linux
 	make install
 
-Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the library in the build/lib directory to the Libraries/linux directory.
+Copy the directory containing the mimetic headers from the _build_linux/include directory to the Headers directory and copy the library in the _build_linux/lib directory to the Libraries/linux directory.
 
 
 =======================================================================
@@ -215,13 +215,13 @@ Download the source for libxml2 from
 and expand it into a directory on the Desktop.
 
 	cd libxml2-2.9.10
-	CFLAGS=-fPIC ./configure --disable-shared --with-threads --without-python --without-zlib --without-lzma --prefix="$(pwd)/_build"
+	CFLAGS=-fPIC ./configure --disable-shared --with-threads --without-python --without-zlib --without-lzma --prefix="$(pwd)/_build_linux"
 	make install
 
 Copy the Headers and libraries to the project directory
 
-	cp -R ./_build/include/libxml2 "${SRCROOT}/Headers"
-	cp ./_build/lib/libxml2.a "${SRCROOT}/Libraries/macOS"
+	cp -R _build_linux/include/libxml2 "${SRCROOT}/Headers"
+	cp _build_linux/lib/libxml2.a "${SRCROOT}/Libraries/linux"
 
 
 =======================================================================
@@ -235,14 +235,14 @@ Download the source from
 and expand it into a directory on the Desktop.
 
 	cd libxslt-1.1.34
-	CFLAGS=-fPIC ./configure --with-libxml-prefix="$(pwd)/../libxml2-2.9.10/_build" --prefix="$(pwd)/_build"
+	CFLAGS=-fPIC ./configure --with-libxml-prefix="$(pwd)/../libxml2-2.9.10/_build_linux" --prefix="$(pwd)/_build_linux"
 
 	make install
 
 Finally, place the headers
 
-	cp -R ./_build/include/libxslt "${SRCROOT}/Headers"
-	cp ./_build/lib/libxslt.a ./_build/lib/libexslt.a "${SRCROOT}/Libraries/Linux"
+	cp -R _build_linux/include/libxslt "${SRCROOT}/Headers"
+	cp _build_linux/lib/libxslt.a ./_build/lib/libexslt.a "${SRCROOT}/Libraries/Linux"
 
 
 =======================================================================
@@ -268,12 +268,12 @@ and extract the archive. Then
 
 	cd libjpeg-turbo-2.0.6
 	cmake -G"Unix Makefiles"
-	make install DESTDIR="./build" -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+	make install DESTDIR="./_build_linux" -DCMAKE_POSITION_INDEPENDENT_CODE=ON
 
 Copy the header and library files.
 
-	cp -R ./build/opt/libjpeg-turbo/include "${SRCROOT}/Headers/libturbojpeg"
-	cp ./build/opt/libjpeg-turbo/lib64/libturbojpeg.a "${SRCROOT}/Libraries/macOS"
+	cp -R _build_linux/opt/libjpeg-turbo/include "${SRCROOT}/Headers/libturbojpeg"
+	cp _build_linux/opt/libjpeg-turbo/lib64/libturbojpeg.a "${SRCROOT}/Libraries/linux"
 
 
 =======================================================================
@@ -287,13 +287,13 @@ Download the source from
 Then
 
 	cd poco-master
-	./configure --cflags="-std=c++11 -fPIC" --static --no-tests --no-samples --prefix="$(pwd)/_build" --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util,XML
+	./configure --cflags="-std=c++11 -fPIC" --static --no-tests --no-samples --prefix="$(pwd)/_build_linux" --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util,XML
 	make -s -j install
 
-Copy the libraries libPocoFoundation.a, libPocoJSON.a & libPocoZip.a from _build/lib to the Libraries/linux directory and copy the _build/include/Poco to Headers.
+Copy the libraries libPocoFoundation.a, libPocoJSON.a & libPocoZip.a from _build_linux/lib to the Libraries/linux directory and copy the _build_linux/include/Poco to Headers.
 
-	cp -R ./_build_macos/include/Poco "${SRCROOT}/Headers"
-	cp ./_build/lib/libPocoFoundation.a ./_build/lib/libPocoZip.a ./_build/lib/libPocoJSON.a "${SRCROOT}/Libraries/Linux"
+	cp -R _build_linux/include/Poco "${SRCROOT}/Headers"
+	cp _build_linux/lib/libPocoFoundation.a _build_linux/lib/libPocoZip.a _build_linux/lib/libPocoJSON.a "${SRCROOT}/Libraries/Linux"
 
 =======================================================================
 freetype - 2.10.4
@@ -306,10 +306,10 @@ Download freetype from
 and expand it into a directory on the Desktop.
 
 	cd freetype-2.10.4
-	CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)/build
+	CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)/_build_linux
 	make install
 
-then copy build/lib/libfreetype.a to Libraries/linux and build/include/freetype2 to Headers.
+then copy _build_linux/lib/libfreetype.a to Libraries/linux and _build_linux/include/freetype2 to Headers.
 
 
 =======================================================================
@@ -323,34 +323,30 @@ Download fontconfig from
 and expand it into a directory on the Desktop.
 
 	cd fontconfig-2.13.1
-	CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)/build FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2" FREETYPE_LIBS="${SRCROOT}/Libraries/linux" LDFLAGS="-L${SRCROOT}/Libraries/linux" --with-expat=/usr/lib64/libexpat.so.1
+	CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)/_build_linux FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2" FREETYPE_LIBS="${SRCROOT}/Libraries/linux" LDFLAGS="-L${SRCROOT}/Libraries/linux" --with-expat=/usr/lib64/libexpat.so.1
 	make install
 
-then copy build/lib/libfontconfig.a to Libraries/linux and build/include/fontconfig to Headers.
+then copy _build_linux/lib/libfontconfig.a to Libraries/linux and _build_linux/include/fontconfig to Headers.
 
 
 =======================================================================
-podofo - 0.9.4
+podofo - 0.9.7
 =======================================================================
 
-Download freetype from
+Download podofo from
 
-	https://www.freetype.org/download.html
+	http://podofo.sourceforge.net/download.html
 	
 and expand it into a directory on the Desktop.
 
-	cd podofo-0.9.4
-	
-Edit
-
-	CMakeLists.txt
-	
-to remove references to CMP0033 and the PNG library. Then
-
-	cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/freetype2" -DFREETYPE_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/linux>/libfreetype.a" -DFONTCONFIG_INCLUDE_DIR="<path to /BaseElements-Plugin/Headers>/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="<path to /BaseElements-Plugin/Libraries/linux>/libfontconfig.a" -DFONTCONFIG_LIBRARIES="<path to /BaseElements-Plugin/Libraries/linux>" -DPODOFO_BUILD_LIB_ONLY=TRUE -DWANT_LIB64:BOOL=TRUE -DCMAKE_CXX_FLAGS="fPIC" ./
+	cd podofo-0.9.7
+	cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build_linux" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="${SRCROOT}/Headers/freetype2" -DFREETYPE_LIBRARY_RELEASE="${SRCROOT}/Libraries/linux/libfreetype.a" -DFONTCONFIG_INCLUDE_DIR="${SRCROOT}/Headers/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="${SRCROOT}/Libraries/linux/libfontconfig.a" -DFONTCONFIG_LIBRARIES="${SRCROOT}/Libraries/linux" -DPODOFO_BUILD_LIB_ONLY=TRUE -DWANT_LIB64:BOOL=TRUE -DCMAKE_CXX_FLAGS="-fPIC" ./
 	make install
 
-then copy _build/lib/libpodofo.a to Libraries/linux and _build/include/podofo to Headers.
+Copy the header and library files.
+
+	cp -R _build_linux/include/podofo "${SRCROOT}/Headers"
+	cp _build_linux/lib64/libpodofo.a "${SRCROOT}/Libraries/linux"
 
 =======================================================================
 
