@@ -205,7 +205,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_JSONPath_Deprecated, BE_JSONPath_Deprecated, 2 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_JSON_Error_Description_Deprecated, BE_JSON_Error_Description_Deprecated );
 	g_be_plugin->RegisterFunction ( kBE_JSON_ArraySize, BE_JSON_ArraySize, 1, 2 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_JSON_Encode_Deprecated, BE_JSON_Encode_Deprecated, 1, 3 );
 
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_GET_File, BE_HTTP_GET, 1, 4 );
@@ -213,10 +212,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1, 2 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_Base64_Decode_Deprecated, BE_Base64_Decode_Deprecated, 1, 2 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_Base64_Encode_Deprecated, BE_Base64_Encode_Deprecated, 1 );
 	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, 0, 1 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_Base64_URL_Encode_Deprecated, BE_Base64_Encode_Deprecated, 1 );
 
 
 	g_be_plugin->RegisterHiddenFunction ( kBE_JPEG_Recompress_Deprecated, BE_JPEGRecompress, 1, 4 ); // deprecated

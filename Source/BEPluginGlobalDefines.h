@@ -148,10 +148,10 @@ enum functions {
 	kBE_PreferenceDelete = 162,
 	kBE_Unzip = 170,
 	kBE_Zip = 171,
-	kBE_Base64_Decode_Deprecated = 172,
-	kBE_Base64_Encode_Deprecated = 173,
+//	kBE_Base64_Decode_Deprecated = 172, // Removed in 4.2
+//	kBE_Base64_Encode_Deprecated = 173, // Removed in 4.2
 	kBE_SetTextEncoding = 174,
-	kBE_Base64_URL_Encode_Deprecated = 175,
+//	kBE_Base64_URL_Encode_Deprecated = 175, // Removed in 4.2
 	kBE_ExportFieldContents = 176,
 	kBE_FileImport = 177,
 	kBE_FilePatternCount = 178,
@@ -193,7 +193,7 @@ enum functions {
 	kBE_JSONPath_Deprecated = 300,
 	kBE_JSON_Error_Description_Deprecated = 301,
 	kBE_JSON_ArraySize = 302,
-	kBE_JSON_Encode_Deprecated = 303,
+//	kBE_JSON_Encode_Deprecated = 303, // Removed in 4.2
 //	kBE_OAuth_RequestToken = 320, // Never Implemented
 	kBE_OAuthRequestAccessToken_Deprecated = 321, // Deprecated in 4.1.4 => Removed in 4.2
 //	kBE_OAuth_SetToken = 322, // Never Implemented

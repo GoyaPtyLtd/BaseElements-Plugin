@@ -1454,47 +1454,6 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 } // BE_JSON_ArraySize_Deprecated
 
 
-fmx::errcode BE_JSON_Encode_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	g_json_error_description.clear();
-
-	try {
-
-		auto key = ParameterAsUTF8String ( parameters );
-		auto type = ParameterAsUTF8String ( parameters, 2 ); // allows the developer to specify null (only)
-
-		if ( parameters.Size() == 1 ) {
-
-			const string out = "\"" + key + "\":";
-			SetResult ( out, results );
-
-		} else {
-
-			std::unique_ptr<BEJSON> json_document ( new BEJSON ( ) );
-			auto json = json_document->encode ( key, parameters.At ( 1 ), type );
-			json.erase ( 0, 1 ); // remove {
-			json.erase ( json.length() - 1 ); // remove }
-			SetResult ( json, results );
-
-		}
-
-	} catch ( BEJSON_Exception& e ) {
-		error = e.code();
-		g_json_error_description = e.description();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_JSON_Encode_Deprecated
-
-
-
 #pragma mark -
 #pragma mark JavaScript
 #pragma mark -
@@ -1525,6 +1484,7 @@ fmx::errcode BE_EvaluateJavaScript ( short /* funcId */, const fmx::ExprEnv& /* 
 	return MapError ( error );
 
 } // BE_EvaluateJavaScript
+
 
 
 #pragma mark -
@@ -1986,62 +1946,6 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 	return MapError ( error );
 
 } // BE_Zip
-
-
-
-fmx::errcode BE_Base64_Decode_Deprecated ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto text = ParameterAsUTF8String ( parameters );
-		auto filename = ParameterAsUTF8String ( parameters, 1 );
-
-		// decode it...
-		vector<char> data = Base64_Decode ( text );
-		if ( filename.empty() ) {
-			SetResult ( data, results );
-		} else {
-			SetResult ( filename, data, results );
-		}
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_Base64_Decode_Deprecated
-
-
-
-fmx::errcode BE_Base64_Encode_Deprecated ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto data = ParameterAsVectorChar ( parameters );
-		auto base64 = Base64_Encode ( data, funcId == kBE_Base64_URL_Encode_Deprecated );
-
-		SetResult ( base64, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_Base64_Encode_Deprecated
 
 
 
