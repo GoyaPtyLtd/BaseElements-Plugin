@@ -10,7 +10,11 @@ Download the FileMaker External Plug-In API from
 
 and place the FMWrapper.framework in the Libraries directory.
 
-On the Mac most of the required headers and library files are installed by default on the system. The only third-party libraries that need to be built the Boost FileSystem, System and Thread libraries.
+The scripts referred to shoud be in the
+
+	BUILDING/Scripts
+	
+directory. Most of the script require paths to vbe set, notably for SRCROOT and the directory containing the source for the library.
 
 =======================================================================
 Boost - 1.75_0
