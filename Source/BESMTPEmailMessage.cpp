@@ -54,6 +54,8 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 	text->body().assign ( message_text + "\r\n\r\n" );
 	text->header().contentType() = "text/plain; charset=\"utf-8\"";
 	
+	html = NULL;
+	
 	// MIME Version
 	mimetic::MimeVersion mime_version = mimetic::MimeVersion ( "1.0" );
 	message->header().mimeVersion ( mime_version );
@@ -84,7 +86,6 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 BESMTPEmailMessage::~BESMTPEmailMessage ( )
 {
 	g_smtp_custom_headers.clear();
-	delete html;
 	delete message;
 }
 
@@ -131,11 +132,15 @@ void BESMTPEmailMessage::set_reply_to ( const std::string& reply_to_address )
 
 void BESMTPEmailMessage::set_html_alternative ( const std::string& html_part )
 {
-	html = new mimetic::MimeEntity;
-	std::string html_text = html_part;
-	boost::replace_all ( html_text, FILEMAKER_END_OF_LINE, "\r\n" );
-	html->body().assign ( html_text );
-	html->header().contentType() = "text/html; charset=\"utf-8\"";
+	if ( !html_part.empty() ) {
+		
+		html = new mimetic::MimeEntity;
+		std::string html_text ( html_part );
+		boost::replace_all ( html_text, FILEMAKER_END_OF_LINE, "\r\n" );
+		html->body().assign ( html_text );
+		html->header().contentType() = "text/html; charset=\"utf-8\"";
+
+	}
 }
 
 
@@ -195,17 +200,21 @@ string BESMTPEmailMessage::as_string()
 void BESMTPEmailMessage::build_message ( )
 {
 	
-	if ( !text->body().empty() && !html->body().empty() ) {
+	if ( html && !html->body().empty() ) {
+		
+		if ( !text->body().empty() ) {
 
-		mimetic::MultipartAlternative * multipart_alternative = new mimetic::MultipartAlternative;
-		multipart_alternative->body().parts().push_back ( text );
-		multipart_alternative->body().parts().push_back ( html );
-		message->body().parts().push_back ( multipart_alternative );
+			mimetic::MultipartAlternative * multipart_alternative = new mimetic::MultipartAlternative;
+			multipart_alternative->body().parts().push_back ( text );
+			multipart_alternative->body().parts().push_back ( html );
+			message->body().parts().push_back ( multipart_alternative );
+
+		} else {
+			message->body().parts().push_back ( html );
+		}
 
 	} else if ( !text->body().empty() ) {
 		message->body().parts().push_back ( text );
-	} else if ( !html->body().empty() ) {
-		message->body().parts().push_back ( html );
 	}
 
 	add_attachments();

@@ -87,17 +87,15 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 
 	// who we send this to
 	
-	struct curl_slist *recipients = NULL;
 	BEValueListStringUniquePtr send_to = message->to_address();
 	send_to->append ( *(message->cc_addresses()) );
 	send_to->append ( *(message->bcc_addresses()) );
 	
+	struct curl_slist * recipients = NULL;
 	vector<string> addresses = send_to->get_values();
 	for ( vector<string>::iterator it = addresses.begin() ; it != addresses.end() ; ++it ) {
-        
-        const std::string address = strip_address ( *it );
-        recipients = curl_slist_append ( recipients, address.c_str() );
-        
+        auto address = strip_address ( *it );
+		recipients = curl_slist_append ( recipients, address.c_str() );
 	}
 		
 	if ( recipients ) {
@@ -105,21 +103,29 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 		easy_setopt ( CURLOPT_MAIL_RCPT, recipients );
 	
 		// the payload
-		string body_string = message->as_string();
+		try {
+			
+			string body_string = message->as_string();
 
-		easy_setopt ( CURLOPT_READFUNCTION, ReadMemoryCallback );
-		userdata.memory = (char *)body_string.c_str();
-		userdata.size = body_string.size();
-		easy_setopt ( CURLOPT_READDATA, &userdata );
-		easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
-		easy_setopt ( CURLOPT_UPLOAD, 1L );
+			easy_setopt ( CURLOPT_READFUNCTION, ReadMemoryCallback );
+			userdata.memory = (char *)body_string.c_str();
+			userdata.size = body_string.size();
+			easy_setopt ( CURLOPT_READDATA, &userdata );
+			easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
+			easy_setopt ( CURLOPT_UPLOAD, 1L );
 
-		// send it
-		result = curl_easy_perform ( curl );
+			// send it
+			result = curl_easy_perform ( curl );
+
+		} catch ( BEPlugin_Exception &e ) {
+			result = (CURLcode)e.code();
+		}
+
 		error = result;
-	
+
 		// clean up
 		curl_slist_free_all ( recipients );
+
 	}
 
 	return (fmx::errcode)result;
