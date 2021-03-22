@@ -75,6 +75,7 @@
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
 			<Add before="cp ../Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
+			<Add after='chown fmserver:fmsadmin &quot;/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx&quot;' />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="../Headers/FMWrapper/FMXBinaryData.h">
@@ -152,6 +153,8 @@
 		<Unit filename="../Source/linux/BELinuxFunctions.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
+			<code_completion />
+			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
