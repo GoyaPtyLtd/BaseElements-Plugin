@@ -69,6 +69,7 @@
 			<Add library="../Libraries/linux/libcrypto.a" />
 			<Add library="../Libraries/linux/libssl.a" />
 			<Add library="../Libraries/linux/libssh2.a" />
+			<Add library="../Libraries/linux/libPocoXML.a" />
 			<Add directory="PlugInSDK/Libraries/Linux" />
 			<Add directory="../Libraries/linux" />
 		</Linker>
@@ -153,8 +154,6 @@
 		<Unit filename="../Source/linux/BELinuxFunctions.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
-			<code_completion />
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

@@ -1,11 +1,13 @@
 ########################################################################
-Version 4.2b1
+Version 4.2b2
 ########################################################################
 
-March 19, 2021
+March 23, 2021
 
 
 New Functions
+
+BE_XMLTidy
 
 
 Functions Removed
@@ -18,6 +20,7 @@ BE_JSON_Encode_Deprecated
 BE_OAuthRequestAccessToken_Deprecated
 BE_XeroGenerateKeys_Deprecated
 BE_XeroSetTokens_Deprecated
+
 
 Changes
 

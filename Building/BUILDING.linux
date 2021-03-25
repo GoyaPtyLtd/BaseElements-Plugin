@@ -287,10 +287,10 @@ Download the source from
 Then
 
 	cd poco-master
-	./configure --cflags="-std=c++11 -fPIC" --static --no-tests --no-samples --prefix="$(pwd)/_build_linux" --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util,XML
+	./configure --cflags="-std=c++11 -fPIC" --static --no-tests --no-samples --prefix="$(pwd)/_build_linux" --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util
 	make -s -j install
 
-Copy the libraries libPocoFoundation.a, libPocoJSON.a & libPocoZip.a from _build_linux/lib to the Libraries/linux directory and copy the _build_linux/include/Poco to Headers.
+Copy the libraries libPocoFoundation.a, libPocoJSON.a, libPocoXML.a & libPocoZip.a from _build_linux/lib to the Libraries/linux directory and copy the _build_linux/include/Poco to Headers.
 
 	cp -R _build_linux/include/Poco "${SRCROOT}/Headers"
 	cp _build_linux/lib/libPocoFoundation.a _build_linux/lib/libPocoZip.a _build_linux/lib/libPocoJSON.a "${SRCROOT}/Libraries/Linux"

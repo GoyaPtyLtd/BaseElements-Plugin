@@ -157,6 +157,7 @@
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
+		4DA6DF9126085A5700B7DCC5 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA6DF9026085A5700B7DCC5 /* libPocoXML.a */; };
 		4DB857A31C646DF600D0192A /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
 		4DBCCD1D25DB76BA0000017C /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1B25DB76BA0000017C /* libiconv.a */; };
 		4DBCCD1E25DB76BA0000017C /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1C25DB76BA0000017C /* libcharset.a */; };
@@ -204,6 +205,8 @@
 		4DFA0D8A222E361C006EF9FB /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
 		4DFA0D8C222E36A6006EF9FB /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7A222E34E1006EF9FB /* libbz2.tbd */; };
 		4DFA0D8D222E36A6006EF9FB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D75222E3493006EF9FB /* libz.tbd */; };
+		4DFC6078260B0779003C795B /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFC6077260B0778003C795B /* libPocoXML.a */; };
+		4DFC607D260B07FD003C795B /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFC607C260B07FD003C795B /* libPocoXML.a */; };
 		6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
 		B282D74C201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 		B282D74D201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
@@ -351,6 +354,7 @@
 		4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginFunctions.cpp; path = ../Source/BEPluginFunctions.cpp; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginFunctions.h; path = ../Source/BEPluginFunctions.h; sourceTree = SOURCE_ROOT; };
 		4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginGlobalDefines.h; path = ../Source/BEPluginGlobalDefines.h; sourceTree = SOURCE_ROOT; usesTabs = 1; };
+		4DA6DF9026085A5700B7DCC5 /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = ../Libraries/macOS/libPocoXML.a; sourceTree = "<group>"; };
 		4DAC555318BDA41E00F365F5 /* BESMTP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTP.cpp; path = ../Source/BESMTP.cpp; sourceTree = "<group>"; };
 		4DAC555418BDA41E00F365F5 /* BESMTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTP.h; path = ../Source/BESMTP.h; sourceTree = "<group>"; };
 		4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPContainerAttachments.cpp; path = ../Source/BESMTPContainerAttachments.cpp; sourceTree = "<group>"; };
@@ -393,6 +397,8 @@
 		4DFA0D82222E361C006EF9FB /* libPocoZipd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZipd.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoZipd.a; sourceTree = "<group>"; };
 		4DFA0D83222E361C006EF9FB /* libPocoFoundationd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundationd.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoFoundationd.a; sourceTree = "<group>"; };
 		4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoFoundation.a; sourceTree = "<group>"; };
+		4DFC6077260B0778003C795B /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = ../Libraries/iOS/iPhoneOS/libPocoXML.a; sourceTree = "<group>"; };
+		4DFC607C260B07FD003C795B /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoXML.a; sourceTree = "<group>"; };
 		4DFDF48F1BF992A100B4C7C4 /* BEPluginVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEPluginVersion.h; path = ../Source/BEPluginVersion.h; sourceTree = "<group>"; };
 		B282D74A201C9B540074C4BE /* BEOpenSSLRSA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BEOpenSSLRSA.h; sourceTree = "<group>"; };
 		B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BEOpenSSLRSA.cpp; sourceTree = "<group>"; usesTabs = 1; };
@@ -403,6 +409,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DFC6078260B0779003C795B /* libPocoXML.a in Frameworks */,
 				4DE1234525E8A5B200518D6D /* libssl.a in Frameworks */,
 				4DE1233E25E8A58900518D6D /* libcrypto.a in Frameworks */,
 				4D5668A625DCD3F700BB450F /* libcharset.a in Frameworks */,
@@ -435,6 +442,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DFC607D260B07FD003C795B /* libPocoXML.a in Frameworks */,
 				4D5668AB25DCD42F00BB450F /* libcharset.a in Frameworks */,
 				4D5668AC25DCD42F00BB450F /* libiconv.a in Frameworks */,
 				4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */,
@@ -467,6 +475,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DA6DF9126085A5700B7DCC5 /* libPocoXML.a in Frameworks */,
 				4DBCCD1D25DB76BA0000017C /* libiconv.a in Frameworks */,
 				4DBCCD1E25DB76BA0000017C /* libcharset.a in Frameworks */,
 				4D33C6C4229BC90200CEA53F /* libboost_program_options.a in Frameworks */,
@@ -684,6 +693,9 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4DA6DF9026085A5700B7DCC5 /* libPocoXML.a */,
+				4DFC6077260B0778003C795B /* libPocoXML.a */,
+				4DFC607C260B07FD003C795B /* libPocoXML.a */,
 				4DE1233125E8A4B500518D6D /* libcrypto-arm64.a */,
 				4DE1233225E8A4B500518D6D /* libssl-arm64.a */,
 				4DBCCD1C25DB76BA0000017C /* libcharset.a */,

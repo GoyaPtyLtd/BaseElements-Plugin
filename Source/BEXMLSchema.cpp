@@ -2,7 +2,7 @@
  BEXMLSchema.cpp
  BaseElements Plug-In
  
- Copyright (c) 2017-2020 Goya. All rights reserved.
+ Copyright (c) 2017-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -18,6 +18,16 @@
 #include <libxml/xmlschemas.h>
 
 #include <libxml/c14n.h>
+
+#include <sstream>
+#include <Poco/DOM/AutoPtr.h>
+#include <Poco/DOM/Document.h>
+#include <Poco/DOM/DOMException.h>
+#include <Poco/DOM/DOMParser.h>
+#include <Poco/DOM/DOMWriter.h>
+#include <Poco/SAX/SAXException.h>
+#include <Poco/XML/XMLException.h>
+#include <Poco/XML/XMLWriter.h>
 
 
 // globals for error reporting
@@ -144,4 +154,27 @@ const std::string canonical_xml ( const std::string xml )
 		
 }
 
+
+const std::string pretty_print_xml ( const std::string xml )
+{
+
+	Poco::XML::DOMParser parser;
+	Poco::XML::AutoPtr<Poco::XML::Document> xml_document;
+	
+	try {
+		xml_document = parser.parseString ( xml );
+	} catch ( Poco::XML::XMLException /* &e */ ) {
+		throw BEPlugin_Exception ( kXMLParseError );
+	}
+
+	Poco::XML::DOMWriter writer;
+	writer.setNewLine ( FILEMAKER_END_OF_LINE );
+	writer.setOptions ( Poco::XML::XMLWriter::CANONICAL_XML | Poco::XML::XMLWriter::PRETTY_PRINT | Poco::XML::XMLWriter::PRETTY_PRINT_ATTRIBUTES );
+
+	std::ostringstream out;
+	writer.writeNode ( out, xml_document );
+
+	return (std::string)out.str();
+		
+} // pretty_print_xml
 

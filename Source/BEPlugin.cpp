@@ -176,7 +176,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_SplitBEFileNodes, BE_SplitBEFileNodes, 1 );
 	g_be_plugin->RegisterFunction ( kBE_XMLValidate, BE_XMLValidate, 2 );
 	g_be_plugin->RegisterFunction ( kBE_XML_Canonical, BE_XML_Canonical, 1 );
-
+	g_be_plugin->RegisterFunction ( kBE_XMLTidy, BE_XMLTidy, 1 );
 
 	g_be_plugin->RegisterHiddenFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1, 2 );
 

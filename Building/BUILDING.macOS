@@ -235,14 +235,14 @@ and extract the archive. Then
 
 	cd poco-poco-1.10.1-release
 
-	./configure --config=Darwin64-clang-libc++ --prefix="${$(pwd)}/_build_macos" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util,XML"
+	./configure --config=Darwin64-clang-libc++ --prefix="${$(pwd)}/_build_macos" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util"
 
 	make -s -j install
 
 Copy the header and library files.
 
 	cp -R ./_build_macos/include/Poco "${SRCROOT}/Headers"
-	cp ./_build_macos/lib/libPocoFoundation.a ./_build_macos/lib/libPocoZip.a ./_build_macos/lib/libPocoJSON.a "${SRCROOT}/Libraries/macOS"
+	cp ./_build_macos/lib/libPocoFoundation.a ./_build_macos/lib/libPocoZip.a ./_build_macos/lib/libPocoJSON.a ./_build_macos/lib/libPocoXML.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================

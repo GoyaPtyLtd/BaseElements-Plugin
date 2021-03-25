@@ -70,6 +70,7 @@
 "212" = "BE_SplitBEFileNodes ( path )||BaseElements Internal : function not documented.";
 "213" = "BE_XMLValidate ( xml ; schema )|XML Validate Schema|Validates an XML file against a schema.";
 "214" = "BE_XML_Canonical ( xml ) |XML Canonical|Create the canonized image of the XML input.";
+"215" = "BE_XMLTidy ( xml )|XML Tidy|Pretty-print the XML input. Note: pretty-printing XML data alters the information set of the document being written, since in XML all whitespace is potentially relevant.";
 "220" = "BE_TimeCurrentMilliseconds|Time Current Milliseconds|Returns the current time as number of milliseconds. Effectively the same as GetAsNumber ( Get ( CurrentTimestamp ) ).";
 "221" = "BE_TimeUTCMilliseconds|Time UTC Milliseconds|Returns UTC time as number of milliseconds, so allowing for time zone offsets.";
 "222" = "BE_TimeZoneOffset|Time UTC Zone Offset|Returns the difference ( in minutes ) between UTC and local time.";
