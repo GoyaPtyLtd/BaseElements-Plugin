@@ -175,7 +175,7 @@ enum functions {
 	kBE_XMLParse = 211,
 	kBE_SplitBEFileNodes = 212,
 	kBE_XMLValidate = 213,
-	kBE_XML_Canonical = 214,
+	kBE_XMLCanonical = 214,
 	kBE_XMLTidy = 215,
 	kBE_TimeCurrentMilliseconds = 220,
 	kBE_TimeUTCMilliseconds = 221,

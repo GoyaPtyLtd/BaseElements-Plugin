@@ -2,7 +2,7 @@
 Version 4.2b2
 ########################################################################
 
-March 23, 2021
+March 25, 2021
 
 
 New Functions
@@ -36,6 +36,7 @@ BE_JSONPath_Deprecated: plug memory leak
 BE_ScriptExecute: scriptControl Parameter added
 BE_SMTPSend: plug memory leak
 BE_ValuesContainsDuplicates: plug memory leak
+BE_XML_Canonical: renamed to BE_XMLCanonical
 BE_XPath: plug memory leak
 BE_XSLTApply: plug memory leak
 

@@ -1323,7 +1323,7 @@ fmx::errcode BE_XMLValidate ( short /* funcId */, const ExprEnv& /* environment 
 
 
 
-fmx::errcode BE_XML_Canonical ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XMLCanonical ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error =	NoError();
 
@@ -1347,7 +1347,7 @@ fmx::errcode BE_XML_Canonical ( short /* funcId */, const ExprEnv& /* environmen
 
 	return MapError ( error );
 
-} // BE_XML_Canonical
+} // BE_XMLCanonical
 
 
 fmx::errcode BE_XMLTidy ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
