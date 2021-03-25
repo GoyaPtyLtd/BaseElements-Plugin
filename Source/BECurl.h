@@ -125,7 +125,7 @@ protected:
 	
 	std::vector<char> upload_data;
 	struct MemoryStruct userdata;
-	struct curl_httppost *post_data;
+	struct curl_mime * mime;
 
 	std::string parameters;
 	

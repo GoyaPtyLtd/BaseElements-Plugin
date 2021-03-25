@@ -409,7 +409,7 @@ BECurl::~BECurl()
 	g_http_custom_headers.clear();
 
 
-	curl_formfree ( post_data );
+	curl_mime_free ( mime );
 	curl_easy_cleanup ( curl );
 	curl_global_cleanup();
 }
@@ -427,8 +427,8 @@ void BECurl::Init ( )
 	upload_file = NULL;
 	custom_headers = NULL;
 	command_list = NULL;
-	post_data = NULL;
-
+	mime = NULL;
+	
 	//
 	http_response_code = 0;
 
@@ -654,7 +654,8 @@ void BECurl::set_parameters ( )
 			vector<string> fields;
 			boost::split ( fields, parameters, boost::is_any_of ( "&" ) );
 
-			struct curl_httppost *last_form_field = NULL;
+			// Build an HTTP form
+			mime = curl_mime_init ( curl );
 
 			for ( vector<string>::iterator it = fields.begin() ; it != fields.end(); ++it ) {
 
@@ -666,23 +667,22 @@ void BECurl::set_parameters ( )
 					break;
 				}
 
+				curl_mimepart * part = curl_mime_addpart ( mime );
+
 				// get rid of @ sign that marks that it's a file path
-				int value_type = CURLFORM_COPYCONTENTS;
 				string value = key_value_pair.at ( 1 );
 				if ( !value.empty() && value[0] == '@' ) {
 					value.erase ( value.begin() );
-					value_type = CURLFORM_FILE;
+					curl_mime_filedata ( part, value.c_str() );
+				} else {
+					curl_mime_data ( part, value.c_str(), CURL_ZERO_TERMINATED );
 				}
-
-				// add the field
-				CURLFORMcode add_result = curl_formadd ( &post_data, &last_form_field, CURLFORM_COPYNAME, key_value_pair.at ( 0 ).c_str(), value_type, value.c_str(), CURLFORM_END );
-				if ( add_result ) {
-					throw BECurl_Exception ( (CURLcode)add_result );
-				}
+				
+				curl_mime_name ( part, key_value_pair.at(0).c_str() );
 
 			} // for
 
-			easy_setopt ( CURLOPT_HTTPPOST, post_data );
+			easy_setopt ( CURLOPT_MIMEPOST, mime );
 
 		} // if ( std::string::npos == parameters.find ( "=@" ) )fi
 
