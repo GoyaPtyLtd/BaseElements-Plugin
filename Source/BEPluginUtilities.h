@@ -87,7 +87,8 @@ const int PreferredContainerType ( const fmx::BinaryData& data );
 const bool BinaryDataAvailable ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 
 const fmx::int32 IndexForStream ( const fmx::BinaryData& data, const std::string stream_type, const bool resolve_main_stream = true );
-const std::vector<char> DataAsVectorChar ( const fmx::BinaryData& data, const FMX_UInt32 which );
+const std::vector<char> BinaryDataAsVectorChar ( const fmx::BinaryData& data, const FMX_UInt32 which = 0 );
+const std::vector<char> DataAsVectorChar ( const fmx::Data& data, const FMX_UInt32 which = 0 );
 const bool StreamIsCompressed ( const fmx::BinaryData& data );
 
 const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path );

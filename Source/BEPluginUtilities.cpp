@@ -407,7 +407,7 @@ const vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX
 
 			if ( which_type != kBE_DataType_Not_Found ) {
 
-				output = DataAsVectorChar ( *data, which_type );
+				output = BinaryDataAsVectorChar ( *data, which_type );
 
 				if ( StreamIsCompressed ( *data ) ) {
 					output = UncompressContainerStream ( output );
@@ -693,7 +693,7 @@ const fmx::int32 IndexForStream ( const BinaryData& data, const std::string stre
 }
 
 
-const vector<char> DataAsVectorChar ( const BinaryData& data, const FMX_UInt32 which )
+const vector<char> BinaryDataAsVectorChar ( const BinaryData& data, const FMX_UInt32 which )
 {
 	uint32 size = data.GetSize ( which );
 	char * output_buffer = new char [ size ];
@@ -704,6 +704,12 @@ const vector<char> DataAsVectorChar ( const BinaryData& data, const FMX_UInt32 w
 	delete[] output_buffer;
 
 	return output;
+}
+
+
+const vector<char> DataAsVectorChar ( const Data& data, const FMX_UInt32 which )
+{
+	return BinaryDataAsVectorChar ( data.GetBinaryData(), which );
 }
 
 

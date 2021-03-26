@@ -2,7 +2,7 @@
 Version 4.2b2
 ########################################################################
 
-March 25, 2021
+March 26, 2021
 
 
 New Functions
@@ -30,6 +30,7 @@ BE_ExecuteSystemCommand: executeUsingShell parameter added
 BE_ExtractScriptVariables: plug memory leak
 BE_FileImport: plug memory leak
 BE_FileMakerSQL: return container/binary data in addition to text (new asText parameter) 
+BE_FileMakerSQL: outputPath parameter added 
 BE_HTTP_PUTData: plug memory leak
 BE_JSON_Encode_Deprecated: plug memory leak
 BE_JSONPath_Deprecated: plug memory leak

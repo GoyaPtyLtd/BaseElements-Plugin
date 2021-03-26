@@ -2150,12 +2150,12 @@ fmx::errcode BE_ContainerGetType ( short /* funcId */, const fmx::ExprEnv& /* en
 
 			} else if ( stream_type == MAIN_CONTAINER_TYPE ) {
 
-				auto quad_char = DataAsVectorChar ( *container, stream_index );
+				auto quad_char = BinaryDataAsVectorChar ( *container, stream_index );
 				SetResult ( quad_char, results );
 
 			} else {
 
-				auto stream_data = DataAsVectorChar ( *container, stream_index );
+				auto stream_data = BinaryDataAsVectorChar ( *container, stream_index );
 				auto name_of_file = TextAsUTF8String ( *file_name );
 				if ( name_of_file.empty() ) {
 					name_of_file = stream_type;
@@ -3985,17 +3985,34 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 		auto text_result_wanted = ParameterAsBoolean ( parameters, 4, true );
 		sql->execute ( environment, text_result_wanted );
 
-		if ( text_result_wanted ) {
 
-			auto sql_result = sql->get_text_result();
-			SetResult ( *sql_result, results );
+		if ( parameters.Size() >= 6 ) { // writing a file
+			
+			ios_base::openmode mode = ios_base::trunc;
+			if ( !text_result_wanted ) {
+				mode |= ios_base::binary;
+			}
 
-		} else {
+			auto path = ParameterAsUTF8String ( parameters, 5 );
+			auto sql_result = sql->get_vector_result();
+			error = write_to_file ( path, sql_result, mode );
 
-			auto sql_result = sql->get_data_result();
-			results.SetBinaryData ( sql_result->GetBinaryData() );
+		} else { // sending the result to fmp
+
+			if ( text_result_wanted ) {
+
+				auto sql_result = sql->get_text_result();
+				SetResult ( *sql_result, results );
+
+			} else {
+
+				auto sql_result = sql->get_data_result();
+				results.SetBinaryData ( sql_result->GetBinaryData() );
+
+			}
 
 		}
+
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();

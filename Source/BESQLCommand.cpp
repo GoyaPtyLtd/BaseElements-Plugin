@@ -12,6 +12,7 @@
 
 #include "BESQLCommand.h"
 #include "BEPluginGlobalDefines.h"
+#include "BEPluginUtilities.h"
 
 
 using namespace std;
@@ -125,6 +126,18 @@ TextUniquePtr BESQLCommand::get_text_result ( void )
 
 }
 
+
+std::vector<char> BESQLCommand::get_vector_result ( void ) const
+{
+	std::vector<char> vector_result;
+
+	if ( !waiting ) {
+		vector_result = DataAsVectorChar ( *result );
+	}
+
+	return vector_result;
+
+}
 
 
 void BESQLCommand::set_column_separator ( const Text& new_column_separator )
