@@ -180,7 +180,7 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 	auto as_binary = !filename.empty();
 
 	vector<char> output = data;
-	
+
 	BEQuadChar data_type ( type );
 	auto compress = data_type.is_zlib();
 	auto is_file = data_type.is_file();
@@ -191,7 +191,7 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 		file->Assign ( filename.c_str(), Text::kEncoding_UTF8 );
 
 		if ( !data_type.is_defined_type() || compress || is_file ) {
-			
+
 			BinaryDataUniquePtr resultBinary;
 			resultBinary->AddFNAMData ( *file ); // error =
 
@@ -209,7 +209,7 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 			results.SetBinaryData ( *resultBinary, true );
 
 		} else {
-			
+
 			BinaryDataUniquePtr resultBinary ( *file, (FMX_UInt32)output.size(), (void *)output.data() );
 			results.SetBinaryData ( *resultBinary, true );
 
@@ -379,10 +379,10 @@ const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX
 
 const BEValueListStringSharedPtr ParameterAsStringValueList ( const DataVect& parameters, const FMX_UInt32 which, const bool is_case_sensitive, const bool retain_empty_values )
 {
-	
+
 	auto text = ParameterAsUTF8String ( parameters, which );
 	BEValueListStringSharedPtr value_list ( new BEValueList<string> ( text, is_case_sensitive, retain_empty_values ) );
-	
+
 	return value_list;
 
 }
@@ -458,12 +458,12 @@ const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& paramet
 
 const boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which, const boost::filesystem::path default_path )
 {
-	
+
 	boost::filesystem::path path = ParameterAsWideString ( parameters, which, default_path.wstring() );
 	path.make_preferred();
-	
+
 	return path;
-	
+
 }
 
 
@@ -509,15 +509,15 @@ const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& paramete
 	std::string results ;
 	std::string file_contents ;
 	std::string::size_type buffer_size = kBufferSize ;
-	
+
 	if ( BinaryDataAvailable ( parameters, which ) ) {
-		
+
 		auto binary_contents = ParameterAsVectorChar ( parameters, which );
 		const std::string temporary_contents ( binary_contents.begin(), binary_contents.end() );
 		results = temporary_contents;
-	
+
 		if ( delimiter == "" ) {
-			
+
 			if ( from > 0 || to > 0 ){
 				size_t offset = 0, depth = 0 ;
 				if ( DetermineOffsetAndDepth(results.length(), from, to, offset, depth) ) {
@@ -526,47 +526,47 @@ const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& paramete
 					results.clear() ;
 				}
 			}
-			
+
 		} else {
-			
+
 			/*  write out to a temporary path */
 			std::string temporary = std::tmpnam(nullptr);
-			
+
 			ios_base::openmode mode = ios_base::trunc;
 			vector<char> out = ConvertTextEncoding ( (char *)results.c_str(), results.size(), g_text_encoding, UTF8 );
-			
+
 			fmx::errcode error = write_to_file ( temporary, out, mode );
-			
+
 			if ( error == kNoError ) {
 				ReadFileAsUTF8Extract(temporary, from, to, buffer_size, delimiter, results ) ;
 				boost::filesystem::remove(temporary);
 			} else {
 				results = temporary_contents;
 			}
-			
+
 		}
-		
+
 	} else {
-		
+
 		auto file = ParameterAsPath ( parameters, which );
-		
+
 		if ( delimiter == "" ) {
-			
+
 			if ( from >0 || to > 0 ) {
 				ReadFileAsUTF8Extract(file, from, to, results ) ;
 			} else {
 				results = ReadFileAsUTF8 ( file );
 			}
-			
+
 		} else {
-		
+
 			ReadFileAsUTF8Extract(file, from, to, buffer_size, delimiter, results ) ;
-			
+
 		}
 	}
-	
+
 	return results ;
-	
+
 } // ParameterPathOrContainerAsUTF8
 
 
@@ -669,9 +669,9 @@ const bool BinaryDataAvailable ( const DataVect& parameters, const FMX_UInt32 wh
 
 const fmx::int32 IndexForStream ( const BinaryData& data, const std::string stream_type, const bool resolve_main_stream )
 {
-	
+
 	fmx::int32 stream_index = kBE_DataType_Not_Found;
-	
+
 	try {
 		unique_ptr<BEQuadChar> quad_char ( new BEQuadChar ( stream_type ) );
 		stream_index = data.GetIndex ( *(quad_char->get_type()) );
@@ -680,16 +680,16 @@ const fmx::int32 IndexForStream ( const BinaryData& data, const std::string stre
 	}
 
 	if ( resolve_main_stream && stream_index != kBE_DataType_Not_Found && stream_type == MAIN_CONTAINER_TYPE ) {
-		
+
 		// the type we want is stored in the first 4 bytes of MAIN
 		char quad_char [ QUAD_CHAR_SIZE + 1 ] = {0};
 		data.GetData ( stream_index, 0, QUAD_CHAR_SIZE, quad_char ); // error =
 		stream_index = IndexForStream ( data, quad_char );
-		
+
 	}
-	
+
 	return stream_index;
-	
+
 }
 
 
@@ -796,32 +796,32 @@ std::string ReadFileAsUTF8 ( const boost::filesystem::path path )
 } // ReadFileAsUTF8
 
 void ReadFileAsUTF8Extract( const boost::filesystem::path path, const size_t from, const size_t to, std::string& result) {
-	
+
 	if ( exists ( path ) ) {
-		
+
 		if ( from > 0 || to > 0 ) {
-			
+
 			size_t length = (size_t)file_size ( path ) ;
 
 			if ( length > 0 ) {
-			
+
 				size_t offset ;
 				size_t read ;
-				
+
 				if ( to <= 0 ) {
-					
+
 					/* read from front */
 					offset = from - 1 ;
 					read = length - from + 1 ;
 
 				} else if ( from <= 0 ) {
-					
+
 					/* read from back */
 					offset = length - to ;
 					read = to ;
-					
+
 				} else {
-					
+
 					if ( from <= to ) {
 						/* read from front */
 						offset = from - 1 ;
@@ -831,62 +831,62 @@ void ReadFileAsUTF8Extract( const boost::filesystem::path path, const size_t fro
 						offset = length - from ;
 						read = from - to + 1 ;
 					}
-					
+
 				}
-				
+
 				if ( offset < 0 ) {
 					offset = 0 ;
 				}
-				
+
 				if ( offset + read > length ) {
 					read = length - offset ;
 				}
-				
+
 				// extract the file contents
 				if ( offset < length ) {
-			
+
 					boost::filesystem::ifstream inFile ( path, ios_base::in | ios_base::binary | ios_base::ate );
-					
+
 					inFile.seekg ( offset, ios::beg ) ;
 					std::vector<char> buffer ( read ) ;
 					inFile.read ( &buffer[0], read ) ;
 					inFile.close ();
-					
+
 					// convert the text in the file to utf-8 if possible
 					result = ConvertTextToUTF8 ( &buffer[0], read );
 					if ( result.length() == 0 ) {
 						result.assign ( &buffer[0] );
 					}
 				}
-				
+
 			}
 		}
 	} else {
 		g_last_error = kNoSuchFileOrDirectoryError;
 	}
 
-	
+
 } // ReadFileAsUTF8Extract
 
 void ReadFileAsUTF8Extract( const boost::filesystem::path path, const size_t from, const size_t to, const size_t buffer_size, const std::string& delimiter, std::string& result) {
-	
+
 	if ( exists ( path ) ) {
-		
+
 		if ( from > 0 || to > 0 ) {
-			
+
 			size_t length = (size_t)file_size ( path ) ;
 
 			if ( length > 0 ) {
-			
+
 				// open the file
 				boost::filesystem::ifstream inFile ( path, ios_base::in | ios_base::binary | ios_base::ate );
-				
+
 				if ( to == 0 || ( to >= from && from > 0 ) ) {
-					
+
 					ReadBufferedFileFromStart( inFile, from, to, buffer_size, delimiter, result ) ;
-					
+
 				} else {
-					
+
 					if ( from == 0) {
 						ReadBufferedFileFromEnd( inFile, 1, to, buffer_size, delimiter, result ) ;
 					} else {
@@ -896,7 +896,7 @@ void ReadFileAsUTF8Extract( const boost::filesystem::path path, const size_t fro
 						 */
 						ReadBufferedFileFromEnd( inFile, to, from, buffer_size, delimiter, result ) ;
 					}
-	
+
 				}
 				inFile.close ();
 			}
@@ -984,9 +984,9 @@ const bool IsValidUTF8 ( const std::string& utf8 )
 	} catch ( BEPlugin_Exception& /* e */ ) {
 		valid = false;
 	}
-	
+
 	return valid;
-	
+
 }
 
 
@@ -1089,32 +1089,30 @@ errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Da
 			database->SetText ( file_name );
 		} else {
 
-			TextUniquePtr command;
-			command->Assign ( "Get ( FileName )" );
-
 			DataUniquePtr name;
-			environment.Evaluate ( *command, *name );
-
+			error = environment.EvaluateGetFunction ( fmx::ExprEnv::kGet_FileName, *name );
 			database->SetText ( name->GetAsText() );
 
 		}
-		
+
 		// if the action is invalid we pause
 		auto script_control_action = script_control;
 		switch ( script_control ) {
-				
+
 			case kFMXT_Halt:
 			case kFMXT_Exit:
 			case kFMXT_Resume:
 			case kFMXT_Pause:
 				break;
-				
+
 			default:
 				script_control_action = kFMXT_Pause;
-				
+
 		}
 
-		error = FMX_StartScript ( &(*database), &script_name, script_control_action, &parameter );
+		if ( kNoError == error ) {
+			error = FMX_StartScript ( &(*database), &script_name, script_control_action, &parameter );
+		}
 
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
@@ -1181,7 +1179,7 @@ errcode MapError ( const errcode error, const bool map )
 
 
 bool DetermineOffsetAndDepth( const size_t& length, const size_t& from, const size_t& to, size_t& offset, size_t& depth) {
-	
+
 	if ( from == 0 && to == 0 ) {
 		offset = 0 ;
 		depth = length ;
@@ -1216,9 +1214,9 @@ bool DetermineOffsetAndDepth( const size_t& length, const size_t& from, const si
 			}
 		}
 	}
-	
+
 	return ( offset + depth < length ) ;
-	
+
 } // DetermineOffsetAndDepth
 
 
@@ -1227,7 +1225,7 @@ bool DetermineOffsetAndDepth( const size_t& length, const size_t& from, const si
  Find the start of delimiter @from
  */
 void FindDelimiterStart( const std::string& text, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset) {
-	
+
 	size_t next ;
 	while ( count < from ) {
 		next = text.find(delimiter,offset) ;
@@ -1247,7 +1245,7 @@ void FindDelimiterStart( const std::string& text, const std::string& delimiter, 
  Find end offset of a delimiter in text
  */
 void FindDelimiterEnd( const std::string& text, const std::string& delimiter, const size_t& to, size_t& count, size_t& offset) {
-	
+
 	size_t next ;
 	while ( count <= to ) {
 		next = text.find(delimiter,offset) ;
@@ -1263,7 +1261,7 @@ void FindDelimiterEnd( const std::string& text, const std::string& delimiter, co
 			}
 		}
 	}
-		
+
 } // FindDelimiterEnd
 
 
@@ -1271,7 +1269,7 @@ void FindDelimiterEnd( const std::string& text, const std::string& delimiter, co
  Find the minimum offset for a delimiter from the end.
  */
 void ReverseFindDelimiter( const std::string& search, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset) {
-	
+
 	size_t next, candidate=0 ;
 	while ( count < from ) {
 		candidate = offset - 1 ;
@@ -1297,15 +1295,15 @@ std::string ConvertFileMakerEOLs ( std::string& in )
 	string from = FILEMAKER_END_OF_LINE;
 	string to = "\n";
 	size_t found_here;
-	
+
 	while ( (found_here = in.find ( from, look_here )) != string::npos )
 	{
 		in.replace ( found_here, from.size(), to );
 		look_here = found_here + to.size();
 	}
-	
+
 	return in;
-	
+
 } // ConvertFileMakerEOLs
 
 
@@ -1329,11 +1327,9 @@ void set_name_value_pair ( const DataVect& parameters, std::map<std::string, std
 
 bool AllowUserAbort ( const ExprEnv& environment )
 {
-	TextUniquePtr command;
-	command->Assign ( "Get ( AllowAbortState )" );
 
 	DataUniquePtr reply;
-	environment.Evaluate ( *command, *reply );
+	environment.EvaluateGetFunction ( fmx::ExprEnv::kGet_AllowAbortState, *reply ); // auto error =
 	bool allow_abort = reply->GetAsBoolean();
 
 	return allow_abort;
@@ -1343,11 +1339,9 @@ bool AllowUserAbort ( const ExprEnv& environment )
 
 std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
 {
-	TextUniquePtr command;
-	command->Assign ( "Get ( TemporaryPath )" );
 
 	DataUniquePtr reply;
-	environment.Evaluate ( *command, *reply );
+	environment.EvaluateGetFunction ( fmx::ExprEnv::kGet_TemporaryPath, *reply ); // auto error =
 
 	// we want the filesystem path, not the "filemaker" path
 	std::string temporary_path = TextAsUTF8String ( reply->GetAsText() );
@@ -1368,7 +1362,7 @@ std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
 
 void Do_GetString ( unsigned long whichString, FMX_PtrType /* winLangID */, FMX_PtrType resultsize, FMX_Unichar* string )
 {
-	
+
 	auto string_to_load = whichString;
 
 	switch ( whichString )
@@ -1443,60 +1437,60 @@ void Do_GetString ( const unsigned long whichStringID, TextUniquePtr& function_i
 } // Do_GetString (TextUniquePtr version)
 
 /** Extract text from a buffered file.
- 
+
  */
 void ReadBufferedFileFromStart(boost::filesystem::ifstream& inFile, const size_t& from, const size_t& to, const size_t& buffer_size, const std::string& delimiter, std::string& result) {
-	
+
 	std::vector<char> buffer ( buffer_size ) ;
 	size_t count = 0, offset = 0, from_delimiter, to_delimiter ;
-	
+
 	std::string slice, hold ;
-	
+
 	/* read from front */
-	
+
 	while (1) {
-		
+
 		inFile.seekg ( offset, ios::beg ) ;
 		inFile.read ( &buffer[0], buffer_size ) ;
-		
+
 		// convert the text in the file to utf-8 if possible
 		slice = ConvertTextToUTF8 ( &buffer[0], inFile.gcount() );
 		if ( slice.length() == 0 ) {
 			slice.assign ( &buffer[0] );
 		}
-		
+
 		from_delimiter = 0 ;
-		
+
 		/* find substring start */
 		FindDelimiterStart( slice, delimiter, from, count, from_delimiter ) ;
-		
+
 		if ( count >= from ) {
-			
+
 			/* insert any previous reads when found + 1 == count */
 			result.append( hold ) ;
 			hold.clear() ;
-			
+
 			if ( to <= 0 ) {
-				
+
 				/* add whole slice */
 				result.append(slice.substr(from_delimiter)) ;
-				
+
 			} else {
-				
+
 				/* find substring end */
 				to_delimiter = from_delimiter ;
 				FindDelimiterEnd( slice, delimiter, to, count,  to_delimiter ) ;
-				
+
 				if( count < to || to_delimiter == std::string::npos ) {
-					
+
 					/* add slice */
 					result.append( slice.substr(from_delimiter) );
-			
+
 				} else {
-				
+
 					/* add portion */
 					result.append(slice.substr( from_delimiter, delimiter.length()+to_delimiter-from_delimiter) ) ;
-					
+
 				}
 			}
 		} else {
@@ -1505,9 +1499,9 @@ void ReadBufferedFileFromStart(boost::filesystem::ifstream& inFile, const size_t
 				hold.append( slice ) ;
 			}
 		}
-		
+
 		slice.clear() ;
-		
+
 		if( !inFile ){
 			break ;
 		} else if ( count >= from && count >= to + 1 && to > 0 ) {
@@ -1521,20 +1515,20 @@ void ReadBufferedFileFromStart(boost::filesystem::ifstream& inFile, const size_t
 
 
 /** Extract text from the end of a file.
- 
+
  */
 void ReadBufferedFileFromEnd(boost::filesystem::ifstream& inFile, const size_t& from, const size_t& to, const size_t& buffer_size, const std::string& delimiter, std::string& result) {
 
 	std::vector<char> buffer ( buffer_size ) ;
 	size_t count = 0, offset, from_delimiter = 0, to_delimiter = 0, length = 0, delimiter_length = delimiter.length();
-	
+
 	std::string slice ;
 	std::vector<std::string> hold ;
 	// std::ostringstream verbose ;
 
 	inFile.seekg ( 0, ios::end ) ;
 	length = inFile.tellg() ;
-	
+
 	/*
 	  read the file in blocks and
 	  start with the last partial block first.
@@ -1565,32 +1559,32 @@ void ReadBufferedFileFromEnd(boost::filesystem::ifstream& inFile, const size_t& 
 		// verbose << "to_delimiter: " << to_delimiter << "\n" ;
 	}
 	from_delimiter = to_delimiter - 1 ;
-		
+
 	// i = 0 ;
 	while (1) {
-				
+
 		// i++ ;
 		// verbose << "\nread i: " << i << " offset: " << offset << "\n" ;
-		
+
 		slice = ConvertTextToUTF8 ( &buffer[0], inFile.gcount() );
 		if ( slice.length() == 0 ) {
 			slice.assign ( &buffer[0] );
 		}
-				
+
 		ReverseFindDelimiter( slice, delimiter, to, count,  from_delimiter ) ;
-	
+
 		// verbose << "count: " << count << "\n" ;
 		// verbose << "from_delimiter: " << from_delimiter << "\n" ;
 		// verbose << "to_delimiter: " << to_delimiter << "\n" ;
-		
+
 		if ( count >= from && count <= to) {
-			
+
 			// verbose << "from_delimiter+delimiter_length: " << from_delimiter+delimiter_length << "\n" ;
 			// verbose << "to_delimiter-from_delimiter-delimiter_length: " << to_delimiter-from_delimiter-delimiter_length << "\n" ;
 		hold.push_back(slice.substr(from_delimiter+delimiter_length,to_delimiter-from_delimiter-delimiter_length)) ;
-				
+
 		}
-		
+
 		if( !inFile ){
 			break ;
 		} else if ( count >= from && count >= to ) {
@@ -1598,7 +1592,7 @@ void ReadBufferedFileFromEnd(boost::filesystem::ifstream& inFile, const size_t& 
 			// verbose << "count >= from && count >= to " ;
 			break ;
 		} else {
-			
+
 			if ( from_delimiter > 0 ) {
 				if( count + 1 == from || count >= from ) {
 				/*
@@ -1607,34 +1601,34 @@ void ReadBufferedFileFromEnd(boost::filesystem::ifstream& inFile, const size_t& 
 				  */
 				// verbose << "Adding head orphan.\n" ;
 				hold.push_back(slice.substr(0,from_delimiter+delimiter_length)) ;
-				
+
 				}
 			}
 
-			
+
 			if ( offset >= buffer_size ) {
-				
+
 				if ( offset > buffer_size ) {
 					offset -= buffer_size ;
 				} else {
 					offset = 0 ;
 				}
-				
+
 				inFile.seekg ( offset, ios::beg ) ;
 				inFile.read ( &buffer[0], buffer_size ) ;
-				
+
 				to_delimiter = inFile.gcount() ;
 				from_delimiter = to_delimiter - 1 ;
-				
+
 			} else {
 				/* no more data to read */
 				break ;
 			}
-			
+
 		}
 
 	}
-	
+
 	AppendToStringInReverse( hold, result ) ;
 	// verbose << "\nresult.length(): " << result.length()  ;
 	// result.append(verbose.str()) ;
