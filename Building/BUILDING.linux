@@ -175,7 +175,7 @@ Download the source from
 and expand it into a directory on the Desktop. Then
 
 	cd curl-7.75.0
-	./configure CFLAGS="-I${SRCROOT}/Headers/libssh2" LDFLAGS="-L${SRCROOT}/Libraries/linux/libcrypto.a -L${SRCROOT}/Libraries/linux/libssl.a -L${SRCROOT}/Libraries/linux/libssh2.a" --disable-dependency-tracking --enable-shared --disable-shared --with-libz --prefix="$(pwd)/_build_linux" --with-libssh2
+	./configure CPPFLAGS="-I${SRCROOT}/Headers/libssh2 -I${SRCROOT}/Headers" LDFLAGS="-L${SRCROOT}/Libraries/linux" LIBS="-lcrypto -lssl -lssh2" --disable-dependency-tracking --enable-static --disable-shared --with-libz --prefix="$(pwd)/_build_linux" --with-libssh2 --with-ssl --without-tests
 	make install
 
 Copy the header and library files.
@@ -195,7 +195,7 @@ Download the source for libiconv from
 and extract the archive. Then
 
 	cd libiconv-1.16
-	CFLAGS=-fPIC ./configure --disable-shared  --prefix="$(pwd)/_build_linux"
+	CFLAGS=-fPIC ./configure --disable-shared --prefix="$(pwd)/_build_linux"
 	make install
 
 Copy the Headers and libraries to the project directory
