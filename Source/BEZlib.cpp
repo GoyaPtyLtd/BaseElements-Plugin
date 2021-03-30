@@ -30,6 +30,8 @@
 #include <Poco/Zip/Compress.h>
 #include <Poco/Zip/Decompress.h>
 
+#include <boost/interprocess/streams/bufferstream.hpp>
+
 
 #define WRITEBUFFERSIZE 8192
 
@@ -50,7 +52,7 @@ public:
 #pragma mark -
 
 
-const long UnZip ( const std::string& archive, const std::string& output_directory )
+const long UnZipFile ( const std::string& archive, const std::string& output_directory )
 {
 	long error = kNoError;
 	
@@ -81,12 +83,30 @@ const long UnZip ( const std::string& archive, const std::string& output_directo
 } // UnZip
 
 
+const long UnZipMemory ( const std::vector<char>& archive, const std::string& output_directory )
+{
+	long error = kNoError;
+	
+	Poco::Path decompress_here ( output_directory );
+	
+	boost::interprocess::bufferstream archive_stream ( (char *)&archive[0], archive.size() );
+	
+	Poco::Zip::Decompress to_decompress ( archive_stream, decompress_here );
+	to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
+	to_decompress.decompressAllFiles();
+	to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
+
+	return error;
+	
+} // UnZipMemory
+
+
 #pragma mark -
 #pragma mark Zip Functions
 #pragma mark -
 
 
-const long Zip ( const BEValueList<std::string> * filenames, const std::string& archive )
+const long ZipFiles ( const BEValueList<std::string> * filenames, const std::string& archive )
 {
 
     long error = 0;
@@ -136,7 +156,33 @@ const long Zip ( const BEValueList<std::string> * filenames, const std::string& 
 	
     return error;
 	
-} // Zip
+} // ZipFiles
+
+
+const long ZipMemory ( const std::vector<char>& data, const std::string& filename, const std::string& archive )
+{
+
+	long error = 0;
+	
+		
+	Poco::Path archive_path = archive;
+	if ( archive.empty() ) {
+		archive_path = filename + ".zip";
+	}
+
+	boost::interprocess::bufferstream compress_this ( (char *)&data[0], data.size() );
+
+	std::ofstream out ( archive_path.toString().c_str(), std::ios::binary );
+	Poco::Zip::Compress to_compress ( out, true );
+	const Poco::DateTime last_modified = Poco::DateTime();
+	to_compress.addFile ( compress_this, last_modified, filename );
+	to_compress.close();
+	
+	return error;
+	
+} // ZipMemory
+
+
 
 
 #pragma mark -

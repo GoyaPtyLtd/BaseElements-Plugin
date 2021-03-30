@@ -2,7 +2,7 @@
 Version 4.2b2
 ########################################################################
 
-March 26, 2021
+March 30, 2021
 
 
 New Functions
@@ -40,7 +40,8 @@ BE_ValuesContainsDuplicates: plug memory leak
 BE_XML_Canonical: renamed to BE_XMLCanonical
 BE_XPath: plug memory leak
 BE_XSLTApply: plug memory leak
-
+BE_UnZip: UnZip archives from containers
+BE_Zip: Zip files from containers
 
 Curl Options Changes
 

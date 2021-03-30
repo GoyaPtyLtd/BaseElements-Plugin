@@ -1899,10 +1899,21 @@ fmx::errcode BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */, cons
 
 	try {
 
-		auto archive = ParameterAsUTF8String ( parameters );
 		auto output_directory = ParameterAsUTF8String ( parameters, 1 );
 
-		error = (fmx::errcode)UnZip ( archive, output_directory );
+		auto is_container = BinaryDataAvailable ( parameters );
+		if ( is_container ) {
+
+			auto archive = ParameterAsVectorChar ( parameters );
+			error = (fmx::errcode)UnZipMemory ( archive, output_directory );
+
+		} else {
+
+			auto archive = ParameterAsUTF8String ( parameters );
+			error = (fmx::errcode)UnZipFile ( archive, output_directory );
+		
+		}
+		
 		SetResult ( error, results );
 
 	} catch ( filesystem_error& e ) {
@@ -1927,31 +1938,44 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 
 	try {
 
-		// should there be multiple files with the same name... keep only the last one
-		auto values = ParameterAsStringValueList ( parameters );
-
-		std::map<std::string, std::string> unique_file_names;
-
-		for ( typename BEValueList<string>::iterator it = values->begin() ; it != values->end(); ++it ) {
-
-			boost::filesystem::path file_path ( *it );
-			auto file_name = boost::algorithm::to_lower_copy ( file_path.filename().string() );
-			auto inserted = unique_file_names.insert ( { file_name, file_path.string() } );
-
-			if ( ! inserted.second ) {
-				error = kNameAlreadyExists;
-				auto next = unique_file_names.erase ( inserted.first );
-				if ( next == unique_file_names.end() ) {
-					unique_file_names.insert ( { file_name, file_path.string() } ); // auto replaced =
-				}
-			}
-
-		} // for...
-
-		BEValueListStringUniquePtr files ( new BEValueList<string> ( map_values ( unique_file_names ) ) );
+		long zip_error = kNoError;
 		auto output_directory = ParameterAsUTF8String ( parameters, 1 );
 
-		auto zip_error = (fmx::errcode)Zip ( files.get(), output_directory );
+		auto is_container = BinaryDataAvailable ( parameters );
+		if ( is_container ) {
+			
+			auto zip_this = ParameterAsVectorChar ( parameters );
+			auto file_name = ParameterFileName( parameters );
+			zip_error = ZipMemory ( zip_this, file_name, output_directory );
+
+		} else {
+			
+			// should there be multiple files with the same name... keep only the last one
+			auto values = ParameterAsStringValueList ( parameters );
+
+			std::map<std::string, std::string> unique_file_names;
+
+			for ( typename BEValueList<string>::iterator it = values->begin() ; it != values->end(); ++it ) {
+
+				boost::filesystem::path file_path ( *it );
+				auto file_name = boost::algorithm::to_lower_copy ( file_path.filename().string() );
+				auto inserted = unique_file_names.insert ( { file_name, file_path.string() } );
+
+				if ( ! inserted.second ) {
+					error = kNameAlreadyExists;
+					auto next = unique_file_names.erase ( inserted.first );
+					if ( next == unique_file_names.end() ) {
+						unique_file_names.insert ( { file_name, file_path.string() } ); // auto replaced =
+					}
+				}
+
+			} // for...
+
+			BEValueListStringUniquePtr files ( new BEValueList<string> ( map_values ( unique_file_names ) ) );
+			zip_error = ZipFiles ( files.get(), output_directory );
+
+		}
+
 		if ( kNoError != zip_error ) {
 			error = zip_error;
 		}
