@@ -2,7 +2,7 @@
  BEValueList.h
  BaseElements Plug-In
  
- Copyright 2013-2020 Goya. All rights reserved.
+ Copyright 2013-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -24,7 +24,7 @@
 #include <algorithm>
 #include <map>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/algorithm/string.hpp>
 
 
@@ -492,7 +492,7 @@ BEValueList<T> BEValueList<T>::apply_regular_expression ( const T expression, co
 template <typename T>
 void BEValueList<T>::trim_values ( )
 {
-	for_each ( values.begin(), values.end(), boost::bind ( &boost::trim<T>, _1, std::locale() ) );
+	for_each ( values.begin(), values.end(), boost::bind ( &boost::trim<T>, boost::placeholders::_1, std::locale() ) );
 }
 
 
