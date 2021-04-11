@@ -47,7 +47,7 @@
 #include <boost/filesystem/fstream.hpp>
 
 #include <../Headers/iconv/iconv.h>
-#include <zlib.h>
+#include <zlib/zlib.h>
 
 #include <sstream>
 #include <iostream>

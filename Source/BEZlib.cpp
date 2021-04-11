@@ -1,12 +1,12 @@
 /*
  BEZlib.cpp
  BaseElements Plug-In
- 
+
  Copyright 2011-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
- 
+
  http://www.goya.com.au/baseelements/plugin
- 
+
  */
 
 
@@ -22,7 +22,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "zlib.h"
+#include <zlib/zlib.h>
 
 #include <Poco/Delegate.h>
 #include <Poco/File.h>
@@ -55,11 +55,11 @@ public:
 const long UnZipFile ( const std::string& archive, const std::string& output_directory )
 {
 	long error = kNoError;
-	
+
 	Poco::File archive_path = archive;
 
 	if ( archive_path.exists() ) {
-		
+
 		std::ifstream out ( archive.c_str(), std::ios::binary );
 		poco_assert ( out );
 
@@ -79,25 +79,25 @@ const long UnZipFile ( const std::string& archive, const std::string& output_dir
 	}
 
 	return error;
-	
+
 } // UnZip
 
 
 const long UnZipMemory ( const std::vector<char>& archive, const std::string& output_directory )
 {
 	long error = kNoError;
-	
+
 	Poco::Path decompress_here ( output_directory );
-	
+
 	boost::interprocess::bufferstream archive_stream ( (char *)&archive[0], archive.size() );
-	
+
 	Poco::Zip::Decompress to_decompress ( archive_stream, decompress_here );
 	to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
 	to_decompress.decompressAllFiles();
 	to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
 
 	return error;
-	
+
 } // UnZipMemory
 
 
@@ -110,12 +110,12 @@ const long ZipFiles ( const BEValueList<std::string> * filenames, const std::str
 {
 
     long error = 0;
-	
+
 	if ( filenames->size() > 0 ) { // ensure there's a file to archive
-		
+
 		const Poco::File file = filenames->first();
 		if ( file.exists() ) {
-			
+
 			Poco::Path archive_path = archive;
 			if ( archive.empty() ) {
 				archive_path = file.path() + ".zip";
@@ -125,7 +125,7 @@ const long ZipFiles ( const BEValueList<std::string> * filenames, const std::str
 			Poco::Zip::Compress to_compress ( out, true );
 
 			for ( size_t i = 0 ; i < filenames->size() ; i++ ) {
-					
+
 				Poco::Path archive_this ( filenames->at ( i ) );
 				Poco::File file_to_archive ( archive_this );
 
@@ -141,7 +141,7 @@ const long ZipFiles ( const BEValueList<std::string> * filenames, const std::str
 					error = kNoSuchFileOrDirectoryError;
 					break;
 				}
-					
+
 			}
 
 			to_compress.close();
@@ -153,9 +153,9 @@ const long ZipFiles ( const BEValueList<std::string> * filenames, const std::str
 	} else {
 		error = kNoSuchFileOrDirectoryError;
 	}
-	
+
     return error;
-	
+
 } // ZipFiles
 
 
@@ -163,8 +163,8 @@ const long ZipMemory ( const std::vector<char>& data, const std::string& filenam
 {
 
 	long error = 0;
-	
-		
+
+
 	Poco::Path archive_path = archive;
 	if ( archive.empty() ) {
 		archive_path = filename + ".zip";
@@ -177,9 +177,9 @@ const long ZipMemory ( const std::vector<char>& data, const std::string& filenam
 	const Poco::DateTime last_modified = Poco::DateTime();
 	to_compress.addFile ( compress_this, last_modified, filename );
 	to_compress.close();
-	
+
 	return error;
-	
+
 } // ZipMemory
 
 
@@ -203,12 +203,12 @@ const std::vector<char> CompressContainerStream ( const std::vector<char> data )
 	stream.zfree = Z_NULL;
 
 	std::vector<char> compressed;
-	
+
 	int status = deflateInit2 ( &stream, Z_BEST_COMPRESSION, Z_DEFLATED, 15 + 16, 8, Z_DEFAULT_STRATEGY );
 	if ( status == Z_OK ) {
 
 		unsigned char * output_buffer = new unsigned char [ size_required ];
-		
+
 		stream.next_out = output_buffer;
 		stream.avail_out = (unsigned int)size_required;
 
@@ -219,17 +219,17 @@ const std::vector<char> CompressContainerStream ( const std::vector<char> data )
 			if ( status == Z_OK ) {
 				compressed.assign ( output_buffer, output_buffer + stream.total_out );
 			}
-		
+
 		}
-		
+
 		be_free ( output_buffer );
-		
+
 	}
-	
+
 	g_last_error = status;
-	
+
 	return compressed;
-	
+
 } // CompressContainerStream
 
 
@@ -244,35 +244,35 @@ const std::vector<char> UncompressContainerStream ( const std::vector<char> data
 	stream.zfree = Z_NULL;
 
 	std::vector<char> decompressed;
- 
+
 	int status = inflateInit2 ( &stream, 15 + 32 );
 	if ( status == Z_OK ) {
 
 		while ( status == Z_OK && stream.avail_in > 0 ) {
-			
+
 			unsigned char output_buffer [ WRITEBUFFERSIZE ];
 			stream.next_out = output_buffer;
 			stream.avail_out = WRITEBUFFERSIZE;
-			
+
 			status = inflate ( &stream, Z_SYNC_FLUSH );
 			if ( status == Z_OK || status == Z_STREAM_END ) {
 				decompressed.insert ( decompressed.end(), output_buffer, output_buffer + WRITEBUFFERSIZE - stream.avail_out );
 			}
 		}
-		
+
 		int close_status = inflateEnd ( &stream );
-		
+
 		if ( status == Z_OK || status == Z_STREAM_END ) {
 			status = close_status;
 		} else {
 			decompressed.clear();
 		}
-		
+
 	}
- 
+
 	g_last_error = status;
 
 	return decompressed;
-	
+
 } // UncompressContainerStream
 
