@@ -2,7 +2,7 @@
  BESystemCommand.h
  BaseElements Plug-In
  
- Copyright 2011-2020 Goya. All rights reserved.
+ Copyright 2011-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -17,7 +17,12 @@
 #include "BEPluginUtilities.h"
 #include <errno.h>
 #include "BEPluginException.h"
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcomma"
 #include <boost/date_time/posix_time/posix_time.hpp>
+#pragma GCC diagnostic pop
+
 #include <Poco/ActiveMethod.h>
 
 class SystemCommand

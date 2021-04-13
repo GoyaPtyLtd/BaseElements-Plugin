@@ -12,6 +12,9 @@
 
 // need (Parser) to go before BEPluginGlobalDefines.h or we not happy
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wsign-compare"
 #include <Poco/Dynamic/Var.h>
 #include <Poco/Exception.h>
 #include <Poco/JSON/JSON.h>
@@ -21,6 +24,7 @@
 #include <Poco/Path.h>
 #include <Poco/RegularExpression.h>
 #include <Poco/String.h>
+#pragma GCC diagnostic pop
 
 
 #include "BEPluginGlobalDefines.h"

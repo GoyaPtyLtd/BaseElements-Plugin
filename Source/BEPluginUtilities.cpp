@@ -42,9 +42,12 @@
 #include "BEZlib.h"
 #include "BEFileSystem.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcomma"
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+#pragma GCC diagnostic pop
 
 #include <../Headers/iconv/iconv.h>
 #include <zlib/zlib.h>

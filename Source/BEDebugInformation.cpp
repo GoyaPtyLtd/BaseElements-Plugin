@@ -10,7 +10,10 @@
  */
 
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
 #include <Poco/JSON/Object.h>
+#pragma GCC diagnostic pop
 
 #include "BEDebugInformation.h"
 

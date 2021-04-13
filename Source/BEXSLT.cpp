@@ -29,7 +29,10 @@
 
 #include <libexslt/exslt.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcomma"
 #include <boost/format.hpp>
+#pragma GCC diagnostic pop
 
 #include <iostream>
 

@@ -2,7 +2,7 @@
  BEMimeticMIMEEntity.h
  BaseElements Plug-In
 
- Copyright 2018 Goya. All rights reserved.
+ Copyright 2018-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -28,6 +28,8 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-register"
 #pragma GCC diagnostic ignored "-Wunused-private-field"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wconversion"
 #include <mimetic/mimetic.h>
 #pragma GCC diagnostic pop
 
