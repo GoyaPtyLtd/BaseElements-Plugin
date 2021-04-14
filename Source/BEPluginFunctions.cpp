@@ -1370,7 +1370,7 @@ fmx::errcode BE_XMLTidy ( short /* funcId */, const ExprEnv& /* environment */, 
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
-	} catch ( exception& e ) {
+	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
 
