@@ -4084,7 +4084,7 @@ fmx::errcode BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environmen
 
 
 
-fmx::errcode BE_JPEGRecompress( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_JPEGRecompress ( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -4098,7 +4098,7 @@ fmx::errcode BE_JPEGRecompress( const short function_id, const ExprEnv& /* envir
 			const int quality = (const int)ParameterAsLong ( parameters, 1, 75 ); // percent
 			jpeg->set_compression_level ( quality );
 
-			if ( function_id == kBE_JPEGRecompress) {
+			if ( function_id == kBE_JPEGRecompress ) {
 
 				const double scale = ParameterAsDouble ( parameters, 2 );
 				jpeg->set_scaling ( scale );
