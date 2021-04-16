@@ -25,7 +25,9 @@ BE_XeroSetTokens_Deprecated
 
 Changes
 
-BE_ConvertContainer: convert images types from container files natively, plug memory leak
+BE_ConvertContainer: convert images types from container files natively
+BE_ConvertContainer: width & height parameters removed
+BE_ConvertContainer: plug memory leak
 BE_ContainerCompress: plug memory leak
 BE_ExecuteSystemCommand: executeUsingShell parameter added
 BE_ExtractScriptVariables: plug memory leak

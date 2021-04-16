@@ -140,7 +140,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 653, "BE_ArrayDelete ( array )" },
 	{ 654, "BE_ArrayFind ( array ; value )" },
 	{ 655, "BE_ArrayChangeValue ( array ; valueNumber ; newValue )" },
-	{ 700, "BE_ConvertContainer ( field {; type ; width ; height } )" },
+	{ 700, "BE_ConvertContainer ( field {; type } )" },
 	{ 750, "BE_PDFAppend ( pdfPathOrContainer ; appendPathOrContainer {; destinationPath } )" },
 	{ 751, "BE_PDFPageCount ( pdfPathOrContainer )" },
 	{ 752, "BE_PDFGetPages ( pdfPathOrContainer ; newPDFPath ; fromPageNum {; toPageNum } )" },

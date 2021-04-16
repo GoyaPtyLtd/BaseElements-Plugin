@@ -54,10 +54,9 @@ void SetResult ( const std::string& text, fmx::Data& results );
 void SetResult ( const std::wstring& text, fmx::Data& results );
 void SetResult ( std::vector<char>& data, fmx::Data& results );
 void SetResult ( const std::vector<unsigned char>& data, fmx::Data& results );
-void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results, const std::string data_type );
 void SetResult ( const std::string& filename, const std::vector<unsigned char>& data, fmx::Data& results, const std::string data_type );
 
-void SetResult ( const std::string& filename, const std::vector<char>& data, const std::string& data_type, const short width, const short height, fmx::Data& results );
+void SetResult ( const std::string& filename, const std::vector<char>& data, const std::string& type, fmx::Data& results );
 
 void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results );
 void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results );

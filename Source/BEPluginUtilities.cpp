@@ -162,23 +162,14 @@ void SetResult ( const vector<unsigned char>& data, Data& results )
 }
 
 
-void SetResult ( const std::string& filename, const vector<char>& data, Data& results, const std::string data_type )
-{
-	const short width = 0;
-	const short height = 0;
-
-	return SetResult ( filename, data, data_type, width, height, results );
-}
-
-
 void SetResult ( const std::string& filename, const vector<unsigned char>& data, Data& results, const std::string data_type )
 {
 	vector<char> char_data ( data.begin(), data.end() );
-	return SetResult ( filename, char_data, results, data_type );
+	return SetResult ( filename, char_data, data_type, results );
 }
 
 
-void SetResult ( const std::string& filename, const vector<char>& data, const std::string& type, const short width, const short height, Data& results )
+void SetResult ( const std::string& filename, const vector<char>& data, const std::string& type, Data& results )
 {
 	auto as_binary = !filename.empty();
 
@@ -250,14 +241,14 @@ void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results
 	const vector<unsigned char> unsigned_char_data = image.get_data();
 	vector<char> char_data ( unsigned_char_data.begin(), unsigned_char_data.end() );
 
-	return SetResult ( filename, char_data, image.get_type(), (short)image.get_width(), (short)image.get_height(), results );
+	return SetResult ( filename, char_data, image.get_type(), results );
 
 } // SetResult
 
 
 void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results )
 {
-	return SetResult ( filename, data, FILE_CONTAINER_TYPE, 0, 0, results );
+	return SetResult ( filename, data, FILE_CONTAINER_TYPE, results );
 }
 
 
@@ -800,7 +791,8 @@ std::string ReadFileAsUTF8 ( const boost::filesystem::path path )
 
 } // ReadFileAsUTF8
 
-void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t from, const size_t to, std::string& result) {
+void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t from, const size_t to, std::string& result )
+{
 
 	if ( exists ( path ) ) {
 
@@ -873,7 +865,9 @@ void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t fr
 
 } // ReadFileAsUTF8Extract
 
-void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t from, const size_t to, const size_t buffer_size, const std::string& delimiter, std::string& result) {
+
+void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t from, const size_t to, const size_t buffer_size, const std::string& delimiter, std::string& result)
+{
 
 	if ( exists ( path ) ) {
 
@@ -909,7 +903,6 @@ void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t fr
 	} else {
 		g_last_error = kNoSuchFileOrDirectoryError;
 	}
-	
 } // ReadFileAsUTF8Extract
 
 
@@ -1186,7 +1179,8 @@ errcode MapError ( const errcode error, const bool map )
 #pragma mark -
 
 
-bool DetermineOffsetAndDepth ( const size_t& length, const size_t& from, const size_t& to, size_t& offset, size_t& depth ) {
+bool DetermineOffsetAndDepth ( const size_t& length, const size_t& from, const size_t& to, size_t& offset, size_t& depth )
+{
 
 	if ( from == 0 && to == 0 ) {
 		offset = 0 ;
@@ -1232,7 +1226,8 @@ bool DetermineOffsetAndDepth ( const size_t& length, const size_t& from, const s
 /**
  Find the start of delimiter @from
  */
-void FindDelimiterStart ( const std::string& text, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset ) {
+void FindDelimiterStart ( const std::string& text, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset )
+{
 
 	size_t next ;
 	while ( count < from ) {
@@ -1252,7 +1247,8 @@ void FindDelimiterStart ( const std::string& text, const std::string& delimiter,
 /**
  Find end offset of a delimiter in text
  */
-void FindDelimiterEnd ( const std::string& text, const std::string& delimiter, const size_t& to, size_t& count, size_t& offset ) {
+void FindDelimiterEnd ( const std::string& text, const std::string& delimiter, const size_t& to, size_t& count, size_t& offset )
+{
 
 	size_t next ;
 	while ( count <= to ) {
@@ -1276,7 +1272,8 @@ void FindDelimiterEnd ( const std::string& text, const std::string& delimiter, c
 /**
  Find the minimum offset for a delimiter from the end.
  */
-void ReverseFindDelimiter ( const std::string& search, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset ) {
+void ReverseFindDelimiter ( const std::string& search, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset )
+{
 
 	size_t next, candidate=0 ;
 	while ( count < from ) {
@@ -1289,6 +1286,7 @@ void ReverseFindDelimiter ( const std::string& search, const std::string& delimi
 			offset = next ;
 		}
 	}
+	
 } // ReverseFindDelimiter
 
 

@@ -247,7 +247,7 @@ fmx::errcode BE_ClipboardGetFile ( short /* funcId */, const ExprEnv& /* environ
 
 		auto clipboard_contents = ClipboardFile ( atype );
 
-		SetResult ( file_name, clipboard_contents, results, FILE_CONTAINER_TYPE );
+		SetResult ( file_name, clipboard_contents, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -721,7 +721,7 @@ fmx::errcode BE_FileImport ( short /* funcId */, const ExprEnv& /* environment *
 
 		auto file_data = ReadFileAsBinary ( from );
 
-		SetResult ( from.filename().string(), file_data, results, data_type );
+		SetResult ( from.filename().string(), file_data, data_type, results );
 
 	} catch ( boost::filesystem::ifstream::failure& /* e */ ) {
 		error = errno; // cannot read the file
@@ -1915,9 +1915,9 @@ fmx::errcode BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */, cons
 
 			auto archive = ParameterAsUTF8String ( parameters );
 			error = (fmx::errcode)UnZipFile ( archive, output_directory );
-		
+
 		}
-		
+
 		SetResult ( error, results );
 
 	} catch ( filesystem_error& e ) {
@@ -1947,13 +1947,13 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 
 		auto is_container = BinaryDataAvailable ( parameters );
 		if ( is_container ) {
-			
+
 			auto zip_this = ParameterAsVectorChar ( parameters );
 			auto file_name = ParameterFileName( parameters );
 			zip_error = ZipMemory ( zip_this, file_name, output_directory );
 
 		} else {
-			
+
 			// should there be multiple files with the same name... keep only the last one
 			auto values = ParameterAsStringValueList ( parameters );
 
@@ -2074,7 +2074,7 @@ fmx::errcode BE_ContainerCompress ( short /*funcId*/, const ExprEnv& /* environm
 		auto to_compress = ParameterAsVectorChar ( parameters );
 		auto filename = ParameterAsUTF8String ( parameters, 1 );
 
-		SetResult ( filename, to_compress, results, COMPRESSED_CONTAINER_TYPE );
+		SetResult ( filename, to_compress, COMPRESSED_CONTAINER_TYPE, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -2189,7 +2189,7 @@ fmx::errcode BE_ContainerGetType ( short /* funcId */, const fmx::ExprEnv& /* en
 					name_of_file = stream_type;
 				}
 
-				SetResult ( name_of_file, stream_data, stream_type, width, height, results );
+				SetResult ( name_of_file, stream_data, stream_type, results );
 
 			}
 
@@ -2842,8 +2842,6 @@ fmx::errcode BE_CurlTrace ( short /* funcId */, const fmx::ExprEnv& /* environme
 
 		SetResult ( g_curl_trace.str(), results );
 
-	} catch ( BECurlOption_Exception& e ) { // we don't handle it
-		error = e.code();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -3388,7 +3386,7 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 
 			auto file_data = ReadFileAsBinary ( temporary_file );
 			auto destination = ParameterFileName ( parameters );
-			SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
+			SetResult ( destination, file_data, results );
 
 		} else {
 
@@ -3471,7 +3469,7 @@ fmx::errcode BE_PDFGetPages ( short /* funcId */, const ExprEnv& /* environment 
 
 				auto file_data = ReadFileAsBinary ( temporary_file );
 				auto destination = ParameterFileName ( parameters );
-				SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
+				SetResult ( destination, file_data, results );
 
 			} else {
 
@@ -4015,7 +4013,7 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 
 
 		if ( parameters.Size() >= 6 ) { // writing a file
-			
+
 			ios_base::openmode mode = ios_base::trunc;
 			if ( !text_result_wanted ) {
 				mode |= ios_base::binary;
@@ -4083,6 +4081,7 @@ fmx::errcode BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environmen
 } // BE_MessageDigest
 
 
+
 fmx::errcode BE_JPEGRecompress ( const short /* function_id */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
@@ -4133,13 +4132,9 @@ fmx::errcode BE_ConvertContainer ( short /* funcId */, const ExprEnv& /* environ
 
 			vector<char> container_data = ParameterAsVectorChar ( parameters );
 			auto filename = ParameterFileName ( parameters );
-
 			auto type = ParameterAsUTF8String ( parameters, 1, FILE_CONTAINER_TYPE );
 
-			auto width = ParameterAsLong ( parameters, 2, kErrorUnknown );
-			auto height = ParameterAsLong ( parameters, 3, kErrorUnknown );
-
-			SetResult ( filename, container_data, type, (const short)width, (const short)height, results );
+			SetResult ( filename, container_data, type, results );
 
 		} else {
 			error = kInvalidFieldType;
