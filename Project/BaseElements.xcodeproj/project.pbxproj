@@ -139,7 +139,7 @@
 		4D5668A725DCD3F700BB450F /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A525DCD3F600BB450F /* libiconv.a */; };
 		4D5668AB25DCD42F00BB450F /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A425DCD3F600BB450F /* libcharset.a */; };
 		4D5668AC25DCD42F00BB450F /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A525DCD3F600BB450F /* libiconv.a */; };
-		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
+		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
 		4D703AD42230D803007632BA /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD12230D803007632BA /* libPocoZip.a */; };
 		4D703AD52230D803007632BA /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD22230D803007632BA /* libPocoJSON.a */; };
@@ -819,7 +819,7 @@
 		C7DEDEEB07E10BF3002283F3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1140;
+				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = Goya;
 				TargetAttributes = {
 					4D3629E81F20789A0036B751 = {
@@ -1455,6 +1455,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1566,6 +1567,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
