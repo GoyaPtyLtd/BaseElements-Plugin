@@ -86,7 +86,6 @@ MemoryStruct InitalizeCallbackMemory ( void );
 static void dump_trace_data ( const unsigned char *ptr, const size_t size );
 static int trace_callback ( CURL * /* curl */, curl_infotype type, char * data, size_t size, void * /* userp */ );
 int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
-int old_progress_dialog ( void *p, double dltotal, double dlnow, double ultotal, double ulnow );
 
 
 #pragma mark -
@@ -313,19 +312,6 @@ int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t 
 	visible = completed ? false : error == CURLE_OK;
 
 	g_last_error = error;
-
-	return error;
-}
-
-
-/* for libcurl older than 7.32.0 (CURLOPT_PROGRESSFUNCTION) */
-int old_progress_dialog ( void *p, double dltotal, double dlnow, double ultotal, double ulnow )
-{
-	int error = kNoError;
-
-	if ( dltotal > 0 || ultotal > 0 ) {
-		error = progress_dialog ( p, (curl_off_t)dltotal, (curl_off_t)dlnow, (curl_off_t)ultotal, (curl_off_t)ulnow );
-	}
 
 	return error;
 }
@@ -851,23 +837,11 @@ void BECurl::easy_setopt ( CURLoption option, ... )
 
 void BECurl::configure_progress_dialog ( )
 {
-	// libcurl uses CURLOPT_XFERINFOFUNCTION if it can and CURLOPT_PROGRESSFUNCTION when it cannot
-
-	error = curl_easy_setopt ( curl, CURLOPT_PROGRESSFUNCTION, old_progress_dialog );
-	if ( error ) {
-		throw BECurl_Exception ( error );
-	}
-
-	// xferinfo was introduced in 7.32.0
-
-#if LIBCURL_VERSION_NUM >= 0x072000
 
 	error = curl_easy_setopt ( curl, CURLOPT_XFERINFOFUNCTION, progress_dialog );
 	if ( error != CURLE_OK && error != CURLE_UNKNOWN_OPTION ) {
 		throw BECurl_Exception ( error );
 	}
-
-#endif
 
 	// and disable it... enabled by the user when required
 	easy_setopt ( CURLOPT_NOPROGRESS, 1L );
