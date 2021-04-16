@@ -214,8 +214,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, 0, 1 );
 
-
-	g_be_plugin->RegisterHiddenFunction ( kBE_JPEG_Recompress_Deprecated, BE_JPEGRecompress, 1, 4 ); // deprecated
 	g_be_plugin->RegisterFunction ( kBE_JPEGRecompress, BE_JPEGRecompress, 1, 3 );
 
 	g_be_plugin->RegisterFunction ( kBE_VariableSet, BE_Variable, 2 );

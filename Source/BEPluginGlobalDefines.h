@@ -189,7 +189,7 @@ enum functions {
 	kBE_ContainerGetType = 254,
 	kBE_Gzip = 260,
 	kBE_UnGzip = 261,
-	kBE_JPEG_Recompress_Deprecated = 270, // deprecated
+//	kBE_JPEG_Recompress_Deprecated = 270, // deprecated => Removed in 4.2
 	kBE_JPEGRecompress= 271,
 	kBE_JSONPath_Deprecated = 300,
 	kBE_JSON_Error_Description_Deprecated = 301,

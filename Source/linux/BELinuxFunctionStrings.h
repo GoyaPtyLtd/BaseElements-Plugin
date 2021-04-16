@@ -107,7 +107,6 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 254, "BE_ContainerGetType ( container ; type )" },
 	{ 260, "BE_Gzip ( data {; filename } )" },
 	{ 261, "BE_UnGzip ( gzip_data {; filename } )" },
-	{ 270, "BE_JPEG_Recompress_Deprecated ( jpeg {; compressionLevel ; width ; height } )" },
 	{ 271, "BE_JPEGRecompress ( jpeg {; compressionLevel ; scale } )" },
 	{ 300, "BE_JSONPath_Deprecated ( json ; path )" },
 	{ 301, "BE_JSON_Error_Description_Deprecated" },

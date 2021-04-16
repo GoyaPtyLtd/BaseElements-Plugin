@@ -4083,8 +4083,7 @@ fmx::errcode BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environmen
 } // BE_MessageDigest
 
 
-
-fmx::errcode BE_JPEGRecompress ( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_JPEGRecompress ( const short /* function_id */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -4098,22 +4097,8 @@ fmx::errcode BE_JPEGRecompress ( const short function_id, const ExprEnv& /* envi
 			const int quality = (const int)ParameterAsLong ( parameters, 1, 75 ); // percent
 			jpeg->set_compression_level ( quality );
 
-			if ( function_id == kBE_JPEGRecompress ) {
-
-				const double scale = ParameterAsDouble ( parameters, 2 );
-				jpeg->set_scaling ( scale );
-
-			} else {
-
-				// deprecated
-
-				const int width = (const int)ParameterAsLong ( parameters, 2, 0 );
-				jpeg->set_width ( width );
-
-				const int height = (const int)ParameterAsLong ( parameters, 3, 0 );
-				jpeg->set_height ( height );
-
-			}
+			const double scale = ParameterAsDouble ( parameters, 2 );
+			jpeg->set_scaling ( scale );
 
 			jpeg->recompress();
 

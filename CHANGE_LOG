@@ -2,7 +2,7 @@
 Version 4.2b2
 ########################################################################
 
-March 30, 2021
+April 16, 2021
 
 
 New Functions
@@ -16,6 +16,7 @@ BE_Base64_Decode_Deprecated
 BE_Base64_Encode_Deprecated
 BE_Base64_URL_Encode_Deprecated
 BE_HMAC_Deprecated
+BE_JPEG_Recompress_Deprecated
 BE_JSON_Encode_Deprecated
 BE_OAuthRequestAccessToken_Deprecated
 BE_XeroGenerateKeys_Deprecated
