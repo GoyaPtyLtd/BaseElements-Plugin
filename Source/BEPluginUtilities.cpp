@@ -509,9 +509,9 @@ const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt
 const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& parameters, const fmx::uint32 which, const long from, const long to, const std::string delimiter )
 {
 
-	std::string results ;
-	std::string file_contents ;
-	std::string::size_type buffer_size = kBufferSize ;
+	std::string results;
+	std::string file_contents;
+	std::string::size_type buffer_size = kBufferSize;
 
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 
@@ -521,10 +521,10 @@ const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& paramete
 
 		if ( delimiter == "" ) {
 
-			if ( from > 0 || to > 0 ){
+			if ( from > 0 || to > 0 ) {
 				size_t offset = 0, depth = 0 ;
-				if ( DetermineOffsetAndDepth(results.length(), from, to, offset, depth) ) {
-					results = results.substr(offset,depth) ;
+				if ( DetermineOffsetAndDepth ( results.length(), from, to, offset, depth ) ) {
+					results = results.substr ( offset, depth ) ;
 				} else {
 					results.clear() ;
 				}
@@ -533,16 +533,18 @@ const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& paramete
 		} else {
 
 			/*  write out to a temporary path */
-			std::string temporary = std::tmpnam(nullptr);
+			auto unique_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
+			auto temporary_file = unique_file.native();
 
 			ios_base::openmode mode = ios_base::trunc;
-			vector<char> out = ConvertTextEncoding ( (char *)results.c_str(), results.size(), g_text_encoding, UTF8 );
-
-			fmx::errcode error = write_to_file ( temporary, out, mode );
+			const vector<char> out = ConvertTextEncoding ( (char *)results.c_str(), results.size(), g_text_encoding, UTF8 );
+			fmx::errcode error = write_to_file ( temporary_file, out, mode );
 
 			if ( error == kNoError ) {
-				ReadFileAsUTF8Extract(temporary, from, to, buffer_size, delimiter, results ) ;
-				boost::filesystem::remove(temporary);
+				
+				ReadFileAsUTF8Extract ( temporary_file, from, to, buffer_size, delimiter, results ) ;
+				boost::filesystem::remove ( temporary_file );
+			
 			} else {
 				results = temporary_contents;
 			}
@@ -555,15 +557,15 @@ const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& paramete
 
 		if ( delimiter == "" ) {
 
-			if ( from >0 || to > 0 ) {
-				ReadFileAsUTF8Extract(file, from, to, results ) ;
+			if ( from > 0 || to > 0 ) {
+				ReadFileAsUTF8Extract ( file, from, to, results ) ;
 			} else {
 				results = ReadFileAsUTF8 ( file );
 			}
 
 		} else {
 
-			ReadFileAsUTF8Extract(file, from, to, buffer_size, delimiter, results ) ;
+			ReadFileAsUTF8Extract ( file, from, to, buffer_size, delimiter, results ) ;
 
 		}
 	}
@@ -798,7 +800,7 @@ std::string ReadFileAsUTF8 ( const boost::filesystem::path path )
 
 } // ReadFileAsUTF8
 
-void ReadFileAsUTF8Extract( const boost::filesystem::path path, const size_t from, const size_t to, std::string& result) {
+void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t from, const size_t to, std::string& result) {
 
 	if ( exists ( path ) ) {
 
@@ -871,7 +873,7 @@ void ReadFileAsUTF8Extract( const boost::filesystem::path path, const size_t fro
 
 } // ReadFileAsUTF8Extract
 
-void ReadFileAsUTF8Extract( const boost::filesystem::path path, const size_t from, const size_t to, const size_t buffer_size, const std::string& delimiter, std::string& result) {
+void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t from, const size_t to, const size_t buffer_size, const std::string& delimiter, std::string& result) {
 
 	if ( exists ( path ) ) {
 
@@ -907,7 +909,10 @@ void ReadFileAsUTF8Extract( const boost::filesystem::path path, const size_t fro
 	} else {
 		g_last_error = kNoSuchFileOrDirectoryError;
 	}
+	
 } // ReadFileAsUTF8Extract
+
+
 
 #pragma mark -
 #pragma mark Unicode
@@ -1181,7 +1186,7 @@ errcode MapError ( const errcode error, const bool map )
 #pragma mark -
 
 
-bool DetermineOffsetAndDepth( const size_t& length, const size_t& from, const size_t& to, size_t& offset, size_t& depth) {
+bool DetermineOffsetAndDepth ( const size_t& length, const size_t& from, const size_t& to, size_t& offset, size_t& depth ) {
 
 	if ( from == 0 && to == 0 ) {
 		offset = 0 ;
@@ -1227,7 +1232,7 @@ bool DetermineOffsetAndDepth( const size_t& length, const size_t& from, const si
 /**
  Find the start of delimiter @from
  */
-void FindDelimiterStart( const std::string& text, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset) {
+void FindDelimiterStart ( const std::string& text, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset ) {
 
 	size_t next ;
 	while ( count < from ) {
@@ -1247,7 +1252,7 @@ void FindDelimiterStart( const std::string& text, const std::string& delimiter, 
 /**
  Find end offset of a delimiter in text
  */
-void FindDelimiterEnd( const std::string& text, const std::string& delimiter, const size_t& to, size_t& count, size_t& offset) {
+void FindDelimiterEnd ( const std::string& text, const std::string& delimiter, const size_t& to, size_t& count, size_t& offset ) {
 
 	size_t next ;
 	while ( count <= to ) {
@@ -1271,7 +1276,7 @@ void FindDelimiterEnd( const std::string& text, const std::string& delimiter, co
 /**
  Find the minimum offset for a delimiter from the end.
  */
-void ReverseFindDelimiter( const std::string& search, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset) {
+void ReverseFindDelimiter ( const std::string& search, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset ) {
 
 	size_t next, candidate=0 ;
 	while ( count < from ) {
