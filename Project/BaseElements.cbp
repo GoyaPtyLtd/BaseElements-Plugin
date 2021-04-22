@@ -36,14 +36,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
-			<Add option="-fexceptions -Wno-unknown-pragmas -fPIC -m64" />
-			<Add directory="PlugInSDK/Headers" />
+			<Add option="-fexceptions -Wno-unknown-pragmas -fPIC" />
 			<Add directory="../Headers" />
 			<Add directory="../Source" />
 		</Compiler>
 		<Linker>
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
-			<Add option="-Wl,-soname=BaseElements_Plugin_4.2.0" />
+			<Add option="-Wl,-soname=4.2.0b2" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="../Libraries/linux/libz.a" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
@@ -52,26 +51,24 @@
 			<Add library="../Libraries/linux/libboost_regex.a" />
 			<Add library="../Libraries/linux/libboost_thread.a" />
 			<Add library="../Libraries/linux/libcurl.a" />
+			<Add library="../Libraries/linux/libmimetic.a" />
+			<Add library="../Libraries/linux/libcrypto.a" />
+			<Add library="../Libraries/linux/libssl.a" />
+			<Add library="../Libraries/linux/libssh2.a" />
 			<Add library="../Libraries/linux/libexslt.a" />
 			<Add library="../Libraries/linux/libjansson.a" />
-			<Add library="../Libraries/linux/libjpeg.a" />
-			<Add library="../Libraries/linux/libmimetic.a" />
-			<Add library="../Libraries/linux/libPocoJSON.a" />
-			<Add library="../Libraries/linux/libPocoZip.a" />
 			<Add library="../Libraries/linux/libturbojpeg.a" />
+			<Add library="../Libraries/linux/libjpeg.a" />
 			<Add library="../Libraries/linux/libxml2.a" />
 			<Add library="../Libraries/linux/libxslt.a" />
+			<Add library="../Libraries/linux/libPocoJSON.a" />
+			<Add library="../Libraries/linux/libPocoZip.a" />
+			<Add library="../Libraries/linux/libPocoXML.a" />
 			<Add library="../Libraries/linux/libPocoFoundation.a" />
 			<Add library="../Libraries/linux/libfreetype.a" />
 			<Add library="../Libraries/linux/libfontconfig.a" />
 			<Add library="../Libraries/linux/libpodofo.a" />
 			<Add library="../Libraries/linux/libiconv.a" />
-			<Add library="../Libraries/linux/libcrypto.a" />
-			<Add library="../Libraries/linux/libssl.a" />
-			<Add library="../Libraries/linux/libssh2.a" />
-			<Add library="../Libraries/linux/libPocoXML.a" />
-			<Add directory="PlugInSDK/Libraries/Linux" />
-			<Add directory="../Libraries/linux" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
