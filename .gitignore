@@ -57,3 +57,4 @@ Project/Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Plug-Ins/*
 .env*
 Project/.vs/BaseElements/v16/.suo
 BaseElements-Plugin
+Project/BaseElements.xcodeproj/project.xcworkspace/contents.xcworkspacedata
