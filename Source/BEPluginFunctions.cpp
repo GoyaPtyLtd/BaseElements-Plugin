@@ -2284,7 +2284,7 @@ fmx::errcode BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */, con
 #pragma mark -
 
 
-fmx::errcode BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_EncryptAES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2320,11 +2320,11 @@ fmx::errcode BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */
 
 	return MapError ( error );
 
-} // BE_Encrypt_AES
+} // BE_EncryptAES
 
 
 
-fmx::errcode BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_DecryptAES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2362,7 +2362,7 @@ fmx::errcode BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */
 
 	return MapError ( error );
 
-} // BE_Decrypt_AES
+} // BE_DecryptAES
 
 
 fmx::errcode BE_SignatureGenerateRSA ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -2546,7 +2546,7 @@ fmx::errcode BE_HTTP_GET ( short /* funcId */, const ExprEnv& /* environment */,
 } // BE_HTTP_GET
 
 
-fmx::errcode BE_HTTP_GET_File ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
+fmx::errcode BE_HTTP_GETFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
 {
 	errcode error = NoError();
 
@@ -2571,7 +2571,7 @@ fmx::errcode BE_HTTP_GET_File ( short /* funcId */, const ExprEnv& /* environmen
 
 	return MapError ( error );
 
-} // BE_HTTP_GET_File
+} // BE_HTTP_GETFile
 
 
 fmx::errcode BE_HTTP_POST_PUT_PATCH ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -4061,8 +4061,8 @@ fmx::errcode BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environmen
 	try {
 
 		auto message = ParameterAsUTF8String ( parameters );
-		const unsigned long algorithm = ParameterAsLong( parameters, 1, kBE_MessageDigestAlgorithm_SHA256 );
-		const unsigned long output_type = ParameterAsLong( parameters, 2, kBE_Encoding_Hex );
+		const unsigned long algorithm = ParameterAsLong( parameters, 1, kBE_MessageDigestAlgorithmSHA256 );
+		const unsigned long output_type = ParameterAsLong( parameters, 2, kBE_EncodingHex );
 
 		string digest = message_digest ( message, algorithm, output_type );
 

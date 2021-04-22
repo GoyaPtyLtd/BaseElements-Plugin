@@ -180,9 +180,9 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterHiddenFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1, 2 );
 
-	g_be_plugin->RegisterFunction ( kBE_OKButton + kBE_ButtonOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_CancelButton + kBE_ButtonOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_AlternateButton + kBE_ButtonOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_ButtonOK + kBE_ButtonOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_ButtonCancel + kBE_ButtonOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_ButtonAlternate + kBE_ButtonOffset, BE_NumericConstants );
 
 #if ( FMX_MAC_TARGET || FMX_WIN_TARGET || FMX_LINUX_TARGET )
 	g_be_plugin->RegisterFunction ( kBE_ExecuteSystemCommand, BE_ExecuteSystemCommand, 1, 2 );
@@ -207,8 +207,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_JSON_ArraySize, BE_JSON_ArraySize, 1, 2 );
 
 
-	g_be_plugin->RegisterFunction ( kBE_HTTP_GET_File, BE_HTTP_GET, 1, 4 );
-	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_HTTP_GET_File, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_HTTP_GETFile, BE_HTTP_GET, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_HTTP_GETFile, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1, 2 );
@@ -223,8 +223,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_StackCount, BE_Stack, 1 );
 	g_be_plugin->RegisterFunction ( kBE_StackDelete, BE_Stack, 1 );
 
-	g_be_plugin->RegisterFunction ( kBE_Encrypt_AES, BE_Encrypt_AES, 2 );
-	g_be_plugin->RegisterFunction ( kBE_Decrypt_AES, BE_Decrypt_AES, 2 );
+	g_be_plugin->RegisterFunction ( kBE_EncryptAES, BE_EncryptAES, 2 );
+	g_be_plugin->RegisterFunction ( kBE_DecryptAES, BE_DecryptAES, 2 );
 	g_be_plugin->RegisterFunction ( kBE_SignatureGenerateRSA, BE_SignatureGenerateRSA, 2, 5 );
 	g_be_plugin->RegisterFunction ( kBE_SignatureVerifyRSA, BE_SignatureVerifyRSA, 3, 4 );
 	g_be_plugin->RegisterFunction ( kBE_CipherEncrypt, BE_CipherEncrypt, 3, 6 );
@@ -246,19 +246,19 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 
 	g_be_plugin->RegisterFunction ( kBE_MessageDigest, BE_MessageDigest, 1, 3 );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_MD5 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA256 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_MDC2 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA1 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA224 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA384 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithm_SHA512 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithmMD5 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithmSHA256 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithmMDC2 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithmSHA + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithmSHA1 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithmSHA224 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithmSHA384 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithmSHA512 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 
 	g_be_plugin->RegisterFunction ( kBE_DebugInformation, BE_DebugInformation );
 
-	g_be_plugin->RegisterFunction ( kBE_Encoding_Hex + kBE_EncodingOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kBE_Encoding_Base64 + kBE_EncodingOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_EncodingHex + kBE_EncodingOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kBE_EncodingBase64 + kBE_EncodingOffset, BE_NumericConstants );
 
 	g_be_plugin->RegisterFunction ( kBE_TimeCurrentMilliseconds, BE_TimeFunctions );
 	g_be_plugin->RegisterFunction ( kBE_TimeUTCMilliseconds, BE_TimeFunctions );

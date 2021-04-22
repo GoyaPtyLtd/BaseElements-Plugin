@@ -2,7 +2,7 @@
  BEWinFunctions.cpp
  BaseElements Plug-in
 	
- Copyright 2010-2019 Goya. All rights reserved.
+ Copyright 2010-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -713,13 +713,13 @@ const int DisplayDialog ( const wstring& title, const wstring& message, const ws
 
 		case IDOK:
 		case IDYES:
-			response = kBE_OKButton;
+			response = kBE_ButtonOK;
 			break;
 		case IDCANCEL:
-			response = kBE_CancelButton;
+			response = kBE_ButtonCancel;
 			break;
 		case IDNO:
-			response = kBE_AlternateButton;
+			response = kBE_ButtonAlternate;
 			break;
 	}
 

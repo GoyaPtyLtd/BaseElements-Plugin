@@ -45,32 +45,32 @@ const EVP_MD * message_digest_algorithm ( const unsigned long algorithm )
 	const EVP_MD * type = NULL;
 	switch ( algorithm ) {
 			
-		case kBE_MessageDigestAlgorithm_MD5:
+		case kBE_MessageDigestAlgorithmMD5:
 			type = EVP_md5();
 			break;
 			
-		case kBE_MessageDigestAlgorithm_MDC2:
+		case kBE_MessageDigestAlgorithmMDC2:
 			type = EVP_mdc2();
 			break;
 			
-		case kBE_MessageDigestAlgorithm_SHA:
-		case kBE_MessageDigestAlgorithm_SHA1:
+		case kBE_MessageDigestAlgorithmSHA:
+		case kBE_MessageDigestAlgorithmSHA1:
 			type = EVP_sha1();
 			break;
 			
-		case kBE_MessageDigestAlgorithm_SHA224:
+		case kBE_MessageDigestAlgorithmSHA224:
 			type = EVP_sha224();
 			break;
 			
-		case kBE_MessageDigestAlgorithm_SHA256:
+		case kBE_MessageDigestAlgorithmSHA256:
 			type = EVP_sha256();
 			break;
 			
-		case kBE_MessageDigestAlgorithm_SHA384:
+		case kBE_MessageDigestAlgorithmSHA384:
 			type = EVP_sha384();
 			break;
 			
-		case kBE_MessageDigestAlgorithm_SHA512:
+		case kBE_MessageDigestAlgorithmSHA512:
 			type = EVP_sha512();
 			break;
 			
@@ -88,7 +88,7 @@ string encode_digest ( const unsigned char * message_digest, const unsigned int 
 {
 	string digest;
 	
-	if ( output_encoding == kBE_Encoding_Base64 ) {
+	if ( output_encoding == kBE_EncodingBase64 ) {
 		std::vector<char> data ( message_digest, message_digest + message_digest_length );
 		digest = Base64_Encode ( data );
 	} else {

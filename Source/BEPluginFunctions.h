@@ -97,7 +97,7 @@ fmx::errcode BE_Zip ( short funcId, const fmx::ExprEnv& environment, const fmx::
 fmx::errcode BE_SetTextEncoding ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_HTTP_GET ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_HTTP_GET_File ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_HTTP_GETFile ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_HTTP_POST_PUT_PATCH ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_HTTP_DELETE ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_HTTP_ResponseCode ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
@@ -165,8 +165,8 @@ fmx::errcode BE_DebugInformation ( short funcId, const fmx::ExprEnv& environment
 
 fmx::errcode BE_MessageDigest ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
-fmx::errcode BE_Encrypt_AES ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_Decrypt_AES ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_EncryptAES ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_DecryptAES ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_JSON_ArraySize ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 

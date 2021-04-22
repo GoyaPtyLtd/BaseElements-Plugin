@@ -2,7 +2,7 @@
 Version 4.2b2
 ########################################################################
 
-April 16, 2021
+April 22, 2021
 
 
 New Functions
@@ -25,20 +25,38 @@ BE_XeroSetTokens_Deprecated
 
 Changes
 
+BE_AlternateButton: renamed to BE_ButtonAlternate
+BE_CancelButton: renamed to BE_ButtonCancel
 BE_ConvertContainer: convert images types from container files natively
 BE_ConvertContainer: width & height parameters removed
 BE_ConvertContainer: plug memory leak
 BE_ContainerCompress: plug memory leak
+BE_Decrypt_AES: renamed to BE_DecryptAES
+BE_Encoding_Base64: renamed to BE_EncodingBase64
+BE_Encoding_Hex: renamed to BE_EncodingHex
+BE_Encrypt_AES: renamed to BE_EncryptAES
 BE_ExecuteSystemCommand: executeUsingShell parameter added
 BE_ExtractScriptVariables: plug memory leak
+BE_ExtractScriptVariables: renamed to BE_TextExtractWords
 BE_FileImport: plug memory leak
 BE_FileMakerSQL: return container/binary data in addition to text (new asText parameter) 
 BE_FileMakerSQL: outputPath parameter added 
+BE_HTTP_GET_File: renamed to BE_HTTP_GETFile
 BE_HTTP_PUTData: plug memory leak
 BE_JSON_Encode_Deprecated: plug memory leak
 BE_JSONPath_Deprecated: plug memory leak
+BE_MessageDigestAlgorithm_MD5: renamed to BE_MessageDigestAlgorithmMD5
+BE_MessageDigestAlgorithm_MDC2: renamed to BE_MessageDigestAlgorithmMDC2
+BE_MessageDigestAlgorithm_SHA: renamed to BE_MessageDigestAlgorithmSHA
+BE_MessageDigestAlgorithm_SHA1: renamed to BE_MessageDigestAlgorithmSHA1
+BE_MessageDigestAlgorithm_SHA224: renamed to BE_MessageDigestAlgorithmSHA224
+BE_MessageDigestAlgorithm_SHA256: renamed to BE_MessageDigestAlgorithmSHA256
+BE_MessageDigestAlgorithm_SHA384: renamed to BE_MessageDigestAlgorithmSHA384
+BE_MessageDigestAlgorithm_SHA512: renamed to BE_MessageDigestAlgorithmSHA512
+BE_OKButton: renamed to BE_ButtonOK
 BE_ScriptExecute: scriptControl Parameter added
 BE_SMTPSend: plug memory leak
+BE_StripInvalidUTF16CharactersFromXMLFile: renamed to BE_XMLStripInvalidCharacters
 BE_ValuesContainsDuplicates: plug memory leak
 BE_XML_Canonical: renamed to BE_XMLCanonical
 BE_XPath: plug memory leak
@@ -46,6 +64,7 @@ BE_XSLTApply: plug memory leak
 BE_UnZip: UnZip archives from containers
 BE_Zip: Zip files from containers
 
+ 	
 Curl Options Changes
 
 Added
@@ -71,6 +90,10 @@ Added
 
 Removed
 - CURLOPT_DNS_USE_GLOBAL_CACHE
+
+
+Added support for Ubuntu
+Removed support for Centos
 
 
 boost libraries updated to 1.75_0 from 1.70_0

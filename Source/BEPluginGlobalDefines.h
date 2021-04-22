@@ -135,7 +135,7 @@ enum functions {
 	kBE_WriteTextFileToContainer_Deprecated = 140,
 	kBE_ScriptExecute = 150,
 	kBE_FileMakerSQL = 151,
-	kBE_HTTP_GET_File = 152,
+	kBE_HTTP_GETFile = 152,
 	kBE_GetLastError = 153,
 	kBE_MessageDigest = 154,
 	kBE_GetLastDDLError = 155,
@@ -227,8 +227,8 @@ enum functions {
 	kBE_StackPop = 473,
 	kBE_StackCount = 474,
 	kBE_StackDelete = 475,
-	kBE_Encrypt_AES = 500,
-	kBE_Decrypt_AES = 501,
+	kBE_EncryptAES = 500,
+	kBE_DecryptAES = 501,
 	kBE_SignatureGenerateRSA = 502,
 	kBE_SignatureVerifyRSA = 503,
 	kBE_CipherEncrypt = 504,
@@ -259,9 +259,9 @@ enum functions {
 
 
 enum dialog_buttons {
-	kBE_OKButton = 1,
-	kBE_CancelButton = 2,
-	kBE_AlternateButton = 3
+	kBE_ButtonOK = 1,
+	kBE_ButtonCancel = 2,
+	kBE_ButtonAlternate = 3
 };
 
 

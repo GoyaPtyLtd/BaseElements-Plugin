@@ -2,7 +2,7 @@
  BEMacFunctions.cpp
  BaseElements Plug-In
  
- Copyright 2010-2019 Goya. All rights reserved.
+ Copyright 2010-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -245,15 +245,15 @@ const int DisplayDialog ( std::wstring& title, std::wstring& message, std::wstri
 	switch ( response ) {
 			
 		case NSAlertFirstButtonReturn:    /* user pressed OK */
-			button_pressed = kBE_OKButton;
+			button_pressed = kBE_ButtonOK;
 			break;
 			
 		case NSAlertSecondButtonReturn:  /* user pressed Cancel */
-			button_pressed = kBE_CancelButton;
+			button_pressed = kBE_ButtonCancel;
 			break;
 			
 		case NSAlertThirdButtonReturn:      /* user pressed the third button */
-			button_pressed = kBE_AlternateButton;
+			button_pressed = kBE_ButtonAlternate;
 			break;
 			
 		case NSModalResponseCancel:
