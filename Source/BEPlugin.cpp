@@ -153,7 +153,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FileReadText, BE_FileReadText, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_FileWriteText, BE_FileWriteText, 2, 3 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_WriteTextFileToContainer_Deprecated, BE_WriteTextFileToContainer_Deprecated, 2, 3 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_StripInvalidUTF16CharactersFromXMLFile, BE_StripInvalidUTF16CharactersFromXMLFile, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_StripInvalidUTF16CharactersFromXMLFile, BE_StripInvalidUTF16CharactersFromXMLFile, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_ExportFieldContents, BE_ExportFieldContents, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_FileImport, BE_FileImport, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_FilePatternCount, BE_FilePatternCount, 2, 2 );
@@ -171,14 +171,14 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_XPathAll, BE_XPath, 2, 3 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_XMLStripNodes, BE_XMLStripNodes, 3 );
+	g_be_plugin->RegisterFunction ( kBE_XMLStripNodes, BE_XMLStripNodes, 3 );
 	g_be_plugin->RegisterFunction ( kBE_XMLParse, BE_XMLParse, 1 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_SplitBEFileNodes, BE_SplitBEFileNodes, 1 );
 	g_be_plugin->RegisterFunction ( kBE_XMLValidate, BE_XMLValidate, 2 );
 	g_be_plugin->RegisterFunction ( kBE_XMLCanonical, BE_XMLCanonical, 1 );
 	g_be_plugin->RegisterFunction ( kBE_XMLTidy, BE_XMLTidy, 1 );
 
-	g_be_plugin->RegisterHiddenFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1, 2 );
+	g_be_plugin->RegisterFunction ( kBE_ExtractScriptVariables, BE_ExtractScriptVariables, 1, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_ButtonOK + kBE_ButtonOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_ButtonCancel + kBE_ButtonOffset, BE_NumericConstants );
