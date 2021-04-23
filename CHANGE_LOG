@@ -2,7 +2,7 @@
 Version 4.2b2
 ########################################################################
 
-April 22, 2021
+April 23, 2021
 
 
 New Functions
@@ -54,11 +54,15 @@ BE_MessageDigestAlgorithm_SHA256: renamed to BE_MessageDigestAlgorithmSHA256
 BE_MessageDigestAlgorithm_SHA384: renamed to BE_MessageDigestAlgorithmSHA384
 BE_MessageDigestAlgorithm_SHA512: renamed to BE_MessageDigestAlgorithmSHA512
 BE_OKButton: renamed to BE_ButtonOK
+BE_PDFGetPagaes: add garbage collection to reduce file size
 BE_ScriptExecute: scriptControl Parameter added
 BE_SMTPSend: plug memory leak
 BE_StripInvalidUTF16CharactersFromXMLFile: renamed to BE_XMLStripInvalidCharacters
+BE_TextExtractWords: make visible in dialog boxes
 BE_ValuesContainsDuplicates: plug memory leak
 BE_XML_Canonical: renamed to BE_XMLCanonical
+BE_XMLStripInvalidCharacters: make visible in dialog boxes
+BE_XMLStripNodes: make visible in dialog boxes
 BE_XPath: plug memory leak
 BE_XSLTApply: plug memory leak
 BE_UnZip: UnZip archives from containers

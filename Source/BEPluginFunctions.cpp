@@ -62,6 +62,7 @@
 #include "BEFileSystem.h"
 #include "BEJavaScript.h"
 #include "BEJSON.h"
+#include "BEPDF.h"
 #include "BEPluginException.h"
 #include "BEQuadChar.h"
 #include "BERegularExpression.h"
@@ -3447,16 +3448,29 @@ fmx::errcode BE_PDFGetPages ( short /* funcId */, const ExprEnv& /* environment 
 	try {
 
 		auto pdf_document = ParameterAsPDF ( parameters );
-		auto from = (int)ParameterAsIndex ( parameters, 2 );
-		from = 0 > from ? 0 : from;
-		auto to = (const int)ParameterAsLong ( parameters, 3 );
-		const auto number_of_pages = to == 0 ? pdf_document->GetPageCount() : to - from;
+		auto number_of_pages_in_pdf = pdf_document->GetPageCount();
 
-		if ( number_of_pages > 0 ) {
+		auto from = ParameterAsLong ( parameters, 2 );
+		auto first_page = 1L;
+		if ( from > first_page ) {
+			first_page = from;
+		}
+		
+		auto to = ParameterAsLong ( parameters, 3 );
+		auto number_of_pages_to_get = to;
+		if ( number_of_pages_to_get <= 0 || number_of_pages_to_get > number_of_pages_in_pdf ) {
+			number_of_pages_to_get = number_of_pages_in_pdf;
+		}
 
-			std::unique_ptr<PoDoFo::PdfMemDocument> new_pdf ( new PoDoFo::PdfMemDocument() );
-			new_pdf->InsertPages ( *pdf_document, from, number_of_pages );
+		if ( number_of_pages_to_get > 0 ) {
 
+			std::vector<long> pages_wanted;
+			for ( long i = first_page ; i <= number_of_pages_to_get ; i++ ) {
+				pages_wanted.push_back ( i - 1 );
+			}
+
+			std::unique_ptr<BEPDFDocument> new_pdf ( new BEPDFDocument() );
+			new_pdf->InsertPages ( *pdf_document, pages_wanted );
 			pdf_document.reset(); // make sure to close the file
 
 			// write out a temporary file
@@ -3805,7 +3819,8 @@ fmx::errcode BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* e
 					break;
 
 //				default:
-			}
+					
+			} // switch
 
 			// this is not on an eternal quest
 			if ( (end != string::npos) && (search_from < calculation.size()) ) {

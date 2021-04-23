@@ -188,6 +188,7 @@ signtool verify /pa "$(TargetPath)"
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\BEDebugInformation.cpp" />
+    <ClCompile Include="..\Source\BEPDF.cpp" />
     <ClCompile Include="..\Source\BESystemCommand.cpp" />
     <ClCompile Include="..\Source\BEXMLSchema.cpp" />
     <ClCompile Include="..\Source\Crypto\BEBase64.cpp" />
@@ -249,6 +250,7 @@ signtool verify /pa "$(TargetPath)"
   <ItemGroup>
     <ClInclude Include="..\Resources\resource_version.h" />
     <ClInclude Include="..\Source\BEDebugInformation.h" />
+    <ClInclude Include="..\Source\BEPDF.h" />
     <ClInclude Include="..\Source\BESystemCommand.h" />
     <ClInclude Include="..\Source\BEXMLSchema.h" />
     <ClInclude Include="..\Source\Crypto\BEBase64.h" />

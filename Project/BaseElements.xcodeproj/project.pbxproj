@@ -142,6 +142,9 @@
 		4D703AD42230D803007632BA /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD12230D803007632BA /* libPocoZip.a */; };
 		4D703AD52230D803007632BA /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD22230D803007632BA /* libPocoJSON.a */; };
 		4D703AD62230D803007632BA /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD32230D803007632BA /* libPocoFoundation.a */; };
+		4D75899326324E15009D6E93 /* BEPDF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D75899126324E15009D6E93 /* BEPDF.cpp */; };
+		4D75899426324E15009D6E93 /* BEPDF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D75899126324E15009D6E93 /* BEPDF.cpp */; };
+		4D75899526324E15009D6E93 /* BEPDF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D75899126324E15009D6E93 /* BEPDF.cpp */; };
 		4D76243C1E0A37F600266C0D /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624391E0A37F600266C0D /* libfontconfig.a */; };
 		4D76243D1E0A37F600266C0D /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243A1E0A37F600266C0D /* libfreetype.a */; };
 		4D76243E1E0A37F600266C0D /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243B1E0A37F600266C0D /* libpodofo.a */; };
@@ -300,6 +303,8 @@
 		4D703AD32230D803007632BA /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = ../Libraries/macOS/libPocoFoundation.a; sourceTree = "<group>"; };
 		4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEFileSystem.cpp; path = ../Source/BEFileSystem.cpp; sourceTree = SOURCE_ROOT; };
 		4D70428713BAE5CA00DE4484 /* BEFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEFileSystem.h; path = ../Source/BEFileSystem.h; sourceTree = SOURCE_ROOT; };
+		4D75899126324E15009D6E93 /* BEPDF.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BEPDF.cpp; path = ../Source/BEPDF.cpp; sourceTree = "<group>"; };
+		4D75899226324E15009D6E93 /* BEPDF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEPDF.h; path = ../Source/BEPDF.h; sourceTree = "<group>"; };
 		4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLTextReader.cpp; path = ../Source/BEXMLTextReader.cpp; sourceTree = "<group>"; };
 		4D760F7A15AD50F8001A0BAF /* BEXMLTextReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLTextReader.h; path = ../Source/BEXMLTextReader.h; sourceTree = "<group>"; };
 		4D760F7B15AD5265001A0BAF /* BEXMLTextWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLTextWriter.h; path = ../Source/BEXMLTextWriter.h; sourceTree = "<group>"; };
@@ -652,6 +657,8 @@
 				4D8265E31E70D13D00257462 /* BEXMLSchema.h */,
 				4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */,
 				4D2C94FC2223B32400372093 /* BEDebugInformation.h */,
+				4D75899126324E15009D6E93 /* BEPDF.cpp */,
+				4D75899226324E15009D6E93 /* BEPDF.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -954,6 +961,7 @@
 				4D362A021F2079BC0036B751 /* BEXSLT.cpp in Sources */,
 				4D44BC21200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */,
 				4D362A041F2079BC0036B751 /* BEZlib.cpp in Sources */,
+				4D75899426324E15009D6E93 /* BEPDF.cpp in Sources */,
 				4D362A051F2079BC0036B751 /* BEFileTextReader.cpp in Sources */,
 				4D362A4D1F207E8C0036B751 /* BEIOSFunctions.mm in Sources */,
 				4D362A061F2079BC0036B751 /* BEXMLReader.cpp in Sources */,
@@ -999,6 +1007,7 @@
 				4D362A6A1F2085880036B751 /* BEXSLT.cpp in Sources */,
 				4D44BC22200FAD9E0028449D /* BEMimeticMIMEEntity.cpp in Sources */,
 				4D362A6C1F2085880036B751 /* BEZlib.cpp in Sources */,
+				4D75899526324E15009D6E93 /* BEPDF.cpp in Sources */,
 				4D362A6D1F2085880036B751 /* BEFileTextReader.cpp in Sources */,
 				4D362A6E1F2085880036B751 /* BEIOSFunctions.mm in Sources */,
 				4D362A6F1F2085880036B751 /* BEXMLReader.cpp in Sources */,
@@ -1065,6 +1074,7 @@
 				4DB857A31C646DF600D0192A /* BESMTPContainerAttachments.cpp in Sources */,
 				4D1D070D1F21C36700BCE550 /* BEAppleFunctionsCommon.mm in Sources */,
 				4D33C6BC229BC8A900CEA53F /* BESystemCommand.cpp in Sources */,
+				4D75899326324E15009D6E93 /* BEPDF.cpp in Sources */,
 				4DCD49641A195B0C00EFCF7F /* BEFileTextReader.cpp in Sources */,
 				4D8265E41E70D13D00257462 /* BEXMLSchema.cpp in Sources */,
 				4DCD49651A195B0C00EFCF7F /* BESMTPEmailMessage.cpp in Sources */,
