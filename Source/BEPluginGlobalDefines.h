@@ -116,8 +116,8 @@ enum functions {
 	kBE_FolderSelect = 113,
 	kBE_DialogDisplay = 114,
 	kBE_XSLTApply = 115,
-	kBE_ExtractScriptVariables = 116,
-	kBE_StripInvalidUTF16CharactersFromXMLFile = 117,
+	kBE_TextExtractWords = 116,
+	kBE_XMLStripInvalidCharacters = 117,
 	kBE_FileMove = 118,
 	kBE_FileCopy = 119,
 //	kBE_ExecuteShellCommand = 120, // removed, do not use

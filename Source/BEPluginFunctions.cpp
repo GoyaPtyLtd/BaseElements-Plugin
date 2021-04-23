@@ -561,7 +561,7 @@ fmx::errcode BE_WriteTextFileToContainer_Deprecated ( short /* funcId */, const 
  any invalid characters, and replaces the old file
  */
 
-fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XMLStripInvalidCharacters ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	auto overwriting = false;
@@ -668,7 +668,7 @@ fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, con
 
 	return MapError ( error );
 
-} // BE_StripInvalidUTF16CharactersFromXMLFile
+} // BE_XMLStripInvalidCharacters
 
 
 
@@ -3745,14 +3745,14 @@ fmx::errcode BE_TimeFunctions ( const short funcId, const ExprEnv& /* environmen
 
 
 /*
- BE_ExtractScriptVariables implements are somewhat imperfect heuristic for finding
+ BE_TextExtractWords implements are somewhat imperfect heuristic for finding
  script variables within chunks of filemaker calculation
 
  try to stip out unwanted text such as strings and comments and then, when a $ is
  found, attempt to guess the where the variable name ends
  */
 
-fmx::errcode BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_TextExtractWords ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -3842,7 +3842,7 @@ fmx::errcode BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* e
 
 	return MapError ( error );
 
-} // BE_ExtractScriptVariables
+} // BE_TextExtractWords
 
 
 
