@@ -3351,31 +3351,34 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 
 		auto pdf_document = ParameterAsPDF ( parameters );
 
-		std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
 		auto which = 1;
 
-		 if ( BinaryDataAvailable ( parameters, which ) ) {
+		if ( BinaryDataAvailable ( parameters, which ) ) {
 
-			 auto pdf = ParameterAsVectorChar ( parameters, which );
-			 pdf_document_to_append->LoadFromBuffer ( pdf.data(), (long)pdf.size() );
-			 pdf_document->Append ( *pdf_document_to_append );
+			auto pdf = ParameterAsVectorChar ( parameters, which );
 
-		 } else {
+			std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
+			pdf_document_to_append->LoadFromBuffer ( pdf.data(), (long)pdf.size() );
+			pdf_document->Append ( *pdf_document_to_append );
+			pdf_document_to_append.reset(); // make sure to close the file
 
-			 auto file_list = ParameterAsStringValueList ( parameters, which, true, false );
+		} else {
 
-			 for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
+			auto file_list = ParameterAsStringValueList ( parameters, which, true, false );
 
-				 boost::filesystem::path pdf_path ( *it );
-				 pdf_path.make_preferred();
-				 pdf_document_to_append->Load ( pdf_path.c_str() );
-				 pdf_document->Append ( *pdf_document_to_append );
+			for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
 
-			 } // for...
+				boost::filesystem::path pdf_path ( *it );
+				pdf_path.make_preferred();
+				
+				std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
+				pdf_document_to_append->Load ( pdf_path.c_str() );
+				pdf_document->Append ( *pdf_document_to_append );
+				pdf_document_to_append.reset(); // make sure to close the file
 
-		 }
+			} // for...
 
-		pdf_document_to_append.reset(); // make sure to close the file
+		} // if ( BinaryDataAvailable...
 
 		// write out a temporary file
 		auto temporary_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();

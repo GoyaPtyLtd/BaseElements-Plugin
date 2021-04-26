@@ -2,7 +2,7 @@
 Version 4.2b2
 ########################################################################
 
-April 23, 2021
+April 26, 2021
 
 
 New Functions
@@ -54,6 +54,7 @@ BE_MessageDigestAlgorithm_SHA256: renamed to BE_MessageDigestAlgorithmSHA256
 BE_MessageDigestAlgorithm_SHA384: renamed to BE_MessageDigestAlgorithmSHA384
 BE_MessageDigestAlgorithm_SHA512: renamed to BE_MessageDigestAlgorithmSHA512
 BE_OKButton: renamed to BE_ButtonOK
+BE_PDFAppend: correctly append more than one PDF document
 BE_PDFGetPagaes: add garbage collection to reduce file size
 BE_ScriptExecute: scriptControl Parameter added
 BE_SMTPSend: plug memory leak
