@@ -45,7 +45,7 @@ const std::string BEBio::extract ( )
 	const int length = BIO_pending ( bio );
 
 	std::vector<char> data ( length );
-	result = BIO_read ( bio, &data[0], length );
+	result = BIO_read ( bio, data.data(), length );
 
 	if ( result > 0 ) {
 		out.assign ( data.begin(), data.end() );

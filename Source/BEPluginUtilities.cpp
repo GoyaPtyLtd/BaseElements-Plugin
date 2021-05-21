@@ -150,7 +150,7 @@ void SetResult ( const wstring& text, Data& results )
 void SetResult ( vector<char>& data, Data& results )
 {
 	data.push_back ( '\0' );
-	const std::string data_string ( &data[0] );//, data.size() );
+	const std::string data_string ( data.data() );//, data.size() );
 	SetResult ( data_string, results );
 }
 
@@ -217,7 +217,7 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 			// filemaker will go into an infinite loop if non-utf8 data is set as utf8
 			// so try to convert it first
 
-			std::string utf8 = ConvertTextToUTF8 ( (char *)&data[0], data.size() );
+			std::string utf8 = ConvertTextToUTF8 ( (char *)data.data(), data.size() );
 
 			if ( compress ) {
 				vector<char> utf8_text ( utf8.begin(), utf8.end() );
@@ -744,7 +744,7 @@ const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path )
 			input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
 			input_file.seekg ( 0, ios::beg );
 			file_data.resize ( length );
-			input_file.read ( &file_data[0], length );
+			input_file.read ( file_data.data(), length );
 
 		}
 
@@ -772,13 +772,13 @@ std::string ReadFileAsUTF8 ( const boost::filesystem::path path )
 
 			// slurp up the file contents
 			std::vector<char> buffer ( length );
-			inFile.read ( &buffer[0], length );
+			inFile.read ( buffer.data(), length );
 			inFile.close ();
 
 			// convert the text in the file to utf-8 if possible
-			result = ConvertTextToUTF8 ( &buffer[0], length );
+			result = ConvertTextToUTF8 ( buffer.data(), length );
 			if ( result.length() == 0 ) {
-				result.assign ( &buffer[0] );
+				result.assign ( buffer.data() );
 			}
 
 		}
@@ -846,13 +846,13 @@ void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t fr
 
 					inFile.seekg ( offset, ios::beg ) ;
 					std::vector<char> buffer ( read ) ;
-					inFile.read ( &buffer[0], read ) ;
+					inFile.read ( buffer.data(), read ) ;
 					inFile.close ();
 
 					// convert the text in the file to utf-8 if possible
-					result = ConvertTextToUTF8 ( &buffer[0], read );
+					result = ConvertTextToUTF8 ( buffer.data(), read );
 					if ( result.length() == 0 ) {
-						result.assign ( &buffer[0] );
+						result.assign ( buffer.data() );
 					}
 				}
 
@@ -938,7 +938,7 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 
         size_t available = (length * 4) + 1;	// worst case for utf-32 to utf-8 ?
 		std::vector<char> encoded ( available );
-		char * encoded_start = &encoded[0];
+		char * encoded_start = encoded.data();
 		size_t remaining = available;
 
 		iconv_t conversion = iconv_open ( to.c_str(), it->c_str() );
@@ -946,7 +946,7 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 			error_result = iconv ( conversion, &start, &start_length, &encoded_start, &remaining );
 			if ( error_result != kIconvError ) {
 				iconv_close ( conversion ); // int =
-				out.assign ( &encoded[0], &encoded[0] + available - remaining );
+				out.assign ( encoded.data(), encoded.data() + available - remaining );
 			} else {
                 error_result = errno;
                 iconv_close ( conversion ); // int =
@@ -1457,12 +1457,12 @@ void ReadBufferedFileFromStart(boost::filesystem::ifstream& inFile, const size_t
 	while (1) {
 
 		inFile.seekg ( offset, ios::beg ) ;
-		inFile.read ( &buffer[0], buffer_size ) ;
+		inFile.read ( buffer.data(), buffer_size ) ;
 
 		// convert the text in the file to utf-8 if possible
-		slice = ConvertTextToUTF8 ( &buffer[0], inFile.gcount() );
+		slice = ConvertTextToUTF8 ( buffer.data(), inFile.gcount() );
 		if ( slice.length() == 0 ) {
-			slice.assign ( &buffer[0] );
+			slice.assign ( buffer.data() );
 		}
 
 		from_delimiter = 0 ;
@@ -1553,13 +1553,13 @@ void ReadBufferedFileFromEnd(boost::filesystem::ifstream& inFile, const size_t& 
 	}
 
 	inFile.seekg ( offset, ios::beg ) ;
-	inFile.read ( &buffer[0], length - offset ) ;
+	inFile.read ( buffer.data(), length - offset ) ;
 	to_delimiter = inFile.gcount() ;
 	if ( from > 1 ) {
 		// verbose << "\nExcluding lines 1 through " << from - 1 << "\n" ;
-		slice = ConvertTextToUTF8 ( &buffer[0], inFile.gcount() );
+		slice = ConvertTextToUTF8 ( buffer.data(), inFile.gcount() );
 		if ( slice.length() == 0 ) {
-			slice.assign ( &buffer[0] );
+			slice.assign ( buffer.data() );
 		}
 		ReverseFindDelimiter( slice, delimiter, from, count,  to_delimiter ) ;
 		// verbose << "to_delimiter: " << to_delimiter << "\n" ;
@@ -1572,9 +1572,9 @@ void ReadBufferedFileFromEnd(boost::filesystem::ifstream& inFile, const size_t& 
 		// i++ ;
 		// verbose << "\nread i: " << i << " offset: " << offset << "\n" ;
 
-		slice = ConvertTextToUTF8 ( &buffer[0], inFile.gcount() );
+		slice = ConvertTextToUTF8 ( buffer.data(), inFile.gcount() );
 		if ( slice.length() == 0 ) {
-			slice.assign ( &buffer[0] );
+			slice.assign ( buffer.data() );
 		}
 
 		ReverseFindDelimiter( slice, delimiter, to, count,  from_delimiter ) ;
@@ -1621,7 +1621,7 @@ void ReadBufferedFileFromEnd(boost::filesystem::ifstream& inFile, const size_t& 
 				}
 
 				inFile.seekg ( offset, ios::beg ) ;
-				inFile.read ( &buffer[0], buffer_size ) ;
+				inFile.read ( buffer.data(), buffer_size ) ;
 
 				to_delimiter = inFile.gcount() ;
 				from_delimiter = to_delimiter - 1 ;

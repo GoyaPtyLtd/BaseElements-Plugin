@@ -184,7 +184,7 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 				auto wide_path = xml_path.wstring();
 				int size = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, NULL, 0, NULL, NULL );
 				std::vector<char> utf8_data ( size );
-				auto bytesConverted = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, &utf8_data[0], (int)utf8_data.size(), NULL, NULL );
+				auto bytesConverted = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, utf8_data.data(), (int)utf8_data.size(), NULL, NULL );
 				std::string utf8 ( utf8_data.begin(), utf8_data.end() );
 				xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), utf8.c_str(), UTF8, options );
 #else

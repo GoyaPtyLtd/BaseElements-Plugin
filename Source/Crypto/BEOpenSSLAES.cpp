@@ -94,7 +94,7 @@ const vector<char> Encrypt_AES ( const string key, const string text, const vect
 	vector<char> result;
 	
 	EVP_CIPHER_CTX * context = EVP_CIPHER_CTX_new();
-	auto reply = EVP_EncryptInit_ex ( context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), (unsigned char *)&input_vector[0] );
+	auto reply = EVP_EncryptInit_ex ( context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), (unsigned char *)input_vector.data() );
 	
 	if ( reply ) {
 		
@@ -134,7 +134,7 @@ const vector<char> Decrypt_AES ( const string key, const vector<char> encrypted_
 	if ( !encrypted_data.empty() ) {
 		
 		EVP_CIPHER_CTX * context = EVP_CIPHER_CTX_new();
-		auto reply = EVP_DecryptInit_ex ( context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), (unsigned char *)&input_vector[0] );
+		auto reply = EVP_DecryptInit_ex ( context, EVP_aes_256_cfb128(), NULL, (unsigned char *)key.c_str(), (unsigned char *)input_vector.data() );
 		
 		if ( reply ) {
 			
@@ -145,7 +145,7 @@ const vector<char> Decrypt_AES ( const string key, const vector<char> encrypted_
 			int output_length = 0;
 			int final_output_length = 0;
 			
-			reply = EVP_DecryptUpdate ( context, decrypted_data, &output_length, (unsigned char *)&encrypted_data[0], (int)input_size );
+			reply = EVP_DecryptUpdate ( context, decrypted_data, &output_length, (unsigned char *)encrypted_data.data(), (int)input_size );
 			if ( reply ) {
 				
 				EVP_DecryptFinal_ex ( context, decrypted_data + output_length, &final_output_length );

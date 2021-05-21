@@ -89,7 +89,7 @@ const long UnZipMemory ( const std::vector<char>& archive, const std::string& ou
 
 	Poco::Path decompress_here ( output_directory );
 
-	boost::interprocess::bufferstream archive_stream ( (char *)&archive[0], archive.size() );
+	boost::interprocess::bufferstream archive_stream ( (char *)archive.data(), archive.size() );
 
 	Poco::Zip::Decompress to_decompress ( archive_stream, decompress_here );
 	to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
@@ -170,7 +170,7 @@ const long ZipMemory ( const std::vector<char>& data, const std::string& filenam
 		archive_path = filename + ".zip";
 	}
 
-	boost::interprocess::bufferstream compress_this ( (char *)&data[0], data.size() );
+	boost::interprocess::bufferstream compress_this ( (char *)data.data(), data.size() );
 
 	std::ofstream out ( archive_path.toString().c_str(), std::ios::binary );
 	Poco::Zip::Compress to_compress ( out, true );
@@ -195,7 +195,7 @@ const std::vector<char> CompressContainerStream ( const std::vector<char> data )
 	auto size_required = compressBound ( (unsigned long)data.size() );
 
 	z_stream stream;
-	stream.next_in = (unsigned char *)&data[0];
+	stream.next_in = (unsigned char *)data.data();
 	stream.avail_in = (unsigned int)data.size();
 	stream.total_out = 0;
 	stream.opaque = Z_NULL; // updated to use default allocation functions.
@@ -236,7 +236,7 @@ const std::vector<char> CompressContainerStream ( const std::vector<char> data )
 const std::vector<char> UncompressContainerStream ( const std::vector<char> data )
 {
 	z_stream stream;
-	stream.next_in = (unsigned char *)&data[0];
+	stream.next_in = (unsigned char *)data.data();
 	stream.avail_in = (unsigned int)data.size();
 	stream.total_out = 0;
 	stream.opaque = Z_NULL; // updated to use default allocation functions.

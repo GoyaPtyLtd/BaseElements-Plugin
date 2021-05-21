@@ -577,7 +577,7 @@ void BECurl::set_parameters ( )
 			input_file.seekg ( 0, ios::beg );
 			vector<char> file_data ( (std::istreambuf_iterator<char> ( input_file ) ), std::istreambuf_iterator<char>() );
 
-			easy_setopt ( CURLOPT_POSTFIELDS, &file_data[0] );
+			easy_setopt ( CURLOPT_POSTFIELDS, file_data.data() );
 			easy_setopt ( CURLOPT_POSTFIELDSIZE, file_data.size() );
 
 		} else if ( std::string::npos == parameters.find ( "=@" ) ) { // let curl do the work unless there's a file path
