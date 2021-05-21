@@ -125,7 +125,7 @@ Copy the header and library files.
 
 
 =======================================================================
-libcurl - 7.75.0
+libcurl - 7.76.1
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -140,7 +140,7 @@ Copy build_libcurl.sh to the same directory as the expanded source and
 
 Copy the header and library files.
 
-	cp -R curl-7.75.0/include/curl "${SRCROOT}/Headers/"
+	cp -R curl-7.76.1/include/curl "${SRCROOT}/Headers/"
 	cp libcurl_iOS_Release/libcurl.a "${SRCROOT}/Libraries/iOS"
 
 

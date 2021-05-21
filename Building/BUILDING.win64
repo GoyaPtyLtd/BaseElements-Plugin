@@ -181,7 +181,7 @@ to the Headers directory and rename it libssh2.
 
 
 =======================================================================
-libcurl - 7.75.0
+libcurl - 7.76.1
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.
@@ -200,6 +200,7 @@ and set the following Configuration Properties for the libssh "LIB Release - LIB
 
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers/libssh directory
 	VC++ Directories -> Include Directories -> add the path to the BEPlugin Headers directory
+	VC++ Directories -> Library Directories -> add the path to the BEPlugin Libraries/win64 directory
 	C/C++ -> Code Generation -> Runtime Library == Multi-threaded (/MT)
 
 In Visual Studio and select "Batch Build" and select the x64 "LIB Release - LIB OpenSSL - LIB LibSSH2" configuration and "Build" it.

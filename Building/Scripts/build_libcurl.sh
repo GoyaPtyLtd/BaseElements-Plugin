@@ -18,7 +18,7 @@
 BUILD_DIR=$HOME/Downloads/libcurl_iOS_Release # RELEASE_DIR
 mkdir -p ${BUILD_DIR}
 cd $BUILD_DIR
-cd "../curl-7.75.0"
+cd "../curl-7.76.1"
 
 set -e
 
