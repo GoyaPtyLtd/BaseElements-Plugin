@@ -2856,19 +2856,31 @@ fmx::errcode BE_CurlTrace ( short /* funcId */, const fmx::ExprEnv& /* environme
 } // BE_CurlTrace
 
 
-fmx::errcode BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FTP_Upload ( short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
 		auto url = ParameterAsUTF8String ( parameters );
-		auto data = ParameterAsVectorChar ( parameters, 1 );
 		auto username = ParameterAsUTF8String ( parameters, 2 );
 		auto password = ParameterAsUTF8String ( parameters, 3 );
+		
+		std::vector<char> response;
+		
+		if ( function_id == kBE_FTP_Upload ) {
 
-		BECurl curl ( url, kBE_FTP_METHOD_UPLOAD, "", username, password, "", data );
-		vector<char> response = curl.ftp_upload ( );
+			auto data = ParameterAsVectorChar ( parameters, 1 );
+			BECurl curl ( url, kBE_FTP_METHOD_UPLOAD, "", username, password, "", data );
+			response = curl.ftp_upload ( );
+
+		} else { // kBE_FTP_UploadFile
+
+			auto file_to_upload = ParameterAsPath ( parameters, 1 );
+			BECurl curl ( url, kBE_FTP_METHOD_UPLOAD, file_to_upload.string(), username, password );
+			response = curl.ftp_upload ( );
+
+		}
 
 		error = g_last_error;
 		if ( error == kNoError ) {
@@ -3390,7 +3402,7 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 
 			auto file_data = ReadFileAsBinary ( temporary_file );
 			auto destination = ParameterFileName ( parameters );
-			SetResult ( destination, file_data, results );
+			SetResult ( destination, file_data, PDF_CONTAINER_TYPE, results );
 
 		} else {
 
@@ -3486,7 +3498,7 @@ fmx::errcode BE_PDFGetPages ( short /* funcId */, const ExprEnv& /* environment 
 
 				auto file_data = ReadFileAsBinary ( temporary_file );
 				auto destination = ParameterFileName ( parameters );
-				SetResult ( destination, file_data, results );
+				SetResult ( destination, file_data, PDF_CONTAINER_TYPE, results );
 
 			} else {
 

@@ -140,6 +140,7 @@ protected:
 	CURLcode error;
 
 	void write_to_memory ( );
+	void prepare_file_upload ( );
 	void perform ( );
 
 	void easy_setopt ( CURLoption option, ... );
@@ -149,7 +150,8 @@ protected:
 	
 	void prepare_data_upload ( );
 	void prepare_upload ( );
-	
+	std::vector<char> upload ( );
+
 };
 
 

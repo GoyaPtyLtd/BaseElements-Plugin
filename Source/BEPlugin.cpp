@@ -244,7 +244,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FTP_Delete, BE_FTP_Delete, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_PATCH, BE_HTTP_POST_PUT_PATCH, 2, 4 );
 
-
 	g_be_plugin->RegisterFunction ( kBE_MessageDigest, BE_MessageDigest, 1, 3 );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithmMD5 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_MessageDigestAlgorithmSHA256 + kBE_MessageDigestAlgorithmOffset, BE_NumericConstants );
@@ -274,6 +273,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 
 	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, 2, 4 );
+	g_be_plugin->RegisterFunction ( kBE_FTP_UploadFile, BE_FTP_Upload, 2, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_SMTPServer, BE_SMTPServer, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_SMTPSend, BE_SMTPSend, 4, 9 );

@@ -489,44 +489,9 @@ vector<char> BECurl::download ( )
 vector<char> BECurl::http_put ( )
 {
 
-	try {
+	easy_setopt ( CURLOPT_PUT, 1L );
 
-		prepare_upload ( );
-
-		if ( filename.empty() ) {
-
-			prepare_data_upload ( );
-
-		} else {
-
-			// no directories etc.
-			if ( exists ( filename ) && is_regular_file ( filename ) ) {
-
-				upload_file = FOPEN ( filename.c_str(), _TEXT ( "rb" ) );
-
-				easy_setopt ( CURLOPT_READDATA, upload_file );
-				easy_setopt ( CURLOPT_INFILESIZE, (curl_off_t)file_size ( filename ) );
-
-			} else {
-				throw BECurl_Exception ( (CURLcode)kFileExistsError );
-			}
-
-		}
-
-		easy_setopt ( CURLOPT_PUT, 1L );
-
-		// put this
-		easy_setopt ( CURLOPT_URL, url.c_str() );
-
-		perform ( );
-
-	} catch ( filesystem_error& e ) {
-		error = (CURLcode)e.code().value();
-	} catch ( BECurl_Exception& e ) {
-		error = e.code();
-	}
-
-	return result;
+	return upload();
 
 }	//	http_put
 
@@ -556,25 +521,7 @@ vector<char> BECurl::http_delete ( )
 
 vector<char> BECurl::ftp_upload ( )
 {
-
-	try {
-
-		prepare_upload ( );
-		prepare_data_upload ( );
-
-		// upload this
-		easy_setopt ( CURLOPT_URL, url.c_str() );
-
-		perform ( );
-
-	} catch ( filesystem_error& e ) {
-		error = (CURLcode)e.code().value();
-	} catch ( BECurl_Exception& e ) {
-		error = e.code();
-	}
-
-	return result;
-
+	return upload();
 }	//	ftp_upload
 
 
@@ -707,12 +654,12 @@ void BECurl::set_custom_headers ( CustomHeaders http_custom_headers )
 
 void BECurl::set_username_and_password ( )
 {
-
+	
 	// set user name and password for the authentication
-	if ( !username.empty() ) {
+	if ( ! username.empty() ) {
 
-		string username_and_password = join ( username, password );
-		easy_setopt ( CURLOPT_USERPWD, username_and_password.c_str() );
+		easy_setopt ( CURLOPT_USERNAME, username.c_str() );
+		easy_setopt ( CURLOPT_PASSWORD, password.c_str() );
 		easy_setopt ( CURLOPT_HTTPAUTH, (long)CURLAUTH_ANY );
 
 	}
@@ -789,6 +736,24 @@ void BECurl::write_to_memory ( )
 	easy_setopt ( CURLOPT_WRITEFUNCTION, WriteMemoryCallback );
 	easy_setopt ( CURLOPT_WRITEDATA, (void *)&data );
 }
+
+
+void BECurl::prepare_file_upload ( )
+{
+
+	// no directories etc.
+	if ( exists ( filename ) && is_regular_file ( filename ) ) {
+
+		upload_file = FOPEN ( filename.c_str(), _TEXT ( "rb" ) );
+
+		easy_setopt ( CURLOPT_READDATA, upload_file );
+		easy_setopt ( CURLOPT_INFILESIZE, (curl_off_t)file_size ( filename ) );
+
+	} else {
+		throw BECurl_Exception ( (CURLcode)kFileExistsError );
+	}
+
+}	//	file_upload
 
 
 void BECurl::perform ( )
@@ -886,20 +851,26 @@ string BECurl::http_method_as_string ( )
 void BECurl::prepare_data_upload ( )
 {
 
-	easy_setopt ( CURLOPT_READFUNCTION, ReadMemoryCallback );
+	if ( filename.empty() ) { // from memory
 
-	userdata = InitalizeCallbackMemory ( );
+		easy_setopt ( CURLOPT_READFUNCTION, ReadMemoryCallback );
 
-	if ( ! upload_data.empty() ) {
-		userdata.memory = &upload_data[0];
+		userdata = InitalizeCallbackMemory();
+		userdata.memory = upload_data.data();
 		userdata.size = upload_data.size();
+
+		easy_setopt ( CURLOPT_READDATA, &userdata );
+		easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
+
+		easy_setopt ( CURLOPT_SEEKFUNCTION, SeekFunction );
+		easy_setopt ( CURLOPT_SEEKDATA, &userdata );
+
+	} else { // a file
+		
+		upload_file = fopen ( filename.string().c_str(), "rb" );
+		easy_setopt ( CURLOPT_READDATA, upload_file );
+		
 	}
-
-	easy_setopt ( CURLOPT_READDATA, &userdata );
-	easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
-
-	easy_setopt ( CURLOPT_SEEKFUNCTION, SeekFunction );
-	easy_setopt ( CURLOPT_SEEKDATA, &userdata );
 
 }
 
@@ -908,4 +879,31 @@ void BECurl::prepare_upload ( )
 {
 	write_to_memory ( );
 	easy_setopt ( CURLOPT_UPLOAD, 1L );
+	easy_setopt ( CURLOPT_URL, url.c_str() );
 }
+
+
+vector<char> BECurl::upload ( )
+{
+
+	try {
+
+		prepare_upload ( );
+
+		if ( filename.empty() ) {
+			prepare_data_upload ( );
+		} else {
+			prepare_file_upload();
+		}
+
+		perform ( );
+
+	} catch ( filesystem_error& e ) {
+		error = (CURLcode)e.code().value();
+	} catch ( BECurl_Exception& e ) {
+		error = e.code();
+	}
+
+	return result;
+
+}	// upload
