@@ -2706,7 +2706,7 @@ fmx::errcode BE_HTTP_ResponseHeaders ( short /* funcId */, const ExprEnv& /* env
 
 		} else {
 
-			auto http_headers = boost::replace_all_copy (g_http_response_headers, "\r\n", "\n" );
+			auto http_headers = boost::replace_all_copy ( g_http_response_headers, NETWORK_ENDL, "\n" );
 
 			BEValueList<string> headers ( http_headers, "\n", false, false );
 			auto look_for = ParameterAsUTF8String ( parameters );

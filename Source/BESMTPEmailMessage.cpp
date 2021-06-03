@@ -2,7 +2,7 @@
  BESMTPEmailMessage.cpp
  BaseElements Plug-In
  
- Copyright 2014-2019 Goya. All rights reserved.
+ Copyright 2014-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -50,8 +50,8 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::str
 
 	text = new mimetic::MimeEntity;
 	auto message_text = message_body;
-	boost::replace_all ( message_text, FILEMAKER_END_OF_LINE, "\r\n" );
-	text->body().assign ( message_text + "\r\n\r\n" );
+	boost::replace_all ( message_text, FILEMAKER_END_OF_LINE, NETWORK_ENDL );
+	text->body().assign ( message_text + NETWORK_ENDL + NETWORK_ENDL );
 	text->header().contentType() = "text/plain; charset=\"utf-8\"";
 	
 	html = NULL;
@@ -136,7 +136,7 @@ void BESMTPEmailMessage::set_html_alternative ( const std::string& html_part )
 		
 		html = new mimetic::MimeEntity;
 		std::string html_text ( html_part );
-		boost::replace_all ( html_text, FILEMAKER_END_OF_LINE, "\r\n" );
+		boost::replace_all ( html_text, FILEMAKER_END_OF_LINE, NETWORK_ENDL );
 		html->body().assign ( html_text );
 		html->header().contentType() = "text/html; charset=\"utf-8\"";
 
@@ -186,7 +186,7 @@ string BESMTPEmailMessage::as_string()
 	build_message();
 
 	ostringstream meassage_stream;
-	meassage_stream << *message << endl;
+	meassage_stream << *message << NETWORK_ENDL;
 	return meassage_stream.str();
 
 }

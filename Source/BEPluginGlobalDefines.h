@@ -91,6 +91,7 @@ extern thread_local fmx::errcode g_last_error;
 
 #define FILEMAKER_END_OF_LINE "\r"
 #define FILEMAKER_END_OF_LINE_CHAR '\r'
+#define NETWORK_ENDL "\r\n"
 
 #define UTF8 "UTF-8"
 #define UTF16 "UTF-16"
