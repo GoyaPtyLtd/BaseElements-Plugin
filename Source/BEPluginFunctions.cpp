@@ -1956,7 +1956,7 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 		} else {
 
 			// should there be multiple files with the same name... keep only the last one
-			auto values = ParameterAsStringValueList ( parameters );
+			auto values = ParameterAsStringValueList ( parameters, 0, true, false );
 
 			std::map<std::string, std::string> unique_file_names;
 

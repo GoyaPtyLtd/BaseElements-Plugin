@@ -2,7 +2,7 @@
 Version 4.2b2
 ########################################################################
 
-May 21, 2021
+June 8, 2021
 
 
 New Functions
@@ -59,6 +59,7 @@ BE_PDFAppend: correctly append more than one PDF document
 BE_PDFGetPagaes: add garbage collection to reduce file size
 BE_ScriptExecute: scriptControl Parameter added
 BE_SMTPSend: plug memory leak
+BE_SMTPSend: do not send a bare line feed after the end of the message
 BE_StripInvalidUTF16CharactersFromXMLFile: renamed to BE_XMLStripInvalidCharacters
 BE_TextExtractWords: make visible in dialog boxes
 BE_ValuesContainsDuplicates: plug memory leak
@@ -69,6 +70,7 @@ BE_XPath: plug memory leak
 BE_XSLTApply: plug memory leak
 BE_UnZip: UnZip archives from containers
 BE_Zip: Zip files from containers
+BE_Zip: remove blank/empty paths from the input prior to archiving
 
  	
 Curl Options Changes
