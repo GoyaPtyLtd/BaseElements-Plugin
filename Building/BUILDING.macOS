@@ -61,56 +61,6 @@ Copy the header and library files.
 
 
 =======================================================================
-mimetic - 0.9.8
-=======================================================================
-
-Download the source from
-
-	http://www.codesink.org/mimetic_mime_library.html#download
-
-and extract the archive. Then
-
-	cd mimetic-0.9.8
-
-Edit the file mimetic/codec/base64.h to replace line 72
-
-	*out = NL; ++out;
-
-with
-
-	*out = CR; ++out;
-	*out = LF; ++out;
-
-Then build the library.
-
-	./configure CXXFLAGS="-arch x86_64 -mmacosx-version-min=10.13 -stdlib=libc++" LDFLAGS="-stdlib=libc++" CFLAGS="-arch x86_64 -mmacosx-version-min=10.13" --disable-shared --prefix="$(pwd)/_build_macos_x86_64"
-	make -s -j install
-	make distclean
-	./configure CXXFLAGS="-arch arm64 -mmacosx-version-min=10.13 -stdlib=libc++" LDFLAGS="-stdlib=libc++" CFLAGS="-arch arm64 -mmacosx-version-min=10.13" --disable-shared --prefix="$(pwd)/_build_macos_arm64"
-	make -s -j install
-	mkdir _build_macos
-	lipo -create "_build_macos_x86_64/lib/libmimetic.a" "_build_macos_arm64/lib/libmimetic.a" -output "_build_macos/libmimetic.a"
-
-
-Copy the header and library files.
-
-	cp -R _build_macos/include/mimetic "${SRCROOT}/Headers/"
-	cp _build_macos/lib/libmimetic.a "${SRCROOT}/Libraries/macOS/"
-
-Note: If make failed with the following error,
-
-	mmfile.cxx:60:14: error: ordered comparison between pointer and zero ('char *' and 'int')
-
-retry after editing mimetic/os/mmfile.cxx to replace line 60
-
-	if(m_beg > 0)
-
-with
-
-	if(m_beg != nullptr)
-
-
-=======================================================================
 OpenSSL - 1.1.1k
 =======================================================================
 
@@ -217,24 +167,14 @@ Copy the header and library files.
 Poco 1.10.1
 =======================================================================
 
-Note: depending on build machine set up you may need to edit the file
-
-	poco/Zip/dependencies
-	
-and delete all lines other than the one containing
-
-	"Foundation"
-	
-==
-
 Download the source from
 
 	http://pocoproject.org/download/
 
 and extract the archive. Then
 
-	cd poco-poco-1.10.1-release
-	./configure --config=Darwin64-clang-libc++ --prefix="${$(pwd)}/_build_macos_x86_64" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util" --include-path="${SRCROOT}/Headers" --library-path="${SRCROOT}/Libraries/macOS"
+	cd poco-poco-1.10.1-all
+	./configure --config=Darwin64-clang-libc++ --prefix="${$(pwd)}/_build_macos_x86_64" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util" --include-path="${SRCROOT}/Headers" --library-path="${SRCROOT}/Libraries/macOS"
 	make -s -j install
 	
 Make a copy of the file
@@ -253,18 +193,19 @@ to
 
 	arm64
 	
-	./configure --config=DarwinArm64-clang-libc++ --prefix="${$(pwd)}/_build_macos_arm64" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util" --include-path="${SRCROOT}/Headers" --library-path="${SRCROOT}/Libraries/macOS"
+	./configure --config=DarwinArm64-clang-libc++ --prefix="${$(pwd)}/_build_macos_arm64" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util" --include-path="${SRCROOT}/Headers" --library-path="${SRCROOT}/Libraries/macOS"
 	make -s -j install
 
 	lipo -create "lib/Darwin/x86_64/libPocoFoundation.a" "lib/Darwin/arm64/libPocoFoundation.a" -output "lib/libPocoFoundation.a"
 	lipo -create "lib/Darwin/x86_64/libPocoZip.a" "lib/Darwin/arm64/libPocoZip.a" -output "lib/libPocoZip.a"
 	lipo -create "lib/Darwin/x86_64/libPocoJSON.a" "lib/Darwin/arm64/libPocoJSON.a" -output "lib/libPocoJSON.a"
 	lipo -create "lib/Darwin/x86_64/libPocoXML.a" "lib/Darwin/arm64/libPocoXML.a" -output "lib/libPocoXML.a"
+	lipo -create "lib/Darwin/x86_64/libPocoNet.a" "lib/Darwin/arm64/libPocoNet.a" -output "lib/libPocoNet.a"
 	
 Copy the header and library files.
 
-	cp -R ./_build_macos/include/Poco "${SRCROOT}/Headers"
-	cp lib/libPocoFoundation.a lib/libPocoZip.a lib/libPocoJSON.a lib/libPocoXML.a "${SRCROOT}/Libraries/macOS"
+	cp -R ./_build_macos_arm64/include/Poco "${SRCROOT}/Headers"
+	cp lib/libPocoFoundation.a lib/libPocoZip.a lib/libPocoJSON.a  lib/libPocoNet.a lib/libPocoXML.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================

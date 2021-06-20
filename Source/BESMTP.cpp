@@ -2,7 +2,7 @@
  BESMTP.cpp
  BaseElements Plug-In
  
- Copyright 2014-2019 Goya. All rights reserved.
+ Copyright 2014-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -87,9 +87,7 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 
 	// who we send this to
 	
-	BEValueListStringUniquePtr send_to = message->to_address();
-	send_to->append ( *(message->cc_addresses()) );
-	send_to->append ( *(message->bcc_addresses()) );
+	BEValueListStringUniquePtr send_to = message->recipients();
 	
 	struct curl_slist * recipients = NULL;
 	vector<string> addresses = send_to->get_values();

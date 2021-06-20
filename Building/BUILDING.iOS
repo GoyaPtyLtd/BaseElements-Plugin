@@ -59,30 +59,6 @@ Copy jansson.h and jansson_config.h from output/<platform>/include to the Header
 
 
 =======================================================================
-mimetic - 0.9.8
-=======================================================================
-
-Download the source from
-
-	http://www.codesink.org/mimetic_mime_library.html#download
-
-Edit the file mimetic/base64.h to replace the line
-
-                *out = NL; ++out;
-
-with
-
-				*out = CR; ++out;
-				*out = LF; ++out;
-
-Follow the supplied building instructions using this ./configure command (to build a universal binary)
-
-	./compile_for_ios.sh
-
-If necessary copy the directory containing the mimetic headers from the output/<platform>/include directory to the Headers directory.
-
-
-=======================================================================
 OpenSSL - 1.1.1j
 =======================================================================
 
@@ -200,18 +176,18 @@ Download the source from
 
 Then
 
-	cd poco-poco-1.10.1-release
-	./configure --config=iPhone-clang-libc++ --cflags="-miphoneos-version-min=13.2" --prefix="${$(pwd)}/_build_iphone" --no-sharedlibs --static --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util --no-tests --no-samples
+	cd poco-poco-1.10.1-all
+	./configure --config=iPhone-clang-libc++ --cflags="-miphoneos-version-min=13.2" --prefix="${$(pwd)}/_build_iphone" --no-sharedlibs --static --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util --no-tests --no-samples
 	make -s -j install
 	make distclean
-	./configure --config=iPhoneSimulator-clang-libc++ --prefix="${$(pwd)}/_build_iphone_simulator" --no-sharedlibs --static --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util --no-tests --no-samples
+	./configure --config=iPhoneSimulator-clang-libc++ --prefix="${$(pwd)}/_build_iphone_simulator" --no-sharedlibs --static --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util --no-tests --no-samples
 	make -s -j install
 
 Copy the libraries (and, if necessary, the headers) to the project directory
 
 	cp -R ./_build_iphone/include/Poco "${SRCROOT}/Headers"
-	cp ./_build_iphone/lib/libPocoFoundation.a ./_build_iphone/lib/libPocoXML.a ./_build_iphone/lib/libPocoZip.a ./_build_iphone/lib/libPocoJSON.a "${SRCROOT}/Libraries/iOS/iPhoneOS"
-	cp ./_build_iphone_simulator/lib/libPocoFoundation.a ./_build_iphone_simulator/lib/libPocoXML.a ./_build_iphone_simulator/lib/libPocoZip.a ./_build_iphone_simulator/lib/libPocoJSON.a "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator"
+	cp ./_build_iphone/lib/libPocoFoundation.a ./_build_iphone/lib/libPocoNet.a ./_build_iphone/lib/libPocoXML.a ./_build_iphone/lib/libPocoZip.a ./_build_iphone/lib/libPocoJSON.a "${SRCROOT}/Libraries/iOS/iPhoneOS"
+	cp ./_build_iphone_simulator/lib/libPocoFoundation.a ./_build_iphone_simulator/lib/libPocoNet.a ./_build_iphone_simulator/lib/libPocoXML.a ./_build_iphone_simulator/lib/libPocoZip.a ./_build_iphone_simulator/lib/libPocoJSON.a "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator"
 
 
 =======================================================================

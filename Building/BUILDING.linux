@@ -55,23 +55,6 @@ Then
 Copy jansson.h and jansson_config.h from build/include to the Headers directory and  _build_linux/lib/libjansson.a to Libraries/linux.
 
 
-=======================================================================
-mimetic - 0.9.8
-=======================================================================
-
-Download the source from
-
-	http://www.codesink.org/mimetic_mime_library.html#download
-
-Then
-
-	cd mimetic-0.9.8
-	CFLAGS=-fPIC ./configure --prefix=$(pwd)/_build_linux
-	make install
-
-Copy the directory containing the mimetic headers from the _build_linux/include directory to the Headers directory and copy the library in the _build_linux/lib directory to the Libraries/linux directory.
-
-
 ======================================================================
 zlib - 1.2.8
 =======================================================================
@@ -260,13 +243,12 @@ Download the source from
 Then
 
 	cd poco-master
-	./configure --cflags="-std=c++11 -fPIC" --static --no-tests --no-samples --prefix="$(pwd)/_build_linux" --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,Net,PDF,PageCompiler,Redis,Util
+	./configure --cflags="-std=c++11 -fPIC" --static --no-tests --no-samples --prefix="$(pwd)/_build_linux" --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util
 	make install
 
-Copy the libraries libPocoFoundation.a, libPocoJSON.a, libPocoXML.a & libPocoZip.a from _build_linux/lib to the Libraries/linux directory and copy the _build_linux/include/Poco to Headers.
 
 	cp -R _build_linux/include/Poco "${SRCROOT}/Headers"
-	cp _build_linux/lib/libPocoFoundation.a _build_linux/lib/libPocoZip.a _build_linux/lib/libPocoJSON.a "${SRCROOT}/Libraries/Linux"
+	cp _build_linux/lib/libPocoFoundation.a _build_linux/lib/libPocoNet.a _build_linux/lib/libPocoXML.a _build_linux/lib/libPocoZip.a _build_linux/lib/libPocoJSON.a "${SRCROOT}/Libraries/Linux"
 
 =======================================================================
 freetype - 2.10.4

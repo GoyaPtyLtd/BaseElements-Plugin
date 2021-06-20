@@ -20,7 +20,7 @@
 // this is the only place the version information is set
 // building the macOS version will automatically set the version information for win/linux
 
-#define	AUTO_UPDATE_VERSION "04019914"
+#define	AUTO_UPDATE_VERSION "04019915"
 #define VERSION_NUMBER_STRING "4.2.0" // e.g. 4.0.1
 #define VERSION_STRING "4.2.0b2"	// e.g. 4.0.1b2
 

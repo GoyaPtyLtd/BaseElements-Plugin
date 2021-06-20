@@ -2975,35 +2975,25 @@ fmx::errcode BE_SMTPSend ( short /* funcId */, const fmx::ExprEnv& /* environmen
 	try {
 
 		auto from = ParameterAsUTF8String ( parameters );
-		auto to = ParameterAsUTF8String ( parameters, 1 );
+		auto to = ParameterAsStringValueList ( parameters, 1, true, false );
 		auto subject = ParameterAsUTF8String ( parameters, 2 );
 		auto text = ParameterAsUTF8String ( parameters, 3 );
+		auto html = ParameterAsUTF8String ( parameters, 7 );
 
-		unique_ptr<BESMTPEmailMessage> message ( new BESMTPEmailMessage ( from, to, subject, text ) );
+		unique_ptr<BESMTPEmailMessage> message ( new BESMTPEmailMessage ( from, to, subject, text, html ) );
 
-		auto cc = ParameterAsUTF8String ( parameters, 4 );
+		auto cc = ParameterAsStringValueList ( parameters, 4, true, false );
 		message->set_cc_addresses ( cc );
 
-		auto bcc = ParameterAsUTF8String ( parameters, 5 );
+		auto bcc = ParameterAsStringValueList ( parameters, 5, true, false );
 		message->set_bcc_addresses ( bcc );
 
 		auto reply_to = ParameterAsUTF8String ( parameters, 6 );
 		message->set_reply_to ( reply_to );
 
-		auto html = ParameterAsUTF8String ( parameters, 7 );
-		message->set_html_alternative ( html );
-
-
-		auto attachments = ParameterAsWideString ( parameters, 8 );
-		vector<path> paths;
-		if ( !attachments.empty() ) {
-
-			boost::split ( paths, attachments, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
-
-			for ( auto const& attach_this : paths ) {
-				g_smtp_attachments.add ( attach_this.string() );
-			}
-
+		auto attachments = ParameterAsStringValueList ( parameters, 8, true, false );
+		for ( auto it = attachments->begin() ; it != attachments->end() ; it++ ) {
+			g_smtp_attachments.add ( *it );
 		}
 		message->set_attachments ( g_smtp_attachments.get_file_list() );
 

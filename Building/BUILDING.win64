@@ -81,42 +81,6 @@ Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win
 
 
 =======================================================================
-mimetic - 0.9.8
-=======================================================================
-
-Download the source from
-
-	http://www.codesink.org/mimetic_mime_library.html#download
-	
-Edit the file mimetic/base64.h to replace the line
-
-                *out = NL; ++out;
-
-with
-
-				*out = CR; ++out;
-				*out = LF; ++out;
-
-In
-
-	Configuration Properties -> General -> Project Defaults
-
-for MTDebug & MTRelease set
-
-	Character Set = Use Unicode Character Set
-
-To create 64-bit configurations go to:
-
-Build -> Configuration Manager -> Active Solution Platform: -> <New>
-	-	Type or select the new platform: -> x64
-	-	Copy Settings from Win32
-
-Then build the MTRelease x64 configuration.
-
-Copy the directory containing the mimetic headers from the build/include directory to the Headers directory and copy the libraries libmimetic_d.lib & libmimetic.lib from the win32\win64 to Libraries\win64.
-
-
-=======================================================================
 OpenSSL - 1.1.1
 =======================================================================
 
@@ -410,9 +374,9 @@ Then, after extracting the archive set
 
 	Configuration Properties -> General -> Project Defaults -> Character Set = Use Unicode Character Set
 
-Then build the Zip, Util, JSON and Foundation MT Release and Debug libraries using the projects in the respective directories.
+Then build the Zip, Util, Net, JSON and Foundation MT Release and Debug libraries using the projects in the respective directories.
 
-Copy PocoFoundationmt.lib/PocoFoundationmtd.lib, libPocoJSON.a/libPocoJSONd.a, PocoXMLmt.lib/PocoXMLmtd.lib & PocoZipmt.lib/PocoZipmtd.lib libraries from the lib and lib64 driectories into the Libraries/win32 and Libraries/win64 directory and copy the include/Poco directory to Headers.
+Copy PocoFoundationmt.lib/PocoFoundationmtd.lib, libPocoJSON.a/libPocoJSONd.a, libPocoNet.a/libPocoNetd.a, PocoXMLmt.lib/PocoXMLmtd.lib & PocoZipmt.lib/PocoZipmtd.lib libraries from the lib and lib64 driectories into the Libraries/win32 and Libraries/win64 directory and copy the include/Poco directory to Headers.
 
 
 =======================================================================
