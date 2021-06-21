@@ -51,7 +51,7 @@
 			<Add library="../Libraries/linux/libboost_regex.a" />
 			<Add library="../Libraries/linux/libboost_thread.a" />
 			<Add library="../Libraries/linux/libcurl.a" />
-			<Add library="../Libraries/linux/libmimetic.a" />
+			<Add library="../Libraries/linux/libPocoNet.a" />
 			<Add library="../Libraries/linux/libcrypto.a" />
 			<Add library="../Libraries/linux/libssl.a" />
 			<Add library="../Libraries/linux/libssh2.a" />
@@ -141,7 +141,6 @@
 		<Unit filename="../Source/Crypto/BEX509.cpp" />
 		<Unit filename="../Source/Images/BEImage.cpp" />
 		<Unit filename="../Source/Images/BEJPEG.cpp" />
-		<Unit filename="../Source/Net/BEMimeticMIMEEntity.cpp" />
 		<Unit filename="../Source/Net/BEMimeticMIMEEntity.h" />
 		<Unit filename="../Source/duktape/duktape.c">
 			<Option compilerVar="CC" />
@@ -151,6 +150,8 @@
 		<Unit filename="../Source/linux/BELinuxFunctions.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
+			<code_completion />
+			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

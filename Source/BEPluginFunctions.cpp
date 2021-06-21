@@ -822,6 +822,49 @@ fmx::errcode BE_FilePatternCount ( short /* funcId */, const ExprEnv& /* environ
 } // BE_FilePatternCount
 
 
+fmx::errcode BE_FileReplaceText ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto text = ParameterPathOrContainerAsUTF8 ( parameters );
+		auto expression = ParameterAsUTF8String ( parameters, 1 );
+		auto replace_with = ParameterAsUTF8String ( parameters, 2 );
+		auto options = ParameterAsUTF8String ( parameters, 3, "gi" );
+
+		auto altered_text = regular_expression ( text, expression, options, replace_with, true );
+
+		auto is_container = BinaryDataAvailable ( parameters );
+		if ( is_container ) {
+
+			SetResult ( altered_text, results );
+
+		} else {
+
+			const std::vector<char> out_to_file ( altered_text.begin(), altered_text.end() );
+			auto path = ParameterAsPath ( parameters );
+			error = write_to_file ( path, out_to_file, ios_base::trunc );
+//			SetResult ( error, results );
+
+		}
+		
+
+	} catch ( filesystem_error& e ) {
+		error = e.code().value();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_FileReplaceText
+
+
 fmx::errcode BE_FileMove ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
