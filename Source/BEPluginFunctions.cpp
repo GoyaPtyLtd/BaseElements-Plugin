@@ -835,7 +835,6 @@ fmx::errcode BE_FileReplaceText ( short /* funcId */, const fmx::ExprEnv& /* env
 
 		auto altered_text = regular_expression ( text, expression, options, replace_with, true );
 
-		auto path = ParameterAsPath ( parameters );
 		const std::vector<char> out_to_file ( altered_text.begin(), altered_text.end() );
 
 		auto is_container = BinaryDataAvailable ( parameters );
@@ -843,10 +842,12 @@ fmx::errcode BE_FileReplaceText ( short /* funcId */, const fmx::ExprEnv& /* env
 
 			const BinaryDataUniquePtr binary_data ( parameters.AtAsBinaryData(0) );
 			unique_ptr<BEQuadChar> data_type ( new BEQuadChar ( *binary_data, PreferredContainerType ( *binary_data ) ) );
-			SetResult ( path.filename().string(), out_to_file, data_type->as_string(), results );
+			auto file_name = ParameterFileName ( parameters );
+			SetResult ( file_name, out_to_file, data_type->as_string(), results );
 
 		} else {
 
+			auto path = ParameterAsPath ( parameters );
 			error = write_to_file ( path, out_to_file, ios_base::trunc );
 //			SetResult ( error, results );
 
