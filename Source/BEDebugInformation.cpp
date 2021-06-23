@@ -114,7 +114,7 @@ const string debug_information ( const ExprEnv& environment ) {
 
 	Poco::JSON::Object::Ptr smtp_attachments = new Poco::JSON::Object();
 	for ( auto const &attachment : g_smtp_attachments.get_file_list() ) {
-		smtp_attachments->set ( attachment.second, attachment.first );
+		smtp_attachments->set ( attachment.first.string(), attachment.second );
 	}
 	curl_information->set ( "SMTP Attachments", smtp_attachments );
 
