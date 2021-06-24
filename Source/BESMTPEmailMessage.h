@@ -21,7 +21,10 @@
 #include <string>
 #include <vector>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
 #include <Poco/Net/MailMessage.h>
+#pragma GCC diagnostic pop
 
 
 class BESMTPEmailMessage {
