@@ -2,7 +2,7 @@
 Version 4.2b2
 ########################################################################
 
-June 21, 2021
+June 24, 2021
 
 
 New Functions
@@ -107,6 +107,7 @@ Removed support for Centos
 
 boost libraries updated to 1.75_0 from 1.70_0
 duktape updated from 2.3.0 to 2.6.0
+FMWrapper updated to 19.3.1.43
 Fontconfig library updated from 2.12.1 to 2.13.1
 Freetype library updated from 2.7 to 2.10.4
 libcurl updated from 7.48.0 to 7.75.0
