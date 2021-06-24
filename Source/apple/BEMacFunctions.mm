@@ -351,8 +351,9 @@ const bool OpenURL ( std::wstring& url )
 
 
 const bool OpenFile ( std::wstring& path )
-{	
-	return [[NSWorkspace sharedWorkspace] openFile: NSStringFromWString ( path ) ];
+{
+	auto url = L"file://" + path;
+	return OpenURL ( url );
 }
 
 
