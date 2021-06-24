@@ -190,6 +190,81 @@
 		4DE1231525E89F3F00518D6D /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A251F207AE70036B751 /* libssh2.a */; };
 		4DE1233E25E8A58900518D6D /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A181F207AE70036B751 /* libcrypto.a */; };
 		4DE1234525E8A5B200518D6D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A261F207AE70036B751 /* libssl.a */; };
+		4DE2FD032682C5160091A9AD /* BE_Plugin_Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4DE2FD022682C5160091A9AD /* BE_Plugin_Tests.mm */; };
+		4DE2FD082682C5360091A9AD /* BESMTPEmailMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */; };
+		4DE2FD092682C5470091A9AD /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
+		4DE2FD0A2682C57E0091A9AD /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
+		4DE2FD0B2682C5D10091A9AD /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		4DE2FD0C2682C5D10091A9AD /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */; };
+		4DE2FD0D2682C5D10091A9AD /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */; };
+		4DE2FD0E2682C5D10091A9AD /* libboost_program_options.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D33C6C3229BC90200CEA53F /* libboost_program_options.a */; };
+		4DE2FD0F2682C5D10091A9AD /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FF1F271C0B00D78042 /* libboost_regex.a */; };
+		4DE2FD102682C5D10091A9AD /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F4011F271C0B00D78042 /* libboost_thread.a */; };
+		4DE2FD112682C5D10091A9AD /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1C25DB76BA0000017C /* libcharset.a */; };
+		4DE2FD122682C5D10091A9AD /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3EA1F271B1F00D78042 /* libcrypto.a */; };
+		4DE2FD132682C5D10091A9AD /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40A1F271C3B00D78042 /* libcurl.a */; };
+		4DE2FD142682C5D10091A9AD /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3EC1F271B5100D78042 /* libexslt.a */; };
+		4DE2FD152682C5D10091A9AD /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624391E0A37F600266C0D /* libfontconfig.a */; };
+		4DE2FD162682C5D10091A9AD /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243A1E0A37F600266C0D /* libfreetype.a */; };
+		4DE2FD172682C5D10091A9AD /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1B25DB76BA0000017C /* libiconv.a */; };
+		4DE2FD182682C5D10091A9AD /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
+		4DE2FD192682C5D10091A9AD /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD32230D803007632BA /* libPocoFoundation.a */; };
+		4DE2FD1A2682C5D10091A9AD /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD22230D803007632BA /* libPocoJSON.a */; };
+		4DE2FD1B2682C5D10091A9AD /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0BBAE3267AC1D60021DA56 /* libPocoNet.a */; };
+		4DE2FD1C2682C5D10091A9AD /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA6DF9026085A5700B7DCC5 /* libPocoXML.a */; };
+		4DE2FD1D2682C5D10091A9AD /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD12230D803007632BA /* libPocoZip.a */; };
+		4DE2FD1E2682C5D10091A9AD /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243B1E0A37F600266C0D /* libpodofo.a */; };
+		4DE2FD1F2682C5D10091A9AD /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40C1F271C5400D78042 /* libssh2.a */; };
+		4DE2FD202682C5D10091A9AD /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3E81F271B0C00D78042 /* libssl.a */; };
+		4DE2FD212682C5D10091A9AD /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40E1F271C6F00D78042 /* libturbojpeg.a */; };
+		4DE2FD222682C5D10091A9AD /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3F01F271B8E00D78042 /* libxml2.a */; };
+		4DE2FD232682C5D10091A9AD /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3EE1F271B6300D78042 /* libxslt.a */; };
+		4DE2FD2B2682C5D10091A9AD /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE2FD272682C5D10091A9AD /* libjpeg.a */; };
+		4DE2FD2C2682C6510091A9AD /* BECurlOption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */; };
+		4DE2FD2D2682C69D0091A9AD /* BEPluginUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */; };
+		4DE2FD2E2682C6BB0091A9AD /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
+		4DE2FD2F2682C6CE0091A9AD /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
+		4DE2FD312682C6E90091A9AD /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
+		4DE2FD322682C6EC0091A9AD /* ProgressDialogWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */; };
+		4DE2FD332682C6F00091A9AD /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
+		4DE2FD342682C6F50091A9AD /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
+		4DE2FD352682C6FE0091A9AD /* BEPluginFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */; };
+		4DE2FD362682C7020091A9AD /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
+		4DE2FD372682C7050091A9AD /* BEFileMakerPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */; };
+		4DE2FD382682C70B0091A9AD /* BEXSLT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */; };
+		4DE2FD392682C7100091A9AD /* BEZlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DC182C9144CEC0900E27CAA /* BEZlib.cpp */; };
+		4DE2FD3A2682C7180091A9AD /* BEFileTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D35117A17E1314A00AEDF01 /* BEFileTextReader.cpp */; };
+		4DE2FD3B2682C71E0091A9AD /* BEXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */; };
+		4DE2FD3C2682C7220091A9AD /* BEXMLTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */; };
+		4DE2FD3D2682C7250091A9AD /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
+		4DE2FD3E2682C7280091A9AD /* BEXMLReaderInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */; };
+		4DE2FD3F2682C72C0091A9AD /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
+		4DE2FD402682C7300091A9AD /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
+		4DE2FD412682C7340091A9AD /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
+		4DE2FD422682C73A0091A9AD /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
+		4DE2FD432682C7400091A9AD /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
+		4DE2FD442682C7440091A9AD /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
+		4DE2FD452682C7470091A9AD /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
+		4DE2FD462682C74C0091A9AD /* BEXMLSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */; };
+		4DE2FD472682C74F0091A9AD /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
+		4DE2FD482682C7530091A9AD /* BEPDF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D75899126324E15009D6E93 /* BEPDF.cpp */; };
+		4DE2FD492682C85B0091A9AD /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C918DA773900DFC47A /* BEBase64.cpp */; };
+		4DE2FD4A2682C85E0091A9AD /* BEOpenSSLAES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */; };
+		4DE2FD4B2682C8620091A9AD /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
+		4DE2FD4C2682C8640091A9AD /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
+		4DE2FD4D2682C8680091A9AD /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
+		4DE2FD4E2682C86B0091A9AD /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
+		4DE2FD4F2682C8730091A9AD /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
+		4DE2FD502682C88A0091A9AD /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
+		4DE2FD522682C9080091A9AD /* LDAP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE2FD512682C9080091A9AD /* LDAP.framework */; };
+		4DE2FD532682CD4E0091A9AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
+		4DE2FD542682CD560091A9AD /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D79CA9B26312C660024B789 /* DiskArbitration.framework */; };
+		4DE2FD552682CD770091A9AD /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
+		4DE2FD562682CD820091A9AD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
+		4DE2FD572682CDE30091A9AD /* FMWrapper.framework in Resources */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
+		4DE2FD582682CDF80091A9AD /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
+		4DE2FD592682CE0C0091A9AD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
+		4DE2FD5A2682CE0C0091A9AD /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5E11E9308B0047A453 /* Info.plist */; };
 		4DFA0D6C222E3211006EF9FB /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D69222E3211006EF9FB /* libPocoZip.a */; };
 		4DFA0D6D222E3211006EF9FB /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */; };
 		4DFA0D6E222E3211006EF9FB /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */; };
@@ -362,6 +437,14 @@
 		4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXSLT.cpp; path = ../Source/BEXSLT.cpp; sourceTree = "<group>"; };
 		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
 		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
+		4DE2FD002682C5160091A9AD /* BE_Plugin_Tests.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BE_Plugin_Tests.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DE2FD022682C5160091A9AD /* BE_Plugin_Tests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BE_Plugin_Tests.mm; sourceTree = "<group>"; };
+		4DE2FD042682C5160091A9AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4DE2FD242682C5D10091A9AD /* libxerces-c.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libxerces-c.a"; path = "../Libraries/macOS/libxerces-c.a"; sourceTree = "<group>"; };
+		4DE2FD252682C5D10091A9AD /* libgpg-error.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgpg-error.a"; path = "../Libraries/macOS/libgpg-error.a"; sourceTree = "<group>"; };
+		4DE2FD262682C5D10091A9AD /* libgcrypt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgcrypt.a; path = ../Libraries/macOS/libgcrypt.a; sourceTree = "<group>"; };
+		4DE2FD272682C5D10091A9AD /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../Libraries/macOS/libjpeg.a; sourceTree = "<group>"; };
+		4DE2FD512682C9080091A9AD /* LDAP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LDAP.framework; path = System/Library/Frameworks/LDAP.framework; sourceTree = SDKROOT; };
 		4DFA0D69222E3211006EF9FB /* libPocoZip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZip.a; path = ../Libraries/iOS/iPhoneOS/libPocoZip.a; sourceTree = "<group>"; };
 		4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = ../Libraries/iOS/iPhoneOS/libPocoFoundation.a; sourceTree = "<group>"; };
 		4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoJSON.a; path = ../Libraries/iOS/iPhoneOS/libPocoJSON.a; sourceTree = "<group>"; };
@@ -488,6 +571,44 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4DE2FCFD2682C5160091A9AD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DE2FD562682CD820091A9AD /* libz.tbd in Frameworks */,
+				4DE2FD552682CD770091A9AD /* libexpat.tbd in Frameworks */,
+				4DE2FD542682CD560091A9AD /* DiskArbitration.framework in Frameworks */,
+				4DE2FD532682CD4E0091A9AD /* Cocoa.framework in Frameworks */,
+				4DE2FD522682C9080091A9AD /* LDAP.framework in Frameworks */,
+				4DE2FD2B2682C5D10091A9AD /* libjpeg.a in Frameworks */,
+				4DE2FD0B2682C5D10091A9AD /* FMWrapper.framework in Frameworks */,
+				4DE2FD0C2682C5D10091A9AD /* libboost_date_time.a in Frameworks */,
+				4DE2FD0D2682C5D10091A9AD /* libboost_filesystem.a in Frameworks */,
+				4DE2FD0E2682C5D10091A9AD /* libboost_program_options.a in Frameworks */,
+				4DE2FD0F2682C5D10091A9AD /* libboost_regex.a in Frameworks */,
+				4DE2FD102682C5D10091A9AD /* libboost_thread.a in Frameworks */,
+				4DE2FD112682C5D10091A9AD /* libcharset.a in Frameworks */,
+				4DE2FD122682C5D10091A9AD /* libcrypto.a in Frameworks */,
+				4DE2FD132682C5D10091A9AD /* libcurl.a in Frameworks */,
+				4DE2FD142682C5D10091A9AD /* libexslt.a in Frameworks */,
+				4DE2FD152682C5D10091A9AD /* libfontconfig.a in Frameworks */,
+				4DE2FD162682C5D10091A9AD /* libfreetype.a in Frameworks */,
+				4DE2FD172682C5D10091A9AD /* libiconv.a in Frameworks */,
+				4DE2FD182682C5D10091A9AD /* libjansson.a in Frameworks */,
+				4DE2FD192682C5D10091A9AD /* libPocoFoundation.a in Frameworks */,
+				4DE2FD1A2682C5D10091A9AD /* libPocoJSON.a in Frameworks */,
+				4DE2FD1B2682C5D10091A9AD /* libPocoNet.a in Frameworks */,
+				4DE2FD1C2682C5D10091A9AD /* libPocoXML.a in Frameworks */,
+				4DE2FD1D2682C5D10091A9AD /* libPocoZip.a in Frameworks */,
+				4DE2FD1E2682C5D10091A9AD /* libpodofo.a in Frameworks */,
+				4DE2FD1F2682C5D10091A9AD /* libssh2.a in Frameworks */,
+				4DE2FD202682C5D10091A9AD /* libssl.a in Frameworks */,
+				4DE2FD212682C5D10091A9AD /* libturbojpeg.a in Frameworks */,
+				4DE2FD222682C5D10091A9AD /* libxml2.a in Frameworks */,
+				4DE2FD232682C5D10091A9AD /* libxslt.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -581,6 +702,15 @@
 			name = apple;
 			sourceTree = "<group>";
 		};
+		4DE2FD012682C5160091A9AD /* BE_Plugin_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				4DE2FD022682C5160091A9AD /* BE_Plugin_Tests.mm */,
+				4DE2FD042682C5160091A9AD /* Info.plist */,
+			);
+			path = BE_Plugin_Tests;
+			sourceTree = "<group>";
+		};
 		C7DEDEE707E10BF3002283F3 = {
 			isa = PBXGroup;
 			children = (
@@ -589,10 +719,12 @@
 				C7DEDEFC07E10BF3002283F3 /* Resources */,
 				4D9EEE5D118A8C9600EC9352 /* Libraries */,
 				4D3629EA1F20789A0036B751 /* BaseElementsIOS */,
+				4DE2FD012682C5160091A9AD /* BE_Plugin_Tests */,
 				C7DEDF1507E10BF4002283F3 /* Frameworks */,
 				4DCD49841A195B0C00EFCF7F /* BaseElements.fmplugin */,
 				4D3629E91F20789A0036B751 /* BaseElementsIOS.fmplugin */,
 				4D362AA61F2085880036B751 /* BaseElementsIOSSimulator.fmplugin */,
+				4DE2FD002682C5160091A9AD /* BE_Plugin_Tests.fmplugin */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 1;
@@ -670,6 +802,11 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4DE2FD512682C9080091A9AD /* LDAP.framework */,
+				4DE2FD262682C5D10091A9AD /* libgcrypt.a */,
+				4DE2FD252682C5D10091A9AD /* libgpg-error.a */,
+				4DE2FD272682C5D10091A9AD /* libjpeg.a */,
+				4DE2FD242682C5D10091A9AD /* libxerces-c.a */,
 				4D0BBAE3267AC1D60021DA56 /* libPocoNet.a */,
 				4D4148FF267C5D8600C726DC /* libPocoNet.a */,
 				4D414901267C5DC500C726DC /* libPocoNet.a */,
@@ -809,12 +946,30 @@
 			productReference = 4DCD49841A195B0C00EFCF7F /* BaseElements.fmplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
+		4DE2FCFF2682C5160091A9AD /* BE_Plugin_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DE2FD052682C5160091A9AD /* Build configuration list for PBXNativeTarget "BE_Plugin_Tests" */;
+			buildPhases = (
+				4DE2FCFC2682C5160091A9AD /* Sources */,
+				4DE2FCFD2682C5160091A9AD /* Frameworks */,
+				4DE2FCFE2682C5160091A9AD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BE_Plugin_Tests;
+			productName = BE_Plugin_Tests;
+			productReference = 4DE2FD002682C5160091A9AD /* BE_Plugin_Tests.fmplugin */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		C7DEDEEB07E10BF3002283F3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Goya;
 				TargetAttributes = {
@@ -824,6 +979,9 @@
 					};
 					4D362A5C1F2085880036B751 = {
 						ProvisioningStyle = Automatic;
+					};
+					4DE2FCFF2682C5160091A9AD = {
+						CreatedOnToolsVersion = 12.5.1;
 					};
 				};
 			};
@@ -843,6 +1001,7 @@
 				4DCD49441A195B0C00EFCF7F /* macOS */,
 				4D3629E81F20789A0036B751 /* iOS */,
 				4D362A5C1F2085880036B751 /* iOSSimulator */,
+				4DE2FCFF2682C5160091A9AD /* BE_Plugin_Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -870,6 +1029,17 @@
 			files = (
 				4D25BF971F3A8C580083345B /* Localizable.strings in Resources */,
 				4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DE2FCFE2682C5160091A9AD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DE2FD592682CE0C0091A9AD /* Localizable.strings in Resources */,
+				4DE2FD5A2682CE0C0091A9AD /* Info.plist in Resources */,
+				4DE2FD582682CDF80091A9AD /* BEProgressDialog.xib in Resources */,
+				4DE2FD572682CDE30091A9AD /* FMWrapper.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1068,6 +1238,53 @@
 				4D8265E41E70D13D00257462 /* BEXMLSchema.cpp in Sources */,
 				4DCD49651A195B0C00EFCF7F /* BESMTPEmailMessage.cpp in Sources */,
 				4DCD49661A195B0C00EFCF7F /* BEBase64.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DE2FCFC2682C5160091A9AD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DE2FD3D2682C7250091A9AD /* BEXMLTextWriter.cpp in Sources */,
+				4DE2FD3F2682C72C0091A9AD /* BETime.cpp in Sources */,
+				4DE2FD362682C7020091A9AD /* BEPlugin.cpp in Sources */,
+				4DE2FD3C2682C7220091A9AD /* BEXMLTextReader.cpp in Sources */,
+				4DE2FD4C2682C8640091A9AD /* BEMessageDigest.cpp in Sources */,
+				4DE2FD092682C5470091A9AD /* BECurl.cpp in Sources */,
+				4DE2FD492682C85B0091A9AD /* BEBase64.cpp in Sources */,
+				4DE2FD352682C6FE0091A9AD /* BEPluginFunctions.cpp in Sources */,
+				4DE2FD392682C7100091A9AD /* BEZlib.cpp in Sources */,
+				4DE2FD322682C6EC0091A9AD /* ProgressDialogWindowController.m in Sources */,
+				4DE2FD402682C7300091A9AD /* BEJSON.cpp in Sources */,
+				4DE2FD0A2682C57E0091A9AD /* BESMTPContainerAttachments.cpp in Sources */,
+				4DE2FD4D2682C8680091A9AD /* BEX509.cpp in Sources */,
+				4DE2FD2D2682C69D0091A9AD /* BEPluginUtilities.cpp in Sources */,
+				4DE2FD482682C7530091A9AD /* BEPDF.cpp in Sources */,
+				4DE2FD032682C5160091A9AD /* BE_Plugin_Tests.mm in Sources */,
+				4DE2FD2E2682C6BB0091A9AD /* BEFileSystem.cpp in Sources */,
+				4DE2FD4E2682C86B0091A9AD /* BEBio.cpp in Sources */,
+				4DE2FD342682C6F50091A9AD /* BESystemCommand.cpp in Sources */,
+				4DE2FD3E2682C7280091A9AD /* BEXMLReaderInterface.cpp in Sources */,
+				4DE2FD4A2682C85E0091A9AD /* BEOpenSSLAES.cpp in Sources */,
+				4DE2FD3B2682C71E0091A9AD /* BEXMLReader.cpp in Sources */,
+				4DE2FD412682C7340091A9AD /* BECppUtilities.cpp in Sources */,
+				4DE2FD432682C7400091A9AD /* BEImage.cpp in Sources */,
+				4DE2FD312682C6E90091A9AD /* BEMacFunctions.mm in Sources */,
+				4DE2FD082682C5360091A9AD /* BESMTPEmailMessage.cpp in Sources */,
+				4DE2FD3A2682C7180091A9AD /* BEFileTextReader.cpp in Sources */,
+				4DE2FD372682C7050091A9AD /* BEFileMakerPlugin.cpp in Sources */,
+				4DE2FD2F2682C6CE0091A9AD /* BESMTP.cpp in Sources */,
+				4DE2FD462682C74C0091A9AD /* BEXMLSchema.cpp in Sources */,
+				4DE2FD382682C70B0091A9AD /* BEXSLT.cpp in Sources */,
+				4DE2FD4F2682C8730091A9AD /* duktape.c in Sources */,
+				4DE2FD2C2682C6510091A9AD /* BECurlOption.cpp in Sources */,
+				4DE2FD4B2682C8620091A9AD /* BEOpenSSLRSA.cpp in Sources */,
+				4DE2FD472682C74F0091A9AD /* BEDebugInformation.cpp in Sources */,
+				4DE2FD442682C7440091A9AD /* BEJPEG.cpp in Sources */,
+				4DE2FD502682C88A0091A9AD /* BEAppleFunctionsCommon.mm in Sources */,
+				4DE2FD452682C7470091A9AD /* BEQuadChar.cpp in Sources */,
+				4DE2FD422682C73A0091A9AD /* BEJavaScript.cpp in Sources */,
+				4DE2FD332682C6F00091A9AD /* BESQLCommand.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1428,6 +1645,95 @@
 			};
 			name = Debug;
 		};
+		4DE2FD062682C5160091A9AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = GUZF844KMZ;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = BE_Plugin_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.BE-Plugin-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		4DE2FD072682C5160091A9AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = GUZF844KMZ;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = BE_Plugin_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.BE-Plugin-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
 		6FD50588097C3165009399BF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1470,6 +1776,7 @@
 				GCC_MODEL_TUNING = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1583,6 +1890,7 @@
 				GCC_MODEL_TUNING = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1681,6 +1989,15 @@
 			buildConfigurations = (
 				4DCD49821A195B0C00EFCF7F /* Release */,
 				4DCD49831A195B0C00EFCF7F /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4DE2FD052682C5160091A9AD /* Build configuration list for PBXNativeTarget "BE_Plugin_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4DE2FD062682C5160091A9AD /* Release */,
+				4DE2FD072682C5160091A9AD /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

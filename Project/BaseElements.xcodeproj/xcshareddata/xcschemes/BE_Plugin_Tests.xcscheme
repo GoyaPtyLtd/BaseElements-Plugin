@@ -9,23 +9,9 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4DCD49441A195B0C00EFCF7F"
-               BuildableName = "BaseElements.fmplugin"
-               BlueprintName = "macOS"
-               ReferencedContainer = "container:BaseElements.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4DE2FCFF2682C5160091A9AD"
@@ -42,7 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       enableAddressSanitizer = "YES"
-      enableASanStackUseAfterReturn = "YES"
       enableUBSanitizer = "YES"
       codeCoverageEnabled = "YES">
       <AdditionalOptions>
@@ -77,17 +62,15 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       enableAddressSanitizer = "YES"
+      enableASanStackUseAfterReturn = "YES"
       enableUBSanitizer = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
+      enableGPUShaderValidationMode = "2"
       allowLocationSimulation = "YES">
-      <PathRunnable
-         runnableDebuggingMode = "0"
-         FilePath = "/Applications/FileMaker Pro.app">
-      </PathRunnable>
       <AdditionalOptions>
          <AdditionalOption
             key = "NSZombieEnabled"
@@ -110,9 +93,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4DCD49441A195B0C00EFCF7F"
-            BuildableName = "BaseElements.fmplugin"
-            BlueprintName = "macOS"
+            BlueprintIdentifier = "4DE2FCFF2682C5160091A9AD"
+            BuildableName = "BE_Plugin_Tests.fmplugin"
+            BlueprintName = "BE_Plugin_Tests"
             ReferencedContainer = "container:BaseElements.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
