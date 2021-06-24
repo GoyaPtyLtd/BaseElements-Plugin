@@ -34,7 +34,6 @@ public:
 	const std::string from_address() { return message.getSender(); };
 	BEValueListStringUniquePtr recipients();
 	
-	void set_addresses ( const Poco::Net::MailRecipient::RecipientType recipient_type, const BEValueListStringSharedPtr email_addresses );
 	void set_cc_addresses ( const BEValueListStringSharedPtr email_addresses );
 	void set_bcc_addresses ( const BEValueListStringSharedPtr email_addresses );
 	void set_reply_to ( const std::string& reply_to_address );
@@ -46,6 +45,8 @@ public:
 protected:
 
 	Poco::Net::MailMessage message;
+
+	void set_addresses ( const Poco::Net::MailRecipient::RecipientType recipient_type, const BEValueListStringSharedPtr email_addresses );
 
 };
 

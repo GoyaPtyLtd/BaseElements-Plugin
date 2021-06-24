@@ -42,9 +42,11 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const BEValueL
 	message.setSubject ( Poco::Net::MailMessage::encodeWord ( subject, UTF8 ) );
 
 	auto text = message_body;
+	boost::replace_all ( text, LINE_FEED, FILEMAKER_END_OF_LINE );
 	boost::replace_all ( text, FILEMAKER_END_OF_LINE, NETWORK_ENDL );
-	
+
 	auto html = html_alternative;
+	boost::replace_all ( html, LINE_FEED, FILEMAKER_END_OF_LINE );
 	boost::replace_all ( html, FILEMAKER_END_OF_LINE, NETWORK_ENDL );
 
 	auto charset = Poco::Net::MailMessage::encodeWord ( "charset=\"utf-8\"" );
@@ -60,13 +62,11 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const BEValueL
 
 	} else if ( !text.empty() && html_alternative.empty() ) {
 		
-		message.setContentType ( type_text );
-		message.setContent ( text );
-		
+		message.addPart ( "TEXT", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+
 	} else if ( text.empty() && !html_alternative.empty() ) {
 
-		message.setContentType ( type_html );
-		message.setContent ( html_alternative );
+		message.addPart ( "HTML", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
 
 	}
 
@@ -100,8 +100,8 @@ BEValueListStringUniquePtr BESMTPEmailMessage::recipients()
 
 	auto send_to = message.recipients();
 	
-	for ( auto it = send_to.begin() ; it != send_to.end() ; it++ ) {
-		auto recipient = *it;
+	
+	for ( auto const& recipient : send_to ) {
 		addresses_list->append ( recipient.getAddress() );
 	}
 	
@@ -115,8 +115,8 @@ BEValueListStringUniquePtr BESMTPEmailMessage::recipients()
 void BESMTPEmailMessage::set_addresses ( const Poco::Net::MailRecipient::RecipientType recipient_type, const BEValueListStringSharedPtr email_addresses )
 {
 
-	for ( auto it = email_addresses->begin() ; it != email_addresses->end() ; it++ ) {
-		message.addRecipient ( Poco::Net::MailRecipient ( recipient_type, *it ) );
+	for ( auto const& recipient : *email_addresses ) {
+		message.addRecipient ( Poco::Net::MailRecipient ( recipient_type, recipient ) );
 	}
 	
 } // set_addresses
