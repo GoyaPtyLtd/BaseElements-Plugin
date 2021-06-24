@@ -787,10 +787,15 @@ void BECurl::perform ( )
 }	//	easy_perform
 
 
-void BECurl::easy_setopt ( CURLoption option, ... )
+void BECurl::easy_setopt ( const CURLoption option, ... )
 {
 	va_list curl_parameter;
-	va_start ( curl_parameter, option );
+	
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wvarargs"
+		va_start ( curl_parameter, option );
+	#pragma GCC diagnostic pop
+
 	error = curl_easy_setopt ( curl, option, va_arg ( curl_parameter, void * ) );
 	va_end ( curl_parameter );
 	if ( error ) {

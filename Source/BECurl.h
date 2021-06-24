@@ -143,7 +143,7 @@ protected:
 	void prepare_file_upload ( );
 	void perform ( );
 
-	void easy_setopt ( CURLoption option, ... );
+	void easy_setopt ( const CURLoption option, ... );
 	void configure_progress_dialog ( );
 	
 	std::string http_method_as_string ( );
