@@ -1528,7 +1528,7 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 
 	return MapError ( error );
 
-} // BE_JSON_ArraySize_Deprecated
+} // BE_JSON_ArraySize
 
 
 #pragma mark -
