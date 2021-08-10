@@ -129,21 +129,27 @@ const fmx::errcode write_to_file ( const path& new_file, const vector<char>& con
 
 		const ios_base::openmode mode = ios_base::out | flags;
 		boost::filesystem::ofstream output_file ( new_file, mode );
-		output_file.exceptions ( boost::filesystem::ofstream::failbit | boost::filesystem::ofstream::badbit );
+		if ( output_file ) {
 
-		if ( !contents.empty() ) {
-			output_file.write ( &contents.front(), contents.size() );
+            output_file.exceptions ( output_file.failbit | output_file.badbit );
+
+            if ( !contents.empty() ) {
+                output_file.write ( &contents.front(), contents.size() );
+            } else {
+                output_file.flush();
+            }
+
+            output_file.close();
+
 		} else {
-			output_file.flush();
-		}
+            error = errno;
+        }
 
-		output_file.close();
-
-	} catch ( boost::filesystem::ofstream::failure& /* e */ ) {
+	} catch ( const boost::filesystem::ofstream::failure& /* e */ ) {
 		error = errno; // cannot write to the file
-	} catch ( boost::filesystem::filesystem_error& e ) {
+	} catch ( const boost::filesystem::filesystem_error& e ) {
 		error = e.code().value();
-	}
+    }
 
 	return error;
 
@@ -153,16 +159,16 @@ const fmx::errcode write_to_file ( const path& new_file, const vector<char>& con
 const uintmax_t file_or_directory_size ( const boost::filesystem::path& path )
 {
 	uintmax_t size = 0;
-	
+
 	BEValueListWideStringUniquePtr list_of_files ( new BEValueList<wstring> );
-	
+
 	if ( boost::filesystem::is_directory ( path ) ) {
 		auto directory_listing ( list_files_in_directory ( path, kBE_FileTypeFile, true ) );
 		list_of_files->append ( *directory_listing );
 	} else {
 		list_of_files->append ( path.wstring() );
 	}
-	
+
 	for ( size_t i = 0 ;  i < list_of_files->size() ; ++i ) {
 
 		boost::filesystem::path file = list_of_files->at ( i );
@@ -173,19 +179,19 @@ const uintmax_t file_or_directory_size ( const boost::filesystem::path& path )
 		if ( ! boost::filesystem::is_symlink ( file ) ) { // boost follows ze aliases
 			size += file_size ( file );
 		} else {
-			
+
 			struct stat file_status;
 
 			if ( lstat ( file.c_str(), &file_status ) == 0 ) {
 				size += file_status.st_size;
 			}
-			
+
 		}
 #endif
-		
+
 	}
 
 	return size;
-	
+
 } // file_or_directory_size
 
