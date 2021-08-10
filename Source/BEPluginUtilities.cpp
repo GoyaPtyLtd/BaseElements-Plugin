@@ -532,10 +532,10 @@ const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& paramete
 			fmx::errcode error = write_to_file ( temporary_file, out, mode );
 
 			if ( error == kNoError ) {
-				
+
 				ReadFileAsUTF8Extract ( temporary_file, from, to, buffer_size, delimiter, results ) ;
 				boost::filesystem::remove ( temporary_file );
-			
+
 			} else {
 				results = temporary_contents;
 			}
@@ -1286,7 +1286,7 @@ void ReverseFindDelimiter ( const std::string& search, const std::string& delimi
 			offset = next ;
 		}
 	}
-	
+
 } // ReverseFindDelimiter
 
 

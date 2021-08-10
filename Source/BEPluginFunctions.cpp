@@ -852,7 +852,7 @@ fmx::errcode BE_FileReplaceText ( short /* funcId */, const fmx::ExprEnv& /* env
 //			SetResult ( error, results );
 
 		}
-		
+
 
 	} catch ( filesystem_error& e ) {
 		error = e.code().value();
@@ -2912,9 +2912,9 @@ fmx::errcode BE_FTP_Upload ( short function_id, const ExprEnv& /* environment */
 		auto url = ParameterAsUTF8String ( parameters );
 		auto username = ParameterAsUTF8String ( parameters, 2 );
 		auto password = ParameterAsUTF8String ( parameters, 3 );
-		
+
 		std::vector<char> response;
-		
+
 		if ( function_id == kBE_FTP_Upload ) {
 
 			auto data = ParameterAsVectorChar ( parameters, 1 );
@@ -3419,7 +3419,7 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 
 				boost::filesystem::path pdf_path ( *it );
 				pdf_path.make_preferred();
-				
+
 				std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
 				pdf_document_to_append->Load ( pdf_path.c_str() );
 				pdf_document->Append ( *pdf_document_to_append );
@@ -3507,7 +3507,7 @@ fmx::errcode BE_PDFGetPages ( short /* funcId */, const ExprEnv& /* environment 
 		if ( from > first_page ) {
 			first_page = from;
 		}
-		
+
 		auto to = ParameterAsLong ( parameters, 3 );
 		auto number_of_pages_to_get = to;
 		if ( number_of_pages_to_get <= 0 || number_of_pages_to_get > number_of_pages_in_pdf ) {
@@ -3871,7 +3871,7 @@ fmx::errcode BE_TextExtractWords ( short /* funcId */, const ExprEnv& /* environ
 					break;
 
 //				default:
-					
+
 			} // switch
 
 			// this is not on an eternal quest

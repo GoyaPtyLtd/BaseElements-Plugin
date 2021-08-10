@@ -36,13 +36,16 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
+			<Add option="-m64" />
 			<Add option="-fexceptions -Wno-unknown-pragmas -fPIC" />
+			<Add option="-D_LIBCPP_STD_VER=11" />
 			<Add directory="../Headers" />
 			<Add directory="../Source" />
 		</Compiler>
 		<Linker>
+			<Add option="-m64" />
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
-			<Add option="-Wl,-soname=4.2.0b2" />
+			<Add option="-Wl,-soname=4.2.0" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="../Libraries/linux/libz.a" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
@@ -115,6 +118,7 @@
 		<Unit filename="../Source/BEFileTextReader.cpp" />
 		<Unit filename="../Source/BEJSON.cpp" />
 		<Unit filename="../Source/BEJavaScript.cpp" />
+		<Unit filename="../Source/BEPDF.cpp" />
 		<Unit filename="../Source/BEPlugin.cpp" />
 		<Unit filename="../Source/BEPluginFunctions.cpp" />
 		<Unit filename="../Source/BEPluginUtilities.cpp" />

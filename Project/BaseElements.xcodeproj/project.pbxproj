@@ -898,7 +898,6 @@
 				4D3629E41F20789A0036B751 /* Sources */,
 				4D3629E51F20789A0036B751 /* Frameworks */,
 				4D3629E71F20789A0036B751 /* Resources */,
-				4DD6520E243456D1007E34A1 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -916,7 +915,6 @@
 				4D362A5D1F2085880036B751 /* Sources */,
 				4D362A831F2085880036B751 /* Frameworks */,
 				4D362AA01F2085880036B751 /* Resources */,
-				A779110D20D8DCA50002E09A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1055,23 +1053,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# echo $SRCROOT\n/usr/bin/ruby $SRCROOT/Extras/SetVersionNumber.rb $SRCROOT/../\n";
 		};
-		4DD6520E243456D1007E34A1 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cp $SRCROOT/Extras/BaseElements\\ Plugin\\ Tests.fmp12 $SRCROOT/Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Solution\\ Files/BaseElements\\ Plugin\\ Tests.fmp12\ncp -r $BUILT_PRODUCTS_DIR/BaseElementsIOS.fmplugin $SRCROOT/Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Plug-Ins/BaseElementsIOS.fmplugin\n";
-		};
 		4DFA3E2B20D8ABFF00A2D858 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1084,19 +1065,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# echo $SRCROOT\n/usr/bin/ruby $SRCROOT/Extras/GenerateStringsFiles.rb $SRCROOT/../\n";
-		};
-		A779110D20D8DCA50002E09A /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cp $SRCROOT/Extras/BaseElements\\ Plugin\\ Tests.fmp12 $SRCROOT/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution\\ Files/BaseElements\\ Plugin\\ Tests.fmp12\ncp -r $BUILT_PRODUCTS_DIR/BaseElementsIOSSimulator.fmplugin $SRCROOT/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/BaseElementsIOSSimulator.fmplugin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
