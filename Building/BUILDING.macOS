@@ -1,0 +1,331 @@
+=======================================================================
+macOS
+=======================================================================
+
+On macOS the plugin is built using macOS 11.2.3 and Xcode 12.4.
+
+Download the FileMaker External Plug-In API from
+
+	http://www.filemaker.com/support/technologies/
+
+and place the FMWrapper.framework in the ${SRCROOT}/Libraries/macOS directory.
+
+In this guide, ${SRCROOT} is the path to the project root (i.e. BaseElements-Plugin) directory.
+
+
+=======================================================================
+Boost - 1.75_0
+=======================================================================
+
+Boost is available from
+
+	http://www.boost.org/
+
+and extract the archive. Then
+
+	cd boost_1_75_0
+	./bootstrap.sh
+	./b2 toolset=clang cxxflags="-arch arm64 -arch x86_64" address-model=64 link=static runtime-link=static install --prefix=_build_macos --with-program_options --with-regex --with-date_time --with-filesystem --with-thread cxxflags="-mmacosx-version-min=10.13 -stdlib=libc++" linkflags="-stdlib=libc++"
+
+Copy the header and library files.
+
+	cp -R _build_macos/include/boost "${SRCROOT}/Headers/"
+	cp _build_macos/lib/*.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+Jansson - 2.5
+=======================================================================
+
+Download the source as a ZIP archive from
+
+	https://github.com/GoyaPtyLtd/jansson
+
+and extract the archive. Then
+
+	cd jansson-master
+	autoreconf -i
+	./configure --prefix="$(pwd)/_build_macos_x86_64" CFLAGS="-arch x86_64 -mmacosx-version-min=10.13" --disable-shared
+	make -s -j install
+	make distclean
+	./configure --prefix="$(pwd)/_build_macos_arm64" CFLAGS="-arch arm64 -mmacosx-version-min=10.13" --disable-shared
+	make -s -j install
+	mkdir _build_macos
+	lipo -create "_build_macos_x86_64/lib/libjansson.a" "_build_macos_arm64/lib/libjansson.a" -output "_build_macos/libjansson.a"
+	
+
+Copy the header and library files.
+
+	cp _build_macos/include/jansson.h ./build/include/jansson_config.h "${SRCROOT}/Headers/"
+	cp _build_macos/lib/libjansson.a "${SRCROOT}/Libraries/macOS/"
+
+
+=======================================================================
+OpenSSL - 1.1.1k
+=======================================================================
+
+Download the latest openssl source from
+
+	http://www.openssl.org/source/
+
+and extract the archive. Then
+
+	cd openssl-OpenSSL_1_1_1-stable 
+	CFLAGS="-mmacosx-version-min=10.13" ./configure darwin64-x86_64-cc no-engine no-hw no-shared --prefix="${$(pwd)}/_build_macos_x86_64"
+	make install
+	make distclean
+	CFLAGS="-mmacosx-version-min=10.13" ./configure darwin64-arm64-cc no-engine no-hw no-shared --prefix="${$(pwd)}/_build_macos_arm64"
+	make install
+
+	mkdir _build_macos
+	lipo -create "_build_macos_x86_64/lib/libcrypto.a" "_build_macos_arm64/lib/libcrypto.a" -output "_build_macos/libcrypto.a"
+	lipo -create "_build_macos_x86_64/lib/libssl.a" "_build_macos_arm64/lib/libssl.a" -output "_build_macos/libssl.a"
+
+Copy the header and library files.
+
+	cp -R _build_macos/include/openssl "${SRCROOT}/Headers/"
+	cp _build_macos/lib/libcrypto.a ./_build_macos/lib/libssl.a "${SRCROOT}/Libraries/macOS/"
+
+
+=======================================================================
+libssh2 - 1.9.0
+=======================================================================
+
+Download the source from
+
+	http://www.libssh2.org/
+
+and extract the archive. Then
+
+	cd libssh2-1.9.0
+	CFLAGS="-arch arm64 -arch x86_64 -mmacosx-version-min=10.13 -I${SRCROOT}/Headers -I${SRCROOT}/Headers/openssl" LDFLAGS="-L${SRCROOT}/Libraries/macOS/" LIBS="-ldl" ./configure --disable-shared --disable-examples-build --prefix="${$(pwd)}/_build_macos" -exec-prefix="${$(pwd)}/_build_macos" --with-libz --with-crypto=openssl
+	make -s -j install
+
+Copy the header and library files.
+
+	cp -R _build_macos/include "${SRCROOT}/Headers/libssh2"
+	cp _build_macos/lib/libssh2.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+libcurl - 7.76.1
+=======================================================================
+
+Note: OpenSSL & libssh2 must be built before building libcurl.
+
+Download the source from
+
+	http://curl.haxx.se/download.html
+
+and expand it into a directory on the Desktop. Then
+
+	cd curl-7.76.1
+	./configure CFLAGS="-arch arm64 -arch x86_64 -mmacosx-version-min=10.13" CPPFLAGS="-I${SRCROOT}/Headers -I${SRCROOT}/Headers/libssh2 -I${SRCROOT}/Headers/openssl" LDFLAGS="-L${SRCROOT}/Libraries/macOS" LIBS="-ldl" --disable-dependency-tracking --enable-static --disable-shared --with-ssl --with-zlib --with-libssh2 --without-tests --prefix="${$(pwd)}/_build_macos"
+	make -s -j install
+
+Copy the header and library files.
+
+	cp -R _build_macos/include/curl "${SRCROOT}/Headers/"
+	cp _build_macos/lib/libcurl.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+duktape - 2.6.0
+=======================================================================
+
+Download the source from
+
+	http://duktape.org/
+
+and extract the archive and copy and rename the src directory.
+
+	cd duktape-2.6.0
+	cp -R src "${SRCROOT}/Source/duktape"
+
+
+=======================================================================
+libjpeg-turbo - 2.0.6
+=======================================================================
+
+Download the source from
+
+	http://www.libjpeg-turbo.org/
+
+and extract the archive. Then
+
+	cd libjpeg-turbo-2.0.6
+	CFLAGS="-arch arm64 -arch x86_64 -mmacosx-version-min=10.13" cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE -DENABLE_SHARED=NO -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+	make install DESTDIR="./_build_macos"
+
+Copy the header and library files.
+
+	cp -R ./_build_macos/opt/libjpeg-turbo/include "${SRCROOT}/Headers/libturbojpeg"
+	cp ./_build_macos/opt/libjpeg-turbo/lib/libturbojpeg.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+Poco 1.10.1
+=======================================================================
+
+Download the source from
+
+	http://pocoproject.org/download/
+
+and extract the archive. Then
+
+	cd poco-poco-1.10.1-all
+	./configure --config=Darwin64-clang-libc++ --prefix="${$(pwd)}/_build_macos_x86_64" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util" --include-path="${SRCROOT}/Headers" --library-path="${SRCROOT}/Libraries/macOS"
+	make -s -j install
+	
+Make a copy of the file
+
+	build/config/Darwin64-clang-libc++
+
+as
+	
+	build/config/DarwinArm64-clang-libc++
+
+and change both instances of
+
+	x86_64
+	
+to
+
+	arm64
+	
+	./configure --config=DarwinArm64-clang-libc++ --prefix="${$(pwd)}/_build_macos_arm64" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util" --include-path="${SRCROOT}/Headers" --library-path="${SRCROOT}/Libraries/macOS"
+	make -s -j install
+
+	lipo -create "lib/Darwin/x86_64/libPocoFoundation.a" "lib/Darwin/arm64/libPocoFoundation.a" -output "lib/libPocoFoundation.a"
+	lipo -create "lib/Darwin/x86_64/libPocoZip.a" "lib/Darwin/arm64/libPocoZip.a" -output "lib/libPocoZip.a"
+	lipo -create "lib/Darwin/x86_64/libPocoJSON.a" "lib/Darwin/arm64/libPocoJSON.a" -output "lib/libPocoJSON.a"
+	lipo -create "lib/Darwin/x86_64/libPocoXML.a" "lib/Darwin/arm64/libPocoXML.a" -output "lib/libPocoXML.a"
+	lipo -create "lib/Darwin/x86_64/libPocoNet.a" "lib/Darwin/arm64/libPocoNet.a" -output "lib/libPocoNet.a"
+	
+Copy the header and library files.
+
+	cp -R ./_build_macos_arm64/include/Poco "${SRCROOT}/Headers"
+	cp lib/libPocoFoundation.a lib/libPocoZip.a lib/libPocoJSON.a  lib/libPocoNet.a lib/libPocoXML.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+libiconv - 1.16
+=======================================================================
+
+Download the source for libiconv from
+
+	https://www.gnu.org/software/libiconv/#downloading
+
+and extract the archive. Then
+
+	cd libiconv-1.16
+	CFLAGS="-arch arm64 -arch x86_64 -mmacosx-version-min=10.13" ./configure --disable-shared --prefix="${$(pwd)}/_build_macos"
+	make -s -j install
+
+Copy the Headers and libraries to the project directory
+
+	cp -R _build_macos/include/*.h "${SRCROOT}/Headers/iconv"
+	cp _build_macos/lib/libiconv.a  _build_macos/lib/libcharset.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+libxml2 - 2.9.10
+=======================================================================
+
+Download the source for libxml2 from
+
+	http://xmlsoft.org/downloads.html
+
+and extract the archive. Then
+
+	cd libxml2-2.9.10
+	CFLAGS="-arch arm64 -arch x86_64 -mmacosx-version-min=10.13" ./configure --disable-shared --with-threads --without-python --without-zlib --without-lzma --with-iconv=../libiconv-1.16/_build_macos --prefix="${$(pwd)}/_build_macos"
+	make -s -j install
+
+Copy the Headers and libraries to the project directory
+
+	cp -R _build_macos/include/libxml2 "${SRCROOT}/Headers"
+	cp _build_macos/lib/libxml2.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+libxslt - 1.1.34
+=======================================================================
+
+Download the source from
+
+	http://xmlsoft.org/downloads.html
+
+and extract the archive. Then
+
+	cd libxslt-1.1.34
+	./configure CFLAGS="-arch arm64 -arch x86_64 -mmacosx-version-min=10.13" --disable-shared --without-python --without-crypto --prefix="${$(pwd)}/_build_macos"
+	make -s -j install
+
+Copy the Headers and libraries to the project directory
+
+	cp -R _build_macos/include/libxslt "${SRCROOT}/Headers"
+	cp _build_macos/lib/libxslt.a ./_build/lib/libexslt.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+freetype - 2.10.4
+=======================================================================
+
+Download freetype from
+
+	https://www.freetype.org/download.html
+
+and extract the archive. Then
+
+	cd freetype-2.10.4
+	CFLAGS="-arch arm64 -arch x86_64 -mmacosx-version-min=10.13" ./configure --disable-shared --with-png=no --with-bzip2=no --with-harfbuzz=no --with-png=no --with-zlib=no --prefix="$(pwd)/_build_macos"
+	make -s -j install
+
+Copy the header and library files.
+
+	cp -R _build_macos/include/freetype2 "${SRCROOT}/Headers"
+	cp _build_macos/lib/libfreetype.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+fontconfig - 2.13.1
+=======================================================================
+
+Download fontconfig from
+
+	https://www.freedesktop.org/wiki/Software/fontconfig/
+
+and extract the archive. Then
+
+	cd fontconfig-2.13.1
+	CFLAGS="-arch arm64 -arch x86_64 -mmacosx-version-min=10.13 -stdlib=libc++" ./configure --disable-shared --prefix="$(pwd)/_build_macos" FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2" FREETYPE_LIBS="-L${SRCROOT}/Libraries/macOS -lfreetype" LDFLAGS="-L${SRCROOT}/Libraries/macOS"
+	make -s -j install
+
+Copy the header and library files.
+
+	cp -R _build_macos/include/fontconfig "${SRCROOT}/Headers"
+	cp _build_macos/lib/libfontconfig.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================
+podofo - 0.9.7
+=======================================================================
+
+Download podofo from
+
+	http://podofo.sourceforge.net/download.html
+
+and extract the archive. Then
+
+	cd podofo-0.9.7
+	cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build_macos" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="${SRCROOT}/Headers/freetype2" -DFREETYPE_LIBRARY_RELEASE="${SRCROOT}/Libraries/macOS/libfreetype.a" -DFONTCONFIG_LIBRARIES="${SRCROOT}/Libraries" -DFONTCONFIG_INCLUDE_DIR="${SRCROOT}/Headers" -DFONTCONFIG_LIBRARY_RELEASE="${SRCROOT}/Libraries/macOS/libfontconfig.a" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_C_FLAGS="-arch arm64 -arch x86_64 -mmacosx-version-min=10.13 -stdlib=libc++" -DCMAKE_CXX_FLAGS="-arch arm64 -arch x86_64 -mmacosx-version-min=10.13 -stdlib=libc++" -DCMAKE_CXX_STANDARD=11 -DCXX_STANDARD_REQUIRED=ON ./
+	make -s -j install
+
+Copy the header and library files.
+
+	cp -R _build_macos/include/podofo "${SRCROOT}/Headers"
+	cp _build_macos/lib/libpodofo.a "${SRCROOT}/Libraries/macOS"
+
+
+=======================================================================

@@ -54,10 +54,9 @@ void SetResult ( const std::string& text, fmx::Data& results );
 void SetResult ( const std::wstring& text, fmx::Data& results );
 void SetResult ( std::vector<char>& data, fmx::Data& results );
 void SetResult ( const std::vector<unsigned char>& data, fmx::Data& results );
-void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results, const std::string data_type );
 void SetResult ( const std::string& filename, const std::vector<unsigned char>& data, fmx::Data& results, const std::string data_type );
 
-void SetResult ( const std::string& filename, const std::vector<char>& data, const std::string& data_type, const short width, const short height, fmx::Data& results );
+void SetResult ( const std::string& filename, const std::vector<char>& data, const std::string& type, fmx::Data& results );
 
 void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results );
 void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results );
@@ -87,7 +86,8 @@ const int PreferredContainerType ( const fmx::BinaryData& data );
 const bool BinaryDataAvailable ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 
 const fmx::int32 IndexForStream ( const fmx::BinaryData& data, const std::string stream_type, const bool resolve_main_stream = true );
-const std::vector<char> DataAsVectorChar ( const fmx::BinaryData& data, const FMX_UInt32 which );
+const std::vector<char> BinaryDataAsVectorChar ( const fmx::BinaryData& data, const FMX_UInt32 which = 0 );
+const std::vector<char> DataAsVectorChar ( const fmx::Data& data, const FMX_UInt32 which = 0 );
 const bool StreamIsCompressed ( const fmx::BinaryData& data );
 
 const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path );
@@ -109,7 +109,7 @@ long DataAsLong ( const fmx::Data& data );
 double DataAsDouble ( const fmx::Data& data );
 
 
-fmx::errcode ExecuteScript ( const fmx::Text& script_name, const fmx::Text& file_name, const fmx::Data& parameter, const fmx::ExprEnv& environment );
+fmx::errcode ExecuteScript ( const fmx::Text& script_name, const fmx::Text& file_name, const fmx::Data& parameter, const FMX_ScriptControl script_control, const fmx::ExprEnv& environment );
 
 
 fmx::errcode NoError ( void );

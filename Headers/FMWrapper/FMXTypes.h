@@ -1,19 +1,19 @@
 /*
- 
- Copyright © 1998 - 2019  Claris International Inc.
+
+ Copyright © 1998 - 2021  Claris International Inc.
  All rights reserved.
- 
+
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
  to enable licensees of Claris FileMaker Pro to compile plug-ins for use with Claris products.
  Redistribution and use in source and binary forms, without modification, are permitted provided
  that the following conditions are met:
- 
+
  * Redistributions of source code must retain the above copyright notice, this list of
  conditions and the following disclaimer.
- 
+
  * The name Claris International Inc. may not be used to endorse or promote products derived
  from this software without specific prior written permission.
- 
+
  THIS SOFTWARE IS PROVIDED BY CLARIS INTERNATIONAL INC. ''AS IS'' AND ANY
  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -24,7 +24,7 @@
  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 #ifndef _h_Types_
@@ -113,7 +113,7 @@ extern "C++"
 
 				// New to FileMaker Pro 13
 				kType_KOR               = 76,   // Korean
-				
+
 				// For compatibility with WinSoft versions (supported in FMI versions >= 12)
 				kType_HE                = 47,   // Hebrew
 				kType_HI                = 48,   // Hindi
@@ -159,30 +159,6 @@ extern "C++"
 
 		};
 
-#if FMX_USE_AUTO_PTR
-		// DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
-		class DEPRECATED QuadCharAutoPtr : public std::auto_ptr<QuadChar>
-		{
-						typedef QuadCharAutoPtr UpCaster;
-		public:
-			inline QuadCharAutoPtr ();
-			inline QuadCharAutoPtr ( char c0, char c1, char c2, char c3 );
-			inline QuadCharAutoPtr ( const QuadChar &value );
-
-		};
-
-		// DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
-		class DEPRECATED LocaleAutoPtr : public std::auto_ptr<Locale>
-		{
-						typedef LocaleAutoPtr   UpCaster;
-		public:
-			inline LocaleAutoPtr ( Locale::Type inputType = Locale::kType_System );
-			inline LocaleAutoPtr ( const Locale &copyConstruct );
-
-		};
-#endif
-		
-#if FMX_USE_UNIQUE_PTR
 		class QuadCharUniquePtr : public std::unique_ptr<QuadChar>
 		{
 			typedef QuadCharUniquePtr UpCaster;
@@ -190,18 +166,17 @@ extern "C++"
 			inline QuadCharUniquePtr ();
 			inline QuadCharUniquePtr ( char c0, char c1, char c2, char c3 );
 			inline QuadCharUniquePtr ( const QuadChar &value );
-			
+
 		};
-		
+
 		class LocaleUniquePtr : public std::unique_ptr<Locale>
 		{
 			typedef LocaleUniquePtr   UpCaster;
 		public:
 			inline LocaleUniquePtr ( Locale::Type inputType = Locale::kType_System );
 			inline LocaleUniquePtr ( const Locale &copyConstruct );
-			
+
 		};
-#endif
 	}
 }
 
@@ -236,7 +211,7 @@ extern "C"
 extern "C++"
 {
 	namespace fmx
-	{           
+	{
 		inline const QuadChar &QuadChar::operator = ( const QuadChar &value )
 		{
 			_fmxcpt _x;
@@ -320,28 +295,6 @@ extern "C++"
 			_x.Check ();
 		}
 
-#if FMX_USE_AUTO_PTR
-		inline QuadCharAutoPtr::QuadCharAutoPtr ()
-		{
-			_fmxcpt _x;
-			reset ( FM_QuadChar_Constructor1 ( _x ) );
-			_x.Check ();
-		}
-		inline QuadCharAutoPtr::QuadCharAutoPtr ( char c0, char c1, char c2, char c3 )
-		{
-			_fmxcpt _x;
-			reset ( FM_QuadChar_Constructor2 ( c0, c1, c2, c3, _x ) );
-			_x.Check ();
-		}
-		inline QuadCharAutoPtr::QuadCharAutoPtr ( const QuadChar &value )
-		{
-			_fmxcpt _x;
-			reset ( FM_QuadChar_Constructor3 ( value, _x ) );
-			_x.Check ();
-		}
-#endif
-		
-#if FMX_USE_UNIQUE_PTR
 		inline QuadCharUniquePtr::QuadCharUniquePtr ()
 		{
 			_fmxcpt _x;
@@ -360,7 +313,6 @@ extern "C++"
 			reset ( FM_QuadChar_Constructor3 ( value, _x ) );
 			_x.Check ();
 		}
-#endif
 		inline Locale &Locale::operator = ( const Locale &rhs )
 		{
 			_fmxcpt _x;
@@ -375,22 +327,6 @@ extern "C++"
 			_x.Check ();
 		}
 
-#if FMX_USE_AUTO_PTR
-		inline LocaleAutoPtr::LocaleAutoPtr ( Locale::Type inputType )
-		{
-			_fmxcpt _x;
-			reset ( FM_Locale_Constructor1 ( inputType, _x ) );
-			_x.Check ();
-		}
-		inline LocaleAutoPtr::LocaleAutoPtr ( const Locale &copyConstruct )
-		{
-			_fmxcpt _x;
-			reset ( FM_Locale_Constructor2 ( copyConstruct, _x ) );
-			_x.Check ();
-		}
-#endif
-		
-#if FMX_USE_UNIQUE_PTR
 		inline LocaleUniquePtr::LocaleUniquePtr ( Locale::Type inputType )
 		{
 			_fmxcpt _x;
@@ -403,7 +339,6 @@ extern "C++"
 			reset ( FM_Locale_Constructor2 ( copyConstruct, _x ) );
 			_x.Check ();
 		}
-#endif
 	}
 }
 

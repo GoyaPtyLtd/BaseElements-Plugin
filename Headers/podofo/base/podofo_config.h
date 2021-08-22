@@ -10,12 +10,13 @@
 
 #define PODOFO_VERSION_MAJOR 0
 #define PODOFO_VERSION_MINOR 9
-#define PODOFO_VERSION_PATCH 4
+#define PODOFO_VERSION_PATCH 7
 
 /* PoDoFo configuration options */
 #define PODOFO_MULTI_THREAD
 
 /* somewhat platform-specific headers */
+#define PODOFO_HAVE_UNIQUE_PTR 1
 #define PODOFO_HAVE_STRINGS_H 1
 #define PODOFO_HAVE_ARPA_INET_H 1
 /* #undef PODOFO_HAVE_WINSOCK2_H */
@@ -55,4 +56,7 @@
 /* #undef PODOFO_HAVE_BOOST */
 /* #undef PODOFO_HAVE_CPPUNIT */
 /* #undef PODOFO_HAVE_OPENSSL */
+/* #undef PODOFO_HAVE_OPENSSL_1_1 */
+/* #undef PODOFO_HAVE_OPENSSL_NO_RC4 */
 /* #undef PODOFO_HAVE_LIBIDN */
+/* #undef PODOFO_HAVE_UNISTRING_LIB */

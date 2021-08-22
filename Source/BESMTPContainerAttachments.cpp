@@ -1,12 +1,12 @@
 /*
  BESMTPContainerAttachments.cpp
  BaseElements Plug-In
- 
- Copyright 2016~2018 Goya. All rights reserved.
+
+ Copyright 2016~2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
- 
+
  http://www.goya.com.au/baseelements/plugin
- 
+
  */
 
 
@@ -19,6 +19,9 @@
 
 
 extern BEFileMakerPlugin * g_be_plugin;
+
+
+#define SMTP_ATTACHMENTS_DIRECTORY "SMTP_Attachments"
 
 
 BESMTPContainerAttachments::~BESMTPContainerAttachments()
@@ -36,20 +39,20 @@ void BESMTPContainerAttachments::add ( const boost::filesystem::path path, const
 void BESMTPContainerAttachments::add ( const std::string file_name, const std::vector<char>& data, const std::string content_type )
 {
 	boost::filesystem::path path = temporary_attachments_directory() + file_name;
-	
+
 	g_last_error = write_to_file ( path, data );
-	
+
 	if ( g_last_error == kNoError ) {
 		files.push_back ( std::make_pair ( path, content_type ) );
 	}
-	
+
 }
 
 
 void BESMTPContainerAttachments::clear ( void )
 {
 	for ( auto const& delete_this : files ) {
-		
+
 		try {
 			auto temp_dir = temporary_attachments_directory();
 			const auto path = delete_this.first;
@@ -59,11 +62,11 @@ void BESMTPContainerAttachments::clear ( void )
 		} catch ( boost::filesystem::filesystem_error& e ) {
 			g_last_error = e.code().value();
 		}
-		
+
 	}
-	
+
 	files.clear();
-	
+
 }
 
 
@@ -72,24 +75,18 @@ void BESMTPContainerAttachments::clear ( void )
 
 const std::string BESMTPContainerAttachments::temporary_attachments_directory ( void )
 {
-	std::string temporary_path = "";
-	
-	 // fms16 gives a per thread directory rather than a global one
-	
-	if ( g_be_plugin->running_on_server() ) {
-		temporary_path = boost::filesystem::temp_directory_path().string();
-	} else {
-		
-		const fmx::ExprEnvUniquePtr environment;
-		FMX_SetToCurrentEnv ( &(*environment) );
-		temporary_path = GetFileMakerTemporaryDirectory ( *environment );
 
+	auto temporary_path = boost::filesystem::temp_directory_path().string();
+	if ( temporary_path.back() != boost::filesystem::path::preferred_separator ) {
+        temporary_path += boost::filesystem::path::preferred_separator;
 	}
 
 	temporary_path.append ( BUNDLE_STRINGS_ID );
-	temporary_path.append ( "/SMTP_Attachments/" );
-	
+	temporary_path += boost::filesystem::path::preferred_separator;
+	temporary_path.append ( SMTP_ATTACHMENTS_DIRECTORY );
+	temporary_path += boost::filesystem::path::preferred_separator;
+
 	return temporary_path;
-	
+
 }
 

@@ -1,9 +1,9 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2012-2014 Barend Gehrels, Amsterdam, the Netherlands.
+// Copyright (c) 2012-2020 Barend Gehrels, Amsterdam, the Netherlands.
 
-// This file was modified by Oracle on 2017.
-// Modifications copyright (c) 2017 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2017-2020.
+// Modifications copyright (c) 2017-2020 Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -16,28 +16,33 @@
 #include <cstddef>
 #include <iterator>
 
-
 #include <boost/core/ignore_unused.hpp>
 #include <boost/numeric/conversion/cast.hpp>
-#include <boost/range.hpp>
+#include <boost/range/begin.hpp>
+#include <boost/range/end.hpp>
+#include <boost/range/rbegin.hpp>
+#include <boost/range/rend.hpp>
+#include <boost/range/size.hpp>
+#include <boost/range/value_type.hpp>
+
+#include <boost/geometry/algorithms/detail/direction_code.hpp>
+#include <boost/geometry/algorithms/detail/buffer/buffered_piece_collection.hpp>
+#include <boost/geometry/algorithms/detail/buffer/line_line_intersection.hpp>
+
+#include <boost/geometry/algorithms/num_interior_rings.hpp>
+#include <boost/geometry/algorithms/simplify.hpp>
 
 #include <boost/geometry/core/assert.hpp>
 #include <boost/geometry/core/closure.hpp>
 #include <boost/geometry/core/exterior_ring.hpp>
 #include <boost/geometry/core/interior_rings.hpp>
 
-#include <boost/geometry/util/condition.hpp>
-#include <boost/geometry/util/math.hpp>
-
 #include <boost/geometry/strategies/buffer.hpp>
 #include <boost/geometry/strategies/side.hpp>
-#include <boost/geometry/algorithms/detail/buffer/buffered_piece_collection.hpp>
-#include <boost/geometry/algorithms/detail/buffer/line_line_intersection.hpp>
-#include <boost/geometry/algorithms/detail/buffer/parallel_continue.hpp>
 
-#include <boost/geometry/algorithms/assign.hpp>
-#include <boost/geometry/algorithms/num_interior_rings.hpp>
-#include <boost/geometry/algorithms/simplify.hpp>
+#include <boost/geometry/util/condition.hpp>
+#include <boost/geometry/util/math.hpp>
+#include <boost/geometry/util/type_traits.hpp>
 
 #include <boost/geometry/views/detail/normalized_view.hpp>
 
@@ -95,7 +100,7 @@ struct buffer_range
         typename JoinStrategy,
         typename EndStrategy,
         typename RobustPolicy,
-        typename Strategy
+        typename SideStrategy
     >
     static inline
     void add_join(Collection& collection,
@@ -111,23 +116,11 @@ struct buffer_range
             JoinStrategy const& join_strategy,
             EndStrategy const& end_strategy,
             RobustPolicy const& ,
-            Strategy const& strategy) // side strategy
+            SideStrategy const& side_strategy)
     {
-        output_point_type intersection_point;
-        geometry::assign_zero(intersection_point);
-
-        geometry::strategy::buffer::join_selector join
-                = get_join_type(penultimate_input, previous_input, input, strategy);
-        if (join == geometry::strategy::buffer::join_convex)
-        {
-            // Calculate the intersection-point formed by the two sides.
-            // It might be that the two sides are not convex, but continue
-            // or spikey, we then change the join-type
-            join = line_line_intersection::apply(
-                        perp1, perp2, prev_perp1, prev_perp2,
-                        intersection_point);
-
-        }
+        geometry::strategy::buffer::join_selector const join
+                = get_join_type(penultimate_input, previous_input, input,
+                                side_strategy);
 
         switch(join)
         {
@@ -161,37 +154,46 @@ struct buffer_range
                 {
                     // The corner is convex, we create a join
                     // TODO (future) - avoid a separate vector, add the piece directly
-                    std::vector<output_point_type> range_out;
-                    if (join_strategy.apply(intersection_point,
-                                previous_input, prev_perp2, perp1,
-                                distance.apply(previous_input, input, side),
-                                range_out))
+                    output_point_type intersection_point;
+                    if (line_line_intersection::apply(perp1, perp2,
+                                    prev_perp1, prev_perp2, intersection_point))
                     {
-                        collection.add_piece(geometry::strategy::buffer::buffered_join,
-                                previous_input, range_out);
+                        std::vector<output_point_type> range_out;
+                        if (join_strategy.apply(intersection_point,
+                                    previous_input, prev_perp2, perp1,
+                                    distance.apply(previous_input, input, side),
+                                    range_out))
+                        {
+                            collection.add_piece(geometry::strategy::buffer::buffered_join,
+                                    previous_input, range_out);
+                        }
                     }
                 }
                 break;
         }
     }
 
-    template <typename Strategy>
+    // Returns true if collinear point p2 continues after p0 and p1.
+    // If it turns back (spike), it returns false.
+    static inline bool same_direction(output_point_type const& p0,
+            output_point_type const& p1,
+            output_point_type const& p2)
+    {
+        typedef typename cs_tag<output_point_type>::type cs_tag;
+        return direction_code<cs_tag>(p0, p1, p2) == 1;
+    }
+
+    template <typename SideStrategy>
     static inline geometry::strategy::buffer::join_selector get_join_type(
             output_point_type const& p0,
             output_point_type const& p1,
             output_point_type const& p2,
-            Strategy const& strategy) // side strategy
+            SideStrategy const& side_strategy)
     {
-        int const side = strategy.apply(p0, p1, p2);
+        int const side = side_strategy.apply(p0, p1, p2);
         return side == -1 ? geometry::strategy::buffer::join_convex
             :  side == 1  ? geometry::strategy::buffer::join_concave
-            :  parallel_continue
-                    (
-                        get<0>(p2) - get<0>(p1),
-                        get<1>(p2) - get<1>(p1),
-                        get<0>(p1) - get<0>(p0),
-                        get<1>(p1) - get<1>(p0)
-                    )  ? geometry::strategy::buffer::join_continue
+            :  same_direction(p0, p1, p2) ? geometry::strategy::buffer::join_continue
             : geometry::strategy::buffer::join_spike;
     }
 
@@ -297,7 +299,7 @@ struct buffer_range
 
             if (first && mark_flat)
             {
-                collection.mark_flat_start();
+                collection.mark_flat_start(*prev);
             }
 
             penultimate_point = *prev;
@@ -316,7 +318,7 @@ struct buffer_range
 
         if (mark_flat)
         {
-            collection.mark_flat_end();
+            collection.mark_flat_end(ultimate_point);
         }
 
         return result;
@@ -605,7 +607,7 @@ struct buffer_inserter<ring_tag, RingInput, RingOutput>
                 collection, distance,
                 side_strategy, join_strategy, end_strategy, point_strategy,
                 robust_policy, strategy);
-        collection.finish_ring(code);
+        collection.finish_ring(code, ring, false, false);
         return code;
     }
 };
@@ -803,7 +805,7 @@ private:
                     join_strategy, end_strategy, point_strategy,
                     robust_policy, strategy);
 
-            collection.finish_ring(code, is_interior);
+            collection.finish_ring(code, *it, is_interior, false);
         }
     }
 
@@ -867,7 +869,7 @@ public:
                     join_strategy, end_strategy, point_strategy,
                     robust_policy, strategy);
 
-            collection.finish_ring(code, false,
+            collection.finish_ring(code, exterior_ring(polygon), false,
                     geometry::num_interior_rings(polygon) > 0u);
         }
 
@@ -940,16 +942,13 @@ inline void buffer_inserter(GeometryInput const& geometry_input, OutputIterator 
     <
         typename geometry::ring_type<GeometryOutput>::type,
         IntersectionStrategy,
+        DistanceStrategy,
         RobustPolicy
     > collection_type;
-    collection_type collection(intersection_strategy, robust_policy);
+    collection_type collection(intersection_strategy, distance_strategy, robust_policy);
     collection_type const& const_collection = collection;
 
-    bool const areal = boost::is_same
-        <
-            typename tag_cast<typename tag<GeometryInput>::type, areal_tag>::type,
-            areal_tag
-        >::type::value;
+    bool const areal = util::is_areal<GeometryInput>::value;
 
     dispatch::buffer_inserter
         <
@@ -966,11 +965,12 @@ inline void buffer_inserter(GeometryInput const& geometry_input, OutputIterator 
             robust_policy, intersection_strategy.get_side_strategy());
 
     collection.get_turns();
-    collection.classify_turns();
     if (BOOST_GEOMETRY_CONDITION(areal))
     {
-        collection.check_remaining_points(distance_strategy);
+        collection.check_turn_in_original();
     }
+
+    collection.verify_turns();
 
     // Visit the piece collection. This does nothing (by default), but
     // optionally a debugging tool can be attached (e.g. console or svg),
@@ -984,6 +984,11 @@ inline void buffer_inserter(GeometryInput const& geometry_input, OutputIterator 
 
     // phase 1: turns (after enrichment/clustering)
     visit_pieces_policy.apply(const_collection, 1);
+
+    if (BOOST_GEOMETRY_CONDITION(areal))
+    {
+        collection.deflate_check_turns();
+    }
 
     collection.traverse();
 

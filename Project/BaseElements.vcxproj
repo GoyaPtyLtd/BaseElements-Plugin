@@ -101,7 +101,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;freetype27.lib;podofo.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;jansson.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofo.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -155,7 +155,7 @@ signtool verify /pa "$(TargetPath)"
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;wldap32.lib;libeay32.lib;ssleay32.lib;jansson.lib;liboauth.lib;comctl32.lib;libmimetic_d.lib;libssh2.lib;turbojpeg-static.lib;Crypt32.lib;freetype27.lib;podofod.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;jansson.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofod.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -164,7 +164,7 @@ signtool verify /pa "$(TargetPath)"
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AddModuleNamesToAssembly>
       </AddModuleNamesToAssembly>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrt.lib;msvcrtd.lib;libcmt.lib;libcpmt.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;msvcrtd.lib;libcmt.lib;libcpmt.lib</IgnoreSpecificDefaultLibraries>
       <AssemblyLinkResource>
       </AssemblyLinkResource>
       <DelayLoadDLLs>FMWrapper.dll</DelayLoadDLLs>
@@ -188,6 +188,7 @@ signtool verify /pa "$(TargetPath)"
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\BEDebugInformation.cpp" />
+    <ClCompile Include="..\Source\BEPDF.cpp" />
     <ClCompile Include="..\Source\BESystemCommand.cpp" />
     <ClCompile Include="..\Source\BEXMLSchema.cpp" />
     <ClCompile Include="..\Source\Crypto\BEBase64.cpp" />
@@ -207,7 +208,6 @@ signtool verify /pa "$(TargetPath)"
     <ClCompile Include="..\Source\Crypto\BEMessageDigest.cpp">
       <DeploymentContent>false</DeploymentContent>
     </ClCompile>
-    <ClCompile Include="..\Source\BEOAuth.cpp" />
     <ClCompile Include="..\Source\Crypto\BEOpenSSLAES.cpp" />
     <ClCompile Include="..\Source\BEPlugin.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -229,7 +229,6 @@ signtool verify /pa "$(TargetPath)"
     <ClCompile Include="..\Source\BESMTPEmailMessage.cpp" />
     <ClCompile Include="..\Source\BESQLCommand.cpp" />
     <ClCompile Include="..\Source\BETime.cpp" />
-    <ClCompile Include="..\Source\BEXero.cpp" />
     <ClCompile Include="..\Source\BEXMLReader.cpp" />
     <ClCompile Include="..\Source\BEXMLReaderInterface.cpp" />
     <ClCompile Include="..\Source\BEXMLTextReader.cpp" />
@@ -244,13 +243,13 @@ signtool verify /pa "$(TargetPath)"
     <ClCompile Include="..\Source\duktape\duktape.c" />
     <ClCompile Include="..\Source\Images\BEImage.cpp" />
     <ClCompile Include="..\Source\Images\BEJPEG.cpp" />
-    <ClCompile Include="..\Source\Net\BEMimeticMIMEEntity.cpp" />
     <ClCompile Include="..\Source\win\BEWinFunctions.cpp" />
     <ClCompile Include="..\Source\win\BEWinIFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Resources\resource_version.h" />
     <ClInclude Include="..\Source\BEDebugInformation.h" />
+    <ClInclude Include="..\Source\BEPDF.h" />
     <ClInclude Include="..\Source\BESystemCommand.h" />
     <ClInclude Include="..\Source\BEXMLSchema.h" />
     <ClInclude Include="..\Source\Crypto\BEBase64.h" />
@@ -267,7 +266,6 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\BESMTPContainerAttachments.h" />
     <ClInclude Include="..\Source\Crypto\BEBio.h" />
     <ClInclude Include="..\Source\Crypto\BEMessageDigest.h" />
-    <ClInclude Include="..\Source\BEOAuth.h" />
     <ClInclude Include="..\Source\Crypto\BEOpenSSLAES.h" />
     <ClInclude Include="..\Source\BEPluginException.h" />
     <ClInclude Include="..\Source\BEPluginFunctions.h" />
@@ -279,7 +277,6 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\BESQLCommand.h" />
     <ClInclude Include="..\Source\BETime.h" />
     <ClInclude Include="..\Source\BEValueList.h" />
-    <ClInclude Include="..\Source\BEXero.h" />
     <ClInclude Include="..\Source\BEXMLReader.h" />
     <ClInclude Include="..\Source\BEXMLReaderInterface.h" />
     <ClInclude Include="..\Source\BEXMLTextReader.h" />
@@ -292,7 +289,6 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\duktape\duktape.h" />
     <ClInclude Include="..\Source\Images\BEImage.h" />
     <ClInclude Include="..\Source\Images\BEJPEG.h" />
-    <ClInclude Include="..\Source\Net\BEMimeticMIMEEntity.h" />
     <ClInclude Include="..\Source\win\BEWinFunctions.h" />
     <ClInclude Include="..\Source\win\BEWinIFileDialog.h" />
   </ItemGroup>

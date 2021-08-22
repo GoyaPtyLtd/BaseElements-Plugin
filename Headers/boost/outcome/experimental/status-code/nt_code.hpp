@@ -1,5 +1,5 @@
 /* Proposed SG14 status_code
-(C) 2018-2019 Niall Douglas <http://www.nedproductions.biz/> (5 commits)
+(C) 2018-2020 Niall Douglas <http://www.nedproductions.biz/> (5 commits)
 File Created: Feb 2018
 
 
@@ -47,8 +47,14 @@ namespace win32
   // A Win32 HMODULE
   using HMODULE = void *;
   // Used to retrieve where the NTDLL DLL is mapped into memory
-  extern "C" HMODULE __stdcall GetModuleHandleW(const wchar_t *lpModuleName);
-}
+  extern HMODULE __stdcall GetModuleHandleW(const wchar_t *lpModuleName);
+#pragma comment(lib, "kernel32.lib")
+#if defined(_WIN64)
+#pragma comment(linker, "/alternatename:?GetModuleHandleW@win32@system_error2@@YAPEAXPEB_W@Z=GetModuleHandleW")
+#else
+#pragma comment(linker, "/alternatename:?GetModuleHandleW@win32@system_error2@@YGPAXPB_W@Z=__imp__GetModuleHandleW@4")
+#endif
+}  // namespace win32
 
 class _nt_code_domain;
 //! (Windows only) A NT error code, those returned by NT kernel functions.
@@ -57,7 +63,7 @@ using nt_code = status_code<_nt_code_domain>;
 using nt_error = status_error<_nt_code_domain>;
 
 /*! (Windows only) The implementation of the domain for NT error codes, those returned by NT kernel functions.
-*/
+ */
 class _nt_code_domain : public status_code_domain
 {
   template <class DomainType> friend class status_code;
@@ -135,7 +141,10 @@ public:
 
 public:
   //! Default constructor
-  constexpr explicit _nt_code_domain(typename _base::unique_id_type id = 0x93f3b4487e4af25b) noexcept : _base(id) {}
+  constexpr explicit _nt_code_domain(typename _base::unique_id_type id = 0x93f3b4487e4af25b) noexcept
+      : _base(id)
+  {
+  }
   _nt_code_domain(const _nt_code_domain &) = default;
   _nt_code_domain(_nt_code_domain &&) = default;
   _nt_code_domain &operator=(const _nt_code_domain &) = default;

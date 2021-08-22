@@ -5,8 +5,8 @@
 // Copyright (c) 2009-2015 Mateusz Loskot, London, UK.
 // Copyright (c) 2014-2015 Adam Wulkiewicz, Lodz, Poland.
 
-// This file was modified by Oracle on 2013, 2014, 2015, 2017, 2018.
-// Modifications copyright (c) 2013-2018 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2013-2020.
+// Modifications copyright (c) 2013-2020 Oracle and/or its affiliates.
 
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
@@ -22,43 +22,48 @@
 #define BOOST_GEOMETRY_ALGORITHMS_DETAIL_SECTIONS_SECTIONALIZE_HPP
 
 #include <cstddef>
+#include <type_traits>
 #include <vector>
 
 #include <boost/concept/requires.hpp>
 #include <boost/core/ignore_unused.hpp>
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/vector_c.hpp>
-#include <boost/range.hpp>
-#include <boost/static_assert.hpp>
-#include <boost/type_traits/is_same.hpp>
-#include <boost/type_traits/is_fundamental.hpp>
+#include <boost/range/begin.hpp>
+#include <boost/range/end.hpp>
+#include <boost/range/size.hpp>
+#include <boost/range/value_type.hpp>
+
+#include <boost/geometry/core/config.hpp>
 
 #include <boost/geometry/algorithms/assign.hpp>
 #include <boost/geometry/algorithms/envelope.hpp>
 #include <boost/geometry/algorithms/expand.hpp>
-
+#include <boost/geometry/algorithms/detail/expand_by_epsilon.hpp>
 #include <boost/geometry/algorithms/detail/interior_iterator.hpp>
 #include <boost/geometry/algorithms/detail/recalculate.hpp>
 #include <boost/geometry/algorithms/detail/ring_identifier.hpp>
 #include <boost/geometry/algorithms/detail/signed_size_type.hpp>
+#include <boost/geometry/algorithms/detail/buffer/buffer_box.hpp>
 
 #include <boost/geometry/core/access.hpp>
 #include <boost/geometry/core/closure.hpp>
 #include <boost/geometry/core/exterior_ring.hpp>
 #include <boost/geometry/core/point_order.hpp>
+#include <boost/geometry/core/static_assert.hpp>
 #include <boost/geometry/core/tags.hpp>
 
 #include <boost/geometry/geometries/concepts/check.hpp>
-#include <boost/geometry/util/math.hpp>
+#include <boost/geometry/geometries/segment.hpp>
 #include <boost/geometry/policies/robustness/no_rescale_policy.hpp>
 #include <boost/geometry/policies/robustness/robust_point_type.hpp>
+#include <boost/geometry/util/math.hpp>
+#include <boost/geometry/util/normalize_spheroidal_coordinates.hpp>
+#include <boost/geometry/util/sequence.hpp>
 #include <boost/geometry/views/closeable_view.hpp>
 #include <boost/geometry/views/reversible_view.hpp>
-#include <boost/geometry/geometries/segment.hpp>
 
-#include <boost/geometry/algorithms/detail/expand_by_epsilon.hpp>
-#include <boost/geometry/strategies/envelope.hpp>
-#include <boost/geometry/strategies/expand.hpp>
+// TEMP
+#include <boost/geometry/strategy/envelope.hpp>
+#include <boost/geometry/strategy/expand.hpp>
 
 namespace boost { namespace geometry
 {
@@ -156,7 +161,7 @@ template
 >
 struct get_direction_loop
 {
-    typedef typename boost::mpl::at_c<DimensionVector, Index>::type dimension;
+    typedef typename util::sequence_element<Index, DimensionVector>::type dimension;
 
     template <typename Segment>
     static inline void apply(Segment const& seg,
@@ -188,7 +193,7 @@ template
 >
 struct get_direction_loop<Point, DimensionVector, 0, Count, spherical_tag>
 {
-    typedef typename boost::mpl::at_c<DimensionVector, 0>::type dimension;
+    typedef typename util::sequence_element<0, DimensionVector>::type dimension;
 
     template <typename Segment>
     static inline void apply(Segment const& seg,
@@ -384,7 +389,7 @@ template
 struct sectionalize_part
 {
     static const std::size_t dimension_count
-        = boost::mpl::size<DimensionVector>::value;
+        = util::sequence_size<DimensionVector>::value;
 
     template
     <
@@ -438,8 +443,8 @@ struct sectionalize_part
         typedef typename boost::range_value<Sections>::type section_type;
         BOOST_STATIC_ASSERT
             (
-                (static_cast<std::size_t>(section_type::dimension_count)
-                 == static_cast<std::size_t>(boost::mpl::size<DimensionVector>::value))
+                section_type::dimension_count
+                 == util::sequence_size<DimensionVector>::value
             );
 
         typedef typename geometry::robust_point_type
@@ -772,25 +777,77 @@ struct sectionalize_multi
     }
 };
 
-template <typename Sections>
-inline void enlarge_sections(Sections& sections)
+// TODO: If it depends on CS it should probably be made into strategy.
+// For now implemented here because of ongoing work on robustness
+//   the fact that it interferes with detail::buffer::buffer_box
+//   and that we probably need a general strategy for defining epsilon in
+//   various coordinate systems, e.g. for point comparison, enlargement of
+//   bounding boxes, etc.
+template <typename CSTag>
+struct expand_by_epsilon
+    : not_implemented<CSTag>
+{};
+
+template <>
+struct expand_by_epsilon<cartesian_tag>
 {
-    // Robustness issue. Increase sections a tiny bit such that all points are really within (and not on border)
-    // Reason: turns might, rarely, be missed otherwise (case: "buffer_mp1")
-    // Drawback: not really, range is now completely inside the section. Section is a tiny bit too large,
-    // which might cause (a small number) of more comparisons
+    template <typename Box>
+    static inline void apply(Box & box)
+    {
+        detail::expand_by_epsilon(box);
+    }
+};
+
+template <>
+struct expand_by_epsilon<spherical_tag>
+{
+    template <typename Box>
+    static inline void apply(Box & box)
+    {
+        typedef typename coordinate_type<Box>::type coord_t;
+        static const coord_t eps = std::is_same<coord_t, float>::value
+            ? coord_t(1e-6)
+            : coord_t(1e-12);
+        detail::expand_by_epsilon(box, eps);
+    }
+};
+
+// TODO: In geographic CS it should probably also depend on FormulaPolicy.
+template <>
+struct expand_by_epsilon<geographic_tag>
+    : expand_by_epsilon<spherical_tag>
+{};
+
+template <typename Sections, typename Strategy>
+inline void enlarge_sections(Sections& sections, Strategy const&)
+{
+    // Enlarge sections slightly, this should be consistent with math::equals()
+    // and with the tolerances used in general_form intersections.
+    // This avoids missing turns.
     
-    // NOTE: above is old comment to the not used code expanding the Boxes by relaxed_epsilon(10)
-    
-    // Enlarge sections by scaled epsilon, this should be consistent with math::equals().
     // Points and Segments are equal-compared WRT machine epsilon, but Boxes aren't
     // Enlarging Boxes ensures that they correspond to the bound objects,
     // Segments in this case, since Sections are collections of Segments.
+
+    // It makes section a tiny bit too large, which might cause (a small number)
+    // of more comparisons
     for (typename boost::range_iterator<Sections>::type it = boost::begin(sections);
         it != boost::end(sections);
         ++it)
     {
-        detail::expand_by_epsilon(it->bounding_box);
+#if defined(BOOST_GEOMETRY_USE_RESCALING)
+        detail::sectionalize::expand_by_epsilon
+            <
+                typename Strategy::cs_tag
+            >::apply(it->bounding_box);
+
+#else
+        // Expand the box to avoid missing any intersection. The amount is
+        // should be larger than epsilon. About the value itself: the smaller
+        // it is, the higher the risk to miss intersections. The larger it is,
+        // the more comparisons are made. So it should be on the high side.
+        detail::buffer::buffer_box(it->bounding_box, 0.001, it->bounding_box);
+#endif
     }
 }
 
@@ -812,11 +869,9 @@ template
 >
 struct sectionalize
 {
-    BOOST_MPL_ASSERT_MSG
-        (
-            false, NOT_OR_NOT_YET_IMPLEMENTED_FOR_THIS_GEOMETRY_TYPE
-            , (types<Geometry>)
-        );
+    BOOST_GEOMETRY_STATIC_ASSERT_FALSE(
+        "Not or not yet implemented for this Geometry type.",
+        Tag, Geometry);
 };
 
 template
@@ -953,7 +1008,7 @@ inline void sectionalize(Geometry const& geometry,
                 int source_index = 0,
                 std::size_t max_count = 10)
 {
-    BOOST_STATIC_ASSERT((! boost::is_fundamental<EnvelopeStrategy>::value));
+    BOOST_STATIC_ASSERT((! std::is_fundamental<EnvelopeStrategy>::value));
 
     concepts::check<Geometry const>();
 
@@ -974,7 +1029,7 @@ inline void sectionalize(Geometry const& geometry,
         >::type
     >::type ctype2;
 
-    BOOST_MPL_ASSERT((boost::is_same<ctype1, ctype2>));
+    BOOST_STATIC_ASSERT((std::is_same<ctype1, ctype2>::value));
 
 
     sections.clear();
@@ -992,7 +1047,7 @@ inline void sectionalize(Geometry const& geometry,
                  envelope_strategy, expand_strategy,
                  ring_id, max_count);
 
-    detail::sectionalize::enlarge_sections(sections);
+    detail::sectionalize::enlarge_sections(sections, envelope_strategy);
 }
 
 
@@ -1018,12 +1073,12 @@ inline void sectionalize(Geometry const& geometry,
 
     typedef typename strategy::expand::services::default_strategy
         <
-            typename boost::mpl::if_c
+            std::conditional_t
                 <
-                    boost::is_same<typename tag<Geometry>::type, box_tag>::value,
+                    std::is_same<typename tag<Geometry>::type, box_tag>::value,
                     box_tag,
                     segment_tag
-                >::type,
+                >,
             typename cs_tag<Geometry>::type
         >::type expand_strategy_type;
 

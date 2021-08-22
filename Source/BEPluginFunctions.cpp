@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2020 Goya. All rights reserved.
+ Copyright 2010-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -12,6 +12,9 @@
 
 // need (Parser) to go before BEPluginGlobalDefines.h or we not happy
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wsign-compare"
 #include <Poco/Dynamic/Var.h>
 #include <Poco/Exception.h>
 #include <Poco/JSON/JSON.h>
@@ -21,6 +24,7 @@
 #include <Poco/Path.h>
 #include <Poco/RegularExpression.h>
 #include <Poco/String.h>
+#pragma GCC diagnostic pop
 
 
 #include "BEPluginGlobalDefines.h"
@@ -46,6 +50,8 @@
 #endif
 
 
+#include <../Headers/iconv/iconv.h>
+
 #include "BEPluginFunctions.h"
 
 #include "BECurl.h"
@@ -56,7 +62,7 @@
 #include "BEFileSystem.h"
 #include "BEJavaScript.h"
 #include "BEJSON.h"
-#include "BEOAuth.h"
+#include "BEPDF.h"
 #include "BEPluginException.h"
 #include "BEQuadChar.h"
 #include "BERegularExpression.h"
@@ -66,7 +72,6 @@
 #include "BESystemCommand.h"
 #include "BETime.h"
 #include "BEValueList.h"
-#include "BEXero.h"
 #include "BEXMLReader.h"
 #include "BEXMLSchema.h"
 #include "BEXMLTextReader.h"
@@ -79,6 +84,7 @@
 #include "Crypto/BEX509.h"
 #include "Images/BEJPEG.h"
 
+#include <algorithm>
 #include <list>
 #include <numeric> // for inner_product
 #include <thread>
@@ -90,9 +96,6 @@
 #include <boost/filesystem/fstream.hpp>
 #include <boost/foreach.hpp>
 #include <boost/tokenizer.hpp>
-
-#include <algorithm>
-#include <iconv.h>
 
 #include <podofo/podofo.h>
 
@@ -113,7 +116,6 @@ thread_local errcode g_last_error;
 thread_local errcode g_last_ddl_error;
 thread_local string g_text_encoding = UTF8;
 thread_local string g_json_error_description;
-thread_local BEOAuth * g_oauth;
 thread_local struct host_details g_smtp_host;
 thread_local BESMTPContainerAttachments g_smtp_attachments;
 thread_local vector<BEValueListStringSharedPtr> arrays;
@@ -246,7 +248,7 @@ fmx::errcode BE_ClipboardGetFile ( short /* funcId */, const ExprEnv& /* environ
 
 		auto clipboard_contents = ClipboardFile ( atype );
 
-		SetResult ( file_name, clipboard_contents, results, FILE_CONTAINER_TYPE );
+		SetResult ( file_name, clipboard_contents, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -273,7 +275,7 @@ fmx::errcode BE_ClipboardSetFile ( short /* funcId */, const ExprEnv& /* environ
 		if ( ! atype.empty() ) {
 			success = SetClipboardFile ( to_copy, atype );
 		}
-		
+
 		SetResult ( success, results );
 
 	} catch ( BEPlugin_Exception& e ) {
@@ -559,7 +561,7 @@ fmx::errcode BE_WriteTextFileToContainer_Deprecated ( short /* funcId */, const 
  any invalid characters, and replaces the old file
  */
 
-fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XMLStripInvalidCharacters ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 	auto overwriting = false;
@@ -666,7 +668,7 @@ fmx::errcode BE_StripInvalidUTF16CharactersFromXMLFile ( short /* funcId */, con
 
 	return MapError ( error );
 
-} // BE_StripInvalidUTF16CharactersFromXMLFile
+} // BE_XMLStripInvalidCharacters
 
 
 
@@ -720,7 +722,7 @@ fmx::errcode BE_FileImport ( short /* funcId */, const ExprEnv& /* environment *
 
 		auto file_data = ReadFileAsBinary ( from );
 
-		SetResult ( from.filename().string(), file_data, results, data_type );
+		SetResult ( from.filename().string(), file_data, data_type, results );
 
 	} catch ( boost::filesystem::ifstream::failure& /* e */ ) {
 		error = errno; // cannot read the file
@@ -757,13 +759,13 @@ fmx::errcode BE_FilePatternCount ( short /* funcId */, const ExprEnv& /* environ
 
 			// we're searching for needles in a haystack
 			std::vector<string> haystack;
-					
+
 			try {
-				
+
 				// gather the hay
 
 				for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
-							
+
 					boost::filesystem::path text_file_path ( *it );
 					text_file_path.make_preferred();
 					auto hay = ReadFileAsUTF8 ( text_file_path );
@@ -777,18 +779,18 @@ fmx::errcode BE_FilePatternCount ( short /* funcId */, const ExprEnv& /* environ
 			} catch ( boost::filesystem::filesystem_error& e ) {
 				error = e.code().value();
 			}
-		
+
 			// search for needles
-					
+
 			for ( typename BEValueList<string>::iterator it = search_strings->begin() ; it != search_strings->end(); ++it ) {
-				
+
 				auto needle = *it;
 				auto found_count = 0;
 
 				for ( typename std::vector<string>::iterator jt = haystack.begin() ; jt != haystack.end(); ++jt ) {
-						
+
 					auto hay = *jt;
-						
+
 					auto found_at = hay.find ( needle, 0 );
 					while ( found_at != std::string::npos ) {
 						found_at = hay.find ( needle, found_at + needle.length() );
@@ -818,6 +820,53 @@ fmx::errcode BE_FilePatternCount ( short /* funcId */, const ExprEnv& /* environ
 	return MapError ( error );
 
 } // BE_FilePatternCount
+
+
+fmx::errcode BE_FileReplaceText ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto text = ParameterPathOrContainerAsUTF8 ( parameters );
+		auto expression = ParameterAsUTF8String ( parameters, 1 );
+		auto replace_with = ParameterAsUTF8String ( parameters, 2 );
+		auto options = ParameterAsUTF8String ( parameters, 3, "gi" );
+
+		auto altered_text = regular_expression ( text, expression, options, replace_with, true );
+
+		const std::vector<char> out_to_file ( altered_text.begin(), altered_text.end() );
+
+		auto is_container = BinaryDataAvailable ( parameters );
+		if ( is_container ) {
+
+			const BinaryDataUniquePtr binary_data ( parameters.AtAsBinaryData(0) );
+			unique_ptr<BEQuadChar> data_type ( new BEQuadChar ( *binary_data, PreferredContainerType ( *binary_data ) ) );
+			auto file_name = ParameterFileName ( parameters );
+			SetResult ( file_name, out_to_file, data_type->as_string(), results );
+
+		} else {
+
+			auto path = ParameterAsPath ( parameters );
+			error = write_to_file ( path, out_to_file, ios_base::trunc );
+//			SetResult ( error, results );
+
+		}
+
+
+	} catch ( filesystem_error& e ) {
+		error = e.code().value();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_FileReplaceText
 
 
 fmx::errcode BE_FileMove ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -1238,9 +1287,9 @@ fmx::errcode BE_XMLParse ( short /* funcId */, const ExprEnv& /* environment */,
 
 		std::string result;
 		std::unique_ptr<BEXMLTextReader> reader;
-		
+
 		auto xml_input = ParameterAsUTF8String ( parameters );
-		
+
 		// if the input, excluding whitespace, begins with < we treat it as xml... if not, treat it as a file path
 		auto it = find_if_not ( xml_input.begin(), xml_input.end(), [](int c){ return isspace(c); } );
 		if ( "<" == xml_input.substr ( 0, 1 ) || *it == '<' ) {
@@ -1249,7 +1298,7 @@ fmx::errcode BE_XMLParse ( short /* funcId */, const ExprEnv& /* environment */,
 			auto input_file = ParameterAsPath ( parameters );
 			reader.reset ( new BEXMLTextReader ( input_file ) );
 		}
-		
+
 		result = reader->parse();
 
 		SetResult ( result, results );
@@ -1326,18 +1375,18 @@ fmx::errcode BE_XMLValidate ( short /* funcId */, const ExprEnv& /* environment 
 
 
 
-fmx::errcode BE_XML_Canonical ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XMLCanonical ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error =	NoError();
-	
+
 	try {
-		
+
 		auto xml = ParameterAsUTF8String ( parameters );
-		
+
 		auto canonized_xml = canonical_xml ( xml );
-		
+
 		SetResult ( canonized_xml, results );
-		
+
 	} catch ( BEXMLReaderInterface_Exception& e ) {
 		error = e.code();
 	} catch ( BEPlugin_Exception& e ) {
@@ -1347,10 +1396,35 @@ fmx::errcode BE_XML_Canonical ( short /* funcId */, const ExprEnv& /* environmen
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return MapError ( error );
-	
-} // BE_XML_Canonical
+
+} // BE_XMLCanonical
+
+
+fmx::errcode BE_XMLTidy ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error =	NoError();
+
+	try {
+
+		auto xml = ParameterAsUTF8String ( parameters );
+
+		auto pretty_printed = pretty_print_xml ( xml );
+
+		SetResult ( pretty_printed, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_XMLTidy
 
 
 
@@ -1432,7 +1506,7 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 			const auto json_query = Poco::JSON::Query ( json_object );
 			const auto json_array = json_query.findArray ( path ); // empty path gives the whole thing
 			array_size = json_array->size();
-			
+
 		} catch ( Poco::BadCastException& /* e */ ) {
 			; // not an array... don't error... array_size = 0;
 		} catch ( Poco::InvalidAccessException& /* e */ ) {
@@ -1443,7 +1517,7 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 		}
 
 		SetResult ( (double)array_size, results );
-		
+
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -1454,48 +1528,7 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 
 	return MapError ( error );
 
-} // BE_JSON_ArraySize_Deprecated
-
-
-fmx::errcode BE_JSON_Encode_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	g_json_error_description.clear();
-
-	try {
-
-		auto key = ParameterAsUTF8String ( parameters );
-		auto type = ParameterAsUTF8String ( parameters, 2 ); // allows the developer to specify null (only)
-
-		if ( parameters.Size() == 1 ) {
-
-			const string out = "\"" + key + "\":";
-			SetResult ( out, results );
-
-		} else {
-
-			std::unique_ptr<BEJSON> json_document ( new BEJSON ( ) );
-			auto json = json_document->encode ( key, parameters.At ( 1 ), type );
-			json.erase ( 0, 1 ); // remove {
-			json.erase ( json.length() - 1 ); // remove }
-			SetResult ( json, results );
-
-		}
-
-	} catch ( BEJSON_Exception& e ) {
-		error = e.code();
-		g_json_error_description = e.description();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_JSON_Encode_Deprecated
-
+} // BE_JSON_ArraySize
 
 
 #pragma mark -
@@ -1528,6 +1561,7 @@ fmx::errcode BE_EvaluateJavaScript ( short /* funcId */, const fmx::ExprEnv& /* 
 	return MapError ( error );
 
 } // BE_EvaluateJavaScript
+
 
 
 #pragma mark -
@@ -1661,13 +1695,13 @@ fmx::errcode BE_ArrayFind ( short /* funcId */, const fmx::ExprEnv& /* environme
 		auto array_id = ParameterAsIndex ( parameters );
 
 		try {
-			
+
 			auto wanted = arrays.at ( array_id ); // so we throw if the index is invalid
 			auto find_this = ParameterAsUTF8String ( parameters, 1 );
 			auto found = wanted->find ( find_this );
-			
+
 			SetResult ( found, results );
-			
+
 		} catch ( out_of_range& /* e */ ) {
 			; // if we don't find it don't error
 		}
@@ -1699,7 +1733,7 @@ fmx::errcode BE_ArrayChangeValue ( short /* funcId */, const fmx::ExprEnv& /* en
 			auto find_this = ParameterAsIndex ( parameters, 1 );
 			auto replace_with = ParameterAsUTF8String ( parameters, 2 );
 			auto changed = wanted->change_value ( find_this, replace_with );
-			
+
 			SetResult ( changed, results );
 
 		} catch ( out_of_range& /* e */ ) {
@@ -1722,17 +1756,17 @@ fmx::errcode BE_ArrayChangeValue ( short /* funcId */, const fmx::ExprEnv& /* en
 fmx::errcode BE_Variable ( short function_id, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
 {
 	errcode error = NoError();
-	
+
 	try {
-		
+
 		auto name = ParameterAsUTF8String ( parameters );
-		
+
 		if ( !name.empty() ) {
-			
+
 			static thread_local map<string,string> variables;
 
 			switch ( function_id ) {
-					
+
 				case kBE_VariableSet:
 				{
 					auto set_this = ParameterAsUTF8String ( parameters, 1 );
@@ -1744,21 +1778,21 @@ fmx::errcode BE_Variable ( short function_id, const fmx::ExprEnv& /* environment
 					}
 					break;
 				}
-					
+
 				case kBE_VariableGet:
 				{
 					auto value = variables [ name ];
 					SetResult ( value, results );
 					break;
 				}
-					
+
 				default:
 					; // should never get here
-					
+
 			} // switch
-			
+
 		}
-		
+
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -1766,31 +1800,31 @@ fmx::errcode BE_Variable ( short function_id, const fmx::ExprEnv& /* environment
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return MapError ( error );
-	
+
 } // BE_Variable
 
 
 fmx::errcode BE_Stack ( short function_id, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
 {
 	errcode error = NoError();
-	
+
 	try {
-		
+
 		auto name = ParameterAsUTF8String ( parameters );
 		if ( !name.empty() ) {
-			
+
 			static thread_local map<string,stack<string>> stacks;
-			
+
 			stack<string> the_stack;
 			auto it = stacks.find ( name );
 			if (  it != stacks.end() ) {
 				the_stack = stacks [ name ];
 			}
-			
+
 			switch ( function_id ) {
-					
+
 				case kBE_StackPush:
 				{
 					auto push_this = ParameterAsUTF8String ( parameters, 1 );
@@ -1799,7 +1833,7 @@ fmx::errcode BE_Stack ( short function_id, const fmx::ExprEnv& /* environment */
 					SetResult ( push_this, results );
 					break;
 				}
-					
+
 				case kBE_StackPop:
 				{
 					if ( !the_stack.empty() ) {
@@ -1810,25 +1844,25 @@ fmx::errcode BE_Stack ( short function_id, const fmx::ExprEnv& /* environment */
 					}
 					break;
 				}
-					
+
 				case kBE_StackCount:
 				{
 					auto size = the_stack.size();
 					SetResult ( (double)size, results );
 					break;
 				}
-					
+
 				case kBE_StackDelete:
 					stacks.erase ( name );
 					break;
 
 				default:
 					; // should never get here
-					
+
 			} // switch
-			
+
 		}
-		
+
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -1836,9 +1870,9 @@ fmx::errcode BE_Stack ( short function_id, const fmx::ExprEnv& /* environment */
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return MapError ( error );
-	
+
 } // BE_Stack
 
 
@@ -1917,10 +1951,21 @@ fmx::errcode BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */, cons
 
 	try {
 
-		auto archive = ParameterAsUTF8String ( parameters );
 		auto output_directory = ParameterAsUTF8String ( parameters, 1 );
 
-		error = (fmx::errcode)UnZip ( archive, output_directory );
+		auto is_container = BinaryDataAvailable ( parameters );
+		if ( is_container ) {
+
+			auto archive = ParameterAsVectorChar ( parameters );
+			error = (fmx::errcode)UnZipMemory ( archive, output_directory );
+
+		} else {
+
+			auto archive = ParameterAsUTF8String ( parameters );
+			error = (fmx::errcode)UnZipFile ( archive, output_directory );
+
+		}
+
 		SetResult ( error, results );
 
 	} catch ( filesystem_error& e ) {
@@ -1944,36 +1989,49 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 	errcode error = NoError();
 
 	try {
-		
-		// should there be multiple files with the same name... keep only the last one
-		auto values = ParameterAsStringValueList ( parameters );
 
-		std::map<std::string, std::string> unique_file_names;
-
-		for ( typename BEValueList<string>::iterator it = values->begin() ; it != values->end(); ++it ) {
-			
-			boost::filesystem::path file_path ( *it );
-			auto file_name = boost::algorithm::to_lower_copy ( file_path.filename().string() );
-			auto inserted = unique_file_names.insert ( { file_name, file_path.string() } );
-
-			if ( ! inserted.second ) {
-				error = kNameAlreadyExists;
-				auto next = unique_file_names.erase ( inserted.first );
-				if ( next == unique_file_names.end() ) {
-					unique_file_names.insert ( { file_name, file_path.string() } ); // auto replaced =
-				}
-			}
-			
-		} // for...
-
-		BEValueListStringUniquePtr files ( new BEValueList<string> ( map_values ( unique_file_names ) ) );
+		long zip_error = kNoError;
 		auto output_directory = ParameterAsUTF8String ( parameters, 1 );
 
-		auto zip_error = (fmx::errcode)Zip ( files.get(), output_directory );
+		auto is_container = BinaryDataAvailable ( parameters );
+		if ( is_container ) {
+
+			auto zip_this = ParameterAsVectorChar ( parameters );
+			auto file_name = ParameterFileName( parameters );
+			zip_error = ZipMemory ( zip_this, file_name, output_directory );
+
+		} else {
+
+			// should there be multiple files with the same name... keep only the last one
+			auto values = ParameterAsStringValueList ( parameters, 0, true, false );
+
+			std::map<std::string, std::string> unique_file_names;
+
+			for ( typename BEValueList<string>::iterator it = values->begin() ; it != values->end(); ++it ) {
+
+				boost::filesystem::path file_path ( *it );
+				auto file_name = boost::algorithm::to_lower_copy ( file_path.filename().string() );
+				auto inserted = unique_file_names.insert ( { file_name, file_path.string() } );
+
+				if ( ! inserted.second ) {
+					error = kNameAlreadyExists;
+					auto next = unique_file_names.erase ( inserted.first );
+					if ( next == unique_file_names.end() ) {
+						unique_file_names.insert ( { file_name, file_path.string() } ); // auto replaced =
+					}
+				}
+
+			} // for...
+
+			BEValueListStringUniquePtr files ( new BEValueList<string> ( map_values ( unique_file_names ) ) );
+			zip_error = ZipFiles ( files.get(), output_directory );
+
+		}
+
 		if ( kNoError != zip_error ) {
 			error = zip_error;
 		}
-		
+
 		SetResult ( error, results );
 
 	} catch ( filesystem_error& e ) {
@@ -1989,62 +2047,6 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 	return MapError ( error );
 
 } // BE_Zip
-
-
-
-fmx::errcode BE_Base64_Decode_Deprecated ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto text = ParameterAsUTF8String ( parameters );
-		auto filename = ParameterAsUTF8String ( parameters, 1 );
-
-		// decode it...
-		vector<char> data = Base64_Decode ( text );
-		if ( filename.empty() ) {
-			SetResult ( data, results );
-		} else {
-			SetResult ( filename, data, results );
-		}
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_Base64_Decode_Deprecated
-
-
-
-fmx::errcode BE_Base64_Encode_Deprecated ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto data = ParameterAsVectorChar ( parameters );
-		auto base64 = Base64_Encode ( data, funcId == kBE_Base64_URL_Encode_Deprecated );
-
-		SetResult ( base64, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_Base64_Encode_Deprecated
 
 
 
@@ -2120,7 +2122,7 @@ fmx::errcode BE_ContainerCompress ( short /*funcId*/, const ExprEnv& /* environm
 		auto to_compress = ParameterAsVectorChar ( parameters );
 		auto filename = ParameterAsUTF8String ( parameters, 1 );
 
-		SetResult ( filename, to_compress, results, COMPRESSED_CONTAINER_TYPE );
+		SetResult ( filename, to_compress, COMPRESSED_CONTAINER_TYPE, results );
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -2162,22 +2164,22 @@ fmx::errcode BE_ContainerUncompress ( short /*funcId*/, const ExprEnv& /* enviro
 fmx::errcode BE_ContainerListTypes ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
 {
 	errcode error = NoError();
-	
+
 	try {
-		
+
 		const BinaryDataUniquePtr container ( parameters.AtAsBinaryData ( 0 ) );
 		fmx::int32 count = container->GetCount();
 		BEValueListStringUniquePtr types ( new BEValueList<string> ( "" ) );
-		
+
 		for ( fmx::int32 i = 0 ; i < count ; i++ ) {
-			
+
 			BEQuadChar stream_type ( *container, i );
 			types->append ( stream_type.as_string() );
-			
+
 		} // for
 
 		SetResult ( *types, results );
-		
+
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -2185,24 +2187,24 @@ fmx::errcode BE_ContainerListTypes ( short /* funcId */, const fmx::ExprEnv& /* 
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return MapError ( error );
-	
+
 } // BE_ContainerListTypes
 
 
 fmx::errcode BE_ContainerGetType ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results )
 {
 	errcode error = NoError();
-	
+
 	try {
-		
+
 		const BinaryDataUniquePtr container ( parameters.AtAsBinaryData ( 0 ) );
 		auto stream_type = ParameterAsUTF8String ( parameters, 1 );
 		auto stream_index = IndexForStream ( *container, stream_type, false );
 
 		if ( kBE_DataType_Not_Found != stream_index ) {
-			
+
 			fmx::TextUniquePtr file_name;
 			auto fnam_error = container->GetFNAMData ( *file_name );
 
@@ -2211,36 +2213,36 @@ fmx::errcode BE_ContainerGetType ( short /* funcId */, const fmx::ExprEnv& /* en
 			auto size_error = container->GetSIZEData ( width, height );
 
 			if ( stream_type == SIZE_CONTAINER_TYPE ) {
-				
+
 				error = size_error;
 				stringstream size;
 				size << width << FILEMAKER_END_OF_LINE << height;
 				SetResult ( size.str(), results );
-				
+
 			} else if ( stream_type == FILENAME_CONTAINER_TYPE ) {
-				
+
 				error = fnam_error;
 				SetResult ( *file_name, results );
-				
+
 			} else if ( stream_type == MAIN_CONTAINER_TYPE ) {
-				
-				auto quad_char = DataAsVectorChar ( *container, stream_index );
+
+				auto quad_char = BinaryDataAsVectorChar ( *container, stream_index );
 				SetResult ( quad_char, results );
-				
+
 			} else {
 
-				auto stream_data = DataAsVectorChar ( *container, stream_index );
+				auto stream_data = BinaryDataAsVectorChar ( *container, stream_index );
 				auto name_of_file = TextAsUTF8String ( *file_name );
 				if ( name_of_file.empty() ) {
 					name_of_file = stream_type;
 				}
-				
-				SetResult ( name_of_file, stream_data, stream_type, width, height, results );
+
+				SetResult ( name_of_file, stream_data, stream_type, results );
 
 			}
 
 		}
-		
+
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -2248,9 +2250,9 @@ fmx::errcode BE_ContainerGetType ( short /* funcId */, const fmx::ExprEnv& /* en
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return MapError ( error );
-	
+
 } // BE_ContainerGetType
 
 
@@ -2330,7 +2332,7 @@ fmx::errcode BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */, con
 #pragma mark -
 
 
-fmx::errcode BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_EncryptAES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2366,11 +2368,11 @@ fmx::errcode BE_Encrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */
 
 	return MapError ( error );
 
-} // BE_Encrypt_AES
+} // BE_EncryptAES
 
 
 
-fmx::errcode BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_DecryptAES ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -2408,7 +2410,7 @@ fmx::errcode BE_Decrypt_AES ( short /*funcId*/, const ExprEnv& /* environment */
 
 	return MapError ( error );
 
-} // BE_Decrypt_AES
+} // BE_DecryptAES
 
 
 fmx::errcode BE_SignatureGenerateRSA ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -2592,7 +2594,7 @@ fmx::errcode BE_HTTP_GET ( short /* funcId */, const ExprEnv& /* environment */,
 } // BE_HTTP_GET
 
 
-fmx::errcode BE_HTTP_GET_File ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
+fmx::errcode BE_HTTP_GETFile ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
 {
 	errcode error = NoError();
 
@@ -2617,7 +2619,7 @@ fmx::errcode BE_HTTP_GET_File ( short /* funcId */, const ExprEnv& /* environmen
 
 	return MapError ( error );
 
-} // BE_HTTP_GET_File
+} // BE_HTTP_GETFile
 
 
 fmx::errcode BE_HTTP_POST_PUT_PATCH ( short funcId, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
@@ -2751,7 +2753,7 @@ fmx::errcode BE_HTTP_ResponseHeaders ( short /* funcId */, const ExprEnv& /* env
 
 		} else {
 
-			auto http_headers = boost::replace_all_copy (g_http_response_headers, "\r\n", "\n" );
+			auto http_headers = boost::replace_all_copy ( g_http_response_headers, NETWORK_ENDL, "\n" );
 
 			BEValueList<string> headers ( http_headers, "\n", false, false );
 			auto look_for = ParameterAsUTF8String ( parameters );
@@ -2888,8 +2890,6 @@ fmx::errcode BE_CurlTrace ( short /* funcId */, const fmx::ExprEnv& /* environme
 
 		SetResult ( g_curl_trace.str(), results );
 
-	} catch ( BECurlOption_Exception& e ) { // we don't handle it
-		error = e.code();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -2903,19 +2903,31 @@ fmx::errcode BE_CurlTrace ( short /* funcId */, const fmx::ExprEnv& /* environme
 } // BE_CurlTrace
 
 
-fmx::errcode BE_FTP_Upload ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_FTP_Upload ( short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
 		auto url = ParameterAsUTF8String ( parameters );
-		auto data = ParameterAsVectorChar ( parameters, 1 );
 		auto username = ParameterAsUTF8String ( parameters, 2 );
 		auto password = ParameterAsUTF8String ( parameters, 3 );
 
-		BECurl curl ( url, kBE_FTP_METHOD_UPLOAD, "", username, password, "", data );
-		vector<char> response = curl.ftp_upload ( );
+		std::vector<char> response;
+
+		if ( function_id == kBE_FTP_Upload ) {
+
+			auto data = ParameterAsVectorChar ( parameters, 1 );
+			BECurl curl ( url, kBE_FTP_METHOD_UPLOAD, "", username, password, "", data );
+			response = curl.ftp_upload ( );
+
+		} else { // kBE_FTP_UploadFile
+
+			auto file_to_upload = ParameterAsPath ( parameters, 1 );
+			BECurl curl ( url, kBE_FTP_METHOD_UPLOAD, file_to_upload.string(), username, password );
+			response = curl.ftp_upload ( );
+
+		}
 
 		error = g_last_error;
 		if ( error == kNoError ) {
@@ -3010,35 +3022,25 @@ fmx::errcode BE_SMTPSend ( short /* funcId */, const fmx::ExprEnv& /* environmen
 	try {
 
 		auto from = ParameterAsUTF8String ( parameters );
-		auto to = ParameterAsUTF8String ( parameters, 1 );
+		auto to = ParameterAsStringValueList ( parameters, 1, true, false );
 		auto subject = ParameterAsUTF8String ( parameters, 2 );
 		auto text = ParameterAsUTF8String ( parameters, 3 );
+		auto html = ParameterAsUTF8String ( parameters, 7 );
 
-		unique_ptr<BESMTPEmailMessage> message ( new BESMTPEmailMessage ( from, to, subject, text ) );
+		unique_ptr<BESMTPEmailMessage> message ( new BESMTPEmailMessage ( from, to, subject, text, html ) );
 
-		auto cc = ParameterAsUTF8String ( parameters, 4 );
+		auto cc = ParameterAsStringValueList ( parameters, 4, true, false );
 		message->set_cc_addresses ( cc );
 
-		auto bcc = ParameterAsUTF8String ( parameters, 5 );
+		auto bcc = ParameterAsStringValueList ( parameters, 5, true, false );
 		message->set_bcc_addresses ( bcc );
 
 		auto reply_to = ParameterAsUTF8String ( parameters, 6 );
 		message->set_reply_to ( reply_to );
 
-		auto html = ParameterAsUTF8String ( parameters, 7 );
-		message->set_html_alternative ( html );
-
-
-		auto attachments = ParameterAsWideString ( parameters, 8 );
-		vector<path> paths;
-		if ( !attachments.empty() ) {
-
-			boost::split ( paths, attachments, boost::is_any_of ( FILEMAKER_END_OF_LINE ), boost::token_compress_on );
-
-			for ( auto const& attach_this : paths ) {
-				g_smtp_attachments.add ( attach_this.string() );
-			}
-
+		auto attachments = ParameterAsStringValueList ( parameters, 8, true, false );
+		for ( auto it = attachments->begin() ; it != attachments->end() ; it++ ) {
+			g_smtp_attachments.add ( *it );
 		}
 		message->set_attachments ( g_smtp_attachments.get_file_list() );
 
@@ -3106,159 +3108,6 @@ fmx::errcode BE_SMTPAddAttachment ( short /* funcId */, const fmx::ExprEnv& /* e
 	return MapError ( error );
 
 } // BE_SMTPAddAttachment
-
-
-
-#pragma mark -
-#pragma mark OAuth
-#pragma mark -
-
-
-fmx::errcode BE_OAuthRequestAccessToken_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto uri = ParameterAsUTF8String ( parameters );
-		auto consumer_key = ParameterAsUTF8String ( parameters, 1 );
-		auto consumer_secret = ParameterAsUTF8String ( parameters, 2 );
-		auto request_key = ParameterAsUTF8String ( parameters, 3 );
-		auto request_secret = ParameterAsUTF8String ( parameters, 4 );
-
-		if ( g_oauth ) {
-			delete g_oauth;
-			g_oauth = NULL;
-		}
-
-		string response;
-
-		// if the uri is empty then we are only clearing out any set oauth data
-
-		if ( !uri.empty() ) {
-
-			BEOAuth * oauth = new BEOAuth ( consumer_key, consumer_secret );
-			error = oauth->oauth_request ( uri, request_key, request_secret );
-
-			// argh, nasty
-			if ( error == kNoError ) {
-
-				const unsigned long number_of_parameters = parameters.Size();
-
-				if ( number_of_parameters == 3 ) {
-					response = oauth->get_request_key() + FILEMAKER_END_OF_LINE + oauth->get_request_secret();
-				} else {
-					response = oauth->get_access_key() + FILEMAKER_END_OF_LINE + oauth->get_access_secret();
-				}
-
-				g_oauth = oauth; // must assign after the authorisation request otherwise BECurl will try and use g_oauth
-
-			} else {
-				response = oauth->get_last_error();
-				if ( !response.empty() ) {
-					error = kNoError;
-				}
-			}
-
-		}
-
-		SetResult ( response, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_OAuthRequestAccessToken_Deprecated
-
-
-#pragma mark -
-#pragma mark Xero (Deprecated)
-#pragma mark -
-
-
-fmx::errcode BE_XeroSetTokens_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		if ( g_oauth ) {
-			delete g_oauth;
-			g_oauth = NULL;
-		}
-
-		auto consumer_key = ParameterAsUTF8String ( parameters );
-		auto consumer_secret = ParameterAsUTF8String ( parameters, 1 );
-
-		// if the consumer_key is empty then we are only clearing out any set oauth data
-
-		if ( !consumer_key.empty() ) {
-
-			boost::algorithm::replace_all ( consumer_secret, FILEMAKER_END_OF_LINE, "\r\n" );
-
-			BEXero * xero = new BEXero ( consumer_key, consumer_secret );
-			g_oauth = xero; // must assign after the authorisation request otherwise BECurl will try and use g_oauth
-
-		}
-
-		SetResult ( "", results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_XeroSetTokens_Deprecated
-
-
-fmx::errcode BE_XeroGenerateKeys_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto organisation = ParameterAsUTF8String ( parameters );
-		auto organisational_unit = ParameterAsUTF8String ( parameters, 1 );
-		auto country = ParameterAsUTF8String ( parameters, 2 );
-		auto state = ParameterAsUTF8String ( parameters, 3 );
-		auto suburb = ParameterAsUTF8String ( parameters, 4 );
-		auto domain = ParameterAsUTF8String ( parameters, 5 );
-		auto email = ParameterAsUTF8String ( parameters, 6 );
-
-		unique_ptr<BEX509> x509 ( new BEX509 );
-
-		x509->add_name_entry ( "O", organisation );
-		x509->add_name_entry ( "OU", organisational_unit );
-		x509->add_name_entry ( "C", country );
-		x509->add_name_entry ( "ST", state );
-		x509->add_name_entry ( "L", suburb );
-		x509->add_name_entry ( "CN", domain );
-		x509->add_name_entry ( "emailAddress", email );
-
-		SetResult ( xero_generate_key_pair ( x509.get() ), results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_XeroGenerateKeys_Deprecated
 
 
 
@@ -3331,7 +3180,7 @@ fmx::errcode BE_ValuesContainsDuplicates ( short /* funcId */, const ExprEnv& /*
 		auto value_list = ParameterAsUTF8String ( parameters );
 		auto case_sensitive = ParameterAsBoolean ( parameters, 1 );
 
-		auto values ( new BEValueList<string> ( value_list, case_sensitive ) );
+		BEValueListStringUniquePtr values ( new BEValueList<string> ( value_list, case_sensitive ) );
 		auto contains_duplicates = values->contains_duplicates();
 
 		SetResult ( contains_duplicates, results );
@@ -3550,32 +3399,35 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 	try {
 
 		auto pdf_document = ParameterAsPDF ( parameters );
-		
-		std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
+
 		auto which = 1;
-		
-		 if ( BinaryDataAvailable ( parameters, which ) ) {
-			 
-			 auto pdf = ParameterAsVectorChar ( parameters, which );
-			 pdf_document_to_append->Load ( pdf.data(), (long)pdf.size() );
-			 pdf_document->Append ( *pdf_document_to_append );
 
-		 } else {
-			 
-			 auto file_list = ParameterAsStringValueList ( parameters, which, true, false );
+		if ( BinaryDataAvailable ( parameters, which ) ) {
 
-			 for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
-				 
-				 boost::filesystem::path pdf_path ( *it );
-				 pdf_path.make_preferred();
-				 pdf_document_to_append->Load ( pdf_path.c_str() );
-				 pdf_document->Append ( *pdf_document_to_append );
+			auto pdf = ParameterAsVectorChar ( parameters, which );
 
-			 } // for...
-			 
-		 }
-		
-		pdf_document_to_append.reset(); // make sure to close the file
+			std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
+			pdf_document_to_append->LoadFromBuffer ( pdf.data(), (long)pdf.size() );
+			pdf_document->Append ( *pdf_document_to_append );
+			pdf_document_to_append.reset(); // make sure to close the file
+
+		} else {
+
+			auto file_list = ParameterAsStringValueList ( parameters, which, true, false );
+
+			for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
+
+				boost::filesystem::path pdf_path ( *it );
+				pdf_path.make_preferred();
+
+				std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
+				pdf_document_to_append->Load ( pdf_path.c_str() );
+				pdf_document->Append ( *pdf_document_to_append );
+				pdf_document_to_append.reset(); // make sure to close the file
+
+			} // for...
+
+		} // if ( BinaryDataAvailable...
 
 		// write out a temporary file
 		auto temporary_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
@@ -3587,7 +3439,7 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 
 			auto file_data = ReadFileAsBinary ( temporary_file );
 			auto destination = ParameterFileName ( parameters );
-			SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
+			SetResult ( destination, file_data, PDF_CONTAINER_TYPE, results );
 
 		} else {
 
@@ -3648,38 +3500,51 @@ fmx::errcode BE_PDFGetPages ( short /* funcId */, const ExprEnv& /* environment 
 	try {
 
 		auto pdf_document = ParameterAsPDF ( parameters );
-		auto from = (int)ParameterAsIndex ( parameters, 2 );
-		from = 0 > from ? 0 : from;
-		auto to = (const int)ParameterAsLong ( parameters, 3 );
-		const auto number_of_pages = to == 0 ? pdf_document->GetPageCount() : to - from;
+		auto number_of_pages_in_pdf = pdf_document->GetPageCount();
 
-		if ( number_of_pages > 0 ) {
+		auto from = ParameterAsLong ( parameters, 2 );
+		auto first_page = 1L;
+		if ( from > first_page ) {
+			first_page = from;
+		}
 
-			std::unique_ptr<PoDoFo::PdfMemDocument> new_pdf ( new PoDoFo::PdfMemDocument() );
-			new_pdf->InsertPages ( *pdf_document, from, number_of_pages );
+		auto to = ParameterAsLong ( parameters, 3 );
+		auto number_of_pages_to_get = to;
+		if ( number_of_pages_to_get <= 0 || number_of_pages_to_get > number_of_pages_in_pdf ) {
+			number_of_pages_to_get = number_of_pages_in_pdf;
+		}
 
+		if ( number_of_pages_to_get > 0 ) {
+
+			std::vector<long> pages_wanted;
+			for ( long i = first_page ; i <= number_of_pages_to_get ; i++ ) {
+				pages_wanted.push_back ( i - 1 );
+			}
+
+			std::unique_ptr<BEPDFDocument> new_pdf ( new BEPDFDocument() );
+			new_pdf->InsertPages ( *pdf_document, pages_wanted );
 			pdf_document.reset(); // make sure to close the file
-			
+
 			// write out a temporary file
 			auto temporary_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
 			new_pdf->Write ( temporary_file.c_str() );
 			new_pdf.reset(); // make sure to close the file
-			
+
 			auto output_path = ParameterAsPath ( parameters, 1 );
 			if ( output_path.empty() ) {
-				
+
 				auto file_data = ReadFileAsBinary ( temporary_file );
 				auto destination = ParameterFileName ( parameters );
-				SetResult ( destination, file_data, results, FILE_CONTAINER_TYPE );
-				
+				SetResult ( destination, file_data, PDF_CONTAINER_TYPE, results );
+
 			} else {
-				
+
 				rename ( temporary_file, output_path );
 				//	SetResult ( nothing, results );
-				
+
 			}
 		}
-		
+
 
 	} catch ( filesystem_error& e ) {
 		error = e.code().value();
@@ -3932,20 +3797,20 @@ fmx::errcode BE_TimeFunctions ( const short funcId, const ExprEnv& /* environmen
 
 
 /*
- BE_ExtractScriptVariables implements are somewhat imperfect heuristic for finding
+ BE_TextExtractWords implements are somewhat imperfect heuristic for finding
  script variables within chunks of filemaker calculation
 
  try to stip out unwanted text such as strings and comments and then, when a $ is
  found, attempt to guess the where the variable name ends
  */
 
-fmx::errcode BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_TextExtractWords ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
-		auto variables ( new BEValueList<std::wstring> );
+		BEValueListWideStringUniquePtr variables ( new BEValueList<std::wstring> );
 		auto calculation = ParameterAsWideString ( parameters );
 		auto variable_prefix = ParameterAsWideString ( parameters, 1, L"$" ); // look for FM script variables unless otherwise specified
 
@@ -4006,7 +3871,8 @@ fmx::errcode BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* e
 					break;
 
 //				default:
-			}
+
+			} // switch
 
 			// this is not on an eternal quest
 			if ( (end != string::npos) && (search_from < calculation.size()) ) {
@@ -4028,7 +3894,7 @@ fmx::errcode BE_ExtractScriptVariables ( short /* funcId */, const ExprEnv& /* e
 
 	return MapError ( error );
 
-} // BE_ExtractScriptVariables
+} // BE_TextExtractWords
 
 
 
@@ -4038,45 +3904,35 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 
 	try {
 
-		auto shell_command = ParameterAsUTF8String ( parameters );
-		const long timeout = ParameterAsLong ( parameters, 1, kBE_Never );
+		SystemCommand::system_command command_to_execute;
+
+		command_to_execute.command_text = ParameterAsUTF8String ( parameters );
+		auto timeout = ParameterAsLong ( parameters, 1, kBE_Never );
+		command_to_execute.execute_using_shell = ParameterAsBoolean ( parameters, 2, true );
 
 		SystemCommand command;
-        
-// Note: not implemented on iOS
-#if ( FMX_MAC_TARGET || FMX_LINUX_TARGET || FMX_IOS_TARGET )
-        SetResult ( command.run_with_popen( shell_command, timeout ), results );
-#endif
-        
-#if defined FMX_WIN_TARGET
-        
-		Poco::ActiveResult<string> result = command.execute ( shell_command );
+		auto result = command.execute ( command_to_execute );
 
 		switch ( timeout ) {
-				
+
 			case kBE_Never:
 				result.wait ( );
 				break;
-				
-			case kBE_Immediate:
-				error = kCommandTimeout;
-				// fall through
-				
+
 			default:
-				
+
 				try {
 					result.wait ( timeout );
 				} catch ( Poco::TimeoutException& /* e */ ) {
 					error = kCommandTimeout;
 				}
-				
+
 		}
 
 		if ( result.available() ) {
 			SetResult ( result.data(), results );
 		}
-#endif
-		
+
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -4169,7 +4025,9 @@ fmx::errcode BE_ScriptExecute ( short /* funcId */, const ExprEnv& environment, 
 
 		}
 
-		error = ExecuteScript ( *script_name, *file_name, *parameter, environment );
+		auto script_control = ParameterAsLong ( parameters, 3, kFMXT_Pause );
+
+		error = ExecuteScript ( *script_name, *file_name, *parameter, script_control, environment );
 
 		SetResult ( error, results );
 
@@ -4199,7 +4057,7 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 		FMX_UInt32 number_of_paramters = parameters.Size();
 
 		TextUniquePtr filename;
-		if ( number_of_paramters == 4 ) {
+		if ( number_of_paramters >= 4 ) {
 			filename->SetText ( parameters.AtAsText(3) );
 		}
 
@@ -4217,9 +4075,37 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 			sql->set_row_separator ( *row_separator );
 		}
 
-		sql->execute ( environment );
+		auto text_result_wanted = ParameterAsBoolean ( parameters, 4, true );
+		sql->execute ( environment, text_result_wanted );
 
-		SetResult ( *(sql->get_text_result()), results );
+
+		if ( parameters.Size() >= 6 ) { // writing a file
+
+			ios_base::openmode mode = ios_base::trunc;
+			if ( !text_result_wanted ) {
+				mode |= ios_base::binary;
+			}
+
+			auto path = ParameterAsUTF8String ( parameters, 5 );
+			auto sql_result = sql->get_vector_result();
+			error = write_to_file ( path, sql_result, mode );
+
+		} else { // sending the result to fmp
+
+			if ( text_result_wanted ) {
+
+				auto sql_result = sql->get_text_result();
+				SetResult ( *sql_result, results );
+
+			} else {
+
+				auto sql_result = sql->get_data_result();
+				results.SetBinaryData ( sql_result->GetBinaryData() );
+
+			}
+
+		}
+
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -4242,8 +4128,8 @@ fmx::errcode BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environmen
 	try {
 
 		auto message = ParameterAsUTF8String ( parameters );
-		const unsigned long algorithm = ParameterAsLong( parameters, 1, kBE_MessageDigestAlgorithm_SHA256 );
-		const unsigned long output_type = ParameterAsLong( parameters, 2, kBE_Encoding_Hex );
+		const unsigned long algorithm = ParameterAsLong( parameters, 1, kBE_MessageDigestAlgorithmSHA256 );
+		const unsigned long output_type = ParameterAsLong( parameters, 2, kBE_EncodingHex );
 
 		string digest = message_digest ( message, algorithm, output_type );
 
@@ -4263,36 +4149,7 @@ fmx::errcode BE_MessageDigest ( short /* funcId */, const ExprEnv& /* environmen
 
 
 
-fmx::errcode BE_HMAC_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto message = ParameterAsUTF8String ( parameters );
-		auto key = ParameterAsUTF8String ( parameters, 1 );
-		const unsigned long algorithm = ParameterAsLong ( parameters, 2, kBE_MessageDigestAlgorithm_SHA1 );
-		const unsigned long output_type = ParameterAsLong ( parameters, 3, kBE_Encoding_Hex );
-		const unsigned long input_type = ParameterAsLong ( parameters, 4, kBE_Encoding_None );
-
-		string hmac = HMAC ( message, algorithm, output_type, key, input_type );
-
-		SetResult ( hmac, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_HMAC_Deprecated
-
-
-fmx::errcode BE_JPEGRecompress( const short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_JPEGRecompress ( const short /* function_id */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -4306,22 +4163,8 @@ fmx::errcode BE_JPEGRecompress( const short function_id, const ExprEnv& /* envir
 			const int quality = (const int)ParameterAsLong ( parameters, 1, 75 ); // percent
 			jpeg->set_compression_level ( quality );
 
-			if ( function_id == kBE_JPEGRecompress) {
-
-				const double scale = ParameterAsDouble ( parameters, 2 );
-				jpeg->set_scaling ( scale );
-
-			} else {
-
-				// deprecated
-
-				const int width = (const int)ParameterAsLong ( parameters, 2, 0 );
-				jpeg->set_width ( width );
-
-				const int height = (const int)ParameterAsLong ( parameters, 3, 0 );
-				jpeg->set_height ( height );
-
-			}
+			const double scale = ParameterAsDouble ( parameters, 2 );
+			jpeg->set_scaling ( scale );
 
 			jpeg->recompress();
 
@@ -4356,13 +4199,9 @@ fmx::errcode BE_ConvertContainer ( short /* funcId */, const ExprEnv& /* environ
 
 			vector<char> container_data = ParameterAsVectorChar ( parameters );
 			auto filename = ParameterFileName ( parameters );
-
 			auto type = ParameterAsUTF8String ( parameters, 1, FILE_CONTAINER_TYPE );
 
-			const unsigned long width = ParameterAsLong ( parameters, 2, kErrorUnknown );
-			const unsigned long height = ParameterAsLong ( parameters, 3, kErrorUnknown );
-
-			SetResult ( filename, container_data, type, (const short)width, (const short)height, results );
+			SetResult ( filename, container_data, type, results );
 
 		} else {
 			error = kInvalidFieldType;
@@ -4476,11 +4315,11 @@ fmx::errcode BE_GetMachineName ( short /* funcId */, const ExprEnv& /* environme
 fmx::errcode BE_DebugInformation ( short /* funcId */, const ExprEnv& environment, const DataVect& /* parameters */, Data& results )
 {
 	errcode error = NoError();
-	
+
 	try {
-		
+
 		SetResult ( debug_information ( environment ), results );
-		
+
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -4488,21 +4327,21 @@ fmx::errcode BE_DebugInformation ( short /* funcId */, const ExprEnv& environmen
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return MapError ( error );
-	
+
 } // BE_DebugInformation
 
 
 fmx::errcode BE_GetSystemDrive ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
 {
 	errcode error = NoError();
-	
+
 	try {
-		
+
 		auto system_drive = get_system_drive();
 		SetResult ( system_drive, results );
-		
+
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
 	} catch ( bad_alloc& /* e */ ) {
@@ -4510,9 +4349,9 @@ fmx::errcode BE_GetSystemDrive ( short /* funcId */, const ExprEnv& /* environme
 	} catch ( exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
-	
+
 	return MapError ( error );
-	
+
 } // BE_GetSystemDrive
 
 

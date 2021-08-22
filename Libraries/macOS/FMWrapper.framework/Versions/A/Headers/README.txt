@@ -1,11 +1,12 @@
 FMMiniPlugIn Sample Plug-In
 ---------------------------
 
-A sample plug-in is now included with the FileMaker Plug-In SDK. The environments used to build this small sample plug-in include:
+A sample plug-in is included with the FileMaker Plug-In SDK. The environments used to build this small sample plug-in include:
 
-macOS & iOS: macOS Version 10.14 with Xcode 10.2, targeting iOS 12.2
-Win: OS Version 10 Visual Studio 2017 15.8
-Linux: CentOS 7.3 Code::Blocks 16.01
+macOS: macOS 11.1 with Xcode 12.4 (for both Apple silicon and Intel processors)
+iOS: iOS 13.2 with Xcode 12.4
+Windows: Windows 10 with Visual Studio 2017 15.8
+Linux: CentOS 7.7 or Ubuntu 18 with Code::Blocks 20
 
 Digitally Signing Plug-Ins
 --------------------------
@@ -15,13 +16,14 @@ Check out these two blogs for how one can sign plug-ins
 https://www.troi.com/plug-in-development/code-signing-filemaker-plugins/
 http://fmplugins.idma.nz/index.php?title=Code_Signing
 
-Plug-in version returned by Get(InstalledFMPlugins)
----------------------------------------------------
+Plug-in version returned by Get(InstalledFMPlugins) and Get(InstalledFMPluginsAsJSON)
+-------------------------------------------------------------------------------------
 
 macOS & iOS: the CFBundleVersion string of the bundle's plist
-Win: the FILEVERSION string of the DLL's VERSIONINFO resource
+Windows: the FILEVERSION string of the DLL's VERSIONINFO resource
 Linux: the soname field of the ELF shared library
 
+The new InstalledFMPluginsAsJSON function also returns the plug-in's ID, description, and file path.
 
 Plug-in XML UI definition
 -------------------------
@@ -30,17 +32,17 @@ This XML is the text that will be passed to the scriptStepDefinition parameter o
 
 The attributes for a <Parameter> tag include:
 
-  * Type - if not one of the following four types, the parameter is ignored
-      1. Calc - a standard Specify button that brings up the calculation dialog. When the script step is executed, the calculation will be evaluated and its results passed to the plug-in
-      2. Bool - simple check box that returns the value of 0 or 1
-      3. List - a static drop-down or pop-up list in which the id of the item selected is returned. The size limit of this list is limited by the capabilities of the UI widgets used to display it. A List type parameter expects to contain <Value> tags as specified below
-      4. Target - will include a specify button that uses the new  Insert From Target field targeting dialog that allows a developer to put the results of a script step into a field (whether or not it is on a layout), into a variable, or insert into the current active field on a layout. If no Target is defined then the result Data object is ignored. If there are multiple Target definitions, only the first one will be honored.
+  * Type - If not one of the following four types, the parameter is ignored.
+      1. Calc - A standard Specify button that brings up the calculation dialog. When the script step is executed, the calculation will be evaluated and its results passed to the plug-in.
+      2. Bool - Simple check box that returns the value of 0 or 1.
+      3. List - A static drop-down or pop-up list in which the ID of the item selected is returned. The size limit of this list is limited by the capabilities of the UI widgets used to display it. A List type parameter expects to contain <Value> tags as specified below.
+      4. Target - Will include a specify button that uses the new Insert From Target field targeting dialog that allows a developer to put the results of a script step into a field (whether or not it is on a layout), into a variable, or insert into the current active field on a layout. If no Target is defined then the result Data object is ignored. If there are multiple Target definitions, only the first one will be honored.
 
-  * ID - A value in the range of 0 to 9 which is used as an index into the DataVect& parms object for the plug-in to retrieve the value of the parameter. Indexes that are not in range or duplicated will cause the parameter to be ignored. A parameter of type Target ignores this attribute if specified
+  * ID - A value in the range of 0 to 9, which is used as an index into the DataVect& parms object for the plug-in to retrieve the value of the parameter. Indexes that are not in range or duplicated will cause the parameter to be ignored. A parameter of type Target ignores this attribute if specified.
 
-  * Label - The name of parameter or control that is displayed in the UI
+  * Label - The name of parameter or control that is displayed in the UI.
 
-  * DataType - only used by the Calc and Target parameter types. If not specified or not one of the six data types, the type Text will be used
+  * DataType - Only used by the Calc and Target parameter types. If not specified or not one of the six data types, the type Text will be used.
       1. Text
       2. Number
       3. Date
@@ -48,11 +50,11 @@ The attributes for a <Parameter> tag include:
       5. Timestamp
       6. Container 
 
-  * ShowInline - value is either true or false. If defined and true, will cause the parameter to show up inlined with the script step in the Scripting Workspace
+  * ShowInline - Value is either true or false. If defined and true, will cause the parameter to show up inlined with the script step in the Script Workspace.
 
-  * Default - either the numeric index of the default list item or the true/false value for a bool item. Ignored for calc and target parameters
+  * Default - Either the numeric index of the default list item or the true/false value for a bool item. Ignored for calc and target parameters.
 
-Parameters of type List are expected to contain <Value> tags whose values are used to construct the drop-down or pop-up list. The id of a value starts at zero but specific id can be given to a value by defining an "ID" attribute. If later values do not have an "ID" attributes the id will be set to the previous values id plus one.
+Parameters of type List are expected to contain <Value> tags whose values are used to construct the drop-down or pop-up list. The ID of a value starts at zero, but a specific ID can be given to a value by defining an "ID" attribute. If later values do not have an "ID" attribute, the ID will be set to the previous value's ID plus one.
 
 Sample XML description:
 
@@ -70,7 +72,7 @@ Sample XML description:
 Unified plug-in bundle format
 -----------------------------
 
-A unified plug-in bundle is now supported so that only one folder of items need to be distributed for the Mac, Win, and Linux platforms. The iOS bundles will still be independent since they cannot be installed by the FileMaker script step and instead are part of the iOS SDK build process. The bundle folder format matches the Mac plug-in bundle with the addition of a Windows and Linux folder inside the Resources folder. The format of the actual Windows or Linux dynamic libraries does not change, now you can just place the Windows .fmx and .fmx64 files into the Windows folder and the Linux .fmx file into Linux folder. The name (minus extension) of the dynamic library must match the name of the bundle folder (minus the extension). An example disk layout of a "fat" plug-in would look like:
+A unified plug-in bundle is now supported so that only one folder of items needs to be distributed for the Mac, Windows, and Linux platforms. The iOS bundles will still be independent since they cannot be installed by the FileMaker script step and instead are part of the iOS App SDK build process. The bundle folder format matches the Mac plug-in bundle with the addition of a Windows and Linux folder inside the Resources folder. The format of the actual Windows or Linux dynamic libraries does not change; now you can just place the Windows .fmx and .fmx64 files into the Windows folder and the Linux .fmx file into the Linux folder. The name (minus extension) of the dynamic library must match the name of the bundle folder (minus the extension). An example disk layout of a "fat" plug-in would look like:
 
 FMMiniPlugIn.fmplugin
   Contents
@@ -87,7 +89,7 @@ FMMiniPlugIn.fmplugin
     Info.plist
     PkgInfo
 
-The reason the Linux and Windows folders are inside the Resources folder is due to how Mac bundles are signed by Xcode. Note that plug-ins are now required to be signed by their development environments and the bundle has to be signed after the non-Mac plug-ins are added to it. Currently only the Mac can import this bundle format into a container folder directly with the Insert File command. Insert from URL can be used on other platforms by creating a properly compressed Mac plug-in bundle via these two commands that come with the macOS:
+The reason the Linux and Windows folders are inside the Resources folder is due to how Mac bundles are signed by Xcode. Note that plug-ins are now required to be signed by their development environments and the bundle has to be signed after the non-Mac plug-ins are added to it. Currently only the Mac can import this bundle format into a container folder directly with the Insert File command. Insert from URL can be used on other platforms by creating a properly compressed Mac plug-in bundle via these two commands that come with macOS:
 
   xar -cf MyCoolPlugin.fmplugin.xar MyCoolPlugin.fmplugin
   gzip -c MyCoolPlugin.fmplugin.xar > MyCoolPlugin.fmplugin.gz
@@ -99,6 +101,11 @@ List of changes for 19
 FMXCalcEngine.h
   New fmx::ExprEnv::EvaluateConvertToFileMakerPath and fmx::ExprEnv::EvaluateConvertFromFileMakerPath methods plus fmx::ExprEnv::kConvert_XXX enums to be able to call the new ConvertToFileMakerPath and ConvertFromFileMakerPath calculation functions directly
 
+General
+  Removal of obsolete APIs from header files
+  Addition of Apple silicon support
+  Addition of the fmplugin extended privilege in FileMaker 19.2.1
+
 List of changes for 18
 ----------------------
 
@@ -106,10 +113,10 @@ FMXCalcEngine.h
   New fmx::ExprEnv::EvaluateGetFunction method and many fmx::ExprEnv::kGet_XXX enums for each FileMaker Get() calculation function
 
 Plug-in loading
-  The existence and validity of the digital signature for Mac and Windows plug-ins will be validated before it is loaded. MacOS and Windows versions of the Pro Advanced or Runtime client will ask the user if they want to trust an unsigned plug-in and add it to to the user preference's permitted list if specified. In all other cases unsigned or invalid/expired/revoked/etc signatures will prevent the plug-in from loading.
+  The existence and validity of the digital signature for Mac and Windows plug-ins will be validated before it is loaded. macOS and Windows versions of the FileMaker Pro Advanced or Runtime client will ask the user if they want to trust an unsigned plug-in and add it to to the user preference's permitted list, if specified. In all other cases, unsigned or invalid/expired/revoked/etc signatures will prevent the plug-in from loading.
 
 Install Plug-In File script step errors
-  For error 1550 and 1551 the Get(LastExternalErrorDetail) function will return the following information for why a plug-in could not load, including the new reasons of having an invalid signature.
+  For error 1550 and 1551, the Get(LastExternalErrorDetail) function will return the following information for why a plug-in could not load, including the new reasons of having an invalid signature.
 
 	Error 1550
 		Unrecognized plug-in file
@@ -160,21 +167,9 @@ FMXCalcEngine.h
   fmx::ExprEnv display and compatibility flag changes
   Support for external script steps via RegisterScriptStep and UnRegisterScriptStep
 FMXExtern.h
-  kFMXT_HelpURLStr in FMXExtern.h used to return URL to your help web site
+  kFMXT_HelpURLStr in FMXExtern.h used to return URL to your help website
 FMXText.h
   Added GetBytesEx to fmx::Text
-
-
-List of changes for 15
-----------------------
-
-All headers
-  Deprecating all xxxAutoPtr classes in favor of xxxUniquePtr classes
-FMXECalcEngine.h
-  New SessionID and FileID state information methods for the fmx:ExprEnv class
-  New RegisterExternalFunctionEx method adds function description parameter
-FMXExtern.h
-  New kFMXT_SessionShutdown and kFMXT_FileShutdown main entry point messages
 
 
 List of earlier changes

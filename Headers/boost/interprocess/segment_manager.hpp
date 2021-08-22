@@ -424,6 +424,8 @@ class segment_manager
       const void *const segm_addr  = static_cast<segment_manager_base_t*>(this);
       (void)this_addr;  (void)segm_addr;
       BOOST_ASSERT( this_addr == segm_addr);
+      const std::size_t void_ptr_alignment = boost::move_detail::alignment_of<void_pointer>::value; (void)void_ptr_alignment;
+      BOOST_ASSERT((0 == (std::size_t)this_addr % boost::move_detail::alignment_of<segment_manager>::value));
    }
 
    //!Tries to find a previous named/unique allocation. Returns the address

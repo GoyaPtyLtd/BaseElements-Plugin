@@ -125,7 +125,7 @@ protected:
 	
 	std::vector<char> upload_data;
 	struct MemoryStruct userdata;
-	struct curl_httppost *post_data;
+	struct curl_mime * mime;
 
 	std::string parameters;
 	
@@ -140,16 +140,18 @@ protected:
 	CURLcode error;
 
 	void write_to_memory ( );
+	void prepare_file_upload ( );
 	void perform ( );
 
-	void easy_setopt ( CURLoption option, ... );
+	void easy_setopt ( const CURLoption option, ... );
 	void configure_progress_dialog ( );
 	
 	std::string http_method_as_string ( );
 	
 	void prepare_data_upload ( );
 	void prepare_upload ( );
-	
+	std::vector<char> upload ( );
+
 };
 
 

@@ -50,10 +50,14 @@ namespace PoDoFo {
 class PdfDocument;
 class PdfDictionary;
 class PdfVecObjects;
+class PdfInputStream;
 
 typedef std::map<PdfReference,PdfAnnotation*> TMapAnnotation;
 typedef TMapAnnotation::iterator              TIMapAnnotation;
 typedef TMapAnnotation::const_iterator        TCIMapAnnotation;
+typedef std::map<PdfObject *,PdfAnnotation*>  TMapAnnotationDirect;
+typedef TMapAnnotationDirect::iterator        TIMapAnnotationDirect;
+typedef TMapAnnotationDirect::const_iterator  TCIMapAnnotationDirect;
 
 /** PdfPage is one page in the pdf document. 
  *  It is possible to draw on a page using a PdfPainter object.
@@ -265,6 +269,17 @@ class PODOFO_DOC_API PdfPage : public PdfElement, public PdfCanvas {
 
     PdfObject* GetOwnAnnotationsArray( bool bCreate, PdfDocument *pDocument);
 
+    /** Set an ICC profile for this page
+     *
+     *  \param pszCSTag a ColorSpace tag
+     *  \param pStream an input stream from which the ICC profiles data can be read
+     *  \param nColorComponents the number of colorcomponents of the ICC profile (expected is 1, 3 or 4 components)
+     *  \param eAlternateColorSpace an alternate colorspace to use if the ICC profile cannot be used
+     *
+     *  \see PdfPainter::SetDependICCProfileColor()
+     */
+    virtual void SetICCProfile( const char* pszCSTag, PdfInputStream* pStream, pdf_int64 nColorComponents,
+                                EPdfColorSpace eAlternateColorSpace = ePdfColorSpace_DeviceRGB );
  private:
 
     /**
@@ -291,7 +306,7 @@ class PODOFO_DOC_API PdfPage : public PdfElement, public PdfCanvas {
     /** Method for getting a key value that could be inherited (such as the boxes, resources, etc.)
      *  \returns PdfObject - the result of the key fetching or NULL
      */
-    const PdfObject* GetInheritedKeyFromObject( const char* inKey, const PdfObject* inObject ) const; 
+    const PdfObject* GetInheritedKeyFromObject( const char* inKey, const PdfObject* inObject, int depth = 0 ) const;
 
     /** Get the annotations array.
      *  \param bCreate if true the annotations array is created 
@@ -305,6 +320,7 @@ class PODOFO_DOC_API PdfPage : public PdfElement, public PdfCanvas {
     PdfObject*     m_pResources;
 
     TMapAnnotation m_mapAnnotations;
+    TMapAnnotationDirect m_mapAnnotationsDirect;
 };
 
 // -----------------------------------------------------

@@ -1,19 +1,19 @@
 /*
- 
- Copyright © 1998 - 2019  Claris International Inc.
+
+ Copyright © 1998 - 2021  Claris International Inc.
  All rights reserved.
- 
+
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
  to enable licensees of Claris FileMaker Pro to compile plug-ins for use with Claris products.
  Redistribution and use in source and binary forms, without modification, are permitted provided
  that the following conditions are met:
- 
+
  * Redistributions of source code must retain the above copyright notice, this list of
  conditions and the following disclaimer.
- 
+
  * The name Claris International Inc. may not be used to endorse or promote products derived
  from this software without specific prior written permission.
- 
+
  THIS SOFTWARE IS PROVIDED BY CLARIS INTERNATIONAL INC. ''AS IS'' AND ANY
  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -24,7 +24,7 @@
  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 #ifndef _h_FixPt_
@@ -44,7 +44,7 @@ extern "C++"
 			{
 				kDefltFixedPrecision = 16
 			};
-		   
+
 			inline void AssignInt ( fmx::int32 that );
 			inline void AssignDouble ( double that );
 			inline void AssignFixPt ( const FixPt &that );
@@ -57,11 +57,11 @@ extern "C++"
 			inline void Increment ( fmx::int32 n );
 			inline void Decrement ( fmx::int32 n );
 			inline void Negate ();
-			
+
 			// Obtain and modify the decimal precision from the standard 16 digits. For more information, see SetPrecision calculation function in FileMaker Pro Help.
 			inline int GetPrecision () const;
 			inline void SetPrecision ( int precision );
-			
+
 			inline void Add ( const FixPt &arg, FixPt &result ) const;
 			inline void Subtract ( const FixPt &arg, FixPt &result ) const;
 			inline void Multiply ( const FixPt &arg, FixPt &result ) const;
@@ -84,28 +84,14 @@ extern "C++"
 
 		};
 
-#if FMX_USE_AUTO_PTR
-		// DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
-		class DEPRECATED FixPtAutoPtr : public std::auto_ptr<FixPt>
-		{
-			typedef FixPtAutoPtr    UpCaster;
-		public:
-			inline FixPtAutoPtr ( fmx::int32 val = 0, int precision = FixPt::kDefltFixedPrecision );
-			inline FixPtAutoPtr ( fmx::int32 val, const FixPt &precisionExample );
-
-		};
-#endif
-		
-#if FMX_USE_UNIQUE_PTR
 		class FixPtUniquePtr : public std::unique_ptr<FixPt>
 		{
 			typedef FixPtUniquePtr    UpCaster;
 		public:
 			inline FixPtUniquePtr ( fmx::int32 val = 0, int precision = FixPt::kDefltFixedPrecision );
 			inline FixPtUniquePtr ( fmx::int32 val, const FixPt &precisionExample );
-			
+
 		};
-#endif
 	}
 }
 
@@ -318,22 +304,6 @@ extern "C++"
 			_x.Check ();
 		}
 
-#if FMX_USE_AUTO_PTR
-		inline FixPtAutoPtr::FixPtAutoPtr ( fmx::int32 val, int precision )
-		{
-			_fmxcpt _x;
-			reset ( FM_FixPt_Constructor1 ( val, precision, _x ) );
-			_x.Check ();
-		}
-		inline FixPtAutoPtr::FixPtAutoPtr ( fmx::int32 val, const FixPt &precisionExample )
-		{
-			_fmxcpt _x;
-			reset ( FM_FixPt_Constructor2 ( val, precisionExample, _x ) );
-			_x.Check ();
-		}
-#endif
-		
-#if FMX_USE_UNIQUE_PTR
 		inline FixPtUniquePtr::FixPtUniquePtr ( fmx::int32 val, int precision )
 		{
 			_fmxcpt _x;
@@ -346,7 +316,6 @@ extern "C++"
 			reset ( FM_FixPt_Constructor2 ( val, precisionExample, _x ) );
 			_x.Check ();
 		}
-#endif
 
 	}
 }

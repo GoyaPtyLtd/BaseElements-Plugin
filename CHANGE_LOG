@@ -1,4 +1,127 @@
 ########################################################################
+Version 4.2
+########################################################################
+
+August 11, 2021
+
+
+New Functions
+
+BE_FTP_Upload_File
+BE_FileReplaceText
+BE_XMLTidy
+
+
+Functions Removed
+
+BE_Base64_Decode_Deprecated
+BE_Base64_Encode_Deprecated
+BE_Base64_URL_Encode_Deprecated
+BE_HMAC_Deprecated
+BE_JPEG_Recompress_Deprecated
+BE_JSON_Encode_Deprecated
+BE_OAuthRequestAccessToken_Deprecated
+BE_XeroGenerateKeys_Deprecated
+BE_XeroSetTokens_Deprecated
+
+
+Changes
+
+BE_AlternateButton: renamed to BE_ButtonAlternate
+BE_CancelButton: renamed to BE_ButtonCancel
+BE_ConvertContainer: convert images types from container files natively
+BE_ConvertContainer: width & height parameters removed
+BE_ConvertContainer: plug memory leak
+BE_ContainerCompress: plug memory leak
+BE_Decrypt_AES: renamed to BE_DecryptAES
+BE_Encoding_Base64: renamed to BE_EncodingBase64
+BE_Encoding_Hex: renamed to BE_EncodingHex
+BE_Encrypt_AES: renamed to BE_EncryptAES
+BE_ExecuteSystemCommand: executeUsingShell parameter added
+BE_ExtractScriptVariables: plug memory leak
+BE_ExtractScriptVariables: renamed to BE_TextExtractWords
+BE_FileImport: plug memory leak
+BE_FileMakerSQL: return container/binary data in addition to text (new asText parameter) 
+BE_FileMakerSQL: outputPath parameter added 
+BE_HTTP_GET_File: renamed to BE_HTTP_GETFile
+BE_HTTP_PUTData: plug memory leak
+BE_JSON_Encode_Deprecated: plug memory leak
+BE_JSONPath_Deprecated: plug memory leak
+BE_MessageDigestAlgorithm_MD5: renamed to BE_MessageDigestAlgorithmMD5
+BE_MessageDigestAlgorithm_MDC2: renamed to BE_MessageDigestAlgorithmMDC2
+BE_MessageDigestAlgorithm_SHA: renamed to BE_MessageDigestAlgorithmSHA
+BE_MessageDigestAlgorithm_SHA1: renamed to BE_MessageDigestAlgorithmSHA1
+BE_MessageDigestAlgorithm_SHA224: renamed to BE_MessageDigestAlgorithmSHA224
+BE_MessageDigestAlgorithm_SHA256: renamed to BE_MessageDigestAlgorithmSHA256
+BE_MessageDigestAlgorithm_SHA384: renamed to BE_MessageDigestAlgorithmSHA384
+BE_MessageDigestAlgorithm_SHA512: renamed to BE_MessageDigestAlgorithmSHA512
+BE_OKButton: renamed to BE_ButtonOK
+BE_PDFAppend: correctly append more than one PDF document
+BE_PDFGetPagaes: add garbage collection to reduce file size
+BE_ScriptExecute: scriptControl Parameter added
+BE_SMTPSend: plug memory leak
+BE_SMTPSend: do not send a bare line feed after the end of the message
+BE_StripInvalidUTF16CharactersFromXMLFile: renamed to BE_XMLStripInvalidCharacters
+BE_TextExtractWords: make visible in dialog boxes
+BE_ValuesContainsDuplicates: plug memory leak
+BE_XML_Canonical: renamed to BE_XMLCanonical
+BE_XMLStripInvalidCharacters: make visible in dialog boxes
+BE_XMLStripNodes: make visible in dialog boxes
+BE_XPath: plug memory leak
+BE_XSLTApply: plug memory leak
+BE_UnZip: UnZip archives from containers
+BE_Zip: Zip files from containers
+BE_Zip: remove blank/empty paths from the input prior to archiving
+
+ 	
+Curl Options Changes
+
+Added
+- CURLOPT_CONNECT_TO
+- CURLOPT_TCP_FASTOPEN
+- CURLOPT_KEEP_SENDING_ON_ERROR
+- CURLOPT_SUPPRESS_CONNECT_HEADERS
+- CURLOPT_SOCKS5_AUTH
+- CURLOPT_REQUEST_TARGET
+- CURLOPT_SSH_COMPRESSION
+- CURLOPT_HAPPY_EYEBALLS_TIMEOUT_MS
+- CURLOPT_DNS_SHUFFLE_ADDRESSES
+- CURLOPT_HAPROXYPROTOCOL
+- CURLOPT_DISALLOW_USERNAME_IN_URL
+- CURLOPT_TLS13_CIPHERS
+- CURLOPT_PROXY_TLS13_CIPHERS
+- CURLOPT_UPLOAD_BUFFERSIZE
+- CURLOPT_DOH_URL
+- CURLOPT_MAXAGE_CONN
+- CURLOPT_MAIL_RCPT_ALLLOWFAILS
+- CURLOPT_PROXY_ISSUERCERT
+- CURLOPT_AWS_SIGV4
+
+Removed
+- CURLOPT_DNS_USE_GLOBAL_CACHE
+
+
+Added support for Ubuntu
+Removed support for Centos
+
+
+boost libraries updated to 1.75_0 from 1.70_0
+duktape updated from 2.3.0 to 2.6.0
+FMWrapper updated to 19.3.1.43
+Fontconfig library updated from 2.12.1 to 2.13.1
+Freetype library updated from 2.7 to 2.10.4
+libcurl updated from 7.48.0 to 7.75.0
+libiconv updated from 1.14 to 1.16 (and build our own for all platforms)
+libjpeg-turbo updated from 1.4.2 to 2.0.6
+libssh2 upated from 1.7.0 to 1.9.0
+libxml2 updated from 2.9.4 to 2.9.10
+lib(e)xslt updated from 1.1.29 to 1.1.34
+OpenSSL updated from 1.0.2g to 1.1.1
+poco updated from 1.9.2 to 1.10.1
+podofo updated from 0.9.4 to 0.9.7
+
+
+########################################################################
 Version 4.1.4
 ########################################################################
 

@@ -2,7 +2,7 @@
  BEXSLT.cpp
  BaseElements Plug-In
  
- Copyright 2010-2019 Goya. All rights reserved.
+ Copyright 2010-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -29,7 +29,10 @@
 
 #include <libexslt/exslt.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcomma"
 #include <boost/format.hpp>
+#pragma GCC diagnostic pop
 
 #include <iostream>
 
@@ -181,7 +184,7 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 				auto wide_path = xml_path.wstring();
 				int size = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, NULL, 0, NULL, NULL );
 				std::vector<char> utf8_data ( size );
-				auto bytesConverted = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, &utf8_data[0], (int)utf8_data.size(), NULL, NULL );
+				auto bytesConverted = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, utf8_data.data(), (int)utf8_data.size(), NULL, NULL );
 				std::string utf8 ( utf8_data.begin(), utf8_data.end() );
 				xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), utf8.c_str(), UTF8, options );
 #else
@@ -219,11 +222,12 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 							xmlOutputBufferPtr outputBufPtr = xmlOutputBufferCreateBuffer ( buffer, NULL );
 							if ( outputBufPtr ) {
 								xsltSaveResultTo ( outputBufPtr, xslt_result, stylesheet );
-								result.assign ( (char*)(buffer->content), buffer->use );	// return transformed xml on success
+								result.assign ( (char *)(buffer->content), buffer->use );	// return transformed xml on success
+								xmlOutputBufferClose ( outputBufPtr ); // auto reply =
 							}
-							
+
+							xmlBufferFree ( buffer );
 						}
-						xmlBufferFree ( buffer );
 
 					}
 
@@ -379,11 +383,11 @@ const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPat
 			
 			if ( xml_error == NULL ) {
 				
-				const std::unique_ptr<const xmlChar> node_as_xml ( xmlBufferContent ( xml_buffer ) );
+				auto node_as_xml = xmlBufferContent ( xml_buffer ); // owned by xml_buffer
 				xml_error = xmlGetLastError();
 				
 				if ( node_as_xml && xml_error == NULL ) {
-					result.assign ( (char*)node_as_xml.get(), xml_buffer_length ); // return node set as string on success
+					result.assign ( (char*)node_as_xml, xml_buffer_length ); // return node set as string on success
 				} else {
 					result = ReportXSLTError ( xml_document->URL );
 				}
@@ -393,7 +397,7 @@ const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPat
 			} // if ( xml_error == NULL )
 
 		} else if ( xpathObj->type == XPATH_NODESET && xpathObj->nodesetval->nodeNr == 0 ) {
-			; // an empty nodeset ... do nothing
+			; // an empty nodeset ... do nothing ... result = ""
 		} else {
 			result = ReportXSLTError ( xml_document->URL );
 		}
@@ -402,8 +406,8 @@ const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPat
 		result = ReportXSLTError ( xml_document->URL );
 	}
 
+	xmlBufferFree ( xml_buffer );
 	xmlResetError ( xml_error );
-	xmlFree ( xml_buffer );
 
 	return result;
 

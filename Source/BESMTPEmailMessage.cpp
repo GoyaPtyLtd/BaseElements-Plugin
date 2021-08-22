@@ -2,7 +2,7 @@
  BESMTPEmailMessage.cpp
  BaseElements Plug-In
  
- Copyright 2014-2019 Goya. All rights reserved.
+ Copyright 2014-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -13,12 +13,11 @@
 #include "BESMTPEmailMessage.h"
 #include "BEPluginException.h"
 #include "BECurl.h"
-#include "Crypto/BEBase64.h"
 
+#include <Poco/Net/FilePartSource.h>
+#include <Poco/Net/MediaType.h>
+#include <Poco/Net/StringPartSource.h>
 #include <Poco/Timestamp.h>
-#include <Poco/Timezone.h>
-#include <Poco/DateTimeFormat.h>
-#include <Poco/DateTimeFormatter.h>
 
 #include <sstream>
 
@@ -34,57 +33,59 @@ thread_local CustomHeaders g_smtp_custom_headers;
 #pragma mark -
 
 
-BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const std::string& to, const std::string& subject, const std::string& message_body )
+BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const BEValueListStringSharedPtr to, const std::string& subject, const std::string& message_body, const std::string& html_alternative )
 {
 	
-	message = new BEMimeticMIMEEntity;
-
-	unique_ptr< BEValueList<string> > mail_to ( new BEValueList<string> ( to ) );
-	message->header().to ( mail_to->get_as_comma_separated() );
-
-	message->header().from ( from );
+	set_addresses ( Poco::Net::MailRecipient::PRIMARY_RECIPIENT, to );
+	message.setSender ( from );
 	
-	auto base64_subject = Base64_Encode ( subject );
-	auto encoded_subject = "=?utf-8?B?" + base64_subject + "?=";
-	message->header().subject ( subject );
+	message.setSubject ( Poco::Net::MailMessage::encodeWord ( subject, UTF8 ) );
 
-	text = new mimetic::MimeEntity;
-	auto message_text = message_body;
-	boost::replace_all ( message_text, FILEMAKER_END_OF_LINE, "\r\n" );
-	text->body().assign ( message_text + "\r\n\r\n" );
-	text->header().contentType() = "text/plain; charset=\"utf-8\"";
+	auto text = message_body;
+	boost::replace_all ( text, LINE_FEED, FILEMAKER_END_OF_LINE );
+	boost::replace_all ( text, FILEMAKER_END_OF_LINE, NETWORK_ENDL );
+
+	auto html = html_alternative;
+	boost::replace_all ( html, LINE_FEED, FILEMAKER_END_OF_LINE );
+	boost::replace_all ( html, FILEMAKER_END_OF_LINE, NETWORK_ENDL );
+
+	auto charset = Poco::Net::MailMessage::encodeWord ( "charset=\"utf-8\"" );
+	auto type_text = "text/plain; " + charset;
+	auto type_html = "text/html; " + charset;
 	
-	// MIME Version
-	mimetic::MimeVersion mime_version = mimetic::MimeVersion ( "1.0" );
-	message->header().mimeVersion ( mime_version );
-	
-	// rfc 1123 (rfc 822) date header
-	Poco::LocalDateTime now;
-	auto rfc1123_date = Poco::DateTimeFormatter::format ( now.timestamp(), Poco::DateTimeFormat::RFC1123_FORMAT, Poco::Timezone::tzd() );
-	g_smtp_custom_headers [ "Date" ] = rfc1123_date;
+	if ( !text.empty() && !html_alternative.empty() ) {
+
+		auto multipart_alternative = new Poco::Net::MultipartSource();
+		multipart_alternative->addPart ( "TEXT", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+		multipart_alternative->addPart ( "HTML", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+		message.addContent ( multipart_alternative, Poco::Net::MailMessage::ENCODING_8BIT );
+
+	} else if ( !text.empty() && html_alternative.empty() ) {
+		
+		message.addPart ( "TEXT", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+
+	} else if ( text.empty() && !html_alternative.empty() ) {
+
+		message.addPart ( "HTML", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+
+	}
+
+	// headers
+	message.setDate ( Poco::Timestamp() ); // rfc 1123 (rfc 822) date header
+	message.set ( Poco::Net::MailMessage::HEADER_MIME_VERSION, "1.0" ); // MIME Version
+	message.set ( "X-Mailer", string ( USER_AGENT_STRING ) + " ( " + string ( AUTO_UPDATE_VERSION ) + " )" ); // who we are
 	
 	// custom headers
-	CustomHeaders::const_iterator it = g_smtp_custom_headers.begin();
-	while ( it != g_smtp_custom_headers.end() ) {
-		
-		mimetic::Field smtp_header;
-		smtp_header.name ( it->first );
-		smtp_header.value ( it->second );
-		message->header().push_back ( smtp_header );
-	
-		++it;
+	for ( auto it = g_smtp_custom_headers.begin() ; it != g_smtp_custom_headers.end() ; it++ ) {
+		message.set ( it->first, it->second );
 	}
-	
-	std::shared_ptr<BEValueList<std::string> > bcc ( new BEValueList<std::string> ( "" ) );
-	bcc_address_list = bcc;
 
-}
+} // BESMTPEmailMessage
 
 
 BESMTPEmailMessage::~BESMTPEmailMessage ( )
 {
 	g_smtp_custom_headers.clear();
-	delete message;
 }
 
 
@@ -93,122 +94,85 @@ BESMTPEmailMessage::~BESMTPEmailMessage ( )
 #pragma mark -
 
 
-std::unique_ptr< BEValueList<std::string> > BESMTPEmailMessage::get_address_list ( const std::string& addresses )
+BEValueListStringUniquePtr BESMTPEmailMessage::recipients()
 {
-	std::unique_ptr< BEValueList<std::string> > addresses_list ( new BEValueList<string> ( addresses, ",", true, false ) );
-	addresses_list->trim_values();
+	BEValueListStringUniquePtr addresses_list ( new BEValueList<string> ( "", ",", true, false ) );
+
+	auto send_to = message.recipients();
 	
-	return addresses_list;
-};
-
-
-void BESMTPEmailMessage::set_cc_addresses ( const std::string& email_addresses )
-{
-	unique_ptr< BEValueList<string> > cc ( new BEValueList<string> ( email_addresses ) );
-	if ( cc->not_empty() ) {
-		message->header().cc ( cc->get_as_comma_separated() );
+	
+	for ( auto const& recipient : send_to ) {
+		addresses_list->append ( recipient.getAddress() );
 	}
+	
+	addresses_list->trim_values();
+
+	return addresses_list;
+	
+} // recipients
+
+
+void BESMTPEmailMessage::set_addresses ( const Poco::Net::MailRecipient::RecipientType recipient_type, const BEValueListStringSharedPtr email_addresses )
+{
+
+	for ( auto const& recipient : *email_addresses ) {
+		message.addRecipient ( Poco::Net::MailRecipient ( recipient_type, recipient ) );
+	}
+	
+} // set_addresses
+
+
+void BESMTPEmailMessage::set_cc_addresses ( const BEValueListStringSharedPtr email_addresses )
+{
+	set_addresses ( Poco::Net::MailRecipient::CC_RECIPIENT, email_addresses );
 }
 
 
-void BESMTPEmailMessage::set_bcc_addresses ( const std::string& email_addresses )
+void BESMTPEmailMessage::set_bcc_addresses ( const BEValueListStringSharedPtr email_addresses )
 {
-	bcc_address_list->clear();
-	unique_ptr< BEValueList<string> > bcc ( new BEValueList<string> ( email_addresses ) );
-	bcc_address_list->append ( *bcc );
+	set_addresses ( Poco::Net::MailRecipient::BCC_RECIPIENT, email_addresses );
 }
 
 
 void BESMTPEmailMessage::set_reply_to ( const std::string& reply_to_address )
 {
 	if ( ! reply_to_address.empty() ) {
-		message->header().replyto ( reply_to_address );
+		message.set ( "Reply-To", reply_to_address );
 	}
 
 }
 
 
-void BESMTPEmailMessage::set_html_alternative ( const std::string& html_part )
+void BESMTPEmailMessage::set_attachments ( const BESMTPContainerAttachmentVector& attachments )
 {
-	html = new mimetic::MimeEntity;
-	auto html_text = html_part;
-	boost::replace_all ( html_text, FILEMAKER_END_OF_LINE, "\r\n" );
-	html->body().assign ( html_text );
-	html->header().contentType() = "text/html; charset=\"utf-8\"";
-}
 
-
-void BESMTPEmailMessage::add_attachment ( const BESMTPContainerAttachment new_attachment )
-{
-	if ( exists ( new_attachment.first ) ) {
-
-		boost::filesystem::path attachment = new_attachment.first;
-		attachment.make_preferred();
-
-		mimetic::Attachment * attach_this = new mimetic::Attachment (
-																	 attachment.string(),
-																	 mimetic::ContentType ( new_attachment.second ),
-																	 mimetic::Base64::Encoder()
-																	 );
-		
-		message->body().parts().push_back ( attach_this );
-		
-	} else {
-		throw BEPlugin_Exception ( kNoSuchFileOrDirectoryError );
-	}
-}
-
-
-void BESMTPEmailMessage::add_attachments ( void )
-{
-		
 	for ( size_t i = 0 ; i < attachments.size() ; i++ ) {
-		add_attachment ( attachments.at ( i ) );
+		
+		auto new_attachment = attachments.at ( i );
+		
+		if ( exists ( new_attachment.first ) ) {
+			
+			auto attachment = new_attachment.first;
+			attachment.make_preferred();
+			auto file_name = Poco::Net::MailMessage::encodeWord ( attachment.filename().string() );
+			auto path = Poco::Net::MailMessage::encodeWord ( attachment.string() );
+			message.addAttachment ( file_name, new Poco::Net::FilePartSource ( path, new_attachment.second ) );
+			
+		} else {
+			throw BEPlugin_Exception ( kNoSuchFileOrDirectoryError );
+		}
+
 	}
 
-}
+} // set_attachments
 
 
-void BESMTPEmailMessage::set_attachments ( const BESMTPContainerAttachmentVector& attachment_list )
+const std::string BESMTPEmailMessage::as_string()
 {
-	attachments = attachment_list;
-}
-
-
-string BESMTPEmailMessage::as_string()
-{
-	build_message();
-
+	
 	ostringstream meassage_stream;
-	meassage_stream << *message << endl;
+	message.write ( meassage_stream );
 	return meassage_stream.str();
 
-}
-
-
-#pragma mark -
-#pragma mark Protected Methods
-#pragma mark -
-
-
-void BESMTPEmailMessage::build_message ( )
-{
-	
-	if ( !text->body().empty() && !html->body().empty() ) {
-
-		mimetic::MultipartAlternative * multipart_alternative = new mimetic::MultipartAlternative;
-		multipart_alternative->body().parts().push_back ( text );
-		multipart_alternative->body().parts().push_back ( html );
-		message->body().parts().push_back ( multipart_alternative );
-
-	} else if ( !text->body().empty() ) {
-		message->body().parts().push_back ( text );
-	} else if ( !html->body().empty() ) {
-		message->body().parts().push_back ( html );
-	}
-
-	add_attachments();
-	
-} // build_message
-
+} // as_string
 

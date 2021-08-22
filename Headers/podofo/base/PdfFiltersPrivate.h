@@ -53,11 +53,21 @@
 
 #ifdef PODOFO_HAVE_JPEG_LIB
 extern "C" {
-#ifdef _WIN32		// Collision between win and jpeg-headers
+#ifdef _WIN32		// Collision between Win32 and libjpeg headers
 #define XMD_H
 #undef FAR
+
+#ifndef HAVE_BOOLEAN
+#define HAVE_BOOLEAN
+#define PODOFO_JPEG_HAVE_BOOLEAN // not to be defined in the build system
+#endif
+
 #endif
 #include "jpeglib.h"
+
+#ifdef PODOFO_JPEG_HAVE_BOOLEAN
+#undef HAVE_BOOLEAN
+#endif
 }
 #endif // PODOFO_HAVE_JPEG_LIB
 
@@ -83,6 +93,8 @@ class PdfOutputDevice;
  */
 class PdfHexFilter : public PdfFilter {
  public:
+    PdfHexFilter();
+
     virtual ~PdfHexFilter() { }
 
     /** Check wether the encoding is implemented for this filter.
@@ -190,6 +202,7 @@ EPdfFilter PdfHexFilter::GetType() const
  */
 class PdfAscii85Filter : public PdfFilter {
  public:
+    PdfAscii85Filter();
     virtual ~PdfAscii85Filter() { }
 
     /** Check wether the encoding is implemented for this filter.
@@ -450,6 +463,7 @@ EPdfFilter PdfFlateFilter::GetType() const
  */
 class PdfRLEFilter : public PdfFilter {
  public:
+    PdfRLEFilter();
     virtual ~PdfRLEFilter() {}
 
     /** Check wether the encoding is implemented for this filter.

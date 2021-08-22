@@ -2,7 +2,7 @@
  BEQuadChar.cpp
  BaseElements Plug-In
 
- Copyright 2015-2019 Goya. All rights reserved.
+ Copyright 2015-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -88,6 +88,12 @@ const bool BEQuadChar::is_image ( ) const
 }
 
 
+const bool BEQuadChar::is_media ( ) const
+{
+	return is_image() || is_type ( SOUND_CONTAINER_TYPE );
+}
+
+
 const bool BEQuadChar::is_jpeg ( ) const
 {
 	return is_type ( JPEG_CONTAINER_TYPE );
@@ -100,9 +106,21 @@ const bool BEQuadChar::is_fork ( ) const
 }
 
 
+const bool BEQuadChar::is_container_attribute ( ) const
+{
+	return is_type ( MAIN_CONTAINER_TYPE ) || is_type ( FILE_CONTAINER_TYPE ) || is_type ( COMPRESSED_CONTAINER_TYPE ) || is_fork();
+}
+
+
 const bool BEQuadChar::is_image_attribute ( ) const
 {
 	return is_type ( DPI_CONTAINER_TYPE ) || is_type ( FILENAME_CONTAINER_TYPE ) || is_type ( SIZE_CONTAINER_TYPE );
+}
+
+
+const bool BEQuadChar::is_defined_type ( ) const
+{
+	return is_image_attribute() || is_media() || is_file() || is_container_attribute();
 }
 
 

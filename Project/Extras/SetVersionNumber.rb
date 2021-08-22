@@ -230,7 +230,7 @@ File.open linux_project do | linux_project_file |
   linux_project_file.each do | line |
         
     if line['-soname'] then
-            lines += '			<Add option="-Wl,-soname=BaseElements_Plugin_' + version_number_string + '" />' + "\n"
+            lines += '			<Add option="-Wl,-soname=' + version.string + '" />' + "\n"
     else
       lines += line
     end

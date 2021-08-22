@@ -2,7 +2,7 @@
  BECurlOptions.cpp
  BaseElements Plug-In
  
- Copyright 2013-2019 Goya. All rights reserved.
+ Copyright 2013-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -185,7 +185,6 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_LOCALPORT" ] = type_long;
 	types [ "CURLOPT_LOCALPORTRANGE" ] = type_long;
 	types [ "CURLOPT_DNS_CACHE_TIMEOUT" ] = type_long;
-	types [ "CURLOPT_DNS_USE_GLOBAL_CACHE" ] = type_long;
 	types [ "CURLOPT_BUFFERSIZE" ] = type_long;
 	types [ "CURLOPT_PORT" ] = type_long;
 	types [ "CURLOPT_TCP_NODELAY" ] = type_long;
@@ -351,6 +350,31 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLMOPT_PIPELINING_SITE_BL" ] = type_not_handled;
 	types [ "CURLMOPT_PIPELINING_SERVER_BL" ] = type_not_handled;
 
+	types [ "CURLOPT_CONNECT_TO" ] = type_string;
+	types [ "CURLOPT_TCP_FASTOPEN" ] = type_long;
+	types [ "CURLOPT_KEEP_SENDING_ON_ERROR" ] = type_long;
+	types [ "CURLOPT_SUPPRESS_CONNECT_HEADERS" ] = type_long;
+	types [ "CURLOPT_SOCKS5_AUTH" ] = type_long;
+	types [ "CURLOPT_REQUEST_TARGET" ] = type_string;
+	types [ "CURLOPT_SSH_COMPRESSION" ] = type_long;
+	types [ "CURLOPT_RESOLVER_START_FUNCTION" ] = type_not_handled;
+	types [ "CURLOPT_RESOLVER_START_DATA" ] = type_not_handled;
+	types [ "CURLOPT_HAPPY_EYEBALLS_TIMEOUT_MS" ] = type_long;
+	types [ "CURLOPT_DNS_SHUFFLE_ADDRESSES" ] = type_long;
+	types [ "CURLOPT_HAPROXYPROTOCOL" ] = type_long;
+	types [ "CURLOPT_TLS13_CIPHERS" ] = type_string;
+	types [ "CURLOPT_PROXY_TLS13_CIPHERS" ] = type_string;
+	types [ "CURLOPT_UPLOAD_BUFFERSIZE" ] = type_long;
+	types [ "CURLOPT_DOH_URL" ] = type_string;
+	types [ "CURLOPT_CURLU" ] = type_not_handled;
+	types [ "CURLOPT_MAXAGE_CONN" ] = type_long;
+	types [ "CURLINFO_RETRY_AFTER" ] = type_not_handled;
+	types [ "CURLMOPT_MAX_CONCURRENT_STREAMS" ] = type_not_handled;
+	types [ "CURLOPT_MAIL_RCPT_ALLLOWFAILS" ] = type_long;
+	types [ "CURLOPT_PROXY_ISSUERCERT" ] = type_string;
+	types [ "CURLOPT_AWS_SIGV4" ] = type_string;
+
+		   
 	// custom option for the plugin
 	types [ "BE_CURLOPT_FORCE_STARTTLS" ] = type_be_long;
 	
@@ -439,7 +463,6 @@ CURLoption BECurlOption::option ( )
 	options [ "CURLOPT_LOCALPORT" ] = CURLOPT_LOCALPORT;
 	options [ "CURLOPT_LOCALPORTRANGE" ] = CURLOPT_LOCALPORTRANGE;
 	options [ "CURLOPT_DNS_CACHE_TIMEOUT" ] = CURLOPT_DNS_CACHE_TIMEOUT;
-	options [ "CURLOPT_DNS_USE_GLOBAL_CACHE" ] = CURLOPT_DNS_USE_GLOBAL_CACHE;
 	options [ "CURLOPT_BUFFERSIZE" ] = CURLOPT_BUFFERSIZE;
 	options [ "CURLOPT_PORT" ] = CURLOPT_PORT;
 	options [ "CURLOPT_TCP_NODELAY" ] = CURLOPT_TCP_NODELAY;
@@ -599,6 +622,32 @@ CURLoption BECurlOption::option ( )
 //	options [ "CURLMOPT_PIPELINING_SITE_BL" ] = CURLMOPT_PIPELINING_SITE_BL;
 //	options [ "CURLMOPT_PIPELINING_SERVER_BL" ] = CURLMOPT_PIPELINING_SERVER_BL;
 
+	options [ "CURLOPT_CONNECT_TO" ] = CURLOPT_CONNECT_TO;
+	options [ "CURLOPT_TCP_FASTOPEN" ] = CURLOPT_TCP_FASTOPEN;
+	options [ "CURLOPT_KEEP_SENDING_ON_ERROR" ] = CURLOPT_KEEP_SENDING_ON_ERROR;
+	options [ "CURLOPT_SUPPRESS_CONNECT_HEADERS" ] = CURLOPT_SUPPRESS_CONNECT_HEADERS;
+	options [ "CURLOPT_SOCKS5_AUTH" ] = CURLOPT_SOCKS5_AUTH;
+	options [ "CURLOPT_REQUEST_TARGET" ] = CURLOPT_REQUEST_TARGET;
+	options [ "CURLOPT_SSH_COMPRESSION" ] = CURLOPT_SSH_COMPRESSION;
+//	options [ "CURLOPT_RESOLVER_START_FUNCTION" ] = CURLOPT_RESOLVER_START_FUNCTION;
+//	options [ "CURLOPT_RESOLVER_START_DATA" ] = CURLOPT_RESOLVER_START_DATA;
+	options [ "CURLOPT_HAPPY_EYEBALLS_TIMEOUT_MS" ] = CURLOPT_HAPPY_EYEBALLS_TIMEOUT_MS;
+	options [ "CURLOPT_DNS_SHUFFLE_ADDRESSES" ] = CURLOPT_DNS_SHUFFLE_ADDRESSES;
+	options [ "CURLOPT_HAPROXYPROTOCOL" ] = CURLOPT_HAPROXYPROTOCOL;
+	options [ "CURLOPT_DISALLOW_USERNAME_IN_URL" ] = CURLOPT_DISALLOW_USERNAME_IN_URL;
+	options [ "CURLOPT_TLS13_CIPHERS" ] = CURLOPT_TLS13_CIPHERS;
+	options [ "CURLOPT_PROXY_TLS13_CIPHERS" ] = CURLOPT_PROXY_TLS13_CIPHERS;
+	options [ "CURLOPT_UPLOAD_BUFFERSIZE" ] = CURLOPT_UPLOAD_BUFFERSIZE;
+	options [ "CURLOPT_DOH_URL" ] = CURLOPT_DOH_URL;
+//	options [ "CURLOPT_CURLU" ] = CURLOPT_CURLU;
+	options [ "CURLOPT_MAXAGE_CONN" ] = CURLOPT_MAXAGE_CONN;
+//	options [ "CURLINFO_RETRY_AFTER" ] = CURLINFO_RETRY_AFTER;
+//	options [ "CURLMOPT_MAX_CONCURRENT_STREAMS" ] = CURLMOPT_MAX_CONCURRENT_STREAMS;
+	options [ "CURLOPT_MAIL_RCPT_ALLLOWFAILS" ] = CURLOPT_MAIL_RCPT_ALLLOWFAILS;
+	options [ "CURLOPT_PROXY_ISSUERCERT" ] = CURLOPT_PROXY_ISSUERCERT;
+	options [ "CURLOPT_AWS_SIGV4" ] = CURLOPT_AWS_SIGV4;
+
+	
 	// custom option for the plugin
 	options [ "BE_CURLOPT_FORCE_STARTTLS" ] = (CURLoption)BE_CURLOPT_FORCE_STARTTLS;
 	

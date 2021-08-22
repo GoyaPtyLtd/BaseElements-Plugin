@@ -4,8 +4,8 @@
 // Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
 
-// This file was modified by Oracle on 2018.
-// Modifications copyright (c) 2018 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2018-2020.
+// Modifications copyright (c) 2018-2020 Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
@@ -19,11 +19,13 @@
 #define BOOST_GEOMETRY_STRATEGIES_CONCEPTS_WITHIN_CONCEPT_HPP
 
 
+#include <type_traits>
 
 #include <boost/concept_check.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <boost/function_types/result_type.hpp>
 
+#include <boost/geometry/core/static_assert.hpp>
 #include <boost/geometry/core/tag.hpp>
 #include <boost/geometry/core/tag_cast.hpp>
 #include <boost/geometry/core/tags.hpp>
@@ -42,10 +44,12 @@ namespace boost { namespace geometry { namespace concepts
 \brief Checks strategy for within (point-in-polygon)
 \ingroup within
 */
-template <typename Strategy>
+template <typename Point, typename Polygonal, typename Strategy>
 class WithinStrategyPolygonal
 {
 #ifndef DOXYGEN_NO_CONCEPT_MEMBERS
+
+    typedef typename geometry::point_type<Polygonal>::type point_of_segment;
 
     // 1) must define state_type
     typedef typename Strategy::state_type state_type;
@@ -53,7 +57,7 @@ class WithinStrategyPolygonal
     struct checker
     {
         template <typename ApplyMethod, typename ResultMethod>
-        static void apply(ApplyMethod const&, ResultMethod const& )
+        static void apply(ApplyMethod, ResultMethod)
         {
             typedef typename parameter_type_of
                 <
@@ -76,23 +80,23 @@ class WithinStrategyPolygonal
                 );
 
             // CHECK: return types (result: int, apply: bool)
-            BOOST_MPL_ASSERT_MSG
+            BOOST_GEOMETRY_STATIC_ASSERT
                 (
-                    (boost::is_same
+                    (std::is_same
                         <
                             bool, typename boost::function_types::result_type<ApplyMethod>::type
-                        >::type::value),
-                    WRONG_RETURN_TYPE_OF_APPLY
-                    , (bool)
+                        >::value),
+                    "Wrong return type of apply().",
+                    bool, ApplyMethod
                 );
-            BOOST_MPL_ASSERT_MSG
+            BOOST_GEOMETRY_STATIC_ASSERT
                 (
-                    (boost::is_same
+                    (std::is_same
                         <
                             int, typename boost::function_types::result_type<ResultMethod>::type
-                        >::type::value),
-                    WRONG_RETURN_TYPE_OF_RESULT
-                    , (int)
+                        >::value),
+                    "Wrong return type of result().",
+                    int, ResultMethod
                 );
 
 
@@ -113,7 +117,8 @@ class WithinStrategyPolygonal
 public :
     BOOST_CONCEPT_USAGE(WithinStrategyPolygonal)
     {
-        checker::apply(&Strategy::apply, &Strategy::result);
+        checker::apply(&Strategy::template apply<Point, point_of_segment>,
+                       &Strategy::result);
     }
 #endif
 };
@@ -126,7 +131,7 @@ class WithinStrategyPointBox
     struct checker
     {
         template <typename ApplyMethod>
-        static void apply(ApplyMethod const&)
+        static void apply(ApplyMethod)
         {
             typedef typename parameter_type_of
                 <
@@ -149,15 +154,15 @@ class WithinStrategyPointBox
                 );
 
             // CHECK: return types (apply: bool)
-            BOOST_MPL_ASSERT_MSG
+            BOOST_GEOMETRY_STATIC_ASSERT
                 (
-                    (boost::is_same
+                    (std::is_same
                         <
                             bool,
                             typename boost::function_types::result_type<ApplyMethod>::type
-                        >::type::value),
-                    WRONG_RETURN_TYPE
-                    , (bool)
+                        >::value),
+                    "Wrong return type of apply().",
+                    bool, ApplyMethod
                 );
 
 
@@ -181,7 +186,7 @@ public :
 #endif
 };
 
-template <typename Strategy>
+template <typename Box1, typename Box2, typename Strategy>
 class WithinStrategyBoxBox
 {
 #ifndef DOXYGEN_NO_CONCEPT_MEMBERS
@@ -212,15 +217,15 @@ class WithinStrategyBoxBox
                 );
 
             // CHECK: return types (apply: bool)
-            BOOST_MPL_ASSERT_MSG
+            BOOST_GEOMETRY_STATIC_ASSERT
                 (
-                    (boost::is_same
+                    (std::is_same
                         <
                             bool,
                             typename boost::function_types::result_type<ApplyMethod>::type
-                        >::type::value),
-                    WRONG_RETURN_TYPE
-                    , (bool)
+                        >::value),
+                    "Wrong return type of apply().",
+                    bool, ApplyMethod
                 );
 
 
@@ -239,7 +244,7 @@ class WithinStrategyBoxBox
 public :
     BOOST_CONCEPT_USAGE(WithinStrategyBoxBox)
     {
-        checker::apply(&Strategy::apply);
+        checker::apply(&Strategy::template apply<Box1, Box2>);
     }
 #endif
 };
@@ -270,7 +275,7 @@ template
 >
 struct check_within<Geometry1, Geometry2, point_tag, AnyTag, areal_tag, Strategy>
 {
-    BOOST_CONCEPT_ASSERT( (WithinStrategyPolygonal<Strategy>) );
+    BOOST_CONCEPT_ASSERT( (WithinStrategyPolygonal<Geometry1, Geometry2, Strategy>) );
 };
 
 
@@ -283,7 +288,7 @@ struct check_within<Geometry1, Geometry2, point_tag, box_tag, areal_tag, Strateg
 template <typename Geometry1, typename Geometry2, typename Strategy>
 struct check_within<Geometry1, Geometry2, box_tag, box_tag, areal_tag, Strategy>
 {
-    BOOST_CONCEPT_ASSERT( (WithinStrategyBoxBox<Strategy>) );
+    BOOST_CONCEPT_ASSERT( (WithinStrategyBoxBox<Geometry1, Geometry2, Strategy>) );
 };
 
 

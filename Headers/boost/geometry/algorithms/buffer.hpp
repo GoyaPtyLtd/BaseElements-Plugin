@@ -4,8 +4,8 @@
 // Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
 
-// This file was modified by Oracle on 2017.
-// Modifications copyright (c) 2017 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2017-2020.
+// Modifications copyright (c) 2017-2020 Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
@@ -22,7 +22,7 @@
 
 #include <boost/numeric/conversion/cast.hpp>
 
-#include <boost/range.hpp>
+#include <boost/range/value_type.hpp>
 
 #include <boost/variant/apply_visitor.hpp>
 #include <boost/variant/static_visitor.hpp>
@@ -224,7 +224,11 @@ inline void buffer(GeometryIn const& geometry_in,
     concepts::check<polygon_type>();
 
     typedef typename point_type<GeometryIn>::type point_type;
-    typedef typename rescale_policy_type<point_type>::type rescale_policy_type;
+    typedef typename rescale_policy_type
+        <
+            point_type,
+            typename geometry::cs_tag<point_type>::type
+        >::type rescale_policy_type;
 
     geometry_out.clear();
 
@@ -244,7 +248,8 @@ inline void buffer(GeometryIn const& geometry_in,
         >::type intersection_strategy;
 
     rescale_policy_type rescale_policy
-            = boost::geometry::get_rescale_policy<rescale_policy_type>(box);
+            = boost::geometry::get_rescale_policy<rescale_policy_type>(
+                box, intersection_strategy);
 
     detail::buffer::buffer_inserter<polygon_type>(geometry_in, range::back_inserter(geometry_out),
                 distance_strategy,
