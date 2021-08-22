@@ -15,6 +15,7 @@
 
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
+#include <boost/math/tools/cxx03_warn.hpp>
 #ifdef BOOST_NO_CXX11_LAMBDAS
 #include <boost/lambda/lambda.hpp>
 #endif
@@ -402,6 +403,11 @@ public:
 #ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
    polynomial<T> prime() const
    {
+#ifdef BOOST_MSVC
+      // Disable int->float conversion warning:
+#pragma warning(push)
+#pragma warning(disable:4244)
+#endif
       if (m_data.size() == 0)
       {
         return polynomial<T>({});
@@ -412,6 +418,9 @@ public:
           p_data[i] = m_data[i+1]*static_cast<T>(i+1);
       }
       return polynomial<T>(std::move(p_data));
+#ifdef BOOST_MSVC
+#pragma warning(pop)
+#endif
    }
 
    polynomial<T> integrate() const

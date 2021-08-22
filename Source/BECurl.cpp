@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
 
- Copyright 2011-2019 Goya. All rights reserved.
+ Copyright 2011-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -13,7 +13,6 @@
 #include "BEPluginGlobalDefines.h"
 #include "BECppUtilities.h"
 #include "BECurl.h"
-#include "BEOAuth.h"
 #include "BEFileMakerPlugin.h"
 
 #include "BEPluginUtilities.h"
@@ -41,11 +40,14 @@
 #include <sstream>
 #include <errno.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcomma"
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/scoped_ptr.hpp>
+#pragma GCC diagnostic pop
 
 #include <Poco/URI.h>
 #include <Poco/Path.h>
@@ -70,8 +72,6 @@ thread_local CustomHeaders g_http_custom_headers;
 thread_local struct host_details g_http_proxy;
 thread_local BECurlOptionMap g_curl_options;
 
-extern thread_local BEOAuth * g_oauth;
-
 extern BEFileMakerPlugin * g_be_plugin;
 
 
@@ -86,7 +86,6 @@ MemoryStruct InitalizeCallbackMemory ( void );
 static void dump_trace_data ( const unsigned char *ptr, const size_t size );
 static int trace_callback ( CURL * /* curl */, curl_infotype type, char * data, size_t size, void * /* userp */ );
 int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow );
-int old_progress_dialog ( void *p, double dltotal, double dlnow, double ultotal, double ulnow );
 
 
 #pragma mark -
@@ -155,9 +154,9 @@ MemoryStruct InitalizeCallbackMemory ( void )
 {
 	struct MemoryStruct data;
 
-	data.memory = (char *)malloc(1);  // this is grown as needed by WriteMemoryCallback
-	data.memory[0] = '\0';
+	data.memory = NULL;  // allocated/grown as needed by WriteMemoryCallback
 	data.size = 0;
+	data.origin = NULL;
 
 	return data;
 
@@ -318,19 +317,6 @@ int progress_dialog ( void *p, curl_off_t dltotal, curl_off_t dlnow, curl_off_t 
 }
 
 
-/* for libcurl older than 7.32.0 (CURLOPT_PROGRESSFUNCTION) */
-int old_progress_dialog ( void *p, double dltotal, double dlnow, double ultotal, double ulnow )
-{
-	int error = kNoError;
-
-	if ( dltotal > 0 || ultotal > 0 ) {
-		error = progress_dialog ( p, (curl_off_t)dltotal, (curl_off_t)dlnow, (curl_off_t)ultotal, (curl_off_t)ulnow );
-	}
-
-	return error;
-}
-
-
 
 #pragma mark -
 #pragma mark Constructors
@@ -356,16 +342,7 @@ BECurl::BECurl ( const string download_this, const be_http_method method, const 
 	password = _password;
 	parameters = post_parameters;
 
-	if ( g_oauth ) {
-
-		int oauth_error = g_oauth->sign_url ( url, parameters, http_method_as_string() );
-		if ( oauth_error != kNoError ) {
-			throw BECurl_Exception ( CURLE_LOGIN_DENIED );
-		}
-
-	} else {
-		set_username_and_password ( );
-	}
+	set_username_and_password();
 
 	// send all headers & data to these functions
 
@@ -421,7 +398,7 @@ BECurl::~BECurl()
 	g_http_custom_headers.clear();
 
 
-	curl_formfree ( post_data );
+	curl_mime_free ( mime );
 	curl_easy_cleanup ( curl );
 	curl_global_cleanup();
 }
@@ -439,15 +416,15 @@ void BECurl::Init ( )
 	upload_file = NULL;
 	custom_headers = NULL;
 	command_list = NULL;
-	post_data = NULL;
-
+	mime = NULL;
+	
 	//
 	http_response_code = 0;
 
 	// set up curl as much as we can
 
 	error = curl_global_init ( CURL_GLOBAL_ALL );
-	if ( error != (CURLcode)kNoError ) {
+	if ( error != CURLE_OK ) {
 		throw BECurl_Exception ( error );
 	}
 
@@ -512,44 +489,9 @@ vector<char> BECurl::download ( )
 vector<char> BECurl::http_put ( )
 {
 
-	try {
+	easy_setopt ( CURLOPT_PUT, 1L );
 
-		prepare_upload ( );
-
-		if ( filename.empty() ) {
-
-			prepare_data_upload ( );
-
-		} else {
-
-			// no directories etc.
-			if ( exists ( filename ) && is_regular_file ( filename ) ) {
-
-				upload_file = FOPEN ( filename.c_str(), _TEXT ( "rb" ) );
-
-				easy_setopt ( CURLOPT_READDATA, upload_file );
-				easy_setopt ( CURLOPT_INFILESIZE, (curl_off_t)file_size ( filename ) );
-
-			} else {
-				throw BECurl_Exception ( (CURLcode)kFileExistsError );
-			}
-
-		}
-
-		easy_setopt ( CURLOPT_PUT, 1L );
-
-		// put this
-		easy_setopt ( CURLOPT_URL, url.c_str() );
-
-		perform ( );
-
-	} catch ( filesystem_error& e ) {
-		error = (CURLcode)e.code().value();
-	} catch ( BECurl_Exception& e ) {
-		error = e.code();
-	}
-
-	return result;
+	return upload();
 
 }	//	http_put
 
@@ -579,25 +521,7 @@ vector<char> BECurl::http_delete ( )
 
 vector<char> BECurl::ftp_upload ( )
 {
-
-	try {
-
-		prepare_upload ( );
-		prepare_data_upload ( );
-
-		// upload this
-		easy_setopt ( CURLOPT_URL, url.c_str() );
-
-		perform ( );
-
-	} catch ( filesystem_error& e ) {
-		error = (CURLcode)e.code().value();
-	} catch ( BECurl_Exception& e ) {
-		error = e.code();
-	}
-
-	return result;
-
+	return upload();
 }	//	ftp_upload
 
 
@@ -653,7 +577,7 @@ void BECurl::set_parameters ( )
 			input_file.seekg ( 0, ios::beg );
 			vector<char> file_data ( (std::istreambuf_iterator<char> ( input_file ) ), std::istreambuf_iterator<char>() );
 
-			easy_setopt ( CURLOPT_POSTFIELDS, &file_data[0] );
+			easy_setopt ( CURLOPT_POSTFIELDS, file_data.data() );
 			easy_setopt ( CURLOPT_POSTFIELDSIZE, file_data.size() );
 
 		} else if ( std::string::npos == parameters.find ( "=@" ) ) { // let curl do the work unless there's a file path
@@ -666,7 +590,8 @@ void BECurl::set_parameters ( )
 			vector<string> fields;
 			boost::split ( fields, parameters, boost::is_any_of ( "&" ) );
 
-			struct curl_httppost *last_form_field = NULL;
+			// Build an HTTP form
+			mime = curl_mime_init ( curl );
 
 			for ( vector<string>::iterator it = fields.begin() ; it != fields.end(); ++it ) {
 
@@ -678,23 +603,22 @@ void BECurl::set_parameters ( )
 					break;
 				}
 
+				curl_mimepart * part = curl_mime_addpart ( mime );
+
 				// get rid of @ sign that marks that it's a file path
-				int value_type = CURLFORM_COPYCONTENTS;
 				string value = key_value_pair.at ( 1 );
 				if ( !value.empty() && value[0] == '@' ) {
 					value.erase ( value.begin() );
-					value_type = CURLFORM_FILE;
+					curl_mime_filedata ( part, value.c_str() );
+				} else {
+					curl_mime_data ( part, value.c_str(), CURL_ZERO_TERMINATED );
 				}
-
-				// add the field
-				CURLFORMcode add_result = curl_formadd ( &post_data, &last_form_field, CURLFORM_COPYNAME, key_value_pair.at ( 0 ).c_str(), value_type, value.c_str(), CURLFORM_END );
-				if ( add_result ) {
-					throw BECurl_Exception ( (CURLcode)add_result );
-				}
+				
+				curl_mime_name ( part, key_value_pair.at(0).c_str() );
 
 			} // for
 
-			easy_setopt ( CURLOPT_HTTPPOST, post_data );
+			easy_setopt ( CURLOPT_MIMEPOST, mime );
 
 		} // if ( std::string::npos == parameters.find ( "=@" ) )fi
 
@@ -730,12 +654,12 @@ void BECurl::set_custom_headers ( CustomHeaders http_custom_headers )
 
 void BECurl::set_username_and_password ( )
 {
-
+	
 	// set user name and password for the authentication
-	if ( !username.empty() ) {
+	if ( ! username.empty() ) {
 
-		string username_and_password = join ( username, password );
-		easy_setopt ( CURLOPT_USERPWD, username_and_password.c_str() );
+		easy_setopt ( CURLOPT_USERNAME, username.c_str() );
+		easy_setopt ( CURLOPT_PASSWORD, password.c_str() );
 		easy_setopt ( CURLOPT_HTTPAUTH, (long)CURLAUTH_ANY );
 
 	}
@@ -814,6 +738,24 @@ void BECurl::write_to_memory ( )
 }
 
 
+void BECurl::prepare_file_upload ( )
+{
+
+	// no directories etc.
+	if ( exists ( filename ) && is_regular_file ( filename ) ) {
+
+		upload_file = FOPEN ( filename.c_str(), _TEXT ( "rb" ) );
+
+		easy_setopt ( CURLOPT_READDATA, upload_file );
+		easy_setopt ( CURLOPT_INFILESIZE, (curl_off_t)file_size ( filename ) );
+
+	} else {
+		throw BECurl_Exception ( (CURLcode)kFileExistsError );
+	}
+
+}	//	file_upload
+
+
 void BECurl::perform ( )
 {
 	error = curl_easy_perform ( curl );
@@ -845,10 +787,15 @@ void BECurl::perform ( )
 }	//	easy_perform
 
 
-void BECurl::easy_setopt ( CURLoption option, ... )
+void BECurl::easy_setopt ( const CURLoption option, ... )
 {
 	va_list curl_parameter;
-	va_start ( curl_parameter, option );
+	
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wvarargs"
+		va_start ( curl_parameter, option );
+	#pragma GCC diagnostic pop
+
 	error = curl_easy_setopt ( curl, option, va_arg ( curl_parameter, void * ) );
 	va_end ( curl_parameter );
 	if ( error ) {
@@ -860,23 +807,11 @@ void BECurl::easy_setopt ( CURLoption option, ... )
 
 void BECurl::configure_progress_dialog ( )
 {
-	// libcurl uses CURLOPT_XFERINFOFUNCTION if it can and CURLOPT_PROGRESSFUNCTION when it cannot
-
-	error = curl_easy_setopt ( curl, CURLOPT_PROGRESSFUNCTION, old_progress_dialog );
-	if ( error ) {
-		throw BECurl_Exception ( error );
-	}
-
-	// xferinfo was introduced in 7.32.0
-
-#if LIBCURL_VERSION_NUM >= 0x072000
 
 	error = curl_easy_setopt ( curl, CURLOPT_XFERINFOFUNCTION, progress_dialog );
 	if ( error != CURLE_OK && error != CURLE_UNKNOWN_OPTION ) {
 		throw BECurl_Exception ( error );
 	}
-
-#endif
 
 	// and disable it... enabled by the user when required
 	easy_setopt ( CURLOPT_NOPROGRESS, 1L );
@@ -921,20 +856,26 @@ string BECurl::http_method_as_string ( )
 void BECurl::prepare_data_upload ( )
 {
 
-	easy_setopt ( CURLOPT_READFUNCTION, ReadMemoryCallback );
+	if ( filename.empty() ) { // from memory
 
-	userdata = InitalizeCallbackMemory ( );
+		easy_setopt ( CURLOPT_READFUNCTION, ReadMemoryCallback );
 
-	if ( ! upload_data.empty() ) {
-		userdata.memory = &upload_data[0];
+		userdata = InitalizeCallbackMemory();
+		userdata.memory = upload_data.data();
 		userdata.size = upload_data.size();
+
+		easy_setopt ( CURLOPT_READDATA, &userdata );
+		easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
+
+		easy_setopt ( CURLOPT_SEEKFUNCTION, SeekFunction );
+		easy_setopt ( CURLOPT_SEEKDATA, &userdata );
+
+	} else { // a file
+		
+		upload_file = fopen ( filename.string().c_str(), "rb" );
+		easy_setopt ( CURLOPT_READDATA, upload_file );
+		
 	}
-
-	easy_setopt ( CURLOPT_READDATA, &userdata );
-	easy_setopt ( CURLOPT_INFILESIZE, userdata.size );
-
-	easy_setopt ( CURLOPT_SEEKFUNCTION, SeekFunction );
-	easy_setopt ( CURLOPT_SEEKDATA, &userdata );
 
 }
 
@@ -943,4 +884,31 @@ void BECurl::prepare_upload ( )
 {
 	write_to_memory ( );
 	easy_setopt ( CURLOPT_UPLOAD, 1L );
+	easy_setopt ( CURLOPT_URL, url.c_str() );
 }
+
+
+vector<char> BECurl::upload ( )
+{
+
+	try {
+
+		prepare_upload ( );
+
+		if ( filename.empty() ) {
+			prepare_data_upload ( );
+		} else {
+			prepare_file_upload();
+		}
+
+		perform ( );
+
+	} catch ( filesystem_error& e ) {
+		error = (CURLcode)e.code().value();
+	} catch ( BECurl_Exception& e ) {
+		error = e.code();
+	}
+
+	return result;
+
+}	// upload

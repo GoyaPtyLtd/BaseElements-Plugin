@@ -1,19 +1,19 @@
 /*
- 
- Copyright © 1998 - 2019  Claris International Inc.
+
+ Copyright © 1998 - 2021  Claris International Inc.
  All rights reserved.
- 
+
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
  to enable licensees of Claris FileMaker Pro to compile plug-ins for use with Claris products.
  Redistribution and use in source and binary forms, without modification, are permitted provided
  that the following conditions are met:
- 
+
  * Redistributions of source code must retain the above copyright notice, this list of
  conditions and the following disclaimer.
- 
+
  * The name Claris International Inc. may not be used to endorse or promote products derived
  from this software without specific prior written permission.
- 
+
  THIS SOFTWARE IS PROVIDED BY CLARIS INTERNATIONAL INC. ''AS IS'' AND ANY
  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -24,7 +24,7 @@
  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 #ifndef _h_BinaryData_
@@ -42,7 +42,7 @@ extern "C++"
 		//              stream of the same type.  Streams should not be empty.
 		// Container fields can be considered to be of type BinaryData when data is stored in the database
 		//          as opposed to objects inserted by reference (path of file as text).
-		//              
+		//
 		// To iterate through the streams of a BinaryData, use GetCount and then call GetIndex to
 		//              get the TypeID for each stream.
 		//
@@ -67,9 +67,9 @@ extern "C++"
 			//          the image. Please use the special accessors below (GetSIZEData and AddSIZEData)
 			//          to get the height and width values for the image.
 			//
-			// When generating other kinds of graphical data, use JPEG or PNGf for a preview,               
-			// and the other format will be preferred if possible. For example, to generate         
-			// a TIFF picture, you have to add "TIFF" and "JPEG" streams.            
+			// When generating other kinds of graphical data, use JPEG or PNGf for a preview,
+			// and the other format will be preferred if possible. For example, to generate
+			// a TIFF picture, you have to add "TIFF" and "JPEG" streams.
 			//
 			//  Files:
 			//          { "FILE" (binary file data), "ZLIB" (compressed file data), "FORK" (Mac only resource fork) }
@@ -77,8 +77,8 @@ extern "C++"
 			//              deflateInit2( ctx, Z_BEST_COMPRESSION, Z_DEFLATED, 15 + 16, 8, Z_DEFAULT_STRATEGY );
 			//          Decompression also uses zlib set to detect zlib or gzip headers. Parameters used are:
 			//              inflateInit2( ctx, 15 + 32 )
-			//          
-			//  Sound: 
+			//
+			//  Sound:
 			//          { "snd " }
 			//          Always Mac raw format.
 			//
@@ -101,7 +101,7 @@ extern "C++"
 			inline void GetType ( int32 index, QuadChar& dataType ) const;
 			inline uint32 GetSize ( int32 index ) const;
 			inline errcode GetData ( int32 index, uint32 offset, uint32 amount, void *buffer ) const;
-			
+
 			// You should exercise great care in using the following functions. Removing or modifying a required stream
 			// could have undesirable and undefined results.
 			inline errcode Add ( const QuadChar& dataType, uint32 amount, void *buffer );
@@ -130,40 +130,16 @@ extern "C++"
 
 		};
 
-#if FMX_USE_AUTO_PTR
-		// DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
-		class DEPRECATED BinaryDataAutoPtr : public std::auto_ptr<BinaryData>
-		{
-			typedef BinaryDataAutoPtr   UpCaster;
-		public:
-			inline BinaryDataAutoPtr ();
-			inline BinaryDataAutoPtr ( const BinaryData &sourceData );
-
-			// New to FileMaker Pro 13 (API VERSION 54) and later
-			// This method sets the FNAM, SIZE, main stream, and all other information streams
-			// for the given data. The extension of the file name passed in is used to determine
-			// the type of data passed in the buffer. This routine does not read data from the
-			// disk itself. Please use this to do "Insert from..." type operations.
-			inline BinaryDataAutoPtr ( const Text &name, uint32 amount, void *buffer );
-
-			// New to FileMaker Pro 14 (API VERSION 55) and later
-			// Same as the above constructor except use AddAppend/AddFinish for the data
-			inline BinaryDataAutoPtr ( const Text &name, uint32* context );
-		};
-#endif
-		
-#if FMX_USE_UNIQUE_PTR
 		class BinaryDataUniquePtr : public std::unique_ptr<BinaryData>
 		{
 			typedef BinaryDataUniquePtr   UpCaster;
 		public:
 			inline BinaryDataUniquePtr ();
 			inline BinaryDataUniquePtr ( const BinaryData &sourceData );
-			
+
 			inline BinaryDataUniquePtr ( const Text &name, uint32 amount, void *buffer );
 			inline BinaryDataUniquePtr ( const Text &name, uint32* context );
 		};
-#endif
 	}
 }
 
@@ -293,34 +269,6 @@ extern "C++"
 			_x.Check ();
 		}
 
-#if FMX_USE_AUTO_PTR
-		inline BinaryDataAutoPtr::BinaryDataAutoPtr ()
-		{
-			_fmxcpt _x;
-			reset ( FM_BinaryData_Constructor1 ( _x ) );
-			_x.Check ();
-		}
-		inline BinaryDataAutoPtr::BinaryDataAutoPtr ( const BinaryData &sourceData )
-		{
-			_fmxcpt _x;
-			reset ( FM_BinaryData_Constructor2 ( sourceData, _x ) );
-			_x.Check ();
-		}
-		inline BinaryDataAutoPtr::BinaryDataAutoPtr ( const Text &name, uint32 amount, void *buffer )
-		{
-			_fmxcpt _x;
-			reset ( FM_BinaryData_Constructor3 ( name, amount, buffer, _x ) );
-			_x.Check ();
-		}
-		inline BinaryDataAutoPtr::BinaryDataAutoPtr ( const Text &name, fmx::uint32* context )
-		{
-			_fmxcpt _x;
-			reset ( FM_BinaryData_Constructor4 ( name, context, _x ) );
-			_x.Check ();
-		}
-#endif
-		
-#if FMX_USE_UNIQUE_PTR
 		inline BinaryDataUniquePtr::BinaryDataUniquePtr ()
 		{
 			_fmxcpt _x;
@@ -345,7 +293,6 @@ extern "C++"
 			reset ( FM_BinaryData_Constructor4 ( name, context, _x ) );
 			_x.Check ();
 		}
-#endif
 
 		inline errcode BinaryData::GetFNAMData ( Text &filepathlist ) const
 		{

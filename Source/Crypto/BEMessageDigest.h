@@ -2,7 +2,7 @@
  BEMessageDigest.h
  BaseElements Plug-In
  
- Copyright 2011-2015 Goya. All rights reserved.
+ Copyright 2011-2020 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -20,21 +20,21 @@
 
 
 enum message_digest_algorithm {
-	kBE_MessageDigestAlgorithm_MD5 = 1,
-	kBE_MessageDigestAlgorithm_SHA256 = 2,
-	kBE_MessageDigestAlgorithm_MDC2 = 4,
-	kBE_MessageDigestAlgorithm_SHA = 6,
-	kBE_MessageDigestAlgorithm_SHA1 = 7,
-	kBE_MessageDigestAlgorithm_SHA224 = 8,
-	kBE_MessageDigestAlgorithm_SHA384 = 9,
-	kBE_MessageDigestAlgorithm_SHA512 = 10
+	kBE_MessageDigestAlgorithmMD5 = 1,
+	kBE_MessageDigestAlgorithmSHA256 = 2,
+	kBE_MessageDigestAlgorithmMDC2 = 4,
+	kBE_MessageDigestAlgorithmSHA = 6,
+	kBE_MessageDigestAlgorithmSHA1 = 7,
+	kBE_MessageDigestAlgorithmSHA224 = 8,
+	kBE_MessageDigestAlgorithmSHA384 = 9,
+	kBE_MessageDigestAlgorithmSHA512 = 10
 };
 
 
 enum message_digest_encoding {
-	kBE_Encoding_None = 0,
-	kBE_Encoding_Hex = 1,
-	kBE_Encoding_Base64 = 2
+	kBE_EncodingNone = 0,
+	kBE_EncodingHex = 1,
+	kBE_EncodingBase64 = 2
 };
 
 
@@ -43,8 +43,7 @@ enum message_digest_error {
 };
 
 
-std::string message_digest ( const std::string message, const unsigned long algorithm = kBE_MessageDigestAlgorithm_SHA256, const unsigned long output_encoding = kBE_Encoding_Hex );
-std::string HMAC ( const std::string message, const unsigned long algorithm = kBE_MessageDigestAlgorithm_SHA1, const unsigned long output_encoding = kBE_Encoding_Hex, const std::string key = "", const unsigned long input_encoding = kBE_Encoding_None );
+std::string message_digest ( const std::string message, const unsigned long algorithm = kBE_MessageDigestAlgorithmSHA256, const unsigned long output_encoding = kBE_EncodingHex );
 
 
 #endif // BEMESSAGEDIGEST_H

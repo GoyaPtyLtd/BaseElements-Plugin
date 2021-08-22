@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>18G103</string>
+	<string>20E232</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>19.0.1</string>
+	<string>19.3.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -23,26 +23,28 @@
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>19.0.1</string>
+	<string>19.3.1</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>11C505</string>
+	<string>12D4e</string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
 	<key>DTPlatformVersion</key>
-	<string>GM</string>
+	<string>11.1</string>
 	<key>DTSDKBuild</key>
-	<string>19B90</string>
+	<string>20C63</string>
 	<key>DTSDKName</key>
-	<string>macosx10.15</string>
+	<string>macosx11.1</string>
 	<key>DTXcode</key>
-	<string>1130</string>
+	<string>1240</string>
 	<key>DTXcodeBuild</key>
-	<string>11C505</string>
+	<string>12D4e</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.7</string>
+	<string>10.12</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>FMWrapper 19.0.1.70 Copyright © 2004-2020 FileMaker, Inc. All rights reserved.</string>
+	<string>FMWrapper 19.3.1.43 Copyright © 2004-2021 FileMaker, Inc. All rights reserved.</string>
 </dict>
 </plist>

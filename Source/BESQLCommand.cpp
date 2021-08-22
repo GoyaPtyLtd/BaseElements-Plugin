@@ -2,7 +2,7 @@
  BESQLCommand.cpp
  BaseElements Plug-In
 
- Copyright 2011-2019 Goya. All rights reserved.
+ Copyright 2011-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -12,6 +12,7 @@
 
 #include "BESQLCommand.h"
 #include "BEPluginGlobalDefines.h"
+#include "BEPluginUtilities.h"
 
 
 using namespace std;
@@ -44,7 +45,7 @@ void BESQLCommand::execute ( )
 
 
 
-void BESQLCommand::execute ( const ExprEnv& environment )
+void BESQLCommand::execute ( const ExprEnv& environment, const bool text_result_wanted )
 {
 	bool ddl = is_ddl_command();
 
@@ -58,8 +59,43 @@ void BESQLCommand::execute ( const ExprEnv& environment )
 
 	} else {
 
-		errcode error = environment.ExecuteFileSQLTextResult ( *expression, *filename, *parameters, *result, column_separator, row_separator );
+		fmx::errcode error = kNoError;
+		
+		if ( text_result_wanted ) {
+			
+			error = environment.ExecuteFileSQLTextResult ( *expression, *filename, *parameters, *result, column_separator, row_separator );
 
+		} else {
+		
+			RowVectUniquePtr records_found;
+			error = environment.ExecuteFileSQL ( *expression, *filename, *parameters, *records_found );
+			auto rows = records_found->Size();
+	
+			if ( rows > 0 ) {
+				
+				auto& this_row = records_found->At(0);
+				auto columns = this_row.Size();
+
+				if ( columns == 0 ) {
+					; // do nothing
+				} else if ( rows == 1 &&  columns == 1 ) {
+					
+					// take the first field/column of the first record
+					auto& container = this_row.At(0);
+					if ( container.GetNativeType() == fmx::Data::kDTBinary ) {
+						result->SetBinaryData( container.GetBinaryData() );
+					} else {
+						error = kInvalidFieldType;
+					}
+					
+				} else {
+					error = kInvalidFieldType;
+				}
+
+			}
+
+		} // if ( text_result_wanted )
+		
 		if ( ddl ) {
 			g_last_ddl_error = error;
 		} else {
@@ -70,18 +106,38 @@ void BESQLCommand::execute ( const ExprEnv& environment )
 
 
 
+DataUniquePtr BESQLCommand::get_data_result ( void ) const
+{
+	DataUniquePtr out;
+	out->SetBinaryData ( result->GetBinaryData() );
+	return out;
+}
+
+
 TextUniquePtr BESQLCommand::get_text_result ( void )
 {
-	TextUniquePtr	text_result;
+	TextUniquePtr text_result;
 
 	if ( !waiting ) {
-		text_result->AppendText( result->GetAsText() );
+		text_result->AppendText ( result->GetAsText() );
 	}
 
 	return text_result;
 
 }
 
+
+std::vector<char> BESQLCommand::get_vector_result ( void ) const
+{
+	std::vector<char> vector_result;
+
+	if ( !waiting ) {
+		vector_result = DataAsVectorChar ( *result );
+	}
+
+	return vector_result;
+
+}
 
 
 void BESQLCommand::set_column_separator ( const Text& new_column_separator )

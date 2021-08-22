@@ -102,7 +102,7 @@ static duk_ret_t BE_ScriptExecute ( duk_context *context )
 
 	FMX_SetToCurrentEnv ( &(*environment) );
 	
-	error = ExecuteScript ( *script_name, *database, *script_parameter, *environment );
+	error = ExecuteScript ( *script_name, *database, *script_parameter, kFMXT_Pause, *environment );
 	
 	duk_push_int ( context, error );
 

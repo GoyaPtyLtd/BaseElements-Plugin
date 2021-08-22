@@ -185,6 +185,20 @@ class PODOFO_API PdfVecObjects {
      */
     inline bool AutoDelete() const;
 
+    /** Enable/disable object numbers re-use.
+     *  By default object numbers re-use is enabled.
+     *
+     *  \param bCanReuseObjectNumbers if true, free object numbers can be re-used when creating new objects.
+     *
+     *  If set to false, the list of free object numbers is automatically cleared.
+     */
+    void SetCanReuseObjectNumbers( bool bCanReuseObjectNumbers );
+
+    /** 
+     *  \returns whether can re-use free object numbers when creating new objects.
+     */
+    inline bool GetCanReuseObjectNumbers() const;
+
     /** Removes all objects from the vector
      *  and resets it to the default state.
      *
@@ -214,6 +228,15 @@ class PODOFO_API PdfVecObjects {
     PdfObject* GetObject( const PdfReference & ref ) const;
 
     /** Finds the object with the given reference in m_vecOffsets 
+     *  and returns a pointer to it if it is found. Throws a PdfError
+     *  exception with error code ePdfError_NoObject if no object was found
+     *  \param ref the object to be found
+     *  \returns the found object
+     *  \throws PdfError(ePdfError_NoObject)
+     */
+    PdfObject* MustGetObject( const PdfReference & ref ) const;
+
+    /** Finds the object with the given reference in m_vecOffsets
      *  and returns the index to it.
      *  \param ref the object to be found
      *  \returns the found object or NULL if no object was found.
@@ -257,6 +280,8 @@ class PODOFO_API PdfVecObjects {
 
     /** Mark a reference as unused so that it can be reused for new objects.
      *  \param rReference the reference to reuse
+     *
+     *  \see GetCanReuseObjectNumbers
      */
     void AddFreeObject( const PdfReference & rReference );
 
@@ -299,6 +324,25 @@ class PODOFO_API PdfVecObjects {
      * Sort the objects in the vector based on their object and generation numbers
      */
     void Sort();
+
+    /**
+     * Set the maximum number of elements Reserve() will work for (to fix
+     * CVE-2018-5783) which is called with a value from the PDF in the parser.
+     * The default is from Table C.1 in section C.2 of PDF32000_2008.pdf
+     * (PDF 1.7 standard free version).
+     * This sets a static variable, so don't use from multiple threads
+     * (without proper locking).
+     * \param size Number of elements to allow to be reserved
+     */
+    void SetMaxReserveSize(size_t size);
+
+    /**
+     * Gets the maximum number of elements Reserve() will work for (to fix
+     * CVE-2018-5783) which is called with a value from the PDF in the parser.
+     * The default is from Table C.1 in section C.2 of PDF32000_2008.pdf
+     * (PDF 1.7 standard free version): 8388607.
+     */
+    size_t GetMaxReserveSize() const;
 
     /** 
      * Causes the internal vector to reserve space for size elements.
@@ -450,6 +494,7 @@ class PODOFO_API PdfVecObjects {
 
  private:
     bool                m_bAutoDelete;
+    bool                m_bCanReuseObjectNumbers;
     size_t              m_nObjectCount;
     bool                m_bSorted;
     TVecObjects         m_vector;
@@ -463,6 +508,7 @@ class PODOFO_API PdfVecObjects {
     StreamFactory*      m_pStreamFactory;
 
 	std::string			m_sSubsetPrefix;		 ///< Prefix for BaseFont and FontName of subsetted font
+    static size_t       m_nMaxReserveSize;
 };
 
 
@@ -477,9 +523,34 @@ inline size_t PdfVecObjects::GetSize() const
 // -----------------------------------------------------
 // 
 // -----------------------------------------------------
+inline void PdfVecObjects::SetMaxReserveSize(size_t size)
+{
+    m_nMaxReserveSize = size;
+}
+
+// -----------------------------------------------------
+// 
+// -----------------------------------------------------
+inline size_t PdfVecObjects::GetMaxReserveSize() const
+{
+    return m_nMaxReserveSize;
+}
+
+// -----------------------------------------------------
+// 
+// -----------------------------------------------------
 inline void PdfVecObjects::Reserve( size_t size )
 {
-    m_vector.reserve( size );
+    if( size <= m_nMaxReserveSize ) // Fix CVE-2018-5783
+    {
+        m_vector.reserve( size );
+    } 
+    else
+    {
+        PdfError::DebugMessage( "Call to PdfVecObjects::Reserve with %"
+                           PDF_SIZE_FORMAT" is over allowed limit of %"
+                           PDF_SIZE_FORMAT".\n", size, m_nMaxReserveSize );
+    }
 }
 
 // -----------------------------------------------------
@@ -512,6 +583,14 @@ inline void PdfVecObjects::SetAutoDelete( bool bAutoDelete )
 inline bool PdfVecObjects::AutoDelete() const
 {
     return m_bAutoDelete;
+}
+
+// -----------------------------------------------------
+// 
+// -----------------------------------------------------
+inline bool PdfVecObjects::GetCanReuseObjectNumbers() const
+{
+    return m_bCanReuseObjectNumbers;
 }
 
 // -----------------------------------------------------

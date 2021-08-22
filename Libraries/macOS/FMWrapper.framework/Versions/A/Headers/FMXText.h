@@ -1,19 +1,19 @@
 /*
- 
- Copyright © 1998 - 2019  Claris International Inc.
+
+ Copyright © 1998 - 2021  Claris International Inc.
  All rights reserved.
- 
+
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
  to enable licensees of Claris FileMaker Pro to compile plug-ins for use with Claris products.
  Redistribution and use in source and binary forms, without modification, are permitted provided
  that the following conditions are met:
- 
+
  * Redistributions of source code must retain the above copyright notice, this list of
  conditions and the following disclaimer.
- 
+
  * The name Claris International Inc. may not be used to endorse or promote products derived
  from this software without specific prior written permission.
- 
+
  THIS SOFTWARE IS PROVIDED BY CLARIS INTERNATIONAL INC. ''AS IS'' AND ANY
  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -24,7 +24,7 @@
  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  */
 
 #ifndef _h_Text_
@@ -155,26 +155,13 @@ extern "C++"
 
 		};
 
-#if FMX_USE_AUTO_PTR
-		// DEPRECATED in FileMaker Pro 15. C++11 deprecated std::auto_ptr and replaced with std::unique_ptr.
-		class DEPRECATED TextAutoPtr : public std::auto_ptr<Text>
-		{
-			typedef TextAutoPtr     UpCaster;
-		public:
-			inline TextAutoPtr ();
-
-		};
-#endif
-		
-#if FMX_USE_UNIQUE_PTR
 		class TextUniquePtr : public std::unique_ptr<Text>
 		{
 			typedef TextUniquePtr     UpCaster;
 		public:
 			inline TextUniquePtr ();
-			
+
 		};
-#endif
 	}
 }
 
@@ -428,24 +415,13 @@ extern "C++"
 			_x.Check ();
 		}
 
-#if FMX_USE_AUTO_PTR
-		inline TextAutoPtr::TextAutoPtr ()
-		{
-			_fmxcpt _x;
-			reset ( FM_Text_Constructor1 ( _x ) );
-			_x.Check ();
-		}
-#endif
-		
-#if FMX_USE_UNIQUE_PTR
 		inline TextUniquePtr::TextUniquePtr ()
 		{
 			_fmxcpt _x;
 			reset ( FM_Text_Constructor1 ( _x ) );
 			_x.Check ();
 		}
-#endif
-		
+
 	}
 }
 

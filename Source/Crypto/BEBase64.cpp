@@ -84,7 +84,7 @@ const vector<char> Base64_Decode ( const std::string& text )
 
 const std::string Base64_Encode ( const vector<char> data, const bool base64url )
 {
-	const std::string to_encode ( base64_text(&data[0]), base64_text(&data[0] + data.size()) );
+	const std::string to_encode ( base64_text ( data.data() ), base64_text ( data.data() + data.size()) );
 	
 	return Base64_Encode ( to_encode, base64url );
 	

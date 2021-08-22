@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
  
- Copyright 2010-2020 Goya. All rights reserved.
+ Copyright 2010-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -91,6 +91,8 @@ extern thread_local fmx::errcode g_last_error;
 
 #define FILEMAKER_END_OF_LINE "\r"
 #define FILEMAKER_END_OF_LINE_CHAR '\r'
+#define LINE_FEED "\n"
+#define NETWORK_ENDL "\r\n"
 
 #define UTF8 "UTF-8"
 #define UTF16 "UTF-16"
@@ -116,8 +118,8 @@ enum functions {
 	kBE_FolderSelect = 113,
 	kBE_DialogDisplay = 114,
 	kBE_XSLTApply = 115,
-	kBE_ExtractScriptVariables = 116,
-	kBE_StripInvalidUTF16CharactersFromXMLFile = 117,
+	kBE_TextExtractWords = 116,
+	kBE_XMLStripInvalidCharacters = 117,
 	kBE_FileMove = 118,
 	kBE_FileCopy = 119,
 //	kBE_ExecuteShellCommand = 120, // removed, do not use
@@ -135,7 +137,7 @@ enum functions {
 	kBE_WriteTextFileToContainer_Deprecated = 140,
 	kBE_ScriptExecute = 150,
 	kBE_FileMakerSQL = 151,
-	kBE_HTTP_GET_File = 152,
+	kBE_HTTP_GETFile = 152,
 	kBE_GetLastError = 153,
 	kBE_MessageDigest = 154,
 	kBE_GetLastDDLError = 155,
@@ -148,13 +150,14 @@ enum functions {
 	kBE_PreferenceDelete = 162,
 	kBE_Unzip = 170,
 	kBE_Zip = 171,
-	kBE_Base64_Decode_Deprecated = 172,
-	kBE_Base64_Encode_Deprecated = 173,
+//	kBE_Base64_Decode_Deprecated = 172, // Removed in 4.2
+//	kBE_Base64_Encode_Deprecated = 173, // Removed in 4.2
 	kBE_SetTextEncoding = 174,
-	kBE_Base64_URL_Encode_Deprecated = 175,
+//	kBE_Base64_URL_Encode_Deprecated = 175, // Removed in 4.2
 	kBE_ExportFieldContents = 176,
 	kBE_FileImport = 177,
 	kBE_FilePatternCount = 178,
+	kBE_FileReplaceText = 179,
 	kBE_HTTP_POST = 180,
 	kBE_HTTP_ResponseCode = 181,
 	kBE_HTTP_ResponseHeaders = 182,
@@ -168,6 +171,7 @@ enum functions {
 	kBE_CurlTrace = 190,
 	kBE_FTP_Delete = 191,
 	kBE_HTTP_PATCH = 192,
+	kBE_FTP_UploadFile = 193,
 	kBE_XSLT_ApplyInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,
@@ -175,7 +179,8 @@ enum functions {
 	kBE_XMLParse = 211,
 	kBE_SplitBEFileNodes = 212,
 	kBE_XMLValidate = 213,
-	kBE_XML_Canonical = 214,
+	kBE_XMLCanonical = 214,
+	kBE_XMLTidy = 215,
 	kBE_TimeCurrentMilliseconds = 220,
 	kBE_TimeUTCMilliseconds = 221,
 	kBE_TimeZoneOffset = 222,
@@ -188,17 +193,17 @@ enum functions {
 	kBE_ContainerGetType = 254,
 	kBE_Gzip = 260,
 	kBE_UnGzip = 261,
-	kBE_JPEG_Recompress_Deprecated = 270, // deprecated
+//	kBE_JPEG_Recompress_Deprecated = 270, // deprecated => Removed in 4.2
 	kBE_JPEGRecompress= 271,
 	kBE_JSONPath_Deprecated = 300,
 	kBE_JSON_Error_Description_Deprecated = 301,
 	kBE_JSON_ArraySize = 302,
-	kBE_JSON_Encode_Deprecated = 303,
+//	kBE_JSON_Encode_Deprecated = 303, // Removed in 4.2
 //	kBE_OAuth_RequestToken = 320, // Never Implemented
-	kBE_OAuthRequestAccessToken_Deprecated = 321, // Deprecated in 4.1.4
+	kBE_OAuthRequestAccessToken_Deprecated = 321, // Deprecated in 4.1.4 => Removed in 4.2
 //	kBE_OAuth_SetToken = 322, // Never Implemented
-	kBE_XeroSetTokens_Deprecated = 330, // Deprecated in 4.1.4
-	kBE_XeroGenerateKeys_Deprecated = 331, // Deprecated in 4.1.4
+	kBE_XeroSetTokens_Deprecated = 330, // Deprecated in 4.1.4 => Removed in 4.2
+	kBE_XeroGenerateKeys_Deprecated = 331, // Deprecated in 4.1.4 => Removed in 4.2
 	kBE_ValuesUnique = 350,
 	kBE_ValuesFilterOut = 351,
 	kBE_ValuesContainsDuplicates = 352,
@@ -226,13 +231,13 @@ enum functions {
 	kBE_StackPop = 473,
 	kBE_StackCount = 474,
 	kBE_StackDelete = 475,
-	kBE_Encrypt_AES = 500,
-	kBE_Decrypt_AES = 501,
+	kBE_EncryptAES = 500,
+	kBE_DecryptAES = 501,
 	kBE_SignatureGenerateRSA = 502,
 	kBE_SignatureVerifyRSA = 503,
 	kBE_CipherEncrypt = 504,
 	kBE_CipherDecrypt = 505,
-	kBE_HMAC_Deprecated = 550,
+//	kBE_HMAC_Deprecated = 550,, // removed in version 4.2
 //	kBE_Encoding_TextToHex = 570, // removed
 //	kBE_Encoding_HexToText = 571, // removed
 	kBE_EvaluateJavaScript = 600,
@@ -258,9 +263,9 @@ enum functions {
 
 
 enum dialog_buttons {
-	kBE_OKButton = 1,
-	kBE_CancelButton = 2,
-	kBE_AlternateButton = 3
+	kBE_ButtonOK = 1,
+	kBE_ButtonCancel = 2,
+	kBE_ButtonAlternate = 3
 };
 
 
@@ -278,8 +283,10 @@ enum errors {
 	kFileExistsError = 17,
 	kErrorParameterMissing = 102,
 	kWindowIsMissingError = 112,
+	kInvalidAccountOrPassword = 212,
 	kNotFoundError = 401,
 	kInvalidFieldType = 413,
+	kXMLParseError = 718,
 	kCannotInsertAsImage = 735,
 	kFileSystemError = 10000,
 	kInvalidUTF8 = 10100,

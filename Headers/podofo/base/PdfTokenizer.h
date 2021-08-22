@@ -225,6 +225,13 @@ class PODOFO_API PdfTokenizer {
      */
     void ReadHexString( PdfVariant& rVariant, PdfEncrypt* pEncrypt );
 
+    /** Read a hex string from the input device
+     *  and store it into a vector.
+     *
+     *  \param rVecBuffer store the hex string into this variable
+     */
+    void ReadHexString( std::vector<char> &rVecBuffer );
+
     /** Read a name from the input device
      *  and store it into a variant.
      * 
@@ -234,8 +241,8 @@ class PODOFO_API PdfTokenizer {
      */
     void ReadName( PdfVariant& rVariant );
 
-    /** Add a token to the queque of tokens.
-     *  GetNextToken() will return all quequed tokens first before
+    /** Add a token to the queue of tokens.
+     *  GetNextToken() will return all enqueued tokens first before
      *  reading new tokens from the input device.
      *
      *  \param pszToken string of the token
@@ -257,8 +264,8 @@ class PODOFO_API PdfTokenizer {
     static const char * const s_whitespaceMap;
     static const char s_octMap[]; ///< Map of bool values, if a certain char
                                   ///< is a valid octal digit
-    static const char * const s_escMap; ///< Mapping of escape sequences to there value
-    static const char * const s_hexMap; ///< Mapping of hex characters to there value
+    static const char * const s_escMap; ///< Mapping of escape sequences to their value
+    static const char * const s_hexMap; ///< Mapping of hex characters to their value
 
 
     TTokenizerQueque m_deqQueque;

@@ -19,6 +19,7 @@
 #include <boost/utility/enable_if.hpp>
 #include <boost/throw_exception.hpp>
 #include <boost/iterator/iterator_traits.hpp>
+#include <cstring> // for std::memcpy
 
 namespace boost { namespace spirit { namespace detail
 {
@@ -1528,11 +1529,11 @@ namespace boost { namespace spirit
         }
 
         template <typename From>
-        To dispatch(From const&, boost::mpl::false_) const
+        BOOST_NORETURN To dispatch(From const&, boost::mpl::false_) const
         {
             // From is NOT convertible to To !!!
             throw std::bad_cast();
-            return To();
+            BOOST_UNREACHABLE_RETURN(To())
         }
 
         template <typename From>
@@ -1554,11 +1555,11 @@ namespace boost { namespace spirit
         typedef T* result_type;
 
         template <typename From>
-        T* operator()(From const&) const
+        BOOST_NORETURN T* operator()(From const&) const
         {
             // From is NOT convertible to T !!!
             throw std::bad_cast();
-            return 0;
+            BOOST_UNREACHABLE_RETURN(NULL)
         }
 
         T* operator()(any_ptr const& p) const

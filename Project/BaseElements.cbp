@@ -36,46 +36,47 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
-			<Add option="-fexceptions -Wno-unknown-pragmas -fPIC -m64" />
-			<Add directory="PlugInSDK/Headers" />
+			<Add option="-m64" />
+			<Add option="-fexceptions -Wno-unknown-pragmas -fPIC" />
+			<Add option="-D_LIBCPP_STD_VER=11" />
 			<Add directory="../Headers" />
 			<Add directory="../Source" />
 		</Compiler>
 		<Linker>
+			<Add option="-m64" />
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
-			<Add option="-Wl,-soname=BaseElements_Plugin_4.1.4" />
+			<Add option="-Wl,-soname=4.2.0" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="../Libraries/linux/libz.a" />
-			<Add library="/usr/lib64/libssh2.so.1" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
 			<Add library="../Libraries/linux/libboost_filesystem.a" />
 			<Add library="../Libraries/linux/libboost_program_options.a" />
 			<Add library="../Libraries/linux/libboost_regex.a" />
 			<Add library="../Libraries/linux/libboost_thread.a" />
 			<Add library="../Libraries/linux/libcurl.a" />
+			<Add library="../Libraries/linux/libPocoNet.a" />
+			<Add library="../Libraries/linux/libcrypto.a" />
+			<Add library="../Libraries/linux/libssl.a" />
+			<Add library="../Libraries/linux/libssh2.a" />
 			<Add library="../Libraries/linux/libexslt.a" />
 			<Add library="../Libraries/linux/libjansson.a" />
-			<Add library="../Libraries/linux/libjpeg.a" />
-			<Add library="../Libraries/linux/libmimetic.a" />
-			<Add library="../Libraries/linux/liboauth.a" />
-			<Add library="../Libraries/linux/libPocoJSON.a" />
-			<Add library="../Libraries/linux/libPocoZip.a" />
 			<Add library="../Libraries/linux/libturbojpeg.a" />
+			<Add library="../Libraries/linux/libjpeg.a" />
 			<Add library="../Libraries/linux/libxml2.a" />
 			<Add library="../Libraries/linux/libxslt.a" />
+			<Add library="../Libraries/linux/libPocoJSON.a" />
+			<Add library="../Libraries/linux/libPocoZip.a" />
+			<Add library="../Libraries/linux/libPocoXML.a" />
 			<Add library="../Libraries/linux/libPocoFoundation.a" />
-			<Add library="../Libraries/linux/libexpat.a" />
 			<Add library="../Libraries/linux/libfreetype.a" />
 			<Add library="../Libraries/linux/libfontconfig.a" />
 			<Add library="../Libraries/linux/libpodofo.a" />
-			<Add library="/usr/lib64/libcrypto.so" />
-			<Add library="/usr/lib64/libssl.so" />
-			<Add directory="PlugInSDK/Libraries/Linux" />
-			<Add directory="../Libraries/linux" />
+			<Add library="../Libraries/linux/libiconv.a" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
-			<Add before="cp /home/goya/Documents/BaseElements-Plugin/Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
+			<Add before="cp ../Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
+			<Add after='chown fmserver:fmsadmin &quot;/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx&quot;' />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="../Headers/FMWrapper/FMXBinaryData.h">
@@ -117,7 +118,7 @@
 		<Unit filename="../Source/BEFileTextReader.cpp" />
 		<Unit filename="../Source/BEJSON.cpp" />
 		<Unit filename="../Source/BEJavaScript.cpp" />
-		<Unit filename="../Source/BEOAuth.cpp" />
+		<Unit filename="../Source/BEPDF.cpp" />
 		<Unit filename="../Source/BEPlugin.cpp" />
 		<Unit filename="../Source/BEPluginFunctions.cpp" />
 		<Unit filename="../Source/BEPluginUtilities.cpp" />
@@ -134,7 +135,6 @@
 		<Unit filename="../Source/BEXMLTextReader.cpp" />
 		<Unit filename="../Source/BEXMLTextWriter.cpp" />
 		<Unit filename="../Source/BEXSLT.cpp" />
-		<Unit filename="../Source/BEXero.cpp" />
 		<Unit filename="../Source/BEZlib.cpp" />
 		<Unit filename="../Source/Crypto/BEBase64.cpp" />
 		<Unit filename="../Source/Crypto/BEBio.cpp" />
@@ -145,7 +145,6 @@
 		<Unit filename="../Source/Crypto/BEX509.cpp" />
 		<Unit filename="../Source/Images/BEImage.cpp" />
 		<Unit filename="../Source/Images/BEJPEG.cpp" />
-		<Unit filename="../Source/Net/BEMimeticMIMEEntity.cpp" />
 		<Unit filename="../Source/Net/BEMimeticMIMEEntity.h" />
 		<Unit filename="../Source/duktape/duktape.c">
 			<Option compilerVar="CC" />
@@ -155,6 +154,8 @@
 		<Unit filename="../Source/linux/BELinuxFunctions.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
+			<code_completion />
+			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

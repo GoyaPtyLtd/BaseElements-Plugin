@@ -2,7 +2,7 @@
  BEJPEG.cpp
  BaseElements Plug-In
 
- Copyright 2015-2018 Goya. All rights reserved.
+ Copyright 2015-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -117,10 +117,10 @@ void BEJPEG::read_header ( void )
 	tjhandle jpeg_decompressor = tjInitDecompress();
 	if ( NULL != jpeg_decompressor ) {
 
-		if ( data.size() > 0) {
+		if ( data.size() > 0 ) {
 
-			int error = tjDecompressHeader3 ( jpeg_decompressor, &data[0], (unsigned long)data.size(), &image_width, &image_height, &chrominance_subsampling, &pixel_format );
-			tjDestroy(jpeg_decompressor); // error =
+			int error = tjDecompressHeader3 ( jpeg_decompressor, data.data(), (unsigned long)data.size(), &image_width, &image_height, &chrominance_subsampling, &pixel_format );
+			tjDestroy ( jpeg_decompressor ); // error =
 
 			if ( 0 == error ) {
 				adjust_dimensions ( image_width, image_height );
@@ -148,9 +148,9 @@ void BEJPEG::decompress ( void )
 
 		std::vector<unsigned char> decompressed_image ( width * height * tjPixelSize[pixel_format] );
 
-		if ( data.size() > 0) {
+		if ( data.size() > 0 ) {
 			
-			int error = tjDecompress2 ( jpeg_decompressor, &data[0], (unsigned long)data.size(), &decompressed_image[0], width, 0, height, pixel_format, 0 );
+			int error = tjDecompress2 ( jpeg_decompressor, data.data(), (unsigned long)data.size(), decompressed_image.data(), width, 0, height, pixel_format, 0 );
 			tjDestroy ( jpeg_decompressor ); // error =
 
 			if ( 0 == error ) {
@@ -177,9 +177,9 @@ void BEJPEG::compress ( void )
 
 		unsigned long image_size = width * height * tjPixelSize[pixel_format];
 		std::vector<unsigned char> image ( image_size );
-		unsigned char * compressed_image = &image[0];
+		unsigned char * compressed_image = image.data();
 
-		int error = tjCompress2 ( jpeg_compressor, &data[0], width, 0, height, pixel_format, &compressed_image, &image_size, chrominance_subsampling, compression_level, 0 );
+		int error = tjCompress2 ( jpeg_compressor, data.data(), width, 0, height, pixel_format, &compressed_image, &image_size, chrominance_subsampling, compression_level, 0 );
 		tjDestroy ( jpeg_compressor ); // error =
 
 		if ( 0 == error ) {

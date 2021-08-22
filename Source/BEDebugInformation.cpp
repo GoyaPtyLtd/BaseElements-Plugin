@@ -2,7 +2,7 @@
  BEDebugInformation.cpp
  BaseElements Plug-In
 
- Copyright (c) 2019 Goya. All rights reserved.
+ Copyright (c) 2019-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -10,13 +10,15 @@
  */
 
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
 #include <Poco/JSON/Object.h>
+#pragma GCC diagnostic pop
 
 #include "BEDebugInformation.h"
 
 #include "BECurl.h"
 #include "BEFileMakerPlugin.h"
-#include "BEOAuth.h"
 #include "BESMTPContainerAttachments.h"
 
 #include <chrono>
@@ -37,7 +39,6 @@ extern thread_local string g_text_encoding;
 
 extern thread_local std::map<short, std::string> g_script_steps;
 
-extern thread_local BEOAuth * g_oauth;
 extern thread_local struct host_details g_smtp_host;
 extern thread_local BESMTPContainerAttachments g_smtp_attachments;
 extern thread_local int g_http_response_code;
@@ -111,19 +112,9 @@ const string debug_information ( const ExprEnv& environment ) {
 	http_proxy_information->set ( "Password", protect_text ( g_http_proxy.password ) );
 	curl_information->set ( "HTTP Proxy Information", http_proxy_information );
 
-	Poco::JSON::Object::Ptr oauth_information = new Poco::JSON::Object();
-	if ( g_oauth ) {
-		oauth_information->set ( "Request Key", g_oauth->get_request_key() );
-		oauth_information->set ( "Request Secret", protect_text ( g_oauth->get_request_secret() ) );
-		oauth_information->set ( "Access Key", g_oauth->get_access_key() );
-		oauth_information->set ( "Access Secret", protect_text ( g_oauth->get_access_secret() ) );
-		oauth_information->set ( "Last Error", g_oauth->get_last_error() );
-	}
-	curl_information->set ( "OAuth Information", oauth_information );
-
 	Poco::JSON::Object::Ptr smtp_attachments = new Poco::JSON::Object();
 	for ( auto const &attachment : g_smtp_attachments.get_file_list() ) {
-		smtp_attachments->set ( attachment.second, attachment.first );
+		smtp_attachments->set ( attachment.first.string(), attachment.second );
 	}
 	curl_information->set ( "SMTP Attachments", smtp_attachments );
 

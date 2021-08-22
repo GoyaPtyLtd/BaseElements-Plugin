@@ -387,13 +387,14 @@ class RecyclingCloner
       :  m_holder(holder), m_icont(itree)
    {}
 
-   BOOST_CONTAINER_FORCEINLINE static void do_assign(node_ptr_type &p, const node_t &other, bool_<true>)
-   {  p->do_move_assign(const_cast<node_t &>(other).get_real_data());   }
+   BOOST_CONTAINER_FORCEINLINE static void do_assign(node_ptr_type &p, node_t &other, bool_<true>)
+   {  p->do_move_assign(other.get_real_data());   }
 
    BOOST_CONTAINER_FORCEINLINE static void do_assign(node_ptr_type &p, const node_t &other, bool_<false>)
    {  p->do_assign(other.get_real_data());   }
 
-   node_ptr_type operator()(const node_t &other) const
+   node_ptr_type operator()
+      (typename dtl::if_c<DoMove, node_t &, const node_t&>::type other) const
    {
       if(node_ptr_type p = m_icont.unlink_leftmost_without_rebalance()){
          //First recycle a node (this can't throw)
@@ -413,7 +414,7 @@ class RecyclingCloner
          BOOST_CATCH_END
       }
       else{
-         return m_holder.create_node(other.get_real_data());
+         return m_holder.create_node(boost::move(other.get_real_data()));
       }
    }
 
@@ -788,7 +789,7 @@ class tree
 
    tree& operator=(BOOST_COPY_ASSIGN_REF(tree) x)
    {
-      if (&x != this){
+      if (BOOST_LIKELY(this != &x)) {
          NodeAlloc &this_alloc     = this->get_stored_allocator();
          const NodeAlloc &x_alloc  = x.get_stored_allocator();
          dtl::bool_<allocator_traits<NodeAlloc>::
@@ -822,39 +823,40 @@ class tree
                           allocator_traits_type::is_always_equal::value) &&
                            boost::container::dtl::is_nothrow_move_assignable<Compare>::value)
    {
-      BOOST_ASSERT(this != &x);
-      NodeAlloc &this_alloc = this->node_alloc();
-      NodeAlloc &x_alloc    = x.node_alloc();
-      const bool propagate_alloc = allocator_traits<NodeAlloc>::
-            propagate_on_container_move_assignment::value;
-      const bool allocators_equal = this_alloc == x_alloc; (void)allocators_equal;
-      //Resources can be transferred if both allocators are
-      //going to be equal after this function (either propagated or already equal)
-      if(propagate_alloc || allocators_equal){
-         //Destroy
-         this->clear();
-         //Move allocator if needed
-         this->AllocHolder::move_assign_alloc(x);
-         //Obtain resources
-         this->icont() = boost::move(x.icont());
-      }
-      //Else do a one by one move
-      else{
-         //Transfer all the nodes to a temporary tree
-         //If anything goes wrong, all the nodes will be destroyed
-         //automatically
-         Icont other_tree(::boost::move(this->icont()));
+      if (BOOST_LIKELY(this != &x)) {
+         NodeAlloc &this_alloc = this->node_alloc();
+         NodeAlloc &x_alloc    = x.node_alloc();
+         const bool propagate_alloc = allocator_traits<NodeAlloc>::
+               propagate_on_container_move_assignment::value;
+         const bool allocators_equal = this_alloc == x_alloc; (void)allocators_equal;
+         //Resources can be transferred if both allocators are
+         //going to be equal after this function (either propagated or already equal)
+         if(propagate_alloc || allocators_equal){
+            //Destroy
+            this->clear();
+            //Move allocator if needed
+            this->AllocHolder::move_assign_alloc(x);
+            //Obtain resources
+            this->icont() = boost::move(x.icont());
+         }
+         //Else do a one by one move
+         else{
+            //Transfer all the nodes to a temporary tree
+            //If anything goes wrong, all the nodes will be destroyed
+            //automatically
+            Icont other_tree(::boost::move(this->icont()));
 
-         //Now recreate the source tree reusing nodes stored by other_tree
-         this->icont().clone_from
-            (::boost::move(x.icont())
-            , RecyclingCloner<AllocHolder, true>(*this, other_tree)
-            , Destroyer(this->node_alloc()));
+            //Now recreate the source tree reusing nodes stored by other_tree
+            this->icont().clone_from
+               (::boost::move(x.icont())
+               , RecyclingCloner<AllocHolder, true>(*this, other_tree)
+               , Destroyer(this->node_alloc()));
 
-         //If there are remaining nodes, destroy them
-         NodePtr p;
-         while((p = other_tree.unlink_leftmost_without_rebalance())){
-            AllocHolder::destroy_node(p);
+            //If there are remaining nodes, destroy them
+            NodePtr p;
+            while((p = other_tree.unlink_leftmost_without_rebalance())){
+               AllocHolder::destroy_node(p);
+            }
          }
       }
       return *this;
@@ -1515,8 +1517,9 @@ struct has_trivial_destructor_after_move
          <T, KeyOfValue, Compare, Allocator, Options>
    >
 {
-   typedef typename ::boost::container::allocator_traits<Allocator>::pointer pointer;
-   static const bool value = ::boost::has_trivial_destructor_after_move<Allocator>::value &&
+   typedef typename ::boost::container::dtl::tree<T, KeyOfValue, Compare, Allocator, Options>::allocator_type allocator_type;
+   typedef typename ::boost::container::allocator_traits<allocator_type>::pointer pointer;
+   static const bool value = ::boost::has_trivial_destructor_after_move<allocator_type>::value &&
                              ::boost::has_trivial_destructor_after_move<pointer>::value &&
                              ::boost::has_trivial_destructor_after_move<Compare>::value;
 };

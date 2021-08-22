@@ -35,6 +35,7 @@
 #ifndef _PDF_SIGNATURE_FIELD_H_
 #define _PDF_SIGNATURE_FIELD_H_
 
+#include "PdfAnnotation.h"
 #include "PdfField.h"
 #include "podofo/base/PdfDate.h"
 
@@ -61,9 +62,24 @@ public:
      */
     PdfSignatureField( PdfPage* pPage, const PdfRect & rRect, PdfDocument* pDoc );
 
-    PdfSignatureField( PdfAnnotation* pWidget, PdfAcroForm* pParent, PdfDocument* pDoc);
+    /** Create a new PdfSignatureField
+     *  \param bInit creates a signature field with/without a /V key
+     */
+    PdfSignatureField( PdfAnnotation* pWidget, PdfAcroForm* pParent, PdfDocument* pDoc, bool bInit = true);
 
-    void SetAppearanceStream(PdfXObject *pObject);
+    /** Creates a PdfSignatureField from an existing PdfAnnotation, which should
+     *  be an annotation with a field type Sig.
+     *	\param pWidget the annotation to create from
+     */
+    PdfSignatureField( PdfAnnotation* pWidget );
+
+    /** Set an appearance stream for this signature field
+     *  to specify its visual appearance
+     *  \param pObject an XObject
+     *  \param eAppearance an appearance type to set
+     *  \param state the state for which set it the pObject; states depend on the annotation type
+     */
+    void SetAppearanceStream(PdfXObject *pObject, EPdfAnnotationAppearance eAppearance = ePdfAnnotationAppearance_Normal, const PdfName & state = "" );
 
     /** Create space for signature
      *
@@ -89,9 +105,15 @@ public:
      */
     void SetSignatureLocation(const PdfString & rsText);
 
-	/** Date of signature
-	 */
-	void SetSignatureDate(const PdfDate &sigDate);
+    /** Set the creator of the signature
+     *
+     *  \param creator the creator of the signature
+     */
+    void SetSignatureCreator( const PdfName & creator );
+
+    /** Date of signature
+     */
+    void SetSignatureDate(const PdfDate &sigDate);
 
     /** Add certification dictionaries and references to document catalog.
      *
@@ -99,6 +121,21 @@ public:
      *  \param perm document modification permission
      */
     void AddCertificationReference(PdfObject *pDocumentCatalog, EPdfCertPermission perm = ePdfCertPermission_NoPerms);
+
+    /** Returns signature object for this signature field.
+     *  It can be NULL, when the signature field was created
+     *  from an existing annotation and it didn't have set it.
+     *
+     *  \returns associated signature object, or NULL
+     */
+    PdfObject* GetSignatureObject( void ) const;
+
+    /** Ensures that the signature field has set a signature object.
+     *  The function does nothing, if the signature object is already
+     *  set. This is useful for cases when the signature field had been
+     *  created from an existing annotation, which didn't have it set.
+     */
+    void EnsureSignatureObject( void );
 };
 
 }
