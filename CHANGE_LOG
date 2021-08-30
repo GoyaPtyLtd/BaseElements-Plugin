@@ -8,6 +8,7 @@ August 30, 2021
 Changes
 
 BE_FileOpen: correctly support/encode unicode paths (macOS)
+BE_ExecuteSystemCommand: fix "too many parameters" error
 
 
 ########################################################################
