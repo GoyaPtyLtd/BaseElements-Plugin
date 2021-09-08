@@ -313,12 +313,7 @@ const std::string ParameterAsUTF8String ( const DataVect& parameters, const FMX_
 	std::string result ( default_value );
 
 	try {
-
-		TextUniquePtr raw_data;
-		raw_data->SetText ( parameters.AtAsText ( which ) );
-
-		result.assign ( TextAsUTF8String ( *raw_data ) );
-
+		result.assign ( TextAsUTF8String ( parameters.AtAsText ( which ) ) );
 	} catch ( exception& /* e */ ) {
 		;	// return the default
 	}
