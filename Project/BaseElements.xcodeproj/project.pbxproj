@@ -36,7 +36,7 @@
 		4D33C6BE229BC8A900CEA53F /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
 		4D33C6C4229BC90200CEA53F /* libboost_program_options.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D33C6C3229BC90200CEA53F /* libboost_program_options.a */; };
 		4D35B3C6262FE4E20098C93F /* libldap.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06781C23B3B6006899FE /* libldap.tbd */; };
-		4D3629F11F2079A60036B751 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
+		4D3629F11F2079A60036B751 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D3629F21F2079A60036B751 /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4D3629F31F2079A60036B751 /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4D3629F41F2079A60036B751 /* BECurlOption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */; };
@@ -96,7 +96,7 @@
 		4D362A701F2085880036B751 /* BEXMLTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */; };
 		4D362A711F2085880036B751 /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
 		4D362A721F2085880036B751 /* BEXMLReaderInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */; };
-		4D362A731F2085880036B751 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
+		4D362A731F2085880036B751 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D362A741F2085880036B751 /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4D362A751F2085880036B751 /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4D362A761F2085880036B751 /* BECurlOption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */; };
@@ -254,7 +254,7 @@
 		4DE2FD4C2682C8640091A9AD /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
 		4DE2FD4D2682C8680091A9AD /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4DE2FD4E2682C86B0091A9AD /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
-		4DE2FD4F2682C8730091A9AD /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; };
+		4DE2FD4F2682C8730091A9AD /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4DE2FD502682C88A0091A9AD /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4DE2FD522682C9080091A9AD /* LDAP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE2FD512682C9080091A9AD /* LDAP.framework */; };
 		4DE2FD532682CD4E0091A9AD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
