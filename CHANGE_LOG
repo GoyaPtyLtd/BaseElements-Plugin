@@ -1,4 +1,20 @@
 ########################################################################
+Version 4.2.1
+########################################################################
+
+September 20, 2021
+
+
+Changes
+
+BE_FileOpen: correctly support/encode unicode paths (macOS)
+BE_ExecuteSystemCommand: fix "too many parameters" error
+BE_ExecuteSystemCommand: correctly tokenize command arguments when executing using a shell on Windows
+
+Restore support for FM17
+
+
+########################################################################
 Version 4.2
 ########################################################################
 

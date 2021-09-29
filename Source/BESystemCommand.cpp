@@ -43,13 +43,20 @@ std::string SystemCommand::execute_implementation ( const system_command& shell_
 		
 			std::vector<std::string> command_and_arguments;
 			if ( shell_command.execute_using_shell ) {
+				
 				command_and_arguments.push_back ( SHELL );
 				command_and_arguments.push_back ( SHELL_FLAG );
+#ifdef FMX_WIN_TARGET
+				auto shell_arguments = boost::program_options::SPLIT ( shell_command.command_text );
+				command_and_arguments.insert ( command_and_arguments.end(), shell_arguments.begin(), shell_arguments.end() );
+#else
 				command_and_arguments.push_back ( shell_command.command_text );
+#endif
+				
 			} else {
 				command_and_arguments = boost::program_options::SPLIT ( shell_command.command_text );
 			}
-
+			
 
 			auto command = command_and_arguments.front();
 			
