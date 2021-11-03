@@ -2,7 +2,7 @@
  BERegularExpression.h
  BaseElements Plug-In
  
- Copyright 2015-2019 Goya. All rights reserved.
+ Copyright 2015-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -30,10 +30,11 @@
  m	multiline
  s	dot matches all characters, including newline
  x	ignore whitespace
- g	replace all
+ g	replace/match all occurances
  
  if the replaceString parameter is present ( can be empty ) then a replace is performed
  otherwise a find
+ 
  */
 
 
@@ -42,7 +43,7 @@ T regular_expression ( const T& text, const T& expression, const std::string opt
 {
     
 	int constructor_options = 0;
-    int replace_options = Poco::RegularExpression::RE_NOTEMPTY; // poco.re hangs when the expression evalutes as "empty" unless this is set;
+    int runtime_options = Poco::RegularExpression::RE_NOTEMPTY; // poco.re hangs when the expression evalutes as "empty" unless this is set;
     
     T regex_options = options;
     Poco::toLowerInPlace ( regex_options );
@@ -69,28 +70,61 @@ T regular_expression ( const T& text, const T& expression, const std::string opt
         
     found = regex_options.find ( "g" );
     if ( found != std::string::npos ) {
-        replace_options |= Poco::RegularExpression::RE_GLOBAL;
+        runtime_options |= Poco::RegularExpression::RE_GLOBAL;
     }
         
-    T matched;
-    
+    T text_matched; // BE_ValueList doesn't work here (why?)
+
     try {
 	
 		Poco::RegularExpression re ( expression, constructor_options, false );
 		
-		if ( ! replace ) {
-			int match_options = 0;
-			re.extract ( text, matched, match_options );
+		if ( replace ) {
+
+			// replace/substitute
+			
+			text_matched = text;
+			re.subst ( text_matched, replace_with, runtime_options ); // int how_many =
+
 		} else {
-			matched = text;
-			re.subst ( matched, replace_with, replace_options ); // int how_many =
+			
+			if ( runtime_options & Poco::RegularExpression::RE_GLOBAL ) {
+				
+				// match all
+
+				Poco::RegularExpression::Match match_details = { 0, 0 };
+				std::string::size_type search_offset = 0;
+				
+				do {
+					
+					re.match ( text, search_offset, match_details, runtime_options );
+					
+					if ( std::string::npos != match_details.offset ) {
+						
+						if ( text_matched.length() > 0 ) {
+							text_matched += FILEMAKER_END_OF_LINE;
+						}
+						
+						text_matched += text.substr ( match_details.offset, match_details.length );
+						search_offset = match_details.offset + match_details.length;
+					}
+				
+				} while ( std::string::npos != match_details.offset );
+				
+			} else {
+
+				// just the first match
+				re.extract ( text, text_matched, runtime_options );
+
+			}
+
 		}
 
     } catch ( Poco::RegularExpressionException& e ) {
         throw BEPlugin_Exception ( e.code() );
     }
         
-    return matched;
+    return text_matched;
     
 } // BE_RegularExpression
 
