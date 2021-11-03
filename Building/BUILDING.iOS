@@ -2,7 +2,7 @@
 iOS
 =======================================================================
 
-On macOS the plugin is built using macOS 11.2.1 and Xcode 12.4.
+On macOS the plugin is built using macOS 12.0.1 and Xcode 13.1.
 
 Download the FileMaker External Plug-In API from
 
@@ -15,6 +15,11 @@ The scripts referred to shoud be in the
 	BUILDING/Scripts
 	
 directory. Most of the script require paths to vbe set, notably for SRCROOT and the directory containing the source for the library.
+
+Notes on the build scripts:
+- check the scripts for any paths that need to set for your environment
+- built libraries should be copied into place automatically
+
 
 =======================================================================
 Boost - 1.75_0
@@ -30,15 +35,22 @@ Get a build script from
 	
 and place it in the same directory as the boost archive download.
 
+Edit the line
+
+	EXTRA_ARM_FLAGS="-DBOOST_AC_USE_PTHREADS -DBOOST_SP_USE_PTHREADS -g -DNDEBUG"
+
+to read
+
+	EXTRA_ARM_FLAGS="-g -DNDEBUG"
+
+
 Build the library using
 
 	./boost.sh -ios --boost-version 1.75.0 --boost-libs "program_options regex date_time filesystem thread"
 
-and copy the headers and libraries to the project directory
+and copy the xcframework to the project directory
 
-	cp -R ./dist/boost.xcframework/Headers/boost "${SRCROOT}/Headers/"
-	cp ./dist/boost.xcframework/ios-arm64/libboost.a "${SRCROOT}/Libraries/iOS/iPhoneOS"
-	cp ./dist/boost.xcframework/ios-x86_64-simulator/libboost.a "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator"
+	cp -R dist/boost.xcframework "${SRCROOT}/Libraries/iOS"
 
 
 =======================================================================
@@ -51,9 +63,7 @@ Download the source from
 
 Then copy the compile_for_ios.sh script to the distribution directory
 
-	cd jansson-json_path
-	autoreconf -i
-	./compile_for_ios.sh
+	sh ./build_jansson.sh
 
 Copy jansson.h and jansson_config.h from output/<platform>/include to the Headers directory and  output/libjansson.a to Libraries/iOS.
 
@@ -121,24 +131,6 @@ Copy the header and library files.
 
 
 =======================================================================
-liboauth - 1.0.3
-=======================================================================
-
-Download the source from
-
-	http://liboauth.sourceforge.net/
-
-Copy build_libcurl.sh to the same directory as the expanded source and
-
-	./compile_for_ios.sh
-
-Copy the header and library files.
-
-	cp liboauth-1.0.3/src/oauth.h "${SRCROOT}/Headers/"
-	cp liboauth_iOS_Release/liboauth.a "${SRCROOT}/Libraries/iOS"
-
-
-=======================================================================
 duktape - 2.6.0
 =======================================================================
 
@@ -159,7 +151,7 @@ Download a build script from
 
 From the command line run
 
-	zsh libturbojpeg-ios.sh
+	sh ./build_libturbojpeg.sh
 	
 to download and build the library and then copy the library to the project directory
 
@@ -180,7 +172,7 @@ Then
 	./configure --config=iPhone-clang-libc++ --cflags="-miphoneos-version-min=13.2" --prefix="${$(pwd)}/_build_iphone" --no-sharedlibs --static --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util --no-tests --no-samples
 	make -s -j install
 	make distclean
-	./configure --config=iPhoneSimulator-clang-libc++ --prefix="${$(pwd)}/_build_iphone_simulator" --no-sharedlibs --static --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util --no-tests --no-samples
+	./configure --config=iPhoneSimulator-clang-libc++ --prefix="${$(pwd)}/_build_iphone_simulator" --no-sharedlibs --static --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis --no-tests --no-samples
 	make -s -j install
 
 Copy the libraries (and, if necessary, the headers) to the project directory
@@ -200,8 +192,7 @@ Download the source for libiconv from
 
 and extract the archive. Then
 
-	cd libiconv-1.16
-	zsh ./build_libiconv.sh
+	sh ./build_libiconv.sh
 
 Copy the Headers and libraries to the project directory
 
@@ -217,9 +208,8 @@ Download the source for libxml2 from
 
 	http://xmlsoft.org/downloads.html
 
-Copy the compile_for_ios.sh to the distribution directory and
+and extract the archive. Then
 
-	cd libxml2-2.9.10
 	sh ./build_libxml2.sh
 		
 Copy the Headers and libraries to the project directory
@@ -236,10 +226,9 @@ Download the source from
 
 	http://xmlsoft.org/downloads.html
 
-Copy the compile_for_ios.sh to the distribution directory and
+and extract the archive. Then
 
-	cd libxslt-1.1.34
-	sh ./build_libxslt.sh
+	sh ./build_libxml2.sh
 	
 Copy the Headers and libraries to the project directory
 
@@ -255,21 +244,9 @@ Download freetype from
 
 	https://www.freetype.org/download.html
 	
-Copy the compile_for_ios.sh to the distribution directory and
+and extract the archive. Then
 
-	cd freetype-2.10.4
-
-	./configure --host="aarch64-apple-darwin" --enable-static=yes --enable-shared=no
-	make clean
-	make
-	cp objs/.libs/libfreetype.a "build/libfreetype-arm64.a"
-	
-	./configure --disable-shared --enable-static --host="x86_64-apple-darwin"
-	make clean
-	make
-	cp objs/.libs/libfreetype.a "build/libfreetype-x86_64.a"
-
-	lipo -create "build/libfreetype-arm64.a" "build/libfreetype-x86_64.a" -output "build/libfreetype.a"
+	sh ./build_libfreetype.sh
 
 If necessary, copy the output/<platform>/freetype2 directory to Headers.
 
@@ -282,12 +259,9 @@ Download fontconfig from
 
 	https://www.freedesktop.org/wiki/Software/fontconfig/
 	
-	Edit ./configure to remove references to...
-	
-Copy the compile_for_ios.sh to the distribution directory and
+and extract the archive. Then
 
-	cd fontconfig-2.13.1
-	sh ./compile_for_ios.sh FREETYPE_CFLAGS=-I/Users/mark/Dropbox/Development/BaseElements-Plugin/Headers/freetype2 FREETYPE_LIBS=/Users/mark/Dropbox/Development/BaseElements-Plugin/Libraries/iOS --enable-libxml2 --enable-static --enable-shared=no
+	sh ./build_libfontconfige.sh
 
 If necessary, copy the output/<platform>/fontconfig directory to Headers.
 

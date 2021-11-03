@@ -11,53 +11,75 @@
 #  The MIT License (MIT)
 #  Copyright (c) 2016 l'L'l
 
+
+SRCROOT="/Users/mark/Dropbox/Development/Plugin_Build_Folder/BaseElements"
+iphoneos="13.2"
+cd "libxml2-2.9.10"
+
 ########################################################################
 # Main
 ########################################################################
 
-BUILD_DIR=$HOME/Downloads/libxml2_iOS_Release # RELEASE_DIR
-mkdir -p ${BUILD_DIR}
-cd $BUILD_DIR
-cd "../libxml2-2.9.10"
-
 set -e
 
-iphoneos="13.2"
-export CC="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+# export CC="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+# export AR="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
+
+########################################################################
+# Device
+########################################################################
+
+IOS_SDK=$(xcrun --sdk iphoneos --show-sdk-path)
 
 ARCH="arm64"
 echo "---> Building ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
 
-export CFLAGS="-arch ${ARCH} -pipe -mdynamic-no-pic -Wno-trigraphs -fpascal-strings -O2 -Wreturn-type -Wunused-variable -fmessage-length=0 -fvisibility=hidden -miphoneos-version-min=$iphoneos -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk"
-export AR="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
-export LDFLAGS="-arch ${ARCH} -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -miphoneos-version-min=7.0"
-./configure --host="aarch64-apple-darwin" --disable-shared --enable-static --without-python --without-zlib --with-iconv=${BUILD_DIR}/../libiconv_iOS_Release
+export CFLAGS="-arch ${ARCH} -I${SRCROOT}/Headers -isysroot ${IOS_SDK} -miphoneos-version-min=$iphoneos"
+export LDFLAGS="-arch ${ARCH} -L${SRCROOT}/Libraries/iOS/iPhoneOS -isysroot ${IOS_SDK} -miphoneos-version-min=$iphoneos"
+./configure --host="aarch64-apple-darwin" --disable-shared --enable-static --without-python --without-zlib --with-iconv
 make clean
 make
-cp .libs/libxml2.a "${BUILD_DIR}/libxml2-${ARCH}.a"
-build_one="$ARCH"
+cp .libs/libxml2.a "${SRCROOT}/Libraries/iOS/iPhoneOS/libxml2.a"
+build_one="Device: $ARCH"
 
 
-iphoneos="13.2"
+########################################################################
+# Simulator
+########################################################################
+
+IOS_SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
+
+ARCH="arm64"
+echo "---> Building Simulator ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
+
+export CFLAGS="-arch ${ARCH} -I${SRCROOT}/Headers -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+export LDFLAGS="-arch ${ARCH} -L${SRCROOT}/Libraries/iOS/iPhoneOSSimulator -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+./configure --host="aarch64-apple-darwin" --disable-shared --enable-static --without-python --without-zlib --with-iconv
+make clean
+make
+cp .libs/libxml2.a "libxml2-${ARCH}.a"
+build_three="SIM: $ARCH"
 
 ARCH="x86_64"
-echo "---> Building ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
+echo "---> Building Simulator ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
 
-export CFLAGS="-arch ${ARCH} -pipe  -Wno-trigraphs -fpascal-strings -O2 -Wreturn-type -Wunused-variable -fmessage-length=0 -fvisibility=hidden -miphoneos-version-min=$iphoneos -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"
-export LDFLAGS="-arch ${ARCH} -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -miphoneos-version-min=$iphoneos"
-./configure --disable-shared --enable-static --host="${ARCH}-apple-darwin" --without-python --without-zlib --with-iconv=${BUILD_DIR}/../libiconv_iOS_Release
+export CFLAGS="-arch ${ARCH} -I${SRCROOT}/Headers -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+export LDFLAGS="-arch ${ARCH} -L${SRCROOT}/Libraries/iOS/iPhoneOSSimulator -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+./configure --host="aarch64-apple-darwin" --disable-shared --enable-static --without-python --without-zlib --with-iconv
 make clean
 make
-cp .libs/libxml2.a "${BUILD_DIR}/libxml2-${ARCH}.a"
-build_four="$ARCH"
+cp .libs/libxml2.a "libxml2-${ARCH}.a"
+build_four="SIM: $ARCH"
+
+# generate fat binary
 
 echo "---> Success: $build_one $build_two $build_three $build_four" | awk '/Success/ {print "\033[37;35;53m" $0 "\033[0m"}'
 
-lipo -create "${BUILD_DIR}/libxml2-arm64.a" "${BUILD_DIR}/libxml2-x86_64.a" -output "${BUILD_DIR}/libxml2.a"
-lipolog="$(lipo -info ${BUILD_DIR}/libxml2.a)"
-
-
+lipo -create libxml2-arm64.a libxml2-x86_64.a -output libxml2.a
+lipolog="$(lipo -info libxml2.a)"
 echo "---> $lipolog" | awk '/Arch/ {print "\033[32;35;52m" $0 "\033[0m"}'
+cp "libxml2.a" "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator/libxml2.a"
+
 echo "---> Build Process Complete!" | awk '/!/ {print "\033[36;35;54m" $0 "\033[0m"}'
 
 ########################################################################

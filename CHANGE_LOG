@@ -11,6 +11,20 @@ BE_RegularExpression: support the g option for match in addition to replace
 
 
 ########################################################################
+Version 4.2.2
+########################################################################
+
+November 3, 2021
+
+
+iOS Support for 4.2.x
+
+Changes
+
+BE_SMTPSend: work around MS's interpretation of MIME::Content-Type::name [Jira #93]
+
+
+########################################################################
 Version 4.2.1
 ########################################################################
 

@@ -20,8 +20,6 @@
 		4D11F40B1F271C3B00D78042 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40A1F271C3B00D78042 /* libcurl.a */; };
 		4D11F40D1F271C5400D78042 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40C1F271C5400D78042 /* libssh2.a */; };
 		4D11F40F1F271C6F00D78042 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40E1F271C6F00D78042 /* libturbojpeg.a */; };
-		4D1BFE561F3AC9A600805CD3 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1BFE551F3AC9A600805CD3 /* libpodofo.a */; };
-		4D1BFE571F3AC9B900805CD3 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1BFE551F3AC9A600805CD3 /* libpodofo.a */; };
 		4D1D070D1F21C36700BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070E1F21C37A00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070F1F21C37C00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
@@ -35,6 +33,7 @@
 		4D33C6BD229BC8A900CEA53F /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
 		4D33C6BE229BC8A900CEA53F /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
 		4D33C6C4229BC90200CEA53F /* libboost_program_options.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D33C6C3229BC90200CEA53F /* libboost_program_options.a */; };
+		4D356F27273239B40036CAA2 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A401F207B660036B751 /* iOSAppSDK.framework */; };
 		4D35B3C6262FE4E20098C93F /* libldap.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06781C23B3B6006899FE /* libldap.tbd */; };
 		4D3629F11F2079A60036B751 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D3629F21F2079A60036B751 /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
@@ -68,17 +67,7 @@
 		4D362A121F2079E30036B751 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
 		4D362A131F2079E30036B751 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
 		4D362A151F2079E30036B751 /* BEXMLSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */; };
-		4D362A2D1F207AE70036B751 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A191F207AE70036B751 /* libcurl.a */; };
-		4D362A2E1F207AE70036B751 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1A1F207AE70036B751 /* libexslt.a */; };
-		4D362A2F1F207AE70036B751 /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1B1F207AE70036B751 /* libfontconfig.a */; };
-		4D362A301F207AE70036B751 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1C1F207AE70036B751 /* libfreetype.a */; };
-		4D362A311F207AE70036B751 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1D1F207AE70036B751 /* libjansson.a */; };
-		4D362A321F207AE70036B751 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1E1F207AE70036B751 /* libjpeg.a */; };
-		4D362A3B1F207AE70036B751 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A271F207AE70036B751 /* libturbojpeg.a */; };
-		4D362A3C1F207AE70036B751 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A281F207AE70036B751 /* libxml2.a */; };
-		4D362A3D1F207AE70036B751 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A291F207AE70036B751 /* libxslt.a */; };
 		4D362A4D1F207E8C0036B751 /* BEIOSFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D362A4B1F207E780036B751 /* BEIOSFunctions.mm */; };
-		4D362A531F2081B90036B751 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; };
 		4D362A5E1F2085880036B751 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
 		4D362A5F1F2085880036B751 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4D362A601F2085880036B751 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
@@ -112,28 +101,15 @@
 		4D362A801F2085880036B751 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
 		4D362A811F2085880036B751 /* BEPluginFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */; };
 		4D362A821F2085880036B751 /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
-		4D362A8C1F2085880036B751 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A181F207AE70036B751 /* libcrypto.a */; };
-		4D362A8D1F2085880036B751 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A191F207AE70036B751 /* libcurl.a */; };
-		4D362A8E1F2085880036B751 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1A1F207AE70036B751 /* libexslt.a */; };
-		4D362A8F1F2085880036B751 /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1B1F207AE70036B751 /* libfontconfig.a */; };
-		4D362A901F2085880036B751 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1C1F207AE70036B751 /* libfreetype.a */; };
-		4D362A911F2085880036B751 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1D1F207AE70036B751 /* libjansson.a */; };
-		4D362A921F2085880036B751 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A1E1F207AE70036B751 /* libjpeg.a */; };
-		4D362A991F2085880036B751 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A251F207AE70036B751 /* libssh2.a */; };
-		4D362A9A1F2085880036B751 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A261F207AE70036B751 /* libssl.a */; };
-		4D362A9B1F2085880036B751 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A271F207AE70036B751 /* libturbojpeg.a */; };
-		4D362A9C1F2085880036B751 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A281F207AE70036B751 /* libxml2.a */; };
-		4D362A9D1F2085880036B751 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A291F207AE70036B751 /* libxslt.a */; };
-		4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A401F207B660036B751 /* iOSAppSDK.framework */; };
-		4D414900267C5D8600C726DC /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4148FF267C5D8600C726DC /* libPocoNet.a */; };
-		4D414902267C5DC500C726DC /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414901267C5DC500C726DC /* libPocoNet.a */; };
-		4D42B4E025CB802F007C120E /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D42B4DC25CB8014007C120E /* libboost.a */; };
-		4D42B4E525CB8074007C120E /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D42B4E425CB8064007C120E /* libboost.a */; };
+		4D3B9BBC2717B7580009E745 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; platformFilter = ios; };
+		4D3B9BBD2717B7590009E745 /* iOSAppSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4D3B9BC22717CFC70009E745 /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7F222E361C006EF9FB /* libPocoJSON.a */; };
+		4D3B9BC32717CFC80009E745 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414901267C5DC500C726DC /* libPocoNet.a */; };
+		4D3B9BC42717CFC80009E745 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFC607C260B07FD003C795B /* libPocoXML.a */; };
+		4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC52717D0B20009E745 /* libPocoUtil.a */; };
+		4D3B9BC72717D2470009E745 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
+		4D3B9BC92717D5A50009E745 /* boost.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC82717D5A50009E745 /* boost.xcframework */; };
 		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
-		4D5668A625DCD3F700BB450F /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A425DCD3F600BB450F /* libcharset.a */; };
-		4D5668A725DCD3F700BB450F /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A525DCD3F600BB450F /* libiconv.a */; };
-		4D5668AB25DCD42F00BB450F /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A425DCD3F600BB450F /* libcharset.a */; };
-		4D5668AC25DCD42F00BB450F /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5668A525DCD3F600BB450F /* libiconv.a */; };
 		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
 		4D703AD42230D803007632BA /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD12230D803007632BA /* libPocoZip.a */; };
@@ -187,9 +163,6 @@
 		4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DD510241DD136F200763F7E /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
-		4DE1231525E89F3F00518D6D /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A251F207AE70036B751 /* libssh2.a */; };
-		4DE1233E25E8A58900518D6D /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A181F207AE70036B751 /* libcrypto.a */; };
-		4DE1234525E8A5B200518D6D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A261F207AE70036B751 /* libssl.a */; };
 		4DE2FD032682C5160091A9AD /* BE_Plugin_Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4DE2FD022682C5160091A9AD /* BE_Plugin_Tests.mm */; };
 		4DE2FD082682C5360091A9AD /* BESMTPEmailMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */; };
 		4DE2FD092682C5470091A9AD /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
@@ -265,25 +238,74 @@
 		4DE2FD582682CDF80091A9AD /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4DE2FD592682CE0C0091A9AD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
 		4DE2FD5A2682CE0C0091A9AD /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5E11E9308B0047A453 /* Info.plist */; };
-		4DFA0D6C222E3211006EF9FB /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D69222E3211006EF9FB /* libPocoZip.a */; };
-		4DFA0D6D222E3211006EF9FB /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */; };
-		4DFA0D6E222E3211006EF9FB /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */; };
-		4DFA0D77222E34A8006EF9FB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D75222E3493006EF9FB /* libz.tbd */; };
-		4DFA0D7B222E34E1006EF9FB /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7A222E34E1006EF9FB /* libbz2.tbd */; };
-		4DFA0D7D222E35C1006EF9FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7C222E35C1006EF9FB /* UIKit.framework */; };
-		4DFA0D7E222E3603006EF9FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7C222E35C1006EF9FB /* UIKit.framework */; };
-		4DFA0D85222E361C006EF9FB /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7F222E361C006EF9FB /* libPocoJSON.a */; };
-		4DFA0D87222E361C006EF9FB /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D81222E361C006EF9FB /* libPocoZip.a */; };
-		4DFA0D8A222E361C006EF9FB /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
-		4DFA0D8C222E36A6006EF9FB /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7A222E34E1006EF9FB /* libbz2.tbd */; };
-		4DFA0D8D222E36A6006EF9FB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D75222E3493006EF9FB /* libz.tbd */; };
-		4DFC6078260B0779003C795B /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFC6077260B0778003C795B /* libPocoXML.a */; };
-		4DFC607D260B07FD003C795B /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFC607C260B07FD003C795B /* libPocoXML.a */; };
+		4DF4DAFA271E4AB8007E91B5 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BD02717E48B0009E745 /* libpodofo.a */; };
+		4DF4DAFD271E4B2E007E91B5 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BCE2717DF840009E745 /* libcrypto.a */; };
+		4DF4DAFE271E4B2E007E91B5 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BCD2717DF840009E745 /* libssl.a */; };
+		4DF4DB00271E4E9A007E91B5 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BD2271933760009E745 /* libcurl.a */; };
+		4DF4DB01271E4EC2007E91B5 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BD12717EFB00009E745 /* libxml2.a */; };
+		4DF4DB02271E4EE1007E91B5 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D81222E361C006EF9FB /* libPocoZip.a */; };
+		4DF4DB03271E4F26007E91B5 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DAFB271E4AD7007E91B5 /* libfreetype.a */; };
+		4DF4DB04271E4F37007E91B5 /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DAFC271E4AED007E91B5 /* libfontconfig.a */; };
+		4DF4DB07271E6198007E91B5 /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB05271E6182007E91B5 /* libcharset.a */; };
+		4DF4DB08271E61A4007E91B5 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB06271E6182007E91B5 /* libiconv.a */; };
+		4DF4DB0B271E7947007E91B5 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB0A271E7934007E91B5 /* libxslt.a */; };
+		4DF4DB0C271E7958007E91B5 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB09271E790C007E91B5 /* libexslt.a */; };
+		4DF4DB0D271E79AA007E91B5 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243F1E0A386F00266C0D /* libbz2.tbd */; };
+		4DF4DB0F271E7A0E007E91B5 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB0E271E79C7007E91B5 /* libssh2.a */; };
+		4DF4DB11271E7A24007E91B5 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB10271E7A24007E91B5 /* libjansson.a */; };
+		4DF4DB13271E7A59007E91B5 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB12271E7A58007E91B5 /* libjpeg.a */; };
+		4DF4DB15271E7A68007E91B5 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB14271E7A68007E91B5 /* libturbojpeg.a */; };
+		4DF4DB17271E7B16007E91B5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB16271E7B16007E91B5 /* UIKit.framework */; };
+		4DF4DB19271E7BD6007E91B5 /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB18271E7BD6007E91B5 /* libcharset.a */; };
+		4DF4DB1A271E7BE7007E91B5 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */; };
+		4DF4DB1B271E7BE7007E91B5 /* libPocoFoundationd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D70222E3287006EF9FB /* libPocoFoundationd.a */; };
+		4DF4DB1C271E7BE7007E91B5 /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */; };
+		4DF4DB1D271E7BE7007E91B5 /* libPocoJSONd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D71222E3287006EF9FB /* libPocoJSONd.a */; };
+		4DF4DB1E271E7BE7007E91B5 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4148FF267C5D8600C726DC /* libPocoNet.a */; };
+		4DF4DB1F271E7BE7007E91B5 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFC6077260B0778003C795B /* libPocoXML.a */; };
+		4DF4DB20271E7BE7007E91B5 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D69222E3211006EF9FB /* libPocoZip.a */; };
+		4DF4DB21271E7BE7007E91B5 /* libPocoZipd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6F222E3287006EF9FB /* libPocoZipd.a */; };
+		4DF4DB35271E7BE8007E91B5 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB22271E7BE7007E91B5 /* libjpeg.a */; };
+		4DF4DB36271E7BE8007E91B5 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB23271E7BE7007E91B5 /* libcrypto.a */; };
+		4DF4DB37271E7BE8007E91B5 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB24271E7BE7007E91B5 /* libfreetype.a */; };
+		4DF4DB38271E7BE8007E91B5 /* libPocoXMLd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB25271E7BE7007E91B5 /* libPocoXMLd.a */; };
+		4DF4DB39271E7BE8007E91B5 /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB26271E7BE7007E91B5 /* libfontconfig.a */; };
+		4DF4DB3A271E7BE8007E91B5 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB27271E7BE7007E91B5 /* libpodofo.a */; };
+		4DF4DB3B271E7BE8007E91B5 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB28271E7BE7007E91B5 /* libssl.a */; };
+		4DF4DB3C271E7BE8007E91B5 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB29271E7BE7007E91B5 /* libturbojpeg.a */; };
+		4DF4DB3D271E7BE8007E91B5 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2A271E7BE7007E91B5 /* libssh2.a */; };
+		4DF4DB3E271E7BE8007E91B5 /* libPocoNetd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2B271E7BE7007E91B5 /* libPocoNetd.a */; };
+		4DF4DB3F271E7BE8007E91B5 /* libiOSAppSDKLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2C271E7BE7007E91B5 /* libiOSAppSDKLibrary.a */; };
+		4DF4DB40271E7BE8007E91B5 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2D271E7BE7007E91B5 /* libxml2.a */; };
+		4DF4DB41271E7BE8007E91B5 /* libPocoUtild.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2E271E7BE7007E91B5 /* libPocoUtild.a */; };
+		4DF4DB42271E7BE8007E91B5 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2F271E7BE7007E91B5 /* libcurl.a */; };
+		4DF4DB43271E7BE8007E91B5 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB30271E7BE8007E91B5 /* libexslt.a */; };
+		4DF4DB44271E7BE8007E91B5 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB31271E7BE8007E91B5 /* libPocoUtil.a */; };
+		4DF4DB45271E7BE8007E91B5 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB32271E7BE8007E91B5 /* libxslt.a */; };
+		4DF4DB46271E7BE8007E91B5 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB33271E7BE8007E91B5 /* libiconv.a */; };
+		4DF4DB47271E7BE8007E91B5 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB34271E7BE8007E91B5 /* libjansson.a */; };
+		4DF4DB49271E7BF1007E91B5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB48271E7BF1007E91B5 /* UIKit.framework */; };
+		4DF4DB4B271E7BFA007E91B5 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB4A271E7BFA007E91B5 /* libbz2.tbd */; };
+		4DF4DB4C271E7C0C007E91B5 /* boost.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC82717D5A50009E745 /* boost.xcframework */; };
 		6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
 		B282D74C201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 		B282D74D201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 		B282D74E201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4D3B9BBE2717B7590009E745 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4D3B9BBD2717B7590009E745 /* iOSAppSDK.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4D00CC5816D3279000160030 /* BEJSON.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEJSON.cpp; path = ../Source/BEJSON.cpp; sourceTree = "<group>"; };
@@ -302,14 +324,12 @@
 		4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../Libraries/macOS/libboost_date_time.a; sourceTree = "<group>"; };
 		4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../Libraries/macOS/libboost_filesystem.a; sourceTree = "<group>"; };
 		4D11F3FF1F271C0B00D78042 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../Libraries/macOS/libboost_regex.a; sourceTree = "<group>"; };
-		4D11F4001F271C0B00D78042 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../Libraries/macOS/libboost_system.a; sourceTree = "<group>"; };
 		4D11F4011F271C0B00D78042 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../Libraries/macOS/libboost_thread.a; sourceTree = "<group>"; };
 		4D11F40A1F271C3B00D78042 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/macOS/libcurl.a; sourceTree = "<group>"; };
 		4D11F40C1F271C5400D78042 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/macOS/libssh2.a; sourceTree = "<group>"; };
 		4D11F40E1F271C6F00D78042 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = ../Libraries/macOS/libturbojpeg.a; sourceTree = "<group>"; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/Crypto/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/Crypto/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
-		4D1BFE551F3AC9A600805CD3 /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/iOS/libpodofo.a; sourceTree = "<group>"; };
 		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/apple/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
 		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/apple/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; usesTabs = 1; };
 		4D27C3851861160000E7F4A1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -324,18 +344,6 @@
 		4D3629E91F20789A0036B751 /* BaseElementsIOS.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaseElementsIOS.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D3629EB1F20789A0036B751 /* BaseElementsIOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseElementsIOS.h; sourceTree = "<group>"; };
 		4D3629EC1F20789A0036B751 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4D362A181F207AE70036B751 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../Libraries/iOS/libcrypto.a; sourceTree = "<group>"; };
-		4D362A191F207AE70036B751 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/iOS/libcurl.a; sourceTree = "<group>"; };
-		4D362A1A1F207AE70036B751 /* libexslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexslt.a; path = ../Libraries/iOS/libexslt.a; sourceTree = "<group>"; };
-		4D362A1B1F207AE70036B751 /* libfontconfig.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfontconfig.a; path = ../Libraries/iOS/libfontconfig.a; sourceTree = "<group>"; };
-		4D362A1C1F207AE70036B751 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../Libraries/iOS/libfreetype.a; sourceTree = "<group>"; };
-		4D362A1D1F207AE70036B751 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/iOS/libjansson.a; sourceTree = "<group>"; };
-		4D362A1E1F207AE70036B751 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../Libraries/iOS/libjpeg.a; sourceTree = "<group>"; };
-		4D362A251F207AE70036B751 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/iOS/libssh2.a; sourceTree = "<group>"; };
-		4D362A261F207AE70036B751 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../Libraries/iOS/libssl.a; sourceTree = "<group>"; };
-		4D362A271F207AE70036B751 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = ../Libraries/iOS/libturbojpeg.a; sourceTree = "<group>"; };
-		4D362A281F207AE70036B751 /* libxml2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxml2.a; path = ../Libraries/iOS/libxml2.a; sourceTree = "<group>"; };
-		4D362A291F207AE70036B751 /* libxslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxslt.a; path = ../Libraries/iOS/libxslt.a; sourceTree = "<group>"; };
 		4D362A401F207B660036B751 /* iOSAppSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iOSAppSDK.framework; path = ../Libraries/iOS/iPhoneOSSimulator/iOSAppSDK.framework; sourceTree = "<group>"; };
 		4D362A4A1F207E780036B751 /* BEIOSFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEIOSFunctions.h; path = ../Source/apple/BEIOSFunctions.h; sourceTree = "<group>"; };
 		4D362A4B1F207E780036B751 /* BEIOSFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEIOSFunctions.mm; path = ../Source/apple/BEIOSFunctions.mm; sourceTree = "<group>"; };
@@ -347,12 +355,17 @@
 		4D3969C718DA54CA00DFC47A /* BEOpenSSLAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEOpenSSLAES.h; sourceTree = "<group>"; };
 		4D3969C918DA773900DFC47A /* BEBase64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBase64.cpp; sourceTree = "<group>"; };
 		4D3969CA18DA773900DFC47A /* BEBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBase64.h; sourceTree = "<group>"; };
+		4D3B9BC52717D0B20009E745 /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoUtil.a; sourceTree = "<group>"; };
+		4D3B9BC82717D5A50009E745 /* boost.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = boost.xcframework; path = ../Libraries/iOS/boost.xcframework; sourceTree = "<group>"; };
+		4D3B9BCD2717DF840009E745 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../Libraries/iOS/iPhoneOSSimulator/libssl.a; sourceTree = "<group>"; };
+		4D3B9BCE2717DF840009E745 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../Libraries/iOS/iPhoneOSSimulator/libcrypto.a; sourceTree = "<group>"; };
+		4D3B9BD02717E48B0009E745 /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/iOS/iPhoneOSSimulator/libpodofo.a; sourceTree = "<group>"; };
+		4D3B9BD12717EFB00009E745 /* libxml2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxml2.a; path = ../Libraries/iOS/iPhoneOSSimulator/libxml2.a; sourceTree = "<group>"; };
+		4D3B9BD2271933760009E745 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/iOS/iPhoneOSSimulator/libcurl.a; sourceTree = "<group>"; };
 		4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLReader.cpp; path = ../Source/BEXMLReader.cpp; sourceTree = "<group>"; };
 		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
 		4D4148FF267C5D8600C726DC /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = ../Libraries/iOS/iPhoneOS/libPocoNet.a; sourceTree = "<group>"; };
 		4D414901267C5DC500C726DC /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoNet.a; sourceTree = "<group>"; };
-		4D42B4DC25CB8014007C120E /* libboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost.a; path = ../Libraries/iOS/iPhoneOS/libboost.a; sourceTree = "<group>"; };
-		4D42B4E425CB8064007C120E /* libboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost.a; path = ../Libraries/iOS/iPhoneOSSimulator/libboost.a; sourceTree = "<group>"; };
 		4D4C066C1C23B372006899FE /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		4D4C066E1C23B37E006899FE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		4D4C06701C23B389006899FE /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -362,8 +375,6 @@
 		4D4C06781C23B3B6006899FE /* libldap.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libldap.tbd; path = usr/lib/libldap.tbd; sourceTree = SDKROOT; };
 		4D55C63815EE0F0A008F7FBA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4D55D9451462598D00EE1241 /* BE_Boost_FileSystem_Additions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BE_Boost_FileSystem_Additions.hpp; path = ../Source/BE_Boost_FileSystem_Additions.hpp; sourceTree = SOURCE_ROOT; };
-		4D5668A425DCD3F600BB450F /* libcharset.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcharset.a; path = ../Libraries/iOS/libcharset.a; sourceTree = "<group>"; };
-		4D5668A525DCD3F600BB450F /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = ../Libraries/iOS/libiconv.a; sourceTree = "<group>"; };
 		4D59DAFA16F95E2400F87180 /* BEValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEValueList.h; path = ../Source/BEValueList.h; sourceTree = "<group>"; };
 		4D668AA31A36BC8900D14592 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
 		4D668AA41A36BC8900D14592 /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
@@ -440,20 +451,47 @@
 		4DE2FD002682C5160091A9AD /* BE_Plugin_Tests.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BE_Plugin_Tests.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DE2FD022682C5160091A9AD /* BE_Plugin_Tests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BE_Plugin_Tests.mm; sourceTree = "<group>"; };
 		4DE2FD042682C5160091A9AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4DE2FD242682C5D10091A9AD /* libxerces-c.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libxerces-c.a"; path = "../Libraries/macOS/libxerces-c.a"; sourceTree = "<group>"; };
-		4DE2FD252682C5D10091A9AD /* libgpg-error.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgpg-error.a"; path = "../Libraries/macOS/libgpg-error.a"; sourceTree = "<group>"; };
-		4DE2FD262682C5D10091A9AD /* libgcrypt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgcrypt.a; path = ../Libraries/macOS/libgcrypt.a; sourceTree = "<group>"; };
 		4DE2FD272682C5D10091A9AD /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../Libraries/macOS/libjpeg.a; sourceTree = "<group>"; };
 		4DE2FD512682C9080091A9AD /* LDAP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LDAP.framework; path = System/Library/Frameworks/LDAP.framework; sourceTree = SDKROOT; };
+		4DF4DAFB271E4AD7007E91B5 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../Libraries/iOS/iPhoneOSSimulator/libfreetype.a; sourceTree = "<group>"; };
+		4DF4DAFC271E4AED007E91B5 /* libfontconfig.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfontconfig.a; path = ../Libraries/iOS/iPhoneOSSimulator/libfontconfig.a; sourceTree = "<group>"; };
+		4DF4DB05271E6182007E91B5 /* libcharset.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcharset.a; path = ../Libraries/iOS/iPhoneOSSimulator/libcharset.a; sourceTree = "<group>"; };
+		4DF4DB06271E6182007E91B5 /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = ../Libraries/iOS/iPhoneOSSimulator/libiconv.a; sourceTree = "<group>"; };
+		4DF4DB09271E790C007E91B5 /* libexslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexslt.a; path = ../Libraries/iOS/iPhoneOSSimulator/libexslt.a; sourceTree = "<group>"; };
+		4DF4DB0A271E7934007E91B5 /* libxslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxslt.a; path = ../Libraries/iOS/iPhoneOSSimulator/libxslt.a; sourceTree = "<group>"; };
+		4DF4DB0E271E79C7007E91B5 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/iOS/iPhoneOSSimulator/libssh2.a; sourceTree = "<group>"; };
+		4DF4DB10271E7A24007E91B5 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/iOS/iPhoneOSSimulator/libjansson.a; sourceTree = "<group>"; };
+		4DF4DB12271E7A58007E91B5 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../Libraries/iOS/iPhoneOSSimulator/libjpeg.a; sourceTree = "<group>"; };
+		4DF4DB14271E7A68007E91B5 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = ../Libraries/iOS/iPhoneOSSimulator/libturbojpeg.a; sourceTree = "<group>"; };
+		4DF4DB16271E7B16007E91B5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		4DF4DB18271E7BD6007E91B5 /* libcharset.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcharset.a; path = ../Libraries/iOS/iPhoneOS/libcharset.a; sourceTree = "<group>"; };
+		4DF4DB22271E7BE7007E91B5 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../Libraries/iOS/iPhoneOS/libjpeg.a; sourceTree = "<group>"; };
+		4DF4DB23271E7BE7007E91B5 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../Libraries/iOS/iPhoneOS/libcrypto.a; sourceTree = "<group>"; };
+		4DF4DB24271E7BE7007E91B5 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../Libraries/iOS/iPhoneOS/libfreetype.a; sourceTree = "<group>"; };
+		4DF4DB25271E7BE7007E91B5 /* libPocoXMLd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXMLd.a; path = ../Libraries/iOS/iPhoneOS/libPocoXMLd.a; sourceTree = "<group>"; };
+		4DF4DB26271E7BE7007E91B5 /* libfontconfig.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfontconfig.a; path = ../Libraries/iOS/iPhoneOS/libfontconfig.a; sourceTree = "<group>"; };
+		4DF4DB27271E7BE7007E91B5 /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/iOS/iPhoneOS/libpodofo.a; sourceTree = "<group>"; };
+		4DF4DB28271E7BE7007E91B5 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../Libraries/iOS/iPhoneOS/libssl.a; sourceTree = "<group>"; };
+		4DF4DB29271E7BE7007E91B5 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = ../Libraries/iOS/iPhoneOS/libturbojpeg.a; sourceTree = "<group>"; };
+		4DF4DB2A271E7BE7007E91B5 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/iOS/iPhoneOS/libssh2.a; sourceTree = "<group>"; };
+		4DF4DB2B271E7BE7007E91B5 /* libPocoNetd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNetd.a; path = ../Libraries/iOS/iPhoneOS/libPocoNetd.a; sourceTree = "<group>"; };
+		4DF4DB2C271E7BE7007E91B5 /* libiOSAppSDKLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiOSAppSDKLibrary.a; path = ../Libraries/iOS/iPhoneOS/libiOSAppSDKLibrary.a; sourceTree = "<group>"; };
+		4DF4DB2D271E7BE7007E91B5 /* libxml2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxml2.a; path = ../Libraries/iOS/iPhoneOS/libxml2.a; sourceTree = "<group>"; };
+		4DF4DB2E271E7BE7007E91B5 /* libPocoUtild.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtild.a; path = ../Libraries/iOS/iPhoneOS/libPocoUtild.a; sourceTree = "<group>"; };
+		4DF4DB2F271E7BE7007E91B5 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/iOS/iPhoneOS/libcurl.a; sourceTree = "<group>"; };
+		4DF4DB30271E7BE8007E91B5 /* libexslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexslt.a; path = ../Libraries/iOS/iPhoneOS/libexslt.a; sourceTree = "<group>"; };
+		4DF4DB31271E7BE8007E91B5 /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = ../Libraries/iOS/iPhoneOS/libPocoUtil.a; sourceTree = "<group>"; };
+		4DF4DB32271E7BE8007E91B5 /* libxslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxslt.a; path = ../Libraries/iOS/iPhoneOS/libxslt.a; sourceTree = "<group>"; };
+		4DF4DB33271E7BE8007E91B5 /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = ../Libraries/iOS/iPhoneOS/libiconv.a; sourceTree = "<group>"; };
+		4DF4DB34271E7BE8007E91B5 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/iOS/iPhoneOS/libjansson.a; sourceTree = "<group>"; };
+		4DF4DB48271E7BF1007E91B5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		4DF4DB4A271E7BFA007E91B5 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk/usr/lib/libbz2.tbd; sourceTree = DEVELOPER_DIR; };
 		4DFA0D69222E3211006EF9FB /* libPocoZip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZip.a; path = ../Libraries/iOS/iPhoneOS/libPocoZip.a; sourceTree = "<group>"; };
 		4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = ../Libraries/iOS/iPhoneOS/libPocoFoundation.a; sourceTree = "<group>"; };
 		4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoJSON.a; path = ../Libraries/iOS/iPhoneOS/libPocoJSON.a; sourceTree = "<group>"; };
 		4DFA0D6F222E3287006EF9FB /* libPocoZipd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZipd.a; path = ../Libraries/iOS/iPhoneOS/libPocoZipd.a; sourceTree = "<group>"; };
 		4DFA0D70222E3287006EF9FB /* libPocoFoundationd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundationd.a; path = ../Libraries/iOS/iPhoneOS/libPocoFoundationd.a; sourceTree = "<group>"; };
 		4DFA0D71222E3287006EF9FB /* libPocoJSONd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoJSONd.a; path = ../Libraries/iOS/iPhoneOS/libPocoJSONd.a; sourceTree = "<group>"; };
-		4DFA0D75222E3493006EF9FB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
-		4DFA0D7A222E34E1006EF9FB /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/usr/lib/libbz2.tbd; sourceTree = DEVELOPER_DIR; };
-		4DFA0D7C222E35C1006EF9FB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		4DFA0D7F222E361C006EF9FB /* libPocoJSON.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoJSON.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoJSON.a; sourceTree = "<group>"; };
 		4DFA0D80222E361C006EF9FB /* libPocoJSONd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoJSONd.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoJSONd.a; sourceTree = "<group>"; };
 		4DFA0D81222E361C006EF9FB /* libPocoZip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZip.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoZip.a; sourceTree = "<group>"; };
@@ -472,32 +510,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D414900267C5D8600C726DC /* libPocoNet.a in Frameworks */,
-				4DFC6078260B0779003C795B /* libPocoXML.a in Frameworks */,
-				4DE1234525E8A5B200518D6D /* libssl.a in Frameworks */,
-				4DE1233E25E8A58900518D6D /* libcrypto.a in Frameworks */,
-				4D5668A625DCD3F700BB450F /* libcharset.a in Frameworks */,
-				4D5668A725DCD3F700BB450F /* libiconv.a in Frameworks */,
+				4DF4DB4C271E7C0C007E91B5 /* boost.xcframework in Frameworks */,
+				4DF4DB4B271E7BFA007E91B5 /* libbz2.tbd in Frameworks */,
+				4DF4DB49271E7BF1007E91B5 /* UIKit.framework in Frameworks */,
+				4DF4DB35271E7BE8007E91B5 /* libjpeg.a in Frameworks */,
+				4DF4DB36271E7BE8007E91B5 /* libcrypto.a in Frameworks */,
+				4DF4DB37271E7BE8007E91B5 /* libfreetype.a in Frameworks */,
+				4DF4DB38271E7BE8007E91B5 /* libPocoXMLd.a in Frameworks */,
+				4DF4DB39271E7BE8007E91B5 /* libfontconfig.a in Frameworks */,
+				4DF4DB3A271E7BE8007E91B5 /* libpodofo.a in Frameworks */,
+				4DF4DB3B271E7BE8007E91B5 /* libssl.a in Frameworks */,
+				4DF4DB3C271E7BE8007E91B5 /* libturbojpeg.a in Frameworks */,
+				4DF4DB3D271E7BE8007E91B5 /* libssh2.a in Frameworks */,
+				4DF4DB3E271E7BE8007E91B5 /* libPocoNetd.a in Frameworks */,
+				4DF4DB3F271E7BE8007E91B5 /* libiOSAppSDKLibrary.a in Frameworks */,
+				4DF4DB40271E7BE8007E91B5 /* libxml2.a in Frameworks */,
+				4DF4DB41271E7BE8007E91B5 /* libPocoUtild.a in Frameworks */,
+				4DF4DB42271E7BE8007E91B5 /* libcurl.a in Frameworks */,
+				4DF4DB43271E7BE8007E91B5 /* libexslt.a in Frameworks */,
+				4DF4DB44271E7BE8007E91B5 /* libPocoUtil.a in Frameworks */,
+				4DF4DB45271E7BE8007E91B5 /* libxslt.a in Frameworks */,
+				4DF4DB46271E7BE8007E91B5 /* libiconv.a in Frameworks */,
+				4DF4DB47271E7BE8007E91B5 /* libjansson.a in Frameworks */,
+				4DF4DB1A271E7BE7007E91B5 /* libPocoFoundation.a in Frameworks */,
+				4DF4DB1B271E7BE7007E91B5 /* libPocoFoundationd.a in Frameworks */,
+				4DF4DB1C271E7BE7007E91B5 /* libPocoJSON.a in Frameworks */,
+				4DF4DB1D271E7BE7007E91B5 /* libPocoJSONd.a in Frameworks */,
+				4DF4DB1E271E7BE7007E91B5 /* libPocoNet.a in Frameworks */,
+				4DF4DB1F271E7BE7007E91B5 /* libPocoXML.a in Frameworks */,
+				4DF4DB20271E7BE7007E91B5 /* libPocoZip.a in Frameworks */,
+				4DF4DB21271E7BE7007E91B5 /* libPocoZipd.a in Frameworks */,
+				4DF4DB19271E7BD6007E91B5 /* libcharset.a in Frameworks */,
 				4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */,
-				4D362A531F2081B90036B751 /* iOSAppSDK.framework in Frameworks */,
-				4DFA0D7D222E35C1006EF9FB /* UIKit.framework in Frameworks */,
-				4D1BFE561F3AC9A600805CD3 /* libpodofo.a in Frameworks */,
-				4DFA0D6D222E3211006EF9FB /* libPocoFoundation.a in Frameworks */,
-				4DE1231525E89F3F00518D6D /* libssh2.a in Frameworks */,
-				4DFA0D6E222E3211006EF9FB /* libPocoJSON.a in Frameworks */,
-				4D42B4E025CB802F007C120E /* libboost.a in Frameworks */,
-				4DFA0D6C222E3211006EF9FB /* libPocoZip.a in Frameworks */,
-				4D362A2D1F207AE70036B751 /* libcurl.a in Frameworks */,
-				4D362A2E1F207AE70036B751 /* libexslt.a in Frameworks */,
-				4D362A2F1F207AE70036B751 /* libfontconfig.a in Frameworks */,
-				4D362A301F207AE70036B751 /* libfreetype.a in Frameworks */,
-				4D362A311F207AE70036B751 /* libjansson.a in Frameworks */,
-				4D362A321F207AE70036B751 /* libjpeg.a in Frameworks */,
-				4D362A3B1F207AE70036B751 /* libturbojpeg.a in Frameworks */,
-				4D362A3C1F207AE70036B751 /* libxml2.a in Frameworks */,
-				4D362A3D1F207AE70036B751 /* libxslt.a in Frameworks */,
-				4DFA0D77222E34A8006EF9FB /* libz.tbd in Frameworks */,
-				4DFA0D7B222E34E1006EF9FB /* libbz2.tbd in Frameworks */,
+				4D3B9BBC2717B7580009E745 /* iOSAppSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,32 +550,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D414902267C5DC500C726DC /* libPocoNet.a in Frameworks */,
-				4DFC607D260B07FD003C795B /* libPocoXML.a in Frameworks */,
-				4D5668AB25DCD42F00BB450F /* libcharset.a in Frameworks */,
-				4D5668AC25DCD42F00BB450F /* libiconv.a in Frameworks */,
+				4DF4DB17271E7B16007E91B5 /* UIKit.framework in Frameworks */,
+				4DF4DB15271E7A68007E91B5 /* libturbojpeg.a in Frameworks */,
+				4DF4DB13271E7A59007E91B5 /* libjpeg.a in Frameworks */,
+				4DF4DB11271E7A24007E91B5 /* libjansson.a in Frameworks */,
+				4DF4DB0F271E7A0E007E91B5 /* libssh2.a in Frameworks */,
+				4DF4DB08271E61A4007E91B5 /* libiconv.a in Frameworks */,
+				4DF4DAFE271E4B2E007E91B5 /* libssl.a in Frameworks */,
+				4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */,
 				4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */,
-				4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */,
-				4DFA0D7E222E3603006EF9FB /* UIKit.framework in Frameworks */,
-				4DFA0D85222E361C006EF9FB /* libPocoJSON.a in Frameworks */,
-				4DFA0D87222E361C006EF9FB /* libPocoZip.a in Frameworks */,
-				4D42B4E525CB8074007C120E /* libboost.a in Frameworks */,
-				4DFA0D8A222E361C006EF9FB /* libPocoFoundation.a in Frameworks */,
-				4D1BFE571F3AC9B900805CD3 /* libpodofo.a in Frameworks */,
-				4D362A8C1F2085880036B751 /* libcrypto.a in Frameworks */,
-				4D362A8D1F2085880036B751 /* libcurl.a in Frameworks */,
-				4D362A8E1F2085880036B751 /* libexslt.a in Frameworks */,
-				4D362A8F1F2085880036B751 /* libfontconfig.a in Frameworks */,
-				4D362A901F2085880036B751 /* libfreetype.a in Frameworks */,
-				4D362A911F2085880036B751 /* libjansson.a in Frameworks */,
-				4D362A921F2085880036B751 /* libjpeg.a in Frameworks */,
-				4D362A991F2085880036B751 /* libssh2.a in Frameworks */,
-				4D362A9A1F2085880036B751 /* libssl.a in Frameworks */,
-				4D362A9B1F2085880036B751 /* libturbojpeg.a in Frameworks */,
-				4D362A9C1F2085880036B751 /* libxml2.a in Frameworks */,
-				4D362A9D1F2085880036B751 /* libxslt.a in Frameworks */,
-				4DFA0D8C222E36A6006EF9FB /* libbz2.tbd in Frameworks */,
-				4DFA0D8D222E36A6006EF9FB /* libz.tbd in Frameworks */,
+				4DF4DB02271E4EE1007E91B5 /* libPocoZip.a in Frameworks */,
+				4DF4DB0C271E7958007E91B5 /* libexslt.a in Frameworks */,
+				4D3B9BC22717CFC70009E745 /* libPocoJSON.a in Frameworks */,
+				4D3B9BC32717CFC80009E745 /* libPocoNet.a in Frameworks */,
+				4DF4DB0B271E7947007E91B5 /* libxslt.a in Frameworks */,
+				4D3B9BC92717D5A50009E745 /* boost.xcframework in Frameworks */,
+				4D356F27273239B40036CAA2 /* iOSAppSDK.framework in Frameworks */,
+				4DF4DAFA271E4AB8007E91B5 /* libpodofo.a in Frameworks */,
+				4DF4DAFD271E4B2E007E91B5 /* libcrypto.a in Frameworks */,
+				4D3B9BC72717D2470009E745 /* libPocoFoundation.a in Frameworks */,
+				4DF4DB01271E4EC2007E91B5 /* libxml2.a in Frameworks */,
+				4DF4DB0D271E79AA007E91B5 /* libbz2.tbd in Frameworks */,
+				4DF4DB07271E6198007E91B5 /* libcharset.a in Frameworks */,
+				4DF4DB04271E4F37007E91B5 /* libfontconfig.a in Frameworks */,
+				4D3B9BC42717CFC80009E745 /* libPocoXML.a in Frameworks */,
+				4DF4DB00271E4E9A007E91B5 /* libcurl.a in Frameworks */,
+				4DF4DB03271E4F26007E91B5 /* libfreetype.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -802,11 +847,48 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4DF4DB4A271E7BFA007E91B5 /* libbz2.tbd */,
+				4DF4DB48271E7BF1007E91B5 /* UIKit.framework */,
+				4DF4DB23271E7BE7007E91B5 /* libcrypto.a */,
+				4DF4DB2F271E7BE7007E91B5 /* libcurl.a */,
+				4DF4DB30271E7BE8007E91B5 /* libexslt.a */,
+				4DF4DB26271E7BE7007E91B5 /* libfontconfig.a */,
+				4DF4DB24271E7BE7007E91B5 /* libfreetype.a */,
+				4DF4DB33271E7BE8007E91B5 /* libiconv.a */,
+				4DF4DB2C271E7BE7007E91B5 /* libiOSAppSDKLibrary.a */,
+				4DF4DB34271E7BE8007E91B5 /* libjansson.a */,
+				4DF4DB22271E7BE7007E91B5 /* libjpeg.a */,
+				4DF4DB2B271E7BE7007E91B5 /* libPocoNetd.a */,
+				4DF4DB31271E7BE8007E91B5 /* libPocoUtil.a */,
+				4DF4DB2E271E7BE7007E91B5 /* libPocoUtild.a */,
+				4DF4DB25271E7BE7007E91B5 /* libPocoXMLd.a */,
+				4DF4DB27271E7BE7007E91B5 /* libpodofo.a */,
+				4DF4DB2A271E7BE7007E91B5 /* libssh2.a */,
+				4DF4DB28271E7BE7007E91B5 /* libssl.a */,
+				4DF4DB29271E7BE7007E91B5 /* libturbojpeg.a */,
+				4DF4DB2D271E7BE7007E91B5 /* libxml2.a */,
+				4DF4DB32271E7BE8007E91B5 /* libxslt.a */,
+				4DF4DB18271E7BD6007E91B5 /* libcharset.a */,
+				4DF4DB16271E7B16007E91B5 /* UIKit.framework */,
+				4DF4DB14271E7A68007E91B5 /* libturbojpeg.a */,
+				4DF4DB12271E7A58007E91B5 /* libjpeg.a */,
+				4DF4DB10271E7A24007E91B5 /* libjansson.a */,
+				4DF4DB0E271E79C7007E91B5 /* libssh2.a */,
+				4DF4DB0A271E7934007E91B5 /* libxslt.a */,
+				4DF4DB09271E790C007E91B5 /* libexslt.a */,
+				4DF4DB05271E6182007E91B5 /* libcharset.a */,
+				4DF4DB06271E6182007E91B5 /* libiconv.a */,
+				4DF4DAFC271E4AED007E91B5 /* libfontconfig.a */,
+				4DF4DAFB271E4AD7007E91B5 /* libfreetype.a */,
+				4D3B9BD2271933760009E745 /* libcurl.a */,
+				4D3B9BD12717EFB00009E745 /* libxml2.a */,
+				4D3B9BD02717E48B0009E745 /* libpodofo.a */,
+				4D3B9BCE2717DF840009E745 /* libcrypto.a */,
+				4D3B9BCD2717DF840009E745 /* libssl.a */,
+				4D3B9BC82717D5A50009E745 /* boost.xcframework */,
+				4D3B9BC52717D0B20009E745 /* libPocoUtil.a */,
 				4DE2FD512682C9080091A9AD /* LDAP.framework */,
-				4DE2FD262682C5D10091A9AD /* libgcrypt.a */,
-				4DE2FD252682C5D10091A9AD /* libgpg-error.a */,
 				4DE2FD272682C5D10091A9AD /* libjpeg.a */,
-				4DE2FD242682C5D10091A9AD /* libxerces-c.a */,
 				4D0BBAE3267AC1D60021DA56 /* libPocoNet.a */,
 				4D4148FF267C5D8600C726DC /* libPocoNet.a */,
 				4D414901267C5DC500C726DC /* libPocoNet.a */,
@@ -816,10 +898,6 @@
 				4DFC607C260B07FD003C795B /* libPocoXML.a */,
 				4DBCCD1C25DB76BA0000017C /* libcharset.a */,
 				4DBCCD1B25DB76BA0000017C /* libiconv.a */,
-				4D5668A425DCD3F600BB450F /* libcharset.a */,
-				4D5668A525DCD3F600BB450F /* libiconv.a */,
-				4D42B4DC25CB8014007C120E /* libboost.a */,
-				4D42B4E425CB8064007C120E /* libboost.a */,
 				4D33C6C3229BC90200CEA53F /* libboost_program_options.a */,
 				4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */,
 				4D703AD32230D803007632BA /* libPocoFoundation.a */,
@@ -830,23 +908,18 @@
 				4DFA0D80222E361C006EF9FB /* libPocoJSONd.a */,
 				4DFA0D81222E361C006EF9FB /* libPocoZip.a */,
 				4DFA0D82222E361C006EF9FB /* libPocoZipd.a */,
-				4DFA0D7C222E35C1006EF9FB /* UIKit.framework */,
-				4DFA0D7A222E34E1006EF9FB /* libbz2.tbd */,
-				4DFA0D75222E3493006EF9FB /* libz.tbd */,
 				4DFA0D70222E3287006EF9FB /* libPocoFoundationd.a */,
 				4DFA0D71222E3287006EF9FB /* libPocoJSONd.a */,
 				4DFA0D6F222E3287006EF9FB /* libPocoZipd.a */,
 				4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */,
 				4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */,
 				4DFA0D69222E3211006EF9FB /* libPocoZip.a */,
-				4D1BFE551F3AC9A600805CD3 /* libpodofo.a */,
 				4D11F40E1F271C6F00D78042 /* libturbojpeg.a */,
 				4D11F40C1F271C5400D78042 /* libssh2.a */,
 				4D11F40A1F271C3B00D78042 /* libcurl.a */,
 				4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */,
 				4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */,
 				4D11F3FF1F271C0B00D78042 /* libboost_regex.a */,
-				4D11F4001F271C0B00D78042 /* libboost_system.a */,
 				4D11F4011F271C0B00D78042 /* libboost_thread.a */,
 				4D11F3F01F271B8E00D78042 /* libxml2.a */,
 				4D11F3EE1F271B6300D78042 /* libxslt.a */,
@@ -855,18 +928,6 @@
 				4D11F3E81F271B0C00D78042 /* libssl.a */,
 				4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */,
 				4D362A401F207B660036B751 /* iOSAppSDK.framework */,
-				4D362A181F207AE70036B751 /* libcrypto.a */,
-				4D362A191F207AE70036B751 /* libcurl.a */,
-				4D362A1A1F207AE70036B751 /* libexslt.a */,
-				4D362A1B1F207AE70036B751 /* libfontconfig.a */,
-				4D362A1C1F207AE70036B751 /* libfreetype.a */,
-				4D362A1D1F207AE70036B751 /* libjansson.a */,
-				4D362A1E1F207AE70036B751 /* libjpeg.a */,
-				4D362A251F207AE70036B751 /* libssh2.a */,
-				4D362A261F207AE70036B751 /* libssl.a */,
-				4D362A271F207AE70036B751 /* libturbojpeg.a */,
-				4D362A281F207AE70036B751 /* libxml2.a */,
-				4D362A291F207AE70036B751 /* libxslt.a */,
 				4D7624411E0A3FFE00266C0D /* libexpat.tbd */,
 				4D76243F1E0A386F00266C0D /* libbz2.tbd */,
 				4D7624391E0A37F600266C0D /* libfontconfig.a */,
@@ -898,6 +959,7 @@
 				4D3629E41F20789A0036B751 /* Sources */,
 				4D3629E51F20789A0036B751 /* Frameworks */,
 				4D3629E71F20789A0036B751 /* Resources */,
+				4D3B9BBE2717B7590009E745 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1289,7 +1351,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = GUZF844KMZ;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1314,7 +1376,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
 				);
-				MTL_ENABLE_DEBUG_INFO = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.baseelements-plugin.BaseElementsIOS";
 				PRODUCT_NAME = BaseElementsIOS;
@@ -1324,8 +1386,7 @@
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = arm64;
+				VALIDATE_PRODUCT = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1352,7 +1413,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = GUZF844KMZ;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1381,8 +1442,8 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
 				);
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.baseelements-plugin.BaseElementsIOS";
 				PRODUCT_NAME = BaseElementsIOS;
@@ -1392,7 +1453,6 @@
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = arm64;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1405,17 +1465,20 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_INTEGER = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1423,19 +1486,21 @@
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
+					"$(SDKROOT)/System/iOSSupport/System/Library/Frameworks",
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INSTALL_PATH = /Library/Frameworks;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1445,7 +1510,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
 				);
-				MTL_ENABLE_DEBUG_INFO = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.baseelements-plugin.BaseElementsIOS";
 				PRODUCT_NAME = BaseElementsIOSSimulator;
@@ -1456,7 +1521,6 @@
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = x86_64;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1469,30 +1533,35 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_INTEGER = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
+					"$(SDKROOT)/System/iOSSupport/System/Library/Frameworks",
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1502,7 +1571,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INSTALL_PATH = /Library/Frameworks;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1512,7 +1581,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
 				);
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.baseelements-plugin.BaseElementsIOS";
 				PRODUCT_NAME = BaseElementsIOSSimulator;
@@ -1522,7 +1591,6 @@
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = x86_64;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1561,6 +1629,7 @@
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
+				SYMROOT = /tmp/Xcode/Build;
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = (
 					"-isystem",
@@ -1604,6 +1673,7 @@
 				SEPARATE_STRIP = NO;
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
+				SYMROOT = /tmp/Xcode/Build;
 				TEST_AFTER_BUILD = NO;
 				USER_HEADER_SEARCH_PATHS = (
 					"-isystem",
@@ -1646,8 +1716,6 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.BE-Plugin-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1694,8 +1762,6 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.BE-Plugin-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1735,7 +1801,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				CODE_SIGN_STYLE = Automatic;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = GUZF844KMZ;
@@ -1744,31 +1809,24 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = ../Libraries/macOS;
 				GCC_C_LANGUAGE_STANDARD = c11;
-				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_MODEL_TUNING = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_SHORT_ENUMS = NO;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_GLOBAL_CONSTRUCTORS = NO;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
-				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
 				GCC_WARN_PEDANTIC = YES;
-				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
@@ -1806,7 +1864,6 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
-				SEPARATE_STRIP = YES;
 				STRIP_STYLE = "non-global";
 				SYMROOT = /tmp/Xcode/Build;
 				USER_HEADER_SEARCH_PATHS = (
@@ -1860,31 +1917,24 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = ../Libraries/macOS;
 				GCC_C_LANGUAGE_STANDARD = c11;
-				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_MODEL_TUNING = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_SHORT_ENUMS = NO;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_GLOBAL_CONSTRUCTORS = NO;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
-				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
 				GCC_WARN_PEDANTIC = YES;
-				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
@@ -1923,7 +1973,6 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
-				SEPARATE_STRIP = NO;
 				STRIP_STYLE = "non-global";
 				SYMROOT = /tmp/Xcode/Build;
 				USER_HEADER_SEARCH_PATHS = (

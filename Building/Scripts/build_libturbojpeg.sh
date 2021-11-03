@@ -11,79 +11,102 @@
 #  The MIT License (MIT)
 #  Copyright (c) 2016 l'L'l
 
+
+SRCROOT="/Users/mark/Dropbox/Development/Plugin_Build_Folder/BaseElements"
+iphoneos="13.2"
+cd libjpeg-turbo-2.0.6
+
+
 ########################################################################
 # Main
 ########################################################################
 
-mkdir libjpeg-turbo
-cd libjpeg-turbo
+set -e
 
-mkdir libs
+########################################################################
+# Device
+########################################################################
 
-rm -rf src
-cd src
+ARCH="arm64"
+echo "---> Building ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
 
-autoreconf -fi
+IOS_SDK=$(xcrun --sdk iphoneos --show-sdk-path)
+cmake -G "Unix Makefiles" -DCMAKE_OSX_SYSROOT=${IOS_SDK} -DCMAKE_INSTALL_PREFIX="./_build_ios" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_FLAGS="-arch ${ARCH} -miphoneos-version-min=$iphoneos -stdlib=libc++" -DCMAKE_CXX_FLAGS="-arch ${ARCH} -miphoneos-version-min=$iphoneos -stdlib=libc++" -DCMAKE_CXX_STANDARD=11
+make install
 
-IOS_PLATFORMDIR=$(xcrun --sdk iphoneos --show-sdk-platform-path)
-IOS_SYSROOT=$(xcrun --sdk iphoneos --show-sdk-path)
-IOS_SIMULATOR_PLATFORMDIR=$(xcrun --sdk iphonesimulator --show-sdk-platform-path)
-IOS_SIMULATOR_SYSROOT=$(xcrun --sdk iphonesimulator --show-sdk-path)
-IOS_GCC=$(/usr/bin/xcode-select -p)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
+cp _build_ios/lib/libturbojpeg.a "${SRCROOT}/Libraries/iOS/iPhoneOS/libturbojpeg.a"
+cp _build_ios/lib/libjpeg.a "${SRCROOT}/Libraries/iOS/iPhoneOS/libjpeg.a"
 
-## arm64
-echo "--- Building for arm64 ---"
-IOS_CFLAGS="-arch arm64 -miphoneos-version-min=8.0"
-export CFLAGS="-Wall -isysroot $IOS_SYSROOT -O3 $IOS_CFLAGS -fembed-bitcode -funwind-tables"
-export ASMFLAGS=""
+build_one="Device: $ARCH"
 
-cat <<EOF >toolchain.cmake
-set(CMAKE_SYSTEM_NAME Darwin)
-set(CMAKE_SYSTEM_PROCESSOR aarch64)
-set(CMAKE_C_COMPILER /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang)
-EOF
 
-cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
-  -DCMAKE_OSX_SYSROOT=${IOS_SYSROOT[0]} \
-  .
-make
-mv -v ./libturbojpeg.a ../libs/libturbojpeg_arm64_a
+########################################################################
+# Simulator
+########################################################################
 
-cd ..
-rm -rf src
-git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git src
-cd src
+IOS_SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
 
-##  x86_64
-echo "--- Building for x86_64 ---"
-IOS_CFLAGS="-arch x86_64 -miphonesimulator-version-min=8.0"
-export CFLAGS="$IOS_CFLAGS -isysroot $IOS_SIMULATOR_SYSROOT"
-export ASMFLAGS=""
-export LDFLAGS=""
-export NASM=/usr/local/bin/nasm
+rm CMakeCache.txt
+rm -rf CMakeFiles
 
-cat <<EOF >toolchain.cmake
-set(CMAKE_SYSTEM_NAME Darwin)
-set(CMAKE_SYSTEM_PROCESSOR x86_64)
-set(CMAKE_C_COMPILER /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang)
-EOF
 
-cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
-  -DCMAKE_OSX_SYSROOT=${IOS_SIMULATOR_SYSROOT[0]} \
-  .
-make
-mv -v ./libturbojpeg.a ../libs/libturbojpeg_x86_64_a
+ARCH="arm64"
+echo "---> Building ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
 
-## lipo
-mkdir -p ../libs/ios/device
-mkdir -p ../libs/ios/simulator
-mkdir -p ../libs/ios/universal
+cmake -G "Unix Makefiles" -DCMAKE_OSX_SYSROOT=${IOS_SDK} -DCMAKE_INSTALL_PREFIX="./_build_iossimulator_${ARCH}" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_FLAGS="-arch ${ARCH} -miphonesimulator-version-min=$iphoneos -stdlib=libc++" -DCMAKE_CXX_FLAGS="-arch ${ARCH} -miphonesimulator-version-min=$iphoneos -stdlib=libc++" -DCMAKE_CXX_STANDARD=11
+make install
 
-# Simulator fat binary
-xcrun -sdk iphoneos lipo -arch i386 ../libs/libturbojpeg_x86_a -arch x86_64 ../libs/libturbojpeg_x86_64_a -create -output ../libs/ios/simulator/libturbojpeg.a
+cp "_build_iossimulator_${ARCH}/lib/libturbojpeg.a" "libturbojpeg_${ARCH}.a"
+cp "_build_iossimulator_${ARCH}/lib/libjpeg.a" "libjpeg_${ARCH}.a"
 
-cd ..
-rm -rf src
+build_three="Device: $ARCH"
+
+
+rm CMakeCache.txt
+rm -rf CMakeFiles
+
+
+ARCH="x86_64"
+echo "---> Building ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
+
+cmake -G "Unix Makefiles" -DCMAKE_OSX_SYSROOT=${IOS_SDK} -DCMAKE_INSTALL_PREFIX="./_build_iossimulator_${ARCH}" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_FLAGS="-arch ${ARCH} -miphonesimulator-version-min=$iphoneos -stdlib=libc++" -DCMAKE_CXX_FLAGS="-arch ${ARCH} -miphonesimulator-version-min=$iphoneos -stdlib=libc++" -DCMAKE_CXX_STANDARD=11
+make install
+
+cp "_build_iossimulator_${ARCH}/lib/libturbojpeg.a" "libturbojpeg_${ARCH}.a"
+cp "_build_iossimulator_${ARCH}/lib/libjpeg.a" "libjpeg_${ARCH}.a"
+
+build_four="Device: $ARCH"
+
+echo "---> Success: $build_one $build_two $build_three $build_four" | awk '/Success/ {print "\033[37;35;53m" $0 "\033[0m"}'
+
+# argh !!! we already have a fat binary ???
+
+cp _build_iossimulator_x86_64/lib/libturbojpeg.a "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator/libturbojpeg.a"
+cp _build_iossimulator_x86_64/lib/libjpeg.a "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator/libjpeg.a"
+
+rm CMakeCache.txt
+rm -rf CMakeFiles
+exit
+
+# end argh !!!
+
+# simulator fat binary
+
+lipo -create libturbojpeg_arm64.a libturbojpeg_x86_64.a -output libturbojpeg.a
+lipolog="$(lipo -info libturbojpeg.a)"
+cp libturbojpeg.a "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator/libturbojpeg.a"
+echo "---> $lipolog" | awk '/Arch/ {print "\033[32;35;52m" $0 "\033[0m"}'
+
+lipo -create libjpeg_arm64.a libjpeg_x86_64.a -output libjpeg.a
+lipolog="$(lipo -info libjpeg.a)"
+cp libjpeg.a "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator/libjpeg.a"
+echo "---> $lipolog" | awk '/Arch/ {print "\033[32;35;52m" $0 "\033[0m"}'
+
+echo "---> Build Process Complete!" | awk '/!/ {print "\033[36;35;54m" $0 "\033[0m"}'
+
+rm CMakeCache.txt
+rm -rf CMakeFiles
+
 
 ########################################################################
 # End

@@ -190,7 +190,7 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 	auto mime = message->as_string();
 
 	XCTAssertFalse ( mime.find ( body_text ) == std::string::npos );
-	XCTAssertFalse ( mime.find ( "Content-Type: text/plain; charset=utf-8; name=TEXT" ) == std::string::npos );
+	XCTAssertFalse ( mime.find ( "Content-Type: text/plain; charset=utf-8" ) == std::string::npos );
 
 }
 
@@ -204,7 +204,7 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 
 	XCTAssertFalse ( mime.find ( body_text ) == std::string::npos );
 	XCTAssertFalse ( mime.find ( "Content-Type: multipart/mixed;" ) == std::string::npos );
-	XCTAssertFalse ( mime.find ( "Content-Type: text/plain; charset=utf-8; name=TEXT" ) == std::string::npos );
+	XCTAssertFalse ( mime.find ( "Content-Type: text/plain; charset=utf-8" ) == std::string::npos );
 	XCTAssertTrue ( mime.find ( "Content-Type: text/plain; charset=utf-8; name=TEXT" ) > mime.find ( "Content-Type: multipart/mixed;" ) );
 
 }
@@ -226,7 +226,7 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 	auto mime = html_only_message->as_string();
 
 	XCTAssertTrue ( mime.find ( "Content-Type: text/plain;" ) == std::string::npos );
-	XCTAssertFalse ( mime.find ( "Content-Type: text/html; charset=utf-8; name=HTML" ) == std::string::npos );
+	XCTAssertFalse ( mime.find ( "Content-Type: text/html; charset=utf-8" ) == std::string::npos );
 	XCTAssertFalse ( mime.find ( "html to use instead" ) == std::string::npos );
 
 }
@@ -242,8 +242,8 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 
 	XCTAssertFalse ( mime.find ( "html to use instead" ) == std::string::npos );
 	XCTAssertFalse ( mime.find ( "Content-Type: multipart/mixed;" ) == std::string::npos );
-	XCTAssertFalse ( mime.find ( "Content-Type: text/html; charset=utf-8; name=HTML" ) == std::string::npos );
-	XCTAssertTrue ( mime.find ( "Content-Type: text/html; charset=utf-8; name=HTML" ) > mime.find ( "Content-Type: multipart/mixed;" ) );
+	XCTAssertFalse ( mime.find ( "Content-Type: text/html; charset=utf-8" ) == std::string::npos );
+	XCTAssertTrue ( mime.find ( "Content-Type: text/html; charset=utf-8" ) > mime.find ( "Content-Type: multipart/mixed;" ) );
 
 }
 
@@ -258,10 +258,10 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 	XCTAssertFalse ( mime.find ( body_text ) == std::string::npos );
 	XCTAssertFalse ( mime.find ( "html to use instead" ) == std::string::npos );
 	XCTAssertFalse ( mime.find ( "Content-Type: multipart/mixed;" ) == std::string::npos );
-	XCTAssertFalse ( mime.find ( "Content-Type: text/plain; charset=utf-8; name=TEXT" ) == std::string::npos );
-	XCTAssertTrue ( mime.find ( "Content-Type: text/plain; charset=utf-8; name=TEXT" ) > mime.find ( "Content-Type: multipart/mixed;" ) );
-	XCTAssertTrue ( mime.find ( "Content-Type: text/plain; charset=utf-8; name=HTML" ) > mime.find ( "Content-Type: multipart/mixed;" ) );
-	XCTAssertFalse ( mime.find ( "Content-Type: text/html; charset=utf-8; name=HTML" ) == std::string::npos );
+	XCTAssertFalse ( mime.find ( "Content-Type: text/plain; charset=utf-8" ) == std::string::npos );
+	XCTAssertTrue ( mime.find ( "Content-Type: text/plain; charset=utf-8" ) > mime.find ( "Content-Type: multipart/mixed;" ) );
+	XCTAssertTrue ( mime.find ( "Content-Type: text/plain; charset=utf-8" ) > mime.find ( "Content-Type: multipart/mixed;" ) );
+	XCTAssertFalse ( mime.find ( "Content-Type: text/html; charset=utf-8" ) == std::string::npos );
 
 }
 

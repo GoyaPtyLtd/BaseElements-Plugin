@@ -12,55 +12,85 @@
 #  Copyright (c) 2016 l'L'l
 
 ########################################################################
+# Configuration
+########################################################################
+
+SRCROOT="/Users/mark/Dropbox/Development/Plugin_Build_Folder/BaseElements"
+iphoneos="13.2"
+cd freetype-2.10.4
+
+########################################################################
 # Main
 ########################################################################
 
-BUILD_DIR=$HOME/Downloads/Freetype_iOS_Release # RELEASE_DIR
-mkdir -p ${BUILD_DIR}
-cd $BUILD_DIR
-cd "../freetype-2.10.4"
-
 set -e
 
-iphoneos="13.2"
-export CC="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+# export CC="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+# export AR="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
+
+########################################################################
+# Device
+########################################################################
+
+IOS_SDK=$(xcrun --sdk iphoneos --show-sdk-path)
 
 ARCH="arm64"
 echo "---> Building ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
 
-export CFLAGS="-arch ${ARCH} -pipe -mdynamic-no-pic -Wno-trigraphs -fpascal-strings -O2 -Wreturn-type -Wunused-variable -fmessage-length=0 -fvisibility=hidden -miphoneos-version-min=$iphoneos -I/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/libxml2 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk"
-export AR="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
-export LDFLAGS="-arch ${ARCH} -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -miphoneos-version-min=7.0"
-./configure --host="aarch64-apple-darwin" --enable-static=yes --enable-shared=yes
+export CFLAGS="-arch ${ARCH} -isysroot ${IOS_SDK} -miphoneos-version-min=$iphoneos"
+export LDFLAGS="-arch ${ARCH} -isysroot ${IOS_SDK} -miphoneos-version-min=$iphoneos"
+./configure --host="aarch64-apple-darwin" --enable-static
 make clean
 make
-cp objs/.libs/libfreetype.a "${BUILD_DIR}/libfreetype-${ARCH}.a"
-cp objs/.libs/libfreetype.dylib "${BUILD_DIR}/libfreetype-${ARCH}.dylib"
-cp objs/.libs/libfreetype.la "${BUILD_DIR}/libfreetype-${ARCH}.la"
-build_one="$ARCH"
+
+cp objs/.libs/libfreetype.a "${SRCROOT}/Libraries/iOS/iPhoneOS/libfreetype.a"
+
+build_one="Device: $ARCH"
+make distclean
+
+
+########################################################################
+# Simulator
+########################################################################
+
+IOS_SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
+
+ARCH="arm64"
+echo "---> Building Simulator ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
+
+export CFLAGS="-arch ${ARCH} -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+export LDFLAGS="-arch ${ARCH} -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+./configure --enable-static --host="aarch64-apple-darwin"
+make clean
+make
+
+cp objs/.libs/libfreetype.a libfreetype-${ARCH}.a
+
+build_three="Sim: $ARCH"
 
 
 ARCH="x86_64"
 echo "---> Building ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
 
-export CFLAGS="-arch ${ARCH} -pipe  -Wno-trigraphs -fpascal-strings -O2 -Wreturn-type -Wunused-variable -fmessage-length=0 -fvisibility=hidden -miphoneos-version-min=$iphoneos -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"
-export LDFLAGS="-arch ${ARCH} -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -miphoneos-version-min=$iphoneos"
-./configure --enable-shared --enable-static --host="${ARCH}-apple-darwin"
+export CFLAGS="-arch ${ARCH} -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+export LDFLAGS="-arch ${ARCH} -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+./configure --enable-static --host="aarch64-apple-darwin"
 make clean
 make
-cp objs/.libs/libfreetype.a "${BUILD_DIR}/libfreetype-${ARCH}.a"
-cp objs/.libs/libfreetype.dylib "${BUILD_DIR}/libfreetype-${ARCH}.dylib"
-cp objs/.libs/libfreetype.la "${BUILD_DIR}/libfreetype-${ARCH}.la"
-build_four="$ARCH"
+
+cp objs/.libs/libfreetype.a "libfreetype-${ARCH}.a"
+
+build_four="Sim: $ARCH"
 
 echo "---> Success: $build_one $build_two $build_three $build_four" | awk '/Success/ {print "\033[37;35;53m" $0 "\033[0m"}'
 
-lipo -create "${BUILD_DIR}/libfreetype-arm64.a" "${BUILD_DIR}/libfreetype-x86_64.a" -output "${BUILD_DIR}/libfreetype.a"
-lipolog="$(lipo -info ${BUILD_DIR}/libfreetype.a)"
-
-
+lipo -create libfreetype-arm64.a libfreetype-x86_64.a -output libfreetype.a
+lipolog="$(lipo -info libfreetype.a)"
+cp libfreetype.a "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator/libfreetype.a"
 echo "---> $lipolog" | awk '/Arch/ {print "\033[32;35;52m" $0 "\033[0m"}'
+
 echo "---> Build Process Complete!" | awk '/!/ {print "\033[36;35;54m" $0 "\033[0m"}'
+
 
 ########################################################################
 # End

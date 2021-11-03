@@ -56,17 +56,17 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const BEValueL
 	if ( !text.empty() && !html_alternative.empty() ) {
 
 		auto multipart_alternative = new Poco::Net::MultipartSource();
-		multipart_alternative->addPart ( "TEXT", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
-		multipart_alternative->addPart ( "HTML", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+		multipart_alternative->addPart ( "", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+		multipart_alternative->addPart ( "", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
 		message.addContent ( multipart_alternative, Poco::Net::MailMessage::ENCODING_8BIT );
 
 	} else if ( !text.empty() && html_alternative.empty() ) {
 		
-		message.addPart ( "TEXT", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+		message.addPart ( "", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
 
 	} else if ( text.empty() && !html_alternative.empty() ) {
 
-		message.addPart ( "HTML", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+		message.addPart ( "", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
 
 	}
 

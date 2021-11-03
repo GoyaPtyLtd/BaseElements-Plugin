@@ -11,57 +11,102 @@
 #  The MIT License (MIT)
 #  Copyright (c) 2016 l'L'l
 
+
+SRCROOT="/Users/mark/Dropbox/Development/Plugin_Build_Folder/BaseElements"
+iphoneos="13.2"
+cd libxslt-1.1.34
+
 ########################################################################
 # Main
 ########################################################################
 
-BUILD_DIR=$HOME/Downloads/libxslt_iOS_Release # RELEASE_DIR
-mkdir -p ${BUILD_DIR}
-cd $BUILD_DIR
-cd "../libxslt-1.1.34"
-
 set -e
 
-iphoneos="10"
 export CC="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+# export AR="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
+
+########################################################################
+# Device
+########################################################################
+
+IOS_SDK=$(xcrun --sdk iphoneos --show-sdk-path)
+export LIBXML_CFLAGS="-I${IOS_SDK}/usr/include"
+export LIBXML_LIBS="-L${IOS_SDK}/usr/lib -lxml2 -lz -lpthread -licucore -lm"
+
 
 ARCH="arm64"
 echo "---> Building ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
 
-export CFLAGS="-arch ${ARCH} -pipe -mdynamic-no-pic -Wno-trigraphs -fpascal-strings -O2 -Wreturn-type -Wunused-variable -fmessage-length=0 -fvisibility=hidden -miphoneos-version-min=$iphoneos -I/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/libxml2 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk"
-export AR="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
-export LDFLAGS="-arch ${ARCH} -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -miphoneos-version-min=7.0"
-./configure --host="aarch64-apple-darwin" --disable-shared --enable-static --without-python --without-crypto
+export CFLAGS="-arch ${ARCH} -I${SRCROOT}/Headers -isysroot ${IOS_SDK} -miphoneos-version-min=$iphoneos"
+export LDFLAGS="-arch ${ARCH} -L${SRCROOT}/Libraries/iOS/iPhoneOS -isysroot ${IOS_SDK} -miphoneos-version-min=$iphoneos"
+./configure --host="aarch64-apple-darwin" --target="arm64-apple-ios" --disable-shared --enable-static --without-python --without-crypto
+
+
+ # -I${IOS_SDK}/usr/include/libxml2
+ # -L${IOS_SDK}/usr/lib
+ # exit
+
 make clean
 make
-cp libxslt/.libs/libxslt.a "${BUILD_DIR}/libxslt-${ARCH}.a"
-cp libexslt/.libs/libexslt.a "${BUILD_DIR}/libexslt-${ARCH}.a"
+
+cp libxslt/.libs/libxslt.a "${SRCROOT}/Libraries/iOS/iPhoneOS/libxslt.a"
+cp libexslt/.libs/libexslt.a "${SRCROOT}/Libraries/iOS/iPhoneOS/libexslt.a"
+
 build_one="$ARCH"
 
 
-iphoneos="10"
+########################################################################
+# Simulator
+########################################################################
+
+IOS_SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
+export LIBXML_CFLAGS="-I${IOS_SDK}/usr/include"
+export LIBXML_LIBS="-L${IOS_SDK}/usr/lib -lxml2 -lz -lpthread -licucore -lm"
+
+
+ARCH="arm64"
+echo "---> Building ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
+
+export CFLAGS="-arch ${ARCH} -I${SRCROOT}/Headers -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+export LDFLAGS="-arch ${ARCH} -L${SRCROOT}/Libraries/iOS/iPhoneOSSimulator -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+./configure --host="aarch64-apple-darwin" --disable-shared --enable-static --without-python --without-crypto
+make clean
+make
+
+cp libxslt/.libs/libxslt.a "libxslt-${ARCH}.a"
+cp libexslt/.libs/libexslt.a "libexslt-${ARCH}.a"
+
+build_three="$ARCH"
+
 
 ARCH="x86_64"
 echo "---> Building ${ARCH}-${iphoneos}" | awk '/'${ARCH}'/ {print "\033[34;25;62m" $0 "\033[0m"}'
 
-export CFLAGS="-arch ${ARCH} -pipe  -Wno-trigraphs -fpascal-strings -O2 -Wreturn-type -Wunused-variable -fmessage-length=0 -fvisibility=hidden -miphoneos-version-min=$iphoneos -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"
-export LDFLAGS="-arch ${ARCH} -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -miphoneos-version-min=$iphoneos"
-./configure --disable-shared --enable-static --host="${ARCH}-apple-darwin" --without-python --without-crypto
+export CFLAGS="-arch ${ARCH} -I${SRCROOT}/Headers -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+export LDFLAGS="-arch ${ARCH} -L${SRCROOT}/Libraries/iOS/iPhoneOSSimulator -isysroot ${IOS_SDK} -miphonesimulator-version-min=$iphoneos"
+./configure --host="aarch64-apple-darwin" --disable-shared --enable-static --without-python --without-crypto
 make clean
 make
-cp libxslt/.libs/libxslt.a "${BUILD_DIR}/libxslt-${ARCH}.a"
-cp libexslt/.libs/libexslt.a "${BUILD_DIR}/libexslt-${ARCH}.a"
+
+cp libxslt/.libs/libxslt.a "libxslt-${ARCH}.a"
+cp libexslt/.libs/libexslt.a "libexslt-${ARCH}.a"
+
 build_four="$ARCH"
+
 
 echo "---> Success: $build_one $build_two $build_three $build_four" | awk '/Success/ {print "\033[37;35;53m" $0 "\033[0m"}'
 
-lipo -create "${BUILD_DIR}/libxslt-arm64.a" "${BUILD_DIR}/libxslt-x86_64.a" -output "${BUILD_DIR}/libxslt.a"
-lipolog="$(lipo -info ${BUILD_DIR}/libxslt.a)"
-lipo -create "${BUILD_DIR}/libexslt-arm64.a" "${BUILD_DIR}/libexslt-x86_64.a" -output "${BUILD_DIR}/libexslt.a"
-lipolog="$(lipo -info ${BUILD_DIR}/libexslt.a)"
-
-
+lipo -create libxslt-arm64.a libxslt-x86_64.a -output libxslt.a
+lipolog="$(lipo -info libxslt.a)"
 echo "---> $lipolog" | awk '/Arch/ {print "\033[32;35;52m" $0 "\033[0m"}'
+cp "libxslt.a" "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator/libxslt.a"
+
+lipo -create libexslt-arm64.a libexslt-x86_64.a -output libexslt.a
+lipolog="$(lipo -info libexslt.a)"
+echo "---> $lipolog" | awk '/Arch/ {print "\033[32;35;52m" $0 "\033[0m"}'
+cp "libexslt.a" "${SRCROOT}/Libraries/iOS/iPhoneOSSimulator/libexslt.a"
+
+
 echo "---> Build Process Complete!" | awk '/!/ {print "\033[36;35;54m" $0 "\033[0m"}'
 
 ########################################################################
