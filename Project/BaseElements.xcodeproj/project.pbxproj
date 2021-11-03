@@ -33,6 +33,7 @@
 		4D33C6BD229BC8A900CEA53F /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
 		4D33C6BE229BC8A900CEA53F /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
 		4D33C6C4229BC90200CEA53F /* libboost_program_options.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D33C6C3229BC90200CEA53F /* libboost_program_options.a */; };
+		4D356F27273239B40036CAA2 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A401F207B660036B751 /* iOSAppSDK.framework */; };
 		4D35B3C6262FE4E20098C93F /* libldap.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06781C23B3B6006899FE /* libldap.tbd */; };
 		4D3629F11F2079A60036B751 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D3629F21F2079A60036B751 /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
@@ -100,7 +101,6 @@
 		4D362A801F2085880036B751 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
 		4D362A811F2085880036B751 /* BEPluginFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */; };
 		4D362A821F2085880036B751 /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
-		4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A401F207B660036B751 /* iOSAppSDK.framework */; };
 		4D3B9BBC2717B7580009E745 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; platformFilter = ios; };
 		4D3B9BBD2717B7590009E745 /* iOSAppSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D3B9BC22717CFC70009E745 /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7F222E361C006EF9FB /* libPocoJSON.a */; };
@@ -109,7 +109,6 @@
 		4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC52717D0B20009E745 /* libPocoUtil.a */; };
 		4D3B9BC72717D2470009E745 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
 		4D3B9BC92717D5A50009E745 /* boost.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC82717D5A50009E745 /* boost.xcframework */; };
-		4D3B9BCA2717D5A50009E745 /* boost.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC82717D5A50009E745 /* boost.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
 		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
@@ -302,17 +301,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4D3B9BBD2717B7590009E745 /* iOSAppSDK.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4D3B9BCB2717D5A60009E745 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				4D3B9BCA2717D5A50009E745 /* boost.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -571,13 +559,13 @@
 				4DF4DAFE271E4B2E007E91B5 /* libssl.a in Frameworks */,
 				4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */,
 				4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */,
-				4D362AB01F20922C0036B751 /* iOSAppSDK.framework in Frameworks */,
 				4DF4DB02271E4EE1007E91B5 /* libPocoZip.a in Frameworks */,
 				4DF4DB0C271E7958007E91B5 /* libexslt.a in Frameworks */,
 				4D3B9BC22717CFC70009E745 /* libPocoJSON.a in Frameworks */,
 				4D3B9BC32717CFC80009E745 /* libPocoNet.a in Frameworks */,
 				4DF4DB0B271E7947007E91B5 /* libxslt.a in Frameworks */,
 				4D3B9BC92717D5A50009E745 /* boost.xcframework in Frameworks */,
+				4D356F27273239B40036CAA2 /* iOSAppSDK.framework in Frameworks */,
 				4DF4DAFA271E4AB8007E91B5 /* libpodofo.a in Frameworks */,
 				4DF4DAFD271E4B2E007E91B5 /* libcrypto.a in Frameworks */,
 				4D3B9BC72717D2470009E745 /* libPocoFoundation.a in Frameworks */,
@@ -989,7 +977,6 @@
 				4D362A5D1F2085880036B751 /* Sources */,
 				4D362A831F2085880036B751 /* Frameworks */,
 				4D362AA01F2085880036B751 /* Resources */,
-				4D3B9BCB2717D5A60009E745 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

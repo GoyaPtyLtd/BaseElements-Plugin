@@ -2,7 +2,7 @@
 iOS
 =======================================================================
 
-On macOS the plugin is built using macOS 11.6 and Xcode 13.
+On macOS the plugin is built using macOS 12.0.1 and Xcode 13.1.
 
 Download the FileMaker External Plug-In API from
 
