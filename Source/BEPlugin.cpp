@@ -322,6 +322,12 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_GetMachineName, BE_GetMachineName );
 
 
+	g_be_plugin->RegisterFunction ( kFMXT_Halt + kBE_ScriptControlOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kFMXT_Exit + kBE_ScriptControlOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kFMXT_Resume + kBE_ScriptControlOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( kFMXT_Pause + kBE_ScriptControlOffset, BE_NumericConstants );
+	
+	
 	return kCurrentExtnVersion;	// enable the plug-in
 
 } // LoadPlugin

@@ -336,6 +336,7 @@ enum {
 	kBE_MessageDigestAlgorithmOffset = 2000,
 	kBE_FileTypeOffset = 3000,
 	kBE_EncodingOffset = 4000,
+	kBE_ScriptControlOffset = 5000
 };
 
 enum file_type {

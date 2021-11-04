@@ -149,4 +149,8 @@
 "3002" = "BE_FileTypeFolder|FileType Folder|For use with the function BE_FileListFolder as a flag for the \"type\" parameter.";
 "4001" = "BE_EncodingHex|Encoding Hex|Named contstant, = 1, for use with BE_MessageDigest";
 "4002" = "BE_EncodingBase64|Encoding Base64|Named contstant, = 2, for use with BE_MessageDigest";
+"5000" = "BE_ScriptControlHalt|Script Control Halt|For use with the function BE_ScriptExecute as an option for the \"scriptControl\" parameter.";
+"5001" = "BE_ScriptControlExit|Script Control Exit|For use with the function BE_ScriptExecute as an option for the \"scriptControl\" parameter.";
+"5002" = "BE_ScriptControlResume|Script Control Resume|For use with the function BE_ScriptExecute as an option for the \"scriptControl\" parameter.";
+"5003" = "BE_ScriptControlPause|Script Control Pause|For use with the function BE_ScriptExecute as an option for the \"scriptControl\" parameter.";
 "65000" = "Version: %@\n\nThis plug-in provides additional functionality for BaseElements from Goya.";

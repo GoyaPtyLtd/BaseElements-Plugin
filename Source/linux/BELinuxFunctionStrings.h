@@ -170,6 +170,10 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 3002, "BE_FileTypeFolder" },
 	{ 4001, "BE_EncodingHex" },
 	{ 4002, "BE_EncodingBase64" },
+	{ 5000, "BE_ScriptControlHalt" },
+	{ 5001, "BE_ScriptControlExit" },
+	{ 5002, "BE_ScriptControlResume" },
+	{ 5003, "BE_ScriptControlPause" },
 	{ 65000, "Version: %@\n\nThis plug-in provides additional functionality for BaseElements from Goya." },
 
 };

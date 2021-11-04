@@ -2,7 +2,15 @@
 Version 4.3.0b1
 ########################################################################
 
-September 29, 2021
+November 4, 2021
+
+
+New Named Constants
+
+BE_ScriptControlHalt: an option for the "scriptControl" parameter of BE_ScriptExecute
+BE_ScriptControlExit: an option for the "scriptControl" parameter of BE_ScriptExecute
+BE_ScriptControlResume: an option for the "scriptControl" parameter of BE_ScriptExecute
+BE_ScriptControlPause: an option for the "scriptControl" parameter of BE_ScriptExecute
 
 
 Changes
