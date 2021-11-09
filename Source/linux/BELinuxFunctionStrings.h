@@ -88,6 +88,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 191, "BE_FTP_Delete ( url {; username ; password } )" },
 	{ 192, "BE_HTTP_PATCH ( url ; parameters {; username ; password } )" },
 	{ 193, "BE_FTP_UploadFile ( url ; pathToFile {; username ; password } )" },
+	{ 194, "BE_CurlGetInfo ( getInfoOption )" },
 	{ 200, "BE_XSLT_ApplyInMemory ( xmlText ; xsltText )" },
 	{ 201, "BE_XPath ( xmlText ; xpathText {; namespaceListText ; asTextBoolean } )" },
 	{ 202, "BE_XPathAll ( xmlText ; xpathText {; namespaceListText } )" },

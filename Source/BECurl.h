@@ -2,7 +2,7 @@
  BECurl.h
  BaseElements Plug-In
  
- Copyright 2011-2017 Goya. All rights reserved.
+ Copyright 2011-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -151,6 +151,14 @@ protected:
 	void prepare_data_upload ( );
 	void prepare_upload ( );
 	std::vector<char> upload ( );
+
+	const std::string easy_getinfo ( const CURLINFO curl_info_option, const bool release_memory = false );
+	const std::string easy_getinfo_long ( const CURLINFO curl_info_option );
+	const std::string easy_getinfo_double ( const CURLINFO curl_info_option );
+	const std::string easy_getinfo_sizet ( const CURLINFO curl_info_option );
+	const std::string easy_getinfo_cert ( const CURLINFO curl_info_option );
+	const std::string easy_getinfo_slist ( const CURLINFO curl_info_option );
+	void get_curl_info ( );
 
 };
 

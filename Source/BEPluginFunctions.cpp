@@ -129,6 +129,7 @@ extern thread_local CustomHeaders g_smtp_custom_headers;
 extern thread_local std::stringstream g_curl_trace;
 extern thread_local struct host_details g_http_proxy;
 extern thread_local BECurlOptionMap g_curl_options;
+extern thread_local std::map<std::string, std::string> g_curl_info;
 
 
 #pragma mark -
@@ -2976,6 +2977,30 @@ fmx::errcode BE_FTP_Delete ( short /* funcId */, const ExprEnv& /* environment *
 	return MapError ( error );
 
 } // BE_FTP_Delete
+
+
+fmx::errcode BE_CurlGetInfo ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto get_info_option = ParameterAsUTF8String ( parameters );
+
+		auto curl_info = g_curl_info [ boost::to_upper_copy ( get_info_option ) ];
+		SetResult ( curl_info, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_CurlGetInfo
 
 
 #pragma mark -

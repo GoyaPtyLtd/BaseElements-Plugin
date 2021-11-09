@@ -71,6 +71,7 @@ thread_local std::stringstream g_curl_trace;
 thread_local CustomHeaders g_http_custom_headers;
 thread_local struct host_details g_http_proxy;
 thread_local BECurlOptionMap g_curl_options;
+thread_local std::map<std::string, std::string> g_curl_info;
 
 extern BEFileMakerPlugin * g_be_plugin;
 
@@ -762,8 +763,8 @@ void BECurl::perform ( )
 
 	if ( error == CURLE_OK ) {
 
-		error = curl_easy_getinfo ( curl, CURLINFO_RESPONSE_CODE, &http_response_code );
-
+		get_curl_info();
+		
 		if ( error == CURLE_OK ) {
 			// record the header information
 			http_response_headers.erase();
@@ -912,3 +913,225 @@ vector<char> BECurl::upload ( )
 	return result;
 
 }	// upload
+
+
+const std::string BECurl::easy_getinfo ( const CURLINFO curl_info_option, const bool release_memory )
+{
+
+	char * getinfo_string;
+	error = curl_easy_getinfo ( curl, curl_info_option, &getinfo_string );
+	
+	std::string the_info;
+	
+	if ( CURLE_OK == error ) {
+
+		if ( getinfo_string ) {
+			the_info = getinfo_string;
+		} else {
+		
+			if ( release_memory ) {
+				be_free ( getinfo_string );
+			}
+		
+		}
+	
+	}
+	
+	return the_info;
+
+}	// easy_getinfo
+
+
+const std::string BECurl::easy_getinfo_long ( const CURLINFO curl_info_option )
+{
+
+	long getinfo_long;
+	error = curl_easy_getinfo ( curl, curl_info_option, &getinfo_long );
+	std::string the_info;
+	
+	if ( CURLE_OK == error ) {
+		the_info = std::to_string ( getinfo_long );
+	}
+	
+	return the_info;
+
+}	// easy_getinfo_long
+
+
+const std::string BECurl::easy_getinfo_double ( const CURLINFO curl_info_option )
+{
+
+	double getinfo_double;
+	error = curl_easy_getinfo ( curl, curl_info_option, &getinfo_double );
+	
+	std::string the_info;
+	
+	if ( CURLE_OK == error ) {
+
+		if ( 0 == getinfo_double ) { // we don't want 0.00000 etc.
+			the_info = "0";
+		} else {
+			the_info = std::to_string ( getinfo_double );
+		}
+	
+	}
+	
+	return the_info;
+
+}	// easy_getinfo_double
+
+
+const std::string BECurl::easy_getinfo_sizet ( const CURLINFO curl_info_option )
+{
+
+	curl_off_t getinfo_sizet;
+	error = curl_easy_getinfo ( curl, curl_info_option, &getinfo_sizet );
+	
+	std::string the_info;
+	
+	if ( CURLE_OK == error ) {
+		the_info = std::to_string ( getinfo_sizet );
+	}
+	
+	return the_info;
+
+}	// easy_getinfo_sizet
+
+
+const std::string BECurl::easy_getinfo_cert ( const CURLINFO curl_info_option )
+{
+
+	struct curl_certinfo * cert_info;
+	error = curl_easy_getinfo ( curl, curl_info_option, &cert_info );
+
+	std::string the_info;
+
+	if ( CURLE_OK == error ) {
+
+		for ( auto i = 0 ; i < cert_info->num_of_certs ; i++ ) {
+
+			struct curl_slist *slist;
+
+			for ( slist = cert_info->certinfo[i]; slist; slist = slist->next ) {
+				the_info.append ( slist->data );
+				the_info.append ( "\n" );
+			}
+	
+		}
+		
+	}
+
+	return the_info;
+
+}	// easy_getinfo_cert
+
+
+const std::string BECurl::easy_getinfo_slist ( const CURLINFO curl_info_option )
+{
+
+	struct curl_slist * s_list;
+	error = curl_easy_getinfo ( curl, curl_info_option, &s_list );
+
+	std::string the_info;
+	
+	if ( CURLE_OK == error ) {
+
+		auto next_list = s_list;
+
+		while ( next_list ) {
+			the_info.append ( next_list->data );
+			the_info.append ( "\n" );
+			next_list = next_list->next;
+		}
+
+		curl_slist_free_all ( s_list );
+	
+	}
+	
+	return the_info;
+
+}	// easy_getinfo_slist
+
+
+void BECurl::get_curl_info ( )
+{
+
+	// start afresh
+	g_curl_info.clear();
+
+	//		https://curl.se/libcurl/c/curl_easy_getinfo.html
+
+	g_curl_info [ "CURLINFO_EFFECTIVE_METHOD" ] = easy_getinfo ( CURLINFO_EFFECTIVE_METHOD );
+	g_curl_info [ "CURLINFO_EFFECTIVE_URL" ] = easy_getinfo ( CURLINFO_EFFECTIVE_URL );
+
+	g_curl_info [ "CURLINFO_RESPONSE_CODE" ] = easy_getinfo_long ( CURLINFO_RESPONSE_CODE );
+	// backwards compatibilty
+	http_response_code = std::stoi ( g_curl_info [ "CURLINFO_RESPONSE_CODE" ] );
+
+	g_curl_info [ "CURLINFO_REFERER" ] = easy_getinfo ( CURLINFO_REFERER );
+	g_curl_info [ "CURLINFO_HTTP_CONNECTCODE" ] = easy_getinfo_long ( CURLINFO_HTTP_CONNECTCODE );
+	g_curl_info [ "CURLINFO_HTTP_VERSION" ] = easy_getinfo_long ( CURLINFO_HTTP_VERSION );
+	g_curl_info [ "CURLINFO_FILETIME" ] = easy_getinfo_long ( CURLINFO_FILETIME );
+	g_curl_info [ "CURLINFO_FILETIME_T" ] = easy_getinfo_sizet ( CURLINFO_FILETIME_T );
+	g_curl_info [ "CURLINFO_TOTAL_TIME" ] = easy_getinfo_double ( CURLINFO_TOTAL_TIME );
+	g_curl_info [ "CURLINFO_TOTAL_TIME_T" ] = easy_getinfo_sizet ( CURLINFO_TOTAL_TIME_T );
+	g_curl_info [ "CURLINFO_NAMELOOKUP_TIME" ] = easy_getinfo_double ( CURLINFO_NAMELOOKUP_TIME );
+	g_curl_info [ "CURLINFO_NAMELOOKUP_TIME_T" ] = easy_getinfo_sizet ( CURLINFO_NAMELOOKUP_TIME_T );
+	g_curl_info [ "CURLINFO_CONNECT_TIME" ] = easy_getinfo_double ( CURLINFO_CONNECT_TIME );
+	g_curl_info [ "CURLINFO_CONNECT_TIME_T" ] = easy_getinfo_sizet ( CURLINFO_CONNECT_TIME_T );
+	g_curl_info [ "CURLINFO_APPCONNECT_TIME" ] = easy_getinfo_double ( CURLINFO_APPCONNECT_TIME );
+	g_curl_info [ "CURLINFO_APPCONNECT_TIME_T" ] = easy_getinfo_sizet ( CURLINFO_APPCONNECT_TIME_T );
+	g_curl_info [ "CURLINFO_PRETRANSFER_TIME" ] = easy_getinfo_double ( CURLINFO_PRETRANSFER_TIME );
+	g_curl_info [ "CURLINFO_PRETRANSFER_TIME_T" ] = easy_getinfo_sizet ( CURLINFO_PRETRANSFER_TIME_T );
+	g_curl_info [ "CURLINFO_STARTTRANSFER_TIME" ] = easy_getinfo_double ( CURLINFO_STARTTRANSFER_TIME );
+	g_curl_info [ "CURLINFO_STARTTRANSFER_TIME_T" ] = easy_getinfo_sizet ( CURLINFO_STARTTRANSFER_TIME_T );
+	g_curl_info [ "CURLINFO_REDIRECT_TIME" ] = easy_getinfo_double ( CURLINFO_REDIRECT_TIME );
+	g_curl_info [ "CURLINFO_REDIRECT_TIME_T" ] = easy_getinfo_sizet ( CURLINFO_REDIRECT_TIME_T );
+	g_curl_info [ "CURLINFO_REDIRECT_COUNT" ] = easy_getinfo_long ( CURLINFO_REDIRECT_COUNT );
+	g_curl_info [ "CURLINFO_REDIRECT_URL" ] = easy_getinfo ( CURLINFO_REDIRECT_URL );
+//	g_curl_info [ "CURLINFO_SIZE_UPLOAD" ] = easy_getinfo_double ( CURLINFO_SIZE_UPLOAD ); // deprecated
+	g_curl_info [ "CURLINFO_SIZE_UPLOAD_T" ] = easy_getinfo_sizet ( CURLINFO_SIZE_UPLOAD_T );
+//	g_curl_info [ "CURLINFO_SIZE_DOWNLOAD" ] = easy_getinfo_double ( CURLINFO_SIZE_DOWNLOAD ); // deprecated
+	g_curl_info [ "CURLINFO_SIZE_DOWNLOAD_T" ] = easy_getinfo_sizet ( CURLINFO_SIZE_DOWNLOAD_T );
+//	g_curl_info [ "CURLINFO_SPEED_DOWNLOAD" ] = easy_getinfo_double ( CURLINFO_SPEED_DOWNLOAD ); // deprecated
+	g_curl_info [ "CURLINFO_SPEED_DOWNLOAD_T" ] = easy_getinfo_sizet ( CURLINFO_SPEED_DOWNLOAD_T );
+//	g_curl_info [ "CURLINFO_SPEED_UPLOAD" ] = easy_getinfo_double ( CURLINFO_SPEED_UPLOAD ); // deprecated
+	g_curl_info [ "CURLINFO_SPEED_UPLOAD_T" ] = easy_getinfo_sizet ( CURLINFO_SPEED_UPLOAD_T );
+	g_curl_info [ "CURLINFO_HEADER_SIZE" ] = easy_getinfo_long ( CURLINFO_HEADER_SIZE );
+	g_curl_info [ "CURLINFO_REQUEST_SIZE" ] = easy_getinfo_long ( CURLINFO_REQUEST_SIZE );
+	g_curl_info [ "CURLINFO_SSL_VERIFYRESULT" ] = easy_getinfo_long ( CURLINFO_SSL_VERIFYRESULT );
+	g_curl_info [ "CURLINFO_PROXY_ERROR" ] = easy_getinfo_long ( CURLINFO_PROXY_ERROR );
+	g_curl_info [ "CURLINFO_PROXY_SSL_VERIFYRESULT" ] = easy_getinfo_long ( CURLINFO_PROXY_SSL_VERIFYRESULT );
+	g_curl_info [ "CURLINFO_SSL_ENGINES" ] = easy_getinfo_slist ( CURLINFO_SSL_ENGINES );
+//	g_curl_info [ "CURLINFO_CONTENT_LENGTH_DOWNLOAD" ] = easy_getinfo_double ( CURLINFO_CONTENT_LENGTH_DOWNLOAD ); // deprecated
+	g_curl_info [ "CURLINFO_CONTENT_LENGTH_DOWNLOAD_T" ] = easy_getinfo_sizet ( CURLINFO_CONTENT_LENGTH_DOWNLOAD_T );
+//	g_curl_info [ "CURLINFO_CONTENT_LENGTH_UPLOAD" ] = easy_getinfo_double ( CURLINFO_CONTENT_LENGTH_UPLOAD ); // deprecated
+	g_curl_info [ "CURLINFO_CONTENT_LENGTH_UPLOAD_T" ] = easy_getinfo_sizet ( CURLINFO_CONTENT_LENGTH_UPLOAD_T );
+	g_curl_info [ "CURLINFO_CONTENT_TYPE" ] = easy_getinfo ( CURLINFO_CONTENT_TYPE );
+	g_curl_info [ "CURLINFO_RETRY_AFTER" ] = easy_getinfo_sizet ( CURLINFO_RETRY_AFTER );
+	g_curl_info [ "CURLINFO_PRIVATE" ] = easy_getinfo ( CURLINFO_PRIVATE );
+	g_curl_info [ "CURLINFO_HTTPAUTH_AVAIL" ] = easy_getinfo_long ( CURLINFO_HTTPAUTH_AVAIL );
+	g_curl_info [ "CURLINFO_PROXYAUTH_AVAIL" ] = easy_getinfo_long ( CURLINFO_PROXYAUTH_AVAIL );
+	g_curl_info [ "CURLINFO_OS_ERRNO" ] = easy_getinfo_long ( CURLINFO_OS_ERRNO );
+	g_curl_info [ "CURLINFO_NUM_CONNECTS" ] = easy_getinfo_long ( CURLINFO_NUM_CONNECTS );
+	g_curl_info [ "CURLINFO_PRIMARY_IP" ] = easy_getinfo ( CURLINFO_PRIMARY_IP );
+	g_curl_info [ "CURLINFO_PRIMARY_PORT" ] = easy_getinfo_long ( CURLINFO_PRIMARY_PORT );
+	g_curl_info [ "CURLINFO_LOCAL_IP" ] = easy_getinfo ( CURLINFO_LOCAL_IP );
+	g_curl_info [ "CURLINFO_LOCAL_PORT" ] = easy_getinfo_long ( CURLINFO_LOCAL_PORT );
+	g_curl_info [ "CURLINFO_COOKIELIST" ] = easy_getinfo_slist ( CURLINFO_COOKIELIST );
+//	g_curl_info [ "CURLINFO_LASTSOCKET" ] = easy_getinfo_long ( CURLINFO_LASTSOCKET ); // deprecated
+	g_curl_info [ "CURLINFO_ACTIVESOCKET" ] = easy_getinfo_long ( CURLINFO_ACTIVESOCKET ); // not useful in this context ???
+	g_curl_info [ "CURLINFO_FTP_ENTRY_PATH" ] = easy_getinfo ( CURLINFO_FTP_ENTRY_PATH );
+	g_curl_info [ "CURLINFO_CERTINFO" ] = easy_getinfo_cert ( CURLINFO_CERTINFO );
+	g_curl_info [ "CURLINFO_TLS_SSL_PTR" ] = std::to_string ( kCommandIsUnavailableError ); // not implemented
+//	g_curl_info [ "CURLINFO_TLS_SESSION" ] = easy_getinfo ( CURLINFO_TLS_SESSION ); // deprecated
+	g_curl_info [ "CURLINFO_CONDITION_UNMET" ] = easy_getinfo_long ( CURLINFO_CONDITION_UNMET );
+	g_curl_info [ "CURLINFO_RTSP_SESSION_ID" ] = easy_getinfo ( CURLINFO_RTSP_SESSION_ID );
+	g_curl_info [ "CURLINFO_RTSP_CLIENT_CSEQ" ] = easy_getinfo_long ( CURLINFO_RTSP_CLIENT_CSEQ );
+	g_curl_info [ "CURLINFO_RTSP_SERVER_CSEQ" ] = easy_getinfo_long ( CURLINFO_RTSP_SERVER_CSEQ );
+	g_curl_info [ "CURLINFO_RTSP_CSEQ_RECV" ] = easy_getinfo_long ( CURLINFO_RTSP_CSEQ_RECV );
+	g_curl_info [ "CURLINFO_PROTOCOL" ] = easy_getinfo_long ( CURLINFO_PROTOCOL );
+	g_curl_info [ "CURLINFO_SCHEME" ] = easy_getinfo ( CURLINFO_SCHEME );
+
+}	// get_curl_info
+

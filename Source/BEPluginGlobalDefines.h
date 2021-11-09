@@ -172,6 +172,7 @@ enum functions {
 	kBE_FTP_Delete = 191,
 	kBE_HTTP_PATCH = 192,
 	kBE_FTP_UploadFile = 193,
+	kBE_CurlGetInfo = 194,
 	kBE_XSLT_ApplyInMemory = 200,
 	kBE_XPath = 201,
 	kBE_XPathAll = 202,
