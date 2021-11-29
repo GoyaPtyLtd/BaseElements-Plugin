@@ -284,7 +284,6 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\BEXMLTextWriter.h" />
     <ClInclude Include="..\Source\BEXSLT.h" />
     <ClInclude Include="..\Source\BEZlib.h" />
-    <ClInclude Include="..\Source\BE_Boost_FileSystem_Additions.hpp" />
     <ClInclude Include="..\Source\Crypto\BEOpenSSLRSA.h" />
     <ClInclude Include="..\Source\Crypto\BEX509.h" />
     <ClInclude Include="..\Source\duktape\duktape.h" />
