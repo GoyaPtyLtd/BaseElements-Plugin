@@ -17,10 +17,10 @@
 	<key>CFBundlePackageType</key>
 	<string>FMXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.2.3</string>
+	<string>4.2.3b1</string>
 	<key>CFBundleSignature</key>
 	<string>GyBE</string>
 	<key>CFBundleVersion</key>
-	<string>4.2.3</string>
+	<string>4.2.3b1</string>
 </dict>
 </plist>
