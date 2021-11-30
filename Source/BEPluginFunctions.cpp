@@ -120,6 +120,9 @@ thread_local struct host_details g_smtp_host;
 thread_local BESMTPContainerAttachments g_smtp_attachments;
 thread_local vector<BEValueListStringSharedPtr> arrays;
 
+std::vector<long> g_background_tasks;
+std::vector<long> g_completed_background_tasks;
+
 extern BEFileMakerPlugin * g_be_plugin;
 
 extern thread_local int g_http_response_code;
@@ -3012,8 +3015,13 @@ fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environme
 {
 	errcode error = NoError();
 
-	static auto which = 1;
-	auto id = which;
+	const auto it = max_element ( std::begin ( g_background_tasks ), std::end ( g_background_tasks ) );
+	long id = 1;
+	if ( it != std::end ( g_background_tasks ) ) {
+		id = 1 + *it;
+	}
+	
+	g_background_tasks.push_back ( id );
 
 	try {
 
@@ -3082,6 +3090,8 @@ fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environme
 
 			auto text_result_wanted = true;
 			sql_cmd->execute ( environment, text_result_wanted );
+			
+			g_completed_background_tasks.push_back ( id );
 
 			}
 		);
@@ -3092,7 +3102,7 @@ fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environme
 		g_http_custom_headers.clear();
 
 		if ( error == kNoError ) {
-			SetResult ( which++, results );
+			SetResult ( id, results );
 		}
 
 	} catch ( BEPlugin_Exception& e ) {
@@ -3106,6 +3116,38 @@ fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environme
 	return MapError ( error );
 
 } // BE_BackgroundTaskAdd
+
+
+fmx::errcode BE_BackgroundTaskList ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		std::sort ( g_background_tasks.begin(), g_background_tasks.end() );
+		std::sort ( g_completed_background_tasks.begin(), g_completed_background_tasks.end() );
+		
+		std::vector<long> pending_background_tasks;
+		std::set_difference (
+							g_background_tasks.begin(), g_background_tasks.end(),
+							g_completed_background_tasks.begin(), g_completed_background_tasks.end(),
+							std::inserter ( pending_background_tasks, std::begin ( pending_background_tasks ) )
+		);
+		
+		BEValueList<std::string> pending_task_list ( pending_background_tasks );
+		SetResult ( pending_task_list, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_BackgroundTaskList
 
 
 

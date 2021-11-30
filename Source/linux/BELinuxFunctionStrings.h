@@ -90,6 +90,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 193, "BE_FTP_UploadFile ( url ; pathToFile {; username ; password } )" },
 	{ 194, "BE_CurlGetInfo ( getInfoOption )" },
 	{ 195, "BE_BackgroundTaskAdd ( type ; when ; repeatInterval ; sql ; sqlFile ; url ; postArgs {; username ; password } )" },
+	{ 196, "BE_BackgroundTaskList" },
 	{ 200, "BE_XSLT_ApplyInMemory ( xmlText ; xsltText )" },
 	{ 201, "BE_XPath ( xmlText ; xpathText {; namespaceListText ; asTextBoolean } )" },
 	{ 202, "BE_XPathAll ( xmlText ; xpathText {; namespaceListText } )" },

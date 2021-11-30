@@ -66,6 +66,7 @@
 "193" = "BE_FTP_UploadFile ( url ; pathToFile {; username ; password } )|FTP Upload File|Uploads a file the to the ftp url specified. Performs the same task for files that BE_FTP_Upload does for container field data.";
 "194" = "BE_CurlGetInfo ( getInfoOption )|Curl Get Info|Get information about the most recent curl (HTTP/FTP/SMTP) connection.";
 "195" = "BE_BackgroundTaskAdd ( type ; when ; repeatInterval ; sql ; sqlFile ; url ; postArgs {; username ; password } )|Background Task Add|";
+"196" = "BE_BackgroundTaskList|Background Task List|";
 "200" = "BE_XSLT_ApplyInMemory ( xmlText ; xsltText )|XML XSLT Memory|Applies the XSLT given by the _xslt_ parameter, to the XML given by the _xml_ parameter, and and returns the result.  Performs the same as the BE_XSLTApply but without writing to disk.";
 "201" = "BE_XPath ( xmlText ; xpathText {; namespaceListText ; asTextBoolean } )|XML XPath|This finds the first instance of a node at the path xpath within the text xml. This function is based on the libxml library which only supports XPath 1.0 http://xmlsoft.org";
 "202" = "BE_XPathAll ( xmlText ; xpathText {; namespaceListText } )|XML XPath All|This finds all instances of a node at the path xpath within the text xml. This function is based on the libxml library which only supports XPath 1.0 http://xmlsoft.org";

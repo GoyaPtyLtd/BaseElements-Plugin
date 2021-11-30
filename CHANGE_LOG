@@ -2,12 +2,18 @@
 Version 4.3.0b1
 ########################################################################
 
-November 8, 2021
+December 1, 2021
 
 
 New Functions
 
+
 BE_CurlGetInfo: get information about the most recent curl (HTTP/FTP/SMTP) connection
+
+Pro Version Only
+
+BE_BackgroundTaskAdd: perform a HTTPPost and set the result into a field in the "background"
+BE_BackgroundTaskList: return a value list of ids for pending background tasks
 
 
 New Named Constants
