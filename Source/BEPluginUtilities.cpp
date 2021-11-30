@@ -39,6 +39,7 @@
 #include "BEPluginException.h"
 #include "BEPluginUtilities.h"
 #include "BEQuadChar.h"
+#include "BETime.h"
 #include "BEZlib.h"
 #include "BEFileSystem.h"
 
@@ -577,6 +578,18 @@ std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& paramet
 	return pdf_document;
 
 } // ParameterAsPDF
+
+
+const time_t ParameterAsEpochTime ( const fmx::DataVect& parameters, const fmx::uint32 which )
+{
+
+	fmx::FixPtUniquePtr timestamp;
+	parameters.AtAsTimeStamp ( which ).GetSecondsSinceEpoch ( *timestamp );
+	const auto epoch_time = timestamp_to_epoch ( timestamp->AsFloat() );
+
+	return epoch_time;
+
+} // ParameterAsEpochTime
 
 
 

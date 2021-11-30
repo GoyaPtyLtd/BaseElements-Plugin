@@ -13,6 +13,9 @@
 #define __BaseElements__BETime__
 
 
+#include "BEPluginGlobalDefines.h"
+
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcomma"
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -21,6 +24,7 @@
 
 const fmx::int64 ptime_to_milliseconds ( const boost::posix_time::ptime& the_time );
 const fmx::int64 std_time_to_timestamp ( const std::time_t the_time );
+const time_t timestamp_to_epoch ( const time_t timestamp );
 
 
 

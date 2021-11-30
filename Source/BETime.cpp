@@ -2,7 +2,7 @@
  BEShell.cpp
  BaseElements Plug-In
  
- Copyright 2012-2015 Goya. All rights reserved.
+ Copyright 2012-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -45,6 +45,17 @@ const fmx::int64 std_time_to_timestamp ( const std::time_t the_time )
 	const fmx::int64 timestamp = localtime + FILEMAKER_EPOCH_OFFSET;
 	
 	return timestamp;
+}
+
+
+const time_t timestamp_to_epoch ( const time_t timestamp )
+{
+	const auto local_time = ptime_to_milliseconds ( boost::posix_time::microsec_clock::local_time() );
+	const auto utc_time = ptime_to_milliseconds ( boost::posix_time::microsec_clock::universal_time() );
+	const time_t utc_offset_seconds = ( local_time - utc_time ) / 1000;
+	const auto epoch_time = timestamp - FILEMAKER_EPOCH_OFFSET - utc_offset_seconds;
+
+	return epoch_time;
 }
 
 

@@ -109,6 +109,8 @@
 		4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC52717D0B20009E745 /* libPocoUtil.a */; };
 		4D3B9BC72717D2470009E745 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
 		4D3B9BC92717D5A50009E745 /* boost.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC82717D5A50009E745 /* boost.xcframework */; };
+		4D3BB6352755D1350085D65F /* Test_BETime.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D3BB6342755D1350085D65F /* Test_BETime.mm */; };
+		4D3BB6372755D1B30085D65F /* BE_Plugin_Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D3BB6362755D1B30085D65F /* BE_Plugin_Tests.mm */; };
 		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
 		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
@@ -163,7 +165,6 @@
 		4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DD510241DD136F200763F7E /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
-		4DE2FD032682C5160091A9AD /* BE_Plugin_Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4DE2FD022682C5160091A9AD /* BE_Plugin_Tests.mm */; };
 		4DE2FD082682C5360091A9AD /* BESMTPEmailMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */; };
 		4DE2FD092682C5470091A9AD /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4DE2FD0A2682C57E0091A9AD /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
@@ -364,6 +365,8 @@
 		4D3B9BD2271933760009E745 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/iOS/iPhoneOSSimulator/libcurl.a; sourceTree = "<group>"; };
 		4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXMLReader.cpp; path = ../Source/BEXMLReader.cpp; sourceTree = "<group>"; };
 		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
+		4D3BB6342755D1350085D65F /* Test_BETime.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Test_BETime.mm; sourceTree = "<group>"; };
+		4D3BB6362755D1B30085D65F /* BE_Plugin_Tests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BE_Plugin_Tests.mm; sourceTree = "<group>"; };
 		4D4148FF267C5D8600C726DC /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = ../Libraries/iOS/iPhoneOS/libPocoNet.a; sourceTree = "<group>"; };
 		4D414901267C5DC500C726DC /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoNet.a; sourceTree = "<group>"; };
 		4D4C066C1C23B372006899FE /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
@@ -449,7 +452,6 @@
 		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
 		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
 		4DE2FD002682C5160091A9AD /* BE_Plugin_Tests.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BE_Plugin_Tests.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
-		4DE2FD022682C5160091A9AD /* BE_Plugin_Tests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BE_Plugin_Tests.mm; sourceTree = "<group>"; };
 		4DE2FD042682C5160091A9AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DE2FD272682C5D10091A9AD /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../Libraries/macOS/libjpeg.a; sourceTree = "<group>"; };
 		4DE2FD512682C9080091A9AD /* LDAP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LDAP.framework; path = System/Library/Frameworks/LDAP.framework; sourceTree = SDKROOT; };
@@ -750,8 +752,9 @@
 		4DE2FD012682C5160091A9AD /* BE_Plugin_Tests */ = {
 			isa = PBXGroup;
 			children = (
-				4DE2FD022682C5160091A9AD /* BE_Plugin_Tests.mm */,
+				4D3BB6362755D1B30085D65F /* BE_Plugin_Tests.mm */,
 				4DE2FD042682C5160091A9AD /* Info.plist */,
+				4D3BB6342755D1350085D65F /* Test_BETime.mm */,
 			);
 			path = BE_Plugin_Tests;
 			sourceTree = "<group>";
@@ -1284,9 +1287,9 @@
 				4DE2FD402682C7300091A9AD /* BEJSON.cpp in Sources */,
 				4DE2FD0A2682C57E0091A9AD /* BESMTPContainerAttachments.cpp in Sources */,
 				4DE2FD4D2682C8680091A9AD /* BEX509.cpp in Sources */,
+				4D3BB6352755D1350085D65F /* Test_BETime.mm in Sources */,
 				4DE2FD2D2682C69D0091A9AD /* BEPluginUtilities.cpp in Sources */,
 				4DE2FD482682C7530091A9AD /* BEPDF.cpp in Sources */,
-				4DE2FD032682C5160091A9AD /* BE_Plugin_Tests.mm in Sources */,
 				4DE2FD2E2682C6BB0091A9AD /* BEFileSystem.cpp in Sources */,
 				4DE2FD4E2682C86B0091A9AD /* BEBio.cpp in Sources */,
 				4DE2FD342682C6F50091A9AD /* BESystemCommand.cpp in Sources */,
@@ -1304,6 +1307,7 @@
 				4DE2FD382682C70B0091A9AD /* BEXSLT.cpp in Sources */,
 				4DE2FD4F2682C8730091A9AD /* duktape.c in Sources */,
 				4DE2FD2C2682C6510091A9AD /* BECurlOption.cpp in Sources */,
+				4D3BB6372755D1B30085D65F /* BE_Plugin_Tests.mm in Sources */,
 				4DE2FD4B2682C8620091A9AD /* BEOpenSSLRSA.cpp in Sources */,
 				4DE2FD472682C74F0091A9AD /* BEDebugInformation.cpp in Sources */,
 				4DE2FD442682C7440091A9AD /* BEJPEG.cpp in Sources */,

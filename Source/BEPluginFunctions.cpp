@@ -3004,6 +3004,112 @@ fmx::errcode BE_CurlGetInfo ( short /* funcId */, const ExprEnv& /* environment 
 
 
 #pragma mark -
+#pragma mark Background Tasks
+#pragma mark -
+
+
+fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	static auto which = 1;
+	auto id = which;
+
+	try {
+
+		auto what = ParameterAsUTF8String ( parameters );
+		auto when = ParameterAsEpochTime ( parameters, 1 );
+//		auto interval = ParameterAsLong( parameters, 2 );
+		auto sql = ParameterAsUTF8String ( parameters, 3 );
+		auto sql_file = ParameterAsUTF8String ( parameters, 4 );
+
+		auto url = ParameterAsUTF8String ( parameters, 5 );
+		auto post_args = ParameterAsUTF8String ( parameters, 6 );
+		auto username = ParameterAsUTF8String ( parameters, 7 );
+		auto password = ParameterAsUTF8String ( parameters, 8 );
+
+		
+		std::shared_ptr<BECurl> curl ( new BECurl ( url, kBE_HTTP_METHOD_POST, "", username, password, post_args ) );
+
+		std::thread background_task ( [id, when, curl, sql, sql_file, &environment] {
+			
+			// when do we run?
+			auto run_at = std::chrono::system_clock::from_time_t ( when );
+			std::this_thread::sleep_until ( run_at );
+			
+			// running
+			auto response = curl->download();
+			const std::string http_response ( response.begin(), response.end() );
+						
+			// output as json
+			Poco::JSON::Object::Ptr json = new Poco::JSON::Object();
+
+				Poco::JSON::Object::Ptr task_information = new Poco::JSON::Object();
+					task_information->set ( "id", id );
+				json->set ( "task information", task_information );
+
+				Poco::JSON::Object::Ptr task_result = new Poco::JSON::Object();
+					task_result->set ( "last error", g_last_error );
+					task_result->set ( "result", http_response );
+					task_result->set ( "response headers", g_http_response_headers );
+					task_result->set ( "timestamp", Poco::Timestamp() );
+			
+					Poco::JSON::Object::Ptr curl_info = new Poco::JSON::Object();
+						for ( std::pair<std::string, std::string> element : g_curl_info ) {
+							curl_info->set ( element.first, element.second );
+						}
+					task_result->set ( "curl info", curl_info );
+			
+				json->set ( "task result", task_result );
+
+			const auto indent = 1;
+			std::ostringstream output;
+			json->stringify ( output, indent );
+
+			// construct the sql command to return the result
+			const std::string replace_this = "###RESULT###";
+			std::string sql_command = sql;
+			boost::replace_all ( sql_command, replace_this, output.str() );
+			
+			// set the result
+			TextUniquePtr expression;
+			expression->Assign ( sql_command.data() );
+
+			TextUniquePtr filename;
+			filename->Assign ( sql_file.data() );
+
+			BESQLCommandUniquePtr sql_cmd ( new BESQLCommand ( *expression, *filename ) );
+
+			auto text_result_wanted = true;
+			sql_cmd->execute ( environment, text_result_wanted );
+
+			}
+		);
+		
+		background_task.detach();
+		
+		g_curl_options.clear();
+		g_http_custom_headers.clear();
+
+		if ( error == kNoError ) {
+			SetResult ( which++, results );
+		}
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_BackgroundTaskAdd
+
+
+
+#pragma mark -
 #pragma mark SMTP
 #pragma mark -
 
