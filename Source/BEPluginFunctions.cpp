@@ -3070,26 +3070,16 @@ fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environme
 			
 				json->set ( "task result", task_result );
 
-			const auto indent = 1;
 			std::ostringstream output;
-			json->stringify ( output, indent );
+			json->stringify ( output, 1 );
 
-			// construct the sql command to return the result
-			const std::string replace_this = "###RESULT###";
+			// construct the sql to return the result
 			std::string sql_command = sql;
-			boost::replace_all ( sql_command, replace_this, output.str() );
+			boost::replace_all ( sql_command, "###RESULT###", output.str() );
 			
 			// set the result
-			TextUniquePtr expression;
-			expression->Assign ( sql_command.data() );
-
-			TextUniquePtr filename;
-			filename->Assign ( sql_file.data() );
-
-			BESQLCommandUniquePtr sql_cmd ( new BESQLCommand ( *expression, *filename ) );
-
-			auto text_result_wanted = true;
-			sql_cmd->execute ( environment, text_result_wanted );
+			BESQLCommandUniquePtr sql_cmd ( new BESQLCommand ( sql_command, sql_file ) );
+			sql_cmd->execute ( environment );
 			
 			g_completed_background_tasks.push_back ( id );
 
@@ -4224,17 +4214,11 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 
 	try {
 
-		TextUniquePtr expression;
-		expression->SetText ( parameters.AtAsText(0) );
+		auto expression = ParameterAsUTF8String ( parameters );
+		auto filename = ParameterAsUTF8String ( parameters, 3 );
+		BESQLCommandUniquePtr sql ( new BESQLCommand ( expression, filename ) );
 
 		FMX_UInt32 number_of_paramters = parameters.Size();
-
-		TextUniquePtr filename;
-		if ( number_of_paramters >= 4 ) {
-			filename->SetText ( parameters.AtAsText(3) );
-		}
-
-		BESQLCommandUniquePtr sql ( new BESQLCommand ( *expression, *filename ) );
 
 		if ( number_of_paramters >= 2 ) {
 			TextUniquePtr column_separator;
@@ -4249,36 +4233,39 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 		}
 
 		auto text_result_wanted = ParameterAsBoolean ( parameters, 4, true );
-		sql->execute ( environment, text_result_wanted );
+		error = sql->execute ( environment, text_result_wanted );
+		g_last_ddl_error = sql->get_ddl_error();
 
+		if ( kNoError == error ) {
 
-		if ( parameters.Size() >= 6 ) { // writing a file
+			if ( parameters.Size() >= 6 ) { // writing a file
 
-			ios_base::openmode mode = ios_base::trunc;
-			if ( !text_result_wanted ) {
-				mode |= ios_base::binary;
-			}
+				ios_base::openmode mode = ios_base::trunc;
+				if ( !text_result_wanted ) {
+					mode |= ios_base::binary;
+				}
 
-			auto path = ParameterAsUTF8String ( parameters, 5 );
-			auto sql_result = sql->get_vector_result();
-			error = write_to_file ( path, sql_result, mode );
+				auto path = ParameterAsUTF8String ( parameters, 5 );
+				auto sql_result = sql->get_vector_result();
+				error = write_to_file ( path, sql_result, mode );
 
-		} else { // sending the result to fmp
+			} else { // sending the result to fmp
 
-			if ( text_result_wanted ) {
+				if ( text_result_wanted ) {
 
-				auto sql_result = sql->get_text_result();
-				SetResult ( *sql_result, results );
+					auto sql_result = sql->get_text_result();
+					SetResult ( *sql_result, results );
 
-			} else {
+				} else {
 
-				auto sql_result = sql->get_data_result();
-				results.SetBinaryData ( sql_result->GetBinaryData() );
+					auto sql_result = sql->get_data_result();
+					results.SetBinaryData ( sql_result->GetBinaryData() );
+
+				}
 
 			}
 
 		}
-
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
