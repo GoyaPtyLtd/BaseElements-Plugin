@@ -167,7 +167,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FileTypeFile + kBE_FileTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_FileTypeFolder + kBE_FileTypeOffset, BE_NumericConstants );
 
-	g_be_plugin->RegisterFunction ( kBE_XSLTApply, BE_XSLTApply, 3 );
+	g_be_plugin->RegisterFunction ( kBE_XSLTApply, BE_XSLTApply, 3, -1 );
 	g_be_plugin->RegisterFunction ( kBE_XSLT_ApplyInMemory, BE_XSLTApply, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, 2, 4 );

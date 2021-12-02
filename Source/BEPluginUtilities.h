@@ -109,7 +109,8 @@ long DataAsLong ( const fmx::Data& data );
 double DataAsDouble ( const fmx::Data& data );
 
 
-fmx::errcode ExecuteScript ( const fmx::Text& script_name, const fmx::Text& file_name, const fmx::Data& parameter, const FMX_ScriptControl script_control, const fmx::ExprEnv& environment );
+fmx::errcode ExecuteScript ( const fmx::Text& script_name, const fmx::Text& file_name, const fmx::Data& parameter, const FMX_ScriptControl script_control );
+fmx::errcode ExecuteScript ( const std::string& script_name, const std::string& file_name, const std::string& parameter, const FMX_ScriptControl script_control );
 
 
 fmx::errcode NoError ( void );

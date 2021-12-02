@@ -1086,7 +1086,7 @@ double DataAsDouble ( const Data& data )
 #pragma mark FMX
 #pragma mark -
 
-errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Data& parameter, const FMX_ScriptControl script_control, const ExprEnv& environment )
+errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Data& parameter, const FMX_ScriptControl script_control )
 {
 	errcode error = kNoError;
 
@@ -1102,7 +1102,10 @@ errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Da
 			command->Assign ( "Get ( FileName )" );
 			
 			DataUniquePtr name;
-			environment.Evaluate ( *command, *name );
+			ExprEnvUniquePtr current_environment;
+			FMX_SetToCurrentEnv ( &(*current_environment) );
+			current_environment->Evaluate ( *command, *name );
+
 			database->SetText ( name->GetAsText() );
 
 		}
@@ -1136,6 +1139,36 @@ errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Da
 
 } // ExecuteScript
 
+
+errcode ExecuteScript ( const std::string& script_name, const std::string& file_name, const std::string& script_parameter, const FMX_ScriptControl script_control )
+{
+	errcode error = kNoError;
+
+	try {
+
+		TextUniquePtr script;
+		script->Assign ( script_name.c_str() );
+		
+		TextUniquePtr database;
+		database->Assign ( file_name.c_str() );
+		
+		TextUniquePtr filemaker_script_parameter;
+		filemaker_script_parameter->Assign ( script_parameter.c_str() );
+		DataUniquePtr parameter;
+		LocaleUniquePtr default_locale;
+		parameter->SetAsText( *filemaker_script_parameter, *default_locale );
+		
+		error = ExecuteScript ( *script, *database, *parameter, script_control );
+
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return error;
+
+} // ExecuteScript
 
 #pragma mark -
 #pragma mark Errors

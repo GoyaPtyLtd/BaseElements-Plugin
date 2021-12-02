@@ -26,6 +26,10 @@
 		4D25BF971F3A8C580083345B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
 		4D25BF981F3A8C580083345B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
 		4D25BF991F3A8C580083345B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
+		4D25C07C275976F6002CA86D /* BETask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D25C07A275976F6002CA86D /* BETask.cpp */; };
+		4D25C07D275976F6002CA86D /* BETask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D25C07A275976F6002CA86D /* BETask.cpp */; };
+		4D25C07E275976F6002CA86D /* BETask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D25C07A275976F6002CA86D /* BETask.cpp */; };
+		4D25C07F275976F6002CA86D /* BETask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D25C07A275976F6002CA86D /* BETask.cpp */; };
 		4D2C94FD2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
 		4D2C94FE2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
 		4D2C94FF2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
@@ -333,6 +337,8 @@
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/Crypto/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
 		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/apple/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
 		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/apple/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; usesTabs = 1; };
+		4D25C07A275976F6002CA86D /* BETask.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BETask.cpp; path = ../Source/BETask.cpp; sourceTree = "<group>"; };
+		4D25C07B275976F6002CA86D /* BETask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BETask.h; path = ../Source/BETask.h; sourceTree = "<group>"; };
 		4D27C3851861160000E7F4A1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4D2C4EAA1B7C774D00760408 /* BERegularExpression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BERegularExpression.h; path = ../Source/BERegularExpression.h; sourceTree = "<group>"; };
 		4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BEDebugInformation.cpp; path = ../Source/BEDebugInformation.cpp; sourceTree = "<group>"; };
@@ -833,6 +839,8 @@
 				4D2C94FC2223B32400372093 /* BEDebugInformation.h */,
 				4D75899126324E15009D6E93 /* BEPDF.cpp */,
 				4D75899226324E15009D6E93 /* BEPDF.h */,
+				4D25C07B275976F6002CA86D /* BETask.h */,
+				4D25C07A275976F6002CA86D /* BETask.cpp */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -1163,6 +1171,7 @@
 				4D3629F31F2079A60036B751 /* BESMTP.cpp in Sources */,
 				4D3629F41F2079A60036B751 /* BECurlOption.cpp in Sources */,
 				4D3629F51F2079A60036B751 /* BESMTPEmailMessage.cpp in Sources */,
+				4D25C07D275976F6002CA86D /* BETask.cpp in Sources */,
 				4D3629F61F2079A60036B751 /* BESMTPContainerAttachments.cpp in Sources */,
 				B282D74C201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */,
 				4D3629F71F2079A60036B751 /* BEBase64.cpp in Sources */,
@@ -1208,6 +1217,7 @@
 				4D362A751F2085880036B751 /* BESMTP.cpp in Sources */,
 				4D362A761F2085880036B751 /* BECurlOption.cpp in Sources */,
 				4D362A771F2085880036B751 /* BESMTPEmailMessage.cpp in Sources */,
+				4D25C07E275976F6002CA86D /* BETask.cpp in Sources */,
 				4D362A781F2085880036B751 /* BESMTPContainerAttachments.cpp in Sources */,
 				B282D74E201C9DBF0074C4BE /* BEOpenSSLRSA.cpp in Sources */,
 				4D362A791F2085880036B751 /* BEBase64.cpp in Sources */,
@@ -1265,6 +1275,7 @@
 				4D75899326324E15009D6E93 /* BEPDF.cpp in Sources */,
 				4DCD49641A195B0C00EFCF7F /* BEFileTextReader.cpp in Sources */,
 				4D8265E41E70D13D00257462 /* BEXMLSchema.cpp in Sources */,
+				4D25C07C275976F6002CA86D /* BETask.cpp in Sources */,
 				4DCD49651A195B0C00EFCF7F /* BESMTPEmailMessage.cpp in Sources */,
 				4DCD49661A195B0C00EFCF7F /* BEBase64.cpp in Sources */,
 			);
@@ -1287,6 +1298,7 @@
 				4DE2FD402682C7300091A9AD /* BEJSON.cpp in Sources */,
 				4DE2FD0A2682C57E0091A9AD /* BESMTPContainerAttachments.cpp in Sources */,
 				4DE2FD4D2682C8680091A9AD /* BEX509.cpp in Sources */,
+				4D25C07F275976F6002CA86D /* BETask.cpp in Sources */,
 				4D3BB6352755D1350085D65F /* Test_BETime.mm in Sources */,
 				4DE2FD2D2682C69D0091A9AD /* BEPluginUtilities.cpp in Sources */,
 				4DE2FD482682C7530091A9AD /* BEPDF.cpp in Sources */,

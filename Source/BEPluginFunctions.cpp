@@ -70,6 +70,7 @@
 #include "BESMTPContainerAttachments.h"
 #include "BESQLCommand.h"
 #include "BESystemCommand.h"
+#include "BETask.h"
 #include "BETime.h"
 #include "BEValueList.h"
 #include "BEXMLReader.h"
@@ -1175,30 +1176,39 @@ fmx::errcode BE_XSLTApply ( short function_id, const ExprEnv& /* environment */,
 
 	try {
 
-		std::string xml;
-		boost::filesystem::path xml_path;
-		boost::filesystem::path csv_path;
+		if ( kBE_XSLT_ApplyInMemory == function_id  ) {
 
-		if ( function_id == kBE_XSLTApply ) {
-			xml = ParameterPathOrContainerAsUTF8 ( parameters );
-			xml_path = ParameterAsPath ( parameters );
-			csv_path = ParameterAsPath ( parameters, 2 );
-		} else {
-			xml = ParameterAsUTF8String ( parameters );
+			auto xml = ParameterAsUTF8String ( parameters );
+			auto xml_path = ParameterAsPath ( parameters );
+			auto xslt = ParameterAsUTF8String ( parameters, 1 );
+			auto csv_path = ParameterAsPath ( parameters, 2 );
+			
+			const auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path, xml_path );
+			SetResult ( csv, results );
+
+		} else { // kBE_XSLT_Apply
+
+			auto xml = ParameterPathOrContainerAsUTF8 ( parameters );
+			auto script_name = ParameterAsUTF8String ( parameters, 3 );
+			auto database_name = ParameterAsUTF8String ( parameters, 4 );
+
+			std::vector<std::wstring> function_parameters; // wide for unicode paths on Windows
+			for ( fmx::uint32 i = 0 ; i < parameters.Size() ; i++ ) {
+				function_parameters.push_back ( ParameterAsWideString ( parameters, i ) );
+			}
+
+			auto xslt_result = xslt_task ( function_parameters, 0, xml, script_name, database_name );
+			error = xslt_result.first;
+			SetResult ( xslt_result.second, results );
+			
 		}
 
-		auto xslt = ParameterAsUTF8String ( parameters, 1 );
 
-		auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path, xml_path );
-
-		SetResult ( csv, results );
-
-
-	} catch ( BEPlugin_Exception& e ) {
+	} catch ( const BEPlugin_Exception& e ) {
 		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
+	} catch ( const bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
+	} catch ( const exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
 
@@ -4190,7 +4200,7 @@ fmx::errcode BE_ScriptExecute ( short /* funcId */, const ExprEnv& environment, 
 
 		auto script_control = ParameterAsLong ( parameters, 3, kFMXT_Pause );
 
-		error = ExecuteScript ( *script_name, *file_name, *parameter, script_control, environment );
+		error = ExecuteScript ( *script_name, *file_name, *parameter, script_control );
 
 		SetResult ( error, results );
 
