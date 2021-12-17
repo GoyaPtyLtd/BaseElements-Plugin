@@ -291,6 +291,7 @@ enum errors {
 	kInvalidFieldType = 413,
 	kXMLParseError = 718,
 	kCannotInsertAsImage = 735,
+	kSMTPConnectionFailure = 1507,
 	kFileSystemError = 10000,
 	kInvalidUTF8 = 10100,
 	kZipError = 10200,

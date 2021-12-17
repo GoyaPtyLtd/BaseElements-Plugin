@@ -117,7 +117,7 @@ thread_local errcode g_last_error;
 thread_local errcode g_last_ddl_error;
 thread_local string g_text_encoding = UTF8;
 thread_local string g_json_error_description;
-thread_local struct host_details g_smtp_host;
+thread_local BESMTPUniquePtr g_smtp_connection;
 thread_local BESMTPContainerAttachments g_smtp_attachments;
 thread_local vector<BEValueListStringSharedPtr> arrays;
 
@@ -3166,11 +3166,10 @@ fmx::errcode BE_SMTPServer ( short /* funcId */, const fmx::ExprEnv& /* environm
 		auto port = ParameterAsUTF8String ( parameters, 1 );
 		auto username = ParameterAsUTF8String ( parameters, 2 );
 		auto password = ParameterAsUTF8String ( parameters, 3 );
+		auto keep_open = ParameterAsBoolean ( parameters, 4, false );
 
-		g_smtp_host.host = host;
-		g_smtp_host.port = port;
-		g_smtp_host.username = username;
-		g_smtp_host.password = password;
+		BESMTPUniquePtr smtp_conection ( new BESMTP ( host, port, username, password, keep_open ) );
+		g_smtp_connection.swap ( smtp_conection );
 
 //		string do_nothing = "";
 //		SetResult ( do_nothing, results );
@@ -3217,10 +3216,25 @@ fmx::errcode BE_SMTPSend ( short /* funcId */, const fmx::ExprEnv& /* environmen
 		}
 		message->set_attachments ( g_smtp_attachments.get_file_list() );
 
+		if ( ! g_smtp_connection ) { // don't crash
 
-		unique_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
-		error = smtp->send ( message.get() );
+			BESMTPUniquePtr smtp_conection ( new BESMTP() );
+			g_smtp_connection.swap ( smtp_conection );
 
+		}
+		
+		if ( ! g_smtp_connection->keep_open() ) {
+
+			auto smtp_host = g_smtp_connection->host_details();
+			BESMTPUniquePtr smtp_conection ( new BESMTP ( smtp_host.host, smtp_host.port, smtp_host.username, smtp_host.password ) );
+			error = smtp_conection->send ( message.get() );
+
+		} else {
+			
+			error = g_smtp_connection->send ( message.get() );
+
+		}
+		
 //		string do_nothing = "";
 //		SetResult ( do_nothing, results );
 
@@ -4173,7 +4187,7 @@ fmx::errcode BE_FileOpen ( short /*funcId*/, const ExprEnv& /* environment */, c
 
 
 
-fmx::errcode BE_ScriptExecute ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
+fmx::errcode BE_ScriptExecute ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 

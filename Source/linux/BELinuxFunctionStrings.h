@@ -122,7 +122,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 353, "BE_ValuesSort ( listOfValues {; ascendingBoolean ; type } )" },
 	{ 354, "BE_ValuesTimesDuplicated ( listOfValues ; numberOfTimes )" },
 	{ 355, "BE_ValuesTrim ( listOfValues )" },
-	{ 400, "BE_SMTPServer ( server { ; port ; username ; password } )" },
+	{ 400, "BE_SMTPServer ( server { ; port ; username ; password ; keepOpen } )" },
 	{ 401, "BE_SMTPSend ( from ; to ; subject ; text { ; cc ; bcc ; replyTo ; html ; attachments } )" },
 	{ 402, "BE_SMTPAddAttachment ( { attachment ; contentType } )" },
 	{ 403, "BE_SMTPSetHeader ( { header ; value } )" },

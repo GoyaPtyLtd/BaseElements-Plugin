@@ -44,11 +44,12 @@ const std::string strip_address ( const std::string address )
 #pragma mark -
 
 
-BESMTP::BESMTP ( const std::string _host, const std::string _port, const std::string _username, const std::string _password )
+BESMTP::BESMTP ( const std::string _host, const std::string _port, const std::string _username, const std::string _password, const bool keep_open )
 {
 	
 	username = _username;
 	password = _password;
+	keep_connection_open = keep_open;
 	
 	set_username_and_password ( );
 
@@ -62,6 +63,8 @@ BESMTP::BESMTP ( const std::string _host, const std::string _port, const std::st
 		easy_setopt ( CURLOPT_USE_SSL, CURLUSESSL_ALL );
 	}
 	
+	host = _host;
+	port = _port;
 	string url = scheme + "://" + join ( _host, _port, ":" );
 	easy_setopt ( CURLOPT_URL, url.c_str() );
 
@@ -77,7 +80,7 @@ BESMTP::BESMTP ( const std::string _host, const std::string _port, const std::st
 #pragma mark Methods
 #pragma mark -
 
-fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
+const fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 {
 	CURLcode result = CURLE_OK;
 
@@ -130,3 +133,10 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 	
 } // send
 
+
+const struct host_details BESMTP::host_details()
+{
+	struct host_details connection_details = { host, port, username, password };
+	
+	return connection_details;
+}
