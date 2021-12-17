@@ -128,6 +128,8 @@
 		<Unit filename="../Source/BESMTPEmailMessage.cpp" />
 		<Unit filename="../Source/BESQLCommand.cpp" />
 		<Unit filename="../Source/BESystemCommand.cpp" />
+		<Unit filename="../Source/BETask.cpp" />
+		<Unit filename="../Source/BETask.h" />
 		<Unit filename="../Source/BETime.cpp" />
 		<Unit filename="../Source/BEXMLReader.cpp" />
 		<Unit filename="../Source/BEXMLReaderInterface.cpp" />
