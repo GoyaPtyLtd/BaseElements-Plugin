@@ -243,6 +243,7 @@ signtool verify /pa "$(TargetPath)"
     <ClCompile Include="..\Source\duktape\duktape.c" />
     <ClCompile Include="..\Source\Images\BEImage.cpp" />
     <ClCompile Include="..\Source\Images\BEJPEG.cpp" />
+    <ClCompile Include="..\Source\Net\BEMailRecipient.cpp" />
     <ClCompile Include="..\Source\win\BEWinFunctions.cpp" />
     <ClCompile Include="..\Source\win\BEWinIFileDialog.cpp" />
   </ItemGroup>
@@ -283,12 +284,12 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\BEXMLTextWriter.h" />
     <ClInclude Include="..\Source\BEXSLT.h" />
     <ClInclude Include="..\Source\BEZlib.h" />
-    <ClInclude Include="..\Source\BE_Boost_FileSystem_Additions.hpp" />
     <ClInclude Include="..\Source\Crypto\BEOpenSSLRSA.h" />
     <ClInclude Include="..\Source\Crypto\BEX509.h" />
     <ClInclude Include="..\Source\duktape\duktape.h" />
     <ClInclude Include="..\Source\Images\BEImage.h" />
     <ClInclude Include="..\Source\Images\BEJPEG.h" />
+    <ClInclude Include="..\Source\Net\BEMailRecipient.h" />
     <ClInclude Include="..\Source\win\BEWinFunctions.h" />
     <ClInclude Include="..\Source\win\BEWinIFileDialog.h" />
   </ItemGroup>

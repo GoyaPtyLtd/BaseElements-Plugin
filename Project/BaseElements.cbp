@@ -145,6 +145,7 @@
 		<Unit filename="../Source/Crypto/BEX509.cpp" />
 		<Unit filename="../Source/Images/BEImage.cpp" />
 		<Unit filename="../Source/Images/BEJPEG.cpp" />
+		<Unit filename="../Source/Net/BEMailRecipient.cpp" />
 		<Unit filename="../Source/Net/BEMimeticMIMEEntity.h" />
 		<Unit filename="../Source/duktape/duktape.c">
 			<Option compilerVar="CC" />

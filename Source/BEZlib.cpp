@@ -14,7 +14,6 @@
 
 
 #include "BEZlib.h"
-#include "BE_Boost_FileSystem_Additions.hpp"
 #include "BECppUtilities.h"
 #include "BEPluginException.h"
 
