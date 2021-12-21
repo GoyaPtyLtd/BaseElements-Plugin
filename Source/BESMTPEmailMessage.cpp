@@ -13,6 +13,8 @@
 #include "BESMTPEmailMessage.h"
 #include "BEPluginException.h"
 #include "BECurl.h"
+#include "Net/BEMailRecipient.h"
+#include "BESMTP.h"
 
 #include <Poco/Net/FilePartSource.h>
 #include <Poco/Net/MediaType.h>
@@ -38,7 +40,6 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const BEValueL
 	
 	set_addresses ( Poco::Net::MailRecipient::PRIMARY_RECIPIENT, to );
 	message.setSender ( from );
-	
 	message.setSubject ( Poco::Net::MailMessage::encodeWord ( subject, UTF8 ) );
 
 	auto text = message_body;
@@ -116,7 +117,7 @@ void BESMTPEmailMessage::set_addresses ( const Poco::Net::MailRecipient::Recipie
 {
 
 	for ( auto const& recipient : *email_addresses ) {
-		message.addRecipient ( Poco::Net::MailRecipient ( recipient_type, recipient ) );
+		message.addRecipient ( BEMailRecipient ( recipient_type, recipient ) );
 	}
 	
 } // set_addresses

@@ -12,6 +12,7 @@
 
 #include "BESMTP.h"
 #include "BECppUtilities.h"
+#include "Net/BEMailRecipient.h"
 
 
 extern thread_local BECurlOptionMap g_curl_options;
@@ -19,24 +20,6 @@ extern thread_local CustomHeaders g_http_custom_headers;
 
 
 using namespace std;
-
-
-const std::string strip_address ( const std::string address );
-const std::string strip_address ( const std::string address )
-{
-    const size_t open = address.find ( "<" );
-    const size_t close = address.find ( ">" );
-    
-    std::string stripped;
-    
-    if ( open != std::string::npos && close != std::string::npos ) {
-        stripped = address.substr ( open, close );
-    } else {
-        stripped = address;
-    }
-    
-    return stripped;
-}
 
 
 #pragma mark -
@@ -81,9 +64,11 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 {
 	CURLcode result = CURLE_OK;
 
-    std::string from = strip_address ( message->from_address() );
+	// who it's from
 
-    easy_setopt ( CURLOPT_MAIL_FROM, from.c_str() );
+	BEMailRecipient from ( BEMailRecipient::PRIMARY_RECIPIENT, message->from_address() );
+	auto addr_spec = from.bracketed_address();
+    easy_setopt ( CURLOPT_MAIL_FROM, addr_spec.c_str() );
 
 	// who we send this to
 	
@@ -92,8 +77,11 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 	struct curl_slist * recipients = NULL;
 	vector<string> addresses = send_to->get_values();
 	for ( vector<string>::iterator it = addresses.begin() ; it != addresses.end() ; ++it ) {
-        auto address = strip_address ( *it );
+		
+		BEMailRecipient recipient ( BEMailRecipient::PRIMARY_RECIPIENT, *it );
+		auto address = recipient.bracketed_address();
 		recipients = curl_slist_append ( recipients, address.c_str() );
+	
 	}
 		
 	if ( recipients ) {
@@ -101,6 +89,7 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 		easy_setopt ( CURLOPT_MAIL_RCPT, recipients );
 	
 		// the payload
+		
 		try {
 			
 			string body_string = message->as_string();
@@ -113,6 +102,7 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 			easy_setopt ( CURLOPT_UPLOAD, 1L );
 
 			// send it
+			
 			result = curl_easy_perform ( curl );
 
 		} catch ( BEPlugin_Exception &e ) {
@@ -122,6 +112,7 @@ fmx::errcode BESMTP::send ( BESMTPEmailMessage * message )
 		error = result;
 
 		// clean up
+		
 		curl_slist_free_all ( recipients );
 
 	}

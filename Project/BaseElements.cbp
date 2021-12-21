@@ -45,7 +45,7 @@
 		<Linker>
 			<Add option="-m64" />
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
-			<Add option="-Wl,-soname=4.2.2" />
+			<Add option="-Wl,-soname=4.2.3" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="../Libraries/linux/libz.a" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
@@ -145,6 +145,7 @@
 		<Unit filename="../Source/Crypto/BEX509.cpp" />
 		<Unit filename="../Source/Images/BEImage.cpp" />
 		<Unit filename="../Source/Images/BEJPEG.cpp" />
+		<Unit filename="../Source/Net/BEMailRecipient.cpp" />
 		<Unit filename="../Source/Net/BEMimeticMIMEEntity.h" />
 		<Unit filename="../Source/duktape/duktape.c">
 			<Option compilerVar="CC" />
