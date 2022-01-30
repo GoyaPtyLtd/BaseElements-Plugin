@@ -168,6 +168,7 @@ Removed
 - CURLOPT_DNS_USE_GLOBAL_CACHE
 
 
+Added support for macOS on Apple M1 hardware
 Added support for Ubuntu
 Removed support for Centos
 
