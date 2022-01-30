@@ -380,6 +380,8 @@
 		4D4C06781C23B3B6006899FE /* libldap.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libldap.tbd; path = usr/lib/libldap.tbd; sourceTree = SDKROOT; };
 		4D55C63815EE0F0A008F7FBA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4D59DAFA16F95E2400F87180 /* BEValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEValueList.h; path = ../Source/BEValueList.h; sourceTree = "<group>"; };
+		4D61EA35278D039000975B1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4D61EA36278D03F900975B1A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4D61F8EE27507DA000AD1423 /* BEMailRecipient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BEMailRecipient.cpp; path = ../Source/Net/BEMailRecipient.cpp; sourceTree = "<group>"; };
 		4D61F8EF27507DA000AD1423 /* BEMailRecipient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEMailRecipient.h; path = ../Source/Net/BEMailRecipient.h; sourceTree = "<group>"; };
 		4D668AA31A36BC8900D14592 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
@@ -1057,6 +1059,7 @@
 			knownRegions = (
 				Base,
 				en,
+				de,
 			);
 			mainGroup = C7DEDEE707E10BF3002283F3;
 			productRefGroup = C7DEDEE707E10BF3002283F3;
@@ -1335,6 +1338,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				4D998C452125626E00757E83 /* Base */,
+				4D61EA35278D039000975B1A /* en */,
+				4D61EA36278D03F900975B1A /* de */,
 			);
 			name = Localizable.strings;
 			path = ../Resources;
@@ -1791,8 +1796,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_TIDY_BUGPRONE_REDUNDANT_BRANCH_CONDITION = YES;
+				CLANG_TIDY_MISC_REDUNDANT_EXPRESSION = YES;
 				CLANG_WARN_ASSIGN_ENUM = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1898,8 +1906,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_TIDY_BUGPRONE_REDUNDANT_BRANCH_CONDITION = YES;
+				CLANG_TIDY_MISC_REDUNDANT_EXPRESSION = YES;
 				CLANG_WARN_ASSIGN_ENUM = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
