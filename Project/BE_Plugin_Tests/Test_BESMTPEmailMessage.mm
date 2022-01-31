@@ -150,8 +150,10 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 		XCTAssertNotEqual ( mime.find ( "To: " + second_recipient ), std::string::npos );
 		XCTAssertEqual ( mime.find ( "To: <" + second_recipient + ">" ), std::string::npos );
 	} else {
-		XCTAssertNotEqual ( mime.find ( "To: <" + second_recipient + ">" ), std::string::npos );
-		XCTSkip ( @"Bracketing naked To: addresses." );
+		XCTExpectFailure ( @"Bracketing naked To: addresses." );
+		XCTAssertEqual ( mime.find ( "To: <" + second_recipient + ">" ), std::string::npos );
+//		XCTSkip ( @"Bracketing naked To: addresses." );
+		
 	}
 
 }
