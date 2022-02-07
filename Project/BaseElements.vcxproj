@@ -248,6 +248,7 @@ signtool verify /pa "$(TargetPath)"
     <ClCompile Include="..\Source\win\BEWinIFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Resources\resource.h" />
     <ClInclude Include="..\Resources\resource_version.h" />
     <ClInclude Include="..\Source\BEDebugInformation.h" />
     <ClInclude Include="..\Source\BEPDF.h" />
@@ -294,7 +295,8 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\win\BEWinIFileDialog.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\Resources\BaseElements.rc" />
+    <ResourceCompile Include="..\Resources\BaseElements_en.rc" />
+    <ResourceCompile Include="..\Resources\BaseElements_de.rc" />
     <ResourceCompile Include="..\Resources\BEPluginVersion.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

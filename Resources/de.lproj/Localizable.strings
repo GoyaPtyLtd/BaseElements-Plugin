@@ -22,9 +22,9 @@
 "125" = "BE_DateiOeffnen ( pfad )|Datei Oeffnen|Öffnet die Datei oder den Ordner in 'pfad' mit der dafür zugewiesenen Standardanwendung.";
 "126" = "BE_DateiGroesse ( pfad )|Datei Groesse|Gibt die Anzahl der bytes für die Datei in 'pfad' zurück.";
 "127" = "BE_DateiAenderungZeitstempel ( pfad )|Datei Aenderung Zeitstempel|Gibt den Änderungszeitstempel des OS zurück. Normalerweise in Sekunden kann dies mit 'LiesAlsZeitstempel ( BE_DateiAenderungZeitstempel ( pfad ))' direkt umgewandelt werden.\nACHTUNG: Es hängt vom OS ab, wie präzise dieser Wert ist und kann auch in Millisekunden angegeben werden. Dies kann sich von OS zu OS unterscheiden!";
-"128" = "BaseElements|Base Elements";
+"128" = "BaseElements";
 "131" = "GyBE1nnYYnn";
-"132" = "https://docs.baseelementsplugin.com|https://docs.baseelementsplugin.com";
+"132" = "https://docs.baseelementsplugin.com";
 "134" = "BE_FehlersucheInformationen|Fehlersuche Informationen|Gibt Statusinformationen zum Plugin für eine Fehlersuche zurück.";
 "135" = "BE_ZwischenablageHoleDatei ( format { ; dateiName } )|Zwischenablage Hole Datei|Versucht, die Objekte in der aktuellen Zwischenablage zu konvertieren, die dem 'format' entsprechen. Um Text aus der Zwischenablage zu extrahieren nutzen sie BE_ZwischenablageHoleText.";
 "136" = "BE_ZwischenablageSetzeDatei ( dateiInhalt ; format )|Zwischenablage Setze Datei|Setzt den 'datenInhalt' in die Zwischenablage und wendet das 'format' darauf an. Zwischenablageformate werden üblicherweise durch das Programm, in dem kopiert wird, gesetzt und hängen von Typ des Inhalts ab. Um einen Typ richtig zu setzen sollte zuerst ein Beispiel kopiert werden und dieser Typ mit Hilfe von BE_ZwischenablageFormate ausgelesen werden. Es muß nur ein Format beim Setzen der Zwischenablage angeben werden. Um Text zu setzen nutzen Sie BE_ZwischenablageSetzeText.";

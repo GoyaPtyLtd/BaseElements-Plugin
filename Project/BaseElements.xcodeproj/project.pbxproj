@@ -23,9 +23,6 @@
 		4D1D070D1F21C36700BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070E1F21C37A00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070F1F21C37C00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
-		4D25BF971F3A8C580083345B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
-		4D25BF981F3A8C580083345B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
-		4D25BF991F3A8C580083345B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
 		4D2C94FD2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
 		4D2C94FE2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
 		4D2C94FF2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
@@ -116,6 +113,10 @@
 		4D61F8F327507DA000AD1423 /* BEMailRecipient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D61F8EE27507DA000AD1423 /* BEMailRecipient.cpp */; };
 		4D668AA51A36BC8900D14592 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D668AA81A36BF0300D14592 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
+		4D67303727A77FCD00C3989F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
+		4D67303827A77FCE00C3989F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
+		4D67303927A77FCE00C3989F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
+		4D67303A27A77FCF00C3989F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
 		4D703AD42230D803007632BA /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD12230D803007632BA /* libPocoZip.a */; };
 		4D703AD52230D803007632BA /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD22230D803007632BA /* libPocoJSON.a */; };
 		4D703AD62230D803007632BA /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD32230D803007632BA /* libPocoFoundation.a */; };
@@ -241,7 +242,6 @@
 		4DE2FD562682CD820091A9AD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
 		4DE2FD572682CDE30091A9AD /* FMWrapper.framework in Resources */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
 		4DE2FD582682CDF80091A9AD /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
-		4DE2FD592682CE0C0091A9AD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
 		4DE2FD5A2682CE0C0091A9AD /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4D7FCA5E11E9308B0047A453 /* Info.plist */; };
 		4DF4DAFA271E4AB8007E91B5 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BD02717E48B0009E745 /* libpodofo.a */; };
 		4DF4DAFD271E4B2E007E91B5 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BCE2717DF840009E745 /* libcrypto.a */; };
@@ -422,7 +422,6 @@
 		4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEQuadChar.cpp; path = ../Source/BEQuadChar.cpp; sourceTree = "<group>"; };
 		4D8D8E151B167A2C005FEBD3 /* BEQuadChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEQuadChar.h; path = ../Source/BEQuadChar.h; sourceTree = "<group>"; };
 		4D8E64181917561D00C9F2BE /* BEPluginException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginException.h; path = ../Source/BEPluginException.h; sourceTree = "<group>"; };
-		4D998C452125626E00757E83 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEX509.cpp; sourceTree = "<group>"; };
 		4D9E26CF1B29069B002F7DD3 /* BEX509.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEX509.h; sourceTree = "<group>"; };
 		4D9E26D11B292032002F7DD3 /* BEBio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBio.cpp; sourceTree = "<group>"; };
@@ -1057,9 +1056,9 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				Base,
 				en,
 				de,
+				Base,
 			);
 			mainGroup = C7DEDEE707E10BF3002283F3;
 			productRefGroup = C7DEDEE707E10BF3002283F3;
@@ -1079,7 +1078,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D25BF981F3A8C580083345B /* Localizable.strings in Resources */,
+				4D67303827A77FCE00C3989F /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1087,7 +1086,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D25BF991F3A8C580083345B /* Localizable.strings in Resources */,
+				4D67303927A77FCE00C3989F /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1095,8 +1094,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D25BF971F3A8C580083345B /* Localizable.strings in Resources */,
 				4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */,
+				4D67303727A77FCD00C3989F /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1104,8 +1103,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DE2FD592682CE0C0091A9AD /* Localizable.strings in Resources */,
 				4DE2FD5A2682CE0C0091A9AD /* Info.plist in Resources */,
+				4D67303A27A77FCF00C3989F /* Localizable.strings in Resources */,
 				4DE2FD582682CDF80091A9AD /* BEProgressDialog.xib in Resources */,
 				4DE2FD572682CDE30091A9AD /* FMWrapper.framework in Resources */,
 			);
@@ -1337,7 +1336,6 @@
 		4D25BF9B1F3A8C580083345B /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4D998C452125626E00757E83 /* Base */,
 				4D61EA35278D039000975B1A /* en */,
 				4D61EA36278D03F900975B1A /* de */,
 			);

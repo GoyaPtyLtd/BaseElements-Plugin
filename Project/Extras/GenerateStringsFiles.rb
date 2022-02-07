@@ -3,8 +3,8 @@
 ########################################################################
 # GenerateStringsFiles
 # 
-# Write out/modify the (English language) Linux & Windows strings files 
-#     based on the macOS one.
+# Write out/modify the (English/German language) Linux & Windows strings  
+#     files based on the macOS one.
 #
 ########################################################################
 
@@ -17,11 +17,15 @@ project_directory = ARGV[0]
 
 testing = false
 if testing then
-  project_directory = '/Users/mark/Dropbox/Development/BaseElements-Plugin/'
+  project_directory = '/Users/mark/Dropbox/Development/Plugin_Build_Folder/BaseElements/'
 end
 
-macOS = project_directory + 'Resources/Base.lproj/Localizable.strings'
-win = project_directory + 'Resources/BaseElements.rc'
+macOS_en = project_directory + 'Resources/en.lproj/Localizable.strings'
+macOS_de = project_directory + 'Resources/de.lproj/Localizable.strings'
+
+win_en = project_directory + 'Resources/BaseElements_en.rc'
+win_de = project_directory + 'Resources/BaseElements_de.rc'
+
 linux = project_directory + 'Source/linux/BELinuxFunctionStrings.h'
 
 version_file = project_directory + 'Source/BEPluginVersion.h'
@@ -69,85 +73,125 @@ Encoding.default_internal = Encoding::UTF_8
 
 
 ########################################################################
-# read the macOS strings file
+# read the macOS strings file(s)
 ########################################################################
 
-strings = Hash.new
 
-File.open macOS do | macos_strings_file |
+def read_strings_file path
 
-  macos_strings_file.each do | line |
+  strings = Hash.new
+
+  File.open path do | strings_file |
+
+    strings_file.each do | line |
     
-    fields = line.split '=', 2 # descriptions may contain =
+      fields = line.split '=', 2 # descriptions may contain =
     
-    if fields.count == 2 then
+      if fields.count == 2 then
 
-      id = fields.first.tr('^0-9', '').to_i
-      parts = fields.last.chomp.chomp(';').chomp('"').split '|', 3
+        id = fields.first.tr('^0-9', '').to_i
+        parts = fields.last.chomp.chomp(';').chomp('"').split '|', 3
               
-      signature = parts.first.strip
-      signature = signature[1..-1] # lose the "
+        signature = parts.first.strip
+        signature = signature[1..-1] # lose the "
 
-      if parts.count == 3 then # it's a function
-        keywords = parts[1].strip
-        description = parts.last.strip
-      else
-        keywords = ''
-        description = ''
-      end
+        if parts.count == 3 then # it's a function
+          keywords = parts[1].strip
+          description = parts.last.strip
+        else
+          keywords = ''
+          description = ''
+        end
         
-      function = FunctionString.new id, signature, keywords, description
-      strings [ id ] = function
+        function = FunctionString.new id, signature, keywords, description
+        strings [ id ] = function
+      
+      end
       
     end
-      
+
   end
+  
+  strings
 
 end
+
+
+strings_en = read_strings_file macOS_en
+strings_de = read_strings_file macOS_de
 
 
 ########################################################################
 # windows
 ########################################################################
 
-windows_strings = ''
 
-File.open win, :encoding => Encoding::UTF_16LE, :binmode => true do | strings_file |
-
-  strings_file.each do | line |
-
-    utf8 = line.encode Encoding::UTF_8
-    fields = utf8.split '"'
+def write_rc_file language, country, lang_id, path, functions
   
-    unless utf8.start_with? '//' then
+  rc_header = <<~STRINGTABLE_BEGIN
+  // Microsoft Visual C++ generated resource script. 
+  // 
 
-      begin
-      
-        id = fields.first.tr('^0-9', '').to_i
 
-        function = strings[id]
-        new_line = "    %-21d\"%s\"\r\n" % [id, function.windows_text]
-        windows_strings += new_line
-      
-      rescue => e
+  #define APSTUDIO_READONLY_SYMBOLS 
+  ///////////////////////////////////////////////////////////////////////////// 
+  // 
+  // Generated from the TEXTINCLUDE 2 resource. 
+  // 
+  #include "windows.h" 
 
-        unless id.is_a? Integer and id > 0 then # function removed
-          windows_strings += line
-        end
+  ///////////////////////////////////////////////////////////////////////////// 
+  #undef APSTUDIO_READONLY_SYMBOLS 
+
+  ///////////////////////////////////////////////////////////////////////////// 
+  // #{language} (#{country}) resources 
+
+  #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENA) 
+  LANGUAGE #{lang_id}
+
+  ///////////////////////////////////////////////////////////////////////////// 
+  // 
+  // String Table 
+  // 
+
+  STRINGTABLE 
+  BEGIN
+STRINGTABLE_BEGIN
+
+  rc_footer = <<~STRINGTABLE_END
+  END
+
+  #endif // #{language} (#{country}) resources 
+  ///////////////////////////////////////////////////////////////////////////// 
+
+STRINGTABLE_END
+  
+  
+  File.open path, 'wt', :encoding => Encoding::UTF_16LE do | rc_file |
+  
+    rc_file.puts rc_header
+  
+    functions.each do | id, function |
+
+      # puts id
+      # function = line
+      rc_file.puts "    %-21d\"%s\"\r\n" % [id, function.windows_text]
     
-      end
-
-    else
-      windows_strings += line
-    end # if
-    
+    end
+  
+    rc_file.puts rc_footer
+  
   end
 
+  
 end
 
-File.open win, 'wt', :encoding => Encoding::UTF_16LE do | windows_strings_file |
-  windows_strings_file.puts windows_strings
-end
+
+write_rc_file "English", "Australia", "LANG_ENGLISH, SUBLANG_ENGLISH_AUS", win_en, strings_en
+write_rc_file "German", "Germany", "LANG_GERMAN, SUBLANG_GERMAN", win_de, strings_de
+
+
+# exit
 
 
 ########################################################################
@@ -156,7 +200,7 @@ end
 
 linux_strings = ''
 
-strings.each do |id, function|
+strings_en.each do |id, function|
   
   map_entry = "\t{ " + id.to_s + ", " + '"' + function.linux_text + '" },' + "\n"
   linux_strings += map_entry
@@ -165,7 +209,7 @@ end
 
 
 copyright_header = DATA.read
-copyright_start_year = 2018
+copyright_start_year = 2019
 unless Time.new.year == copyright_start_year then
   puts copyright_header.gsub! copyright_start_year.to_s, copyright_start_year.to_s + '-' + Time.new.year.to_s
 end
