@@ -3037,7 +3037,7 @@ fmx::errcode BE_SMTPServer ( short /* funcId */, const fmx::ExprEnv& /* environm
 
 	return MapError ( error );
 
-} // BE_Email_SMTP_Server
+} // BE_SMTPServer
 
 
 fmx::errcode BE_SMTPSend ( short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& /* results */ )

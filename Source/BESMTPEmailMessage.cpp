@@ -2,7 +2,7 @@
  BESMTPEmailMessage.cpp
  BaseElements Plug-In
  
- Copyright 2014-2021 Goya. All rights reserved.
+ Copyright 2014-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -42,34 +42,13 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const BEValueL
 	message.setSender ( from );
 	message.setSubject ( Poco::Net::MailMessage::encodeWord ( subject, UTF8 ) );
 
-	auto text = message_body;
+	text = message_body;
 	boost::replace_all ( text, LINE_FEED, FILEMAKER_END_OF_LINE );
 	boost::replace_all ( text, FILEMAKER_END_OF_LINE, NETWORK_ENDL );
 
-	auto html = html_alternative;
+	html = html_alternative;
 	boost::replace_all ( html, LINE_FEED, FILEMAKER_END_OF_LINE );
 	boost::replace_all ( html, FILEMAKER_END_OF_LINE, NETWORK_ENDL );
-
-	auto charset = Poco::Net::MailMessage::encodeWord ( "charset=\"utf-8\"" );
-	auto type_text = "text/plain; " + charset;
-	auto type_html = "text/html; " + charset;
-	
-	if ( !text.empty() && !html_alternative.empty() ) {
-
-		auto multipart_alternative = new Poco::Net::MultipartSource();
-		multipart_alternative->addPart ( "", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
-		multipart_alternative->addPart ( "", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
-		message.addContent ( multipart_alternative, Poco::Net::MailMessage::ENCODING_8BIT );
-
-	} else if ( !text.empty() && html_alternative.empty() ) {
-		
-		message.addPart ( "", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
-
-	} else if ( text.empty() && !html_alternative.empty() ) {
-
-		message.addPart ( "", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
-
-	}
 
 	// headers
 	message.setDate ( Poco::Timestamp() ); // rfc 1123 (rfc 822) date header
@@ -80,7 +59,8 @@ BESMTPEmailMessage::BESMTPEmailMessage ( const std::string& from, const BEValueL
 	for ( auto it = g_smtp_custom_headers.begin() ; it != g_smtp_custom_headers.end() ; it++ ) {
 		message.set ( it->first, it->second );
 	}
-
+	
+	
 } // BESMTPEmailMessage
 
 
@@ -144,7 +124,14 @@ void BESMTPEmailMessage::set_reply_to ( const std::string& reply_to_address )
 }
 
 
-void BESMTPEmailMessage::set_attachments ( const BESMTPContainerAttachmentVector& attachments )
+void BESMTPEmailMessage::set_attachments ( const BESMTPContainerAttachmentVector& the_attachments )
+{
+	attachments = the_attachments;
+	
+} // set_attachments
+
+
+void BESMTPEmailMessage::add_attachments ( )
 {
 
 	for ( size_t i = 0 ; i < attachments.size() ; i++ ) {
@@ -165,12 +152,45 @@ void BESMTPEmailMessage::set_attachments ( const BESMTPContainerAttachmentVector
 
 	}
 
-} // set_attachments
+} // add_attachments
 
 
 const std::string BESMTPEmailMessage::as_string()
 {
 	
+	auto charset = Poco::Net::MailMessage::encodeWord ( "charset=\"utf-8\"" );
+	auto type_text = "text/plain; " + charset;
+	auto type_html = "text/html; " + charset;
+	
+	if ( !text.empty() && !html.empty() ) {
+
+		auto multipart_alternative = new Poco::Net::MultipartSource();
+		multipart_alternative->addPart ( "", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+		multipart_alternative->addPart ( "", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+		message.addContent ( multipart_alternative, Poco::Net::MailMessage::ENCODING_8BIT );
+
+	} else if ( !text.empty() && html.empty() ) {
+		
+		if ( attachments.empty() ) {
+			message.setContent ( text );
+			message.setContentType ( type_text );
+		} else {
+			message.addPart ( "", new Poco::Net::StringPartSource ( text, type_text ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+		}
+
+	} else if ( text.empty() && !html.empty() ) {
+
+		if ( attachments.empty() ) {
+			message.setContent ( html );
+			message.setContentType ( type_html );
+		} else {
+			message.addPart ( "", new Poco::Net::StringPartSource ( html, type_html ), Poco::Net::MailMessage::CONTENT_INLINE, Poco::Net::MailMessage::ENCODING_QUOTED_PRINTABLE );
+		}
+
+	}
+
+	add_attachments();
+
 	ostringstream meassage_stream;
 	message.write ( meassage_stream );
 	return meassage_stream.str();

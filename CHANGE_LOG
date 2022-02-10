@@ -2,7 +2,7 @@
 Version 4.3.0b1
 ########################################################################
 
-November 8, 2021
+February 11, 2022
 
 
 New Functions
@@ -20,7 +20,10 @@ BE_ScriptControlPause: an option for the "scriptControl" parameter of BE_ScriptE
 
 Changes
 
+German Localization on macOS, iOS & Windows
+
 BE_RegularExpression: support the g option for match in addition to replace
+BE_SMTPSend: do not send single part messages as "multipart"
 
 
 ########################################################################

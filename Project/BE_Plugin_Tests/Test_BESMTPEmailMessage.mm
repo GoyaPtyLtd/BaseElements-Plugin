@@ -2,7 +2,7 @@
  Test_BESMTPEmailMessage.mm
  BaseElements Plug-In
  
- Copyright 2021 Goya. All rights reserved.
+ Copyright 2021-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -241,7 +241,8 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 	auto mime = message->as_string();
 
 	XCTAssertNotEqual ( mime.find ( body_text ), std::string::npos );
-	XCTAssertNotEqual ( mime.find ( "Content-Type: text/plain; charset=utf-8" ), std::string::npos );
+	XCTAssertNotEqual ( mime.find ( "Content-Type: text/plain; charset=\"utf-8\"" ), std::string::npos );
+	XCTAssertEqual ( mime.find ( "Content-Type: multipart/mixed;" ), std::string::npos );
 
 }
 
@@ -258,6 +259,8 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 	XCTAssertNotEqual ( mime.find ( "Content-Type: text/plain; charset=utf-8" ), std::string::npos );
 	XCTAssertGreaterThan ( mime.find ( "Content-Type: text/plain; charset=utf-8; name=TEXT" ), mime.find ( "Content-Type: multipart/mixed;" ) );
 
+	XCTAssertGreaterThan ( mime.find ( "Content-Type: application/octet-stream;" ), mime.find ( "Content-Type: text/plain;" ) );
+	
 }
 
 
@@ -267,6 +270,10 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 
 	XCTAssertNotEqual ( mime.find ( body_text ), std::string::npos );
 	XCTAssertNotEqual ( mime.find ( "html to use instead" ), std::string::npos );
+	
+	XCTAssertNotEqual ( mime.find ( "Content-Type: text/plain; charset=utf-8" ), std::string::npos );
+	XCTAssertNotEqual ( mime.find ( "Content-Type: text/html; charset=utf-8" ), std::string::npos );
+	XCTAssertNotEqual ( mime.find ( "Content-Type: multipart/mixed;" ), std::string::npos );
 
 }
 
@@ -277,8 +284,9 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 	auto mime = html_only_message->as_string();
 
 	XCTAssertEqual ( mime.find ( "Content-Type: text/plain;" ), std::string::npos );
-	XCTAssertNotEqual ( mime.find ( "Content-Type: text/html; charset=utf-8" ), std::string::npos );
+	XCTAssertNotEqual ( mime.find ( "Content-Type: text/html; charset=\"utf-8\"" ), std::string::npos );
 	XCTAssertNotEqual ( mime.find ( "html to use instead" ), std::string::npos );
+	XCTAssertEqual ( mime.find ( "Content-Type: multipart/mixed;" ), std::string::npos );
 
 }
 
@@ -294,7 +302,8 @@ std::unique_ptr<BESMTPEmailMessage> html_message;
 	XCTAssertNotEqual ( mime.find ( "html to use instead" ), std::string::npos );
 	XCTAssertNotEqual ( mime.find ( "Content-Type: multipart/mixed;" ), std::string::npos );
 	XCTAssertNotEqual ( mime.find ( "Content-Type: text/html; charset=utf-8" ), std::string::npos );
-	XCTAssertGreaterThan ( mime.find ( "Content-Type: text/html; charset=utf-8" ), mime.find ( "Content-Type: multipart/mixed;" ) );
+
+	XCTAssertGreaterThan ( mime.find ( "Content-Type: application/octet-stream;" ), mime.find ( "Content-Type: text/html;" ) );
 
 }
 

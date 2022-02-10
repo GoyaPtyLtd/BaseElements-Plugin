@@ -2,7 +2,7 @@
  BESMTPEmailMessage.h
  BaseElements Plug-In
 
- Copyright 2014-2021 Goya. All rights reserved.
+ Copyright 2014-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -48,9 +48,13 @@ public:
 protected:
 
 	Poco::Net::MailMessage message;
+	std::string text;
+	std::string html;
+	BESMTPContainerAttachmentVector attachments;
 
 	void set_addresses ( const Poco::Net::MailRecipient::RecipientType recipient_type, const BEValueListStringSharedPtr email_addresses );
-
+	void add_attachments();
+	
 };
 
 
