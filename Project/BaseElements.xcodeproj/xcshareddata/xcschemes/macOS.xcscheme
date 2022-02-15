@@ -20,20 +20,6 @@
                ReferencedContainer = "container:BaseElements.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4DE2FCFF2682C5160091A9AD"
-               BuildableName = "BE_Plugin_Tests.fmplugin"
-               BlueprintName = "BE_Plugin_Tests"
-               ReferencedContainer = "container:BaseElements.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -58,18 +44,6 @@
          </AdditionalOption>
       </AdditionalOptions>
       <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES"
-            testExecutionOrdering = "random">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4DE2FCFF2682C5160091A9AD"
-               BuildableName = "BE_Plugin_Tests.fmplugin"
-               BlueprintName = "BE_Plugin_Tests"
-               ReferencedContainer = "container:BaseElements.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

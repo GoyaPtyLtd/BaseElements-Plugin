@@ -190,6 +190,7 @@ signtool verify /pa "$(TargetPath)"
     <ClCompile Include="..\Source\BEDebugInformation.cpp" />
     <ClCompile Include="..\Source\BEPDF.cpp" />
     <ClCompile Include="..\Source\BESystemCommand.cpp" />
+    <ClCompile Include="..\Source\BETask.cpp" />
     <ClCompile Include="..\Source\BEXMLSchema.cpp" />
     <ClCompile Include="..\Source\Crypto\BEBase64.cpp" />
     <ClCompile Include="..\Source\BECppUtilities.cpp" />
@@ -253,6 +254,7 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\BEDebugInformation.h" />
     <ClInclude Include="..\Source\BEPDF.h" />
     <ClInclude Include="..\Source\BESystemCommand.h" />
+    <ClInclude Include="..\Source\BETask.h" />
     <ClInclude Include="..\Source\BEXMLSchema.h" />
     <ClInclude Include="..\Source\Crypto\BEBase64.h" />
     <ClInclude Include="..\Source\BECppUtilities.h" />

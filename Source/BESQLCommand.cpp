@@ -19,8 +19,6 @@ using namespace std;
 using namespace fmx;
 
 
-extern thread_local errcode g_last_ddl_error;
-
 BESQLCommandUniquePtr g_ddl_command;
 
 
@@ -28,24 +26,26 @@ BESQLCommand::BESQLCommand ( const Text& _expression, const Text& _filename )
 {
 	expression->SetText ( _expression );
 	filename->SetText ( _filename );
-
-	column_separator = '\t';
-	row_separator = FILEMAKER_END_OF_LINE_CHAR;
-
-	waiting = false;
 }
 
 
-void BESQLCommand::execute ( )
+BESQLCommand::BESQLCommand ( const std::string& _expression, const std::string& _filename )
+{
+	expression->Assign ( _expression.c_str() );
+	filename->Assign ( _filename.c_str() );
+}
+
+
+const fmx::errcode BESQLCommand::execute ( )
 {
 	ExprEnvUniquePtr environment;
 	FMX_SetToCurrentEnv ( &(*environment) );
-	execute ( *environment );
+	return execute ( *environment );
 }
 
 
 
-void BESQLCommand::execute ( const ExprEnv& environment, const bool text_result_wanted )
+const fmx::errcode BESQLCommand::execute ( const ExprEnv& environment, const bool text_result_wanted )
 {
 	bool ddl = is_ddl_command();
 
@@ -55,11 +55,11 @@ void BESQLCommand::execute ( const ExprEnv& environment, const bool text_result_
 		BESQLCommandUniquePtr command ( new BESQLCommand ( *expression, *filename ) );
 		command->wait();
 
+#pragma TODO Remove global dependency
+		
 		g_ddl_command.swap ( command );
 
 	} else {
-
-		fmx::errcode error = kNoError;
 		
 		if ( text_result_wanted ) {
 			
@@ -83,7 +83,7 @@ void BESQLCommand::execute ( const ExprEnv& environment, const bool text_result_
 					// take the first field/column of the first record
 					auto& container = this_row.At(0);
 					if ( container.GetNativeType() == fmx::Data::kDTBinary ) {
-						result->SetBinaryData( container.GetBinaryData() );
+						result->SetBinaryData ( container.GetBinaryData() );
 					} else {
 						error = kInvalidFieldType;
 					}
@@ -97,12 +97,14 @@ void BESQLCommand::execute ( const ExprEnv& environment, const bool text_result_
 		} // if ( text_result_wanted )
 		
 		if ( ddl ) {
-			g_last_ddl_error = error;
-		} else {
-			g_last_error = error;
+			ddl_error = error;
 		}
+
 	}
-}
+	
+	return error;
+
+} // execute
 
 
 

@@ -19,7 +19,8 @@
 
 #include "BECurl.h"
 #include "BEFileMakerPlugin.h"
-#include "BESMTPContainerAttachments.h"
+#include "BESMTP.h"
+//#include "BESMTPContainerAttachments.h"
 
 #include <chrono>
 #include <sstream>
@@ -39,7 +40,8 @@ extern thread_local string g_text_encoding;
 
 extern thread_local std::map<short, std::string> g_script_steps;
 
-extern thread_local struct host_details g_smtp_host;
+//extern thread_local struct host_details g_smtp_host;
+extern thread_local BESMTPUniquePtr g_smtp_connection;
 extern thread_local BESMTPContainerAttachments g_smtp_attachments;
 extern thread_local int g_http_response_code;
 extern thread_local std::string g_http_response_headers;
@@ -98,12 +100,18 @@ const string debug_information ( const ExprEnv& environment ) {
 	curl_information->set ( "Trace", g_curl_trace.str() );
 	curl_information->set ( "HTTP Response Headers", g_http_response_headers );
 
-	Poco::JSON::Object::Ptr smtp_information = new Poco::JSON::Object();
-	smtp_information->set ( "Server", g_smtp_host.host );
-	smtp_information->set ( "Port", g_smtp_host.port );
-	smtp_information->set ( "Username", g_smtp_host.username );
-	smtp_information->set ( "Password", protect_text ( g_smtp_host.password ) );
-	curl_information->set ( "SMTP Server Information", smtp_information );
+	if ( g_smtp_connection ) {
+		
+		auto smtp_connection = g_smtp_connection->host_details();
+
+		Poco::JSON::Object::Ptr smtp_information = new Poco::JSON::Object();
+		smtp_information->set ( "Server", smtp_connection.host );
+		smtp_information->set ( "Port", smtp_connection.port );
+		smtp_information->set ( "Username", smtp_connection.username );
+		smtp_information->set ( "Password", protect_text ( smtp_connection.password ) );
+		curl_information->set ( "SMTP Server Information", smtp_information );
+
+	}
 
 	Poco::JSON::Object::Ptr http_proxy_information = new Poco::JSON::Object();
 	http_proxy_information->set ( "Server", g_http_proxy.host );

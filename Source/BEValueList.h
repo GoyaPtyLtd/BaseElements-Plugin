@@ -62,6 +62,7 @@ public:
 	
 	BEValueList ( void );
 	BEValueList ( const T& value_list, bool is_case_sensitive = true, bool retain_empty_values = false );
+	BEValueList ( const std::vector<long>& value_list );
 	BEValueList ( const std::vector<T>& value_list, bool is_case_sensitive = true );
 	BEValueList ( const T& value_list, const T& delimiter, const bool is_case_sensitive = true, bool retain_empty_values = false );
 
@@ -164,6 +165,15 @@ BEValueList<T>::BEValueList ( const std::vector<T>& value_list, bool is_case_sen
 {
 	values = value_list;
 	case_sensitive = is_case_sensitive;
+}
+
+
+template <typename T>
+BEValueList<T>::BEValueList ( const std::vector<long>& value_list )
+{
+	for ( auto a_number : value_list ) {
+		append ( std::to_string ( a_number ) );
+	}
 }
 
 

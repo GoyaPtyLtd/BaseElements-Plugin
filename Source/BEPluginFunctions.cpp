@@ -70,6 +70,7 @@
 #include "BESMTPContainerAttachments.h"
 #include "BESQLCommand.h"
 #include "BESystemCommand.h"
+#include "BETask.h"
 #include "BETime.h"
 #include "BEValueList.h"
 #include "BEXMLReader.h"
@@ -116,9 +117,12 @@ thread_local errcode g_last_error;
 thread_local errcode g_last_ddl_error;
 thread_local string g_text_encoding = UTF8;
 thread_local string g_json_error_description;
-thread_local struct host_details g_smtp_host;
+thread_local BESMTPUniquePtr g_smtp_connection;
 thread_local BESMTPContainerAttachments g_smtp_attachments;
 thread_local vector<BEValueListStringSharedPtr> arrays;
+
+std::vector<long> g_background_tasks;
+std::vector<long> g_completed_background_tasks;
 
 extern BEFileMakerPlugin * g_be_plugin;
 
@@ -1172,30 +1176,39 @@ fmx::errcode BE_XSLTApply ( short function_id, const ExprEnv& /* environment */,
 
 	try {
 
-		std::string xml;
-		boost::filesystem::path xml_path;
-		boost::filesystem::path csv_path;
+		if ( kBE_XSLT_ApplyInMemory == function_id  ) {
 
-		if ( function_id == kBE_XSLTApply ) {
-			xml = ParameterPathOrContainerAsUTF8 ( parameters );
-			xml_path = ParameterAsPath ( parameters );
-			csv_path = ParameterAsPath ( parameters, 2 );
-		} else {
-			xml = ParameterAsUTF8String ( parameters );
+			auto xml = ParameterAsUTF8String ( parameters );
+			auto xml_path = ParameterAsPath ( parameters );
+			auto xslt = ParameterAsUTF8String ( parameters, 1 );
+			auto csv_path = ParameterAsPath ( parameters, 2 );
+			
+			const auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path, xml_path );
+			SetResult ( csv, results );
+
+		} else { // kBE_XSLT_Apply
+
+			auto xml = ParameterPathOrContainerAsUTF8 ( parameters );
+			auto script_name = ParameterAsUTF8String ( parameters, 3 );
+			auto database_name = ParameterAsUTF8String ( parameters, 4 );
+
+			std::vector<std::wstring> function_parameters; // wide for unicode paths on Windows
+			for ( fmx::uint32 i = 0 ; i < parameters.Size() ; i++ ) {
+				function_parameters.push_back ( ParameterAsWideString ( parameters, i ) );
+			}
+
+			auto xslt_result = xslt_task ( function_parameters, 0, xml, script_name, database_name );
+			error = xslt_result.first;
+			SetResult ( xslt_result.second, results );
+			
 		}
 
-		auto xslt = ParameterAsUTF8String ( parameters, 1 );
 
-		auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path, xml_path );
-
-		SetResult ( csv, results );
-
-
-	} catch ( BEPlugin_Exception& e ) {
+	} catch ( const BEPlugin_Exception& e ) {
 		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
+	} catch ( const bad_alloc& /* e */ ) {
 		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
+	} catch ( const exception& /* e */ ) {
 		error = kErrorUnknown;
 	}
 
@@ -3004,6 +3017,141 @@ fmx::errcode BE_CurlGetInfo ( short /* funcId */, const ExprEnv& /* environment 
 
 
 #pragma mark -
+#pragma mark Background Tasks
+#pragma mark -
+
+
+fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	const auto it = max_element ( std::begin ( g_background_tasks ), std::end ( g_background_tasks ) );
+	long id = 1;
+	if ( it != std::end ( g_background_tasks ) ) {
+		id = 1 + *it;
+	}
+	
+	g_background_tasks.push_back ( id );
+
+	try {
+
+		auto what = ParameterAsUTF8String ( parameters );
+		auto when = ParameterAsEpochTime ( parameters, 1 );
+//		auto interval = ParameterAsLong( parameters, 2 );
+		auto sql = ParameterAsUTF8String ( parameters, 3 );
+		auto sql_file = ParameterAsUTF8String ( parameters, 4 );
+
+		auto url = ParameterAsUTF8String ( parameters, 5 );
+		auto post_args = ParameterAsUTF8String ( parameters, 6 );
+		auto username = ParameterAsUTF8String ( parameters, 7 );
+		auto password = ParameterAsUTF8String ( parameters, 8 );
+
+		
+		std::shared_ptr<BECurl> curl ( new BECurl ( url, kBE_HTTP_METHOD_POST, "", username, password, post_args ) );
+
+		std::thread background_task ( [id, when, curl, sql, sql_file, &environment] {
+			
+			// when do we run?
+			auto run_at = std::chrono::system_clock::from_time_t ( when );
+			std::this_thread::sleep_until ( run_at );
+			
+			// running
+			auto response = curl->download();
+			const std::string http_response ( response.begin(), response.end() );
+						
+			// output as json
+			Poco::JSON::Object::Ptr json = new Poco::JSON::Object();
+
+				Poco::JSON::Object::Ptr task_information = new Poco::JSON::Object();
+					task_information->set ( "id", id );
+				json->set ( "task information", task_information );
+
+				Poco::JSON::Object::Ptr task_result = new Poco::JSON::Object();
+					task_result->set ( "last error", g_last_error );
+					task_result->set ( "result", http_response );
+					task_result->set ( "response headers", g_http_response_headers );
+					task_result->set ( "timestamp", Poco::Timestamp() );
+			
+					Poco::JSON::Object::Ptr curl_info = new Poco::JSON::Object();
+						for ( std::pair<std::string, std::string> element : g_curl_info ) {
+							curl_info->set ( element.first, element.second );
+						}
+					task_result->set ( "curl info", curl_info );
+			
+				json->set ( "task result", task_result );
+
+			std::ostringstream output;
+			json->stringify ( output, 1 );
+
+			// construct the sql to return the result
+			std::string sql_command = sql;
+			boost::replace_all ( sql_command, "###RESULT###", output.str() );
+			
+			// set the result
+			BESQLCommandUniquePtr sql_cmd ( new BESQLCommand ( sql_command, sql_file ) );
+			sql_cmd->execute ( environment );
+			
+			g_completed_background_tasks.push_back ( id );
+
+			}
+		);
+		
+		background_task.detach();
+		
+		g_curl_options.clear();
+		g_http_custom_headers.clear();
+
+		if ( error == kNoError ) {
+			SetResult ( id, results );
+		}
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_BackgroundTaskAdd
+
+
+fmx::errcode BE_BackgroundTaskList ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		std::sort ( g_background_tasks.begin(), g_background_tasks.end() );
+		std::sort ( g_completed_background_tasks.begin(), g_completed_background_tasks.end() );
+		
+		std::vector<long> pending_background_tasks;
+		std::set_difference (
+							g_background_tasks.begin(), g_background_tasks.end(),
+							g_completed_background_tasks.begin(), g_completed_background_tasks.end(),
+							std::inserter ( pending_background_tasks, std::begin ( pending_background_tasks ) )
+		);
+		
+		BEValueList<std::string> pending_task_list ( pending_background_tasks );
+		SetResult ( pending_task_list, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_BackgroundTaskList
+
+
+
+#pragma mark -
 #pragma mark SMTP
 #pragma mark -
 
@@ -3018,11 +3166,10 @@ fmx::errcode BE_SMTPServer ( short /* funcId */, const fmx::ExprEnv& /* environm
 		auto port = ParameterAsUTF8String ( parameters, 1 );
 		auto username = ParameterAsUTF8String ( parameters, 2 );
 		auto password = ParameterAsUTF8String ( parameters, 3 );
+		auto keep_open = ParameterAsBoolean ( parameters, 4, false );
 
-		g_smtp_host.host = host;
-		g_smtp_host.port = port;
-		g_smtp_host.username = username;
-		g_smtp_host.password = password;
+		BESMTPUniquePtr smtp_conection ( new BESMTP ( host, port, username, password, keep_open ) );
+		g_smtp_connection.swap ( smtp_conection );
 
 //		string do_nothing = "";
 //		SetResult ( do_nothing, results );
@@ -3069,10 +3216,25 @@ fmx::errcode BE_SMTPSend ( short /* funcId */, const fmx::ExprEnv& /* environmen
 		}
 		message->set_attachments ( g_smtp_attachments.get_file_list() );
 
+		if ( ! g_smtp_connection ) { // don't crash
 
-		unique_ptr<BESMTP> smtp ( new BESMTP ( g_smtp_host.host, g_smtp_host.port, g_smtp_host.username, g_smtp_host.password ) );
-		error = smtp->send ( message.get() );
+			BESMTPUniquePtr smtp_conection ( new BESMTP() );
+			g_smtp_connection.swap ( smtp_conection );
 
+		}
+		
+		if ( ! g_smtp_connection->keep_open() ) {
+
+			auto smtp_host = g_smtp_connection->host_details();
+			BESMTPUniquePtr smtp_conection ( new BESMTP ( smtp_host.host, smtp_host.port, smtp_host.username, smtp_host.password ) );
+			error = smtp_conection->send ( message.get() );
+
+		} else {
+			
+			error = g_smtp_connection->send ( message.get() );
+
+		}
+		
 //		string do_nothing = "";
 //		SetResult ( do_nothing, results );
 
@@ -4025,7 +4187,7 @@ fmx::errcode BE_FileOpen ( short /*funcId*/, const ExprEnv& /* environment */, c
 
 
 
-fmx::errcode BE_ScriptExecute ( short /* funcId */, const ExprEnv& environment, const DataVect& parameters, Data& results )
+fmx::errcode BE_ScriptExecute ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
@@ -4052,7 +4214,7 @@ fmx::errcode BE_ScriptExecute ( short /* funcId */, const ExprEnv& environment, 
 
 		auto script_control = ParameterAsLong ( parameters, 3, kFMXT_Pause );
 
-		error = ExecuteScript ( *script_name, *file_name, *parameter, script_control, environment );
+		error = ExecuteScript ( *script_name, *file_name, *parameter, script_control );
 
 		SetResult ( error, results );
 
@@ -4076,17 +4238,11 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 
 	try {
 
-		TextUniquePtr expression;
-		expression->SetText ( parameters.AtAsText(0) );
+		auto expression = ParameterAsUTF8String ( parameters );
+		auto filename = ParameterAsUTF8String ( parameters, 3 );
+		BESQLCommandUniquePtr sql ( new BESQLCommand ( expression, filename ) );
 
 		FMX_UInt32 number_of_paramters = parameters.Size();
-
-		TextUniquePtr filename;
-		if ( number_of_paramters >= 4 ) {
-			filename->SetText ( parameters.AtAsText(3) );
-		}
-
-		BESQLCommandUniquePtr sql ( new BESQLCommand ( *expression, *filename ) );
 
 		if ( number_of_paramters >= 2 ) {
 			TextUniquePtr column_separator;
@@ -4101,36 +4257,39 @@ fmx::errcode BE_FileMakerSQL ( short /* funcId */, const ExprEnv& environment, c
 		}
 
 		auto text_result_wanted = ParameterAsBoolean ( parameters, 4, true );
-		sql->execute ( environment, text_result_wanted );
+		error = sql->execute ( environment, text_result_wanted );
+		g_last_ddl_error = sql->get_ddl_error();
 
+		if ( kNoError == error ) {
 
-		if ( parameters.Size() >= 6 ) { // writing a file
+			if ( parameters.Size() >= 6 ) { // writing a file
 
-			ios_base::openmode mode = ios_base::trunc;
-			if ( !text_result_wanted ) {
-				mode |= ios_base::binary;
-			}
+				ios_base::openmode mode = ios_base::trunc;
+				if ( !text_result_wanted ) {
+					mode |= ios_base::binary;
+				}
 
-			auto path = ParameterAsUTF8String ( parameters, 5 );
-			auto sql_result = sql->get_vector_result();
-			error = write_to_file ( path, sql_result, mode );
+				auto path = ParameterAsUTF8String ( parameters, 5 );
+				auto sql_result = sql->get_vector_result();
+				error = write_to_file ( path, sql_result, mode );
 
-		} else { // sending the result to fmp
+			} else { // sending the result to fmp
 
-			if ( text_result_wanted ) {
+				if ( text_result_wanted ) {
 
-				auto sql_result = sql->get_text_result();
-				SetResult ( *sql_result, results );
+					auto sql_result = sql->get_text_result();
+					SetResult ( *sql_result, results );
 
-			} else {
+				} else {
 
-				auto sql_result = sql->get_data_result();
-				results.SetBinaryData ( sql_result->GetBinaryData() );
+					auto sql_result = sql->get_data_result();
+					results.SetBinaryData ( sql_result->GetBinaryData() );
+
+				}
 
 			}
 
 		}
-
 
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();

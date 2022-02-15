@@ -167,7 +167,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FileTypeFile + kBE_FileTypeOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kBE_FileTypeFolder + kBE_FileTypeOffset, BE_NumericConstants );
 
-	g_be_plugin->RegisterFunction ( kBE_XSLTApply, BE_XSLTApply, 3 );
+	g_be_plugin->RegisterFunction ( kBE_XSLTApply, BE_XSLTApply, 3, -1 );
 	g_be_plugin->RegisterFunction ( kBE_XSLT_ApplyInMemory, BE_XSLTApply, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, 2, 4 );
@@ -276,9 +276,10 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_FTP_UploadFile, BE_FTP_Upload, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_CurlGetInfo, BE_CurlGetInfo, 1 );
+	g_be_plugin->RegisterFunction ( kBE_BackgroundTaskAdd, BE_BackgroundTaskAdd, 7, 9 );
+	g_be_plugin->RegisterFunction ( kBE_BackgroundTaskList, BE_BackgroundTaskList );
 	
-	
-	g_be_plugin->RegisterFunction ( kBE_SMTPServer, BE_SMTPServer, 1, 4 );
+	g_be_plugin->RegisterFunction ( kBE_SMTPServer, BE_SMTPServer, 1, 5 );
 	g_be_plugin->RegisterFunction ( kBE_SMTPSend, BE_SMTPSend, 4, 9 );
 	g_be_plugin->RegisterFunction ( kBE_SMTPAddAttachment, BE_SMTPAddAttachment, 0, 2 );
 	g_be_plugin->RegisterFunction ( kBE_SMTPSetHeader, BE_Net_Set_Header, 0, 2 );

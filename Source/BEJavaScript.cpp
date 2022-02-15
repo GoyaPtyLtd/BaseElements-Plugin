@@ -2,7 +2,7 @@
  BEJavaScript.cpp
  BaseElements Plug-In
  
- Copyright 2014-2019 Goya. All rights reserved.
+ Copyright 2014-2021 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -81,29 +81,12 @@ static duk_ret_t BE_ScriptExecute ( duk_context *context )
 {
 	fmx::errcode error = kNoError;
 	
-	std::string script = duk_require_string ( context, 0 );
-	std::string file_name = duk_require_string ( context, 1 );
-	std::string parameter = duk_require_string ( context, 2 );
+	const std::string script = duk_require_string ( context, 0 );
+	const std::string file_name = duk_require_string ( context, 1 );
+	const std::string parameter = duk_require_string ( context, 2 );
 	
-	fmx::TextUniquePtr script_name;
-	script_name->Assign ( script.c_str() );
-	
-	fmx::TextUniquePtr database;
-	database->Assign ( file_name.c_str() );
-	
-	fmx::DataUniquePtr script_parameter;
-	fmx::TextUniquePtr parameter_data;
-	parameter_data->Assign ( parameter.c_str() );
-	fmx::LocaleUniquePtr default_locale;
+	error = ExecuteScript ( script, file_name, parameter, kFMXT_Pause );
 
-	script_parameter->SetAsText ( *parameter_data, *default_locale );
-	
-	const fmx::ExprEnvUniquePtr environment;
-
-	FMX_SetToCurrentEnv ( &(*environment) );
-	
-	error = ExecuteScript ( *script_name, *database, *script_parameter, kFMXT_Pause, *environment );
-	
 	duk_push_int ( context, error );
 
 	return 1;
