@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
 
- Copyright 2011-2021 Goya. All rights reserved.
+ Copyright 2011-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -392,16 +392,16 @@ BECurl::~BECurl()
 		curl_slist_free_all ( command_list );
 	}
 
-
-	g_last_error = last_error();
-	g_http_response_code = response_code();
-	g_http_response_headers = response_headers();
+	g_last_error = error;
+	g_http_response_code = http_response_code;
+	g_http_response_headers = http_response_headers;
+	
 	g_http_custom_headers.clear();
-
 
 	curl_mime_free ( mime );
 	curl_easy_cleanup ( curl );
 	curl_global_cleanup();
+	
 }
 
 

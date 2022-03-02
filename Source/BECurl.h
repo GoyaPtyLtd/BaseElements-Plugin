@@ -2,7 +2,7 @@
  BECurl.h
  BaseElements Plug-In
  
- Copyright 2011-2021 Goya. All rights reserved.
+ Copyright 2011-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -98,16 +98,12 @@ public:
 	
 	be_http_method get_http_method ( ) { return http_method; };
 	void set_http_method ( be_http_method method ) { http_method = method; };
-	
+
 	void set_parameters ( );
 	void set_custom_headers ( CustomHeaders _headers );
 	void set_username_and_password ( );
-	
-	int response_code ( ) { return http_response_code; }
-	std::string response_headers ( ) { return http_response_headers; }
 	void set_proxy ( struct host_details proxy_server );
 	void set_options ( BECurlOptionMap options );
-	CURLcode last_error ( ) { return error; }
 	
 protected:
 	
