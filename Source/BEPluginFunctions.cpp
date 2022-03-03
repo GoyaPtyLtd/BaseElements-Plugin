@@ -54,8 +54,8 @@
 
 #include "BEPluginFunctions.h"
 
-#include "BECurl.h"
-#include "BECurlOption.h"
+#include "Net/BECurl.h"
+#include "Net/BECurlOption.h"
 #include "BECppUtilities.h"
 #include "BEDebugInformation.h"
 #include "BEFileMakerPlugin.h"
@@ -66,8 +66,8 @@
 #include "BEPluginException.h"
 #include "BEQuadChar.h"
 #include "BERegularExpression.h"
-#include "BESMTP.h"
-#include "BESMTPContainerAttachments.h"
+#include "Net/BESMTP.h"
+#include "Net/BESMTPContainerAttachments.h"
 #include "BESQLCommand.h"
 #include "BESystemCommand.h"
 #include "BETask.h"

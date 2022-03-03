@@ -17,9 +17,9 @@
 
 #include "BEDebugInformation.h"
 
-#include "BECurl.h"
+#include "Net/BECurl.h"
+#include "Net/BESMTP.h"
 #include "BEFileMakerPlugin.h"
-#include "BESMTP.h"
 
 
 #include <chrono>

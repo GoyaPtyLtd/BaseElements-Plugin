@@ -380,8 +380,8 @@ signtool verify /pa "$(TargetPath)"
     <ClCompile Include="..\Source\BEXMLSchema.cpp" />
     <ClCompile Include="..\Source\Crypto\BEBase64.cpp" />
     <ClCompile Include="..\Source\BECppUtilities.cpp" />
-    <ClCompile Include="..\Source\BECurl.cpp" />
-    <ClCompile Include="..\Source\BECurlOption.cpp" />
+    <ClCompile Include="..\Source\Net\BECurl.cpp" />
+    <ClCompile Include="..\Source\Net\BECurlOption.cpp" />
     <ClCompile Include="..\Source\BEFileMakerPlugin.cpp">
       <UndefinePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </UndefinePreprocessorDefinitions>
@@ -392,7 +392,7 @@ signtool verify /pa "$(TargetPath)"
     <ClCompile Include="..\Source\BEFileTextReader.cpp" />
     <ClCompile Include="..\Source\BEJavaScript.cpp" />
     <ClCompile Include="..\Source\BEJSON.cpp" />
-    <ClCompile Include="..\Source\BESMTPContainerAttachments.cpp" />
+    <ClCompile Include="..\Source\Net\BESMTPContainerAttachments.cpp" />
     <ClCompile Include="..\Source\Crypto\BEBio.cpp" />
     <ClCompile Include="..\Source\Crypto\BEMessageDigest.cpp">
       <DeploymentContent>false</DeploymentContent>
@@ -423,8 +423,8 @@ signtool verify /pa "$(TargetPath)"
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Source\BEQuadChar.cpp" />
-    <ClCompile Include="..\Source\BESMTP.cpp" />
-    <ClCompile Include="..\Source\BESMTPEmailMessage.cpp" />
+    <ClCompile Include="..\Source\Net\BESMTP.cpp" />
+    <ClCompile Include="..\Source\Net\BESMTPEmailMessage.cpp" />
     <ClCompile Include="..\Source\BESQLCommand.cpp" />
     <ClCompile Include="..\Source\BETime.cpp" />
     <ClCompile Include="..\Source\BEXMLReader.cpp" />
@@ -457,8 +457,8 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\BEXMLSchema.h" />
     <ClInclude Include="..\Source\Crypto\BEBase64.h" />
     <ClInclude Include="..\Source\BECppUtilities.h" />
-    <ClInclude Include="..\Source\BECurl.h" />
-    <ClInclude Include="..\Source\BECurlOption.h" />
+    <ClInclude Include="..\Source\Net\BECurl.h" />
+    <ClInclude Include="..\Source\Net\BECurlOption.h" />
     <ClInclude Include="..\Source\BEFileMakerPlugin.h" />
     <ClInclude Include="..\Source\BEFileSystem.h" />
     <ClInclude Include="..\Source\BEFileTextReader.h" />
@@ -466,7 +466,7 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\BEJSON.h" />
     <ClInclude Include="..\Source\BERegularExpression.h" />
     <ClInclude Include="..\Source\BEPluginVersion.h" />
-    <ClInclude Include="..\Source\BESMTPContainerAttachments.h" />
+    <ClInclude Include="..\Source\Net\BESMTPContainerAttachments.h" />
     <ClInclude Include="..\Source\Crypto\BEBio.h" />
     <ClInclude Include="..\Source\Crypto\BEMessageDigest.h" />
     <ClInclude Include="..\Source\Crypto\BEOpenSSLAES.h" />
@@ -475,8 +475,8 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\BEPluginGlobalDefines.h" />
     <ClInclude Include="..\Source\BEPluginUtilities.h" />
     <ClInclude Include="..\Source\BEQuadChar.h" />
-    <ClInclude Include="..\Source\BESMTP.h" />
-    <ClInclude Include="..\Source\BESMTPEmailMessage.h" />
+    <ClInclude Include="..\Source\Net\BESMTP.h" />
+    <ClInclude Include="..\Source\Net\BESMTPEmailMessage.h" />
     <ClInclude Include="..\Source\BESQLCommand.h" />
     <ClInclude Include="..\Source\BETime.h" />
     <ClInclude Include="..\Source\BEValueList.h" />
