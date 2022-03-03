@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
 
- Copyright 2010-2021 Goya. All rights reserved.
+ Copyright 2010-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -1441,6 +1441,25 @@ void Do_GetString ( unsigned long whichString, FMX_PtrType /* winLangID */, FMX_
 	} // switch ( whichString )
 
 	Sub_LoadString ( string_to_load, string, resultsize );
+	
+#ifdef BEP_PRO_VERSION
+
+	if ( kFMXT_NameStr == string_to_load ) {
+		
+		TextUniquePtr function_name;
+		function_name->AssignUnicode ( string );
+
+		TextUniquePtr pro_suffix;
+		pro_suffix->Assign( BEP_PRO_NAME_SUFFIX );
+		
+		function_name->AppendText ( *pro_suffix );
+//		be_free ( string );
+		auto name_length = function_name->GetSize();
+		function_name->GetUnicode ( string, 0, name_length );
+		
+	}
+	
+#endif
 
 } // Do_GetString ( FMX_Unichar* version )
 

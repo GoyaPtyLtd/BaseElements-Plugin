@@ -2,7 +2,7 @@
  BEDebugInformation.cpp
  BaseElements Plug-In
 
- Copyright (c) 2019-2021 Goya. All rights reserved.
+ Copyright (c) 2019-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -20,7 +20,7 @@
 #include "BECurl.h"
 #include "BEFileMakerPlugin.h"
 #include "BESMTP.h"
-//#include "BESMTPContainerAttachments.h"
+
 
 #include <chrono>
 #include <sstream>
@@ -40,7 +40,6 @@ extern thread_local string g_text_encoding;
 
 extern thread_local std::map<short, std::string> g_script_steps;
 
-//extern thread_local struct host_details g_smtp_host;
 extern thread_local BESMTPUniquePtr g_smtp_connection;
 extern thread_local BESMTPContainerAttachments g_smtp_attachments;
 extern thread_local int g_http_response_code;
@@ -76,6 +75,14 @@ const string debug_information ( const ExprEnv& environment ) {
 	Poco::JSON::Object::Ptr plugin_information = new Poco::JSON::Object();
 	plugin_information->set ( "Auto Update Version", AUTO_UPDATE_VERSION );
 	plugin_information->set ( "Version", VERSION_STRING );
+	
+#ifdef BEP_PRO_VERSION
+	#define PRO_VERSION_STRING "Yes"
+#else
+	#define PRO_VERSION_STRING "No"
+#endif
+
+	plugin_information->set ( "Pro Version", PRO_VERSION_STRING );
 	json->set ( "Plugin Information", plugin_information );
 
 	std::time_t time_now = std::time ( nullptr );
