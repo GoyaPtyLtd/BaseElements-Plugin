@@ -108,7 +108,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_PreferenceSet, BE_PreferenceSet, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_PreferenceGet, BE_Preference, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_PreferenceDelete, BE_Preference, 1, 2 );
-	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ScriptExecute, BE_ScriptExecute, 1, 4 );
 #else
 	g_be_plugin->RegisterHiddenFunction ( kBE_ClipboardGetText, BE_NotImplemented, 1 );
@@ -119,9 +118,10 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceSet, BE_NotImplemented, 2, 3 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceGet, BE_NotImplemented, 1, 2 );
 	g_be_plugin->RegisterHiddenFunction ( kBE_PreferenceDelete, BE_NotImplemented, 1, 2 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_EvaluateJavaScript, BE_NotImplemented, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ScriptExecute, BE_NotImplemented, 1, 4 );
 #endif
+
+	g_be_plugin->RegisterFunction ( kBE_EvaluateJavaScript, BE_EvaluateJavaScript, 1 );
 
 #if ( FMX_MAC_TARGET || FMX_WIN_TARGET )
 	g_be_plugin->RegisterFunction ( kBE_GetSystemDrive, BE_GetSystemDrive );

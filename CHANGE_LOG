@@ -32,6 +32,7 @@ Changes
 
 German Localization on macOS, iOS & Windows
 
+BE_EvaluateJavaScript: now available on all platforms
 BE_RegularExpression: support the g option for match in addition to replace
 BE_SMTPSend: do not send single part messages as "multipart"
 
