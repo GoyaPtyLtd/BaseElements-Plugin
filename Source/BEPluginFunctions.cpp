@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2021 Goya. All rights reserved.
+ Copyright 2010-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -141,16 +141,37 @@ extern thread_local std::map<std::string, std::string> g_curl_info;
 #pragma mark -
 
 
-fmx::errcode BE_Version ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+fmx::errcode BE_Version ( short function_id, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
 {
-	return TextConstantFunction ( WSTRING ( VERSION_STRING ), results );
+	errcode error = NoError();
+
+	switch ( function_id ) {
+			
+		case kBE_Version:
+			error = TextConstantFunction ( WSTRING ( VERSION_STRING ), results );
+			break;
+			
+		case kBE_VersionAutoUpdate:
+			error = TextConstantFunction ( WSTRING ( AUTO_UPDATE_VERSION ), results );
+			break;
+			
+		case kBE_VersionPro:
+#ifdef BEP_PRO_VERSION
+			SetResult ( true, results );
+#else
+			SetResult ( false, results );
+#endif
+			break;
+			
+//		default:
+//			;
+
+	}
+
+	return error;
+
 }
 
-
-fmx::errcode BE_VersionAutoUpdate ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
-{
-	return TextConstantFunction ( WSTRING ( AUTO_UPDATE_VERSION ), results );
-}
 
 
 #pragma mark -

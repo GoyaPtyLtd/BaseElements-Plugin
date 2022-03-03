@@ -135,6 +135,7 @@ enum functions {
 	kBE_ClipboardSetFile = 136,
 	kBE_GetSystemDrive = 137,
 	kBE_WriteTextFileToContainer_Deprecated = 140,
+	kBE_VersionPro = 141,
 	kBE_ScriptExecute = 150,
 	kBE_FileMakerSQL = 151,
 	kBE_HTTP_GETFile = 152,

@@ -94,8 +94,10 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->set_fmx_application_version ( application_version );
 
 	g_be_plugin->RegisterFunction ( kBE_Version, BE_Version );
-	g_be_plugin->RegisterFunction ( kBE_VersionAutoUpdate, BE_VersionAutoUpdate );
+	g_be_plugin->RegisterFunction ( kBE_VersionAutoUpdate, BE_Version );
+	g_be_plugin->RegisterFunction ( kBE_VersionPro, BE_Version );
 
+	
 	g_be_plugin->RegisterFunction ( kBE_GetLastError, BE_GetLastError );
 	g_be_plugin->RegisterFunction ( kBE_GetLastDDLError, BE_GetLastError );
 
