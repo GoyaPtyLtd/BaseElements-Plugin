@@ -2,7 +2,7 @@
 Version 4.3.0b2
 ########################################################################
 
-March 3, 2022
+March 16, 2022
 
 
 Pro Version
@@ -32,6 +32,7 @@ Changes
 
 German Localization on macOS, iOS & Windows
 
+BE_ExecuteSystemCommand: fix for sometime "hang" on Windows [Jira #104]
 BE_EvaluateJavaScript: now available on all platforms
 BE_RegularExpression: support the g option for match in addition to replace
 BE_SMTPSend: do not send single part messages as "multipart"
