@@ -565,6 +565,9 @@
 		4D11F40E1F271C6F00D78042 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = ../Libraries/macOS/libturbojpeg.a; sourceTree = "<group>"; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/Crypto/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/Crypto/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
+		4D1B526427EBEF2500442764 /* CONTRIBUTING */ = {isa = PBXFileReference; lastKnownFileType = text; name = CONTRIBUTING; path = ../CONTRIBUTING; sourceTree = "<group>"; };
+		4D1B526527EBEF2500442764 /* CHANGE_LOG */ = {isa = PBXFileReference; lastKnownFileType = text; name = CHANGE_LOG; path = ../CHANGE_LOG; sourceTree = "<group>"; };
+		4D1B526627EBEF3300442764 /* Building */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Building; path = ../Building; sourceTree = "<group>"; };
 		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/apple/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
 		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/apple/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; usesTabs = 1; };
 		4D27C3851861160000E7F4A1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -1010,6 +1013,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D1B526327EBEEF900442764 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				4D1B526527EBEF2500442764 /* CHANGE_LOG */,
+				4D1B526427EBEF2500442764 /* CONTRIBUTING */,
+				4D1B526627EBEF3300442764 /* Building */,
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
 		4D3629EA1F20789A0036B751 /* BaseElementsIOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -1115,6 +1128,7 @@
 		C7DEDEE707E10BF3002283F3 = {
 			isa = PBXGroup;
 			children = (
+				4D1B526327EBEEF900442764 /* Documentation */,
 				4D668AA21A36BC8900D14592 /* duktape */,
 				C7DEDEF607E10BF3002283F3 /* Sources */,
 				C7DEDEFC07E10BF3002283F3 /* Resources */,
