@@ -1098,13 +1098,10 @@ errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Da
 			database->SetText ( file_name );
 		} else {
 
-			TextUniquePtr command;
-			command->Assign ( "Get ( FileName )" );
-			
 			DataUniquePtr name;
 			ExprEnvUniquePtr current_environment;
 			FMX_SetToCurrentEnv ( &(*current_environment) );
-			current_environment->Evaluate ( *command, *name );
+			error = current_environment->EvaluateGetFunction ( fmx::ExprEnv::kGet_FileName, *name );
 
 			database->SetText ( name->GetAsText() );
 
@@ -1378,11 +1375,8 @@ void set_name_value_pair ( const DataVect& parameters, std::map<std::string, std
 bool AllowUserAbort ( const ExprEnv& environment )
 {
 
-	TextUniquePtr command;
-	command->Assign ( "Get ( AllowAbortState )" );
-
 	DataUniquePtr reply;
-	environment.Evaluate ( *command, *reply );
+	environment.EvaluateGetFunction ( fmx::ExprEnv::kGet_AllowAbortState, *reply ); // auto error =
 	auto allow_abort = reply->GetAsBoolean();
 
 	return allow_abort;
@@ -1393,11 +1387,8 @@ bool AllowUserAbort ( const ExprEnv& environment )
 std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
 {
 
-	TextUniquePtr command;
-	command->Assign ( "Get ( TemporaryPath )" );
-
 	DataUniquePtr reply;
-	environment.Evaluate ( *command, *reply );
+	environment.EvaluateGetFunction ( fmx::ExprEnv::kGet_TemporaryPath, *reply ); // auto error =
 
 	// we want the filesystem path, not the "filemaker" path
 	auto temporary_path = TextAsUTF8String ( reply->GetAsText() );
