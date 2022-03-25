@@ -1,0 +1,19 @@
+Minimum Supported Requirements for BaseElements Plug-In 5
+
+
+Note: there is no 32-bit version of the plug-in, it's is 64-bit only.
+
+FileMaker Pro 18
+FileMaker Server 18
+
+iOS 12.2
+macOS 10.13 (High Sierra) - M1, x86
+Ubuntu 18.04 LTS - x86
+Windows 7 SP1 Professional - x86
+
+
+For building the plug-in:
+
+macOS 12.3, Xcode 13.3
+Ubuntu 18.04 - CodeBlocks 16.01 (w/clang)
+Windows 11 Professional, Visual Studio 2022

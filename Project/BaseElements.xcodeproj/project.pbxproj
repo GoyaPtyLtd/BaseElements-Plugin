@@ -640,6 +640,7 @@
 		4D76243B1E0A37F600266C0D /* libpodofo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo.a; path = ../Libraries/macOS/libpodofo.a; sourceTree = "<group>"; };
 		4D76243F1E0A386F00266C0D /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		4D7624411E0A3FFE00266C0D /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
+		4D76911427ED28C40069AFAA /* REQUIREMENTS */ = {isa = PBXFileReference; lastKnownFileType = text; name = REQUIREMENTS; path = ../REQUIREMENTS; sourceTree = "<group>"; };
 		4D79CA9B26312C660024B789 /* DiskArbitration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiskArbitration.framework; path = System/Library/Frameworks/DiskArbitration.framework; sourceTree = SDKROOT; };
 		4D7FCA5E11E9308B0047A453 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/Base.lproj/Info.plist; sourceTree = SOURCE_ROOT; };
 		4D807EFE1A9C255000E27E38 /* BEImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEImage.cpp; path = ../Source/Images/BEImage.cpp; sourceTree = "<group>"; };
@@ -1018,6 +1019,7 @@
 			children = (
 				4D1B526527EBEF2500442764 /* CHANGE_LOG */,
 				4D1B526427EBEF2500442764 /* CONTRIBUTING */,
+				4D76911427ED28C40069AFAA /* REQUIREMENTS */,
 				4D1B526627EBEF3300442764 /* Building */,
 			);
 			name = Documentation;
