@@ -57,7 +57,6 @@
 		4D362A081F2079BC0036B751 /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
 		4D362A091F2079BC0036B751 /* BEXMLReaderInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */; };
 		4D362A0A1F2079CA0036B751 /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
-		4D362A0B1F2079CA0036B751 /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
 		4D362A0E1F2079CA0036B751 /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
 		4D362A101F2079E30036B751 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
 		4D362A111F2079E30036B751 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
@@ -71,7 +70,6 @@
 		4D362A611F2085880036B751 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
 		4D362A631F2085880036B751 /* BEXMLSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */; };
 		4D362A641F2085880036B751 /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
-		4D362A651F2085880036B751 /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
 		4D362A681F2085880036B751 /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
 		4D362A691F2085880036B751 /* BEFileMakerPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */; };
 		4D362A6A1F2085880036B751 /* BEXSLT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */; };
@@ -172,7 +170,6 @@
 		4DBB48D927C45AD000D3D232 /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
 		4DBB48DA27C45AD000D3D232 /* BEXMLReaderInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */; };
 		4DBB48DB27C45AD000D3D232 /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
-		4DBB48DC27C45AD000D3D232 /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
 		4DBB48DD27C45AD000D3D232 /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
 		4DBB48DE27C45AD000D3D232 /* ProgressDialogWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */; };
 		4DBB48DF27C45AD000D3D232 /* BECurlOption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */; };
@@ -210,7 +207,6 @@
 		4DBB490127C45AD000D3D232 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243A1E0A37F600266C0D /* libfreetype.a */; };
 		4DBB490227C45AD000D3D232 /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624391E0A37F600266C0D /* libfontconfig.a */; };
 		4DBB490327C45AD000D3D232 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243B1E0A37F600266C0D /* libpodofo.a */; };
-		4DBB490427C45AD000D3D232 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
 		4DBB490527C45AD000D3D232 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DBB490627C45AD000D3D232 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
 		4DBB490727C45AD000D3D232 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
@@ -225,7 +221,6 @@
 		4DC9275327C5A79100FA1655 /* BEXMLSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */; };
 		4DC9275427C5A79100FA1655 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4DC9275527C5A79100FA1655 /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
-		4DC9275627C5A79100FA1655 /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
 		4DC9275727C5A79100FA1655 /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
 		4DC9275827C5A79100FA1655 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
 		4DC9275927C5A79100FA1655 /* BEFileMakerPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */; };
@@ -261,7 +256,6 @@
 		4DC9277827C5A79100FA1655 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB16271E7B16007E91B5 /* UIKit.framework */; };
 		4DC9277927C5A79100FA1655 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB14271E7A68007E91B5 /* libturbojpeg.a */; };
 		4DC9277A27C5A79100FA1655 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB12271E7A58007E91B5 /* libjpeg.a */; };
-		4DC9277B27C5A79100FA1655 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB10271E7A24007E91B5 /* libjansson.a */; };
 		4DC9277C27C5A79100FA1655 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB0E271E79C7007E91B5 /* libssh2.a */; };
 		4DC9277D27C5A79100FA1655 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB06271E6182007E91B5 /* libiconv.a */; };
 		4DC9277E27C5A79100FA1655 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BCD2717DF840009E745 /* libssl.a */; };
@@ -292,7 +286,6 @@
 		4DC9279F27C5A81300FA1655 /* BEXMLSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */; };
 		4DC927A027C5A81300FA1655 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4DC927A127C5A81300FA1655 /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
-		4DC927A227C5A81300FA1655 /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
 		4DC927A327C5A81300FA1655 /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
 		4DC927A427C5A81300FA1655 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
 		4DC927A527C5A81300FA1655 /* BEFileMakerPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD780D811FFCD2500CFC8B4 /* BEFileMakerPlugin.cpp */; };
@@ -346,7 +339,6 @@
 		4DC927D627C5A81300FA1655 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB31271E7BE8007E91B5 /* libPocoUtil.a */; };
 		4DC927D727C5A81300FA1655 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB32271E7BE8007E91B5 /* libxslt.a */; };
 		4DC927D827C5A81300FA1655 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB33271E7BE8007E91B5 /* libiconv.a */; };
-		4DC927D927C5A81300FA1655 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB34271E7BE8007E91B5 /* libjansson.a */; };
 		4DC927DA27C5A81300FA1655 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */; };
 		4DC927DB27C5A81300FA1655 /* libPocoFoundationd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D70222E3287006EF9FB /* libPocoFoundationd.a */; };
 		4DC927DC27C5A81300FA1655 /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */; };
@@ -378,7 +370,6 @@
 		4DCD495C1A195B0C00EFCF7F /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
 		4DCD495D1A195B0C00EFCF7F /* BEXMLReaderInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */; };
 		4DCD495E1A195B0C00EFCF7F /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
-		4DCD495F1A195B0C00EFCF7F /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
 		4DCD49611A195B0C00EFCF7F /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
 		4DCD49621A195B0C00EFCF7F /* ProgressDialogWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */; };
 		4DCD49631A195B0C00EFCF7F /* BECurlOption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCE05C170BC61D00835D21 /* BECurlOption.cpp */; };
@@ -388,7 +379,6 @@
 		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
-		4DD510241DD136F200763F7E /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
 		4DE2FD082682C5360091A9AD /* BESMTPEmailMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */; };
 		4DE2FD092682C5470091A9AD /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4DE2FD0A2682C57E0091A9AD /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
@@ -405,7 +395,6 @@
 		4DE2FD152682C5D10091A9AD /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624391E0A37F600266C0D /* libfontconfig.a */; };
 		4DE2FD162682C5D10091A9AD /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243A1E0A37F600266C0D /* libfreetype.a */; };
 		4DE2FD172682C5D10091A9AD /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1B25DB76BA0000017C /* libiconv.a */; };
-		4DE2FD182682C5D10091A9AD /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DD510231DD136F200763F7E /* libjansson.a */; };
 		4DE2FD192682C5D10091A9AD /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD32230D803007632BA /* libPocoFoundation.a */; };
 		4DE2FD1A2682C5D10091A9AD /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD22230D803007632BA /* libPocoJSON.a */; };
 		4DE2FD1B2682C5D10091A9AD /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0BBAE3267AC1D60021DA56 /* libPocoNet.a */; };
@@ -437,7 +426,6 @@
 		4DE2FD3D2682C7250091A9AD /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
 		4DE2FD3E2682C7280091A9AD /* BEXMLReaderInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */; };
 		4DE2FD3F2682C72C0091A9AD /* BETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DDBA8B5164386A900CC6FD7 /* BETime.cpp */; };
-		4DE2FD402682C7300091A9AD /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D00CC5816D3279000160030 /* BEJSON.cpp */; };
 		4DE2FD412682C7340091A9AD /* BECppUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */; };
 		4DE2FD422682C73A0091A9AD /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
 		4DE2FD432682C7400091A9AD /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
@@ -476,7 +464,6 @@
 		4DF4DB0C271E7958007E91B5 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB09271E790C007E91B5 /* libexslt.a */; };
 		4DF4DB0D271E79AA007E91B5 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243F1E0A386F00266C0D /* libbz2.tbd */; };
 		4DF4DB0F271E7A0E007E91B5 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB0E271E79C7007E91B5 /* libssh2.a */; };
-		4DF4DB11271E7A24007E91B5 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB10271E7A24007E91B5 /* libjansson.a */; };
 		4DF4DB13271E7A59007E91B5 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB12271E7A58007E91B5 /* libjpeg.a */; };
 		4DF4DB15271E7A68007E91B5 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB14271E7A68007E91B5 /* libturbojpeg.a */; };
 		4DF4DB17271E7B16007E91B5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB16271E7B16007E91B5 /* UIKit.framework */; };
@@ -507,7 +494,6 @@
 		4DF4DB44271E7BE8007E91B5 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB31271E7BE8007E91B5 /* libPocoUtil.a */; };
 		4DF4DB45271E7BE8007E91B5 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB32271E7BE8007E91B5 /* libxslt.a */; };
 		4DF4DB46271E7BE8007E91B5 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB33271E7BE8007E91B5 /* libiconv.a */; };
-		4DF4DB47271E7BE8007E91B5 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB34271E7BE8007E91B5 /* libjansson.a */; };
 		4DF4DB49271E7BF1007E91B5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB48271E7BF1007E91B5 /* UIKit.framework */; };
 		4DF4DB4B271E7BFA007E91B5 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB4A271E7BFA007E91B5 /* libbz2.tbd */; };
 		4DF4DB4C271E7C0C007E91B5 /* boost.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC82717D5A50009E745 /* boost.xcframework */; };
@@ -543,8 +529,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4D00CC5816D3279000160030 /* BEJSON.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEJSON.cpp; path = ../Source/BEJSON.cpp; sourceTree = "<group>"; };
-		4D00CC5916D3279000160030 /* BEJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEJSON.h; path = ../Source/BEJSON.h; sourceTree = "<group>"; };
 		4D05792C1B3B83550000585F /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/macOS/FMWrapper.framework; sourceTree = "<group>"; };
 		4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPEmailMessage.cpp; path = ../Source/Net/BESMTPEmailMessage.cpp; sourceTree = "<group>"; };
 		4D0BA9B118BEF74D00F8FD45 /* BESMTPEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTPEmailMessage.h; path = ../Source/Net/BESMTPEmailMessage.h; sourceTree = "<group>"; };
@@ -686,7 +670,6 @@
 		4DCD49841A195B0C00EFCF7F /* BaseElements.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaseElements.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BECppUtilities.cpp; path = ../Source/BECppUtilities.cpp; sourceTree = "<group>"; };
 		4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BECppUtilities.h; path = ../Source/BECppUtilities.h; sourceTree = "<group>"; };
-		4DD510231DD136F200763F7E /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/macOS/libjansson.a; sourceTree = "<group>"; };
 		4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BEProgressDialog.xib; path = ../Resources/Base.lproj/BEProgressDialog.xib; sourceTree = "<group>"; };
 		4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressDialogWindowController.h; path = ../Source/apple/ProgressDialogWindowController.h; sourceTree = "<group>"; };
 		4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressDialogWindowController.m; path = ../Source/apple/ProgressDialogWindowController.m; sourceTree = "<group>"; };
@@ -707,7 +690,6 @@
 		4DF4DB09271E790C007E91B5 /* libexslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexslt.a; path = ../Libraries/iOS/iPhoneOSSimulator/libexslt.a; sourceTree = "<group>"; };
 		4DF4DB0A271E7934007E91B5 /* libxslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxslt.a; path = ../Libraries/iOS/iPhoneOSSimulator/libxslt.a; sourceTree = "<group>"; };
 		4DF4DB0E271E79C7007E91B5 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = ../Libraries/iOS/iPhoneOSSimulator/libssh2.a; sourceTree = "<group>"; };
-		4DF4DB10271E7A24007E91B5 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/iOS/iPhoneOSSimulator/libjansson.a; sourceTree = "<group>"; };
 		4DF4DB12271E7A58007E91B5 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../Libraries/iOS/iPhoneOSSimulator/libjpeg.a; sourceTree = "<group>"; };
 		4DF4DB14271E7A68007E91B5 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = ../Libraries/iOS/iPhoneOSSimulator/libturbojpeg.a; sourceTree = "<group>"; };
 		4DF4DB16271E7B16007E91B5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -730,7 +712,6 @@
 		4DF4DB31271E7BE8007E91B5 /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = ../Libraries/iOS/iPhoneOS/libPocoUtil.a; sourceTree = "<group>"; };
 		4DF4DB32271E7BE8007E91B5 /* libxslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxslt.a; path = ../Libraries/iOS/iPhoneOS/libxslt.a; sourceTree = "<group>"; };
 		4DF4DB33271E7BE8007E91B5 /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = ../Libraries/iOS/iPhoneOS/libiconv.a; sourceTree = "<group>"; };
-		4DF4DB34271E7BE8007E91B5 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../Libraries/iOS/iPhoneOS/libjansson.a; sourceTree = "<group>"; };
 		4DF4DB48271E7BF1007E91B5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		4DF4DB4A271E7BFA007E91B5 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk/usr/lib/libbz2.tbd; sourceTree = DEVELOPER_DIR; };
 		4DFA0D69222E3211006EF9FB /* libPocoZip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoZip.a; path = ../Libraries/iOS/iPhoneOS/libPocoZip.a; sourceTree = "<group>"; };
@@ -778,7 +759,6 @@
 				4DF4DB44271E7BE8007E91B5 /* libPocoUtil.a in Frameworks */,
 				4DF4DB45271E7BE8007E91B5 /* libxslt.a in Frameworks */,
 				4DF4DB46271E7BE8007E91B5 /* libiconv.a in Frameworks */,
-				4DF4DB47271E7BE8007E91B5 /* libjansson.a in Frameworks */,
 				4DF4DB1A271E7BE7007E91B5 /* libPocoFoundation.a in Frameworks */,
 				4DF4DB1B271E7BE7007E91B5 /* libPocoFoundationd.a in Frameworks */,
 				4DF4DB1C271E7BE7007E91B5 /* libPocoJSON.a in Frameworks */,
@@ -800,7 +780,6 @@
 				4DF4DB17271E7B16007E91B5 /* UIKit.framework in Frameworks */,
 				4DF4DB15271E7A68007E91B5 /* libturbojpeg.a in Frameworks */,
 				4DF4DB13271E7A59007E91B5 /* libjpeg.a in Frameworks */,
-				4DF4DB11271E7A24007E91B5 /* libjansson.a in Frameworks */,
 				4DF4DB0F271E7A0E007E91B5 /* libssh2.a in Frameworks */,
 				4DF4DB08271E61A4007E91B5 /* libiconv.a in Frameworks */,
 				4DF4DAFE271E4B2E007E91B5 /* libssl.a in Frameworks */,
@@ -854,7 +833,6 @@
 				4DBB490127C45AD000D3D232 /* libfreetype.a in Frameworks */,
 				4DBB490227C45AD000D3D232 /* libfontconfig.a in Frameworks */,
 				4DBB490327C45AD000D3D232 /* libpodofo.a in Frameworks */,
-				4DBB490427C45AD000D3D232 /* libjansson.a in Frameworks */,
 				4DBB490527C45AD000D3D232 /* libexpat.tbd in Frameworks */,
 				4DBB490627C45AD000D3D232 /* libz.tbd in Frameworks */,
 				4DBB490727C45AD000D3D232 /* FMWrapper.framework in Frameworks */,
@@ -870,7 +848,6 @@
 				4DC9277827C5A79100FA1655 /* UIKit.framework in Frameworks */,
 				4DC9277927C5A79100FA1655 /* libturbojpeg.a in Frameworks */,
 				4DC9277A27C5A79100FA1655 /* libjpeg.a in Frameworks */,
-				4DC9277B27C5A79100FA1655 /* libjansson.a in Frameworks */,
 				4DC9277C27C5A79100FA1655 /* libssh2.a in Frameworks */,
 				4DC9277D27C5A79100FA1655 /* libiconv.a in Frameworks */,
 				4DC9277E27C5A79100FA1655 /* libssl.a in Frameworks */,
@@ -921,7 +898,6 @@
 				4DC927D627C5A81300FA1655 /* libPocoUtil.a in Frameworks */,
 				4DC927D727C5A81300FA1655 /* libxslt.a in Frameworks */,
 				4DC927D827C5A81300FA1655 /* libiconv.a in Frameworks */,
-				4DC927D927C5A81300FA1655 /* libjansson.a in Frameworks */,
 				4DC927DA27C5A81300FA1655 /* libPocoFoundation.a in Frameworks */,
 				4DC927DB27C5A81300FA1655 /* libPocoFoundationd.a in Frameworks */,
 				4DC927DC27C5A81300FA1655 /* libPocoJSON.a in Frameworks */,
@@ -964,7 +940,6 @@
 				4D76243D1E0A37F600266C0D /* libfreetype.a in Frameworks */,
 				4D76243C1E0A37F600266C0D /* libfontconfig.a in Frameworks */,
 				4D76243E1E0A37F600266C0D /* libpodofo.a in Frameworks */,
-				4DD510241DD136F200763F7E /* libjansson.a in Frameworks */,
 				4D7624421E0A3FFE00266C0D /* libexpat.tbd in Frameworks */,
 				4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */,
 				6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */,
@@ -996,7 +971,6 @@
 				4DE2FD152682C5D10091A9AD /* libfontconfig.a in Frameworks */,
 				4DE2FD162682C5D10091A9AD /* libfreetype.a in Frameworks */,
 				4DE2FD172682C5D10091A9AD /* libiconv.a in Frameworks */,
-				4DE2FD182682C5D10091A9AD /* libjansson.a in Frameworks */,
 				4DE2FD192682C5D10091A9AD /* libPocoFoundation.a in Frameworks */,
 				4DE2FD1A2682C5D10091A9AD /* libPocoJSON.a in Frameworks */,
 				4DE2FD1B2682C5D10091A9AD /* libPocoNet.a in Frameworks */,
@@ -1188,8 +1162,6 @@
 				4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */,
 				4DDBA8B6164386A900CC6FD7 /* BETime.h */,
 				4DDBA8B5164386A900CC6FD7 /* BETime.cpp */,
-				4D00CC5916D3279000160030 /* BEJSON.h */,
-				4D00CC5816D3279000160030 /* BEJSON.cpp */,
 				4DD3E8FC16DD6DA300DC0070 /* BECppUtilities.h */,
 				4DD3E8FB16DD6DA300DC0070 /* BECppUtilities.cpp */,
 				4D59DAFA16F95E2400F87180 /* BEValueList.h */,
@@ -1232,7 +1204,6 @@
 				4DF4DB24271E7BE7007E91B5 /* libfreetype.a */,
 				4DF4DB33271E7BE8007E91B5 /* libiconv.a */,
 				4DF4DB2C271E7BE7007E91B5 /* libiOSAppSDKLibrary.a */,
-				4DF4DB34271E7BE8007E91B5 /* libjansson.a */,
 				4DF4DB22271E7BE7007E91B5 /* libjpeg.a */,
 				4DF4DB2B271E7BE7007E91B5 /* libPocoNetd.a */,
 				4DF4DB31271E7BE8007E91B5 /* libPocoUtil.a */,
@@ -1248,7 +1219,6 @@
 				4DF4DB16271E7B16007E91B5 /* UIKit.framework */,
 				4DF4DB14271E7A68007E91B5 /* libturbojpeg.a */,
 				4DF4DB12271E7A58007E91B5 /* libjpeg.a */,
-				4DF4DB10271E7A24007E91B5 /* libjansson.a */,
 				4DF4DB0E271E79C7007E91B5 /* libssh2.a */,
 				4DF4DB0A271E7934007E91B5 /* libxslt.a */,
 				4DF4DB09271E790C007E91B5 /* libexslt.a */,
@@ -1309,7 +1279,6 @@
 				4D7624391E0A37F600266C0D /* libfontconfig.a */,
 				4D76243A1E0A37F600266C0D /* libfreetype.a */,
 				4D76243B1E0A37F600266C0D /* libpodofo.a */,
-				4DD510231DD136F200763F7E /* libjansson.a */,
 				4D7613811C44C52E00FC651E /* Security.framework */,
 				4D4C06781C23B3B6006899FE /* libldap.tbd */,
 				4D4C06761C23B3A9006899FE /* libcharset.tbd */,
@@ -1627,7 +1596,6 @@
 				4D362A151F2079E30036B751 /* BEXMLSchema.cpp in Sources */,
 				4D1D070E1F21C37A00BCE550 /* BEAppleFunctionsCommon.mm in Sources */,
 				4D362A0A1F2079CA0036B751 /* BETime.cpp in Sources */,
-				4D362A0B1F2079CA0036B751 /* BEJSON.cpp in Sources */,
 				4D362A0E1F2079CA0036B751 /* BECppUtilities.cpp in Sources */,
 				4D2C94FE2223B32400372093 /* BEDebugInformation.cpp in Sources */,
 				4D362A011F2079BC0036B751 /* BEFileMakerPlugin.cpp in Sources */,
@@ -1674,7 +1642,6 @@
 				4D362A631F2085880036B751 /* BEXMLSchema.cpp in Sources */,
 				4D1D070F1F21C37C00BCE550 /* BEAppleFunctionsCommon.mm in Sources */,
 				4D362A641F2085880036B751 /* BETime.cpp in Sources */,
-				4D362A651F2085880036B751 /* BEJSON.cpp in Sources */,
 				4D362A681F2085880036B751 /* BECppUtilities.cpp in Sources */,
 				4D2C94FF2223B32400372093 /* BEDebugInformation.cpp in Sources */,
 				4D362A691F2085880036B751 /* BEFileMakerPlugin.cpp in Sources */,
@@ -1743,7 +1710,6 @@
 				4DBB48D927C45AD000D3D232 /* BEXMLTextWriter.cpp in Sources */,
 				4DBB48DA27C45AD000D3D232 /* BEXMLReaderInterface.cpp in Sources */,
 				4DBB48DB27C45AD000D3D232 /* BETime.cpp in Sources */,
-				4DBB48DC27C45AD000D3D232 /* BEJSON.cpp in Sources */,
 				4DBB48DD27C45AD000D3D232 /* BECppUtilities.cpp in Sources */,
 				4DBB48DE27C45AD000D3D232 /* ProgressDialogWindowController.m in Sources */,
 				4DBB48DF27C45AD000D3D232 /* BECurlOption.cpp in Sources */,
@@ -1769,7 +1735,6 @@
 				4DC9275327C5A79100FA1655 /* BEXMLSchema.cpp in Sources */,
 				4DC9275427C5A79100FA1655 /* BEAppleFunctionsCommon.mm in Sources */,
 				4DC9275527C5A79100FA1655 /* BETime.cpp in Sources */,
-				4DC9275627C5A79100FA1655 /* BEJSON.cpp in Sources */,
 				4DC9275727C5A79100FA1655 /* BECppUtilities.cpp in Sources */,
 				4DC9275827C5A79100FA1655 /* BEDebugInformation.cpp in Sources */,
 				4DC9275927C5A79100FA1655 /* BEFileMakerPlugin.cpp in Sources */,
@@ -1816,7 +1781,6 @@
 				4DC9279F27C5A81300FA1655 /* BEXMLSchema.cpp in Sources */,
 				4DC927A027C5A81300FA1655 /* BEAppleFunctionsCommon.mm in Sources */,
 				4DC927A127C5A81300FA1655 /* BETime.cpp in Sources */,
-				4DC927A227C5A81300FA1655 /* BEJSON.cpp in Sources */,
 				4DC927A327C5A81300FA1655 /* BECppUtilities.cpp in Sources */,
 				4DC927A427C5A81300FA1655 /* BEDebugInformation.cpp in Sources */,
 				4DC927A527C5A81300FA1655 /* BEFileMakerPlugin.cpp in Sources */,
@@ -1885,7 +1849,6 @@
 				4DCD495C1A195B0C00EFCF7F /* BEXMLTextWriter.cpp in Sources */,
 				4DCD495D1A195B0C00EFCF7F /* BEXMLReaderInterface.cpp in Sources */,
 				4DCD495E1A195B0C00EFCF7F /* BETime.cpp in Sources */,
-				4DCD495F1A195B0C00EFCF7F /* BEJSON.cpp in Sources */,
 				4DCD49611A195B0C00EFCF7F /* BECppUtilities.cpp in Sources */,
 				4DCD49621A195B0C00EFCF7F /* ProgressDialogWindowController.m in Sources */,
 				4DCD49631A195B0C00EFCF7F /* BECurlOption.cpp in Sources */,
@@ -1915,7 +1878,6 @@
 				4DE2FD352682C6FE0091A9AD /* BEPluginFunctions.cpp in Sources */,
 				4DE2FD392682C7100091A9AD /* BEZlib.cpp in Sources */,
 				4DE2FD322682C6EC0091A9AD /* ProgressDialogWindowController.m in Sources */,
-				4DE2FD402682C7300091A9AD /* BEJSON.cpp in Sources */,
 				4DE2FD0A2682C57E0091A9AD /* BESMTPContainerAttachments.cpp in Sources */,
 				4D8757E12750459A008D9838 /* Test_BESMTPEmailMessage.mm in Sources */,
 				4DE2FD4D2682C8680091A9AD /* BEX509.cpp in Sources */,

@@ -64,23 +64,6 @@ Copy zip.h and zconf.h from the root directory of the distribution to the Header
 
 
 =======================================================================
-Jansson - 2.5
-=======================================================================
-
-Download the source from
-
-	https://github.com/rogerz/jansson/tree/json_path
-
-Download the source from
-
-	https://github.com/GoyaPtyLtd/jansson
-
-And build the release configuration.
-
-Copy jansson.h and jansson_config.h from ./src/ to the Headers directory and win32/vs2010/Output/Release/jansson.lib to Libraries\win64.
-
-
-=======================================================================
 OpenSSL - 1.1.1
 =======================================================================
 

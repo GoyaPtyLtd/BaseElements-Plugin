@@ -61,7 +61,6 @@
 #include "BEFileMakerPlugin.h"
 #include "BEFileSystem.h"
 #include "BEJavaScript.h"
-#include "BEJSON.h"
 #include "BEPDF.h"
 #include "BEPluginException.h"
 #include "BEQuadChar.h"
@@ -535,50 +534,6 @@ fmx::errcode BE_FileWriteText ( short /* funcId */, const ExprEnv& /* environmen
 	return MapError ( error );
 
 } // BE_FileWriteText
-
-
-fmx::errcode BE_WriteTextFileToContainer_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto file_name = ParameterFileName ( parameters );
-
-		if ( !file_name.empty() ) {
-
-			std::string text_to_write;
-
-			// should the text be appended to the file or replace any existing contents
-
-			auto append = ParameterAsBoolean ( parameters, 2, false );
-			if ( append && BinaryDataAvailable ( parameters )) {
-				text_to_write = ParameterPathOrContainerAsUTF8 ( parameters );
-			}
-
-			text_to_write += ParameterAsUTF8String ( parameters, 1 );
-
-			auto out = ConvertTextEncoding ( (char *)text_to_write.c_str(), text_to_write.size(), g_text_encoding, UTF8 );
-
-			if ( !out.empty() ) {
-				SetResult ( file_name, out, results );
-			}
-
-		} else {
-			error = kRequestedDataIsMissingError;
-		}
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_WriteTextFileToContainer_Deprecated
 
 
 /*
@@ -1466,60 +1421,6 @@ fmx::errcode BE_XMLTidy ( short /* funcId */, const ExprEnv& /* environment */, 
 #pragma mark -
 #pragma mark JSON
 #pragma mark -
-
-
-fmx::errcode BE_JSONPath_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
-{
-	errcode error = NoError();
-
-	g_json_error_description.clear();
-
-	try {
-
-		auto json = ParameterAsUTF8String ( parameters );
-		auto json_path_expression = ParameterAsUTF8String ( parameters, 1 );
-
-		std::unique_ptr<BEJSON> json_document ( new BEJSON ( json ) );
-		json_document->json_path_query ( json_path_expression, results );
-
-	} catch ( BEJSON_Exception& e ) {
-		error = e.code();
-		g_json_error_description = e.description();
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_JSONPath_Deprecated
-
-
-
-// do not set the global last error
-
-fmx::errcode BE_JSON_Error_Description_Deprecated ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
-{
-	errcode error = kNoError;
-
-	try {
-
-		SetResult ( g_json_error_description, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return error;
-
-} // BE_JSON_Error_Description_Deprecated
 
 
 fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )

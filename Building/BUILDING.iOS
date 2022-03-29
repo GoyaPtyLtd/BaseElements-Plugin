@@ -54,21 +54,6 @@ and copy the xcframework to the project directory
 
 
 =======================================================================
-Jansson - 2.5
-=======================================================================
-
-Download the source from
-
-	https://github.com/GoyaPtyLtd/jansson
-
-Then copy the compile_for_ios.sh script to the distribution directory
-
-	sh ./build_jansson.sh
-
-Copy jansson.h and jansson_config.h from output/<platform>/include to the Headers directory and  output/libjansson.a to Libraries/iOS.
-
-
-=======================================================================
 OpenSSL - 1.1.1j
 =======================================================================
 

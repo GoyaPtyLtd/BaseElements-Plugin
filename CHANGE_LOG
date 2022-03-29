@@ -20,6 +20,13 @@ BE_BackgroundTaskList: return a value list of ids for pending background tasks
 BE_SMTPServer: new parameter to control reuse of the SMTP connection when sending bulk email
 
 
+Functions Removed
+
+BE_JSONPath_Deprecated
+BE_JSON_Error_Description_Deprecated
+BE_WriteTextFileToContainer_Deprecated
+
+
 New Named Constants
 
 BE_ScriptControlHalt: an option for the "scriptControl" parameter of BE_ScriptExecute

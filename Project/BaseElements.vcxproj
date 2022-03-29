@@ -156,7 +156,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;jansson.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofo.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofo.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -211,7 +211,7 @@ signtool verify /pa "$(TargetPath)"
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;jansson.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofo.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofo.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -269,7 +269,7 @@ signtool verify /pa "$(TargetPath)"
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;jansson.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofod.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofod.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -337,7 +337,7 @@ signtool verify /pa "$(TargetPath)"
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;jansson.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofod.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofod.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -391,7 +391,6 @@ signtool verify /pa "$(TargetPath)"
     <ClCompile Include="..\Source\BEFileSystem.cpp" />
     <ClCompile Include="..\Source\BEFileTextReader.cpp" />
     <ClCompile Include="..\Source\BEJavaScript.cpp" />
-    <ClCompile Include="..\Source\BEJSON.cpp" />
     <ClCompile Include="..\Source\Net\BESMTPContainerAttachments.cpp" />
     <ClCompile Include="..\Source\Crypto\BEBio.cpp" />
     <ClCompile Include="..\Source\Crypto\BEMessageDigest.cpp">
@@ -463,7 +462,6 @@ signtool verify /pa "$(TargetPath)"
     <ClInclude Include="..\Source\BEFileSystem.h" />
     <ClInclude Include="..\Source\BEFileTextReader.h" />
     <ClInclude Include="..\Source\BEJavaScript.h" />
-    <ClInclude Include="..\Source\BEJSON.h" />
     <ClInclude Include="..\Source\BERegularExpression.h" />
     <ClInclude Include="..\Source\BEPluginVersion.h" />
     <ClInclude Include="..\Source\Net\BESMTPContainerAttachments.h" />

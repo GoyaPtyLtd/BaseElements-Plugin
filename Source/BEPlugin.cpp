@@ -154,7 +154,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
     g_be_plugin->RegisterFunction ( kBE_FileModificationTimestamp, BE_FileModificationTimestamp, 1 );
 	g_be_plugin->RegisterFunction ( kBE_FileReadText, BE_FileReadText, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_FileWriteText, BE_FileWriteText, 2, 3 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_WriteTextFileToContainer_Deprecated, BE_WriteTextFileToContainer_Deprecated, 2, 3 );
 	g_be_plugin->RegisterFunction ( kBE_XMLStripInvalidCharacters, BE_XMLStripInvalidCharacters, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_ExportFieldContents, BE_ExportFieldContents, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_FileImport, BE_FileImport, 1, 2 );
@@ -210,8 +209,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_Gzip, BE_Gzip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_UnGzip, BE_UnGzip, 1, 2 );
 
-	g_be_plugin->RegisterHiddenFunction ( kBE_JSONPath_Deprecated, BE_JSONPath_Deprecated, 2 );
-	g_be_plugin->RegisterHiddenFunction ( kBE_JSON_Error_Description_Deprecated, BE_JSON_Error_Description_Deprecated );
 	g_be_plugin->RegisterFunction ( kBE_JSON_ArraySize, BE_JSON_ArraySize, 1, 2 );
 
 

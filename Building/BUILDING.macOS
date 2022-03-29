@@ -34,33 +34,6 @@ Copy the header and library files.
 
 
 =======================================================================
-Jansson - 2.5
-=======================================================================
-
-Download the source as a ZIP archive from
-
-	https://github.com/GoyaPtyLtd/jansson
-
-and extract the archive. Then
-
-	cd jansson-master
-	autoreconf -i
-	./configure --prefix="$(pwd)/_build_macos_x86_64" CFLAGS="-arch x86_64 -mmacosx-version-min=10.13" --disable-shared
-	make -s -j install
-	make distclean
-	./configure --prefix="$(pwd)/_build_macos_arm64" CFLAGS="-arch arm64 -mmacosx-version-min=10.13" --disable-shared
-	make -s -j install
-	mkdir _build_macos
-	lipo -create "_build_macos_x86_64/lib/libjansson.a" "_build_macos_arm64/lib/libjansson.a" -output "_build_macos/libjansson.a"
-	
-
-Copy the header and library files.
-
-	cp _build_macos/include/jansson.h ./build/include/jansson_config.h "${SRCROOT}/Headers/"
-	cp _build_macos/lib/libjansson.a "${SRCROOT}/Libraries/macOS/"
-
-
-=======================================================================
 OpenSSL - 1.1.1k
 =======================================================================
 

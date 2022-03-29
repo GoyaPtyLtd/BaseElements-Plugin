@@ -37,24 +37,6 @@ for instructions on compiling the Boost libraries. From the command prompt try
 Copy the directory containing the boost headers from the _build_linux/include directory to the Headers directory and copy the files in the _build_linux/lib to Libraries/linux.
 
 
-=======================================================================
-Jansson - 2.5
-=======================================================================
-
-Download the source from
-
-	https://github.com/GoyaPtyLtd/jansson
-
-Then
-
-	cd jansson-json_path
-	autoreconf -i
-	CFLAGS=-fPIC ./configure --prefix=$(pwd)/_build_linux
-	make install
-
-Copy jansson.h and jansson_config.h from build/include to the Headers directory and  _build_linux/lib/libjansson.a to Libraries/linux.
-
-
 ======================================================================
 zlib - 1.2.8
 =======================================================================

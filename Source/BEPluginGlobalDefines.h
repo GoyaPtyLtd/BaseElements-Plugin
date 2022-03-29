@@ -134,7 +134,7 @@ enum functions {
 	kBE_ClipboardGetFile = 135,
 	kBE_ClipboardSetFile = 136,
 	kBE_GetSystemDrive = 137,
-	kBE_WriteTextFileToContainer_Deprecated = 140,
+//	kBE_WriteTextFileToContainer_Deprecated = 140, // removed in 5
 	kBE_VersionPro = 141,
 	kBE_ScriptExecute = 150,
 	kBE_FileMakerSQL = 151,
@@ -199,8 +199,8 @@ enum functions {
 	kBE_UnGzip = 261,
 //	kBE_JPEG_Recompress_Deprecated = 270, // deprecated => Removed in 4.2
 	kBE_JPEGRecompress= 271,
-	kBE_JSONPath_Deprecated = 300,
-	kBE_JSON_Error_Description_Deprecated = 301,
+//	kBE_JSONPath_Deprecated = 300, // removed in 5
+//	kBE_JSON_Error_Description_Deprecated = 301, // removed in 5
 	kBE_JSON_ArraySize = 302,
 //	kBE_JSON_Encode_Deprecated = 303, // Removed in 4.2
 //	kBE_OAuth_RequestToken = 320, // Never Implemented

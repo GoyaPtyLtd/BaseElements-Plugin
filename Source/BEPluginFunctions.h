@@ -174,12 +174,4 @@ fmx::errcode BE_DecryptAES ( short funcId, const fmx::ExprEnv& environment, cons
 fmx::errcode BE_JSON_ArraySize ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 
-// Deprecated
-
-fmx::errcode BE_WriteTextFileToContainer_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-
-fmx::errcode BE_JSONPath_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-fmx::errcode BE_JSON_Error_Description_Deprecated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
-
-
 #endif // BEPLUGINFUNCTIONS_H
