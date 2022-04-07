@@ -2,7 +2,7 @@
  BEWinIFileDialog.cpp
  BaseElements Plug-In
  
- Copyright 2014-2016 Goya. All rights reserved.
+ Copyright 2014-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -122,7 +122,7 @@ const std::wstring BEWinIFileOpenDialog::GetSelection ( )
 {
 	hr = S_OK;
 
-	auto_ptr< BEValueList<wstring> > selected_files ( new BEValueList<wstring>( ) );
+	unique_ptr< BEValueList<wstring> > selected_files ( new BEValueList<wstring>( ) );
 
 	IShellItemArray * file_names;
 	hr = file_dialog->GetResults ( &file_names );

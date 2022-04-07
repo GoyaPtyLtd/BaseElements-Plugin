@@ -2,7 +2,7 @@
  BEWinFunctions.cpp
  BaseElements Plug-in
 	
- Copyright 2010-2021 Goya. All rights reserved.
+ Copyright 2010-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -619,7 +619,7 @@ const bool SetClipboardFile ( const std::vector<unsigned char>& data, const std:
 
 const wstring SelectFile ( const wstring& prompt, const wstring& in_folder )
 {
-	BEWinIFileOpenDialogAutoPtr file_dialog ( new BEWinIFileOpenDialog ( prompt, in_folder ) );
+	BEWinIFileOpenDialogUniquePtr file_dialog ( new BEWinIFileOpenDialog ( prompt, in_folder ) );
 	const wstring selected_files ( file_dialog->Show ( ) );
 
 	return selected_files;
@@ -670,7 +670,7 @@ const wstring SelectFolder ( const wstring& prompt, const wstring& in_folder )
 
 const wstring SaveFileDialog ( const wstring& prompt, const wstring& file_name, const wstring& in_folder )
 {
-	BEWinIFileSaveDialogAutoPtr file_dialog ( new BEWinIFileSaveDialog ( prompt, file_name, in_folder ) );
+	BEWinIFileSaveDialogUniquePtr file_dialog ( new BEWinIFileSaveDialog ( prompt, file_name, in_folder ) );
 	const wstring save_file_as ( file_dialog->Show ( ) );
 
 	return save_file_as;

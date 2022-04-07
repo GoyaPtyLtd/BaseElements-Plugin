@@ -2,7 +2,7 @@
  BEWinIFileDialog.h
  BaseElements Plug-In
  
- Copyright 2014-2016 Goya. All rights reserved.
+ Copyright 2014-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -50,7 +50,7 @@ protected:
 };
 
 
-typedef std::auto_ptr<BEWinIFileOpenDialog> BEWinIFileOpenDialogAutoPtr;
+typedef std::unique_ptr<BEWinIFileOpenDialog> BEWinIFileOpenDialogUniquePtr;
 
 
 class BEWinIFileSaveDialog : public BEWinIFileOpenDialog
@@ -73,7 +73,7 @@ protected:
 };
 
 
-typedef std::auto_ptr<BEWinIFileSaveDialog> BEWinIFileSaveDialogAutoPtr;
+typedef std::unique_ptr<BEWinIFileSaveDialog> BEWinIFileSaveDialogUniquePtr;
 
 
 #endif // BEWINIFILEDIALOG_H
