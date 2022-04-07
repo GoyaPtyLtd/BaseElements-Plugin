@@ -150,6 +150,8 @@
       <DisableSpecificWarnings>4068</DisableSpecificWarnings>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -172,9 +174,7 @@
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"
-signtool verify /pa "$(TargetPath)"
-</Command>
+      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -205,6 +205,8 @@ signtool verify /pa "$(TargetPath)"
       <DisableSpecificWarnings>4068</DisableSpecificWarnings>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -227,9 +229,7 @@ signtool verify /pa "$(TargetPath)"
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"
-signtool verify /pa "$(TargetPath)"
-</Command>
+      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -263,6 +263,8 @@ signtool verify /pa "$(TargetPath)"
       </UndefinePreprocessorDefinitions>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -295,9 +297,7 @@ signtool verify /pa "$(TargetPath)"
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"
-signtool verify /pa "$(TargetPath)"
-</Command>
+      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -331,6 +331,8 @@ signtool verify /pa "$(TargetPath)"
       </UndefinePreprocessorDefinitions>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -363,9 +365,7 @@ signtool verify /pa "$(TargetPath)"
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"
-signtool verify /pa "$(TargetPath)"
-</Command>
+      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>

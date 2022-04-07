@@ -63,10 +63,10 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
+			<Add option="-std=gnu++17" />
 			<Add option="-m64" />
 			<Add option="-fexceptions -Wno-unknown-pragmas -fPIC" />
-			<Add option="-D_LIBCPP_STD_VER=11" />
+			<Add option="-D_LIBCPP_STD_VER=17" />
 			<Add directory="../Headers" />
 			<Add directory="../Source" />
 		</Compiler>
@@ -177,7 +177,7 @@
 		<Unit filename="../Source/Net/BESMTPEmailMessage.cpp" />
 		<Unit filename="../Source/duktape/duktape.c">
 			<Option compilerVar="CC" />
-			<Option compiler="clang" use="1" buildCommand="$compiler $options -std=c99 $includes -c $file -o $object" />
+			<Option compiler="clang" use="1" buildCommand="$compiler $options -std=gnu11 $includes -c $file -o $object" />
 		</Unit>
 		<Unit filename="../Source/linux/BELinuxFunctions.cpp" />
 		<Extensions>
