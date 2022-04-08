@@ -46,8 +46,6 @@ Project/BaseElements.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChec
 Project/Extras/BaseElementsIOSPluginTest
 Project/Extras/Import.log
 Project/Extras/build_libraries.rb
-Project/CodeSigning/GoyaPtyLtd.pfx
-Project/CodeSigning/Certificates - goya.p12
 
 Project/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Solution Files/BaseElements Plugin Tests.fmp12
 Project/Extras/BaseElementsIOSPluginTest/BaseElementsIOSPluginTest/Plug-Ins/*
@@ -62,3 +60,4 @@ Project/core
 Project/.vs/BaseElements/v17/Browse.VC.db
 Project/.vs/BaseElements/v17/.suo
 Project/.vs/BaseElements/v17/fileList.bin
+Project/CodeSigning/*
