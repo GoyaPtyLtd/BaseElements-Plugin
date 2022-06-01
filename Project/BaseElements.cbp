@@ -42,7 +42,7 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-g" />
-					<Add option='-DGCC_PREPROCESSOR_DEFINITIONS=&quot;BEP_PRO_VERSION=1&quot;' />
+					<Add option="-DBEP_PRO_VERSION=1" />
 				</Compiler>
 			</Target>
 			<Target title="PRO Release">
@@ -54,7 +54,7 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add option='-DGCC_PREPROCESSOR_DEFINITIONS=&quot;BEP_PRO_VERSION=1&quot;' />
+					<Add option="-DBEP_PRO_VERSION=1" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -63,7 +63,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-std=gnu++17" />
 			<Add option="-m64" />
 			<Add option="-fexceptions -Wno-unknown-pragmas -fPIC" />
 			<Add option="-D_LIBCPP_STD_VER=17" />
@@ -102,7 +101,7 @@
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
-			<Add before="cp ../Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
+			<Add before="#cp ../Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
 			<Add after='chown -f fmserver:fmsadmin  &quot;/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx&quot;' />
 			<Mode after="always" />
 		</ExtraCommands>
