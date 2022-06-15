@@ -2,7 +2,7 @@
  BEPDF.h
  BaseElements Plug-In
 
- Copyright 2021 Goya. All rights reserved.
+ Copyright 2021~2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -17,7 +17,10 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <podofo/podofo.h>
+#pragma GCC diagnostic pop
 
 
 /*
