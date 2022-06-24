@@ -68,13 +68,15 @@
 			<Add option="-D_LIBCPP_STD_VER=17" />
 			<Add directory="../Headers" />
 			<Add directory="../Source" />
+			<Add directory="../Headers/ImageMagick-7" />
 		</Compiler>
 		<Linker>
 			<Add option="-m64" />
-			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
 			<Add option="-Wl,-soname=5.0b1" />
+			<Add option="-Wl,--exclude-libs,ALL" />
+			<Add library="../Libraries/linux/libMagick++-7.Q16HDRI.a" />
+			<Add library="../Libraries/linux/libMagickCore-7.Q16HDRI.a" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
-			<Add library="../Libraries/linux/libz.a" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
 			<Add library="../Libraries/linux/libboost_filesystem.a" />
 			<Add library="../Libraries/linux/libboost_program_options.a" />
@@ -87,7 +89,6 @@
 			<Add library="../Libraries/linux/libssh2.a" />
 			<Add library="../Libraries/linux/libexslt.a" />
 			<Add library="../Libraries/linux/libturbojpeg.a" />
-			<Add library="../Libraries/linux/libjpeg.a" />
 			<Add library="../Libraries/linux/libxml2.a" />
 			<Add library="../Libraries/linux/libxslt.a" />
 			<Add library="../Libraries/linux/libPocoJSON.a" />
@@ -98,11 +99,17 @@
 			<Add library="../Libraries/linux/libfontconfig.a" />
 			<Add library="../Libraries/linux/libpodofo.a" />
 			<Add library="../Libraries/linux/libiconv.a" />
+			<Add library="../Libraries/linux/libheif.a" />
+			<Add library="../Libraries/linux/liblibde265.a" />
+			<Add library="../Libraries/linux/libjpeg.a" />
+			<Add library="../Libraries/linux/libpng16.a" />
+			<Add library="../Libraries/linux/libz.a" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
 			<Add before="#cp ../Libraries/linux/libFMWrapper.so /opt/FileMaker/lib/" />
 			<Add after='chown -f fmserver:fmsadmin  &quot;/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx&quot;' />
+			<Add after='#cp &quot;/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx&quot; ~/Desktop/' />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="../Headers/FMWrapper/FMXBinaryData.h">

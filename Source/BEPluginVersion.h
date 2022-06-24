@@ -1,12 +1,12 @@
 /*
  BEPluginVersion.h
  BaseElements Plug-In
- 
+
  Copyright 2015-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
- 
+
  http://www.goya.com.au/baseelements/plugin
- 
+
  */
 
 
@@ -20,7 +20,7 @@
 // this is the only place the version information is set
 // building the macOS version will automatically set the version information for win/linux
 
-#define	AUTO_UPDATE_VERSION "04990000"
+#define	AUTO_UPDATE_VERSION "04990002"
 #define VERSION_NUMBER_STRING "5.0" // e.g. 4.0.1
 #define VERSION_STRING "5.0b1"	// e.g. 4.0.1b2
 

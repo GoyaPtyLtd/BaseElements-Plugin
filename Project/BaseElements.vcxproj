@@ -88,10 +88,10 @@
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='PRO Release|x64'">.fmx64</TargetExt>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Libraries\win64;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='PRO Release|x64'">..\Libraries\win64;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='PRO Debug|x64'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='PRO Release|x64'">../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Headers\ImageMagick-7-win64;../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='PRO Debug|x64'">..\Headers\ImageMagick-7-win64;../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Headers\ImageMagick-7-win64;../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='PRO Release|x64'">..\Headers\ImageMagick-7-win64;../Headers\iconv;../Headers\boost;../Resources;../Headers;../Source;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(VC_SourcePath);$(UniversalCRT_SourcePath);</SourcePath>
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='PRO Release|x64'">$(VC_SourcePath);$(UniversalCRT_SourcePath);</SourcePath>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">c:\Users\$(username)\AppData\Local\FileMaker\FileMaker Pro\19.0\Extensions\</OutDir>
@@ -158,7 +158,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofo.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmt.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofo.lib;iphlpapi.lib;heif.lib;libde265.lib;libpng16.lib;openjp2.lib;CORE_RL_zlib_.lib;CORE_RL_aom_.lib;CORE_RL_brotli_.lib;CORE_RL_bzlib_.lib;CORE_RL_cairo_.lib;CORE_RL_coders_.lib;CORE_RL_croco_.lib;CORE_RL_exr_.lib;CORE_RL_ffi_.lib;CORE_RL_filters_.lib;CORE_RL_freetype_.lib;CORE_RL_fribidi_.lib;CORE_RL_glib_.lib;CORE_RL_harfbuzz_.lib;CORE_RL_highway_.lib;CORE_RL_jp2_.lib;CORE_RL_jpeg-turbo_.lib;CORE_RL_jpeg-xl_.lib;CORE_RL_lcms_.lib;CORE_RL_libde265_.lib;CORE_RL_libheif_.lib;CORE_RL_liblzma_.lib;CORE_RL_libraw_.lib;CORE_RL_librsvg_.lib;CORE_RL_libxml_.lib;CORE_RL_libzip_.lib;CORE_RL_lqr_.lib;CORE_RL_Magick++_.lib;CORE_RL_MagickCore_.lib;CORE_RL_MagickWand_.lib;CORE_RL_openjpeg_.lib;CORE_RL_pango_.lib;CORE_RL_pixman_.lib;CORE_RL_png_.lib;CORE_RL_raqm_.lib;CORE_RL_tiff_.lib;CORE_RL_webp_.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -174,7 +174,7 @@
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
+      <Command>signtool sign /fd SHA256 /td SHA256 /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -213,7 +213,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmt.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofo.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmt.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofo.lib;iphlpapi.lib;heif.lib;libde265.lib;libpng16.lib;openjp2.lib;CORE_RL_zlib_.lib;CORE_RL_aom_.lib;CORE_RL_brotli_.lib;CORE_RL_bzlib_.lib;CORE_RL_cairo_.lib;CORE_RL_coders_.lib;CORE_RL_croco_.lib;CORE_RL_exr_.lib;CORE_RL_ffi_.lib;CORE_RL_filters_.lib;CORE_RL_freetype_.lib;CORE_RL_fribidi_.lib;CORE_RL_glib_.lib;CORE_RL_harfbuzz_.lib;CORE_RL_highway_.lib;CORE_RL_jp2_.lib;CORE_RL_jpeg-turbo_.lib;CORE_RL_jpeg-xl_.lib;CORE_RL_lcms_.lib;CORE_RL_libde265_.lib;CORE_RL_libheif_.lib;CORE_RL_liblzma_.lib;CORE_RL_libraw_.lib;CORE_RL_librsvg_.lib;CORE_RL_libxml_.lib;CORE_RL_libzip_.lib;CORE_RL_lqr_.lib;CORE_RL_Magick++_.lib;CORE_RL_MagickCore_.lib;CORE_RL_MagickWand_.lib;CORE_RL_openjpeg_.lib;CORE_RL_pango_.lib;CORE_RL_pixman_.lib;CORE_RL_png_.lib;CORE_RL_raqm_.lib;CORE_RL_tiff_.lib;CORE_RL_webp_.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -229,7 +229,7 @@
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
+      <Command>signtool sign /fd SHA256 /td SHA256 /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -271,7 +271,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofod.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmtd.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofod.lib;iphlpapi.lib;heif.lib;libde265_d.lib;libpng16.lib;openjp2.lib;CORE_DB_zlib_.lib;CORE_DB_aom_.lib;CORE_DB_brotli_.lib;CORE_DB_bzlib_.lib;CORE_DB_cairo_.lib;CORE_DB_coders_.lib;CORE_DB_croco_.lib;CORE_DB_exr_.lib;CORE_DB_ffi_.lib;CORE_DB_filters_.lib;CORE_DB_freetype_.lib;CORE_DB_fribidi_.lib;CORE_DB_glib_.lib;CORE_DB_harfbuzz_.lib;CORE_DB_highway_.lib;CORE_DB_jp2_.lib;CORE_DB_jpeg-turbo_.lib;CORE_DB_jpeg-xl_.lib;CORE_DB_lcms_.lib;CORE_DB_libde265_.lib;CORE_DB_libheif_.lib;CORE_DB_liblzma_.lib;CORE_DB_libraw_.lib;CORE_DB_librsvg_.lib;CORE_DB_libxml_.lib;CORE_DB_libzip_.lib;CORE_DB_lqr_.lib;CORE_DB_Magick++_.lib;CORE_DB_MagickCore_.lib;CORE_DB_MagickWand_.lib;CORE_DB_openjpeg_.lib;CORE_DB_pango_.lib;CORE_DB_pixman_.lib;CORE_DB_png_.lib;CORE_DB_raqm_.lib;CORE_DB_tiff_.lib;CORE_DB_webp_.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -297,7 +297,7 @@
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
+      <Command>signtool sign /fd SHA256 /td SHA256 /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -339,7 +339,7 @@
       <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmtd.lib;zlibstat.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofod.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>delayimp.lib;FMWrapper.lib;libcmtd.lib;iconv.lib;libxml2.lib;libxslt_a.lib;libexslt_a.lib;libcurl.lib;ws2_32.lib;Crypt32.lib;user32.lib;gdi32.lib;advapi32.lib;wldap32.lib;libcrypto_static.lib;libssl_static.lib;comctl32.lib;libssh2.lib;turbojpeg-static.lib;freetype.lib;podofod.lib;iphlpapi.lib;heif.lib;libde265_d.lib;libpng16.lib;openjp2.lib;CORE_DB_zlib_.lib;CORE_DB_aom_.lib;CORE_DB_brotli_.lib;CORE_DB_bzlib_.lib;CORE_DB_cairo_.lib;CORE_DB_coders_.lib;CORE_DB_croco_.lib;CORE_DB_exr_.lib;CORE_DB_ffi_.lib;CORE_DB_filters_.lib;CORE_DB_freetype_.lib;CORE_DB_fribidi_.lib;CORE_DB_glib_.lib;CORE_DB_harfbuzz_.lib;CORE_DB_highway_.lib;CORE_DB_jp2_.lib;CORE_DB_jpeg-turbo_.lib;CORE_DB_jpeg-xl_.lib;CORE_DB_lcms_.lib;CORE_DB_libde265_.lib;CORE_DB_libheif_.lib;CORE_DB_liblzma_.lib;CORE_DB_libraw_.lib;CORE_DB_librsvg_.lib;CORE_DB_libxml_.lib;CORE_DB_libzip_.lib;CORE_DB_lqr_.lib;CORE_DB_Magick++_.lib;CORE_DB_MagickCore_.lib;CORE_DB_MagickWand_.lib;CORE_DB_openjpeg_.lib;CORE_DB_pango_.lib;CORE_DB_pixman_.lib;CORE_DB_png_.lib;CORE_DB_raqm_.lib;CORE_DB_tiff_.lib;CORE_DB_webp_.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Libraries\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -365,7 +365,7 @@
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
+      <Command>signtool sign /fd SHA256 /td SHA256 /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>

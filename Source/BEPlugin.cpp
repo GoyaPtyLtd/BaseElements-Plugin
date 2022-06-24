@@ -34,7 +34,6 @@
 
  */
 
-
 #include "BEPluginGlobalDefines.h"
 #include "BEPluginFunctions.h"
 #include "BEPluginUtilities.h"
@@ -52,6 +51,12 @@
 #elif FMX_LINUX_TARGET
 	#include "linux/BELinuxFunctions.h"
 #endif
+
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#include <Magick++.h>
+#pragma GCC diagnostic pop
 
 
 using namespace std;
@@ -88,6 +93,11 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin = new BEFileMakerPlugin ( *plugin_id );
 	g_be_plugin->set_fmx_application ( plugin_call->parm1 );
 
+
+#ifndef FMX_IOS_TARGET
+    Magick::InitializeMagick ( NULL );
+#endif
+
 	fmx::TextUniquePtr fmx_application_version;
 	fmx_application_version->AssignUnicode ( (unichar16 *)plugin_call->parm2 );
 	const std::string application_version ( TextAsUTF8String ( *fmx_application_version ) );
@@ -97,7 +107,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_VersionAutoUpdate, BE_Version );
 	g_be_plugin->RegisterFunction ( kBE_VersionPro, BE_Version );
 
-	
+
 	g_be_plugin->RegisterFunction ( kBE_GetLastError, BE_GetLastError );
 	g_be_plugin->RegisterFunction ( kBE_GetLastDDLError, BE_GetLastError );
 
@@ -159,7 +169,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FileImport, BE_FileImport, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_FilePatternCount, BE_FilePatternCount, 2 );
 	g_be_plugin->RegisterFunction ( kBE_FileReplaceText, BE_FileReplaceText, 3, 4 );
-	
+
 	g_be_plugin->RegisterFunction ( kBE_FileMove, BE_FileMove, 2 );
 	g_be_plugin->RegisterFunction ( kBE_FileCopy, BE_FileCopy, 2 );
 	g_be_plugin->RegisterFunction ( kBE_FileListFolder, BE_FileListFolder, 1, 5 );
@@ -173,7 +183,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 #else
 	g_be_plugin->RegisterFunction ( kBE_XSLTApply, BE_XSLTApply, 3 );
 #endif
-	
+
 	g_be_plugin->RegisterFunction ( kBE_XSLT_ApplyInMemory, BE_XSLTApply, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, 2, 4 );
@@ -220,6 +230,10 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, 0, 1 );
 
 	g_be_plugin->RegisterFunction ( kBE_JPEGRecompress, BE_JPEGRecompress, 1, 3 );
+
+#if BEP_PRO_VERSION && !FMX_IOS_TARGET
+	g_be_plugin->RegisterFunction ( kBE_ContainerConvertImage, BE_ContainerConvertImage, 1, 2 );
+#endif
 
 	g_be_plugin->RegisterFunction ( kBE_VariableSet, BE_Variable, 2 );
 	g_be_plugin->RegisterFunction ( kBE_VariableGet, BE_Variable, 1 );
@@ -280,7 +294,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FTP_Upload, BE_FTP_Upload, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_FTP_UploadFile, BE_FTP_Upload, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_CurlGetInfo, BE_CurlGetInfo, 1 );
-	
+
 #ifdef BEP_PRO_VERSION
 	g_be_plugin->RegisterFunction ( kBE_BackgroundTaskAdd, BE_BackgroundTaskAdd, 7, 9 );
 	g_be_plugin->RegisterFunction ( kBE_BackgroundTaskList, BE_BackgroundTaskList );
@@ -303,8 +317,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_ArrayDelete, BE_ArrayDelete, 1 );
 	g_be_plugin->RegisterFunction ( kBE_ArrayFind, BE_ArrayFind, 2 );
 	g_be_plugin->RegisterFunction ( kBE_ArrayChangeValue, BE_ArrayChangeValue, 3 );
-
-
 	g_be_plugin->RegisterFunction ( kBE_ConvertContainer, BE_ConvertContainer, 1, 4 );
 
 	g_be_plugin->RegisterFunction ( kBE_PDFAppend, BE_PDFAppend, 2, 3 );
@@ -342,8 +354,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kFMXT_Exit + kBE_ScriptControlOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kFMXT_Resume + kBE_ScriptControlOffset, BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( kFMXT_Pause + kBE_ScriptControlOffset, BE_NumericConstants );
-	
-	
+
+
 	return kCurrentExtnVersion;	// enable the plug-in
 
 } // LoadPlugin
@@ -351,6 +363,11 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 
 static void UnloadPlugin ( void ) {
+
+
+#ifndef FMX_IOS_TARGET
+    Magick::TerminateMagick();
+#endif
 
 	CleanupLibXSLT();
 

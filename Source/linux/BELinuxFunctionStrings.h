@@ -111,6 +111,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 260, "BE_Gzip ( data { ; fileName } )" },
 	{ 261, "BE_UnGzip ( gzip_data { ; fileName } )" },
 	{ 271, "BE_JPEGRecompress ( jpeg { ; compressionLevel ; scale } )" },
+	{ 272, "BE_ContainerConvertImage ( image {; imageFormat } )" },
 	{ 302, "BE_JSON_ArraySize ( json { ; path } )" },
 	{ 350, "BE_ValuesUnique ( listOfValues { ; caseSensitiveBoolean } )" },
 	{ 351, "BE_ValuesFilterOut ( textToFilter ; filterValues { ; caseSensitiveBoolean } )" },

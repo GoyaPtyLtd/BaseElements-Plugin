@@ -23,6 +23,8 @@
 		4D1D070D1F21C36700BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070E1F21C37A00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070F1F21C37C00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
+		4D29455B28643DBC00C94A27 /* libde265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43213428126C170014BBD3 /* libde265.a */; };
+		4D29455C286441AC00C94A27 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE2FD272682C5D10091A9AD /* libjpeg.a */; };
 		4D2C94FD2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
 		4D2C94FE2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
 		4D2C94FF2223B32400372093 /* BEDebugInformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */; };
@@ -104,7 +106,23 @@
 		4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC52717D0B20009E745 /* libPocoUtil.a */; };
 		4D3B9BC72717D2470009E745 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
 		4D3B9BC92717D5A50009E745 /* boost.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC82717D5A50009E745 /* boost.xcframework */; };
-		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
+		4D43211E281268720014BBD3 /* libheif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432118281268710014BBD3 /* libheif.a */; };
+		4D43211F281268720014BBD3 /* libheif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432118281268710014BBD3 /* libheif.a */; };
+		4D432121281268720014BBD3 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432119281268710014BBD3 /* libpng16.a */; };
+		4D432122281268720014BBD3 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432119281268710014BBD3 /* libpng16.a */; };
+		4D432123281268720014BBD3 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432119281268710014BBD3 /* libpng16.a */; };
+		4D432124281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211A281268710014BBD3 /* libMagick++-7.Q16HDRI.a */; };
+		4D432125281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211A281268710014BBD3 /* libMagick++-7.Q16HDRI.a */; };
+		4D432126281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211A281268710014BBD3 /* libMagick++-7.Q16HDRI.a */; };
+		4D432127281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211B281268720014BBD3 /* libMagickCore-7.Q16HDRI.a */; };
+		4D432128281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211B281268720014BBD3 /* libMagickCore-7.Q16HDRI.a */; };
+		4D432129281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211B281268720014BBD3 /* libMagickCore-7.Q16HDRI.a */; };
+		4D43212A281268720014BBD3 /* libopenjp2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211C281268720014BBD3 /* libopenjp2.a */; };
+		4D43212B281268720014BBD3 /* libopenjp2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211C281268720014BBD3 /* libopenjp2.a */; };
+		4D43212D281268720014BBD3 /* libMagickWand-7.Q16HDRI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211D281268720014BBD3 /* libMagickWand-7.Q16HDRI.a */; };
+		4D43212E281268720014BBD3 /* libMagickWand-7.Q16HDRI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211D281268720014BBD3 /* libMagickWand-7.Q16HDRI.a */; };
+		4D432132281269D30014BBD3 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432130281269D30014BBD3 /* libz.a */; };
+		4D43213628126C170014BBD3 /* libde265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43213428126C170014BBD3 /* libde265.a */; };
 		4D61F8F027507DA000AD1423 /* BEMailRecipient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D61F8EE27507DA000AD1423 /* BEMailRecipient.cpp */; };
 		4D61F8F127507DA000AD1423 /* BEMailRecipient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D61F8EE27507DA000AD1423 /* BEMailRecipient.cpp */; };
 		4D61F8F227507DA000AD1423 /* BEMailRecipient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D61F8EE27507DA000AD1423 /* BEMailRecipient.cpp */; };
@@ -135,11 +153,15 @@
 		4D84EB4927BB5E29006AF80A /* BETask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D84EB4527BB5E1C006AF80A /* BETask.cpp */; };
 		4D8757DD2750459A008D9838 /* Test_BEMailRecipient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D8757D82750459A008D9838 /* Test_BEMailRecipient.mm */; };
 		4D8757E12750459A008D9838 /* Test_BESMTPEmailMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D8757D92750459A008D9838 /* Test_BESMTPEmailMessage.mm */; };
+		4D8C5963281A4CD400628356 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40E1F271C6F00D78042 /* libturbojpeg.a */; };
 		4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
+		4D9B306928657134004B4853 /* libde265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43213428126C170014BBD3 /* libde265.a */; };
+		4D9B306A28657188004B4853 /* libde265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43213428126C170014BBD3 /* libde265.a */; };
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4DA6DF9126085A5700B7DCC5 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA6DF9026085A5700B7DCC5 /* libPocoXML.a */; };
+		4DA72E79285AE5F20036CC90 /* libMagickWand-7.Q16HDRI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211D281268720014BBD3 /* libMagickWand-7.Q16HDRI.a */; };
 		4DB857A31C646DF600D0192A /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
 		4DBB48BF27C45AD000D3D232 /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DBB48C027C45AD000D3D232 /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
@@ -191,7 +213,6 @@
 		4DBB48F127C45AD000D3D232 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD12230D803007632BA /* libPocoZip.a */; };
 		4DBB48F227C45AD000D3D232 /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD22230D803007632BA /* libPocoJSON.a */; };
 		4DBB48F327C45AD000D3D232 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D703AD32230D803007632BA /* libPocoFoundation.a */; };
-		4DBB48F427C45AD000D3D232 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40E1F271C6F00D78042 /* libturbojpeg.a */; };
 		4DBB48F527C45AD000D3D232 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3E81F271B0C00D78042 /* libssl.a */; };
 		4DBB48F627C45AD000D3D232 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3EA1F271B1F00D78042 /* libcrypto.a */; };
 		4DBB48F727C45AD000D3D232 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40C1F271C5400D78042 /* libssh2.a */; };
@@ -208,12 +229,13 @@
 		4DBB490227C45AD000D3D232 /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624391E0A37F600266C0D /* libfontconfig.a */; };
 		4DBB490327C45AD000D3D232 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243B1E0A37F600266C0D /* libpodofo.a */; };
 		4DBB490527C45AD000D3D232 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
-		4DBB490627C45AD000D3D232 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
 		4DBB490727C45AD000D3D232 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
 		4DBB490827C45AD000D3D232 /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D79CA9B26312C660024B789 /* DiskArbitration.framework */; };
 		4DBB490927C45AD000D3D232 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4DBCCD1D25DB76BA0000017C /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1B25DB76BA0000017C /* libiconv.a */; };
 		4DBCCD1E25DB76BA0000017C /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1C25DB76BA0000017C /* libcharset.a */; };
+		4DC4FE052817BC0000C3A339 /* libheif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432118281268710014BBD3 /* libheif.a */; };
+		4DC4FE062817D30F00C3A339 /* libopenjp2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211C281268720014BBD3 /* libopenjp2.a */; };
 		4DC9274F27C5A79100FA1655 /* BEJavaScript.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA61A36BF0300D14592 /* BEJavaScript.cpp */; };
 		4DC9275027C5A79100FA1655 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4DC9275127C5A79100FA1655 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
@@ -555,6 +577,7 @@
 		4D1D070B1F21C36700BCE550 /* BEAppleFunctionsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEAppleFunctionsCommon.h; path = ../Source/apple/BEAppleFunctionsCommon.h; sourceTree = "<group>"; };
 		4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEAppleFunctionsCommon.mm; path = ../Source/apple/BEAppleFunctionsCommon.mm; sourceTree = "<group>"; usesTabs = 1; };
 		4D27C3851861160000E7F4A1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		4D29455928643D1E00C94A27 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = "../../../../../Downloads/ImageMagick/jpeg-9e/_build_macos/lib/libjpeg.a"; sourceTree = "<group>"; };
 		4D2C4EAA1B7C774D00760408 /* BERegularExpression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BERegularExpression.h; path = ../Source/BERegularExpression.h; sourceTree = "<group>"; };
 		4D2C94FB2223B32400372093 /* BEDebugInformation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BEDebugInformation.cpp; path = ../Source/BEDebugInformation.cpp; sourceTree = "<group>"; };
 		4D2C94FC2223B32400372093 /* BEDebugInformation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEDebugInformation.h; path = ../Source/BEDebugInformation.h; sourceTree = "<group>"; };
@@ -588,6 +611,14 @@
 		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
 		4D4148FF267C5D8600C726DC /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = ../Libraries/iOS/iPhoneOS/libPocoNet.a; sourceTree = "<group>"; };
 		4D414901267C5DC500C726DC /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoNet.a; sourceTree = "<group>"; };
+		4D432118281268710014BBD3 /* libheif.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libheif.a; path = ../Libraries/macOS/libheif.a; sourceTree = "<group>"; };
+		4D432119281268710014BBD3 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = ../Libraries/macOS/libpng16.a; sourceTree = "<group>"; };
+		4D43211A281268710014BBD3 /* libMagick++-7.Q16HDRI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libMagick++-7.Q16HDRI.a"; path = "../Libraries/macOS/libMagick++-7.Q16HDRI.a"; sourceTree = "<group>"; };
+		4D43211B281268720014BBD3 /* libMagickCore-7.Q16HDRI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libMagickCore-7.Q16HDRI.a"; path = "../Libraries/macOS/libMagickCore-7.Q16HDRI.a"; sourceTree = "<group>"; };
+		4D43211C281268720014BBD3 /* libopenjp2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopenjp2.a; path = ../Libraries/macOS/libopenjp2.a; sourceTree = "<group>"; };
+		4D43211D281268720014BBD3 /* libMagickWand-7.Q16HDRI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libMagickWand-7.Q16HDRI.a"; path = "../Libraries/macOS/libMagickWand-7.Q16HDRI.a"; sourceTree = "<group>"; };
+		4D432130281269D30014BBD3 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = ../Libraries/macOS/libz.a; sourceTree = "<group>"; };
+		4D43213428126C170014BBD3 /* libde265.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libde265.a; path = ../Libraries/macOS/libde265.a; sourceTree = "<group>"; };
 		4D4C066C1C23B372006899FE /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		4D4C066E1C23B37E006899FE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		4D4C06701C23B389006899FE /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -809,6 +840,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D432129281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
 				4DBB48EC27C45AD000D3D232 /* libPocoNet.a in Frameworks */,
 				4DBB48ED27C45AD000D3D232 /* libPocoXML.a in Frameworks */,
 				4DBB48EE27C45AD000D3D232 /* libiconv.a in Frameworks */,
@@ -817,7 +849,6 @@
 				4DBB48F127C45AD000D3D232 /* libPocoZip.a in Frameworks */,
 				4DBB48F227C45AD000D3D232 /* libPocoJSON.a in Frameworks */,
 				4DBB48F327C45AD000D3D232 /* libPocoFoundation.a in Frameworks */,
-				4DBB48F427C45AD000D3D232 /* libturbojpeg.a in Frameworks */,
 				4DBB48F527C45AD000D3D232 /* libssl.a in Frameworks */,
 				4DBB48F627C45AD000D3D232 /* libcrypto.a in Frameworks */,
 				4DBB48F727C45AD000D3D232 /* libssh2.a in Frameworks */,
@@ -825,8 +856,12 @@
 				4DBB48F927C45AD000D3D232 /* libboost_date_time.a in Frameworks */,
 				4DBB48FA27C45AD000D3D232 /* libldap.tbd in Frameworks */,
 				4DBB48FB27C45AD000D3D232 /* libboost_filesystem.a in Frameworks */,
+				4D432126281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
+				4DA72E79285AE5F20036CC90 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
+				4DC4FE062817D30F00C3A339 /* libopenjp2.a in Frameworks */,
 				4DBB48FC27C45AD000D3D232 /* libboost_regex.a in Frameworks */,
 				4DBB48FD27C45AD000D3D232 /* libboost_thread.a in Frameworks */,
+				4D8C5963281A4CD400628356 /* libturbojpeg.a in Frameworks */,
 				4DBB48FE27C45AD000D3D232 /* libxml2.a in Frameworks */,
 				4DBB48FF27C45AD000D3D232 /* libxslt.a in Frameworks */,
 				4DBB490027C45AD000D3D232 /* libexslt.a in Frameworks */,
@@ -834,10 +869,14 @@
 				4DBB490227C45AD000D3D232 /* libfontconfig.a in Frameworks */,
 				4DBB490327C45AD000D3D232 /* libpodofo.a in Frameworks */,
 				4DBB490527C45AD000D3D232 /* libexpat.tbd in Frameworks */,
-				4DBB490627C45AD000D3D232 /* libz.tbd in Frameworks */,
+				4D29455C286441AC00C94A27 /* libjpeg.a in Frameworks */,
+				4D432123281268720014BBD3 /* libpng16.a in Frameworks */,
 				4DBB490727C45AD000D3D232 /* FMWrapper.framework in Frameworks */,
 				4DBB490827C45AD000D3D232 /* DiskArbitration.framework in Frameworks */,
+				4D9B306928657134004B4853 /* libde265.a in Frameworks */,
 				4DBB490927C45AD000D3D232 /* Cocoa.framework in Frameworks */,
+				4D29455B28643DBC00C94A27 /* libde265.a in Frameworks */,
+				4DC4FE052817BC0000C3A339 /* libheif.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -916,6 +955,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D432127281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
+				4D9B306A28657188004B4853 /* libde265.a in Frameworks */,
 				4D0BBAE4267AC1D60021DA56 /* libPocoNet.a in Frameworks */,
 				4DA6DF9126085A5700B7DCC5 /* libPocoXML.a in Frameworks */,
 				4DBCCD1D25DB76BA0000017C /* libiconv.a in Frameworks */,
@@ -932,6 +973,8 @@
 				4D11F4031F271C0B00D78042 /* libboost_date_time.a in Frameworks */,
 				4D35B3C6262FE4E20098C93F /* libldap.tbd in Frameworks */,
 				4D11F4041F271C0B00D78042 /* libboost_filesystem.a in Frameworks */,
+				4D432124281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
+				4D43212A281268720014BBD3 /* libopenjp2.a in Frameworks */,
 				4D11F4051F271C0B00D78042 /* libboost_regex.a in Frameworks */,
 				4D11F4071F271C0B00D78042 /* libboost_thread.a in Frameworks */,
 				4D11F3F11F271B8E00D78042 /* libxml2.a in Frameworks */,
@@ -941,10 +984,12 @@
 				4D76243C1E0A37F600266C0D /* libfontconfig.a in Frameworks */,
 				4D76243E1E0A37F600266C0D /* libpodofo.a in Frameworks */,
 				4D7624421E0A3FFE00266C0D /* libexpat.tbd in Frameworks */,
-				4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */,
+				4D432121281268720014BBD3 /* libpng16.a in Frameworks */,
+				4D43212D281268720014BBD3 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
 				6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */,
 				4D79CA9C26312C660024B789 /* DiskArbitration.framework in Frameworks */,
 				4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */,
+				4D43211E281268720014BBD3 /* libheif.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -960,18 +1005,24 @@
 				4DE2FD2B2682C5D10091A9AD /* libjpeg.a in Frameworks */,
 				4DE2FD0B2682C5D10091A9AD /* FMWrapper.framework in Frameworks */,
 				4DE2FD0C2682C5D10091A9AD /* libboost_date_time.a in Frameworks */,
+				4D432125281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
+				4D432132281269D30014BBD3 /* libz.a in Frameworks */,
 				4DE2FD0D2682C5D10091A9AD /* libboost_filesystem.a in Frameworks */,
 				4DE2FD0E2682C5D10091A9AD /* libboost_program_options.a in Frameworks */,
 				4DE2FD0F2682C5D10091A9AD /* libboost_regex.a in Frameworks */,
 				4DE2FD102682C5D10091A9AD /* libboost_thread.a in Frameworks */,
 				4DE2FD112682C5D10091A9AD /* libcharset.a in Frameworks */,
 				4DE2FD122682C5D10091A9AD /* libcrypto.a in Frameworks */,
+				4D432128281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
+				4D43211F281268720014BBD3 /* libheif.a in Frameworks */,
 				4DE2FD132682C5D10091A9AD /* libcurl.a in Frameworks */,
+				4D43212E281268720014BBD3 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
 				4DE2FD142682C5D10091A9AD /* libexslt.a in Frameworks */,
 				4DE2FD152682C5D10091A9AD /* libfontconfig.a in Frameworks */,
 				4DE2FD162682C5D10091A9AD /* libfreetype.a in Frameworks */,
 				4DE2FD172682C5D10091A9AD /* libiconv.a in Frameworks */,
 				4DE2FD192682C5D10091A9AD /* libPocoFoundation.a in Frameworks */,
+				4D43212B281268720014BBD3 /* libopenjp2.a in Frameworks */,
 				4DE2FD1A2682C5D10091A9AD /* libPocoJSON.a in Frameworks */,
 				4DE2FD1B2682C5D10091A9AD /* libPocoNet.a in Frameworks */,
 				4DE2FD1C2682C5D10091A9AD /* libPocoXML.a in Frameworks */,
@@ -979,8 +1030,10 @@
 				4DE2FD1E2682C5D10091A9AD /* libpodofo.a in Frameworks */,
 				4DE2FD1F2682C5D10091A9AD /* libssh2.a in Frameworks */,
 				4DE2FD202682C5D10091A9AD /* libssl.a in Frameworks */,
+				4D432122281268720014BBD3 /* libpng16.a in Frameworks */,
 				4DE2FD212682C5D10091A9AD /* libturbojpeg.a in Frameworks */,
 				4DE2FD222682C5D10091A9AD /* libxml2.a in Frameworks */,
+				4D43213628126C170014BBD3 /* libde265.a in Frameworks */,
 				4DE2FD232682C5D10091A9AD /* libxslt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1053,6 +1106,14 @@
 		4D9EEE5D118A8C9600EC9352 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				4D43213428126C170014BBD3 /* libde265.a */,
+				4D432130281269D30014BBD3 /* libz.a */,
+				4D432118281268710014BBD3 /* libheif.a */,
+				4D43211A281268710014BBD3 /* libMagick++-7.Q16HDRI.a */,
+				4D43211B281268720014BBD3 /* libMagickCore-7.Q16HDRI.a */,
+				4D43211D281268720014BBD3 /* libMagickWand-7.Q16HDRI.a */,
+				4D43211C281268720014BBD3 /* libopenjp2.a */,
+				4D432119281268710014BBD3 /* libpng16.a */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1195,6 +1256,7 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D29455928643D1E00C94A27 /* libjpeg.a */,
 				4DF4DB4A271E7BFA007E91B5 /* libbz2.tbd */,
 				4DF4DB48271E7BF1007E91B5 /* UIKit.framework */,
 				4DF4DB23271E7BE7007E91B5 /* libcrypto.a */,
@@ -2218,7 +2280,10 @@
 					"BEP_PRO_VERSION=1",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
-				HEADER_SEARCH_PATHS = ../Headers/;
+				HEADER_SEARCH_PATHS = (
+					../Headers,
+					"../Headers/ImageMagick-7/",
+				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2265,7 +2330,10 @@
 					"BEP_PRO_VERSION=1",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
-				HEADER_SEARCH_PATHS = ../Headers/;
+				HEADER_SEARCH_PATHS = (
+					../Headers,
+					"../Headers/ImageMagick-7/",
+				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2589,7 +2657,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
-				HEADER_SEARCH_PATHS = ../Headers/;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+				);
 				INFOPLIST_FILE = "${INFOPLIST_FILE}";
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2633,7 +2704,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
-				HEADER_SEARCH_PATHS = ../Headers/;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+				);
 				INFOPLIST_FILE = "${INFOPLIST_FILE}";
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2817,7 +2891,10 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
-				HEADER_SEARCH_PATHS = ../Headers/;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
@@ -2928,7 +3005,10 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
-				HEADER_SEARCH_PATHS = ../Headers/;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";

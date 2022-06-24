@@ -9,7 +9,6 @@
 
  */
 
-
 // need (Parser) to go before BEPluginGlobalDefines.h or we not happy
 
 #pragma GCC diagnostic push
@@ -99,6 +98,13 @@
 
 #include <podofo/podofo.h>
 
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#include <Magick++.h>
+#pragma GCC diagnostic pop
+
+
 using namespace std;
 using namespace fmx;
 using namespace boost::filesystem;
@@ -145,15 +151,15 @@ fmx::errcode BE_Version ( short function_id, const ExprEnv& /* environment */, c
 	errcode error = NoError();
 
 	switch ( function_id ) {
-			
+
 		case kBE_Version:
 			error = TextConstantFunction ( WSTRING ( VERSION_STRING ), results );
 			break;
-			
+
 		case kBE_VersionAutoUpdate:
 			error = TextConstantFunction ( WSTRING ( AUTO_UPDATE_VERSION ), results );
 			break;
-			
+
 		case kBE_VersionPro:
 #ifdef BEP_PRO_VERSION
 			SetResult ( true, results );
@@ -161,7 +167,7 @@ fmx::errcode BE_Version ( short function_id, const ExprEnv& /* environment */, c
 			SetResult ( false, results );
 #endif
 			break;
-			
+
 //		default:
 //			;
 
@@ -469,20 +475,26 @@ fmx::errcode BE_FileReadText ( short /* funcId */, const ExprEnv& /* environment
 	errcode error = NoError();
 
 	try {
-		long start = ParameterAsLong ( parameters, 1, 0) ;
+
+		long start = ParameterAsLong ( parameters, 1, 0 );
 		if ( start < 0 ) {
-			start = 0 ;
+			start = 0;
 		}
-		long to = ParameterAsLong ( parameters, 2, 0 ) ;
+
+		long to = ParameterAsLong ( parameters, 2, 0 );
 		if ( to < 0 ) {
-			to = 0 ;
+			to = 0;
 		}
-		std::string delimiter = ParameterAsUTF8String ( parameters, 3, "" ) ;
+
+		std::string delimiter = ParameterAsUTF8String ( parameters, 3, "" );
 		if ( delimiter.length() > 1 ) {
-			delimiter = delimiter.substr(0,1) ;
+			delimiter = delimiter.substr ( 0, 1 );
 		}
-		const std::string file_contents = ParameterPathOrContainerAsUTF8 ( parameters, 0, start, to, delimiter ) ;
-        SetResult ( file_contents, results ) ;
+
+
+		const std::string file_contents = ParameterPathOrContainerAsUTF8 ( parameters, 0, start, to, delimiter );
+        SetResult ( file_contents, results );
+
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
@@ -1158,7 +1170,7 @@ fmx::errcode BE_XSLTApply ( short function_id, const ExprEnv& /* environment */,
 			auto xml_path = ParameterAsPath ( parameters );
 			auto xslt = ParameterAsUTF8String ( parameters, 1 );
 			auto csv_path = ParameterAsPath ( parameters, 2 );
-			
+
 			const auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path, xml_path );
 			SetResult ( csv, results );
 
@@ -1176,7 +1188,7 @@ fmx::errcode BE_XSLTApply ( short function_id, const ExprEnv& /* environment */,
 			auto xslt_result = xslt_task ( function_parameters, 0, xml, script_name, database_name );
 			error = xslt_result.first;
 			SetResult ( xslt_result.second, results );
-			
+
 		}
 
 
@@ -2952,7 +2964,7 @@ fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environme
 	if ( it != std::end ( g_background_tasks ) ) {
 		id = 1 + *it;
 	}
-	
+
 	g_background_tasks.push_back ( id );
 
 	try {
@@ -2968,19 +2980,19 @@ fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environme
 		auto username = ParameterAsUTF8String ( parameters, 7 );
 		auto password = ParameterAsUTF8String ( parameters, 8 );
 
-		
+
 		std::shared_ptr<BECurl> curl ( new BECurl ( url, kBE_HTTP_METHOD_POST, "", username, password, post_args ) );
 
 		std::thread background_task ( [id, when, curl, sql, sql_file, &environment] {
-			
+
 			// when do we run?
 			auto run_at = std::chrono::system_clock::from_time_t ( when );
 			std::this_thread::sleep_until ( run_at );
-			
+
 			// running
 			auto response = curl->download();
 			const std::string http_response ( response.begin(), response.end() );
-						
+
 			// output as json
 			Poco::JSON::Object::Ptr json = new Poco::JSON::Object();
 
@@ -2993,13 +3005,13 @@ fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environme
 					task_result->set ( "result", http_response );
 					task_result->set ( "response headers", g_http_response_headers );
 					task_result->set ( "timestamp", Poco::Timestamp() );
-			
+
 					Poco::JSON::Object::Ptr curl_info = new Poco::JSON::Object();
 						for ( std::pair<std::string, std::string> element : g_curl_info ) {
 							curl_info->set ( element.first, element.second );
 						}
 					task_result->set ( "curl info", curl_info );
-			
+
 				json->set ( "task result", task_result );
 
 			std::ostringstream output;
@@ -3008,18 +3020,18 @@ fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environme
 			// construct the sql to return the result
 			std::string sql_command = sql;
 			boost::replace_all ( sql_command, "###RESULT###", output.str() );
-			
+
 			// set the result
 			BESQLCommandUniquePtr sql_cmd ( new BESQLCommand ( sql_command, sql_file ) );
 			sql_cmd->execute ( environment );
-			
+
 			g_completed_background_tasks.push_back ( id );
 
 			}
 		);
-		
+
 		background_task.detach();
-		
+
 		g_curl_options.clear();
 		g_http_custom_headers.clear();
 
@@ -3048,14 +3060,14 @@ fmx::errcode BE_BackgroundTaskList ( short /* funcId */, const ExprEnv& /* envir
 
 		std::sort ( g_background_tasks.begin(), g_background_tasks.end() );
 		std::sort ( g_completed_background_tasks.begin(), g_completed_background_tasks.end() );
-		
+
 		std::vector<long> pending_background_tasks;
 		std::set_difference (
 							g_background_tasks.begin(), g_background_tasks.end(),
 							g_completed_background_tasks.begin(), g_completed_background_tasks.end(),
 							std::inserter ( pending_background_tasks, std::begin ( pending_background_tasks ) )
 		);
-		
+
 		BEValueList<std::string> pending_task_list ( pending_background_tasks );
 		SetResult ( pending_task_list, results );
 
@@ -3144,7 +3156,7 @@ fmx::errcode BE_SMTPSend ( short /* funcId */, const fmx::ExprEnv& /* environmen
 			g_smtp_connection.swap ( smtp_conection );
 
 		}
-		
+
 		if ( ! g_smtp_connection->keep_open() ) {
 
 			auto smtp_host = g_smtp_connection->host_details();
@@ -3152,11 +3164,11 @@ fmx::errcode BE_SMTPSend ( short /* funcId */, const fmx::ExprEnv& /* environmen
 			error = smtp_conection->send ( message.get() );
 
 		} else {
-			
+
 			error = g_smtp_connection->send ( message.get() );
 
 		}
-		
+
 //		string do_nothing = "";
 //		SetResult ( do_nothing, results );
 
@@ -3698,7 +3710,7 @@ fmx::errcode BE_ScriptStepInstall ( short /* function_id */, const fmx::ExprEnv&
 
 		const fmx::uint32 flags = fmx::ExprEnv::kAllDeviceCompatible;
 
-		error = (fmx::errcode)environment.RegisterScriptStep ( *g_be_plugin->id(), (const short)id, *name, *definition, *description, flags, (fmx::ExtPluginType)BE_ScriptStepPerform);
+		error = (fmx::errcode)environment.RegisterScriptStep ( *g_be_plugin->id(), (const short)id, *name, *definition, *description, flags, (fmx::ExtPluginType)BE_ScriptStepPerform );
 
 		if ( kNoError == error ) {
 			auto calculation = ParameterAsUTF8String ( parameters, 4 );
@@ -4293,6 +4305,71 @@ fmx::errcode BE_JPEGRecompress ( const short /* function_id */, const ExprEnv& /
 
 } // BE_JPEG_Recompress
 
+
+#ifndef FMX_IOS_TARGET
+
+fmx::errcode BE_ContainerConvertImage ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		const BinaryDataUniquePtr data ( parameters.AtAsBinaryData ( 0 ) );
+		if ( data->GetCount() > 0 ) {
+
+			auto container_data = ParameterAsVectorChar ( parameters );
+			auto filename = ParameterFileName ( parameters );
+			auto new_magick_type = ParameterAsUTF8String ( parameters, 1, JPG_FILE_EXTENSION );
+			boost::algorithm::to_lower ( new_magick_type );
+
+			auto claris_type = new_magick_type;
+			if ( JPG_FILE_EXTENSION == new_magick_type || JPEG_FILE_EXTENSION == new_magick_type ) {
+				claris_type = JPEG_CONTAINER_TYPE;
+			} else if ( GIF_FILE_EXTENSION == new_magick_type ) {
+				claris_type = GIF_CONTAINER_TYPE;
+			} else if ( PNG_FILE_EXTENSION == new_magick_type ) {
+				claris_type = PNG_CONTAINER_TYPE;
+			} else if ( HEIF_FILE_EXTENSION == new_magick_type ) {
+				claris_type = JPEG_CONTAINER_TYPE;
+			}
+
+
+			Magick::Blob from_container ( container_data.data(), container_data.size() );
+
+			Poco::Path source_file_name ( filename );
+			Magick::Image source_image ( from_container );
+
+			source_image.magick ( new_magick_type );
+			Magick::Blob converted_image;
+			source_image.write ( &converted_image );
+
+			auto converted_image_end = (const char *)converted_image.data() + converted_image.length();
+			const std::vector<char> to_container ( (const char *)converted_image.data(), converted_image_end );
+
+			Poco::Path new_file_name ( filename );
+			new_file_name.setExtension ( new_magick_type );
+
+			SetResult ( new_file_name.getFileName(), to_container, claris_type, results );
+
+		} else {
+			error = kInvalidFieldType;
+		}
+
+	} catch ( Magick::Exception& /* e */ ) {
+		error = kImageMagickError;
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& e ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_ContainerConvertImage
+
+#endif
 
 fmx::errcode BE_ConvertContainer ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {

@@ -1,12 +1,12 @@
 /*
  BEPluginGlobalDefines.h
  BaseElements Plug-In
- 
+
  Copyright 2010-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
- 
+
  http://www.goya.com.au/baseelements/plugin
- 
+
  */
 
 
@@ -96,6 +96,17 @@ extern thread_local fmx::errcode g_last_error;
 
 #define UTF8 "UTF-8"
 #define UTF16 "UTF-16"
+
+// ImageMagick
+#define MAGICKCORE_QUANTUM_DEPTH 16
+#define MAGICKCORE_HDRI_ENABLE 1
+
+
+#define JPEG_FILE_EXTENSION "jpeg"
+#define JPG_FILE_EXTENSION "jpg"
+#define GIF_FILE_EXTENSION "gif"
+#define PNG_FILE_EXTENSION "png"
+#define HEIF_FILE_EXTENSION "heic"
 
 
 enum {
@@ -198,7 +209,8 @@ enum functions {
 	kBE_Gzip = 260,
 	kBE_UnGzip = 261,
 //	kBE_JPEG_Recompress_Deprecated = 270, // deprecated => Removed in 4.2
-	kBE_JPEGRecompress= 271,
+	kBE_JPEGRecompress = 271,
+	kBE_ContainerConvertImage = 272,
 //	kBE_JSONPath_Deprecated = 300, // removed in 5
 //	kBE_JSON_Error_Description_Deprecated = 301, // removed in 5
 	kBE_JSON_ArraySize = 302,
@@ -291,11 +303,13 @@ enum errors {
 	kNotFoundError = 401,
 	kInvalidFieldType = 413,
 	kXMLParseError = 718,
+	kParserTransformerError = 721,
 	kCannotInsertAsImage = 735,
 	kSMTPConnectionFailure = 1507,
 	kFileSystemError = 10000,
 	kInvalidUTF8 = 10100,
 	kZipError = 10200,
+	kImageMagickError = 10300,
 	kDDLCommandQueued = 11000,
 	kCommandTimeout = 12000,
 	kNotImplemented = 13000,
@@ -351,7 +365,7 @@ enum file_type {
 };
 
 enum data_type {
-	kBE_DataType_Not_Found = -1, 
+	kBE_DataType_Not_Found = -1,
 	kBE_DataType_String = 0,
 	kBE_DataType_Long = 1
 };
