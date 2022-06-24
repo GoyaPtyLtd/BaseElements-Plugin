@@ -85,7 +85,6 @@ extern thread_local fmx::errcode g_last_error;
 
 #define PLUGIN_ID		'G', 'y', 'B', 'E'
 #define BUNDLE_STRINGS_ID "BaseElements"
-#define BEP_PRO_NAME_SUFFIX " Pro"
 
 #define	TEMPORARY_FILE_SUFFIX L".be4.tmp"
 
