@@ -2969,7 +2969,7 @@ fmx::errcode BE_BackgroundTaskAdd ( short /* funcId */, const ExprEnv& environme
 
 	try {
 
-		auto what = ParameterAsUTF8String ( parameters );
+//		auto request_method = ParameterAsUTF8String ( parameters );
 		auto when = ParameterAsEpochTime ( parameters, 1 );
 //		auto interval = ParameterAsLong( parameters, 2 );
 		auto sql = ParameterAsUTF8String ( parameters, 3 );
