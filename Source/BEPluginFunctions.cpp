@@ -1254,17 +1254,13 @@ fmx::errcode BE_XMLStripNodes ( short /* funcId */, const ExprEnv& /* environmen
 
 	try {
 
-		path input_file = ParameterAsPath ( parameters );
-		path output_file = ParameterAsPath ( parameters, 1 );
-		std::string node_names = ParameterAsUTF8String ( parameters, 2 );
+		auto xml = ParameterAsUTF8String( parameters );
+		auto output_file = ParameterAsPath ( parameters, 1 );
+		BEValueListStringSharedPtr node_names = ParameterAsStringValueList( parameters, 2 );
 
-		vector<string> node_names_vector;
-		boost::tokenizer<> tokeniser ( node_names );
-		for ( boost::tokenizer<>::iterator it = tokeniser.begin() ; it != tokeniser.end() ; ++it ) {
-			node_names_vector.push_back ( *it );
-		}
+		// if the input, excluding whitespace, begins with < we treat it as xml
+		error = StripXMLNodes ( xml, output_file, node_names->get_values() );
 
-		error = StripXMLNodes ( input_file, output_file, node_names_vector );
 		SetResult ( error, results );
 
 	} catch ( BEPlugin_Exception& e ) {
@@ -1287,21 +1283,9 @@ fmx::errcode BE_XMLParse ( short /* funcId */, const ExprEnv& /* environment */,
 
 	try {
 
-		std::string result;
-		std::unique_ptr<BEXMLTextReader> reader;
-
-		auto xml_input = ParameterAsUTF8String ( parameters );
-
-		// if the input, excluding whitespace, begins with < we treat it as xml... if not, treat it as a file path
-		auto it = find_if_not ( xml_input.begin(), xml_input.end(), [](int c){ return isspace(c); } );
-		if ( "<" == xml_input.substr ( 0, 1 ) || *it == '<' ) {
-			reader.reset ( new BEXMLTextReader ( xml_input ) );
-		} else {
-			auto input_file = ParameterAsPath ( parameters );
-			reader.reset ( new BEXMLTextReader ( input_file ) );
-		}
-
-		result = reader->parse();
+		auto xml = ParameterAsUTF8String ( parameters );
+		std::unique_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( xml ) );
+		auto result = reader->parse();
 
 		SetResult ( result, results );
 

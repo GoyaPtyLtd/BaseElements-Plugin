@@ -2,13 +2,15 @@
  BEXMLTextReader.cpp
  BaseElements Plug-In
 
- Copyright 2012-2018 Goya. All rights reserved.
+ Copyright 2012-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
 
  */
 
+
+#include "win/BEWinFunctions.h"
 #include "BEXMLTextReader.h"
 
 #include <algorithm>
@@ -30,45 +32,48 @@
 #pragma mark Constructors
 #pragma mark -
 
-BEXMLTextReader::BEXMLTextReader ( const boost::filesystem::path path )
-{
-	initialise();
-
-	file = path;
-	bool file_exists = boost::filesystem::exists ( file );
-
-	if ( file_exists ) {
-
-#if defined ( FMX_WIN_TARGET )
-		file_descriptor = _wopen ( file.c_str(), O_RDONLY | _O_WTEXT );
-		reader = xmlReaderForFd ( file_descriptor, NULL, NULL, XML_PARSE_HUGE );
-#else
-		reader = xmlReaderForFile ( file.c_str(), NULL, XML_PARSE_HUGE );
-#endif
-
-		if ( reader != NULL ) {
-			xml_document = xmlTextReaderCurrentDoc ( reader );
-		} else {
-			throw BEXMLReaderInterface_Exception ( last_error() );
-		}
-
-	} else {
-		throw BEXMLReaderInterface_Exception ( kNoSuchFileOrDirectoryError );
-	}
-
-} // ::BEXMLTextReader ( const boost::filesystem::path path )
-
 
 BEXMLTextReader::BEXMLTextReader ( const std::string xml )
 {
 	initialise();
 
-	file = "XML";
-	auto xml_to_parse = xml;
-	ConvertFileMakerEOLs ( xml_to_parse );
-	xml_text = xmlStrdup ( (const xmlChar *)xml_to_parse.c_str() );
+	auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC;
+			
+	// if the input, excluding whitespace, begins with < we treat it as xml... if not, treat it as a file path
+	auto it = find_if_not ( xml.begin(), xml.end(), [](int c){ return isspace(c); } );
+	if ( "<" == xml.substr ( 0, 1 ) || *it == '<' ) {
 
-	reader = xmlReaderForDoc ( xml_text, file.string().c_str(), xmlGetCharEncodingName ( XML_CHAR_ENCODING_UTF8 ), XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC );
+		file = "XML";
+		auto xml_to_parse = xml;
+		ConvertFileMakerEOLs ( xml_to_parse );
+		xml_text = xmlStrdup ( (const xmlChar *)xml_to_parse.c_str() );
+
+		reader = xmlReaderForDoc ( xml_text, file.string().c_str(), xmlGetCharEncodingName ( XML_CHAR_ENCODING_UTF8 ), options );
+
+	} else {
+
+#if defined ( FMX_WIN_TARGET )
+			file = utf8toutf16 ( xml  );
+#else
+			file = xml;
+#endif
+		
+		file.make_preferred();
+		auto file_exists = boost::filesystem::exists ( file );
+		if ( file_exists ) {
+
+#if defined ( FMX_WIN_TARGET )
+			file_descriptor = _wopen ( file.c_str(), O_RDONLY | _O_WTEXT );
+			reader = xmlReaderForFd ( file_descriptor, NULL, NULL, options );
+#else
+			reader = xmlReaderForFile ( file.c_str(), NULL, options );
+#endif
+
+		} else {
+			throw BEXMLReaderInterface_Exception ( kNoSuchFileOrDirectoryError );
+		}
+
+	}
 
 	if ( NULL != reader ) {
 		xml_document = xmlTextReaderCurrentDoc ( reader );
@@ -76,7 +81,8 @@ BEXMLTextReader::BEXMLTextReader ( const std::string xml )
 		throw BEXMLReaderInterface_Exception ( last_error() );
 	}
 
-} // ::BEXMLTextReader ( const std::string xml )
+	
+} // ::BEXMLTextReader
 
 
 BEXMLTextReader::~BEXMLTextReader()

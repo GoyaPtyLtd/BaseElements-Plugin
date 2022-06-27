@@ -2,7 +2,7 @@
  BEXMLReader.cpp
  BaseElements Plug-In
  
- Copyright 2012-2015 Goya. All rights reserved.
+ Copyright 2012-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -26,12 +26,12 @@ using namespace std;
 using namespace boost::filesystem;
 
 
-int StripXMLNodes ( const path input_file, const path output_file, const vector<string> node_names )
+int StripXMLNodes ( const std::string xml, const path output_file, const vector<string> node_names )
 {
 
 	try {
 		
-		std::shared_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( input_file ) );
+		std::unique_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( xml ) );
 		std::shared_ptr<BEXMLTextWriter> writer ( new BEXMLTextWriter ( output_file ) );
 		
 		reader->read();
