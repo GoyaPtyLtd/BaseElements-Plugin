@@ -2,7 +2,7 @@
  BEFileSystem.cpp
  BaseElements Plug-In
 
- Copyright 2011-2020 Goya. All rights reserved.
+ Copyright 2011-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -21,38 +21,6 @@
 
 using namespace std;
 using namespace boost::filesystem;
-
-
-const bool recursive_directory_copy ( const path & from, const path & to  ) {
-
-	if ( is_directory ( from ) ) {
-
-		copy_directory ( from, to );
-
-		directory_iterator end_it; // default construction yields past-the-end
-
-		for ( directory_iterator it ( from ); it != end_it; ++it ) {
-
-			path target = to;
-			target /= it->path().filename();
-
-			auto failed = recursive_directory_copy ( it->path(), target );
-			if ( !failed ) {
-				return false;
-			}
-
-		}
-
-	} else {
-
-		// note: aliases & symlinks are not handled correctly
-
-		copy_file ( from, to );
-	}
-
-	return true;
-
-} // recursive_directory_copy
 
 
 BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem::path& directory, const long file_type_wanted = kBE_FileTypeAll, const bool recurse = false, const bool include_hidden = true )

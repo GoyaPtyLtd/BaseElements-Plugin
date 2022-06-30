@@ -868,8 +868,8 @@ fmx::errcode BE_FileMove ( short /* funcId */, const ExprEnv& /* environment */,
 
 	try {
 
-		path from = ParameterAsPath ( parameters );
-		path to = ParameterAsPath ( parameters, 1 );
+		auto from = ParameterAsPath ( parameters );
+		auto to = ParameterAsPath ( parameters, 1 );
 
 		try {
 			rename ( from, to );
@@ -898,11 +898,18 @@ fmx::errcode BE_FileCopy ( short /* funcId */, const ExprEnv& /* environment */,
 
 	try {
 
-		path from = ParameterAsPath ( parameters );
-		path to = ParameterAsPath ( parameters, 1 );
+		auto from = ParameterAsPath ( parameters );
+		auto to = ParameterAsPath ( parameters, 1 );
+		auto overwrite_existing = ParameterAsBoolean ( parameters, 2, false );
 
 		try {
-			recursive_directory_copy ( from, to );
+			
+			auto options = copy_options::recursive | copy_options::copy_symlinks;
+			if ( overwrite_existing ) {
+				options |= copy_options::overwrite_existing;
+			}
+			copy ( from, to, options );
+
 		} catch ( filesystem_error& e ) {
 			g_last_error = e.code().value();
 		}
