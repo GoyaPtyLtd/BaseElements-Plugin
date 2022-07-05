@@ -14,7 +14,7 @@
 
 SRCROOT="/Users/mark/Dropbox/Development/Plugin_Build_Folder/BaseElements"
 iphoneos="13.2"
-cd curl-7.76.1
+cd curl-7.84.0
 
 ########################################################################
 # Main

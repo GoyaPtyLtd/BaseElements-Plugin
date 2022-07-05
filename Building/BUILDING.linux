@@ -102,7 +102,7 @@ Copy the header and library files.
 
 
 =======================================================================
-libcurl - 7.76.1
+libcurl - 7.84.0
 =======================================================================
 
 Note: zlib, OpenSSL & libssh2 must be built before building libcurl.
@@ -113,7 +113,7 @@ Download the source from
 
 and expand it into a directory on the Desktop. Then
 
-	cd curl-7.76.1
+	cd curl-7.84.0
 	CPPFLAGS="-I${SRCROOT}/Headers -I${SRCROOT}/Headers/zlib -I${SRCROOT}/Headers/libssh2" LDFLAGS="-L${SRCROOT}/Libraries/linux" LIBS="-ldl" ./configure --disable-dependency-tracking --enable-static --disable-shared --with-ssl --with-zlib --with-libssh2 --without-tests --prefix="$(pwd)/_build_linux"
 	make install
 

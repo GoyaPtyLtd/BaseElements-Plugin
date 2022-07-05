@@ -128,7 +128,7 @@ to the Headers directory and rename it libssh2.
 
 
 =======================================================================
-libcurl - 7.76.1
+libcurl - 7.84.0
 =======================================================================
 
 Note: OpenSSL & libssh2 must be built before building libcurl.

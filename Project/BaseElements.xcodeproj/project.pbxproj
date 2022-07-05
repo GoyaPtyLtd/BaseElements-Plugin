@@ -106,6 +106,10 @@
 		4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC52717D0B20009E745 /* libPocoUtil.a */; };
 		4D3B9BC72717D2470009E745 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
 		4D3B9BC92717D5A50009E745 /* boost.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC82717D5A50009E745 /* boost.xcframework */; };
+		4D414DAF2872B00300749AE0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414DAE2872B00300749AE0 /* CoreFoundation.framework */; };
+		4D414DB12872B01E00749AE0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414DB02872B01E00749AE0 /* SystemConfiguration.framework */; };
+		4D414DB22872B05800749AE0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414DAE2872B00300749AE0 /* CoreFoundation.framework */; };
+		4D414DB32872B06100749AE0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414DB02872B01E00749AE0 /* SystemConfiguration.framework */; };
 		4D43211E281268720014BBD3 /* libheif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432118281268710014BBD3 /* libheif.a */; };
 		4D43211F281268720014BBD3 /* libheif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432118281268710014BBD3 /* libheif.a */; };
 		4D432121281268720014BBD3 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432119281268710014BBD3 /* libpng16.a */; };
@@ -611,6 +615,8 @@
 		4D3BA85315A3FE59008AC145 /* BEXMLReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEXMLReader.h; path = ../Source/BEXMLReader.h; sourceTree = "<group>"; };
 		4D4148FF267C5D8600C726DC /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = ../Libraries/iOS/iPhoneOS/libPocoNet.a; sourceTree = "<group>"; };
 		4D414901267C5DC500C726DC /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoNet.a; sourceTree = "<group>"; };
+		4D414DAE2872B00300749AE0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		4D414DB02872B01E00749AE0 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4D432118281268710014BBD3 /* libheif.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libheif.a; path = ../Libraries/macOS/libheif.a; sourceTree = "<group>"; };
 		4D432119281268710014BBD3 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = ../Libraries/macOS/libpng16.a; sourceTree = "<group>"; };
 		4D43211A281268710014BBD3 /* libMagick++-7.Q16HDRI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libMagick++-7.Q16HDRI.a"; path = "../Libraries/macOS/libMagick++-7.Q16HDRI.a"; sourceTree = "<group>"; };
@@ -868,8 +874,10 @@
 				4DBB490127C45AD000D3D232 /* libfreetype.a in Frameworks */,
 				4DBB490227C45AD000D3D232 /* libfontconfig.a in Frameworks */,
 				4DBB490327C45AD000D3D232 /* libpodofo.a in Frameworks */,
+				4D414DAF2872B00300749AE0 /* CoreFoundation.framework in Frameworks */,
 				4DBB490527C45AD000D3D232 /* libexpat.tbd in Frameworks */,
 				4D29455C286441AC00C94A27 /* libjpeg.a in Frameworks */,
+				4D414DB12872B01E00749AE0 /* SystemConfiguration.framework in Frameworks */,
 				4D432123281268720014BBD3 /* libpng16.a in Frameworks */,
 				4DBB490727C45AD000D3D232 /* FMWrapper.framework in Frameworks */,
 				4DBB490827C45AD000D3D232 /* DiskArbitration.framework in Frameworks */,
@@ -975,6 +983,7 @@
 				4D11F4041F271C0B00D78042 /* libboost_filesystem.a in Frameworks */,
 				4D432124281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
 				4D43212A281268720014BBD3 /* libopenjp2.a in Frameworks */,
+				4D414DB22872B05800749AE0 /* CoreFoundation.framework in Frameworks */,
 				4D11F4051F271C0B00D78042 /* libboost_regex.a in Frameworks */,
 				4D11F4071F271C0B00D78042 /* libboost_thread.a in Frameworks */,
 				4D11F3F11F271B8E00D78042 /* libxml2.a in Frameworks */,
@@ -985,6 +994,7 @@
 				4D76243E1E0A37F600266C0D /* libpodofo.a in Frameworks */,
 				4D7624421E0A3FFE00266C0D /* libexpat.tbd in Frameworks */,
 				4D432121281268720014BBD3 /* libpng16.a in Frameworks */,
+				4D414DB32872B06100749AE0 /* SystemConfiguration.framework in Frameworks */,
 				4D43212D281268720014BBD3 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
 				6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */,
 				4D79CA9C26312C660024B789 /* DiskArbitration.framework in Frameworks */,
@@ -1256,6 +1266,8 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D414DB02872B01E00749AE0 /* SystemConfiguration.framework */,
+				4D414DAE2872B00300749AE0 /* CoreFoundation.framework */,
 				4D29455928643D1E00C94A27 /* libjpeg.a */,
 				4DF4DB4A271E7BFA007E91B5 /* libbz2.tbd */,
 				4DF4DB48271E7BF1007E91B5 /* UIKit.framework */,
