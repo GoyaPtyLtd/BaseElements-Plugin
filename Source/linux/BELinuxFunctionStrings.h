@@ -39,7 +39,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 115, "BE_XSLTApply ( xmlFilePath ; xsltText ; outputFilePath {; scriptName ; databaseName ; [xsltText ; outputPath] ; ... } )" },
 	{ 116, "BE_TextExtractWords ( text { ; wordPrefix } )" },
 	{ 117, "BE_XMLStripInvalidCharacters ( path ; { resultFilePath } )" },
-	{ 118, "BE_FileMove ( fromFilePath ; toFilePath )" },
+	{ 118, "BE_FileMove ( fromFilePath ; toFilePath {; replaceDestinationFile } )" },
 	{ 119, "BE_FileCopy ( fromFilePath ; toFilePath {; replaceDestinationFile } )" },
 	{ 121, "BE_FileListFolder ( path { ; type ; includeSubdirBoolean ; useFullPathBoolean ; includeHiddenBoolean } )" },
 	{ 124, "BE_OpenURL ( url )" },

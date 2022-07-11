@@ -94,6 +94,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/foreach.hpp>
+#include <boost/interprocess/exceptions.hpp>
 #include <boost/tokenizer.hpp>
 
 #include <podofo/podofo.h>
@@ -870,11 +871,31 @@ fmx::errcode BE_FileMove ( short /* funcId */, const ExprEnv& /* environment */,
 
 		auto from = ParameterAsPath ( parameters );
 		auto to = ParameterAsPath ( parameters, 1 );
+		auto overwrite_existing = ParameterAsBoolean ( parameters, 2, true );
 
-		try {
-			rename ( from, to );
-		} catch ( filesystem_error& e ) {
-			g_last_error = e.code().value();
+		auto destination_exists = exists ( to );
+		
+		if ( overwrite_existing || !destination_exists ) {
+
+			try {
+				rename ( from, to );
+			} catch ( filesystem_error& e ) {
+				g_last_error = e.code().value();
+			}
+			
+		} else {
+			
+			// EEXIST || ERROR_FILE_EXISTS on Windows
+			// <adapted from boost::interprocess::errors>
+			const boost::interprocess::ec_xlate *cur  = &boost::interprocess::ec_table[0],
+			*end  = cur + sizeof(boost::interprocess::ec_table)/sizeof(boost::interprocess::ec_xlate);
+			for  (;cur != end; ++cur ){
+				if ( boost::interprocess::already_exists_error == cur->ec ) {
+					g_last_error = cur->sys_ec;
+					break;
+				}
+			}
+			// </adapted>
 		}
 
 		SetResult ( g_last_error, results );
