@@ -295,8 +295,9 @@ const fmx::errcode DisplayProgressDialog ( const std::wstring& title, const std:
 			[progressDialog show: title_string description: description_string maximumValue: maximum canCancel: can_cancel];
 			
 			// force fmp to display the dialog immediately - Jira #26
-			[NSApp runModalForWindow: (NSWindow *)progressDialog];
-			[NSApp stopModal];
+			auto session = [NSApp beginModalSessionForWindow: [progressDialog window]];
+			[NSApp runModalSession: session];
+			[NSApp endModalSession: session];
 
 		} else {
 			error = kWindowIsMissingError;
