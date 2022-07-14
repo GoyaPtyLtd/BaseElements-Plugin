@@ -89,6 +89,7 @@ extern thread_local fmx::errcode g_last_error;
 #define	TEMPORARY_FILE_SUFFIX L".be4.tmp"
 
 #define FILEMAKER_END_OF_LINE "\r"
+#define FILEMAKER_END_OF_LINE_W L"\r"
 #define FILEMAKER_END_OF_LINE_CHAR '\r'
 #define LINE_FEED "\n"
 #define NETWORK_ENDL "\r\n"
@@ -127,7 +128,7 @@ enum functions {
 	kBE_FileSelect = 112,
 	kBE_FolderSelect = 113,
 	kBE_DialogDisplay = 114,
-	kBE_XSLTApply = 115,
+	kBE_XSLT_Apply = 115,
 	kBE_TextExtractWords = 116,
 	kBE_XMLStripInvalidCharacters = 117,
 	kBE_FileMove = 118,

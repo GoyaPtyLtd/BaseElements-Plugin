@@ -1185,35 +1185,39 @@ fmx::errcode BE_DialogProgressUpdate ( short /* funcId */, const ExprEnv& /* env
 #pragma mark XML / XSLT
 #pragma mark -
 
-
-fmx::errcode BE_XSLTApply ( short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_XSLT_Apply ( short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
+		auto xml_path = ParameterAsPath ( parameters );
+		auto xslt = ParameterAsUTF8String ( parameters, 1 );
+		auto csv_path = ParameterAsPath ( parameters, 2 );
+
 		if ( kBE_XSLT_ApplyInMemory == function_id  ) {
 
 			auto xml = ParameterAsUTF8String ( parameters );
-			auto xml_path = ParameterAsPath ( parameters );
-			auto xslt = ParameterAsUTF8String ( parameters, 1 );
-			auto csv_path = ParameterAsPath ( parameters, 2 );
 
-			const auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path, xml_path );
+			auto csv = ApplyXSLTInMemory ( xml, xslt, csv_path, xml_path );
 			SetResult ( csv, results );
 
 		} else { // kBE_XSLT_Apply
 
 			auto xml = ParameterPathOrContainerAsUTF8 ( parameters );
+
+			std::vector<std::string> stylesheets { xslt };
+			std::vector<boost::filesystem::path> output_paths { csv_path };
+
 			auto script_name = ParameterAsUTF8String ( parameters, 3 );
 			auto database_name = ParameterAsUTF8String ( parameters, 4 );
-
-			std::vector<std::wstring> function_parameters; // wide for unicode paths on Windows
-			for ( fmx::uint32 i = 0 ; i < parameters.Size() ; i++ ) {
-				function_parameters.push_back ( ParameterAsWideString ( parameters, i ) );
+			
+			for ( fmx::uint32 i = 5 ; i < parameters.Size() ; i = i + 2 ) {
+				stylesheets.push_back ( ParameterAsUTF8String ( parameters, i ) );
+				output_paths.push_back ( ParameterAsPath ( parameters, i + 1 ) );
 			}
+			auto xslt_result = xslt_task ( output_paths, stylesheets, xml, xml_path, script_name, database_name );
 
-			auto xslt_result = xslt_task ( function_parameters, 0, xml, script_name, database_name );
 			error = xslt_result.first;
 			SetResult ( xslt_result.second, results );
 
@@ -1230,7 +1234,7 @@ fmx::errcode BE_XSLTApply ( short function_id, const ExprEnv& /* environment */,
 
 	return MapError ( error );
 
-} // BE_XSLTApply
+} // BE_XSLT_Apply
 
 
 fmx::errcode BE_XPath ( short function_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )

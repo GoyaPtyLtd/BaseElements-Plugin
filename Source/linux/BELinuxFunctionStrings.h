@@ -36,7 +36,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 112, "BE_FileSelectDialog ( prompt { ; inFolderPath } )" },
 	{ 113, "BE_FolderSelectDialog ( prompt { ; inFolderPath } )" },
 	{ 114, "BE_DialogDisplay ( title ; message ; defaultButton { ; cancelButton ; alternateButton } )" },
-	{ 115, "BE_XSLTApply ( xmlFilePath ; xsltText ; outputFilePath {; scriptName ; databaseName ; [xsltText ; outputPath] ; ... } )" },
+	{ 115, "BE_XSLT_Apply ( xmlFilePath ; xsltText ; outputFilePath {; scriptName ; databaseName ; [xsltText ; outputPath] ; ... } )" },
 	{ 116, "BE_TextExtractWords ( text { ; wordPrefix } )" },
 	{ 117, "BE_XMLStripInvalidCharacters ( path ; { resultFilePath } )" },
 	{ 118, "BE_FileMove ( fromFilePath ; toFilePath {; replaceDestinationFile } )" },
