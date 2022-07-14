@@ -146,15 +146,6 @@ void ResetXMLErrors ( void )
 }
 
 
-/*
- an old version of libxml2, this has no effect libxml2 < 2.7 but means large text
- nodes can be handled in later versions
- */
-
-#ifndef XML_PARSE_HUGE
-	#define XML_PARSE_HUGE 1<<19
-#endif
-
 ////////////////////////////////////////////////////////////////////////////////////////
 //	ApplyXSLTInMemory includes code supplied by Magnus Strand, http://www.smartasystem.se/
 ////////////////////////////////////////////////////////////////////////////////////////
