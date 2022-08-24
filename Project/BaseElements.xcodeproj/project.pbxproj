@@ -98,6 +98,9 @@
 		4D362A801F2085880036B751 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
 		4D362A811F2085880036B751 /* BEPluginFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */; };
 		4D362A821F2085880036B751 /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
+		4D3A800E2890BFDE006EC1B4 /* Test_JSON_jq.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D3A800D2890BFDE006EC1B4 /* Test_JSON_jq.mm */; };
+		4D3A800F2890C2A3006EC1B4 /* libjq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBC8618288128B600E4CD1D /* libjq.a */; };
+		4D3A80102890C2DD006EC1B4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414DB02872B01E00749AE0 /* SystemConfiguration.framework */; };
 		4D3B9BBC2717B7580009E745 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; platformFilter = ios; };
 		4D3B9BBD2717B7590009E745 /* iOSAppSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D3B9BC22717CFC70009E745 /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7F222E361C006EF9FB /* libPocoJSON.a */; };
@@ -110,6 +113,7 @@
 		4D414DB12872B01E00749AE0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414DB02872B01E00749AE0 /* SystemConfiguration.framework */; };
 		4D414DB22872B05800749AE0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414DAE2872B00300749AE0 /* CoreFoundation.framework */; };
 		4D414DB32872B06100749AE0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414DB02872B01E00749AE0 /* SystemConfiguration.framework */; };
+		4D423CF628B5F47E00C0BB2C /* libjq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBC8618288128B600E4CD1D /* libjq.a */; };
 		4D43211E281268720014BBD3 /* libheif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432118281268710014BBD3 /* libheif.a */; };
 		4D43211F281268720014BBD3 /* libheif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432118281268710014BBD3 /* libheif.a */; };
 		4D432121281268720014BBD3 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432119281268710014BBD3 /* libpng16.a */; };
@@ -236,6 +240,10 @@
 		4DBB490727C45AD000D3D232 /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; };
 		4DBB490827C45AD000D3D232 /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D79CA9B26312C660024B789 /* DiskArbitration.framework */; };
 		4DBB490927C45AD000D3D232 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
+		4DBC8613287FEC1F00E4CD1D /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBC8610287FEC1F00E4CD1D /* BEJSON.cpp */; };
+		4DBC8614287FEC1F00E4CD1D /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBC8610287FEC1F00E4CD1D /* BEJSON.cpp */; };
+		4DBC8617287FEC1F00E4CD1D /* BEJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBC8610287FEC1F00E4CD1D /* BEJSON.cpp */; };
+		4DBC861E28812E4200E4CD1D /* libjq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBC8618288128B600E4CD1D /* libjq.a */; };
 		4DBCCD1D25DB76BA0000017C /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1B25DB76BA0000017C /* libiconv.a */; };
 		4DBCCD1E25DB76BA0000017C /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1C25DB76BA0000017C /* libcharset.a */; };
 		4DC4FE052817BC0000C3A339 /* libheif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432118281268710014BBD3 /* libheif.a */; };
@@ -604,6 +612,7 @@
 		4D3969C718DA54CA00DFC47A /* BEOpenSSLAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEOpenSSLAES.h; sourceTree = "<group>"; };
 		4D3969C918DA773900DFC47A /* BEBase64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBase64.cpp; sourceTree = "<group>"; };
 		4D3969CA18DA773900DFC47A /* BEBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBase64.h; sourceTree = "<group>"; };
+		4D3A800D2890BFDE006EC1B4 /* Test_JSON_jq.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Test_JSON_jq.mm; sourceTree = "<group>"; };
 		4D3B9BC52717D0B20009E745 /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoUtil.a; sourceTree = "<group>"; };
 		4D3B9BC82717D5A50009E745 /* boost.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = boost.xcframework; path = ../Libraries/iOS/boost.xcframework; sourceTree = "<group>"; };
 		4D3B9BCD2717DF840009E745 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../Libraries/iOS/iPhoneOSSimulator/libssl.a; sourceTree = "<group>"; };
@@ -632,6 +641,7 @@
 		4D4C06731C23B39B006899FE /* libxslt.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxslt.tbd; path = usr/lib/libxslt.tbd; sourceTree = SDKROOT; };
 		4D4C06761C23B3A9006899FE /* libcharset.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcharset.tbd; path = usr/lib/libcharset.tbd; sourceTree = SDKROOT; };
 		4D4C06781C23B3B6006899FE /* libldap.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libldap.tbd; path = usr/lib/libldap.tbd; sourceTree = SDKROOT; };
+		4D50124F2893492300E197AD /* libpthread.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libpthread.tbd; path = usr/lib/libpthread.tbd; sourceTree = SDKROOT; };
 		4D55C63815EE0F0A008F7FBA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4D59DAFA16F95E2400F87180 /* BEValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEValueList.h; path = ../Source/BEValueList.h; sourceTree = "<group>"; };
 		4D61EA35278D039000975B1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -696,6 +706,10 @@
 		4DB857A21C646DF600D0192A /* BESMTPContainerAttachments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTPContainerAttachments.h; path = ../Source/Net/BESMTPContainerAttachments.h; sourceTree = "<group>"; };
 		4DB9C6CA228539E400BAA17F /* duk_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_config.h; sourceTree = "<group>"; };
 		4DBB490D27C45AD000D3D232 /* BaseElements.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaseElements.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DBC860F287FEC1F00E4CD1D /* BEJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEJSON.h; path = ../Source/BEJSON.h; sourceTree = "<group>"; };
+		4DBC8610287FEC1F00E4CD1D /* BEJSON.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEJSON.cpp; path = ../Source/BEJSON.cpp; sourceTree = "<group>"; };
+		4DBC8618288128B600E4CD1D /* libjq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjq.a; path = ../Libraries/macOS/libjq.a; sourceTree = "<group>"; };
+		4DBC861A28812D0600E4CD1D /* libjq.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libjq.1.dylib; path = ../Libraries/macOS/libjq.1.dylib; sourceTree = "<group>"; };
 		4DBCCD1B25DB76BA0000017C /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = ../Libraries/macOS/libiconv.a; sourceTree = "<group>"; };
 		4DBCCD1C25DB76BA0000017C /* libcharset.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcharset.a; path = ../Libraries/macOS/libcharset.a; sourceTree = "<group>"; };
 		4DC182C8144CEC0900E27CAA /* BEZlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEZlib.h; path = ../Source/BEZlib.h; sourceTree = SOURCE_ROOT; };
@@ -846,6 +860,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DBC861E28812E4200E4CD1D /* libjq.a in Frameworks */,
 				4D432129281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
 				4DBB48EC27C45AD000D3D232 /* libPocoNet.a in Frameworks */,
 				4DBB48ED27C45AD000D3D232 /* libPocoXML.a in Frameworks */,
@@ -963,6 +978,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D423CF628B5F47E00C0BB2C /* libjq.a in Frameworks */,
 				4D432127281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
 				4D9B306A28657188004B4853 /* libde265.a in Frameworks */,
 				4D0BBAE4267AC1D60021DA56 /* libPocoNet.a in Frameworks */,
@@ -1007,6 +1023,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D3A80102890C2DD006EC1B4 /* SystemConfiguration.framework in Frameworks */,
+				4D3A800F2890C2A3006EC1B4 /* libjq.a in Frameworks */,
 				4DE2FD562682CD820091A9AD /* libz.tbd in Frameworks */,
 				4DE2FD552682CD770091A9AD /* libexpat.tbd in Frameworks */,
 				4DE2FD542682CD560091A9AD /* DiskArbitration.framework in Frameworks */,
@@ -1166,6 +1184,7 @@
 			isa = PBXGroup;
 			children = (
 				4D8757D82750459A008D9838 /* Test_BEMailRecipient.mm */,
+				4D3A800D2890BFDE006EC1B4 /* Test_JSON_jq.mm */,
 				4D8757D92750459A008D9838 /* Test_BESMTPEmailMessage.mm */,
 				4DE2FD042682C5160091A9AD /* Info.plist */,
 			);
@@ -1197,6 +1216,8 @@
 		C7DEDEF607E10BF3002283F3 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				4DBC860F287FEC1F00E4CD1D /* BEJSON.h */,
+				4DBC8610287FEC1F00E4CD1D /* BEJSON.cpp */,
 				4DB857A01C646B2800D0192A /* Net */,
 				4D9E26CD1B2905D4002F7DD3 /* Crypto */,
 				4DB90DCF20D731A000D0A367 /* apple */,
@@ -1266,6 +1287,9 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D50124F2893492300E197AD /* libpthread.tbd */,
+				4DBC861A28812D0600E4CD1D /* libjq.1.dylib */,
+				4DBC8618288128B600E4CD1D /* libjq.a */,
 				4D414DB02872B01E00749AE0 /* SystemConfiguration.framework */,
 				4D414DAE2872B00300749AE0 /* CoreFoundation.framework */,
 				4D29455928643D1E00C94A27 /* libjpeg.a */,
@@ -1778,6 +1802,7 @@
 				4DBB48D327C45AD000D3D232 /* BEZlib.cpp in Sources */,
 				4DBB48D427C45AD000D3D232 /* BESQLCommand.cpp in Sources */,
 				4DBB48D527C45AD000D3D232 /* BEXMLReader.cpp in Sources */,
+				4DBC8617287FEC1F00E4CD1D /* BEJSON.cpp in Sources */,
 				4DBB48D627C45AD000D3D232 /* BEX509.cpp in Sources */,
 				4DBB48D727C45AD000D3D232 /* BEBio.cpp in Sources */,
 				4DBB48D827C45AD000D3D232 /* BEXMLTextReader.cpp in Sources */,
@@ -1917,6 +1942,7 @@
 				4DCD49541A195B0C00EFCF7F /* BEZlib.cpp in Sources */,
 				4DCD49591A195B0C00EFCF7F /* BESQLCommand.cpp in Sources */,
 				4DCD495A1A195B0C00EFCF7F /* BEXMLReader.cpp in Sources */,
+				4DBC8613287FEC1F00E4CD1D /* BEJSON.cpp in Sources */,
 				4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */,
 				4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */,
 				4DCD495B1A195B0C00EFCF7F /* BEXMLTextReader.cpp in Sources */,
@@ -1957,6 +1983,7 @@
 				4DE2FD4D2682C8680091A9AD /* BEX509.cpp in Sources */,
 				4DE2FD2D2682C69D0091A9AD /* BEPluginUtilities.cpp in Sources */,
 				4DE2FD482682C7530091A9AD /* BEPDF.cpp in Sources */,
+				4D3A800E2890BFDE006EC1B4 /* Test_JSON_jq.mm in Sources */,
 				4DE2FD2E2682C6BB0091A9AD /* BEFileSystem.cpp in Sources */,
 				4DE2FD4E2682C86B0091A9AD /* BEBio.cpp in Sources */,
 				4DE2FD342682C6F50091A9AD /* BESystemCommand.cpp in Sources */,
@@ -1969,6 +1996,7 @@
 				4D84EB4927BB5E29006AF80A /* BETask.cpp in Sources */,
 				4DE2FD082682C5360091A9AD /* BESMTPEmailMessage.cpp in Sources */,
 				4DE2FD3A2682C7180091A9AD /* BEFileTextReader.cpp in Sources */,
+				4DBC8614287FEC1F00E4CD1D /* BEJSON.cpp in Sources */,
 				4DE2FD372682C7050091A9AD /* BEFileMakerPlugin.cpp in Sources */,
 				4DE2FD2F2682C6CE0091A9AD /* BESMTP.cpp in Sources */,
 				4DE2FD462682C74C0091A9AD /* BEXMLSchema.cpp in Sources */,

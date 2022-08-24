@@ -173,6 +173,9 @@ fmx::errcode BE_EncryptAES ( short funcId, const fmx::ExprEnv& environment, cons
 fmx::errcode BE_DecryptAES ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_JSON_ArraySize ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+#if ( !FMX_WIN_TARGET && !FMX_IOS_TARGET )
+	fmx::errcode BE_JSON_jq ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+#endif
 
 
 #endif // BEPLUGINFUNCTIONS_H

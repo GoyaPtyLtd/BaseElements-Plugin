@@ -64,7 +64,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-m64" />
-			<Add option="-fexceptions -Wno-unknown-pragmas -fPIC" />
+			<Add option="-fexceptions" />
+			<Add option="-Wno-unknown-pragmas" />
+			<Add option="-fPIC" />
 			<Add option="-D_LIBCPP_STD_VER=17" />
 			<Add directory="../Headers" />
 			<Add directory="../Source" />
@@ -104,6 +106,7 @@
 			<Add library="../Libraries/linux/libjpeg.a" />
 			<Add library="../Libraries/linux/libpng16.a" />
 			<Add library="../Libraries/linux/libz.a" />
+			<Add library="../Libraries/linux/libjq.a" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
@@ -147,6 +150,7 @@
 		<Unit filename="../Source/BEFileMakerPlugin.cpp" />
 		<Unit filename="../Source/BEFileSystem.cpp" />
 		<Unit filename="../Source/BEFileTextReader.cpp" />
+		<Unit filename="../Source/BEJSON.cpp" />
 		<Unit filename="../Source/BEJavaScript.cpp" />
 		<Unit filename="../Source/BEPDF.cpp" />
 		<Unit filename="../Source/BEPlugin.cpp" />

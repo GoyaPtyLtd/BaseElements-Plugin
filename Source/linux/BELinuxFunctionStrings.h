@@ -115,6 +115,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 271, "BE_JPEGRecompress ( jpeg { ; compressionLevel ; scale } )" },
 	{ 272, "BE_ContainerConvertImage ( image {; imageFormat } )" },
 	{ 302, "BE_JSON_ArraySize ( json { ; path } )" },
+	{ 304, "BE_JSON_jq ( json ; filter { ; options } )" },
 	{ 350, "BE_ValuesUnique ( listOfValues { ; caseSensitiveBoolean } )" },
 	{ 351, "BE_ValuesFilterOut ( textToFilter ; filterValues { ; caseSensitiveBoolean } )" },
 	{ 352, "BE_ValuesContainsDuplicates ( listOfValues  { ; caseSensitiveBoolean } )" },

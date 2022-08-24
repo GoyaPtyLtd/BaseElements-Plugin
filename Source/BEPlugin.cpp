@@ -220,6 +220,11 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_UnGzip, BE_UnGzip, 1, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_JSON_ArraySize, BE_JSON_ArraySize, 1, 2 );
+#if ( FMX_WIN_TARGET || FMX_IOS_TARGET )
+	g_be_plugin->RegisterFunction ( kBE_JSON_jq, BE_NotImplemented, 2, 3 );
+#else
+	g_be_plugin->RegisterFunction ( kBE_JSON_jq, BE_JSON_jq, 2, 3 );
+#endif
 
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_GETFile, BE_HTTP_GET, 1, 4 );

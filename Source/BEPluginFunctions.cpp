@@ -60,6 +60,7 @@
 #include "BEFileMakerPlugin.h"
 #include "BEFileSystem.h"
 #include "BEJavaScript.h"
+#include "BEJSON.h"
 #include "BEPDF.h"
 #include "BEPluginException.h"
 #include "BEQuadChar.h"
@@ -874,7 +875,7 @@ fmx::errcode BE_FileMove ( short /* funcId */, const ExprEnv& /* environment */,
 		auto overwrite_existing = ParameterAsBoolean ( parameters, 2, true );
 
 		auto destination_exists = exists ( to );
-		
+
 		if ( overwrite_existing || !destination_exists ) {
 
 			try {
@@ -882,9 +883,9 @@ fmx::errcode BE_FileMove ( short /* funcId */, const ExprEnv& /* environment */,
 			} catch ( filesystem_error& e ) {
 				g_last_error = e.code().value();
 			}
-			
+
 		} else {
-			
+
 			// EEXIST || ERROR_FILE_EXISTS on Windows
 			// <adapted from boost::interprocess::errors>
 			const boost::interprocess::ec_xlate *cur  = &boost::interprocess::ec_table[0],
@@ -924,7 +925,7 @@ fmx::errcode BE_FileCopy ( short /* funcId */, const ExprEnv& /* environment */,
 		auto overwrite_existing = ParameterAsBoolean ( parameters, 2, false );
 
 		try {
-			
+
 			auto options = copy_options::recursive | copy_options::copy_symlinks;
 			if ( overwrite_existing ) {
 				options |= copy_options::overwrite_existing;
@@ -1211,7 +1212,7 @@ fmx::errcode BE_XSLT_Apply ( short function_id, const ExprEnv& /* environment */
 
 			auto script_name = ParameterAsUTF8String ( parameters, 3 );
 			auto database_name = ParameterAsUTF8String ( parameters, 4 );
-			
+
 			for ( fmx::uint32 i = 5 ; i < parameters.Size() ; i = i + 2 ) {
 				stylesheets.push_back ( ParameterAsUTF8String ( parameters, i ) );
 				output_paths.push_back ( ParameterAsPath ( parameters, i + 1 ) );
@@ -1493,6 +1494,37 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 	return MapError ( error );
 
 } // BE_JSON_ArraySize
+
+
+#if ( !FMX_WIN_TARGET && !FMX_IOS_TARGET )
+fmx::errcode BE_JSON_jq ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto json = ParameterAsUTF8String ( parameters );
+		boost::replace_all ( json, FILEMAKER_END_OF_LINE, LINE_FEED );
+
+		auto filter = ParameterAsUTF8String ( parameters, 1 );
+		auto options = ParameterAsUTF8String ( parameters, 2 );
+		
+		auto jq_result = JSON_jq ( json, filter, options );
+
+		SetResult ( jq_result, results );
+
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_JSON_jq
+#endif
 
 
 #pragma mark -

@@ -2,23 +2,23 @@
 Version 5.0b2
 ########################################################################
 
-July 14, 2022
-
+August 24, 2022
 
 Pro Version
 
 
 New Functions
 
+	BE_CurlGetInfo: get information about the most recent curl (HTTP/FTP/SMTP) connection
+	BE_JSON_jq: an adaption of the jq JSON command line tool (macOS, Ubuntu only)
 
-BE_CurlGetInfo: get information about the most recent curl (HTTP/FTP/SMTP) connection
 
-Pro Version Only
+	Pro Version Only
 
-BE_BackgroundTaskAdd: perform a HTTPPost and set the result into a field in the "background"
-BE_BackgroundTaskList: return a value list of ids for pending background tasks
-BE_ContainerConvertImage: convert images between JPG, PNG, GIF and HEIC (read-only) formats
-BE_SMTPServer: new parameter to control reuse of the SMTP connection when sending bulk email
+	BE_BackgroundTaskAdd: perform a HTTPPost and set the result into a field in the "background"
+	BE_BackgroundTaskList: return a value list of ids for pending background tasks
+	BE_ContainerConvertImage: convert images between JPG, PNG, GIF and HEIC (read-only) formats
+	BE_SMTPServer: new parameter to control reuse of the SMTP connection when sending bulk email
 
 
 Functions Removed

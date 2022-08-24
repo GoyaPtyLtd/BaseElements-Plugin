@@ -215,6 +215,7 @@ enum functions {
 //	kBE_JSON_Error_Description_Deprecated = 301, // removed in 5
 	kBE_JSON_ArraySize = 302,
 //	kBE_JSON_Encode_Deprecated = 303, // Removed in 4.2
+	kBE_JSON_jq = 304,
 //	kBE_OAuth_RequestToken = 320, // Never Implemented
 	kBE_OAuthRequestAccessToken_Deprecated = 321, // Deprecated in 4.1.4 => Removed in 4.2
 //	kBE_OAuth_SetToken = 322, // Never Implemented
