@@ -123,7 +123,6 @@ thread_local std::map<short, std::string> g_script_steps;
 thread_local errcode g_last_error;
 thread_local errcode g_last_ddl_error;
 thread_local string g_text_encoding = UTF8;
-thread_local string g_json_error_description;
 thread_local BESMTPUniquePtr g_smtp_connection;
 thread_local BESMTPContainerAttachments g_smtp_attachments;
 thread_local vector<BEValueListStringSharedPtr> arrays;
@@ -1455,7 +1454,6 @@ fmx::errcode BE_XMLTidy ( short /* funcId */, const ExprEnv& /* environment */, 
 fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
-	g_json_error_description.clear();
 
 	try {
 
@@ -1478,7 +1476,6 @@ fmx::errcode BE_JSON_ArraySize ( short /* funcId */, const ExprEnv& /* environme
 			; // didn't find path... don't error... array_size = 0;
 		} catch ( Poco::Exception& e ) {
 			error = e.code();
-//			g_json_error_description = e.what(); // deprecated
 		}
 
 		SetResult ( (double)array_size, results );
