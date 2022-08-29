@@ -67,6 +67,7 @@
 			<Add option="-fexceptions" />
 			<Add option="-Wno-unknown-pragmas" />
 			<Add option="-fPIC" />
+			<Add option="-fvisibility=hidden" />
 			<Add option="-D_LIBCPP_STD_VER=17" />
 			<Add directory="../Headers" />
 			<Add directory="../Source" />

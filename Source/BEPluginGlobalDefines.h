@@ -28,6 +28,8 @@
 
 	#endif
 
+	#define BEP_EXPORT __attribute__((visibility("default")))
+
 	#define USER_PREFERENCES_DOMAIN BE_PLUGIN_BUNDLE_IDENTIFIER".plugin-user"
 	#define FOPEN fopen
 
@@ -48,6 +50,8 @@
 #elif defined __linux__
 
     #define FMX_LINUX_TARGET 1
+
+	#define BEP_EXPORT __attribute__((visibility("default")))
 
     // tchar
     #define _TEXT(x) x

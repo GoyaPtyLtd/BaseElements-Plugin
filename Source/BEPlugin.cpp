@@ -69,7 +69,7 @@ using namespace fmx;
 #pragma mark Globals
 #pragma mark -
 
-FMX_ExternCallPtr gFMX_ExternCallPtr; // required by the FMX API
+BEP_EXPORT FMX_ExternCallPtr gFMX_ExternCallPtr; // required by the FMX API
 BEFileMakerPlugin * g_be_plugin;
 
 extern BESQLCommandUniquePtr g_ddl_command;
@@ -384,7 +384,7 @@ static void UnloadPlugin ( void ) {
 // main entry point
 // calls for plug-in functions go direct to the registered function
 
-void FMX_ENTRYPT FMExternCallProc ( FMX_ExternCallPtr plugin_call ) {
+void FMX_ENTRYPT BEP_EXPORT FMExternCallProc ( FMX_ExternCallPtr plugin_call ) {
 
 	gFMX_ExternCallPtr = plugin_call;
 
