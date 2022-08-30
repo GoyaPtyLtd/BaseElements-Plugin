@@ -142,6 +142,13 @@ void GetPreference ( std::wstring& key, std::wstring& domain )
 }
 
 
+void DeletePreference ( std::string& key, std::string& domain )
+{
+	throw BEPlugin_Exception ( kCommandIsUnavailableError );
+}
+
+
+
 // other
 
 bool OpenURL ( std::wstring& url )
