@@ -77,9 +77,11 @@
 			<Add option="-m64" />
 			<Add option="-Wl,-soname=5.0b2" />
 			<Add option="-Wl,--exclude-libs,ALL" />
+			<Add option="-Wl,--no-undefined" />
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
 			<Add library="FMWrapper" />
 			<Add library="libMagick++-7.Q16HDRI.a" />
+			<Add library="libMagickWand-7.Q16HDRI.a" />
 			<Add library="libMagickCore-7.Q16HDRI.a" />
 			<Add library="libboost_date_time.a" />
 			<Add library="libboost_filesystem.a" />
@@ -88,20 +90,20 @@
 			<Add library="libboost_thread.a" />
 			<Add library="libcurl.a" />
 			<Add library="libPocoNet.a" />
-			<Add library="libcrypto.a" />
-			<Add library="libssl.a" />
 			<Add library="libssh2.a" />
-			<Add library="libexslt.a" />
-			<Add library="libturbojpeg.a" />
-			<Add library="libxml2.a" />
+			<Add library="libssl.a" />
+			<Add library="libcrypto.a" />
 			<Add library="libxslt.a" />
+			<Add library="libexslt.a" />
+			<Add library="libxml2.a" />
+			<Add library="libturbojpeg.a" />
 			<Add library="libPocoJSON.a" />
 			<Add library="libPocoZip.a" />
 			<Add library="libPocoXML.a" />
 			<Add library="libPocoFoundation.a" />
-			<Add library="libfreetype.a" />
-			<Add library="libfontconfig.a" />
 			<Add library="libpodofo.a" />
+			<Add library="libfontconfig.a" />
+			<Add library="libfreetype.a" />
 			<Add library="libiconv.a" />
 			<Add library="libheif.a" />
 			<Add library="liblibde265.a" />
@@ -109,6 +111,10 @@
 			<Add library="libpng16.a" />
 			<Add library="libz.a" />
 			<Add library="libjq.a" />
+			<Add library="libopenjp2.a" />
+			<Add library="dl" />
+			<Add library="uuid" />
+			<Add library="pthread" />
 			<Add directory="../Libraries/linux" />
 		</Linker>
 		<ExtraCommands>
