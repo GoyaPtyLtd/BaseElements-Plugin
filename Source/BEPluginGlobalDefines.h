@@ -47,6 +47,8 @@
 
 	#define PATH_MAX MAX_PATH
 
+	#define BEP_EXPORT 
+
 #elif defined __linux__
 
     #define FMX_LINUX_TARGET 1
