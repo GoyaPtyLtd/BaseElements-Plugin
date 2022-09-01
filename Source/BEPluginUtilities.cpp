@@ -503,7 +503,8 @@ const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& paramete
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 
 		auto binary_contents = ParameterAsVectorChar ( parameters, which );
-		const std::string temporary_contents ( binary_contents.begin(), binary_contents.end() );
+		auto binary_contents_as_utf8 = ConvertTextEncoding ( (char *)binary_contents.data(), binary_contents.size(), UTF8, g_text_encoding );
+		const std::string temporary_contents ( binary_contents_as_utf8.begin(), binary_contents_as_utf8.end() );
 		results = temporary_contents;
 
 		if ( delimiter == "" ) {
@@ -519,13 +520,12 @@ const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& paramete
 
 		} else {
 
-			/*  write out to a temporary path */
+			//  write out to a temporary path
 			auto unique_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
 			auto temporary_file = unique_file.native();
 
 			ios_base::openmode mode = ios_base::trunc;
-			const vector<char> out = ConvertTextEncoding ( (char *)results.c_str(), results.size(), g_text_encoding, UTF8 );
-			fmx::errcode error = write_to_file ( temporary_file, out, mode );
+			fmx::errcode error = write_to_file ( temporary_file, binary_contents_as_utf8, mode );
 
 			if ( error == kNoError ) {
 
@@ -988,10 +988,33 @@ const bool IsValidUTF8 ( const std::string& utf8 )
 {
 	auto valid = true;
 
-	try {
-		auto bit_bucket = ConvertTextToUTF8 ( (char *)utf8.c_str(), utf8.size(), UTF8 );
-	} catch ( BEPlugin_Exception& /* e */ ) {
-		valid = false;
+//	there's no clean way to determine the codeset of the supplied text so try converting from utf8 to utf8
+
+	auto conversion = iconv_open ( UTF8, UTF8 );
+	
+	const size_t kIconvError = -1;
+	if ( kIconvError != (size_t)conversion ) {
+		
+		char * start = (char *)utf8.c_str();
+		size_t start_length = utf8.length();
+		std::vector<char> encoded ( start_length );
+		char * encoded_start = encoded.data();
+		size_t remaining = start_length;
+
+		auto error_result = iconv ( conversion, &start, &start_length, &encoded_start, &remaining );
+		iconv_close ( conversion ); // int =
+		
+		if ( kIconvError == error_result ) {
+
+			valid = false;
+			error_result = errno;
+
+			if ( EILSEQ != error_result ) {
+				throw BEPlugin_Exception ( (fmx::errcode)error_result );
+			}
+
+		}
+
 	}
 
 	return valid;

@@ -1,8 +1,8 @@
 ########################################################################
-Version 5.0b2
+Version 5.0b1
 ########################################################################
 
-August 24, 2022
+September 1, 2022
 
 Pro Version
 
@@ -44,6 +44,7 @@ BE_XSLTApply: rename to BE_XSLT_Apply
 BE_XSLT_Apply: correct an issue relating to Unicode in stylesheets
 BE_FileCopy: added parameter to replaceDestinationFile
 BE_FileMove: added parameter to replaceDestinationFile
+BE_FileReadText: fix crash when reading a utf16 file from a container
 BE_RegularExpression: support the g option for match in addition to replace
 BE_SMTPSend: do not send single part messages as "multipart"
 BE_XMLStripNodes: now accepts text/xml input (as per BE_XMLParse)
