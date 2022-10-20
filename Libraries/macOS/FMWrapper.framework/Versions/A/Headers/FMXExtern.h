@@ -1,6 +1,6 @@
 /*
 
- Copyright © 1998 - 2021  Claris International Inc.
+ Copyright © 1998 - 2022  Claris International Inc.
  All rights reserved.
 
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
@@ -36,7 +36,7 @@
 
 // Platform specific macros
 
-#if defined(__GNUC__) && (defined (_LIBCPP_STD_VER) && _LIBCPP_STD_VER >= 11)
+#if defined(__GNUC__) && (defined (__cplusplus) && __cplusplus >= 201103L)
 
 	#define FMX_PACK                    __attribute__ ((packed))
 	#define FMX_PACK_ON
@@ -173,7 +173,9 @@ enum
 	k191ExtnVersion     = 63,
 	k192ExtnVersion     = 64,
 	k193ExtnVersion     = 65,
-	kCurrentExtnVersion = 65,
+	k194ExtnVersion     = 66,
+	k195ExtnVersion     = 67,
+	kCurrentExtnVersion = 67,
 	kMinExtnVersion     = 4,
 	kMaxExtnVersion     = 255
 };
@@ -241,9 +243,9 @@ struct FMX_ExternCallStruct
 		FMX_Int16               extnVersion;                    // Version of this structure, set to the value of kCurrentExtnVersion
 		fmx::unusedid           unusedID;                       // Always -1 as of FileMaker Pro version 19 (API VERSION 61)
 		FMX_ExternCallProc      entryPoint;                     // The pointer the plug-ins entry point, FMExternCallProc
-		FMX_Boolean             cfmCalls;                       // Always false (i.e. 0)
+		FMX_Boolean             unusedFlag;                     // Always false (i.e. 0)
 		FMX_ExternCallSwitch    whichCall;                      // Which call FileMaker is making into the plug-in (i.e. kFMXT_Init and others)
-		FMX_Boolean             unsafeCalls;                    // True if unsafe for non-memory calls
+		FMX_Boolean             unsafeCalls;                    // True if not on the main thread
 
 	// Parameters for the calls; any parameter not used by a call is set to zero.
 		FMX_UChar               parm1;

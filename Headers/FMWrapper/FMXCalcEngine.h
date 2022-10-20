@@ -260,7 +260,10 @@ extern "C++"
 				kGet_SystemLocaleElements = 1126,
 				kGet_FileLocaleElements = 1127,
 				kGet_InstalledFMPluginsAsJSON = 1128,
-
+				
+				// New to FileMaker Pro 19.4.1
+				kGet_SessionIdentifier = 1129,
+				
 				// New to FileMaker Pro 19 (API VERSION 62) and later. For new EvaluateConvert... entry points
 				kConvert_PosixPath		= 1,
 				kConvert_WinPath		= 2,
