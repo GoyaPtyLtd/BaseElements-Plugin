@@ -75,7 +75,7 @@
 		</Compiler>
 		<Linker>
 			<Add option="-m64" />
-			<Add option="-Wl,-soname=5.0b2" />
+			<Add option="-Wl,-soname=5.0b3" />
 			<Add option="-Wl,--exclude-libs,ALL" />
 			<Add option="-Wl,--no-undefined" />
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />

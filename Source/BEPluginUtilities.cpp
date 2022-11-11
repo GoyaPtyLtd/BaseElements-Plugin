@@ -493,71 +493,25 @@ const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt
 } // ParameterFileName
 
 
-const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& parameters, const fmx::uint32 which, const long from, const long to, const std::string delimiter )
+const std::string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, const fmx::uint32 which )
 {
-
-	std::string results;
 	std::string file_contents;
-	std::string::size_type buffer_size = kBufferSize;
 
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 
 		auto binary_contents = ParameterAsVectorChar ( parameters, which );
 		auto binary_contents_as_utf8 = ConvertTextEncoding ( (char *)binary_contents.data(), binary_contents.size(), UTF8, g_text_encoding );
 		const std::string temporary_contents ( binary_contents_as_utf8.begin(), binary_contents_as_utf8.end() );
-		results = temporary_contents;
-
-		if ( delimiter == "" ) {
-
-			if ( from > 0 || to > 0 ) {
-				size_t offset = 0, depth = 0 ;
-				if ( DetermineOffsetAndDepth ( results.length(), from, to, offset, depth ) ) {
-					results = results.substr ( offset, depth ) ;
-				} else {
-					results.clear() ;
-				}
-			}
-
-		} else {
-
-			//  write out to a temporary path
-			auto unique_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
-			auto temporary_file = unique_file.native();
-
-			ios_base::openmode mode = ios_base::trunc;
-			fmx::errcode error = write_to_file ( temporary_file, binary_contents_as_utf8, mode );
-
-			if ( error == kNoError ) {
-
-				ReadFileAsUTF8Extract ( temporary_file, from, to, buffer_size, delimiter, results ) ;
-				boost::filesystem::remove ( temporary_file );
-
-			} else {
-				results = temporary_contents;
-			}
-
-		}
+		file_contents = temporary_contents;
 
 	} else {
 
 		auto file = ParameterAsPath ( parameters, which );
+		file_contents = ReadFileAsUTF8 ( file );
 
-		if ( delimiter == "" ) {
-
-			if ( from > 0 || to > 0 ) {
-				ReadFileAsUTF8Extract ( file, from, to, results ) ;
-			} else {
-				results = ReadFileAsUTF8 ( file );
-			}
-
-		} else {
-
-			ReadFileAsUTF8Extract ( file, from, to, buffer_size, delimiter, results ) ;
-
-		}
 	}
 
-	return results ;
+	return file_contents;
 
 } // ParameterPathOrContainerAsUTF8
 
@@ -799,6 +753,7 @@ std::string ReadFileAsUTF8 ( const boost::filesystem::path path )
 
 } // ReadFileAsUTF8
 
+
 void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t from, const size_t to, std::string& result )
 {
 
@@ -871,46 +826,6 @@ void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t fr
 	}
 
 
-} // ReadFileAsUTF8Extract
-
-
-void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t from, const size_t to, const size_t buffer_size, const std::string& delimiter, std::string& result)
-{
-
-	if ( exists ( path ) ) {
-
-		if ( from > 0 || to > 0 ) {
-
-			size_t length = (size_t)file_size ( path ) ;
-
-			if ( length > 0 ) {
-
-				// open the file
-				boost::filesystem::ifstream inFile ( path, ios_base::in | ios_base::binary | ios_base::ate );
-
-				if ( to == 0 || ( to >= from && from > 0 ) ) {
-
-					ReadBufferedFileFromStart( inFile, from, to, buffer_size, delimiter, result ) ;
-
-				} else {
-
-					if ( from == 0) {
-						ReadBufferedFileFromEnd( inFile, 1, to, buffer_size, delimiter, result ) ;
-					} else {
-						/*
-						   from is entered greater than to
-						   so pass in to as from and from as to
-						 */
-						ReadBufferedFileFromEnd( inFile, to, from, buffer_size, delimiter, result ) ;
-					}
-
-				}
-				inFile.close ();
-			}
-		}
-	} else {
-		g_last_error = kNoSuchFileOrDirectoryError;
-	}
 } // ReadFileAsUTF8Extract
 
 
@@ -991,10 +906,10 @@ const bool IsValidUTF8 ( const std::string& utf8 )
 //	there's no clean way to determine the codeset of the supplied text so try converting from utf8 to utf8
 
 	auto conversion = iconv_open ( UTF8, UTF8 );
-	
+
 	const size_t kIconvError = -1;
 	if ( kIconvError != (size_t)conversion ) {
-		
+
 		char * start = (char *)utf8.c_str();
 		size_t start_length = utf8.length();
 		std::vector<char> encoded ( start_length );
@@ -1003,7 +918,7 @@ const bool IsValidUTF8 ( const std::string& utf8 )
 
 		auto error_result = iconv ( conversion, &start, &start_length, &encoded_start, &remaining );
 		iconv_close ( conversion ); // int =
-		
+
 		if ( kIconvError == error_result ) {
 
 			valid = false;
@@ -1168,16 +1083,16 @@ errcode ExecuteScript ( const std::string& script_name, const std::string& file_
 
 		TextUniquePtr script;
 		script->Assign ( script_name.c_str() );
-		
+
 		TextUniquePtr database;
 		database->Assign ( file_name.c_str() );
-		
+
 		TextUniquePtr filemaker_script_parameter;
 		filemaker_script_parameter->Assign ( script_parameter.c_str() );
 		DataUniquePtr parameter;
 		LocaleUniquePtr default_locale;
 		parameter->SetAsText( *filemaker_script_parameter, *default_locale );
-		
+
 		error = ExecuteScript ( *script, *database, *parameter, script_control );
 
 	} catch ( bad_alloc& /* e */ ) {
@@ -1241,117 +1156,6 @@ errcode MapError ( const errcode error, const bool map )
 #pragma mark -
 #pragma mark Other
 #pragma mark -
-
-
-bool DetermineOffsetAndDepth ( const size_t& length, const size_t& from, const size_t& to, size_t& offset, size_t& depth )
-{
-
-	if ( from == 0 && to == 0 ) {
-		offset = 0 ;
-		depth = length ;
-	} else if ( from == 0 ) {
-		/* read from end */
-		/* fmp standard is 1 offset*/
-		depth = to ;
-		offset = length - 1 - to ;
-		if ( offset > length ) {
-			offset = 0 ;
-			depth = length ;
-		}
-	} else if ( to == 0 ) {
-		/* read from start */
-		/* fmp standard is 1 offset*/
-		offset = from - 1 ;
-		depth = length - from ;
-		if( depth > length) {
-			depth = length ;
-		}
-	} else {
-		/* read start..to */
-		/* fmp standard is 1 offset */
-		if ( from == to ) {
-			offset = from - 1;
-			depth = to - from ;
-		} else {
-			depth = from - to  ;
-			offset = length - 1 - from ;
-			if ( offset > length ) {
-				offset = 0 ;
-			}
-		}
-	}
-
-	return ( offset + depth < length ) ;
-
-} // DetermineOffsetAndDepth
-
-
-
-/**
- Find the start of delimiter @from
- */
-void FindDelimiterStart ( const std::string& text, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset )
-{
-
-	size_t next ;
-	while ( count < from ) {
-		next = text.find(delimiter,offset) ;
-		if ( next == std::string::npos) {
-			break ;
-		} else {
-			count++ ;
-			if ( count < from ) {
-				offset = next + delimiter.length() ;
-			}
-		}
-	}
-} // FindDelimiterStart
-
-
-/**
- Find end offset of a delimiter in text
- */
-void FindDelimiterEnd ( const std::string& text, const std::string& delimiter, const size_t& to, size_t& count, size_t& offset )
-{
-
-	size_t next ;
-	while ( count <= to ) {
-		next = text.find(delimiter,offset) ;
-		if ( next == std::string::npos) {
-			offset = next ;
-			break ;
-		} else {
-			count++ ;
-			if ( count <= to ) {
-				offset = next + delimiter.length() ;
-			} else {
-				offset = next ;
-			}
-		}
-	}
-
-} // FindDelimiterEnd
-
-
-/**
- Find the minimum offset for a delimiter from the end.
- */
-void ReverseFindDelimiter ( const std::string& search, const std::string& delimiter, const size_t& from, size_t& count, size_t& offset )
-{
-
-	size_t next, candidate=0 ;
-	while ( count < from ) {
-		candidate = offset - 1 ;
-		next = search.rfind(delimiter,candidate) ;
-		if ( next == std::string::npos ) {
-			break ;
-		} else {
-			count++ ;
-			offset = next ;
-		}
-	}
-
-} // ReverseFindDelimiter
 
 
 /*
@@ -1455,8 +1259,8 @@ void Do_GetString ( unsigned long whichString, FMX_PtrType /* winLangID */, FMX_
 	} // switch ( whichString )
 
 	Sub_LoadString ( string_to_load, string, resultsize );
-	
-	
+
+
 } // Do_GetString ( FMX_Unichar* version )
 
 
@@ -1506,218 +1310,4 @@ void Do_GetString ( const unsigned long whichStringID, TextUniquePtr& function_i
 	} // stripFunctionParams
 
 } // Do_GetString (TextUniquePtr version)
-
-/** Extract text from a buffered file.
-
- */
-void ReadBufferedFileFromStart(boost::filesystem::ifstream& inFile, const size_t& from, const size_t& to, const size_t& buffer_size, const std::string& delimiter, std::string& result) {
-
-	std::vector<char> buffer ( buffer_size ) ;
-	size_t count = 0, offset = 0, from_delimiter, to_delimiter ;
-
-	std::string slice, hold ;
-
-	/* read from front */
-
-	while (1) {
-
-		inFile.seekg ( offset, ios::beg ) ;
-		inFile.read ( buffer.data(), buffer_size ) ;
-
-		// convert the text in the file to utf-8 if possible
-		slice = ConvertTextToUTF8 ( buffer.data(), inFile.gcount() );
-		if ( slice.length() == 0 ) {
-			slice.assign ( buffer.data() );
-		}
-
-		from_delimiter = 0 ;
-
-		/* find substring start */
-		FindDelimiterStart( slice, delimiter, from, count, from_delimiter ) ;
-
-		if ( count >= from ) {
-
-			/* insert any previous reads when found + 1 == count */
-			result.append( hold ) ;
-			hold.clear() ;
-
-			if ( to <= 0 ) {
-
-				/* add whole slice */
-				result.append(slice.substr(from_delimiter)) ;
-
-			} else {
-
-				/* find substring end */
-				to_delimiter = from_delimiter ;
-				FindDelimiterEnd( slice, delimiter, to, count,  to_delimiter ) ;
-
-				if( count < to || to_delimiter == std::string::npos ) {
-
-					/* add slice */
-					result.append( slice.substr(from_delimiter) );
-
-				} else {
-
-					/* add portion */
-					result.append(slice.substr( from_delimiter, delimiter.length()+to_delimiter-from_delimiter) ) ;
-
-				}
-			}
-		} else {
-			if ( count + 1 == from ) {
-				/* first delimiter might be found in subsequent buffer reads */
-				hold.append( slice ) ;
-			}
-		}
-
-		slice.clear() ;
-
-		if( !inFile ){
-			break ;
-		} else if ( count >= from && count >= to + 1 && to > 0 ) {
-			/* no need to read anymore data*/
-			break ;
-		} else {
-			offset = offset + buffer_size ;
-		}
-	}
-}
-
-
-/** Extract text from the end of a file.
-
- */
-void ReadBufferedFileFromEnd(boost::filesystem::ifstream& inFile, const size_t& from, const size_t& to, const size_t& buffer_size, const std::string& delimiter, std::string& result) {
-
-	std::vector<char> buffer ( buffer_size ) ;
-	size_t count = 0, offset, from_delimiter = 0, to_delimiter = 0, length = 0, delimiter_length = delimiter.length();
-
-	std::string slice ;
-	std::vector<std::string> hold ;
-	// std::ostringstream verbose ;
-
-	inFile.seekg ( 0, ios::end ) ;
-	length = inFile.tellg() ;
-
-	/*
-	  read the file in blocks and
-	  start with the last partial block first.
-	  */
-	if ( length < buffer_size ) {
-		/* one partial block */
-		offset = 0 ;
-	} else {
-		size_t remainder = length % buffer_size ;
-		if ( remainder != 0 ) {
-			offset = length - remainder ;
-		} else {
-			/* No partial blocks */
-			offset = length - buffer_size ;
-		}
-	}
-
-	inFile.seekg ( offset, ios::beg ) ;
-	inFile.read ( buffer.data(), length - offset ) ;
-	to_delimiter = inFile.gcount() ;
-	if ( from > 1 ) {
-		// verbose << "\nExcluding lines 1 through " << from - 1 << "\n" ;
-		slice = ConvertTextToUTF8 ( buffer.data(), inFile.gcount() );
-		if ( slice.length() == 0 ) {
-			slice.assign ( buffer.data() );
-		}
-		ReverseFindDelimiter( slice, delimiter, from, count,  to_delimiter ) ;
-		// verbose << "to_delimiter: " << to_delimiter << "\n" ;
-	}
-	from_delimiter = to_delimiter - 1 ;
-
-	// i = 0 ;
-	while (1) {
-
-		// i++ ;
-		// verbose << "\nread i: " << i << " offset: " << offset << "\n" ;
-
-		slice = ConvertTextToUTF8 ( buffer.data(), inFile.gcount() );
-		if ( slice.length() == 0 ) {
-			slice.assign ( buffer.data() );
-		}
-
-		ReverseFindDelimiter( slice, delimiter, to, count,  from_delimiter ) ;
-
-		// verbose << "count: " << count << "\n" ;
-		// verbose << "from_delimiter: " << from_delimiter << "\n" ;
-		// verbose << "to_delimiter: " << to_delimiter << "\n" ;
-
-		if ( count >= from && count <= to) {
-
-			// verbose << "from_delimiter+delimiter_length: " << from_delimiter+delimiter_length << "\n" ;
-			// verbose << "to_delimiter-from_delimiter-delimiter_length: " << to_delimiter-from_delimiter-delimiter_length << "\n" ;
-		hold.push_back(slice.substr(from_delimiter+delimiter_length,to_delimiter-from_delimiter-delimiter_length)) ;
-
-		}
-
-		if( !inFile ){
-			break ;
-		} else if ( count >= from && count >= to ) {
-			/* No need to read anymore data. */
-			// verbose << "count >= from && count >= to " ;
-			break ;
-		} else {
-
-			if ( from_delimiter > 0 ) {
-				if( count + 1 == from || count >= from ) {
-				/*
-				  Nothing found in this block or
-				  there is still data to be processed.
-				  */
-				// verbose << "Adding head orphan.\n" ;
-				hold.push_back(slice.substr(0,from_delimiter+delimiter_length)) ;
-
-				}
-			}
-
-
-			if ( offset >= buffer_size ) {
-
-				if ( offset > buffer_size ) {
-					offset -= buffer_size ;
-				} else {
-					offset = 0 ;
-				}
-
-				inFile.seekg ( offset, ios::beg ) ;
-				inFile.read ( buffer.data(), buffer_size ) ;
-
-				to_delimiter = inFile.gcount() ;
-				from_delimiter = to_delimiter - 1 ;
-
-			} else {
-				/* no more data to read */
-				break ;
-			}
-
-		}
-
-	}
-
-	AppendToStringInReverse( hold, result ) ;
-	// verbose << "\nresult.length(): " << result.length()  ;
-	// result.append(verbose.str()) ;
-
-}
-
-void AppendToStringInReverse( const std::vector<std::string>& source, std::string& target ) {
-	if (source.size()>0){
-		auto i = source.size()-1 ;
-		while(1) {
-			target.append( source[i] ) ;
-			if ( i == 0 ) {
-				break ;
-			} else {
-				i--;
-			}
-		}
-	}
-} // AppendToStringInReverse
-
 

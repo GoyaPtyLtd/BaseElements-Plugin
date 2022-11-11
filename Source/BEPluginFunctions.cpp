@@ -90,6 +90,7 @@
 #include <thread>
 
 #include <boost/algorithm/hex.hpp>
+#include <boost/algorithm/string_regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
 #include <boost/filesystem.hpp>
@@ -471,30 +472,106 @@ fmx::errcode BE_FileModificationTimestamp ( short /* funcId */, const ExprEnv& /
 } // BE_FileModificationTimestamp
 
 
+
 fmx::errcode BE_FileReadText ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
-		long start = ParameterAsLong ( parameters, 1, 0 );
-		if ( start < 0 ) {
-			start = 0;
+		const auto from = ParameterAsLong ( parameters, 1 );
+		const auto to = ParameterAsLong ( parameters, 2 );
+		const auto file_contents = ParameterPathOrContainerAsUTF8 ( parameters );
+
+		fmx::uint32 read_from = static_cast<fmx::uint32>(from);
+		fmx::uint32 number_to_read = static_cast<fmx::uint32>(to);
+
+		if ( 0 == from && 0 == to ) { // or if there's a delimiter ???
+						
+			SetResult ( file_contents, results );
+
+		} else {
+			
+			const auto delimiter = ParameterAsUTF8String ( parameters, 3 );
+			if ( !delimiter.empty() ) {
+				
+				bool popped = false;
+				std::vector<std::string> values;
+				boost::algorithm::split_regex ( values, file_contents, boost::regex ( delimiter ) ) ;
+				if ( values.back().empty() ) {
+					values.pop_back();
+					popped = true;
+				}
+
+				const auto number_of_values = static_cast<fmx::uint32>(values.size());
+				
+				if ( number_of_values < number_to_read ) {
+					number_to_read = number_of_values;
+				}
+				
+				if ( 1 > read_from ) { // get from the end
+					read_from = number_of_values - number_to_read;
+					number_to_read = number_of_values;
+				} else if ( 1 > number_to_read ) {
+					read_from = read_from - 1;
+					number_to_read = number_of_values;
+				} else {
+					read_from = read_from - 1;
+				}
+
+				if ( (number_of_values >= read_from) && (number_to_read >= read_from) ) {
+					
+					const std::vector<std::string> wanted ( values.begin() + read_from, values.begin() + number_to_read );
+					auto outs = boost::algorithm::join ( wanted, delimiter );
+					if ( number_of_values > number_to_read || popped ) {
+						outs += delimiter;
+					}
+					
+					SetResult ( outs, results );
+					
+				}
+				
+			} else {
+				
+				fmx::TextUniquePtr input;
+				input->AssignWithLength ( file_contents.data(), static_cast<fmx::uint32>(file_contents.size()), fmx::Text::kEncoding_UTF8 );
+
+				auto characters_to_read = input->GetSize(); // all of them
+
+				if ( from < 1 ) { // we are reading from the end
+								
+					read_from = input->GetSize() - number_to_read;
+					characters_to_read = fmx::Text::kSize_End;
+								
+				} else {
+					read_from = read_from - 1; // first character is 0 not 1 and 0 is read from the end
+				}
+
+				if ( fmx::Text::kSize_End != characters_to_read ) {
+								
+					if ( to < 1 ) {
+						characters_to_read = 0;
+					} else if ( to > characters_to_read ) {
+						characters_to_read = fmx::Text::kSize_End;
+					} else {
+						characters_to_read = number_to_read - read_from;
+					}
+
+				}
+				
+				if ( (input->GetSize() >= read_from) && ((characters_to_read == fmx::Text::kSize_End) || (characters_to_read >= read_from)) ) {
+					
+					fmx::TextUniquePtr fmx_text;
+					fmx_text->SetText ( *input, read_from, characters_to_read );
+					SetResult ( *fmx_text, results );
+					
+				}
+				
+			}
+			
 		}
 
-		long to = ParameterAsLong ( parameters, 2, 0 );
-		if ( to < 0 ) {
-			to = 0;
-		}
-
-		std::string delimiter = ParameterAsUTF8String ( parameters, 3, "" );
-		if ( delimiter.length() > 1 ) {
-			delimiter = delimiter.substr ( 0, 1 );
-		}
-
-
-		const std::string file_contents = ParameterPathOrContainerAsUTF8 ( parameters, 0, start, to, delimiter );
-        SetResult ( file_contents, results );
+//        SetResult ( file_contents, results );
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();
