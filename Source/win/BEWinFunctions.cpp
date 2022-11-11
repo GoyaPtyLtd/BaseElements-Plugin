@@ -356,7 +356,7 @@ const wstring ClipboardFormats ( void )
 
 const bool IsFileMakerClipboardType ( const wstring& atype )
 {
-	return ( atype.find ( L"Mac-XM" ) == 0 );
+	return ( atype.find ( L"Mac-" ) == 0 );
 }
 
 
