@@ -4261,7 +4261,7 @@ fmx::errcode BE_ScriptExecute ( short /* funcId */, const ExprEnv& /* environmen
 
 		// get the parameter, if present
 		DataUniquePtr parameter;
-		if ( number_of_paramters == 3 ) {
+		if ( number_of_paramters >= 3 ) {
 
 			LocaleUniquePtr default_locale;
 			parameter->SetAsText ( parameters.AtAsText ( 2 ), *default_locale );
