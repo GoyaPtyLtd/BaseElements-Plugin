@@ -2,7 +2,7 @@
 Version 5.0b3
 ########################################################################
 
-November 11, 2022
+November 15, 2022
 
 Pro Version
 
@@ -41,6 +41,7 @@ Changes
 German Localization on macOS, iOS & Windows
 
 BE_ClipboardGetText: correctly get FMP Theme data on Windows
+BE_Curl_Set_Option: Support for CURLOPT_XOAUTH2_BEARER
 BE_FileCopy: added parameter to replaceDestinationFile
 BE_FileMove: added parameter to replaceDestinationFile
 BE_FileReadText: fix for bugs/crashes when reading unicode text
