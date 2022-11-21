@@ -2,7 +2,7 @@
  BECurlOptions.cpp
  BaseElements Plug-In
  
- Copyright 2013-2021 Goya. All rights reserved.
+ Copyright 2013-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -172,6 +172,7 @@ BECurlOption::BECurlOptionType BECurlOption::type ( )
 	types [ "CURLOPT_UNIX_SOCKET_PATH" ] = type_string;
 	types [ "CURLOPT_PINNEDPUBLICKEY" ] = type_string;
 	types [ "CURLOPT_DEFAULT_PROTOCOL" ] = type_string;
+	types [ "CURLOPT_XOAUTH2_BEARER" ] = type_string;
 
 	types [ "CURLOPT_VERBOSE" ] = type_long;
 	types [ "CURLOPT_HEADER" ] = type_long;
@@ -611,6 +612,7 @@ CURLoption BECurlOption::option ( )
 	options [ "CURLOPT_TCP_KEEPINTVL" ] = CURLOPT_TCP_KEEPINTVL;
 	
 	options [ "CURLOPT_DEFAULT_PROTOCOL" ] = CURLOPT_DEFAULT_PROTOCOL;
+	options [ "CURLOPT_XOAUTH2_BEARER" ] = CURLOPT_XOAUTH2_BEARER;
 	options [ "CURLOPT_STREAM_WEIGHT" ] = CURLOPT_STREAM_WEIGHT;
 	
 //	options [ "CURLMOPT_PIPELINING" ] = CURLMOPT_PIPELINING;
