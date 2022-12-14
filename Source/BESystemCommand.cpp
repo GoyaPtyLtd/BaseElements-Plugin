@@ -2,7 +2,7 @@
  BESystemCommand.cpp
  BaseElements Plug-In
 
- Copyright 2011-2020 Goya. All rights reserved.
+ Copyright 2011-2022 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -34,7 +34,6 @@
 
 std::string SystemCommand::execute_implementation ( const system_command& shell_command ) {
 
-	short error = kNoError;
 	std::string result;
 
 	try {
@@ -62,24 +61,23 @@ std::string SystemCommand::execute_implementation ( const system_command& shell_
 			
 			std::vector<std::string> arguments;
 			command_and_arguments.erase ( command_and_arguments.begin() ); // auto it = new first element
-			for ( auto& each_argument : command_and_arguments ){
+			for ( auto& each_argument : command_and_arguments ) {
 				arguments.push_back ( each_argument );
 			}
 			
 			Poco::Pipe output_pipe;
 			Poco::ProcessHandle process = Poco::Process::launch ( command, arguments, 0, &output_pipe, &output_pipe );
-			Poco::PipeInputStream istr ( output_pipe );
-			error = process.wait();
-			
+			Poco::PipeInputStream input_stream ( output_pipe );
+
 			std::ostringstream output;
-			Poco::StreamCopier::copyStream ( istr, output );
+			Poco::StreamCopier::copyStream ( input_stream, output );
 			
 			result = output.str();
 
 		}
 		
 	} catch ( Poco::SystemException& e ) {
-		error = e.code();
+		throw BEPlugin_Exception ( e.code() );
 	}
 	
 	return result;

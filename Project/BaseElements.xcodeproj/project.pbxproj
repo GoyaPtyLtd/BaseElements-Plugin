@@ -106,7 +106,6 @@
 		4D3B9BC22717CFC70009E745 /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7F222E361C006EF9FB /* libPocoJSON.a */; };
 		4D3B9BC32717CFC80009E745 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414901267C5DC500C726DC /* libPocoNet.a */; };
 		4D3B9BC42717CFC80009E745 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFC607C260B07FD003C795B /* libPocoXML.a */; };
-		4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC52717D0B20009E745 /* libPocoUtil.a */; };
 		4D3B9BC72717D2470009E745 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
 		4D3B9BC92717D5A50009E745 /* boost.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC82717D5A50009E745 /* boost.xcframework */; };
 		4D4C066F1C23B37E006899FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C066E1C23B37E006899FE /* libz.tbd */; };
@@ -140,6 +139,8 @@
 		4DB857A31C646DF600D0192A /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
 		4DBCCD1D25DB76BA0000017C /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1B25DB76BA0000017C /* libiconv.a */; };
 		4DBCCD1E25DB76BA0000017C /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBCCD1C25DB76BA0000017C /* libcharset.a */; };
+		4DBDE0CB2922023D0083E994 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC52717D0B20009E745 /* libPocoUtil.a */; };
+		4DBDE0CC2922023D0083E994 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D81222E361C006EF9FB /* libPocoZip.a */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
@@ -248,7 +249,6 @@
 		4DF4DAFE271E4B2E007E91B5 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BCD2717DF840009E745 /* libssl.a */; };
 		4DF4DB00271E4E9A007E91B5 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BD2271933760009E745 /* libcurl.a */; };
 		4DF4DB01271E4EC2007E91B5 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BD12717EFB00009E745 /* libxml2.a */; };
-		4DF4DB02271E4EE1007E91B5 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D81222E361C006EF9FB /* libPocoZip.a */; };
 		4DF4DB03271E4F26007E91B5 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DAFB271E4AD7007E91B5 /* libfreetype.a */; };
 		4DF4DB04271E4F37007E91B5 /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DAFC271E4AED007E91B5 /* libfontconfig.a */; };
 		4DF4DB07271E6198007E91B5 /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB05271E6182007E91B5 /* libcharset.a */; };
@@ -561,12 +561,12 @@
 				4DF4DB15271E7A68007E91B5 /* libturbojpeg.a in Frameworks */,
 				4DF4DB13271E7A59007E91B5 /* libjpeg.a in Frameworks */,
 				4DF4DB11271E7A24007E91B5 /* libjansson.a in Frameworks */,
+				4DBDE0CB2922023D0083E994 /* libPocoUtil.a in Frameworks */,
 				4DF4DB0F271E7A0E007E91B5 /* libssh2.a in Frameworks */,
 				4DF4DB08271E61A4007E91B5 /* libiconv.a in Frameworks */,
 				4DF4DAFE271E4B2E007E91B5 /* libssl.a in Frameworks */,
-				4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */,
+				4DBDE0CC2922023D0083E994 /* libPocoZip.a in Frameworks */,
 				4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */,
-				4DF4DB02271E4EE1007E91B5 /* libPocoZip.a in Frameworks */,
 				4DF4DB0C271E7958007E91B5 /* libexslt.a in Frameworks */,
 				4D3B9BC22717CFC70009E745 /* libPocoJSON.a in Frameworks */,
 				4D3B9BC32717CFC80009E745 /* libPocoNet.a in Frameworks */,
@@ -1366,6 +1366,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = GUZF844KMZ;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1428,6 +1429,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = GUZF844KMZ;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1492,7 +1494,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1504,6 +1506,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_NS_ASSERTIONS = NO;
+				EXCLUDED_ARCHS = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
@@ -1525,14 +1528,14 @@
 					../Libraries/iOS/iPhoneOSSimulator,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.baseelements-plugin.BaseElementsIOS";
 				PRODUCT_NAME = BaseElementsIOSSimulator;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1560,7 +1563,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1570,6 +1573,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = NO;
+				EXCLUDED_ARCHS = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
@@ -1596,14 +1600,14 @@
 					../Libraries/iOS/iPhoneOSSimulator,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.baseelements-plugin.BaseElementsIOS";
 				PRODUCT_NAME = BaseElementsIOSSimulator;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";

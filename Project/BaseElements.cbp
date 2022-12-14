@@ -45,7 +45,7 @@
 		<Linker>
 			<Add option="-m64" />
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
-			<Add option="-Wl,-soname=4.2.3" />
+			<Add option="-Wl,-soname=4.2.6" />
 			<Add library="/opt/FileMaker/lib/libFMWrapper.so" />
 			<Add library="../Libraries/linux/libz.a" />
 			<Add library="../Libraries/linux/libboost_date_time.a" />
@@ -149,8 +149,7 @@
 		<Unit filename="../Source/Net/BEMimeticMIMEEntity.h" />
 		<Unit filename="../Source/duktape/duktape.c">
 			<Option compilerVar="CC" />
-			<Option compile="0" />
-			<Option link="0" />
+			<Option compiler="clang" use="1" buildCommand="$compiler $options -std=c99 $includes -c $file -o $object" />
 		</Unit>
 		<Unit filename="../Source/linux/BELinuxFunctions.cpp" />
 		<Extensions>

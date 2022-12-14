@@ -21,13 +21,13 @@
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfAtl>false</UseOfAtl>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -117,9 +117,7 @@
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"
-signtool verify /pa "$(TargetPath)"
-</Command>
+      <Command>signtool sign /fd SHA256 /td SHA256 /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -181,9 +179,7 @@ signtool verify /pa "$(TargetPath)"
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>signtool sign /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"
-signtool verify /pa "$(TargetPath)"
-</Command>
+      <Command>signtool sign /fd SHA256 /td SHA256 /f "$(ProjectDir)\CodeSigning\GoyaPtyLtd.pfx" /p Goblues /tr http://timestamp.digicert.com "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
