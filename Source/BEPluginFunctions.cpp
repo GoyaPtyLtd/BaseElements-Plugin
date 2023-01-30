@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2022 Goya. All rights reserved.
+ Copyright 2010-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -4147,19 +4147,19 @@ fmx::errcode BE_ExecuteSystemCommand ( short /* funcId */, const ExprEnv& /* env
 
 	try {
 
-		SystemCommand::system_command command_to_execute;
+		BESystemCommand::be_system_command command_to_execute;
 
 		command_to_execute.command_text = ParameterAsUTF8String ( parameters );
 		auto timeout = ParameterAsLong ( parameters, 1, kBE_Never );
 		command_to_execute.execute_using_shell = ParameterAsBoolean ( parameters, 2, true );
 
-		SystemCommand command;
+		BESystemCommand command;
 		auto result = command.execute ( command_to_execute );
 
 		switch ( timeout ) {
 
 			case kBE_Never:
-				result.wait ( );
+				result.wait();
 				break;
 
 			default:

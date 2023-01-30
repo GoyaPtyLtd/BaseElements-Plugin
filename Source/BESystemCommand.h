@@ -2,7 +2,7 @@
  BESystemCommand.h
  BaseElements Plug-In
  
- Copyright 2011-2021 Goya. All rights reserved.
+ Copyright 2011-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -25,25 +25,27 @@
 
 #include <Poco/ActiveMethod.h>
 
-class SystemCommand
+
+
+class BESystemCommand
 {
 	
 	public:
 	
-	struct system_command {
-		std::string command_text;
-		bool execute_using_shell;
-	};
-	
-	
-    SystemCommand():execute(this, &SystemCommand::execute_implementation) {}
-    
-            Poco::ActiveMethod<std::string, system_command, SystemCommand> execute;
+		struct be_system_command {
+			std::string command_text;
+			bool execute_using_shell;
+		};
+		
+		
+		BESystemCommand():execute(this, &BESystemCommand::execute_implementation) {}
+
+		Poco::ActiveMethod<std::string, be_system_command, BESystemCommand> execute;
 
 
 	protected:
 	
-        std::string execute_implementation ( const system_command& shell_command );
+		std::string execute_implementation ( const be_system_command& shell_command );
 	//	, const bool execute_using_shell
     
 };

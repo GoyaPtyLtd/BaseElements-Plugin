@@ -2,7 +2,7 @@
  BESystemCommand.cpp
  BaseElements Plug-In
 
- Copyright 2011-2022 Goya. All rights reserved.
+ Copyright 2011-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -15,8 +15,8 @@
 
 #include <boost/program_options/parsers.hpp>
 
-#include <Poco/Process.h>
 #include <Poco/Pipe.h>
+#include <Poco/Process.h>
 #include <Poco/PipeStream.h>
 #include <Poco/StreamCopier.h>
 
@@ -32,7 +32,7 @@
 #endif
 
 
-std::string SystemCommand::execute_implementation ( const system_command& shell_command ) {
+std::string BESystemCommand::execute_implementation ( const be_system_command& shell_command ) {
 
 	std::string result;
 
@@ -73,6 +73,9 @@ std::string SystemCommand::execute_implementation ( const system_command& shell_
 			Poco::StreamCopier::copyStream ( input_stream, output );
 			
 			result = output.str();
+			
+			// github #212 - do not unleash the zombie apocalypse
+			process.wait(); // const int exit_code = 
 
 		}
 		
