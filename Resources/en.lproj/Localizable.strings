@@ -73,7 +73,7 @@
 "210" = "BE_XMLStripNodes ( inputFilePath ; outputFilePath ; nodeNames )|XML Strip Nodes|Removes all the names nodes from the XML file. See also the libcurl documentation at: https://curl.se/libcurl/c/curl_easy_getinfo.html";
 "211" = "BE_XMLParse ( pathOrXMLText )|XML Parse|Parses an XML file at path or XML Text to determine if it's properly formed. When the first character of the input is a < the input is treated as XML Text, otherwise it is treated as a file path. Does not check XSD details, just whether every tag is properly opened and closed.";
 "212" = "BE_SplitBEFileNodes ( path )|BaseElements Internal : function not documented.";
-"213" = "BE_XMLValidate ( xmlFilePath ; schema )|XML Validate Schema|Validates an XML file against a schema.";
+"213" = "BE_XMLValidate ( xmlText ; schemaText )|XML Validate Schema|Validates XML text against a schema.";
 "214" = "BE_XMLCanonical ( xmlText ) |XML Canonical|Create the canonized image of the XML input.";
 "215" = "BE_XMLTidy ( xml )|XML Tidy|Pretty-print the XML input. Note: pretty-printing XML data alters the information set of the document being written, since in XML all whitespace is potentially relevant.";
 "220" = "BE_TimeCurrentMilliseconds|Time Current Milliseconds|Returns the current time as number of milliseconds. Effectively the same as GetAsNumber ( Get ( CurrentTimestamp ) ).";

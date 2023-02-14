@@ -97,7 +97,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 210, "BE_XMLStripNodes ( inputFilePath ; outputFilePath ; nodeNames )" },
 	{ 211, "BE_XMLParse ( pathOrXMLText )" },
 	{ 212, "BE_SplitBEFileNodes ( path )" },
-	{ 213, "BE_XMLValidate ( xmlFilePath ; schema )" },
+	{ 213, "BE_XMLValidate ( xmlText ; schemaText )" },
 	{ 214, "BE_XMLCanonical ( xmlText )" },
 	{ 215, "BE_XMLTidy ( xml )" },
 	{ 220, "BE_TimeCurrentMilliseconds" },

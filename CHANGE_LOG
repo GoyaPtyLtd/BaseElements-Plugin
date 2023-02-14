@@ -2,7 +2,7 @@
 Version 5.0b3
 ########################################################################
 
-January 30, 2023
+February 14, 2023
 
 Pro Version
 
@@ -48,6 +48,7 @@ BE_FileReadText: fix for bugs/crashes when reading unicode text
 BE_RegularExpression: support the g option for match in addition to replace
 BE_SMTPSend: do not send single part messages as "multipart"
 BE_XMLStripNodes: now accepts text/xml input (as per BE_XMLParse)
+BE_XMLValidate: rename parameters to more accurately reflect the data type required
 BE_XSLTApply: rename to BE_XSLT_Apply
 BE_XSLT_Apply: correct an issue relating to Unicode in stylesheets
 
