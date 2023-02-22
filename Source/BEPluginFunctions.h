@@ -2,7 +2,7 @@
  BEPluginFunctions.h
  BaseElements Plug-In
  
- Copyright 2010-2022 Goya. All rights reserved.
+ Copyright 2010-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -164,6 +164,10 @@ fmx::errcode BE_SignatureVerifyRSA ( short funcId, const fmx::ExprEnv& environme
 
 fmx::errcode BE_CipherEncrypt ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_CipherDecrypt ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_EncryptWithKey ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_DecryptWithKey ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_CreateKeyPair ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_GetPublicKey ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 fmx::errcode BE_DebugInformation ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 

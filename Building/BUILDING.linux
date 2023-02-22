@@ -225,12 +225,12 @@ Download the source from
 Then
 
 	cd poco-master
-	./configure --cflags="-std=c++11 -fPIC" --static --no-tests --no-samples --prefix="$(pwd)/_build_linux" --poquito --omit=CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util
+	./configure --cflags="-std=c++11 -fPIC" --static --no-tests --no-samples --prefix="$(pwd)/_build_linux" --poquito --omit=CppParser,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util
 	make install
 
 
 	cp -R _build_linux/include/Poco "${SRCROOT}/Headers"
-	cp _build_linux/lib/libPocoFoundation.a _build_linux/lib/libPocoNet.a _build_linux/lib/libPocoXML.a _build_linux/lib/libPocoZip.a _build_linux/lib/libPocoJSON.a "${SRCROOT}/Libraries/Linux"
+	cp _build_linux/lib/libPocoFoundation.a _build_linux/lib/libPocoCrypto.a _build_linux/lib/libPocoNet.a _build_linux/lib/libPocoXML.a _build_linux/lib/libPocoZip.a _build_linux/lib/libPocoJSON.a "${SRCROOT}/Libraries/Linux"
 
 =======================================================================
 freetype - 2.10.4

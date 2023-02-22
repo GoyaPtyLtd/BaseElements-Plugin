@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
 
- Copyright 2010-2022 Goya. All rights reserved.
+ Copyright 2010-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -260,6 +260,10 @@ enum functions {
 	kBE_SignatureVerifyRSA = 503,
 	kBE_CipherEncrypt = 504,
 	kBE_CipherDecrypt = 505,
+	kBE_EncryptWithKey = 506,
+	kBE_DecryptWithKey = 507,
+	kBE_CreateKeyPair = 508,
+	kBE_GetPublicKey = 509,
 //	kBE_HMAC_Deprecated = 550,, // removed in version 4.2
 //	kBE_Encoding_TextToHex = 570, // removed
 //	kBE_Encoding_HexToText = 571, // removed

@@ -106,7 +106,6 @@
 		4D3B9BC22717CFC70009E745 /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D7F222E361C006EF9FB /* libPocoJSON.a */; };
 		4D3B9BC32717CFC80009E745 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414901267C5DC500C726DC /* libPocoNet.a */; };
 		4D3B9BC42717CFC80009E745 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFC607C260B07FD003C795B /* libPocoXML.a */; };
-		4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC52717D0B20009E745 /* libPocoUtil.a */; };
 		4D3B9BC72717D2470009E745 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D84222E361C006EF9FB /* libPocoFoundation.a */; };
 		4D3B9BC92717D5A50009E745 /* boost.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC82717D5A50009E745 /* boost.xcframework */; };
 		4D414DAF2872B00300749AE0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414DAE2872B00300749AE0 /* CoreFoundation.framework */; };
@@ -168,6 +167,9 @@
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4D9E26D01B29069B002F7DD3 /* BEX509.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26CE1B29069B002F7DD3 /* BEX509.cpp */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
+		4DA0C72629A6DA4200BC1952 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA0C72529A6DA2B00BC1952 /* libPocoCrypto.a */; };
+		4DA0C72829A6DA6700BC1952 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA0C72729A6DA5600BC1952 /* libPocoCrypto.a */; };
+		4DA0C72929A6DA8D00BC1952 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA0C72729A6DA5600BC1952 /* libPocoCrypto.a */; };
 		4DA6DF9126085A5700B7DCC5 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA6DF9026085A5700B7DCC5 /* libPocoXML.a */; };
 		4DA72E79285AE5F20036CC90 /* libMagickWand-7.Q16HDRI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43211D281268720014BBD3 /* libMagickWand-7.Q16HDRI.a */; };
 		4DB857A31C646DF600D0192A /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
@@ -293,7 +295,6 @@
 		4DC9277C27C5A79100FA1655 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB0E271E79C7007E91B5 /* libssh2.a */; };
 		4DC9277D27C5A79100FA1655 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB06271E6182007E91B5 /* libiconv.a */; };
 		4DC9277E27C5A79100FA1655 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BCD2717DF840009E745 /* libssl.a */; };
-		4DC9277F27C5A79100FA1655 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3B9BC52717D0B20009E745 /* libPocoUtil.a */; };
 		4DC9278027C5A79100FA1655 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DC9278127C5A79100FA1655 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D81222E361C006EF9FB /* libPocoZip.a */; };
 		4DC9278227C5A79100FA1655 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB09271E790C007E91B5 /* libexslt.a */; };
@@ -358,29 +359,22 @@
 		4DC927C727C5A81300FA1655 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB22271E7BE7007E91B5 /* libjpeg.a */; };
 		4DC927C827C5A81300FA1655 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB23271E7BE7007E91B5 /* libcrypto.a */; };
 		4DC927C927C5A81300FA1655 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB24271E7BE7007E91B5 /* libfreetype.a */; };
-		4DC927CA27C5A81300FA1655 /* libPocoXMLd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB25271E7BE7007E91B5 /* libPocoXMLd.a */; };
 		4DC927CB27C5A81300FA1655 /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB26271E7BE7007E91B5 /* libfontconfig.a */; };
 		4DC927CC27C5A81300FA1655 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB27271E7BE7007E91B5 /* libpodofo.a */; };
 		4DC927CD27C5A81300FA1655 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB28271E7BE7007E91B5 /* libssl.a */; };
 		4DC927CE27C5A81300FA1655 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB29271E7BE7007E91B5 /* libturbojpeg.a */; };
 		4DC927CF27C5A81300FA1655 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2A271E7BE7007E91B5 /* libssh2.a */; };
-		4DC927D027C5A81300FA1655 /* libPocoNetd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2B271E7BE7007E91B5 /* libPocoNetd.a */; };
 		4DC927D127C5A81300FA1655 /* libiOSAppSDKLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2C271E7BE7007E91B5 /* libiOSAppSDKLibrary.a */; };
 		4DC927D227C5A81300FA1655 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2D271E7BE7007E91B5 /* libxml2.a */; };
-		4DC927D327C5A81300FA1655 /* libPocoUtild.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2E271E7BE7007E91B5 /* libPocoUtild.a */; };
 		4DC927D427C5A81300FA1655 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2F271E7BE7007E91B5 /* libcurl.a */; };
 		4DC927D527C5A81300FA1655 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB30271E7BE8007E91B5 /* libexslt.a */; };
-		4DC927D627C5A81300FA1655 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB31271E7BE8007E91B5 /* libPocoUtil.a */; };
 		4DC927D727C5A81300FA1655 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB32271E7BE8007E91B5 /* libxslt.a */; };
 		4DC927D827C5A81300FA1655 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB33271E7BE8007E91B5 /* libiconv.a */; };
 		4DC927DA27C5A81300FA1655 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */; };
-		4DC927DB27C5A81300FA1655 /* libPocoFoundationd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D70222E3287006EF9FB /* libPocoFoundationd.a */; };
 		4DC927DC27C5A81300FA1655 /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */; };
-		4DC927DD27C5A81300FA1655 /* libPocoJSONd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D71222E3287006EF9FB /* libPocoJSONd.a */; };
 		4DC927DE27C5A81300FA1655 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4148FF267C5D8600C726DC /* libPocoNet.a */; };
 		4DC927DF27C5A81300FA1655 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFC6077260B0778003C795B /* libPocoXML.a */; };
 		4DC927E027C5A81300FA1655 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D69222E3211006EF9FB /* libPocoZip.a */; };
-		4DC927E127C5A81300FA1655 /* libPocoZipd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6F222E3287006EF9FB /* libPocoZipd.a */; };
 		4DC927E227C5A81300FA1655 /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB18271E7BD6007E91B5 /* libcharset.a */; };
 		4DC927E327C5A81300FA1655 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DC927E427C5A81300FA1655 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; platformFilter = ios; };
@@ -413,6 +407,9 @@
 		4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D27C3851861160000E7F4A1 /* Cocoa.framework */; };
 		4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
+		4DDF7315299B351E00B9C608 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDF7314299B350100B9C608 /* libPocoCrypto.a */; };
+		4DDF7317299B38B200B9C608 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDF7314299B350100B9C608 /* libPocoCrypto.a */; };
+		4DDF7318299B3D2200B9C608 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDF7314299B350100B9C608 /* libPocoCrypto.a */; };
 		4DE2FD082682C5360091A9AD /* BESMTPEmailMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */; };
 		4DE2FD092682C5470091A9AD /* BECurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D37E0B11339CF080084730B /* BECurl.cpp */; };
 		4DE2FD0A2682C57E0091A9AD /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
@@ -503,29 +500,22 @@
 		4DF4DB17271E7B16007E91B5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB16271E7B16007E91B5 /* UIKit.framework */; };
 		4DF4DB19271E7BD6007E91B5 /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB18271E7BD6007E91B5 /* libcharset.a */; };
 		4DF4DB1A271E7BE7007E91B5 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6A222E3211006EF9FB /* libPocoFoundation.a */; };
-		4DF4DB1B271E7BE7007E91B5 /* libPocoFoundationd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D70222E3287006EF9FB /* libPocoFoundationd.a */; };
 		4DF4DB1C271E7BE7007E91B5 /* libPocoJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6B222E3211006EF9FB /* libPocoJSON.a */; };
-		4DF4DB1D271E7BE7007E91B5 /* libPocoJSONd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D71222E3287006EF9FB /* libPocoJSONd.a */; };
 		4DF4DB1E271E7BE7007E91B5 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4148FF267C5D8600C726DC /* libPocoNet.a */; };
 		4DF4DB1F271E7BE7007E91B5 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFC6077260B0778003C795B /* libPocoXML.a */; };
 		4DF4DB20271E7BE7007E91B5 /* libPocoZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D69222E3211006EF9FB /* libPocoZip.a */; };
-		4DF4DB21271E7BE7007E91B5 /* libPocoZipd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFA0D6F222E3287006EF9FB /* libPocoZipd.a */; };
 		4DF4DB35271E7BE8007E91B5 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB22271E7BE7007E91B5 /* libjpeg.a */; };
 		4DF4DB36271E7BE8007E91B5 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB23271E7BE7007E91B5 /* libcrypto.a */; };
 		4DF4DB37271E7BE8007E91B5 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB24271E7BE7007E91B5 /* libfreetype.a */; };
-		4DF4DB38271E7BE8007E91B5 /* libPocoXMLd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB25271E7BE7007E91B5 /* libPocoXMLd.a */; };
 		4DF4DB39271E7BE8007E91B5 /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB26271E7BE7007E91B5 /* libfontconfig.a */; };
 		4DF4DB3A271E7BE8007E91B5 /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB27271E7BE7007E91B5 /* libpodofo.a */; };
 		4DF4DB3B271E7BE8007E91B5 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB28271E7BE7007E91B5 /* libssl.a */; };
 		4DF4DB3C271E7BE8007E91B5 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB29271E7BE7007E91B5 /* libturbojpeg.a */; };
 		4DF4DB3D271E7BE8007E91B5 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2A271E7BE7007E91B5 /* libssh2.a */; };
-		4DF4DB3E271E7BE8007E91B5 /* libPocoNetd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2B271E7BE7007E91B5 /* libPocoNetd.a */; };
 		4DF4DB3F271E7BE8007E91B5 /* libiOSAppSDKLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2C271E7BE7007E91B5 /* libiOSAppSDKLibrary.a */; };
 		4DF4DB40271E7BE8007E91B5 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2D271E7BE7007E91B5 /* libxml2.a */; };
-		4DF4DB41271E7BE8007E91B5 /* libPocoUtild.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2E271E7BE7007E91B5 /* libPocoUtild.a */; };
 		4DF4DB42271E7BE8007E91B5 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB2F271E7BE7007E91B5 /* libcurl.a */; };
 		4DF4DB43271E7BE8007E91B5 /* libexslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB30271E7BE8007E91B5 /* libexslt.a */; };
-		4DF4DB44271E7BE8007E91B5 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB31271E7BE8007E91B5 /* libPocoUtil.a */; };
 		4DF4DB45271E7BE8007E91B5 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB32271E7BE8007E91B5 /* libxslt.a */; };
 		4DF4DB46271E7BE8007E91B5 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB33271E7BE8007E91B5 /* libiconv.a */; };
 		4DF4DB49271E7BF1007E91B5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DF4DB48271E7BF1007E91B5 /* UIKit.framework */; };
@@ -699,6 +689,8 @@
 		4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPluginFunctions.cpp; path = ../Source/BEPluginFunctions.cpp; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		4D9F2DDA11E934BC003D75BB /* BEPluginFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginFunctions.h; path = ../Source/BEPluginFunctions.h; sourceTree = SOURCE_ROOT; };
 		4D9F2DDB11E934BC003D75BB /* BEPluginGlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginGlobalDefines.h; path = ../Source/BEPluginGlobalDefines.h; sourceTree = SOURCE_ROOT; usesTabs = 1; };
+		4DA0C72529A6DA2B00BC1952 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = ../Libraries/iOS/iPhoneOS/libPocoCrypto.a; sourceTree = "<group>"; };
+		4DA0C72729A6DA5600BC1952 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = ../Libraries/iOS/iPhoneOSSimulator/libPocoCrypto.a; sourceTree = "<group>"; };
 		4DA6DF9026085A5700B7DCC5 /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = ../Libraries/macOS/libPocoXML.a; sourceTree = "<group>"; };
 		4DAC555318BDA41E00F365F5 /* BESMTP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTP.cpp; path = ../Source/Net/BESMTP.cpp; sourceTree = "<group>"; };
 		4DAC555418BDA41E00F365F5 /* BESMTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTP.h; path = ../Source/Net/BESMTP.h; sourceTree = "<group>"; };
@@ -730,6 +722,8 @@
 		4DD7831F120005AE00CFC8B4 /* BEXSLT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEXSLT.cpp; path = ../Source/BEXSLT.cpp; sourceTree = "<group>"; };
 		4DDBA8B5164386A900CC6FD7 /* BETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BETime.cpp; path = ../Source/BETime.cpp; sourceTree = "<group>"; };
 		4DDBA8B6164386A900CC6FD7 /* BETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BETime.h; path = ../Source/BETime.h; sourceTree = "<group>"; };
+		4DDF7313299B350100B9C608 /* libPocoCryptod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCryptod.a; path = ../Libraries/macOS/libPocoCryptod.a; sourceTree = "<group>"; };
+		4DDF7314299B350100B9C608 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = ../Libraries/macOS/libPocoCrypto.a; sourceTree = "<group>"; };
 		4DE2FD002682C5160091A9AD /* BE_Plugin_Tests.fmplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BE_Plugin_Tests.fmplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DE2FD042682C5160091A9AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DE2FD272682C5D10091A9AD /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../Libraries/macOS/libjpeg.a; sourceTree = "<group>"; };
@@ -795,29 +789,23 @@
 				4DF4DB35271E7BE8007E91B5 /* libjpeg.a in Frameworks */,
 				4DF4DB36271E7BE8007E91B5 /* libcrypto.a in Frameworks */,
 				4DF4DB37271E7BE8007E91B5 /* libfreetype.a in Frameworks */,
-				4DF4DB38271E7BE8007E91B5 /* libPocoXMLd.a in Frameworks */,
 				4DF4DB39271E7BE8007E91B5 /* libfontconfig.a in Frameworks */,
 				4DF4DB3A271E7BE8007E91B5 /* libpodofo.a in Frameworks */,
 				4DF4DB3B271E7BE8007E91B5 /* libssl.a in Frameworks */,
 				4DF4DB3C271E7BE8007E91B5 /* libturbojpeg.a in Frameworks */,
 				4DF4DB3D271E7BE8007E91B5 /* libssh2.a in Frameworks */,
-				4DF4DB3E271E7BE8007E91B5 /* libPocoNetd.a in Frameworks */,
 				4DF4DB3F271E7BE8007E91B5 /* libiOSAppSDKLibrary.a in Frameworks */,
 				4DF4DB40271E7BE8007E91B5 /* libxml2.a in Frameworks */,
-				4DF4DB41271E7BE8007E91B5 /* libPocoUtild.a in Frameworks */,
 				4DF4DB42271E7BE8007E91B5 /* libcurl.a in Frameworks */,
 				4DF4DB43271E7BE8007E91B5 /* libexslt.a in Frameworks */,
-				4DF4DB44271E7BE8007E91B5 /* libPocoUtil.a in Frameworks */,
 				4DF4DB45271E7BE8007E91B5 /* libxslt.a in Frameworks */,
 				4DF4DB46271E7BE8007E91B5 /* libiconv.a in Frameworks */,
 				4DF4DB1A271E7BE7007E91B5 /* libPocoFoundation.a in Frameworks */,
-				4DF4DB1B271E7BE7007E91B5 /* libPocoFoundationd.a in Frameworks */,
+				4DDF7315299B351E00B9C608 /* libPocoCrypto.a in Frameworks */,
 				4DF4DB1C271E7BE7007E91B5 /* libPocoJSON.a in Frameworks */,
-				4DF4DB1D271E7BE7007E91B5 /* libPocoJSONd.a in Frameworks */,
 				4DF4DB1E271E7BE7007E91B5 /* libPocoNet.a in Frameworks */,
 				4DF4DB1F271E7BE7007E91B5 /* libPocoXML.a in Frameworks */,
 				4DF4DB20271E7BE7007E91B5 /* libPocoZip.a in Frameworks */,
-				4DF4DB21271E7BE7007E91B5 /* libPocoZipd.a in Frameworks */,
 				4DF4DB19271E7BD6007E91B5 /* libcharset.a in Frameworks */,
 				4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */,
 				4D3B9BBC2717B7580009E745 /* iOSAppSDK.framework in Frameworks */,
@@ -833,8 +821,8 @@
 				4DF4DB13271E7A59007E91B5 /* libjpeg.a in Frameworks */,
 				4DF4DB0F271E7A0E007E91B5 /* libssh2.a in Frameworks */,
 				4DF4DB08271E61A4007E91B5 /* libiconv.a in Frameworks */,
+				4DA0C72929A6DA8D00BC1952 /* libPocoCrypto.a in Frameworks */,
 				4DF4DAFE271E4B2E007E91B5 /* libssl.a in Frameworks */,
-				4D3B9BC62717D0CB0009E745 /* libPocoUtil.a in Frameworks */,
 				4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */,
 				4DF4DB02271E4EE1007E91B5 /* libPocoZip.a in Frameworks */,
 				4DF4DB0C271E7958007E91B5 /* libexslt.a in Frameworks */,
@@ -881,6 +869,7 @@
 				4DA72E79285AE5F20036CC90 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
 				4DC4FE062817D30F00C3A339 /* libopenjp2.a in Frameworks */,
 				4DBB48FC27C45AD000D3D232 /* libboost_regex.a in Frameworks */,
+				4DDF7318299B3D2200B9C608 /* libPocoCrypto.a in Frameworks */,
 				4DBB48FD27C45AD000D3D232 /* libboost_thread.a in Frameworks */,
 				4D8C5963281A4CD400628356 /* libturbojpeg.a in Frameworks */,
 				4DBB48FE27C45AD000D3D232 /* libxml2.a in Frameworks */,
@@ -912,8 +901,8 @@
 				4DC9277A27C5A79100FA1655 /* libjpeg.a in Frameworks */,
 				4DC9277C27C5A79100FA1655 /* libssh2.a in Frameworks */,
 				4DC9277D27C5A79100FA1655 /* libiconv.a in Frameworks */,
+				4DA0C72829A6DA6700BC1952 /* libPocoCrypto.a in Frameworks */,
 				4DC9277E27C5A79100FA1655 /* libssl.a in Frameworks */,
-				4DC9277F27C5A79100FA1655 /* libPocoUtil.a in Frameworks */,
 				4DC9278027C5A79100FA1655 /* libexpat.tbd in Frameworks */,
 				4DC9278127C5A79100FA1655 /* libPocoZip.a in Frameworks */,
 				4DC9278227C5A79100FA1655 /* libexslt.a in Frameworks */,
@@ -945,29 +934,23 @@
 				4DC927C727C5A81300FA1655 /* libjpeg.a in Frameworks */,
 				4DC927C827C5A81300FA1655 /* libcrypto.a in Frameworks */,
 				4DC927C927C5A81300FA1655 /* libfreetype.a in Frameworks */,
-				4DC927CA27C5A81300FA1655 /* libPocoXMLd.a in Frameworks */,
 				4DC927CB27C5A81300FA1655 /* libfontconfig.a in Frameworks */,
+				4DA0C72629A6DA4200BC1952 /* libPocoCrypto.a in Frameworks */,
 				4DC927CC27C5A81300FA1655 /* libpodofo.a in Frameworks */,
 				4DC927CD27C5A81300FA1655 /* libssl.a in Frameworks */,
 				4DC927CE27C5A81300FA1655 /* libturbojpeg.a in Frameworks */,
 				4DC927CF27C5A81300FA1655 /* libssh2.a in Frameworks */,
-				4DC927D027C5A81300FA1655 /* libPocoNetd.a in Frameworks */,
 				4DC927D127C5A81300FA1655 /* libiOSAppSDKLibrary.a in Frameworks */,
 				4DC927D227C5A81300FA1655 /* libxml2.a in Frameworks */,
-				4DC927D327C5A81300FA1655 /* libPocoUtild.a in Frameworks */,
 				4DC927D427C5A81300FA1655 /* libcurl.a in Frameworks */,
 				4DC927D527C5A81300FA1655 /* libexslt.a in Frameworks */,
-				4DC927D627C5A81300FA1655 /* libPocoUtil.a in Frameworks */,
 				4DC927D727C5A81300FA1655 /* libxslt.a in Frameworks */,
 				4DC927D827C5A81300FA1655 /* libiconv.a in Frameworks */,
 				4DC927DA27C5A81300FA1655 /* libPocoFoundation.a in Frameworks */,
-				4DC927DB27C5A81300FA1655 /* libPocoFoundationd.a in Frameworks */,
 				4DC927DC27C5A81300FA1655 /* libPocoJSON.a in Frameworks */,
-				4DC927DD27C5A81300FA1655 /* libPocoJSONd.a in Frameworks */,
 				4DC927DE27C5A81300FA1655 /* libPocoNet.a in Frameworks */,
 				4DC927DF27C5A81300FA1655 /* libPocoXML.a in Frameworks */,
 				4DC927E027C5A81300FA1655 /* libPocoZip.a in Frameworks */,
-				4DC927E127C5A81300FA1655 /* libPocoZipd.a in Frameworks */,
 				4DC927E227C5A81300FA1655 /* libcharset.a in Frameworks */,
 				4DC927E327C5A81300FA1655 /* libexpat.tbd in Frameworks */,
 				4DC927E427C5A81300FA1655 /* iOSAppSDK.framework in Frameworks */,
@@ -998,6 +981,7 @@
 				4D35B3C6262FE4E20098C93F /* libldap.tbd in Frameworks */,
 				4D11F4041F271C0B00D78042 /* libboost_filesystem.a in Frameworks */,
 				4D432124281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
+				4DDF7317299B38B200B9C608 /* libPocoCrypto.a in Frameworks */,
 				4D43212A281268720014BBD3 /* libopenjp2.a in Frameworks */,
 				4D414DB22872B05800749AE0 /* CoreFoundation.framework in Frameworks */,
 				4D11F4051F271C0B00D78042 /* libboost_regex.a in Frameworks */,
@@ -1287,6 +1271,10 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4DDF7314299B350100B9C608 /* libPocoCrypto.a */,
+				4DA0C72529A6DA2B00BC1952 /* libPocoCrypto.a */,
+				4DA0C72729A6DA5600BC1952 /* libPocoCrypto.a */,
+				4DDF7313299B350100B9C608 /* libPocoCryptod.a */,
 				4D50124F2893492300E197AD /* libpthread.tbd */,
 				4DBC861A28812D0600E4CD1D /* libjq.1.dylib */,
 				4DBC8618288128B600E4CD1D /* libjq.a */,
@@ -2310,13 +2298,15 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "${USER_LIBRARY_DIR}/Application Support/FileMaker/Extensions";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
-				DEVELOPMENT_TEAM = GUZF844KMZ;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = GUZF844KMZ;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2361,13 +2351,15 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "${USER_LIBRARY_DIR}/Application Support/FileMaker/Extensions";
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = NO;
-				DEVELOPMENT_TEAM = GUZF844KMZ;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = GUZF844KMZ;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (

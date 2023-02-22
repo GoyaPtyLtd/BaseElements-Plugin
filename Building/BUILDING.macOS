@@ -147,7 +147,7 @@ Download the source from
 and extract the archive. Then
 
 	cd poco-poco-1.10.1-all
-	./configure --config=Darwin64-clang-libc++ --prefix="${$(pwd)}/_build_macos_x86_64" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util" --include-path="${SRCROOT}/Headers" --library-path="${SRCROOT}/Libraries/macOS"
+	./configure --config=Darwin64-clang-libc++ --prefix="${$(pwd)}/_build_macos_x86_64" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util" --include-path="${SRCROOT}/Headers" --library-path="${SRCROOT}/Libraries/macOS"
 	make -s -j install
 	
 Make a copy of the file
@@ -166,9 +166,10 @@ to
 
 	arm64
 	
-	./configure --config=DarwinArm64-clang-libc++ --prefix="${$(pwd)}/_build_macos_arm64" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Crypto,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util" --include-path="${SRCROOT}/Headers" --library-path="${SRCROOT}/Libraries/macOS"
+	./configure --config=DarwinArm64-clang-libc++ --prefix="${$(pwd)}/_build_macos_arm64" --no-sharedlibs --static --poquito --no-tests --no-samples --omit="CppParser,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util" --include-path="${SRCROOT}/Headers" --library-path="${SRCROOT}/Libraries/macOS"
 	make -s -j install
 
+	lipo -create "lib/Darwin/x86_64/libPococrypto.a" "lib/Darwin/arm64/libPocoCrypto.a" -output "lib/libPocoCrypto.a"
 	lipo -create "lib/Darwin/x86_64/libPocoFoundation.a" "lib/Darwin/arm64/libPocoFoundation.a" -output "lib/libPocoFoundation.a"
 	lipo -create "lib/Darwin/x86_64/libPocoZip.a" "lib/Darwin/arm64/libPocoZip.a" -output "lib/libPocoZip.a"
 	lipo -create "lib/Darwin/x86_64/libPocoJSON.a" "lib/Darwin/arm64/libPocoJSON.a" -output "lib/libPocoJSON.a"
@@ -178,7 +179,7 @@ to
 Copy the header and library files.
 
 	cp -R ./_build_macos_arm64/include/Poco "${SRCROOT}/Headers"
-	cp lib/libPocoFoundation.a lib/libPocoZip.a lib/libPocoJSON.a  lib/libPocoNet.a lib/libPocoXML.a "${SRCROOT}/Libraries/macOS"
+	cp lib/libPocoCrypto.a lib/libPocoFoundation.a lib/libPocoZip.a lib/libPocoJSON.a  lib/libPocoNet.a lib/libPocoXML.a "${SRCROOT}/Libraries/macOS"
 
 
 =======================================================================

@@ -62,11 +62,11 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall" />
+			<Add option="-fPIC" />
 			<Add option="-m64" />
+			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-Wno-unknown-pragmas" />
-			<Add option="-fPIC" />
 			<Add option="-fvisibility=hidden" />
 			<Add option="-D_LIBCPP_STD_VER=17" />
 			<Add directory="../Headers" />
@@ -100,7 +100,6 @@
 			<Add library="libPocoJSON.a" />
 			<Add library="libPocoZip.a" />
 			<Add library="libPocoXML.a" />
-			<Add library="libPocoFoundation.a" />
 			<Add library="libpodofo.a" />
 			<Add library="libfontconfig.a" />
 			<Add library="libfreetype.a" />
@@ -112,9 +111,12 @@
 			<Add library="libz.a" />
 			<Add library="libjq.a" />
 			<Add library="libopenjp2.a" />
+			<Add library="libPocoCrypto.a" />
+			<Add library="libPocoFoundation.a" />
+			<Add library="/usr/lib/x86_64-linux-gnu/libuuid.so.1" />
 			<Add library="dl" />
-			<Add library="uuid" />
 			<Add library="pthread" />
+			<Add library="m" />
 			<Add directory="../Libraries/linux" />
 		</Linker>
 		<ExtraCommands>
@@ -201,8 +203,6 @@
 		<Unit filename="../Source/linux/BELinuxFunctions.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
-			<code_completion />
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

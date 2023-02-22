@@ -2,14 +2,18 @@
 Version 5.0b3
 ########################################################################
 
-February 14, 2023
+February 23, 2023
 
 Pro Version
 
 
 New Functions
 
+	BE_CreateKeyPair: Create and RSA key pair and return the private key
 	BE_CurlGetInfo: get information about the most recent curl (HTTP/FTP/SMTP) connection
+	BE_DecryptWithKey: Encrypt the supplied base 64 encoded text using an X509 certificate
+	BE_EncryptWithKey: Decrypt the supplied text using an X509 certificate
+	BE_GetPublicKey: return a public key for the supplied private key
 	BE_JSON_jq: an adaption of the jq JSON command line tool (macOS, Ubuntu only)
 
 

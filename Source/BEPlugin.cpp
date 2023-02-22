@@ -2,7 +2,7 @@
  BEPlugin.cpp
  BaseElements Plug-in
 
- Copyright 2010-2022 Goya. All rights reserved.
+ Copyright 2010-2023 Goya. All rights reserved.
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -253,6 +253,11 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SignatureVerifyRSA, BE_SignatureVerifyRSA, 3, 4 );
 	g_be_plugin->RegisterFunction ( kBE_CipherEncrypt, BE_CipherEncrypt, 3, 6 );
 	g_be_plugin->RegisterFunction ( kBE_CipherDecrypt, BE_CipherDecrypt, 3, 6 );
+	
+	g_be_plugin->RegisterFunction ( kBE_EncryptWithKey, BE_EncryptWithKey, 2 );
+	g_be_plugin->RegisterFunction ( kBE_DecryptWithKey, BE_DecryptWithKey, 2 );
+	g_be_plugin->RegisterFunction ( kBE_CreateKeyPair, BE_CreateKeyPair );
+	g_be_plugin->RegisterFunction ( kBE_GetPublicKey, BE_GetPublicKey, 1 );
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_POST, BE_HTTP_POST_PUT_PATCH, 2, 5 );
 	g_be_plugin->RegisterFunction ( kBE_HTTP_DELETE, BE_HTTP_DELETE, 1, 3 );

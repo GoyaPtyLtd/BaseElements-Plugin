@@ -14,6 +14,9 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wsign-compare"
+#include <Poco/Crypto/Cipher.h>
+#include <Poco/Crypto/CipherFactory.h>
+#include <Poco/Crypto/RSAKey.h>
 #include <Poco/Dynamic/Var.h>
 #include <Poco/Exception.h>
 #include <Poco/JSON/JSON.h>
@@ -81,7 +84,7 @@
 #include "Crypto/BEMessageDigest.h"
 #include "Crypto/BEOpenSSLAES.h"
 #include "Crypto/BEOpenSSLRSA.h"
-#include "Crypto/BEX509.h"
+//#include "Crypto/BEX509.h"
 #include "Images/BEJPEG.h"
 
 #include <algorithm>
@@ -2624,6 +2627,150 @@ fmx::errcode BE_CipherDecrypt ( short /*funcId*/, const ExprEnv& /* environment 
 	return MapError ( error );
 
 } // BE_Decrypt_Cipher
+
+
+fmx::errcode BE_EncryptWithKey ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto base64_text = ParameterAsUTF8String ( parameters );
+		auto key = ParameterAsUTF8String ( parameters, 1 );
+
+		// Line separator of RSA key must be LF.
+		replace ( key.begin(), key.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
+		std::istringstream public_key ( key );
+		Poco::Crypto::RSAKey rsa_key ( &public_key );
+		Poco::Crypto::CipherFactory& factory = Poco::Crypto::CipherFactory::defaultFactory();
+		Poco::Crypto::Cipher* cipher = factory.createCipher ( rsa_key );
+
+		//encrypt using RSA (keys prepped with RSA)
+		auto encrypted_data = cipher->encryptString ( base64_text, Poco::Crypto::Cipher::Encoding::ENC_BASE64 );
+			
+		SetResult ( encrypted_data, results );
+
+	} catch ( Poco::Exception& e ) {
+		error = e.code();
+		if ( kNoError == error ) {
+			error = kRSAReadPublicKeyFailed;
+		}
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_EncryptWithKey
+
+
+fmx::errcode BE_DecryptWithKey ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto encrypted_text = ParameterAsUTF8String ( parameters );
+		auto key = ParameterAsUTF8String ( parameters, 1 );
+
+		// Line separator of RSA key must be LF.
+		replace ( key.begin(), key.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
+		std::istringstream private_key ( key );
+		Poco::Crypto::RSAKey rsa_key ( NULL, &private_key );
+		Poco::Crypto::CipherFactory& factory = Poco::Crypto::CipherFactory::defaultFactory();
+		Poco::Crypto::Cipher* cipher = factory.createCipher ( rsa_key );
+
+		auto decrypted_data = cipher->decryptString ( encrypted_text, Poco::Crypto::Cipher::Encoding::ENC_BASE64 );
+		
+		SetResult ( decrypted_data, results );
+
+	} catch ( Poco::Exception& e ) {
+		error = e.code();
+		if ( kNoError == error ) {
+			error = kRSAReadPrivateKeyFailed;
+		}
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_DecryptWithKey
+
+
+fmx::errcode BE_CreateKeyPair ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& /* parameters */, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		Poco::Crypto::RSAKey rsa_key ( Poco::Crypto::RSAKey::KL_4096, Poco::Crypto::RSAKey::EXP_LARGE );
+
+		std::ostringstream private_key_stream;
+		rsa_key.save ( NULL, &private_key_stream );
+		auto private_key = private_key_stream.str();
+		
+		SetResult ( private_key, results );
+
+	} catch ( Poco::Exception& e ) {
+		error = e.code();
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_CreateKeyPair
+
+
+fmx::errcode BE_GetPublicKey ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+{
+	errcode error = NoError();
+
+	try {
+
+		auto private_key = ParameterAsUTF8String ( parameters );
+
+		// Just in case... Line separator of RSA key must be LF.
+		replace ( private_key.begin(), private_key.end(), FILEMAKER_END_OF_LINE_CHAR, '\n' );
+
+		std::istringstream generate_public_key_using ( private_key );
+		Poco::Crypto::RSAKey rsa_key ( NULL, &generate_public_key_using );
+
+		std::ostringstream public_key_stream;
+		rsa_key.save ( &public_key_stream, NULL );
+		auto public_key = public_key_stream.str();
+		
+		SetResult ( public_key, results );
+
+	} catch ( Poco::Exception& e ) {
+		error = e.code();
+		if ( kNoError == error ) {
+			error = kRSAReadPrivateKeyFailed;
+		}
+	} catch ( BEPlugin_Exception& e ) {
+		error = e.code();
+	} catch ( bad_alloc& /* e */ ) {
+		error = kLowMemoryError;
+	} catch ( exception& /* e */ ) {
+		error = kErrorUnknown;
+	}
+
+	return MapError ( error );
+
+} // BE_GetPublicKey
 
 
 
