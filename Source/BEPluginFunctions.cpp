@@ -84,7 +84,6 @@
 #include "Crypto/BEMessageDigest.h"
 #include "Crypto/BEOpenSSLAES.h"
 #include "Crypto/BEOpenSSLRSA.h"
-//#include "Crypto/BEX509.h"
 #include "Images/BEJPEG.h"
 
 #include <algorithm>
