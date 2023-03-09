@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
 
- Copyright 2010-2022 Goya. All rights reserved.
+ Copyright 2010-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -752,82 +752,6 @@ std::string ReadFileAsUTF8 ( const boost::filesystem::path path )
 	return result;
 
 } // ReadFileAsUTF8
-
-
-void ReadFileAsUTF8Extract ( const boost::filesystem::path path, const size_t from, const size_t to, std::string& result )
-{
-
-	if ( exists ( path ) ) {
-
-		if ( from > 0 || to > 0 ) {
-
-			size_t length = (size_t)file_size ( path ) ;
-
-			if ( length > 0 ) {
-
-				size_t offset ;
-				size_t read ;
-
-				if ( to <= 0 ) {
-
-					/* read from front */
-					offset = from - 1 ;
-					read = length - from + 1 ;
-
-				} else if ( from <= 0 ) {
-
-					/* read from back */
-					offset = length - to ;
-					read = to ;
-
-				} else {
-
-					if ( from <= to ) {
-						/* read from front */
-						offset = from - 1 ;
-						read = to - from + 1 ;
-					} else {
-						/* read from back */
-						offset = length - from ;
-						read = from - to + 1 ;
-					}
-
-				}
-
-				if ( offset < 0 ) {
-					offset = 0 ;
-				}
-
-				if ( offset + read > length ) {
-					read = length - offset ;
-				}
-
-				// extract the file contents
-				if ( offset < length ) {
-
-					boost::filesystem::ifstream inFile ( path, ios_base::in | ios_base::binary | ios_base::ate );
-
-					inFile.seekg ( offset, ios::beg ) ;
-					std::vector<char> buffer ( read ) ;
-					inFile.read ( buffer.data(), read ) ;
-					inFile.close ();
-
-					// convert the text in the file to utf-8 if possible
-					result = ConvertTextToUTF8 ( buffer.data(), read );
-					if ( result.length() == 0 ) {
-						result.assign ( buffer.data() );
-					}
-				}
-
-			}
-		}
-	} else {
-		g_last_error = kNoSuchFileOrDirectoryError;
-	}
-
-
-} // ReadFileAsUTF8Extract
-
 
 
 #pragma mark -
