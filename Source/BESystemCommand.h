@@ -20,6 +20,7 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcomma"
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <boost/date_time/posix_time/posix_time.hpp>
 #pragma GCC diagnostic pop
 

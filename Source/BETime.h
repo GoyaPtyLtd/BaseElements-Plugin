@@ -18,7 +18,12 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcomma"
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include <boost/date_time/posix_time/posix_time.hpp>
+#pragma clang diagnostic pop
+
 #pragma GCC diagnostic pop
 
 

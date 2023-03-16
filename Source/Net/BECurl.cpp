@@ -43,7 +43,12 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcomma"
 #include <boost/algorithm/string.hpp>
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include <boost/date_time/posix_time/posix_time.hpp>
+#pragma clang diagnostic pop
+
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/scoped_ptr.hpp>

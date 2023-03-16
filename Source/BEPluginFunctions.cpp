@@ -16,7 +16,12 @@
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #include <Poco/Crypto/Cipher.h>
 #include <Poco/Crypto/CipherFactory.h>
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnewline-eof"
 #include <Poco/Crypto/RSAKey.h>
+#pragma clang diagnostic pop
+
 #include <Poco/Dynamic/Var.h>
 #include <Poco/Exception.h>
 #include <Poco/JSON/JSON.h>
@@ -91,6 +96,9 @@
 #include <numeric> // for inner_product
 #include <thread>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+
 #include <boost/algorithm/hex.hpp>
 #include <boost/algorithm/string_regex.hpp>
 #include <boost/algorithm/string.hpp>
@@ -102,6 +110,8 @@
 #include <boost/tokenizer.hpp>
 
 #include <podofo/podofo.h>
+
+#pragma GCC diagnostic pop
 
 
 #pragma GCC diagnostic push
