@@ -1634,6 +1634,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		4DBB48BC27C45AD000D3D232 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -1647,6 +1648,7 @@
 		};
 		4DBB48BD27C45AD000D3D232 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -1660,6 +1662,7 @@
 		};
 		4DCE316921238F3200C7D9C2 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -1673,6 +1676,7 @@
 		};
 		4DFA3E2B20D8ABFF00A2D858 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
