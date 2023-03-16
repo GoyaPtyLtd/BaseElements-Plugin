@@ -2,7 +2,7 @@
  BEIOSFunctions.cpp
  BaseElements Plug-In
  
- Copyright 2017-2019 Goya. All rights reserved.
+ Copyright 2017-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -198,4 +198,11 @@ const std::string get_system_drive ( )
 {
 	return ""; // matching Get ( SystemDrive )
 }
+
+
+const fmx::errcode display_system_notification ( std::string& /* title */, std::string& /* message */, std::string& /* fmp_uri */ )
+{
+	return kNotImplemented;
+}
+
 

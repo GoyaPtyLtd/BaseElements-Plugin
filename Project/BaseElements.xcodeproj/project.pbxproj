@@ -160,6 +160,15 @@
 		4D8757E12750459A008D9838 /* Test_BESMTPEmailMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D8757D92750459A008D9838 /* Test_BESMTPEmailMessage.mm */; };
 		4D8C5963281A4CD400628356 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40E1F271C6F00D78042 /* libturbojpeg.a */; };
 		4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
+		4D8E92ED29B6E88C001C8ABA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8E92EC29B6E88C001C8ABA /* UserNotifications.framework */; };
+		4D8E92EF29B6E894001C8ABA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8E92EE29B6E894001C8ABA /* UserNotifications.framework */; };
+		4D8E92F029B6E89A001C8ABA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8E92EC29B6E88C001C8ABA /* UserNotifications.framework */; };
+		4D8E92F129B6E8A6001C8ABA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8E92EC29B6E88C001C8ABA /* UserNotifications.framework */; };
+		4D8E92F229B6E8AC001C8ABA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8E92EE29B6E894001C8ABA /* UserNotifications.framework */; };
+		4D8E92F329B6E8B3001C8ABA /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8E92EC29B6E88C001C8ABA /* UserNotifications.framework */; };
+		4D8E92F529B97F54001C8ABA /* BEMacNotificationResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E92F429B97F54001C8ABA /* BEMacNotificationResponse.mm */; };
+		4D8E92F629B97F54001C8ABA /* BEMacNotificationResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E92F429B97F54001C8ABA /* BEMacNotificationResponse.mm */; };
+		4D8E92F729B97F54001C8ABA /* BEMacNotificationResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E92F429B97F54001C8ABA /* BEMacNotificationResponse.mm */; };
 		4D9B306928657134004B4853 /* libde265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43213428126C170014BBD3 /* libde265.a */; };
 		4D9B306A28657188004B4853 /* libde265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43213428126C170014BBD3 /* libde265.a */; };
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
@@ -374,6 +383,8 @@
 		4DC927E427C5A81300FA1655 /* iOSAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; platformFilter = ios; };
 		4DC927E627C5A81300FA1655 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D25BF9B1F3A8C580083345B /* Localizable.strings */; };
 		4DC927E827C5A81300FA1655 /* iOSAppSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D362A4E1F2081B90036B751 /* iOSAppSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4DCC540B29BA963F0060223E /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDF7314299B350100B9C608 /* libPocoCrypto.a */; };
+		4DCC540C29BA96510060223E /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8E92EC29B6E88C001C8ABA /* UserNotifications.framework */; };
 		4DCD49461A195B0C00EFCF7F /* BESMTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC555318BDA41E00F365F5 /* BESMTP.cpp */; };
 		4DCD49471A195B0C00EFCF7F /* BEMacFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */; };
 		4DCD49481A195B0C00EFCF7F /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
@@ -672,6 +683,10 @@
 		4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEQuadChar.cpp; path = ../Source/BEQuadChar.cpp; sourceTree = "<group>"; };
 		4D8D8E151B167A2C005FEBD3 /* BEQuadChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEQuadChar.h; path = ../Source/BEQuadChar.h; sourceTree = "<group>"; };
 		4D8E64181917561D00C9F2BE /* BEPluginException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginException.h; path = ../Source/BEPluginException.h; sourceTree = "<group>"; };
+		4D8E92EC29B6E88C001C8ABA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		4D8E92EE29B6E894001C8ABA /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.2.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
+		4D8E92F429B97F54001C8ABA /* BEMacNotificationResponse.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = BEMacNotificationResponse.mm; path = ../Source/apple/BEMacNotificationResponse.mm; sourceTree = "<group>"; };
+		4D8E92F829B97FBB001C8ABA /* BEMacNotificationResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BEMacNotificationResponse.h; path = ../Source/apple/BEMacNotificationResponse.h; sourceTree = "<group>"; };
 		4D9E26D11B292032002F7DD3 /* BEBio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBio.cpp; sourceTree = "<group>"; };
 		4D9E26D21B292032002F7DD3 /* BEBio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBio.h; sourceTree = "<group>"; };
 		4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMacFunctions.h; path = ../Source/apple/BEMacFunctions.h; sourceTree = "<group>"; };
@@ -797,6 +812,7 @@
 				4DF4DB1E271E7BE7007E91B5 /* libPocoNet.a in Frameworks */,
 				4DF4DB1F271E7BE7007E91B5 /* libPocoXML.a in Frameworks */,
 				4DF4DB20271E7BE7007E91B5 /* libPocoZip.a in Frameworks */,
+				4D8E92F229B6E8AC001C8ABA /* UserNotifications.framework in Frameworks */,
 				4DF4DB19271E7BD6007E91B5 /* libcharset.a in Frameworks */,
 				4DD0383325B55AB1004AD435 /* libexpat.tbd in Frameworks */,
 				4D3B9BBC2717B7580009E745 /* iOSAppSDK.framework in Frameworks */,
@@ -819,6 +835,7 @@
 				4DF4DB0C271E7958007E91B5 /* libexslt.a in Frameworks */,
 				4D3B9BC22717CFC70009E745 /* libPocoJSON.a in Frameworks */,
 				4D3B9BC32717CFC80009E745 /* libPocoNet.a in Frameworks */,
+				4D8E92F329B6E8B3001C8ABA /* UserNotifications.framework in Frameworks */,
 				4DF4DB0B271E7947007E91B5 /* libxslt.a in Frameworks */,
 				4D3B9BC92717D5A50009E745 /* boost.xcframework in Frameworks */,
 				4D356F27273239B40036CAA2 /* iOSAppSDK.framework in Frameworks */,
@@ -859,6 +876,7 @@
 				4D432126281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
 				4DA72E79285AE5F20036CC90 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
 				4DC4FE062817D30F00C3A339 /* libopenjp2.a in Frameworks */,
+				4D8E92ED29B6E88C001C8ABA /* UserNotifications.framework in Frameworks */,
 				4DBB48FC27C45AD000D3D232 /* libboost_regex.a in Frameworks */,
 				4DDF7318299B3D2200B9C608 /* libPocoCrypto.a in Frameworks */,
 				4DBB48FD27C45AD000D3D232 /* libboost_thread.a in Frameworks */,
@@ -899,6 +917,7 @@
 				4DC9278227C5A79100FA1655 /* libexslt.a in Frameworks */,
 				4DC9278327C5A79100FA1655 /* libPocoJSON.a in Frameworks */,
 				4DC9278427C5A79100FA1655 /* libPocoNet.a in Frameworks */,
+				4D8E92F029B6E89A001C8ABA /* UserNotifications.framework in Frameworks */,
 				4DC9278527C5A79100FA1655 /* libxslt.a in Frameworks */,
 				4DC9278627C5A79100FA1655 /* boost.xcframework in Frameworks */,
 				4DC9278727C5A79100FA1655 /* iOSAppSDK.framework in Frameworks */,
@@ -942,6 +961,7 @@
 				4DC927DE27C5A81300FA1655 /* libPocoNet.a in Frameworks */,
 				4DC927DF27C5A81300FA1655 /* libPocoXML.a in Frameworks */,
 				4DC927E027C5A81300FA1655 /* libPocoZip.a in Frameworks */,
+				4D8E92EF29B6E894001C8ABA /* UserNotifications.framework in Frameworks */,
 				4DC927E227C5A81300FA1655 /* libcharset.a in Frameworks */,
 				4DC927E327C5A81300FA1655 /* libexpat.tbd in Frameworks */,
 				4DC927E427C5A81300FA1655 /* iOSAppSDK.framework in Frameworks */,
@@ -952,6 +972,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D8E92F129B6E8A6001C8ABA /* UserNotifications.framework in Frameworks */,
 				4D423CF628B5F47E00C0BB2C /* libjq.a in Frameworks */,
 				4D432127281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
 				4D9B306A28657188004B4853 /* libde265.a in Frameworks */,
@@ -998,6 +1019,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DCC540C29BA96510060223E /* UserNotifications.framework in Frameworks */,
+				4DCC540B29BA963F0060223E /* libPocoCrypto.a in Frameworks */,
 				4D3A80102890C2DD006EC1B4 /* SystemConfiguration.framework in Frameworks */,
 				4D3A800F2890C2A3006EC1B4 /* libjq.a in Frameworks */,
 				4DE2FD562682CD820091A9AD /* libz.tbd in Frameworks */,
@@ -1149,6 +1172,8 @@
 				4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */,
 				4DD613F016FBBACF00C25A3E /* ProgressDialogWindowController.h */,
 				4DD613F116FBBACF00C25A3E /* ProgressDialogWindowController.m */,
+				4D8E92F829B97FBB001C8ABA /* BEMacNotificationResponse.h */,
+				4D8E92F429B97F54001C8ABA /* BEMacNotificationResponse.mm */,
 			);
 			name = apple;
 			sourceTree = "<group>";
@@ -1260,6 +1285,8 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D8E92EC29B6E88C001C8ABA /* UserNotifications.framework */,
+				4D8E92EE29B6E894001C8ABA /* UserNotifications.framework */,
 				4DDF7314299B350100B9C608 /* libPocoCrypto.a */,
 				4DA0C72529A6DA2B00BC1952 /* libPocoCrypto.a */,
 				4DA0C72729A6DA5600BC1952 /* libPocoCrypto.a */,
@@ -1780,6 +1807,7 @@
 				4DBC8617287FEC1F00E4CD1D /* BEJSON.cpp in Sources */,
 				4DBB48D727C45AD000D3D232 /* BEBio.cpp in Sources */,
 				4DBB48D827C45AD000D3D232 /* BEXMLTextReader.cpp in Sources */,
+				4D8E92F729B97F54001C8ABA /* BEMacNotificationResponse.mm in Sources */,
 				4DBB48D927C45AD000D3D232 /* BEXMLTextWriter.cpp in Sources */,
 				4DBB48DA27C45AD000D3D232 /* BEXMLReaderInterface.cpp in Sources */,
 				4DBB48DB27C45AD000D3D232 /* BETime.cpp in Sources */,
@@ -1917,6 +1945,7 @@
 				4DBC8613287FEC1F00E4CD1D /* BEJSON.cpp in Sources */,
 				4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */,
 				4DCD495B1A195B0C00EFCF7F /* BEXMLTextReader.cpp in Sources */,
+				4D8E92F529B97F54001C8ABA /* BEMacNotificationResponse.mm in Sources */,
 				4DCD495C1A195B0C00EFCF7F /* BEXMLTextWriter.cpp in Sources */,
 				4DCD495D1A195B0C00EFCF7F /* BEXMLReaderInterface.cpp in Sources */,
 				4DCD495E1A195B0C00EFCF7F /* BETime.cpp in Sources */,
@@ -1938,6 +1967,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D8E92F629B97F54001C8ABA /* BEMacNotificationResponse.mm in Sources */,
 				4DE2FD3D2682C7250091A9AD /* BEXMLTextWriter.cpp in Sources */,
 				4DE2FD3F2682C72C0091A9AD /* BETime.cpp in Sources */,
 				4D8757DD2750459A008D9838 /* Test_BEMailRecipient.mm in Sources */,
@@ -2278,6 +2308,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "-";
@@ -2331,6 +2362,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "-";
@@ -2668,6 +2700,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
@@ -2716,6 +2749,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CODE_SIGN_IDENTITY = "Developer ID Application";

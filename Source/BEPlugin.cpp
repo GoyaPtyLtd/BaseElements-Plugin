@@ -306,8 +306,16 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_CurlGetInfo, BE_CurlGetInfo, 1 );
 
 #ifdef BEP_PRO_VERSION
+	
+	#if ( FMX_MAC_TARGET )
+		g_be_plugin->RegisterHiddenFunction ( kBE_Notification, BE_Notification, 2, 3 );
+	#else
+		g_be_plugin->RegisterHiddenFunction ( kBE_Notification, BE_NotImplemented, 2, 3 );
+	#endif
+	
 	g_be_plugin->RegisterFunction ( kBE_BackgroundTaskAdd, BE_BackgroundTaskAdd, 7, 9 );
 	g_be_plugin->RegisterFunction ( kBE_BackgroundTaskList, BE_BackgroundTaskList );
+
 #endif
 
 #ifdef BEP_PRO_VERSION

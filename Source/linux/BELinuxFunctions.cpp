@@ -2,7 +2,7 @@
  BELinuxFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2016-2019 Goya. All rights reserved.
+ Copyright 2016-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -185,6 +185,14 @@ const std::wstring get_machine_name ( )
 
 	return w_host_name;
 
+}
+
+
+const fmx::errcode display_system_notification ( std::string& title, std::string& message, std::string&fmp_uri )
+{
+	throw BEPlugin_Exception ( kCommandIsUnavailableError );
+
+	return kCommandIsUnavailableError;
 }
 
 

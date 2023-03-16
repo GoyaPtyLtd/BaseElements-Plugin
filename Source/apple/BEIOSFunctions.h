@@ -2,7 +2,7 @@
  BEIOSFunctions.h
  BaseElements Plug-In
  
- Copyright 2017-2019 Goya. All rights reserved.
+ Copyright 2017-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -49,6 +49,8 @@ const bool OpenFile ( std::wstring& path );
 
 const std::wstring get_machine_name ( );
 const std::string get_system_drive ( );
+
+const fmx::errcode display_system_notification ( std::string& title, std::string& message, std::string& fmp_uri );
 
 
 #endif // BEIOSFUNCTIONS_H
