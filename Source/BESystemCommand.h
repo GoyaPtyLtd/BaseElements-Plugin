@@ -24,7 +24,10 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #pragma GCC diagnostic pop
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wall"
 #include <Poco/ActiveMethod.h>
+#pragma clang diagnostic pop
 
 
 
