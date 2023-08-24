@@ -1,6 +1,6 @@
 /*
 
- Copyright © 1998 - 2022  Claris International Inc.
+ Copyright © 1998 - 2022 Claris International Inc.
  All rights reserved.
 
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
@@ -175,7 +175,9 @@ enum
 	k193ExtnVersion     = 65,
 	k194ExtnVersion     = 66,
 	k195ExtnVersion     = 67,
-	kCurrentExtnVersion = 67,
+	k196ExtnVersion     = 68,
+    k201ExtnVersion     = 71,
+	kCurrentExtnVersion = 71,
 	kMinExtnVersion     = 4,
 	kMaxExtnVersion     = 255
 };
