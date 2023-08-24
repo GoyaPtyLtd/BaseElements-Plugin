@@ -53,16 +53,11 @@ Project/Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Solution Files/BaseEl
 Project/Extras/BaseElements_iOS_Test/BaseElements_iOS_Test/Plug-Ins/*
 
 .env*
-Project/.vs/BaseElements/v16/.suo
+.vs
+Project/.vs
 BaseElements-Plugin
 Project/BaseElements.xcodeproj/project.xcworkspace/contents.xcworkspacedata
 Project/core
-Project/.vs/BaseElements/v17/Browse.VC.db
-Project/.vs/BaseElements/v17/.suo
-Project/.vs/BaseElements/v17/fileList.bin
 Project/CodeSigning/*
-Project/.vs/BaseElements/FileContentIndex/f409333c-9fed-438c-a0fd-be003ba1c946.vsidx
 *.vsidx
 *.lock
-Project/.vs/BaseElements/v17/ipch/AutoPCH/ecd32e3ae8873d9/BEPLUGINFUNCTIONS.ipch
-Project/.vs/cmake.db
