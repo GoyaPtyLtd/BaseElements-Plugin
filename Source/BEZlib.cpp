@@ -2,7 +2,7 @@
  BEZlib.cpp
  BaseElements Plug-In
 
- Copyright 2011-2021 Goya. All rights reserved.
+ Copyright 2011-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -27,7 +27,6 @@
 #include <Poco/File.h>
 #include <Poco/Path.h>
 #include <Poco/Zip/Compress.h>
-#include <Poco/Zip/Decompress.h>
 
 #include <boost/interprocess/streams/bufferstream.hpp>
 
@@ -51,51 +50,68 @@ public:
 #pragma mark -
 
 
-const long UnZipFile ( const std::string& archive, const std::string& output_directory )
+const BEValueListStringSharedPtr DecompressFiles ( Poco::Zip::Decompress& to_decompress, Poco::Path& decompress_here )
 {
-	long error = kNoError;
+	
+	to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
+	to_decompress.decompressAllFiles();
+	to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
+	
+	BEValueListStringSharedPtr unzipped ( new BEValueList<std::string> ( "", true, true ) );
 
-	Poco::File archive_path = archive;
+	const auto file_map = to_decompress.mapping();
+	for ( const auto& [key, value] : file_map ) {
 
-	if ( archive_path.exists() ) {
+		if ( !value.toString().empty() ) {
+			
+			auto full_path = decompress_here;
+			full_path.append ( value );
+			unzipped->append ( full_path.toString() );
 
-		std::ifstream out ( archive.c_str(), std::ios::binary );
-		poco_assert ( out );
-
-		Poco::Path decompress_here ( output_directory );
-		if ( output_directory.empty() ) {
-			Poco::Path where = archive;
-			decompress_here = where.parent();
 		}
 
-		Poco::Zip::Decompress to_decompress ( out, decompress_here );
-		to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
-		to_decompress.decompressAllFiles();
-		to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
+	}
+	
+	return unzipped;
+	
+}
 
-	} else {
-		error = kNoSuchFileOrDirectoryError;
+
+const BEValueListStringSharedPtr UnZipFile ( const std::string& archive, const std::string& output_directory )
+{
+
+	Poco::File archive_path = archive;
+	
+	if ( !archive_path.exists() ) {
+		throw BEPlugin_Exception ( kNoSuchFileOrDirectoryError );
 	}
 
-	return error;
+	std::ifstream out ( archive.c_str(), std::ios::binary );
+	Poco::Path decompress_here = output_directory;
+	if ( output_directory.empty() ) {
+		Poco::Path where = archive;
+		decompress_here = where.parent();
+	}
+
+	Poco::Zip::Decompress to_decompress ( out, decompress_here );
+	auto unzipped = DecompressFiles ( to_decompress, decompress_here );
+
+	return unzipped;
 
 } // UnZip
 
 
-const long UnZipMemory ( const std::vector<char>& archive, const std::string& output_directory )
+const BEValueListStringSharedPtr UnZipMemory ( const std::vector<char>& archive, const std::string& output_directory )
 {
-	long error = kNoError;
-
+	
 	Poco::Path decompress_here ( output_directory );
 
 	boost::interprocess::bufferstream archive_stream ( (char *)archive.data(), archive.size() );
 
 	Poco::Zip::Decompress to_decompress ( archive_stream, decompress_here );
-	to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
-	to_decompress.decompressAllFiles();
-	to_decompress.EError += Poco::Delegate<Zip_Error, std::pair<const Poco::Zip::ZipLocalFileHeader, const std::string> >(NULL, &Zip_Error::zip_error);
+	BEValueListStringSharedPtr unzipped = DecompressFiles ( to_decompress, decompress_here );
 
-	return error;
+	return unzipped;
 
 } // UnZipMemory
 

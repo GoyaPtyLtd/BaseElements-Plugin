@@ -166,7 +166,8 @@ enum functions {
 	kBE_PreferenceSet = 160,
 	kBE_PreferenceGet = 161,
 	kBE_PreferenceDelete = 162,
-	kBE_Unzip = 170,
+	kBE_Unzip = 169,
+	kBE_Unzip_Deprecated = 170,
 	kBE_Zip = 171,
 //	kBE_Base64_Decode_Deprecated = 172, // Removed in 4.2
 //	kBE_Base64_Encode_Deprecated = 173, // Removed in 4.2

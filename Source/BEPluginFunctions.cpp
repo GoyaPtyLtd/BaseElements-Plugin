@@ -2027,28 +2027,34 @@ fmx::errcode BE_Preference ( short function_id, const ExprEnv& /* environment */
 
 
 
-fmx::errcode BE_Unzip ( short /*funcId*/, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
+fmx::errcode BE_Unzip ( const short fucnction_id, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
 
 	try {
 
+		BEValueListStringSharedPtr files_unzipped;
+		
 		auto output_directory = ParameterAsUTF8String ( parameters, 1 );
 
 		auto is_container = BinaryDataAvailable ( parameters );
 		if ( is_container ) {
 
 			auto archive = ParameterAsVectorChar ( parameters );
-			error = (fmx::errcode)UnZipMemory ( archive, output_directory );
+			files_unzipped = UnZipMemory ( archive, output_directory );
 
 		} else {
 
 			auto archive = ParameterAsUTF8String ( parameters );
-			error = (fmx::errcode)UnZipFile ( archive, output_directory );
+			files_unzipped = UnZipFile ( archive, output_directory );
 
 		}
 
-		SetResult ( error, results );
+		if ( kBE_Unzip == fucnction_id ) {
+			SetResult ( *files_unzipped, results );
+		} else { // BE_Unzip_Deprecated
+			SetResult ( error, results );
+		}
 
 	} catch ( filesystem_error& e ) {
 		g_last_error = e.code().value();

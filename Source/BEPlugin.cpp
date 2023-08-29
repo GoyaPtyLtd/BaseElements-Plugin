@@ -230,6 +230,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_HTTP_GETFile, BE_HTTP_GET, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_HTTP_GETFile, 2, 4 );
 
+	g_be_plugin->RegisterFunction ( kBE_Unzip_Deprecated, BE_Unzip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Unzip, BE_Unzip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_Zip, BE_Zip, 1, 2 );
 	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, 0, 1 );

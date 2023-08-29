@@ -99,7 +99,7 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\$(username)\Documents\Temp\$(ProjectName)\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='PRO Debug|x64'">C:\Users\$(username)\Documents\Temp\$(ProjectName)\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">c:\Users\$(username)\AppData\Local\FileMaker\FileMaker Pro\19.0\Extensions\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='PRO Release|x64'">c:\Users\$(username)\AppData\Local\FileMaker\FileMaker Pro\19.0\Extensions\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='PRO Release|x64'">c:\Users\$(username)\AppData\Local\FileMaker\FileMaker Pro\20.0\Extensions\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\$(username)\Documents\Temp\$(ProjectName)\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='PRO Release|x64'">C:\Users\$(username)\Documents\Temp\$(ProjectName)\Build\$(Configuration)\$(Platform).intermediate\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)</TargetName>

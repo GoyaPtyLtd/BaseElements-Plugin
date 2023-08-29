@@ -92,7 +92,7 @@ fmx::errcode BE_PreferenceSet ( short function_id, const fmx::ExprEnv& environme
 fmx::errcode BE_Preference ( short function_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 
 
-fmx::errcode BE_Unzip ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_Unzip ( const short fucnction_id, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_Zip ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_SetTextEncoding ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 

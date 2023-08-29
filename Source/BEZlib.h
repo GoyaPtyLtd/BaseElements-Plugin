@@ -2,7 +2,7 @@
  BEZlib.h
  BaseElements Plug-In
  
- Copyright 2011-2021 Goya. All rights reserved.
+ Copyright 2011-2023 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -20,9 +20,13 @@
 
 #include <vector>
 
+#include <Poco/Zip/Decompress.h>
 
-const long UnZipFile ( const std::string& archive, const std::string& output_directory );
-const long UnZipMemory ( const std::vector<char>& archive, const std::string& output_directory );
+
+const BEValueListStringSharedPtr DecompressFiles ( Poco::Zip::Decompress& to_decompress, Poco::Path& decompress_here );
+
+const BEValueListStringSharedPtr UnZipFile ( const std::string& archive, const std::string& output_directory );
+const BEValueListStringSharedPtr UnZipMemory ( const std::vector<char>& archive, const std::string& output_directory );
 const long ZipFiles ( const BEValueList<std::string> * filename, const std::string& archive );
 const long ZipMemory ( const std::vector<char>& data, const std::string& filename, const std::string& archive );
 
