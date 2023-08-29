@@ -12,23 +12,32 @@ To get setup on a fresh ubuntu install :
 
 sudo apt update
 sudo apt upgrade
-
 sudo apt install git-all git-lfs
 sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 sudo apt install codeblocks clang-format clang-tidy clang-tools clang clangd libc++-dev libc++abi-dev libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python3-clang cmake libexpat1-dev gperf
 
 wget https://downloads.claris.com/esd/fms_20.1.2.207_Ubuntu22_arm64.zip
+unzip fms_20.1.2.207_Ubuntu22_arm64.zip
+sudo apt install ./filemaker-server-20.1.2.207-arm64.deb 
 
 mkdir ~/source
 cd ~/source
-
 git clone https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
 
-cd BaseElements-Plugin
+sudo codeblocks   ( possibly not required, but at the moment solves a tonne of issues )
 
+Use llvm clang as the default compiler
+
+=======================================================================
+Compiling the libraries used
+=======================================================================
+
+All of the instructions below are for building the libraries themselves.  You do not need to do do any of these to build the plugin if you're happy to use our precompiled libraries.
+
+The Instructions below assume you're in the ~/source directory to begin with, so all the download and git folders are in there.  Set the source variable with :
+
+cd ~/source
 export SRCROOT=`pwd`
-
-all the instructions below assume you're in the ~/source directory to begin with, so all the download and git folders are in there.
 
 =======================================================================
 Boost - 1.83_0

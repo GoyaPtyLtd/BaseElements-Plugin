@@ -32,4 +32,19 @@ See the platform specific BUILDING.platform files for platform specific instruct
 BE Plugin specific code
 =======================================================================
 
-All changes to code are submitted to the Development branch which should alwasy compile and pass the tests.  From there new releases are made which go to the main branch.
+All changes to code are submitted to the Development branch which should always compile and pass the tests.  From there new releases are made which go to the main branch.
+
+
+=======================================================================
+Building the plugin
+=======================================================================
+
+If you have git and git-lfs installed, then you can download the latest repo from github, and it should complile and work.
+
+The code uses Xcode on the mac, Visual Studio on Windows and CodeBlocks on Linux.  ( CodeBlocks is launched with sudo, and although this should be nessecary it does seem to solve a lot of other issues. )
+
+You will need your own certificates for Mac or Win versions.
+
+You should have FileMaker Pro installed before compiling as the project puts the final version in the Extensions folder to start testing with.  ( install FMS on linux instead ).
+
+Any other platform specific instructions or dependencies are in the OS specific documents.  These also contain the instructions for building the libaries which you don't need to do every time.
