@@ -2,39 +2,65 @@
 Linux
 =======================================================================
 
-The plug-in was built using Code::Blocks 16.01 on Ubuntu 18.04 (64-bit).
-
-Download the FileMaker External Plug-In API from
-
-	http://www.filemaker.com/support/technologies/
-
-and place the FMWrapper directory inside the SDK's Headers directory in the Headers directory. The version of libFMWrapper.so in the Libraries/Linux should be placed the Libraries/linux directory.
+The plug-in was built using Code::Blocks 20.03 on Ubuntu 22.04.3 (64-bit).
 
 The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries.
 
 In this guide, ${SRCROOT} is the path to the project root (i.e. BaseElements-Plugin) directory.
 
+To get setup on a fresh ubuntu install :
+
+sudo apt update
+sudo apt upgrade
+sudo apt install git-all git-lfs
+sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+sudo apt install codeblocks clang-format clang-tidy clang-tools clang clangd libc++-dev libc++abi-dev libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python3-clang cmake libexpat1-dev gperf
+
+wget https://downloads.claris.com/esd/fms_20.1.2.207_Ubuntu22_arm64.zip
+unzip fms_20.1.2.207_Ubuntu22_arm64.zip
+sudo apt install ./filemaker-server-20.1.2.207-arm64.deb 
+
+mkdir ~/source
+cd ~/source
+git clone https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
+
+sudo codeblocks   ( possibly not required, but at the moment solves a tonne of issues )
+
+Use llvm clang as the default compiler
 
 =======================================================================
-Boost - 1.75_0
+Compiling the libraries used
+=======================================================================
+
+All of the instructions below are for building the libraries themselves.  You do not need to do do any of these to build the plugin if you're happy to use our precompiled libraries.
+
+The Instructions below assume you're in the ~/source directory to begin with, so all the download and git folders are in there.  Set the source variable with :
+
+cd ~/source
+export SRCROOT=`pwd`
+
+=======================================================================
+Boost - 1.83_0
 =======================================================================
 
 The Boost FileSystem and System libraries are required.
 
 	http://www.boost.org/
 
-See
+wget https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.gz
+tar -xvzf boost_1_83_0.tar.gz
+cd boost_1_83_0
 
-	more/getting_started/index.html
+./bootstrap.sh
+./b2 link=static cflags=-fPIC cxxflags=-fPIC runtime-link=static install --prefix=_build_linux --with-program_options --with-regex --with-date_time --with-filesystem --with-thread
 
-for instructions on compiling the Boost libraries. From the command prompt try
+Copy the directory containing the boost headers from the _build_linux/include directory to the Headers directory and copy the files in the _build_linux/lib to Libraries/linux :
 
-	cd boost_1_75_0
-	./bootstrap.sh
-	./b2 link=static cflags=-fPIC cxxflags=-fPIC runtime-link=static install --prefix=_build_linux --with-program_options --with-regex --with-date_time --with-filesystem --with-thread
+cp -r _build_linux/include/boost ../BaseElements-Plugin/Headers/boost
 
-
-Copy the directory containing the boost headers from the _build_linux/include directory to the Headers directory and copy the files in the _build_linux/lib to Libraries/linux.
+cp -r _build_linux/lib/* ../BaseElements-Plugin/Libraries/linux/
+    or
+cp -r _build_linux/lib/* ../BaseElements-Plugin/Libraries/linuxARM/
 
 
 ======================================================================
@@ -45,16 +71,21 @@ Building zlib is straightforward. Download the zlib source from
 
 	http://www.zlib.net/
 
-and extract the folder zlib-1.2.8 to the desktop.
+cd ~/source
+wget https://www.zlib.net/zlib-1.3.tar.gz
+tar -xvzf zlib-1.3.tar.gz
+cd zlib-1.3
 
-	cd zlib-1.2.8
-	CFLAGS="-fPIC" ./configure --static --prefix="$(pwd)/_build_linux"
-	make install
+CFLAGS="-fPIC" ./configure --static --prefix="$(pwd)/_build_linux"
+make install
 
 Copy the header and library files.
 
-	cp -R _build_linux/include "${SRCROOT}/Headers/zlib"
-	cp _build_linux/lib/libz.a "${SRCROOT}/Libraries/linux/"
+cp -R _build_linux/include ../BaseElements-Plugin/Headers/zlib
+
+cp _build_linux/lib/libz.a ../BaseElements-Plugin/Libraries/linux/
+    or
+cp _build_linux/lib/libz.a ../BaseElements-Plugin/Libraries/linuxARM/
 
 
 =======================================================================
@@ -65,16 +96,22 @@ Download the latest openssl source from
 
 	http://www.openssl.org/source/
 
-and extract the archive. Then
 
-	cd openssl-OpenSSL_1_1_1-stable 
-	./Configure linux-generic64 no-engine no-hw no-shared --prefix="$(pwd)/_build_linux"
-	make install
+cd ~/source
+wget https://www.openssl.org/source/openssl-1.1.1v.tar.gz
+tar -xvzf openssl-1.1.1v.tar.gz
+
+cd openssl-1.1.1v
+./Configure linux-generic64 no-engine no-hw no-shared --prefix="$(pwd)/_build_linux"
+make install
 
 Copy the header and library files.
 
-	cp -R _build_linux/include/openssl "${SRCROOT}/Headers/"
-	cp _build_linux/lib/libcrypto.a ./_build_linux/lib/libssl.a "${SRCROOT}/Libraries/linux/"
+cp -R _build_linux/include/openssl ../BaseElements-Plugin/Headers/
+
+cp _build_linux/lib/libcrypto.a ./_build_linux/lib/libssl.a ../BaseElements-Plugin/Libraries/linux/
+    or
+cp _build_linux/lib/libcrypto.a ./_build_linux/lib/libssl.a ../BaseElements-Plugin/Libraries/linuxARM/
 
 
 =======================================================================
@@ -89,17 +126,21 @@ Download the source from
 
 	http://www.libssh2.org/
 
-and extract the archive. Then
 
-	cd libssh2-1.9.0
-	CFLAGS="-fPIC -I${SRCROOT}/Headers -I${SRCROOT}/Headers/zlib" LDFLAGS="-L${SRCROOT}/Libraries/linux/" LIBS="-ldl" ./configure --disable-shared --disable-examples-build --prefix="$(pwd)/_build_linux"
-	make install
+wget https://libssh2.org/download/libssh2-1.11.0.tar.gz
+tar -xvzf libssh2-1.11.0.tar.gz
+cd libssh2-1.11.0
+
+CFLAGS="-fPIC -I${SRCROOT}/Headers -I${SRCROOT}/Headers/zlib" LDFLAGS="-L${SRCROOT}/Libraries/linux/" LIBS="-ldl" ./configure --disable-shared --disable-examples-build --prefix="$(pwd)/_build_linux" --with-libwolfssl-prefix
+make install
 
 Copy the header and library files.
 
-	cp -R _build_linux/include "${SRCROOT}/Headers/libssh2"
-	cp _build_linux/lib/libssh2.a "${SRCROOT}/Libraries/linux"
+cp -R _build_linux/include "${SRCROOT}/Headers/libssh2"
 
+cp _build_linux/lib/libssh2.a "${SRCROOT}/Libraries/linux"
+    or
+cp _build_linux/lib/libssh2.a "${SRCROOT}/Libraries/linuxARM"
 
 =======================================================================
 libcurl - 7.84.0
@@ -109,18 +150,26 @@ Note: zlib, OpenSSL & libssh2 must be built before building libcurl.
 
 Download the source from
 
-	http://curl.haxx.se/download.html
+http://curl.haxx.se/download.html
 
-and expand it into a directory on the Desktop. Then
+    cd ~/source
+    wget https://curl.se/download/curl-8.2.1.tar.gz
+    tar -xvzf curl-8.2.1.tar.gz
+    cd curl-8.2.1
 
-	cd curl-7.84.0
-	CPPFLAGS="-I${SRCROOT}/Headers -I${SRCROOT}/Headers/zlib -I${SRCROOT}/Headers/libssh2" LDFLAGS="-L${SRCROOT}/Libraries/linux" LIBS="-ldl" ./configure --disable-dependency-tracking --enable-static --disable-shared --with-ssl --with-zlib --with-libssh2 --without-tests --prefix="$(pwd)/_build_linux"
-	make install
+    CPPFLAGS="-I${SRCROOT}/Headers -I${SRCROOT}/Headers/zlib -I${SRCROOT}/Headers/libssh2  -I${SRCROOT}/Headers/openssl" LDFLAGS="-L${SRCROOT}/Libraries/linux" LIBS="-ldl" ./configure --disable-dependency-tracking --enable-static --disable-shared --with-ssl --with-zlib --with-libssh2 --without-tests --prefix="$(pwd)/_build_linux"
+or
+    CPPFLAGS="-I${SRCROOT}/Headers -I${SRCROOT}/Headers/zlib -I${SRCROOT}/Headers/libssh2  -I${SRCROOT}/Headers/openssl" LDFLAGS="-L${SRCROOT}/Libraries/linuxARM" LIBS="-ldl" ./configure --disable-dependency-tracking --enable-static --disable-shared --with-ssl --with-zlib --with-libssh2 --without-tests --prefix="$(pwd)/_build_linux"
+
+    make install
 
 Copy the header and library files.
 
-	cp -R _build_linux/include/curl "${SRCROOT}/Headers/"
-	cp _build_linux/lib/libcurl.a "${SRCROOT}/Libraries/linux"
+    cp -R _build_linux/include/curl "${SRCROOT}/Headers/"
+
+    cp _build_linux/lib/libcurl.a "${SRCROOT}/Libraries/linux"
+or
+    cp _build_linux/lib/libcurl.a "${SRCROOT}/Libraries/linuxARM"
 
 
 =======================================================================
@@ -131,16 +180,20 @@ Download the source for libiconv from
 
 	https://www.gnu.org/software/libiconv/#downloading
 
-and extract the archive. Then
+    cd ~/source
+    wget https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.17.tar.gz
+    tar -xvzf libiconv-1.17.tar.gz
+    libiconv-1.17
 
-	cd libiconv-1.16
-	CFLAGS=-fPIC ./configure --disable-shared --prefix="$(pwd)/_build_linux"
-	make install
+    CFLAGS=-fPIC ./configure --disable-shared --prefix="$(pwd)/_build_linux"
+    make install
 
 Copy the Headers and libraries to the project directory
 
 	cp -R _build_linux/include/*.h "${SRCROOT}/Headers/iconv"
-	cp _build_linux/lib/libiconv.a  _build_linux/lib/libcharset.a "${SRCROOT}/Libraries/linux"
+    cp _build_linux/lib/libiconv.a  _build_linux/lib/libcharset.a "${SRCROOT}/Libraries/linux"
+or
+    cp _build_linux/lib/libiconv.a  _build_linux/lib/libcharset.a "${SRCROOT}/Libraries/linuxARM"
 
 
 =======================================================================
@@ -149,18 +202,21 @@ libxml2 - 2.9.10
 
 Download the source for libxml2 from
 
-	http://xmlsoft.org/downloads.html
+	https://github.com/GNOME/libxml2
 
-and expand it into a directory on the Desktop.
-
-	cd libxml2-2.9.10
+    wget https://download.gnome.org/sources/libxml2/2.11/libxml2-2.11.5.tar.xz
+    tar -xf libxml2-2.11.5.tar.xz
+    cd libxml2-2.11.5
+    
 	CFLAGS=-fPIC ./configure --disable-shared --with-threads --without-python --without-zlib --without-lzma --prefix="$(pwd)/_build_linux"
 	make install
 
 Copy the Headers and libraries to the project directory
 
 	cp -R _build_linux/include/libxml2 "${SRCROOT}/Headers"
-	cp _build_linux/lib/libxml2.a "${SRCROOT}/Libraries/linux"
+    cp _build_linux/lib/libxml2.a "${SRCROOT}/Libraries/linux"
+or
+    cp _build_linux/lib/libxml2.a "${SRCROOT}/Libraries/linuxARM"
 
 
 =======================================================================
@@ -171,16 +227,19 @@ Download the source from
 
 	http://xmlsoft.org/XSLT/downloads.html
 
-and expand it into a directory on the Desktop.
-
-	cd libxslt-1.1.34
-	CFLAGS=-fPIC ./configure --with-libxml-prefix="$(pwd)/../libxml2-2.9.10/_build_linux" --prefix="$(pwd)/_build_linux"
+    wget https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.38.tar.xz
+    tar -xf libxslt-1.1.38.tar.xz
+	cd libxslt-1.1.38
+    
+    CFLAGS=-fPIC ./configure --disable-shared --without-python --without-crypto --prefix="$(pwd)/_build_linux"
 	make install
 
 Finally, place the headers
 
 	cp -R _build_linux/include/libxslt "${SRCROOT}/Headers"
-	cp _build_linux/lib/libxslt.a ./_build/lib/libexslt.a "${SRCROOT}/Libraries/Linux"
+    cp _build_linux/lib/libxslt.a _build_linux/lib/libexslt.a "${SRCROOT}/Libraries/linux"
+or
+    cp _build_linux/lib/libxslt.a _build_linux/lib/libexslt.a "${SRCROOT}/Libraries/linuxARM"
 
 
 =======================================================================
@@ -202,16 +261,21 @@ Download the source from
 
 	http://www.libjpeg-turbo.org/
 
-and extract the archive. Then
-
-	cd libjpeg-turbo-2.0.6
+    cd ~/source
+    wget https://ixpeering.dl.sourceforge.net/project/libjpeg-turbo/2.1.5.1/libjpeg-turbo-2.1.5.1.tar.gz
+    tar -xvzf libjpeg-turbo-2.1.5.1.tar.gz
+    cd libjpeg-turbo-2.1.5.1
+    
 	cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build_linux" -DBUILD_SHARED_LIBS=NO -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_IGNORE_PATH=/usr/lib/x86_64-linux-gnu/ ./
 	make install
 
 Copy the header and library files.
 
-	cp -R _build_linux/opt/libjpeg-turbo/include "${SRCROOT}/Headers/libturbojpeg"
-	cp _build_linux/opt/libjpeg-turbo/lib64/libturbojpeg.a "${SRCROOT}/Libraries/linux"
+	cp -R _build_linux/include "${SRCROOT}/Headers/libturbojpeg"
+    
+    cp _build_linux/lib/libturbojpeg.a "${SRCROOT}/Libraries/linux"
+or
+    cp _build_linux/lib/libturbojpeg.a "${SRCROOT}/Libraries/linuxARM"
 
 
 =======================================================================
@@ -222,15 +286,21 @@ Download the source from
 
 	http://pocoproject.org/download/index.html
 
-Then
+    cd ~/source
+    wget https://github.com/pocoproject/poco/archive/refs/tags/poco-1.12.4-release.tar.gz
+    tar -xvzf poco-1.12.4-release.tar.gz
+    cd poco-1.12.4-release
 
-	cd poco-master
-	./configure --cflags="-std=c++11 -fPIC" --static --no-tests --no-samples --prefix="$(pwd)/_build_linux" --poquito --omit=CppParser,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util
+	./configure --cflags=-fPIC --typical --static --no-tests --no-samples --include-path="$(pwd)/../BaseElements-Plugin/Headers" --prefix="$(pwd)/_build_linux" --poquito --omit=CppParser,Data,Encodings,MongoDB,PDF,PageCompiler,Redis,Util
 	make install
 
+Copy the header and library files.
 
 	cp -R _build_linux/include/Poco "${SRCROOT}/Headers"
-	cp _build_linux/lib/libPocoFoundation.a _build_linux/lib/libPocoCrypto.a _build_linux/lib/libPocoNet.a _build_linux/lib/libPocoXML.a _build_linux/lib/libPocoZip.a _build_linux/lib/libPocoJSON.a "${SRCROOT}/Libraries/Linux"
+    
+	cp _build_linux/lib/libPocoFoundation.a _build_linux/lib/libPocoCrypto.a _build_linux/lib/libPocoNet.a _build_linux/lib/libPocoXML.a _build_linux/lib/libPocoZip.a _build_linux/lib/libPocoJSON.a "${SRCROOT}/Libraries/linux"
+ or
+     cp _build_linux/lib/libPocoFoundation.a _build_linux/lib/libPocoCrypto.a _build_linux/lib/libPocoNet.a _build_linux/lib/libPocoXML.a _build_linux/lib/libPocoZip.a _build_linux/lib/libPocoJSON.a "${SRCROOT}/Libraries/linuxARM"
 
 =======================================================================
 freetype - 2.10.4
@@ -240,13 +310,20 @@ Download freetype from
 
 	https://www.freetype.org/download.html
 	
-and expand it into a directory on the Desktop.
-
-	cd freetype-2.10.4
+    wget https://sourceforge.net/projects/freetype/files/freetype2/2.13.1/freetype-2.13.1.tar.gz
+    tar -xvzf freetype-2.13.1.tar.gz
+    cd freetype-2.13.1
+        
 	CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)/_build_linux
 	make install
+ 
+Copy the header and library files.
 
-then copy _build_linux/lib/libfreetype.a to Libraries/linux and _build_linux/include/freetype2 to Headers.
+    cp -R _build_linux/include/freetype2 "${SRCROOT}/Headers"
+
+    cp _build_linux/lib/libfreetype.a "${SRCROOT}/Libraries/linux"
+or
+    cp _build_linux/lib/libfreetype.a "${SRCROOT}/Libraries/linuxARM"
 
 
 =======================================================================
@@ -256,14 +333,21 @@ fontconfig - 2.13.1
 Download fontconfig from
 
 	https://www.freedesktop.org/wiki/Software/fontconfig/
+ 
+    wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.14.2.tar.gz
+    tar -xvzf fontconfig-2.14.2.tar.gz
+    cd fontconfig-2.14.2
 	
-and expand it into a directory on the Desktop.
-
-	cd fontconfig-2.13.1
-	CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)/_build_linux FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2" FREETYPE_LIBS="${SRCROOT}/Libraries/linux" LDFLAGS="-L${SRCROOT}/Libraries/linux" --with-expat=/usr/lib64/libexpat.so.1
+    LIBS="-lz" CFLAGS="-fPIC" ./configure --disable-shared --prefix=$(pwd)/_build_linux FREETYPE_CFLAGS="-I${SRCROOT}/Headers/freetype2"
 	make install
 
-then copy _build_linux/lib/libfontconfig.a to Libraries/linux and _build_linux/include/fontconfig to Headers.
+Copy the header and library files.
+
+    cp -R _build_linux/include/fontconfig "${SRCROOT}/Headers"
+
+    cp _build_linux/lib/libfontconfig.a "${SRCROOT}/Libraries/linux"
+or
+    cp _build_linux/lib/libfontconfig.a "${SRCROOT}/Libraries/linuxARM"
 
 
 =======================================================================
@@ -274,16 +358,24 @@ Download podofo from
 
 	http://podofo.sourceforge.net/download.html
 	
-and expand it into a directory on the Desktop.
+    cd ~/source
+    wget https://github.com/podofo/podofo/archive/refs/tags/0.10.1.tar.gz
+    tar -xvzf 0.10.1.tar.gz
+    cd podofo-0.10.1
 
-	cd podofo-0.9.7
-	cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build_linux" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DPODOFO_BUILD_SHARED:BOOL=FALSE -DFREETYPE_INCLUDE_DIR="${SRCROOT}/Headers/freetype2" -DFREETYPE_LIBRARY_RELEASE="${SRCROOT}/Libraries/linux/libfreetype.a" -DFONTCONFIG_INCLUDE_DIR="${SRCROOT}/Headers/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="${SRCROOT}/Libraries/linux/libfontconfig.a" -DFONTCONFIG_LIBRARIES="${SRCROOT}/Libraries/linux" -DPODOFO_BUILD_LIB_ONLY=TRUE -DWANT_LIB64:BOOL=TRUE -DCMAKE_CXX_FLAGS="-fPIC" ./
+    cmake -G "Unix Makefiles" -DWANT_FONTCONFIG:BOOL=TRUE -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build_linux" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DFREETYPE_INCLUDE_DIR="${SRCROOT}/Headers/freetype2" -DFREETYPE_LIBRARY_RELEASE="${SRCROOT}/Libraries/linux/libfreetype.a" -DFONTCONFIG_INCLUDE_DIR="${SRCROOT}/Headers/fontconfig" -DFONTCONFIG_LIBRARY_RELEASE="${SRCROOT}/Libraries/linux/libfontconfig.a" -DFONTCONFIG_LIBRARIES="${SRCROOT}/Libraries/linux" -DPODOFO_BUILD_LIB_ONLY=TRUE -DWANT_LIB64:BOOL=TRUE -DCMAKE_CXX_FLAGS="-fPIC" ./
+or
+    cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX="./_build_linux" -DPODOFO_BUILD_STATIC:BOOL=TRUE -DFREETYPE_LIBRARY_RELEASE="${SRCROOT}/Libraries/linuxARM/libfreetype.a" -DFontconfig_INCLUDE_DIR="${SRCROOT}/Headers/fontconfig" -DFontconfig_LIBRARIES="${SRCROOT}/Libraries/linuxARM" -DPODOFO_BUILD_LIB_ONLY=TRUE -DCMAKE_CXX_FLAGS="-fPIC" ./
+
 	make install
 
 Copy the header and library files.
 
 	cp -R _build_linux/include/podofo "${SRCROOT}/Headers"
+    
 	cp _build_linux/lib64/libpodofo.a "${SRCROOT}/Libraries/linux"
+ or
+    cp _build_linux/lib/libpodofo.a "${SRCROOT}/Libraries/linuxARM"
 
 =======================================================================
 

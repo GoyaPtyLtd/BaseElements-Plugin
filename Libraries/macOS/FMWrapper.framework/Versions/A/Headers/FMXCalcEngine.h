@@ -1,6 +1,6 @@
 /*
 
- Copyright © 1998 - 2021  Claris International Inc.
+ Copyright © 1998 - 2022  Claris International Inc.
  All rights reserved.
 
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
@@ -264,10 +264,18 @@ extern "C++"
 				// New to FileMaker Pro 19.4.1
 				kGet_SessionIdentifier = 1129,
 				
+				// New to FileMaker Pro 19.5.1 internal use, new to 20.1.1 Release
+				kGet_CacheFileName = 1130,
+				kGet_CacheFilePath = 1131,
+				
 				// New to FileMaker Pro 19 (API VERSION 62) and later. For new EvaluateConvert... entry points
 				kConvert_PosixPath		= 1,
 				kConvert_WinPath		= 2,
-				kConvert_URLPath		= 3
+				kConvert_URLPath		= 3,
+				
+				// New to FileMaker Pro 19.6
+				kGet_TransactionState	= 1132,
+				kGet_LastErrorLocation 	= 1134
 			};
 
 			inline errcode Evaluate ( const Text &expression, Data &result ) const;
