@@ -16,9 +16,23 @@ sudo apt install git-all git-lfs
 sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 sudo apt install codeblocks clang-format clang-tidy clang-tools clang clangd libc++-dev libc++abi-dev libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python3-clang cmake libexpat1-dev gperf
 
+--------Ubuntu 22 ARM---------
 wget https://downloads.claris.com/esd/fms_20.1.2.207_Ubuntu22_arm64.zip
 unzip fms_20.1.2.207_Ubuntu22_arm64.zip
-sudo apt install ./filemaker-server-20.1.2.207-arm64.deb 
+sudo apt install ./filemaker-server-20.1.2.207-arm64.deb
+------------------------------
+
+--------Ubuntu 22 x86---------
+wget https://downloads.claris.com/esd/fms_20.1.2.207_Ubuntu22_amd64.zip
+unzip fms_20.1.2.207_Ubuntu22_amd64.zip
+sudo apt install ./filemaker-server-20.1.2.207-amd64.deb
+------------------------------
+
+--------Ubuntu 20 x86---------
+wget https://downloads.claris.com/esd/fms_20.1.2.207_Ubuntu20_amd64.zip
+unzip fms_20.1.2.207_Ubuntu20_amd64.zip
+sudo apt install ./filemaker-server-20.1.2.207-amd64.deb
+------------------------------
 
 mkdir ~/source
 cd ~/source
