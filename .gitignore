@@ -66,3 +66,7 @@ Project/.vs/BaseElements/FileContentIndex/f409333c-9fed-438c-a0fd-be003ba1c946.v
 *.lock
 Project/.vs/BaseElements/v17/ipch/AutoPCH/ecd32e3ae8873d9/BEPLUGINFUNCTIONS.ipch
 Project/.vs/cmake.db
+/.vs
+/Project/UpgradeLog.htm
+/Project/.vs/BaseElements/v17/ipch/AutoPCH
+/Project/.vs/BaseElements/v17
