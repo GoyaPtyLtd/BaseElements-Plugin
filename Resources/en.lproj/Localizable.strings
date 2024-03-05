@@ -159,4 +159,4 @@
 "5001" = "BE_ScriptControlExit|Script Control Exit|For use with the function BE_ScriptExecute as an option for the \'scriptControl\' parameter.";
 "5002" = "BE_ScriptControlResume|Script Control Resume|For use with the function BE_ScriptExecute as an option for the \'scriptControl\' parameter.";
 "5003" = "BE_ScriptControlPause|Script Control Pause|For use with the function BE_ScriptExecute as an option for the \'scriptControl\' parameter.";
-"65000" = "Version: %@\n\nThis plug-in provides additional functionality for BaseElements from Goya.";
+"65000" = "Version: %@ - This plug-in provides additional functionality in FileMaker Pro. Visit goya.com.au for more info.";

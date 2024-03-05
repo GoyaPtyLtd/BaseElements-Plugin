@@ -4,9 +4,7 @@ Linux
 
 The plug-in was built using Code::Blocks 20.03 on Ubuntu 22.04.3 (64-bit).
 
-The BaseElements plug-in is built as a static library and all third-party libraries must be built from source as static libraries.
-
-In this guide, ${SRCROOT} is the path to the project root (i.e. BaseElements-Plugin) directory.
+The BaseElements plug-in is built as a static library ( all third-party libraries are built from source as static libraries ).
 
 To get setup on a fresh ubuntu install :
 
@@ -14,7 +12,15 @@ sudo apt update
 sudo apt upgrade
 sudo apt install git-all git-lfs
 sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
-sudo apt install codeblocks clang-format clang-tidy clang-tools clang clangd libc++-dev libc++abi-dev libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python3-clang cmake libexpat1-dev gperf
+
+sudo apt install codeblocks cmake gperf
+sudo apt install libc++-dev libc++abi-dev libexpat1-dev
+sudo apt install lld lldb liblldb-dev
+sudo apt install libomp5 libomp-dev
+sudo apt install llvm llvm-dev llvm-runtime libllvm-ocaml-dev
+sudo apt install clang clangd clang-format clang-tidy clang-tools clang libclang-dev libclang1 python3-clang
+
+( You can obviously install all these in one command, I was just grouping them. )
 
 --------Ubuntu 22 ARM---------
 wget https://downloads.claris.com/esd/fms_20.1.2.207_Ubuntu22_arm64.zip
