@@ -137,10 +137,15 @@ fmx::errcode BE_Stack ( short funcId, const fmx::ExprEnv& environment, const fmx
 
 fmx::errcode BE_ValuesUnique ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_ValuesFilterOut ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ValuesFilter( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+fmx::errcode BE_ValuesCombinations(short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results);
 fmx::errcode BE_ValuesContainsDuplicates ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_ValuesSort ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_ValuesTimesDuplicated ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 fmx::errcode BE_ValuesTrim ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
+
+
+
 
 fmx::errcode BE_XOR ( short funcId, const fmx::ExprEnv& environment, const fmx::DataVect& parameters, fmx::Data& results );
 

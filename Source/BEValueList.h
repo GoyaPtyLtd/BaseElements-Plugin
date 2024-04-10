@@ -83,6 +83,7 @@ public:
 	
 	T unique ( );
 	T filter_out ( BEValueList& filter_out );
+	T filter_in(BEValueList& filter_in);
 	const bool contains_duplicates ( );
 	BEValueList<T> times_duplicated ( const long numberOfDuplicates ) const;
 	T sort ( const bool ascending = true, const bool numeric = false ) const;
@@ -338,6 +339,34 @@ T BEValueList<T>::filter_out ( BEValueList& filter_out )
 	return text.str();
 	
 } // filter_out
+
+
+
+template <typename T>
+T BEValueList<T>::filter_in(BEValueList& filter_in) {
+	std::vector<T> to_filter = filter_in.get_values();
+
+	std::unordered_set<T> filter_set(to_filter.begin(), to_filter.end());
+
+	std::stringstream text;
+	bool first = true;
+
+	values.erase(std::remove_if(values.begin(), values.end(), [&filter_set, &text, &first](const T& value) {
+		if (filter_set.find(value) != filter_set.end()) {
+			if (!first) {
+				text << FILEMAKER_END_OF_LINE;
+			}
+			first = false;
+			text << value;
+			return false;
+		}
+		return true;
+		}), values.end());
+
+	return text.str();
+}
+
+
 
 
 template <typename T>

@@ -3570,6 +3570,115 @@ fmx::errcode BE_ValuesFilterOut ( short /* funcId */, const ExprEnv& /* environm
 } // BE_ValuesFilterOut
 
 
+fmx::errcode BE_ValuesFilter(short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results)
+{
+	errcode error = NoError();
+
+	try {
+
+		auto value_list = ParameterAsUTF8String(parameters);
+		auto filter_out = ParameterAsUTF8String(parameters, 1);
+		const bool case_sensitive = ParameterAsBoolean(parameters, 2);
+
+		unique_ptr< BEValueList<string> > values(new BEValueList<string>(value_list, case_sensitive));
+		unique_ptr< BEValueList<string> > filter(new BEValueList<string>(filter_out, case_sensitive));
+		string filtered_values = values->filter_in(*filter);
+
+		SetResult(filtered_values, results);
+
+	}
+	catch (BEPlugin_Exception& e) {
+		error = e.code();
+	}
+	catch (bad_alloc& /* e */) {
+		error = kLowMemoryError;
+	}
+	catch (exception& /* e */) {
+		error = kErrorUnknown;
+	}
+
+	return MapError(error);
+
+} // BE_ValuesFilter
+
+//helper function for BE_ValuesCombinations declaration
+std::vector<std::string> GenerateCombinations(const std::vector<std::string>& elements);
+std::string RemoveCharacters(const std::string& input, const std::string& charsToRemove);
+
+
+
+fmx::errcode BE_ValuesCombinations(short /* funcId */, const fmx::ExprEnv& /* environment */, const fmx::DataVect& parameters, fmx::Data& results) {
+	errcode error = NoError();
+
+	try {
+		// Extract the input string and delimiter
+		auto input = ParameterAsUTF8String(parameters);
+		std::string delimiter = parameters.Size() > 1 ? ParameterAsUTF8String(parameters, 1) : " ";
+		std::string charsToRemove = parameters.Size() > 2 ? ParameterAsUTF8String(parameters, 2) : "";
+
+		// Split the input string using the delimiter
+		std::vector<std::string> elements;
+		std::istringstream iss(input);
+		std::string token;
+		while (std::getline(iss, token, delimiter[0])) {
+			elements.push_back(token);
+		}
+
+		// Generate all combinations
+		std::vector<std::string> combinations = GenerateCombinations(elements);
+
+		// Combine all combinations into a single string
+		std::stringstream combinedResults;
+		for (const auto& combination : combinations) {
+			if (!combinedResults.str().empty()) {
+				combinedResults << "\n";
+			}
+			combinedResults << RemoveCharacters(combination, charsToRemove);
+		}
+
+		// Set the result
+		std::string result = combinedResults.str();
+		SetResult(result, results);
+
+	}
+	catch (const std::exception& e) {
+		// Handle any standard exceptions
+		error = kErrorUnknown;
+	}
+
+	return error;
+}//BE_ValuesCombinations
+
+
+//helper function for BE_ValuesCombinations
+std::vector<std::string> GenerateCombinations(const std::vector<std::string>& elements) {
+	std::vector<std::string> combinations;
+	int n = elements.size();
+	// Use bitmasking to generate combinations
+	for (int i = 1; i < (1 << n); ++i) {
+		std::string combination;
+		for (int j = 0; j < n; ++j) {
+			if (i & (1 << j)) {
+				if (!combination.empty()) {
+					combination += " ";
+				}
+				combination += elements[j];
+			}
+		}
+		combinations.push_back(combination);
+	}
+	return combinations;
+}
+
+//helper function for BE_ValuesCombinations
+std::string RemoveCharacters(const std::string& input, const std::string& charsToRemove) {
+	std::string result = input;
+	for (char ch : charsToRemove) {
+		result.erase(std::remove(result.begin(), result.end(), ch), result.end());
+	}
+	return result;
+}
+
 fmx::errcode BE_ValuesContainsDuplicates ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& results )
 {
 	errcode error = NoError();
