@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
 
- Copyright 2010-2023 Goya. All rights reserved.
+ Copyright 2010-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -1006,13 +1006,13 @@ errcode ExecuteScript ( const std::string& script_name, const std::string& file_
 	try {
 
 		TextUniquePtr script;
-		script->Assign ( script_name.c_str() );
+		script->Assign ( script_name.c_str(), fmx::Text::kEncoding_UTF8 );
 
 		TextUniquePtr database;
-		database->Assign ( file_name.c_str() );
+		database->Assign ( file_name.c_str(), fmx::Text::kEncoding_UTF8 );
 
 		TextUniquePtr filemaker_script_parameter;
-		filemaker_script_parameter->Assign ( script_parameter.c_str() );
+		filemaker_script_parameter->Assign ( script_parameter.c_str(), fmx::Text::kEncoding_UTF8 );
 		DataUniquePtr parameter;
 		LocaleUniquePtr default_locale;
 		parameter->SetAsText( *filemaker_script_parameter, *default_locale );
@@ -1197,10 +1197,10 @@ void Do_GetString ( const unsigned long whichStringID, TextUniquePtr& function_i
 	function_information->AssignUnicode ( temp_buffer );
 
 	TextUniquePtr function_delimiter;
-	function_delimiter->Assign ( " (" );
+	function_delimiter->Assign ( " (", fmx::Text::kEncoding_UTF8 );
 
 	TextUniquePtr pipe;
-	pipe->Assign ( "|" );
+	pipe->Assign ( "|", fmx::Text::kEncoding_UTF8 );
 	auto pipe_at = function_information->Find ( *pipe, 0 );
 
 	switch ( which_string ) {

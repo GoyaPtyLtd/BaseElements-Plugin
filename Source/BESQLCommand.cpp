@@ -2,7 +2,7 @@
  BESQLCommand.cpp
  BaseElements Plug-In
 
- Copyright 2011-2021 Goya. All rights reserved.
+ Copyright 2011-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -31,8 +31,8 @@ BESQLCommand::BESQLCommand ( const Text& _expression, const Text& _filename )
 
 BESQLCommand::BESQLCommand ( const std::string& _expression, const std::string& _filename )
 {
-	expression->Assign ( _expression.c_str() );
-	filename->Assign ( _filename.c_str() );
+	expression->Assign ( _expression.c_str(), fmx::Text::kEncoding_UTF8 );
+	filename->Assign ( _filename.c_str(), fmx::Text::kEncoding_UTF8 );
 }
 
 
@@ -167,13 +167,13 @@ void BESQLCommand::set_row_separator ( const Text& new_row_separator )
 bool BESQLCommand::is_ddl_command ( void ) const
 {
 	const TextUniquePtr alter;
-	alter->Assign ( "ALTER" );
+	alter->Assign ( "ALTER", fmx::Text::kEncoding_UTF8 );
 
 	const TextUniquePtr create;
-	create->Assign ( "CREATE" );
+	create->Assign ( "CREATE", fmx::Text::kEncoding_UTF8 );
 
 	const TextUniquePtr drop;
-	drop->Assign ( "DROP" );
+	drop->Assign ( "DROP", fmx::Text::kEncoding_UTF8 );
 
 	bool is_ddl = expression->FindIgnoringCase ( *alter, 0 ) == 0 ||
 				expression->FindIgnoringCase ( *create, 0 ) == 0 ||

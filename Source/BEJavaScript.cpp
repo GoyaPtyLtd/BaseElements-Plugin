@@ -2,7 +2,7 @@
  BEJavaScript.cpp
  BaseElements Plug-In
  
- Copyright 2014-2021 Goya. All rights reserved.
+ Copyright 2014-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -101,7 +101,7 @@ static duk_ret_t BE_Evaluate_FileMaker_Calculation ( duk_context *context )
 	std::string calculation = duk_require_string ( context, 0 );
 
 	fmx::TextUniquePtr command;
-	command->Assign ( calculation.c_str() );
+	command->Assign ( calculation.c_str(), fmx::Text::kEncoding_UTF8 );
 
 	fmx::DataUniquePtr result;
 	const fmx::ExprEnvUniquePtr environment;

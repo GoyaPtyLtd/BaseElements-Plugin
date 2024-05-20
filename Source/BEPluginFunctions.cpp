@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2023 Goya. All rights reserved.
+ Copyright 2010-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
