@@ -2,7 +2,7 @@
  BEFileSystem.cpp
  BaseElements Plug-In
 
- Copyright 2011-2022 Goya. All rights reserved.
+ Copyright 2011-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -34,14 +34,14 @@ BEValueListWideStringUniquePtr list_files_in_directory ( const boost::filesystem
 		directory_path.make_preferred(); // force the correct path separator for the platform
 
 		recursive_directory_iterator end_it; // default construction yields past-the-end
-		recursive_directory_iterator it ( directory_path, symlink_option::recurse );
+		recursive_directory_iterator it ( directory_path, directory_options::follow_directory_symlink );
 
 		while ( it != end_it ) {
 
 			bool is_folder = is_directory ( it->status() );
 
 			if ( is_folder && !recurse ) {
-				it.no_push(); // don't recurse into sub directories.
+				it.disable_recursion_pending(); // don't recurse into sub directories.
 			}
 
 
