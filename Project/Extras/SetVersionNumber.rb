@@ -47,7 +47,7 @@ class Version
 
 
    def description
-     "Version: #{@version_number}#{@eol}#{@eol}This plug-in provides additional functionality for BaseElements from Goya."
+     "Version: #{@version_number} - This plug-in provides additional functionality in FileMaker Pro. Visit goya.com.au for more info."
    end
    
    def short_version_string

@@ -2,7 +2,7 @@
  BELinuxFunctionStrings.h
  BaseElements Plug-In
 
- Copyright 2019-2023 Goya. All rights reserved.
+ Copyright 2019-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
    http://www.goya.com.au/baseelements/plugin
@@ -183,7 +183,7 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 5001, "BE_ScriptControlExit" },
 	{ 5002, "BE_ScriptControlResume" },
 	{ 5003, "BE_ScriptControlPause" },
-	{ 65000, "Version: %@\n\nThis plug-in provides additional functionality for BaseElements from Goya." },
+	{ 65000, "Version: %@ - This plug-in provides additional functionality in FileMaker Pro. Visit goya.com.au for more info." },
 
 };
 
