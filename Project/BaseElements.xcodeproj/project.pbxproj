@@ -2218,7 +2218,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.goya.baseelements;
 				PRODUCT_NAME = BaseElementsIOSSimulator;
@@ -2289,7 +2289,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.goya.baseelements;
 				PRODUCT_NAME = BaseElementsIOSSimulator;
@@ -2965,7 +2965,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CFLAGS = (
 					"-Dfopen64=fopen",
 					"-Dftello64=ftello",
@@ -3079,7 +3079,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Dfopen64=fopen",
