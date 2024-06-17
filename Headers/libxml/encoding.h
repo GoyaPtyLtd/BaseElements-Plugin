@@ -25,7 +25,7 @@
 #include <libxml/xmlversion.h>
 
 #ifdef LIBXML_ICONV_ENABLED
-#include <iconv.h>
+#include <iconv/iconv.h>
 #endif
 #ifdef LIBXML_ICU_ENABLED
 #include <unicode/ucnv.h>
