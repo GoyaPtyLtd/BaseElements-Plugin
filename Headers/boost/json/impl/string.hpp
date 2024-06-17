@@ -12,7 +12,8 @@
 
 #include <utility>
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 string::
 string(
@@ -72,7 +73,7 @@ append(InputIt first, InputIt last)
 }
 
 // KRYSTIAN TODO: this can be done without copies when
-// reallocation is not needed, when the iterator is a 
+// reallocation is not needed, when the iterator is a
 // FowardIterator or better, as we can use std::distance
 template<class InputIt, class>
 auto
@@ -109,7 +110,7 @@ insert(
 }
 
 // KRYSTIAN TODO: this can be done without copies when
-// reallocation is not needed, when the iterator is a 
+// reallocation is not needed, when the iterator is a
 // FowardIterator or better, as we can use std::distance
 template<class InputIt, class>
 auto
@@ -141,9 +142,9 @@ replace(
     cleanup c{tmp, dsp};
     std::memcpy(
         impl_.replace_unchecked(
-            first - begin(), 
-            last - first, 
-            tmp.size(), 
+            first - begin(),
+            last - first,
+            tmp.size(),
             sp_),
         tmp.data(),
         tmp.size());
@@ -194,10 +195,16 @@ append(
     InputIt last,
     std::random_access_iterator_tag)
 {
+
     auto const n = static_cast<
         size_type>(last - first);
-    std::copy(first, last,
-        impl_.append(n, sp_));
+    char* out = impl_.append(n, sp_);
+#if defined(_MSC_VER) && _MSC_VER <= 1900
+    while( first != last )
+        *out++ = *first++;
+#else
+    std::copy(first, last, out);
+#endif
 }
 
 template<class InputIt>
@@ -231,6 +238,7 @@ append(
         tmp.data(), tmp.size());
 }
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost
 
 #endif

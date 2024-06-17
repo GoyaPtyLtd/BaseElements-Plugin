@@ -1,8 +1,9 @@
 // Boost.Geometry
 
-// Copyright (c) 2019 Barend Gehrels, Amsterdam, the Netherlands.
+// Copyright (c) 2019-2021 Barend Gehrels, Amsterdam, the Netherlands.
 
-// Copyright (c) 2018-2020 Oracle and/or its affiliates.
+// Copyright (c) 2018-2023 Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -13,24 +14,25 @@
 #define BOOST_GEOMETRY_CORE_CONFIG_HPP
 
 #include <boost/config.hpp>
+#include <boost/config/pragma_message.hpp>
 
-// NOTE: workaround for VC++ 12 (aka 2013): cannot specify explicit initializer for arrays
-#if !defined(BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX) && (!defined(_MSC_VER) || (_MSC_VER >= 1900))
-#define BOOST_GEOMETRY_CXX11_ARRAY_UNIFIED_INITIALIZATION
+// If no define is specified, it uses BOOST_GEOMETRY_NO_ROBUSTNESS, which means: no rescaling.
+// (Rescaling was an earlier approach to fix robustness issues.)
+// However, if BOOST_GEOMETRY_ROBUSTNESS_ALTERNATIVE is specified, it flips the default.
+#if !defined(BOOST_GEOMETRY_NO_ROBUSTNESS) && !defined(BOOST_GEOMETRY_USE_RESCALING)
+  #if defined(BOOST_GEOMETRY_ROBUSTNESS_ALTERNATIVE)
+    #define BOOST_GEOMETRY_USE_RESCALING
+  #else
+    #define BOOST_GEOMETRY_NO_ROBUSTNESS
+  #endif
 #endif
 
-#if !defined(BOOST_NO_CXX11_HDR_TUPLE) && !defined(BOOST_NO_VARIADIC_TEMPLATES)
-#define BOOST_GEOMETRY_CXX11_TUPLE
+#if defined(BOOST_GEOMETRY_USE_RESCALING) && ! defined(BOOST_GEOMETRY_ROBUSTNESS_ALTERNATIVE)
+    BOOST_PRAGMA_MESSAGE("Rescaling is deprecated and its functionality will be removed in Boost 1.84")
 #endif
 
-// Defining this selects Kramer rule for segment-intersection
-// That is default behaviour.
-#define BOOST_GEOMETRY_USE_KRAMER_RULE
-
-// Rescaling is turned on, unless NO_ROBUSTNESS is defined
-// In future versions of Boost.Geometry, it will be turned off by default
-#if ! defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
-#define BOOST_GEOMETRY_USE_RESCALING
+#if defined(BOOST_GEOMETRY_USE_RESCALING) && defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
+    #error "Define either BOOST_GEOMETRY_NO_ROBUSTNESS (default) or BOOST_GEOMETRY_USE_RESCALING"
 #endif
 
 #endif // BOOST_GEOMETRY_CORE_CONFIG_HPP

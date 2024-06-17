@@ -2,7 +2,7 @@
 @file
 Forward declares `boost::hana::set`.
 
-@copyright Louis Dionne 2013-2017
+Copyright Louis Dionne 2013-2022
 Distributed under the Boost Software License, Version 1.0.
 (See accompanying file LICENSE.md or copy at http://boost.org/LICENSE_1_0.txt)
  */
@@ -16,7 +16,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/hana/fwd/erase_key.hpp>
 
 
-BOOST_HANA_NAMESPACE_BEGIN
+namespace boost { namespace hana {
     //! @ingroup group-datatypes
     //! Basic unordered container requiring unique, `Comparable` and
     //! `Hashable` keys.
@@ -133,7 +133,7 @@ BOOST_HANA_NAMESPACE_BEGIN
     //! Example
     //! -------
     //! @include example/set/make.cpp
-    constexpr auto make_set = make<set_tag>;
+    BOOST_HANA_INLINE_VARIABLE constexpr auto make_set = make<set_tag>;
 
     //! Insert an element in a `hana::set`.
     //! @relates hana::set
@@ -293,6 +293,6 @@ constexpr auto symmetric_difference = [](auto&& xs, auto&& ys) {
 #endif
 
 
-BOOST_HANA_NAMESPACE_END
+}} // end namespace boost::hana
 
 #endif // !BOOST_HANA_FWD_SET_HPP

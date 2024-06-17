@@ -1,5 +1,5 @@
 /* A less simple result type
-(C) 2018-2020 Niall Douglas <http://www.nedproductions.biz/> (17 commits)
+(C) 2018-2023 Niall Douglas <http://www.nedproductions.biz/> (17 commits)
 File Created: Apr 2018
 
 
@@ -63,20 +63,67 @@ namespace experimental
   namespace policy
   {
     template <class T, class EC, class E>
-    using default_status_outcome_policy = std::conditional_t<                                                                                                                              //
-    std::is_void<EC>::value && std::is_void<E>::value,                                                                                                                                     //
-    BOOST_OUTCOME_V2_NAMESPACE::policy::terminate,                                                                                                                                               //
-    std::conditional_t<(is_status_code<EC>::value || is_errored_status_code<EC>::value) && (std::is_void<E>::value || BOOST_OUTCOME_V2_NAMESPACE::trait::is_exception_ptr_available<E>::value),  //
-                       status_code_throw<T, EC, E>,                                                                                                                                        //
-                       BOOST_OUTCOME_V2_NAMESPACE::policy::fail_to_compile_observers                                                                                                             //
+    using default_status_outcome_policy = std::conditional_t<  //
+    std::is_void<EC>::value && std::is_void<E>::value,         //
+    BOOST_OUTCOME_V2_NAMESPACE::policy::terminate,                   //
+    std::conditional_t<(is_status_code<EC>::value || is_errored_status_code<EC>::value) &&
+                       (std::is_void<E>::value || BOOST_OUTCOME_V2_NAMESPACE::trait::is_exception_ptr_available<E>::value),  //
+                       status_code_throw<T, EC, E>,                                                                    //
+                       BOOST_OUTCOME_V2_NAMESPACE::policy::fail_to_compile_observers                                         //
                        >>;
   }  // namespace policy
 
-  /*! AWAITING HUGO JSON CONVERSION TOOL 
+  /*! AWAITING HUGO JSON CONVERSION TOOL
 SIGNATURE NOT RECOGNISED
 */
-  template <class R, class S = system_code, class P = std::exception_ptr, class NoValuePolicy = policy::default_status_outcome_policy<R, S, P>>  //
+  template <class R, class S = erased_errored_status_code<typename system_code::value_type>, class P = std::exception_ptr,
+            class NoValuePolicy = policy::default_status_outcome_policy<R, S, P>>  //
   using status_outcome = basic_outcome<R, S, P, NoValuePolicy>;
+
+  /*! AWAITING HUGO JSON CONVERSION TOOL
+SIGNATURE NOT RECOGNISED
+*/
+  BOOST_OUTCOME_TEMPLATE(class R, class S, class P, class NoValuePolicy)
+  BOOST_OUTCOME_TREQUIRES(BOOST_OUTCOME_TPRED(std::is_copy_constructible<R>::value &&std::is_copy_constructible<P>::value &&
+                                  (is_status_code<S>::value || is_errored_status_code<S>::value)))
+  inline basic_outcome<R, S, P, NoValuePolicy> clone(const basic_outcome<R, S, P, NoValuePolicy> &v)
+  {
+    if(v)
+    {
+      return success_type<R>(v.assume_value());
+    }
+    if(v.has_error() && v.has_exception())
+    {
+      return failure_type<S, P>(v.assume_error().clone(), v.assume_exception(), hooks::spare_storage(&v));
+    }
+    if(v.has_exception())
+    {
+      return failure_type<S, P>(in_place_type<P>, v.assume_exception(), hooks::spare_storage(&v));
+    }
+    return failure_type<S, P>(in_place_type<S>, v.assume_error().clone(), hooks::spare_storage(&v));
+  }
+
+  /*! AWAITING HUGO JSON CONVERSION TOOL
+SIGNATURE NOT RECOGNISED
+*/
+  BOOST_OUTCOME_TEMPLATE(class S, class P, class NoValuePolicy)
+  BOOST_OUTCOME_TREQUIRES(BOOST_OUTCOME_TPRED(std::is_copy_constructible<P>::value && (is_status_code<S>::value || is_errored_status_code<S>::value)))
+  inline basic_outcome<void, S, P, NoValuePolicy> clone(const basic_outcome<void, S, P, NoValuePolicy> &v)
+  {
+    if(v)
+    {
+      return success_type<void>();
+    }
+    if(v.has_error() && v.has_exception())
+    {
+      return failure_type<S, P>(v.assume_error().clone(), v.assume_exception(), hooks::spare_storage(&v));
+    }
+    if(v.has_exception())
+    {
+      return failure_type<S, P>(in_place_type<P>, v.assume_exception(), hooks::spare_storage(&v));
+    }
+    return failure_type<S, P>(in_place_type<S>, v.assume_error().clone(), hooks::spare_storage(&v));
+  }
 
   namespace policy
   {
@@ -89,7 +136,8 @@ SIGNATURE NOT RECOGNISED
         {
           if(base::_has_exception(static_cast<Impl &&>(self)))
           {
-            BOOST_OUTCOME_V2_NAMESPACE::policy::detail::_rethrow_exception<trait::is_exception_ptr_available<E>::value>(base::_exception<T, status_code<DomainType>, E, status_code_throw>(static_cast<Impl &&>(self)));  // NOLINT
+            BOOST_OUTCOME_V2_NAMESPACE::policy::detail::_rethrow_exception<trait::is_exception_ptr_available<E>::value>(
+            base::_exception<T, status_code<DomainType>, E, status_code_throw>(static_cast<Impl &&>(self)));  // NOLINT
           }
           if(base::_has_error(static_cast<Impl &&>(self)))
           {
@@ -104,7 +152,8 @@ SIGNATURE NOT RECOGNISED
       template <class Impl> static constexpr void wide_error_check(Impl &&self) { _base::narrow_error_check(static_cast<Impl &&>(self)); }
       template <class Impl> static constexpr void wide_exception_check(Impl &&self) { _base::narrow_exception_check(static_cast<Impl &&>(self)); }
     };
-    template <class T, class DomainType, class E> struct status_code_throw<T, errored_status_code<DomainType>, E> : status_code_throw<T, status_code<DomainType>, E>
+    template <class T, class DomainType, class E>
+    struct status_code_throw<T, errored_status_code<DomainType>, E> : status_code_throw<T, status_code<DomainType>, E>
     {
       status_code_throw() = default;
       using status_code_throw<T, status_code<DomainType>, E>::status_code_throw;

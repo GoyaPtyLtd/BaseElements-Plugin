@@ -5,8 +5,8 @@
 // Copyright (c) 2009-2014 Mateusz Loskot, London, UK.
 // Copyright (c) 2013-2014 Adam Wulkiewicz, Lodz, Poland.
 
-// This file was modified by Oracle on 2013-2020.
-// Modifications copyright (c) 2013-2020, Oracle and/or its affiliates.
+// This file was modified by Oracle on 2013-2022.
+// Modifications copyright (c) 2013-2022, Oracle and/or its affiliates.
 
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
@@ -23,12 +23,14 @@
 
 #include <boost/geometry/core/point_type.hpp>
 
-#include <boost/geometry/algorithms/covered_by.hpp>
+#include <boost/geometry/algorithms/detail/covered_by/implementation.hpp>
 #include <boost/geometry/algorithms/detail/for_each_range.hpp>
 #include <boost/geometry/algorithms/detail/point_on_border.hpp>
 
 #include <boost/geometry/algorithms/detail/disjoint/linear_linear.hpp>
 #include <boost/geometry/algorithms/detail/disjoint/segment_box.hpp>
+
+#include <boost/geometry/geometries/helper_geometry.hpp>
 
 #include <boost/geometry/algorithms/for_each.hpp>
 
@@ -46,7 +48,8 @@ inline bool point_on_border_covered_by(Geometry1 const& geometry1,
                                        Geometry2 const& geometry2,
                                        Strategy const& strategy)
 {
-    typename geometry::point_type<Geometry1>::type pt;
+    using point_type = typename geometry::point_type<Geometry1>::type;
+    typename helper_geometry<point_type>::type pt;
     return geometry::point_on_border(pt, geometry1)
         && geometry::covered_by(pt, geometry2, strategy);
 }
@@ -60,13 +63,9 @@ inline bool rings_containing(Geometry1 const& geometry1,
                              Geometry2 const& geometry2,
                              Strategy const& strategy)
 {
-    // TODO: This will be removed when IntersectionStrategy is replaced with
-    //       UmbrellaStrategy
-    auto const pgs = strategy.template get_point_in_geometry_strategy<Geometry2, Geometry1>();
-
     return geometry::detail::any_range_of(geometry2, [&](auto const& range)
     {
-        return point_on_border_covered_by(range, geometry1, pgs);
+        return point_on_border_covered_by(range, geometry1, strategy);
     });
 }
 
@@ -116,11 +115,9 @@ struct areal_box
                              Box const& box,
                              Strategy const& strategy)
     {
-        // TODO: This will be removed when UmbrellaStrategy is supported
-        auto const ds = strategy.get_disjoint_segment_box_strategy();
         if (! geometry::all_segments_of(areal, [&](auto const& s)
               {
-                  return disjoint_segment_box::apply(s, box, ds);
+                  return disjoint_segment_box::apply(s, box, strategy);
               }) )
         {
             return false;
@@ -129,8 +126,7 @@ struct areal_box
         // If there is no intersection of any segment and box,
         // the box might be located inside areal geometry
 
-        if ( point_on_border_covered_by(box, areal,
-                strategy.template get_point_in_geometry_strategy<Box, Areal>()) )
+        if ( point_on_border_covered_by(box, areal, strategy) )
         {
             return false;
         }

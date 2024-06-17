@@ -2,7 +2,11 @@
 //
 // R-tree nodes based on Boost.Variant, storing static-size containers
 //
-// Copyright (c) 2011-2018 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2011-2023 Adam Wulkiewicz, Lodz, Poland.
+//
+// This file was modified by Oracle on 2021.
+// Modifications copyright (c) 2021 Oracle and/or its affiliates.
+// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 //
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -10,6 +14,15 @@
 
 #ifndef BOOST_GEOMETRY_INDEX_DETAIL_RTREE_NODE_VARIANT_STATIC_HPP
 #define BOOST_GEOMETRY_INDEX_DETAIL_RTREE_NODE_VARIANT_STATIC_HPP
+
+#include <utility>
+#include <boost/container/allocator_traits.hpp>
+#include <boost/core/invoke_swap.hpp>
+#include <boost/variant/static_visitor.hpp>
+#include <boost/variant/variant.hpp>
+
+#include <boost/geometry/index/detail/rtree/node/variant_dynamic.hpp>
+#include <boost/geometry/index/detail/varray.hpp>
 
 namespace boost { namespace geometry { namespace index {
 
@@ -121,27 +134,25 @@ public:
         : node_allocator_type(alloc)
     {}
 
-    inline allocators(BOOST_FWD_REF(allocators) a)
-        : node_allocator_type(boost::move(a.node_allocator()))
+    inline allocators(allocators&& a)
+        : node_allocator_type(std::move(a.node_allocator()))
     {}
 
-    inline allocators & operator=(BOOST_FWD_REF(allocators) a)
+    inline allocators & operator=(allocators&& a)
     {
-        node_allocator() = boost::move(a.node_allocator());
+        node_allocator() = std::move(a.node_allocator());
         return *this;
     }
 
-#ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
     inline allocators & operator=(allocators const& a)
     {
         node_allocator() = a.node_allocator();
         return *this;
     }
-#endif
 
     void swap(allocators & a)
     {
-        boost::swap(node_allocator(), a.node_allocator());
+        boost::core::invoke_swap(node_allocator(), a.node_allocator());
     }
 
     bool operator==(allocators const& a) const { return node_allocator() == a.node_allocator(); }

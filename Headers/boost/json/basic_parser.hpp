@@ -12,25 +12,17 @@
 #define BOOST_JSON_BASIC_PARSER_HPP
 
 #include <boost/json/detail/config.hpp>
+#include <boost/json/detail/except.hpp>
 #include <boost/json/error.hpp>
 #include <boost/json/kind.hpp>
 #include <boost/json/parse_options.hpp>
 #include <boost/json/detail/stack.hpp>
 #include <boost/json/detail/stream.hpp>
 #include <boost/json/detail/utf8.hpp>
+#include <boost/json/detail/sbo_buffer.hpp>
 
-/*  VFALCO NOTE
-
-    This file is in the detail namespace because it
-    is not allowed to be included directly by users,
-    who should be including <boost/json/basic_parser.hpp>
-    instead, which provides the member function definitions.
-
-    The source code is arranged this way to keep compile
-    times down.
-*/
-
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 /** An incremental SAX parser for serialized JSON.
 
@@ -88,12 +80,12 @@ BOOST_JSON_NS_BEGIN
     the error code to a suitable value. This error
     code will be returned by the write function to
     the caller.
-\n            
+\n
     Handlers are required to declare the maximum
     limits on various elements. If these limits
     are exceeded during parsing, then parsing
     fails with an error.
-\n            
+\n
     The following declaration meets the parser's
     handler requirements:
 
@@ -263,7 +255,8 @@ BOOST_JSON_NS_BEGIN
 
     @see
         @ref parse,
-        @ref stream_parser.
+        @ref stream_parser,
+        [Validating parser example](../../doc/html/json/examples.html#json.examples.validate).
 
     @headerfile <boost/json/basic_parser.hpp>
 */
@@ -272,11 +265,9 @@ class basic_parser
 {
     enum class state : char
     {
-        doc1,  doc2,  doc3, doc4,
+        doc1,  doc3,
         com1,  com2,  com3, com4,
-        nul1,  nul2,  nul3,
-        tru1,  tru2,  tru3,
-        fal1,  fal2,  fal3,  fal4,
+        lit1,
         str1,  str2,  str3,  str4,
         str5,  str6,  str7,  str8,
         sur1,  sur2,  sur3,
@@ -284,12 +275,12 @@ class basic_parser
         obj1,  obj2,  obj3,  obj4,
         obj5,  obj6,  obj7,  obj8,
         obj9,  obj10, obj11,
-        arr1,  arr2,  arr3, 
+        arr1,  arr2,  arr3,
         arr4,  arr5,  arr6,
         num1,  num2,  num3,  num4,
         num5,  num6,  num7,  num8,
         exp1,  exp2,  exp3,
-        val1,  val2
+        val1,  val2, val3
     };
 
     struct number
@@ -300,6 +291,9 @@ class basic_parser
         bool frac;
         bool neg;
     };
+
+    template< bool StackEmpty_, char First_ >
+    struct parse_number_helper;
 
     // optimization: must come first
     Handler h_;
@@ -314,10 +308,13 @@ class basic_parser
     bool done_ = false; // true on complete parse
     bool clean_ = true; // write_some exited cleanly
     const char* end_;
+    detail::sbo_buffer<16 + 16 + 1 + 1> num_buf_;
     parse_options opt_;
     // how many levels deeper the parser can go
     std::size_t depth_ = opt_.max_depth;
-    
+    unsigned char cur_lit_ = 0;
+    unsigned char lit_offset_ = 0;
+
     inline void reserve();
     inline const char* sentinel();
     inline bool incomplete(
@@ -349,21 +346,22 @@ class basic_parser
     inline
     const char*
     fail(
-        const char* p, 
-        error ev) noexcept;
+        const char* p,
+        error ev,
+        source_location const* loc) noexcept;
 
     BOOST_NOINLINE
     inline
     const char*
     maybe_suspend(
-        const char* p, 
+        const char* p,
         state st);
 
     BOOST_NOINLINE
     inline
     const char*
     maybe_suspend(
-        const char* p, 
+        const char* p,
         state st,
         std::size_t n);
 
@@ -411,10 +409,9 @@ class basic_parser
         /*std::integral_constant<bool, AllowTrailing_>*/ bool allow_trailing,
         /*std::integral_constant<bool, AllowBadUTF8_>*/ bool allow_bad_utf8);
 
-    template<bool StackEmpty_, bool AllowComments_/*,
+    template<bool AllowComments_/*,
         bool AllowTrailing_, bool AllowBadUTF8_*/>
     const char* resume_value(const char* p,
-        std::integral_constant<bool, StackEmpty_> stack_empty,
         std::integral_constant<bool, AllowComments_> allow_comments,
         /*std::integral_constant<bool, AllowTrailing_>*/ bool allow_trailing,
         /*std::integral_constant<bool, AllowBadUTF8_>*/ bool allow_bad_utf8);
@@ -435,17 +432,9 @@ class basic_parser
         /*std::integral_constant<bool, AllowTrailing_>*/ bool allow_trailing,
         /*std::integral_constant<bool, AllowBadUTF8_>*/ bool allow_bad_utf8);
 
-    template<bool StackEmpty_>
-    const char* parse_null(const char* p,
-        std::integral_constant<bool, StackEmpty_> stack_empty);
-
-    template<bool StackEmpty_>
-    const char* parse_true(const char* p,
-        std::integral_constant<bool, StackEmpty_> stack_empty);
-
-    template<bool StackEmpty_>
-    const char* parse_false(const char* p,
-        std::integral_constant<bool, StackEmpty_> stack_empty);
+    template<int Literal>
+    const char* parse_literal(const char* p,
+        std::integral_constant<int, Literal> literal);
 
     template<bool StackEmpty_, bool IsKey_/*,
         bool AllowBadUTF8_*/>
@@ -453,12 +442,13 @@ class basic_parser
         std::integral_constant<bool, StackEmpty_> stack_empty,
         std::integral_constant<bool, IsKey_> is_key,
         /*std::integral_constant<bool, AllowBadUTF8_>*/ bool allow_bad_utf8);
-    
-    template<bool StackEmpty_, char First_>
+
+    template<bool StackEmpty_, char First_, number_precision Numbers_>
     const char* parse_number(const char* p,
         std::integral_constant<bool, StackEmpty_> stack_empty,
-        std::integral_constant<char, First_> first);
-    
+        std::integral_constant<char, First_> first,
+        std::integral_constant<number_precision, Numbers_> numbers);
+
     template<bool StackEmpty_, bool IsKey_/*,
         bool AllowBadUTF8_*/>
     const char* parse_unescaped(const char* p,
@@ -702,14 +692,24 @@ public:
 
         @param ec Set to the error, if any occurred.
     */
+/** @{ */
     std::size_t
     write_some(
         bool more,
         char const* data,
         std::size_t size,
         error_code& ec);
+
+    std::size_t
+    write_some(
+        bool more,
+        char const* data,
+        std::size_t size,
+        std::error_code& ec);
+/** @} */
 };
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost
 
 #endif

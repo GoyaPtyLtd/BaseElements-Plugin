@@ -1,10 +1,10 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
 // Copyright (c) 2017 Barend Gehrels, Amsterdam, the Netherlands.
-// Copyright (c) 2017 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2017-2023 Adam Wulkiewicz, Lodz, Poland.
 
-// This file was modified by Oracle on 2019-2020.
-// Modifications copyright (c) 2019-2020 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2019-2022.
+// Modifications copyright (c) 2019-2022 Oracle and/or its affiliates.
 
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -19,11 +19,11 @@
 #include <boost/range/end.hpp>
 #include <boost/range/value_type.hpp>
 
+#include <boost/geometry/algorithms/detail/covered_by/implementation.hpp>
 #include <boost/geometry/algorithms/detail/overlay/cluster_info.hpp>
 #include <boost/geometry/algorithms/detail/overlay/is_self_turn.hpp>
 #include <boost/geometry/algorithms/detail/overlay/overlay_type.hpp>
-#include <boost/geometry/algorithms/covered_by.hpp>
-#include <boost/geometry/algorithms/within.hpp>
+#include <boost/geometry/algorithms/detail/within/implementation.hpp>
 
 namespace boost { namespace geometry
 {
@@ -31,48 +31,6 @@ namespace boost { namespace geometry
 #ifndef DOXYGEN_NO_DETAIL
 namespace detail { namespace overlay
 {
-
-
-template
-<
-    typename Point, typename Geometry,
-    typename Tag2 = typename geometry::tag<Geometry>::type
->
-struct check_within_strategy
-{
-    template <typename Strategy>
-    static inline typename Strategy::template point_in_geometry_strategy<Point, Geometry>::type
-        within(Strategy const& strategy)
-    {
-        return strategy.template get_point_in_geometry_strategy<Point, Geometry>();
-    }
-
-    template <typename Strategy>
-    static inline typename Strategy::template point_in_geometry_strategy<Point, Geometry>::type
-        covered_by(Strategy const& strategy)
-    {
-        return strategy.template get_point_in_geometry_strategy<Point, Geometry>();
-    }
-};
-
-template <typename Point, typename Geometry>
-struct check_within_strategy<Point, Geometry, box_tag>
-{
-    template <typename Strategy>
-    static inline typename Strategy::within_point_box_strategy_type
-        within(Strategy const& )
-    {
-        return typename Strategy::within_point_box_strategy_type();
-    }
-
-    template <typename Strategy>
-    static inline typename Strategy::covered_by_point_box_strategy_type
-        covered_by(Strategy const&)
-    {
-        return typename Strategy::covered_by_point_box_strategy_type();
-    }
-};
-
 
 template <overlay_type OverlayType>
 struct check_within
@@ -86,14 +44,10 @@ struct check_within
     bool apply(Turn const& turn, Geometry0 const& geometry0,
                Geometry1 const& geometry1, UmbrellaStrategy const& strategy)
     {
-        typedef typename Turn::point_type point_type;
-
         // Operations 0 and 1 have the same source index in self-turns
         return turn.operations[0].seg_id.source_index == 0
-            ? geometry::within(turn.point, geometry1,
-                check_within_strategy<point_type, Geometry1>::within(strategy))
-            : geometry::within(turn.point, geometry0,
-                check_within_strategy<point_type, Geometry0>::within(strategy));
+            ? geometry::within(turn.point, geometry1, strategy)
+            : geometry::within(turn.point, geometry0, strategy);
     }
 
 };
@@ -110,15 +64,11 @@ struct check_within<overlay_difference>
     bool apply(Turn const& turn, Geometry0 const& geometry0,
                Geometry1 const& geometry1, UmbrellaStrategy const& strategy)
     {
-        typedef typename Turn::point_type point_type;
-
         // difference = intersection(a, reverse(b))
         // therefore we should reverse the meaning of within for geometry1
         return turn.operations[0].seg_id.source_index == 0
-            ? ! geometry::covered_by(turn.point, geometry1,
-                  check_within_strategy<point_type, Geometry1>::covered_by(strategy))
-            : geometry::within(turn.point, geometry0,
-                check_within_strategy<point_type, Geometry0>::within(strategy));
+            ? ! geometry::covered_by(turn.point, geometry1, strategy)
+            : geometry::within(turn.point, geometry0, strategy);
     }
 };
 
@@ -156,15 +106,8 @@ struct discard_closed_turns<overlay_union, operation_union>
                Geometry0 const& geometry0, Geometry1 const& geometry1,
                Strategy const& strategy)
     {
-        typedef typename boost::range_value<Turns>::type turn_type;
-
-        for (typename boost::range_iterator<Turns>::type
-                it = boost::begin(turns);
-             it != boost::end(turns);
-             ++it)
+        for (auto& turn : turns)
         {
-            turn_type& turn = *it;
-
             if (! turn.discarded
                 && is_self_turn<overlay_union>(turn)
                 && check_within<overlay_union>::apply(turn, geometry0,
@@ -185,20 +128,18 @@ private :
     template <typename Turns, typename Clusters>
     static inline
     bool is_self_cluster(signed_size_type cluster_id,
-            const Turns& turns, Clusters const& clusters)
+            Turns const& turns, Clusters const& clusters)
     {
-        typename Clusters::const_iterator cit = clusters.find(cluster_id);
+        auto cit = clusters.find(cluster_id);
         if (cit == clusters.end())
         {
             return false;
         }
 
         cluster_info const& cinfo = cit->second;
-        for (std::set<signed_size_type>::const_iterator it
-             = cinfo.turn_indices.begin();
-             it != cinfo.turn_indices.end(); ++it)
+        for (auto index : cinfo.turn_indices)
         {
-            if (! is_self_turn<OverlayType>(turns[*it]))
+            if (! is_self_turn<OverlayType>(turns[index]))
             {
                 return false;
             }
@@ -214,28 +155,25 @@ private :
             Geometry0 const& geometry0, Geometry1 const& geometry1,
             Strategy const& strategy)
     {
-        for (typename Clusters::const_iterator cit = clusters.begin();
-             cit != clusters.end(); ++cit)
+        for (auto const& pair : clusters)
         {
-            signed_size_type const cluster_id = cit->first;
+            signed_size_type const cluster_id = pair.first;
+            cluster_info const& cinfo = pair.second;
 
             // If there are only self-turns in the cluster, the cluster should
             // be located within the other geometry, for intersection
-            if (! cit->second.turn_indices.empty()
+            if (! cinfo.turn_indices.empty()
                 && is_self_cluster(cluster_id, turns, clusters))
             {
-                cluster_info const& cinfo = cit->second;
-                signed_size_type const index = *cinfo.turn_indices.begin();
-                if (! check_within<OverlayType>::apply(turns[index],
+                signed_size_type const first_index = *cinfo.turn_indices.begin();
+                if (! check_within<OverlayType>::apply(turns[first_index],
                                                        geometry0, geometry1,
                                                        strategy))
                 {
                     // Discard all turns in cluster
-                    for (std::set<signed_size_type>::const_iterator sit
-                         = cinfo.turn_indices.begin();
-                         sit != cinfo.turn_indices.end(); ++sit)
+                    for (auto index : cinfo.turn_indices)
                     {
-                        turns[*sit].discarded = true;
+                        turns[index].discarded = true;
                     }
                 }
             }
@@ -253,15 +191,8 @@ public :
     {
         discard_clusters(turns, clusters, geometry0, geometry1, strategy);
 
-        typedef typename boost::range_value<Turns>::type turn_type;
-
-        for (typename boost::range_iterator<Turns>::type
-                it = boost::begin(turns);
-             it != boost::end(turns);
-             ++it)
+        for (auto& turn : turns)
         {
-            turn_type& turn = *it;
-
             // It is a ii self-turn
             // Check if it is within the other geometry
             if (! turn.discarded

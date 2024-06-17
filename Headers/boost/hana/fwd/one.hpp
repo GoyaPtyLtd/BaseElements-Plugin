@@ -2,7 +2,7 @@
 @file
 Forward declares `boost::hana::one`.
 
-@copyright Louis Dionne 2013-2017
+Copyright Louis Dionne 2013-2022
 Distributed under the Boost Software License, Version 1.0.
 (See accompanying file LICENSE.md or copy at http://boost.org/LICENSE_1_0.txt)
  */
@@ -14,7 +14,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/hana/core/when.hpp>
 
 
-BOOST_HANA_NAMESPACE_BEGIN
+namespace boost { namespace hana {
     //! Identity of the `Ring` multiplication.
     //! @ingroup group-Ring
     //!
@@ -40,8 +40,8 @@ BOOST_HANA_NAMESPACE_BEGIN
     };
 
     template <typename R>
-    constexpr one_t<R> one{};
+    BOOST_HANA_INLINE_VARIABLE constexpr one_t<R> one{};
 #endif
-BOOST_HANA_NAMESPACE_END
+}} // end namespace boost::hana
 
 #endif // !BOOST_HANA_FWD_ONE_HPP

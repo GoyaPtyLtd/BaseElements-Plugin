@@ -1,6 +1,6 @@
 // Boost.Geometry
 
-// Copyright (c) 2017-2020 Oracle and/or its affiliates.
+// Copyright (c) 2017-2022 Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -12,8 +12,7 @@
 #define BOOST_GEOMETRY_ALGORITHMS_DETAIL_OVERLAY_RANGE_IN_GEOMETRY_HPP
 
 
-#include <boost/geometry/algorithms/covered_by.hpp>
-#include <boost/geometry/core/access.hpp>
+#include <boost/geometry/algorithms/detail/covered_by/implementation.hpp>
 #include <boost/geometry/core/tags.hpp>
 #include <boost/geometry/iterators/point_iterator.hpp>
 
@@ -98,9 +97,9 @@ struct point_in_geometry_helper<Box, box_tag>
 {
     template <typename Point, typename Strategy>
     static inline int apply(Point const& point, Box const& box,
-                            Strategy const&)
+                            Strategy const& strategy)
     {
-        return geometry::covered_by(point, box) ? 1 : -1;
+        return geometry::covered_by(point, box, strategy) ? 1 : -1;
     }
 };
 
@@ -126,15 +125,9 @@ static inline int range_in_geometry(Geometry1 const& geometry1,
         ++it;
     }
 
-    typename Strategy::template point_in_geometry_strategy
-        <
-            Geometry1, Geometry2
-        >::type const in_strategy
-        = strategy.template get_point_in_geometry_strategy<Geometry1, Geometry2>();
-
     for ( ; it != end; ++it)
     {
-        result = point_in_geometry_helper<Geometry2>::apply(*it, geometry2, in_strategy);
+        result = point_in_geometry_helper<Geometry2>::apply(*it, geometry2, strategy);
         if (result != 0)
         {
             return result;
@@ -153,15 +146,14 @@ inline int range_in_geometry(Point1 const& first_point1,
                              Strategy const& strategy)
 {
     // check a point on border of geometry1 first
-    int result = point_in_geometry_helper<Geometry2>::apply(first_point1, geometry2,
-                    strategy.template get_point_in_geometry_strategy<Point1, Geometry2>());
+    int result = point_in_geometry_helper<Geometry2>::apply(first_point1, geometry2, strategy);
     if (result == 0)
     {
         // if a point is on boundary of geometry2
         // check points of geometry1 until point inside/outside is found
         // NOTE: skip first point because it should be already tested above
         result = range_in_geometry(geometry1, geometry2, strategy, true);
-    }    
+    }
     return result;
 }
 

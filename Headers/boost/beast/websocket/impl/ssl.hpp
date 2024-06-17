@@ -62,10 +62,12 @@ struct ssl_shutdown_op
 
     template<class Self>
     void
-    operator()(Self& self, error_code ec = {}, std::size_t bytes_transferred = 0)
+    operator()(Self& self, error_code ec = {}, std::size_t = 0)
     {
         BOOST_ASIO_CORO_REENTER(*this)
         {
+            self.reset_cancellation_state(net::enable_total_cancellation());
+
             BOOST_ASIO_CORO_YIELD
                 s_.async_shutdown(std::move(self));
             ec_ = ec;

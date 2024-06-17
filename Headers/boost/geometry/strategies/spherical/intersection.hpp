@@ -2,7 +2,7 @@
 
 // Copyright (c) 2017 Adam Wulkiewicz, Lodz, Poland.
 
-// Copyright (c) 2016-2020, Oracle and/or its affiliates.
+// Copyright (c) 2016-2021, Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -95,119 +95,6 @@ template
 struct ecef_segments
 {
     typedef spherical_tag cs_tag;
-
-    typedef side::spherical_side_formula<CalculationType> side_strategy_type;
-
-    static inline side_strategy_type get_side_strategy()
-    {
-        return side_strategy_type();
-    }
-
-    template <typename Geometry1, typename Geometry2>
-    struct point_in_geometry_strategy
-    {
-        typedef strategy::within::spherical_winding
-            <
-                typename point_type<Geometry1>::type,
-                typename point_type<Geometry2>::type,
-                CalculationType
-            > type;
-    };
-
-    template <typename Geometry1, typename Geometry2>
-    static inline typename point_in_geometry_strategy<Geometry1, Geometry2>::type
-        get_point_in_geometry_strategy()
-    {
-        typedef typename point_in_geometry_strategy
-            <
-                Geometry1, Geometry2
-            >::type strategy_type;
-        return strategy_type();
-    }
-
-    template <typename Geometry>
-    struct area_strategy
-    {
-        typedef area::spherical
-            <
-                typename coordinate_type<Geometry>::type,
-                CalculationType
-            > type;
-    };
-
-    template <typename Geometry>
-    static inline typename area_strategy<Geometry>::type get_area_strategy()
-    {
-        typedef typename area_strategy<Geometry>::type strategy_type;
-        return strategy_type();
-    }
-
-    template <typename Geometry>
-    struct distance_strategy
-    {
-        typedef distance::haversine
-            <
-                typename coordinate_type<Geometry>::type,
-                CalculationType
-            > type;
-    };
-
-    template <typename Geometry>
-    static inline typename distance_strategy<Geometry>::type get_distance_strategy()
-    {
-        typedef typename distance_strategy<Geometry>::type strategy_type;
-        return strategy_type();
-    }
-
-    typedef envelope::spherical<CalculationType>
-        envelope_strategy_type;
-
-    static inline envelope_strategy_type get_envelope_strategy()
-    {
-        return envelope_strategy_type();
-    }
-
-    typedef expand::spherical_segment<CalculationType>
-        expand_strategy_type;
-
-    static inline expand_strategy_type get_expand_strategy()
-    {
-        return expand_strategy_type();
-    }
-
-    typedef within::spherical_point_point point_in_point_strategy_type;
-
-    static inline point_in_point_strategy_type get_point_in_point_strategy()
-    {
-        return point_in_point_strategy_type();
-    }
-
-    typedef within::spherical_point_point equals_point_point_strategy_type;
-
-    static inline equals_point_point_strategy_type get_equals_point_point_strategy()
-    {
-        return equals_point_point_strategy_type();
-    }
-
-    typedef disjoint::spherical_box_box disjoint_box_box_strategy_type;
-
-    static inline disjoint_box_box_strategy_type get_disjoint_box_box_strategy()
-    {
-        return disjoint_box_box_strategy_type();
-    }
-
-    typedef disjoint::segment_box_spherical disjoint_segment_box_strategy_type;
-
-    static inline disjoint_segment_box_strategy_type get_disjoint_segment_box_strategy()
-    {
-        return disjoint_segment_box_strategy_type();
-    }
-
-    typedef covered_by::spherical_point_box disjoint_point_box_strategy_type;
-    typedef covered_by::spherical_point_box covered_by_point_box_strategy_type;
-    typedef within::spherical_point_box within_point_box_strategy_type;
-    typedef envelope::spherical_box envelope_box_strategy_type;
-    typedef expand::spherical_box expand_box_strategy_type;
 
     enum intersection_point_flag { ipi_inters = 0, ipi_at_a1, ipi_at_a2, ipi_at_b1, ipi_at_b2 };
 
@@ -310,7 +197,7 @@ struct ecef_segments
         vec3d_t const a2v = calc_policy.template to_cart3d<vec3d_t>(a2);
         vec3d_t const b1v = calc_policy.template to_cart3d<vec3d_t>(b1);
         vec3d_t const b2v = calc_policy.template to_cart3d<vec3d_t>(b2);
-        
+
         bool degen_neq_coords = false;
         side_info sides;
 
@@ -399,7 +286,7 @@ struct ecef_segments
         // NOTE: at this point the segments may still be disjoint
         // NOTE: at this point one of the segments may be degenerated
 
-        bool collinear = sides.collinear();       
+        bool collinear = sides.collinear();
 
         if (! collinear)
         {
@@ -437,7 +324,7 @@ struct ecef_segments
             sides.set<0>(0, 0);
             sides.set<1>(0, 0);
         }
-        
+
         if (collinear)
         {
             if (a_is_point)
@@ -473,7 +360,7 @@ struct ecef_segments
                 segment_ratio<calc_t> ra_to(dist_b1_a2, dist_b1_b2);
                 segment_ratio<calc_t> rb_from(dist_a1_b1, dist_a1_a2);
                 segment_ratio<calc_t> rb_to(dist_a1_b2, dist_a1_a2);
-                
+
                 // NOTE: this is probably not needed
                 int const a1_wrt_b = position_value(c0, dist_a1_b1, dist_a1_b2);
                 int const a2_wrt_b = position_value(dist_a1_a2, dist_a1_b1, dist_a1_b2);
@@ -639,7 +526,7 @@ private:
     {
         Vec3d ip1, ip2;
         calc_policy.intersection_points(plane1, plane2, ip1, ip2);
-        
+
         calculate_dist(a1v, a2v, plane1, ip1, dist_a1_ip);
         ip = ip1;
 
@@ -685,7 +572,7 @@ private:
                 ip_flag = ipi_at_a1;
                 return true;
             }
-            
+
             if (is_near_b2 && equals_point_point(a1, b2))
             {
                 dist_a1_ip = 0;
@@ -886,8 +773,7 @@ private:
     template <typename Point1, typename Point2>
     static inline bool equals_point_point(Point1 const& point1, Point2 const& point2)
     {
-        return detail::equals::equals_point_point(point1, point2,
-                                                  point_in_point_strategy_type());
+        return strategy::within::spherical_point_point::apply(point1, point2);
     }
 };
 
@@ -954,13 +840,15 @@ struct spherical_segments_calc_policy
         //       not checked before this function is called the length
         //       should be checked here (math::equals(len, c0))
         coord_t const len = math::sqrt(dot_product(ip1, ip1));
-        divide_value(ip1, len); // normalize i1
-
-        ip2 = ip1;
-        multiply_value(ip2, coord_t(-1));
+        geometry::detail::for_each_dimension<Point3d>([&](auto index)
+        {
+            coord_t const coord = get<index>(ip1) / len; // normalize
+            set<index>(ip1, coord);
+            set<index>(ip2, -coord);
+        });
 
         return true;
-    }    
+    }
 };
 
 

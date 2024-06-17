@@ -14,6 +14,7 @@
 #include <string>
 #include <type_traits>
 
+#include <boost/range/size.hpp>
 #include <boost/throw_exception.hpp>
 
 #include <boost/geometry/algorithms/convert.hpp>
@@ -95,7 +96,7 @@ struct transform_geometry_point
     typedef typename geometry::point_type<Geometry>::type point_type;
 
     typedef geometry::model::point
-        <   
+        <
             typename select_most_precise
                 <
                     typename geometry::coordinate_type<point_type>::type,
@@ -552,7 +553,7 @@ struct transform<MultiPolygon, CT, multi_polygon_tag>
 
 
 }} // namespace projections::detail
-    
+
 namespace srs
 {
 

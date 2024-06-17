@@ -11,6 +11,8 @@
 
 #include <cstddef>
 
+#include <boost/range/size.hpp>
+
 #include <boost/geometry/algorithms/detail/overlay/backtrack_check_si.hpp>
 #include <boost/geometry/algorithms/detail/overlay/traversal_ring_creator.hpp>
 #include <boost/geometry/algorithms/detail/overlay/traversal_switch_detector.hpp>
@@ -42,14 +44,11 @@ class traverse
     template <typename Turns>
     static void reset_visits(Turns& turns)
     {
-        for (typename boost::range_iterator<Turns>::type
-            it = boost::begin(turns);
-            it != boost::end(turns);
-            ++it)
+        for (auto& turn : turns)
         {
-            for (int i = 0; i < 2; i++)
+            for (auto& op : turn.operations)
             {
-                it->operations[i].visited.reset();
+                op.visited.reset();
             }
         }
     }

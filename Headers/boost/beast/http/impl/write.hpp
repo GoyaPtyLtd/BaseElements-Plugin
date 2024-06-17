@@ -18,7 +18,7 @@
 #include <boost/beast/core/stream_traits.hpp>
 #include <boost/beast/core/detail/is_invocable.hpp>
 #include <boost/asio/coroutine.hpp>
-#include <boost/asio/post.hpp>
+#include <boost/asio/dispatch.hpp>
 #include <boost/asio/write.hpp>
 #include <boost/optional.hpp>
 #include <boost/throw_exception.hpp>
@@ -102,8 +102,9 @@ public:
                     __FILE__, __LINE__,
                     "http::async_write_some"));
 
-                return net::post(
-                    s_.get_executor(),
+                auto ex = asio::get_associated_immediate_executor(*this, s_.get_executor());
+                return net::dispatch(
+                    ex,
                     beast::bind_front_handler(
                         std::move(*this), ec, 0));
             }
@@ -120,8 +121,9 @@ public:
             __FILE__, __LINE__,
             "http::async_write_some"));
 
-        return net::post(
-            s_.get_executor(),
+        const auto ex = this->get_immediate_executor();
+        return net::dispatch(
+            ex,
             beast::bind_front_handler(
                 std::move(*this), ec, 0));
     }
@@ -178,8 +180,18 @@ class write_op
     Stream& s_;
     serializer<isRequest, Body, Fields>& sr_;
     std::size_t bytes_transferred_ = 0;
+    net::cancellation_state st_{this->
+        beast::async_base<Handler, beast::executor_type<Stream>>
+            ::get_cancellation_slot()};
 
 public:
+    using cancellation_slot_type = net::cancellation_slot;
+    cancellation_slot_type get_cancellation_slot() const noexcept
+    {
+        return st_.slot();
+    }
+
+
     template<class Handler_>
     write_op(
         Handler_&& h,
@@ -209,8 +221,9 @@ public:
                         __FILE__, __LINE__,
                         "http::async_write"));
 
-                    net::post(
-                        s_.get_executor(),
+                    const auto ex = this->get_immediate_executor();
+                    net::dispatch(
+                        ex,
                         std::move(*this));
                 }
                 goto upcall;
@@ -227,6 +240,10 @@ public:
                         s_, sr_, std::move(*this));
                 }
                 bytes_transferred_ += bytes_transferred;
+                if (!ec && st_.cancelled() != net::cancellation_type::none)
+                {
+                    BOOST_BEAST_ASSIGN_EC(ec, net::error::operation_aborted);
+                }
                 if(ec)
                     goto upcall;
                 if(Predicate{}(sr_))

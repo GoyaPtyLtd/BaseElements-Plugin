@@ -49,20 +49,18 @@
 #ifndef BOOST_POLYMORPHIC_CAST_HPP
 #define BOOST_POLYMORPHIC_CAST_HPP
 
-# include <boost/config.hpp>
+#include <boost/config.hpp>
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
 #   pragma once
 #endif
 
 # include <boost/assert.hpp>
-# include <boost/core/addressof.hpp>
-# include <boost/core/enable_if.hpp>
 # include <boost/throw_exception.hpp>
-# include <boost/type_traits/is_reference.hpp> 
-# include <boost/type_traits/remove_reference.hpp>
 
+# include <memory>  // std::addressof
 # include <typeinfo>
+# include <type_traits>
 
 namespace boost
 {
@@ -111,13 +109,13 @@ namespace boost
     //  Contributed by Julien Delacroix
 
     template <class Target, class Source>
-    inline typename boost::enable_if_c<
-        boost::is_reference<Target>::value, Target
+    inline typename std::enable_if<
+        std::is_reference<Target>::value, Target
     >::type polymorphic_downcast(Source& x)
     {
-        typedef typename boost::remove_reference<Target>::type* target_pointer_type;
+        typedef typename std::remove_reference<Target>::type* target_pointer_type;
         return *boost::polymorphic_downcast<target_pointer_type>(
-            boost::addressof(x)
+            std::addressof(x)
         );
     }
 

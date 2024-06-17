@@ -2,7 +2,7 @@
 @file
 Defines `boost::hana::to` and related utilities.
 
-@copyright Louis Dionne 2013-2017
+Copyright Louis Dionne 2013-2022
 Distributed under the Boost Software License, Version 1.0.
 (See accompanying file LICENSE.md or copy at http://boost.org/LICENSE_1_0.txt)
  */
@@ -27,7 +27,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <utility>
 
 
-BOOST_HANA_NAMESPACE_BEGIN
+namespace boost { namespace hana {
     //////////////////////////////////////////////////////////////////////////
     // to
     //////////////////////////////////////////////////////////////////////////
@@ -191,6 +191,6 @@ BOOST_HANA_NAMESPACE_BEGIN
         static constexpr decltype(auto) apply(Xs&& xs)
         { return hana::unpack(static_cast<Xs&&>(xs), hana::make<S>); }
     };
-BOOST_HANA_NAMESPACE_END
+}} // end namespace boost::hana
 
 #endif // !BOOST_HANA_CORE_TO_HPP

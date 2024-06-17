@@ -19,6 +19,7 @@
 #include <boost/asio/buffer.hpp>
 #include <boost/optional.hpp>
 #include <boost/assert.hpp>
+#include <cstdint>
 #include <limits>
 #include <memory>
 #include <type_traits>
@@ -130,7 +131,9 @@ class basic_parser
     template<bool OtherIsRequest>
     friend class basic_parser;
 
+#ifndef BOOST_BEAST_DOXYGEN
     friend class basic_parser_test;
+#endif
 
 protected:
     /// Default constructor

@@ -2,8 +2,8 @@
 @file
 Defines `boost::hana::at_key`.
 
-@copyright Louis Dionne 2013-2017
-@copyright Jason Rice 2017
+Copyright Louis Dionne 2013-2022
+Copyright Jason Rice 2017
 Distributed under the Boost Software License, Version 1.0.
 (See accompanying file LICENSE.md or copy at http://boost.org/LICENSE_1_0.txt)
  */
@@ -34,7 +34,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <utility>
 
 
-BOOST_HANA_NAMESPACE_BEGIN
+namespace boost { namespace hana {
     //! @cond
     template <typename Xs, typename Key>
     constexpr decltype(auto) at_key_t::operator()(Xs&& xs, Key const& key) const {
@@ -92,6 +92,6 @@ BOOST_HANA_NAMESPACE_BEGIN
             return accessor(static_cast<X&&>(x));
         }
     };
-BOOST_HANA_NAMESPACE_END
+}} // end namespace boost::hana
 
 #endif // !BOOST_HANA_AT_KEY_HPP

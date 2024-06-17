@@ -10,7 +10,8 @@
 #ifndef BOOST_JSON_DETAIL_STREAM_HPP
 #define BOOST_JSON_DETAIL_STREAM_HPP
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 namespace detail {
 
 class const_stream
@@ -22,8 +23,6 @@ class const_stream
 
 public:
     const_stream() = default;
-    const_stream(
-        const_stream const&) = default;
 
     const_stream(
         char const* data,
@@ -158,7 +157,7 @@ public:
     {
         return p_ < end_;
     }
-    
+
     const char* begin() const noexcept
     {
         return p_;
@@ -245,9 +244,6 @@ class stream
     char* end_;
 
 public:
-    stream(
-        stream const&) = default;
-
     stream(
         char* data,
         std::size_t size) noexcept
@@ -345,6 +341,7 @@ public:
 };
 
 } // detail
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost
 
 #endif

@@ -1,11 +1,10 @@
 //
-//  Copyright (c) 2012 Artyom Beilis (Tonkikh)
-//  Copyright (c) 2019 - 2020 Alexander Grund
+// Copyright (c) 2012 Artyom Beilis (Tonkikh)
+// Copyright (c) 2019 - 2022 Alexander Grund
 //
-//  Distributed under the Boost Software License, Version 1.0. (See
-//  accompanying file LICENSE or copy at
-//  http://www.boost.org/LICENSE_1_0.txt)
-//
+// Distributed under the Boost Software License, Version 1.0.
+// https://www.boost.org/LICENSE_1_0.txt
+
 #ifndef BOOST_NOWIDE_CONFIG_HPP_INCLUDED
 #define BOOST_NOWIDE_CONFIG_HPP_INCLUDED
 
@@ -17,13 +16,6 @@
 
 //! @cond Doxygen_Suppress
 
-// MinGW32 requires a __MSVCRT_VERSION__ defined to make some functions available, e.g. _stat64
-// Hence define this here to target MSVC 7.0 which has the required functions and do it as early as possible
-// as including a system header might default this to 0x0600 which is to low
-#if defined(__MINGW32__) && !defined(__MSVCRT_VERSION__)
-#define __MSVCRT_VERSION__ 0x0700
-#endif
-
 #if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_NOWIDE_DYN_LINK)
 #ifdef BOOST_NOWIDE_SOURCE
 #define BOOST_NOWIDE_DECL BOOST_SYMBOL_EXPORT
@@ -34,9 +26,7 @@
 #define BOOST_NOWIDE_DECL
 #endif // BOOST_NOWIDE_DYN_LINK
 
-//
 // Automatically link to the correct build variant where possible.
-//
 #if !defined(BOOST_ALL_NO_LIB) && !defined(BOOST_NOWIDE_NO_LIB) && !defined(BOOST_NOWIDE_SOURCE)
 //
 // Set the name of our library, this will get undef'ed by auto_link.hpp
@@ -58,38 +48,60 @@
 //! @endcond
 
 /// @def BOOST_NOWIDE_USE_WCHAR_OVERLOADS
-/// @brief Whether to use the wchar_t* overloads in fstream/filebuf
-/// Enabled on Windows and Cygwin as the latter may use wchar_t in filesystem::path
-#if defined(BOOST_WINDOWS) || defined(__CYGWIN__)
+/// @brief Whether to use the wchar_t* overloads in fstream-classes.
+///
+/// Enabled by default on Windows and Cygwin as the latter may use wchar_t in filesystem::path.
+#ifndef BOOST_NOWIDE_USE_WCHAR_OVERLOADS
+#if defined(BOOST_WINDOWS) || defined(__CYGWIN__) || defined(BOOST_NOWIDE_DOXYGEN)
 #define BOOST_NOWIDE_USE_WCHAR_OVERLOADS 1
 #else
 #define BOOST_NOWIDE_USE_WCHAR_OVERLOADS 0
 #endif
+#endif
 
 /// @def BOOST_NOWIDE_USE_FILEBUF_REPLACEMENT
-/// @brief Define to 1 to use internal class from filebuf.hpp
+/// @brief Define to 1 to use the class from <filebuf.hpp> that is used on Windows.
 ///
-/// - On Non-Windows platforms: Define to 1 to use the same class from header <filebuf.hpp>
-///   that is used on Windows.
 /// - On Windows: No effect, always overwritten to 1
+/// - Others (including Cygwin): Defaults to the value of #BOOST_NOWIDE_USE_WCHAR_OVERLOADS if not set.
+///
+/// When set to 0 boost::nowide::basic_filebuf will be an alias for std::basic_filebuf.
 ///
 /// Affects boost::nowide::basic_filebuf,
 /// boost::nowide::basic_ofstream, boost::nowide::basic_ifstream, boost::nowide::basic_fstream
-#if defined(BOOST_WINDOWS) || BOOST_NOWIDE_USE_WCHAR_OVERLOADS
+#if defined(BOOST_WINDOWS) || defined(BOOST_NOWIDE_DOXYGEN)
 #ifdef BOOST_NOWIDE_USE_FILEBUF_REPLACEMENT
 #undef BOOST_NOWIDE_USE_FILEBUF_REPLACEMENT
 #endif
 #define BOOST_NOWIDE_USE_FILEBUF_REPLACEMENT 1
 #elif !defined(BOOST_NOWIDE_USE_FILEBUF_REPLACEMENT)
-#define BOOST_NOWIDE_USE_FILEBUF_REPLACEMENT 0
+#define BOOST_NOWIDE_USE_FILEBUF_REPLACEMENT BOOST_NOWIDE_USE_WCHAR_OVERLOADS
 #endif
 
 //! @cond Doxygen_Suppress
 
-#if BOOST_VERSION < 106500 && defined(BOOST_GCC) && __GNUC__ >= 7
+#if BOOST_VERSION < 106500 && defined(__GNUC__) && __GNUC__ >= 7
 #define BOOST_NOWIDE_FALLTHROUGH __attribute__((fallthrough))
 #else
 #define BOOST_NOWIDE_FALLTHROUGH BOOST_FALLTHROUGH
+#endif
+
+// The std::codecvt<char16/32_t, char, std::mbstate_t> are deprecated in C++20
+// These macros can suppress this warning
+#if defined(_MSC_VER)
+#define BOOST_NOWIDE_SUPPRESS_UTF_CODECVT_DEPRECATION_BEGIN __pragma(warning(push)) __pragma(warning(disable : 4996))
+#define BOOST_NOWIDE_SUPPRESS_UTF_CODECVT_DEPRECATION_END __pragma(warning(pop))
+#elif(__cplusplus >= 202002L) && defined(__clang__)
+#define BOOST_NOWIDE_SUPPRESS_UTF_CODECVT_DEPRECATION_BEGIN \
+    _Pragma("clang diagnostic push") _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"")
+#define BOOST_NOWIDE_SUPPRESS_UTF_CODECVT_DEPRECATION_END _Pragma("clang diagnostic pop")
+#elif(__cplusplus >= 202002L) && defined(__GNUC__)
+#define BOOST_NOWIDE_SUPPRESS_UTF_CODECVT_DEPRECATION_BEGIN \
+    _Pragma("GCC diagnostic push") _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+#define BOOST_NOWIDE_SUPPRESS_UTF_CODECVT_DEPRECATION_END _Pragma("GCC diagnostic pop")
+#else
+#define BOOST_NOWIDE_SUPPRESS_UTF_CODECVT_DEPRECATION_BEGIN
+#define BOOST_NOWIDE_SUPPRESS_UTF_CODECVT_DEPRECATION_END
 #endif
 
 //! @endcond
@@ -104,4 +116,4 @@ namespace boost {
 namespace nowide {}
 } // namespace boost
 
-#endif // boost/nowide/config.hpp
+#endif

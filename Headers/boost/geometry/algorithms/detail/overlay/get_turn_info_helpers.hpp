@@ -44,20 +44,18 @@ struct turn_operation_linear
 
 template
 <
-    typename TurnPointCSTag,
     typename UniqueSubRange1,
     typename UniqueSubRange2,
-    typename SideStrategy
+    typename Strategy
 >
 struct side_calculator
 {
-    typedef typename UniqueSubRange1::point_type point1_type;
-    typedef typename UniqueSubRange2::point_type point2_type;
+    typedef decltype(std::declval<Strategy>().side()) side_strategy_type;
 
     inline side_calculator(UniqueSubRange1 const& range_p,
                            UniqueSubRange2 const& range_q,
-                           SideStrategy const& side_strategy)
-        : m_side_strategy(side_strategy)
+                           Strategy const& strategy)
+        : m_side_strategy(strategy.side())
         , m_range_p(range_p)
         , m_range_q(range_q)
     {}
@@ -76,17 +74,16 @@ struct side_calculator
     inline int pj_wrt_q1() const { return m_side_strategy.apply(get_qi(), get_qj(), get_pj()); }
     inline int pj_wrt_q2() const { return m_side_strategy.apply(get_qj(), get_qk(), get_pj()); }
 
-    inline point1_type const& get_pi() const { return m_range_p.at(0); }
-    inline point1_type const& get_pj() const { return m_range_p.at(1); }
-    inline point1_type const& get_pk() const { return m_range_p.at(2); }
+    inline auto const& get_pi() const { return m_range_p.at(0); }
+    inline auto const& get_pj() const { return m_range_p.at(1); }
+    inline auto const& get_pk() const { return m_range_p.at(2); }
 
-    inline point2_type const& get_qi() const { return m_range_q.at(0); }
-    inline point2_type const& get_qj() const { return m_range_q.at(1); }
-    inline point2_type const& get_qk() const { return m_range_q.at(2); }
+    inline auto const& get_qi() const { return m_range_q.at(0); }
+    inline auto const& get_qj() const { return m_range_q.at(1); }
+    inline auto const& get_qk() const { return m_range_q.at(2); }
 
-    // Used side-strategy, owned by the calculator,
-    // created from .get_side_strategy()
-    SideStrategy m_side_strategy;
+    // Used side-strategy, owned by the calculator
+    side_strategy_type m_side_strategy;
 
     // Used ranges - owned by get_turns or (for robust points) by intersection_info_base
     UniqueSubRange1 const& m_range_p;
@@ -259,16 +256,14 @@ public:
     typedef robust_subrange_adapter<robust_point1_type, UniqueSubRange1, RobustPolicy> robust_subrange1;
     typedef robust_subrange_adapter<robust_point2_type, UniqueSubRange2, RobustPolicy> robust_subrange2;
 
-    typedef typename cs_tag<TurnPoint>::type cs_tag;
-
-    typedef typename UmbrellaStrategy::side_strategy_type side_strategy_type;
-    typedef side_calculator<cs_tag, robust_subrange1, robust_subrange2,
-             side_strategy_type> side_calculator_type;
+    typedef side_calculator
+        <
+            robust_subrange1, robust_subrange2, UmbrellaStrategy
+        > side_calculator_type;
 
     typedef side_calculator
         <
-            cs_tag, robust_subrange2, robust_subrange1,
-            side_strategy_type
+            robust_subrange2, robust_subrange1, UmbrellaStrategy
         > robust_swapped_side_calculator_type;
 
     intersection_info_base(UniqueSubRange1 const& range_p,
@@ -280,9 +275,9 @@ public:
         , m_robust_calc(range_p, range_q, robust_policy)
         , m_robust_range_p(range_p, m_robust_calc.m_rpi, m_robust_calc.m_rpj, robust_policy)
         , m_robust_range_q(range_q, m_robust_calc.m_rqi, m_robust_calc.m_rqj, robust_policy)
-        , m_side_calc(m_robust_range_p, m_robust_range_q,
-                      umbrella_strategy.get_side_strategy())
-        , m_result(umbrella_strategy.apply(range_p, range_q,
+        , m_side_calc(m_robust_range_p, m_robust_range_q, umbrella_strategy)
+        , m_swapped_side_calc(m_robust_range_q, m_robust_range_p, umbrella_strategy)
+        , m_result(umbrella_strategy.relate().apply(range_p, range_q,
                        intersection_policy_type(),
                        m_robust_range_p, m_robust_range_q))
     {}
@@ -299,13 +294,9 @@ public:
     inline robust_point2_type const& rqk() const { return m_robust_calc.get_rqk(); }
 
     inline side_calculator_type const& sides() const { return m_side_calc; }
-
-    robust_swapped_side_calculator_type get_swapped_sides() const
+    inline robust_swapped_side_calculator_type const& swapped_sides() const
     {
-        robust_swapped_side_calculator_type result(
-                            m_robust_range_q, m_robust_range_p,
-                            m_side_calc.m_side_strategy);
-        return result;
+        return m_swapped_side_calc;
     }
 
 private :
@@ -319,6 +310,7 @@ private :
     robust_subrange1 m_robust_range_p;
     robust_subrange2 m_robust_range_q;
     side_calculator_type m_side_calc;
+    robust_swapped_side_calculator_type m_swapped_side_calc;
 
 protected :
     result_type m_result;
@@ -344,50 +336,43 @@ public:
 
     typedef typename intersection_policy_type::return_type result_type;
 
-    typedef typename UniqueSubRange1::point_type point1_type;
-    typedef typename UniqueSubRange2::point_type point2_type;
-
-    typedef typename UmbrellaStrategy::cs_tag cs_tag;
-
-    typedef typename UmbrellaStrategy::side_strategy_type side_strategy_type;
-    typedef side_calculator<cs_tag, UniqueSubRange1, UniqueSubRange2, side_strategy_type> side_calculator_type;
+    typedef side_calculator
+        <
+            UniqueSubRange1, UniqueSubRange2, UmbrellaStrategy
+        > side_calculator_type;
 
     typedef side_calculator
         <
-            cs_tag, UniqueSubRange2, UniqueSubRange1,
-            side_strategy_type
+            UniqueSubRange2, UniqueSubRange1, UmbrellaStrategy
         > swapped_side_calculator_type;
-    
+
     intersection_info_base(UniqueSubRange1 const& range_p,
                            UniqueSubRange2 const& range_q,
                            UmbrellaStrategy const& umbrella_strategy,
                            no_rescale_policy const& )
         : m_range_p(range_p)
         , m_range_q(range_q)
-        , m_side_calc(range_p, range_q,
-                      umbrella_strategy.get_side_strategy())
-        , m_result(umbrella_strategy.apply(range_p, range_q, intersection_policy_type()))
+        , m_side_calc(range_p, range_q, umbrella_strategy)
+        , m_swapped_side_calc(range_q, range_p, umbrella_strategy)
+        , m_result(umbrella_strategy.relate()
+                        .apply(range_p, range_q, intersection_policy_type()))
     {}
 
     inline bool p_is_last_segment() const { return m_range_p.is_last_segment(); }
     inline bool q_is_last_segment() const { return m_range_q.is_last_segment(); }
 
-    inline point1_type const& rpi() const { return m_side_calc.get_pi(); }
-    inline point1_type const& rpj() const { return m_side_calc.get_pj(); }
-    inline point1_type const& rpk() const { return m_side_calc.get_pk(); }
+    inline auto const& rpi() const { return m_side_calc.get_pi(); }
+    inline auto const& rpj() const { return m_side_calc.get_pj(); }
+    inline auto const& rpk() const { return m_side_calc.get_pk(); }
 
-    inline point2_type const& rqi() const { return m_side_calc.get_qi(); }
-    inline point2_type const& rqj() const { return m_side_calc.get_qj(); }
-    inline point2_type const& rqk() const { return m_side_calc.get_qk(); }
+    inline auto const& rqi() const { return m_side_calc.get_qi(); }
+    inline auto const& rqj() const { return m_side_calc.get_qj(); }
+    inline auto const& rqk() const { return m_side_calc.get_qk(); }
 
     inline side_calculator_type const& sides() const { return m_side_calc; }
-
-    swapped_side_calculator_type get_swapped_sides() const
+    inline swapped_side_calculator_type const& swapped_sides() const
     {
-        swapped_side_calculator_type result(
-            m_range_q, m_range_p,
-            m_side_calc.m_side_strategy);
-        return result;
+        return m_swapped_side_calc;
     }
 
 private :
@@ -397,6 +382,7 @@ private :
 
     // Owned by this class
     side_calculator_type m_side_calc;
+    swapped_side_calculator_type m_swapped_side_calc;
 
 protected :
     result_type m_result;
@@ -419,16 +405,11 @@ class intersection_info
 
 public:
 
-    typedef typename UniqueSubRange1::point_type point1_type;
-    typedef typename UniqueSubRange2::point_type point2_type;
-
-    typedef UmbrellaStrategy intersection_strategy_type;
-    typedef typename UmbrellaStrategy::side_strategy_type side_strategy_type;
     typedef typename UmbrellaStrategy::cs_tag cs_tag;
 
     typedef typename base::side_calculator_type side_calculator_type;
     typedef typename base::result_type result_type;
-    
+
     typedef typename result_type::intersection_points_type i_info_type;
     typedef typename result_type::direction_type d_info_type;
 
@@ -437,18 +418,13 @@ public:
                       UmbrellaStrategy const& umbrella_strategy,
                       RobustPolicy const& robust_policy)
         : base(range_p, range_q, umbrella_strategy, robust_policy)
-        , m_intersection_strategy(umbrella_strategy)
+        , m_umbrella_strategy(umbrella_strategy)
         , m_robust_policy(robust_policy)
     {}
 
     inline result_type const& result() const { return base::m_result; }
     inline i_info_type const& i_info() const { return base::m_result.intersection_points; }
     inline d_info_type const& d_info() const { return base::m_result.direction; }
-
-    inline side_strategy_type get_side_strategy() const
-    {
-        return m_intersection_strategy.get_side_strategy();
-    }
 
     // TODO: it's more like is_spike_ip_p
     inline bool is_spike_p() const
@@ -486,7 +462,7 @@ public:
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -509,19 +485,24 @@ public:
             bool const has_pk = ! base::p_is_last_segment();
             int const pk_q1 = has_pk ? base::sides().pk_wrt_q1() : 0;
             int const pk_q2 = has_pk ? base::sides().pk_wrt_q2() : 0;
-                
+
             if (pk_q1 == -pk_q2)
             {
                 if (pk_q1 == 0)
                 {
                     return direction_code<cs_tag>(base::rqi(), base::rqj(), base::rqk()) == -1;
                 }
-                        
+
                 return true;
             }
         }
-        
+
         return false;
+    }
+
+    UmbrellaStrategy const& strategy() const
+    {
+        return m_umbrella_strategy;
     }
 
 private:
@@ -548,7 +529,7 @@ private:
         }
     }
 
-    UmbrellaStrategy const& m_intersection_strategy;
+    UmbrellaStrategy const& m_umbrella_strategy;
     RobustPolicy const& m_robust_policy;
 };
 

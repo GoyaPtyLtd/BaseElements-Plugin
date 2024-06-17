@@ -1,4 +1,4 @@
-// Copyright Antony Polukhin, 2016-2019.
+// Copyright Antony Polukhin, 2016-2023.
 //
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
@@ -28,9 +28,13 @@
 
 
 #ifdef __CRT_UUID_DECL // for __MINGW32__
+#if !defined(__MINGW32__) || \
+    (!defined(__clang__) && __GNUC__ < 12) || \
+    (defined(__clang__) && __clang_major__ < 16)
     __CRT_UUID_DECL(IDebugClient,0x27fe5639,0x8407,0x4f47,0x83,0x64,0xee,0x11,0x8f,0xb0,0x8a,0xc8)
     __CRT_UUID_DECL(IDebugControl,0x5182e668,0x105e,0x416e,0xad,0x92,0x24,0xef,0x80,0x04,0x24,0xba)
     __CRT_UUID_DECL(IDebugSymbols,0x8c31e98c,0x983a,0x48a5,0x90,0x16,0x6f,0xe5,0xd6,0x67,0xa9,0x50)
+#endif
 #elif defined(DEFINE_GUID) && !defined(BOOST_MSVC)
     DEFINE_GUID(IID_IDebugClient,0x27fe5639,0x8407,0x4f47,0x83,0x64,0xee,0x11,0x8f,0xb0,0x8a,0xc8);
     DEFINE_GUID(IID_IDebugControl,0x5182e668,0x105e,0x416e,0xad,0x92,0x24,0xef,0x80,0x04,0x24,0xba);
@@ -44,53 +48,28 @@
 
 namespace boost { namespace stacktrace { namespace detail {
 
-class com_global_initer: boost::noncopyable {
-    bool ok_;
-
-public:
-    com_global_initer() BOOST_NOEXCEPT
-        : ok_(false)
-    {
-        // COINIT_MULTITHREADED means that we must serialize access to the objects manually.
-        // This is the fastest way to work. If user calls CoInitializeEx before us - we 
-        // can end up with other mode (which is OK for us).
-        //
-        // If we call CoInitializeEx befire user - user may end up with different mode, which is a problem.
-        // So we need to call that initialization function as late as possible.
-        const DWORD res = ::CoInitializeEx(0, COINIT_MULTITHREADED);
-        ok_ = (res == S_OK || res == S_FALSE);
-    }
-
-    ~com_global_initer() BOOST_NOEXCEPT {
-        if (ok_) {
-            ::CoUninitialize();
-        }
-    }
-};
-
-
 template <class T>
 class com_holder: boost::noncopyable {
     T* holder_;
 
 public:
-    com_holder(const com_global_initer&) BOOST_NOEXCEPT
+    com_holder() noexcept
         : holder_(0)
     {}
 
-    T* operator->() const BOOST_NOEXCEPT {
+    T* operator->() const noexcept {
         return holder_;
     }
 
-    void** to_void_ptr_ptr() BOOST_NOEXCEPT {
+    void** to_void_ptr_ptr() noexcept {
         return reinterpret_cast<void**>(&holder_);
     }
 
-    bool is_inited() const BOOST_NOEXCEPT {
+    bool is_inited() const noexcept {
         return !!holder_;
     }
 
-    ~com_holder() BOOST_NOEXCEPT {
+    ~com_holder() noexcept {
         if (holder_) {
             holder_->Release();
         }
@@ -126,13 +105,13 @@ inline void trim_right_zeroes(std::string& s) {
 }
 
 class debugging_symbols: boost::noncopyable {
-    static void try_init_com(com_holder< ::IDebugSymbols>& idebug, const com_global_initer& com) BOOST_NOEXCEPT {
-        com_holder< ::IDebugClient> iclient(com);
+    static void try_init_com(com_holder< ::IDebugSymbols>& idebug) noexcept {
+        com_holder< ::IDebugClient> iclient;
         if (S_OK != ::DebugCreate(__uuidof(IDebugClient), iclient.to_void_ptr_ptr())) {
             return;
         }
 
-        com_holder< ::IDebugControl> icontrol(com);
+        com_holder< ::IDebugControl> icontrol;
         const bool res0 = (S_OK == iclient->QueryInterface(
             __uuidof(IDebugControl),
             icontrol.to_void_ptr_ptr()
@@ -154,20 +133,17 @@ class debugging_symbols: boost::noncopyable {
             return;
         }
 
-        // No cheking: QueryInterface sets the output parameter to NULL in case of error.
+        // No checking: QueryInterface sets the output parameter to NULL in case of error.
         iclient->QueryInterface(__uuidof(IDebugSymbols), idebug.to_void_ptr_ptr());
     }
 
 #ifndef BOOST_STACKTRACE_USE_WINDBG_CACHED
 
-    boost::stacktrace::detail::com_global_initer com_;
     com_holder< ::IDebugSymbols> idebug_;
 public:
-    debugging_symbols() BOOST_NOEXCEPT
-        : com_()
-        , idebug_(com_)
+    debugging_symbols() noexcept
     {
-        try_init_com(idebug_, com_);
+        try_init_com(idebug_);
     }
 
 #else
@@ -176,14 +152,13 @@ public:
 #   error Your compiler does not support C++11 thread_local storage. It`s impossible to build with BOOST_STACKTRACE_USE_WINDBG_CACHED.
 #endif
 
-    static com_holder< ::IDebugSymbols>& get_thread_local_debug_inst() BOOST_NOEXCEPT {
+    static com_holder< ::IDebugSymbols>& get_thread_local_debug_inst() noexcept {
         // [class.mfct]: A static local variable or local type in a member function always refers to the same entity, whether
         // or not the member function is inline.
-        static thread_local boost::stacktrace::detail::com_global_initer com;
-        static thread_local com_holder< ::IDebugSymbols> idebug(com);
+        static thread_local com_holder< ::IDebugSymbols> idebug;
 
         if (!idebug.is_inited()) {
-            try_init_com(idebug, com);
+            try_init_com(idebug);
         }
 
         return idebug;
@@ -191,13 +166,13 @@ public:
 
     com_holder< ::IDebugSymbols>& idebug_;
 public:
-    debugging_symbols() BOOST_NOEXCEPT
+    debugging_symbols() noexcept
         : idebug_( get_thread_local_debug_inst() )
     {}
 
 #endif // #ifndef BOOST_STACKTRACE_USE_WINDBG_CACHED
 
-    bool is_inited() const BOOST_NOEXCEPT {
+    bool is_inited() const noexcept {
         return idebug_.is_inited();
     }
 
@@ -228,9 +203,12 @@ public:
                 &size,
                 0
             ));
-            trim_right_zeroes(result);
+
+            // According to https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/dbgeng/nf-dbgeng-idebugsymbols-getnamebyoffset
+            // "This size includes the space for the '\0' terminating character."
+            result.resize(size - 1);
         } else if (res) {
-            result = name;
+            result.assign(name, size - 1);
         }
 
         if (!res) {
@@ -256,7 +234,7 @@ public:
         return result;
     }
 
-    std::size_t get_line_impl(const void* addr) const BOOST_NOEXCEPT {
+    std::size_t get_line_impl(const void* addr) const noexcept {
         ULONG result = 0;
         if (!is_inited()) {
             return result;

@@ -1,5 +1,5 @@
 // Copyright 2014 Renato Tegon Forti, Antony Polukhin.
-// Copyright 2015-2019 Antony Polukhin.
+// Copyright Antony Polukhin, 2015-2023.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt
@@ -14,7 +14,7 @@
 #include <boost/dll/detail/posix/program_location_impl.hpp>
 
 #include <boost/move/utility.hpp>
-#include <boost/swap.hpp>
+#include <boost/core/invoke_swap.hpp>
 #include <boost/predef/os.h>
 
 #include <dlfcn.h>
@@ -62,7 +62,7 @@ public:
     static boost::dll::fs::path decorate(const boost::dll::fs::path & sl) {
         boost::dll::fs::path actual_path = (
             std::strncmp(sl.filename().string().c_str(), "lib", 3)
-            ? boost::dll::fs::path((sl.has_parent_path() ? sl.parent_path() / L"lib" : L"lib").native() + sl.filename().native())
+            ? boost::dll::fs::path((sl.has_parent_path() ? sl.parent_path() / "lib" : "lib").native() + sl.filename().native())
             : sl
         );
         actual_path += suffix();
@@ -177,7 +177,7 @@ public:
     }
 
     void swap(shared_library_impl& rhs) BOOST_NOEXCEPT {
-        boost::swap(handle_, rhs.handle_);
+        boost::core::invoke_swap(handle_, rhs.handle_);
     }
 
     boost::dll::fs::path full_module_path(boost::dll::fs::error_code &ec) const {

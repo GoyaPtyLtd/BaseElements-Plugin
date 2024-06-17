@@ -56,7 +56,7 @@ public:
         // Constructor
         explicit    iterator( dataset1_iter iter1, DataSet2 const& ds2 )
         : m_iter1( std::move( iter1 ) )
-        , m_iter2( std::move( ds2.begin() ) )
+        , m_iter2( ds2.begin() )
         , m_ds2( &ds2 )
         , m_ds2_pos( 0 )
         {}
@@ -90,7 +90,7 @@ public:
     };
 
 public:
-    enum { arity = boost::decay<DataSet1>::type::arity + boost::decay<DataSet2>::type::arity };
+    static const int arity = boost::decay<DataSet1>::type::arity + boost::decay<DataSet2>::type::arity;
 
     //! Constructor
     grid( DataSet1&& ds1, DataSet2&& ds2 )

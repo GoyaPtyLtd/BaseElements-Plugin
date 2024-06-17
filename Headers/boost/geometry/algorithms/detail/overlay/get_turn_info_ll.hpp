@@ -75,7 +75,7 @@ struct get_turn_info_linear_linear
                 get_turn_info_for_endpoint<true, true>
                     ::apply(range_p, range_q,
                             tp_model, inters, method_none, out,
-                            umbrella_strategy.get_point_in_point_strategy());
+                            umbrella_strategy);
                 break;
 
             case 'd' : // disjoint: never do anything
@@ -83,24 +83,21 @@ struct get_turn_info_linear_linear
 
             case 'm' :
             {
+                using handler = touch_interior<TurnInfo, verify_policy_ll>;
+
                 if ( get_turn_info_for_endpoint<false, true>
                         ::apply(range_p, range_q,
                                 tp_model, inters, method_touch_interior, out,
-                                umbrella_strategy.get_point_in_point_strategy()) )
+                                umbrella_strategy) )
                 {
                     // do nothing
                 }
                 else
                 {
-                    typedef touch_interior
-                        <
-                            TurnInfo
-                        > policy;
-
                     // If Q (1) arrives (1)
                     if ( inters.d_info().arrival[1] == 1)
                     {
-                        policy::template apply<0>(range_p, range_q, tp,
+                        handler::template apply<0>(range_p, range_q, tp,
                                                   inters.i_info(), inters.d_info(),
                                                   inters.sides(),
                                                   umbrella_strategy);
@@ -108,12 +105,12 @@ struct get_turn_info_linear_linear
                     else
                     {
                         // Swap p/q
-                        policy::template apply<1>(range_q, range_p, tp,
+                        handler::template apply<1>(range_q, range_p, tp,
                                                   inters.i_info(), inters.d_info(),
-                                                  inters.get_swapped_sides(),
+                                                  inters.swapped_sides(),
                                                   umbrella_strategy);
                     }
-                    
+
                     if ( tp.operations[0].operation == operation_blocked )
                     {
                         tp.operations[1].is_collinear = true;
@@ -126,7 +123,7 @@ struct get_turn_info_linear_linear
                     replace_method_and_operations_tm(tp.method,
                                                      tp.operations[0].operation,
                                                      tp.operations[1].operation);
-                    
+
                     *out++ = tp;
                 }
             }
@@ -142,20 +139,22 @@ struct get_turn_info_linear_linear
             break;
             case 't' :
             {
+                using handler = touch<TurnInfo, verify_policy_ll>;
+
                 // Both touch (both arrive there)
                 if ( get_turn_info_for_endpoint<false, true>
                         ::apply(range_p, range_q,
                                 tp_model, inters, method_touch, out,
-                                umbrella_strategy.get_point_in_point_strategy()) )
+                                umbrella_strategy) )
                 {
                     // do nothing
                 }
-                else 
+                else
                 {
-                    touch<TurnInfo>::apply(range_p, range_q, tp,
-                                           inters.i_info(), inters.d_info(),
-                                           inters.sides(),
-                                           umbrella_strategy);
+                    handler::apply(range_p, range_q, tp,
+                                   inters.i_info(), inters.d_info(),
+                                   inters.sides(),
+                                   umbrella_strategy);
 
                     // workarounds for touch<> not taking spikes into account starts here
                     // those was discovered empirically
@@ -170,7 +169,7 @@ struct get_turn_info_linear_linear
                         if ( inters.is_spike_p() && inters.is_spike_q() )
                         {
                             tp.operations[0].operation = operation_union;
-                            tp.operations[1].operation = operation_union; 
+                            tp.operations[1].operation = operation_union;
                         }
                         else
                         {
@@ -189,7 +188,7 @@ struct get_turn_info_linear_linear
                             }
                             else
                             {
-                                tp.operations[0].operation = operation_union;                                
+                                tp.operations[0].operation = operation_union;
                             }
                         }
                         else
@@ -208,7 +207,7 @@ struct get_turn_info_linear_linear
                             }
                             else
                             {
-                                tp.operations[1].operation = operation_union;                                
+                                tp.operations[1].operation = operation_union;
                             }
                         }
                         else
@@ -224,7 +223,7 @@ struct get_turn_info_linear_linear
                           && inters.is_spike_p() )
                         {
                             tp.operations[0].operation = operation_union;
-                            tp.operations[1].operation = operation_union; 
+                            tp.operations[1].operation = operation_union;
                         }
                     }
                     else if ( tp.operations[0].operation == operation_none
@@ -275,10 +274,12 @@ struct get_turn_info_linear_linear
             break;
             case 'e':
             {
+                using handler = equal<TurnInfo, verify_policy_ll>;
+
                 if ( get_turn_info_for_endpoint<true, true>
                         ::apply(range_p, range_q,
                                 tp_model, inters, method_equal, out,
-                                umbrella_strategy.get_point_in_point_strategy()) )
+                                umbrella_strategy) )
                 {
                     // do nothing
                 }
@@ -291,7 +292,7 @@ struct get_turn_info_linear_linear
                     {
                         // Both equal
                         // or collinear-and-ending at intersection point
-                        equal<TurnInfo>::apply(range_p, range_q, tp,
+                        handler::apply(range_p, range_q, tp,
                             inters.i_info(), inters.d_info(), inters.sides(),
                             umbrella_strategy);
 
@@ -333,7 +334,7 @@ struct get_turn_info_linear_linear
                 if ( get_turn_info_for_endpoint<true, true>
                         ::apply(range_p, range_q,
                                 tp_model, inters,  method_collinear, out,
-                                umbrella_strategy.get_point_in_point_strategy()) )
+                                umbrella_strategy) )
                 {
                     // do nothing
                 }
@@ -351,7 +352,9 @@ struct get_turn_info_linear_linear
                         if ( inters.d_info().arrival[0] == 0 )
                         {
                             // Collinear, but similar thus handled as equal
-                            equal<TurnInfo>::apply(range_p, range_q, tp,
+                            using handler = equal<TurnInfo, verify_policy_ll>;
+
+                            handler::apply(range_p, range_q, tp,
                                 inters.i_info(), inters.d_info(), inters.sides(),
                                 umbrella_strategy);
 
@@ -364,8 +367,10 @@ struct get_turn_info_linear_linear
                         }
                         else
                         {
-                            collinear<TurnInfo>::apply(range_p, range_q,
-                                    tp, inters.i_info(), inters.d_info(), inters.sides());
+                            using handler = collinear<TurnInfo, verify_policy_ll>;
+                            handler::apply(range_p, range_q, tp,
+                                           inters.i_info(), inters.d_info(),
+                                           inters.sides());
 
                             //method_replace = method_touch_interior;
                             //spike_op = operation_continue;
@@ -374,7 +379,7 @@ struct get_turn_info_linear_linear
                         // transform turn
                         turn_transformer_ec transformer(method_replace);
                         transformer(tp);
-                        
+
                         // conditionally handle spikes
                         if ( ! BOOST_GEOMETRY_CONDITION(handle_spikes)
                           || ! append_collinear_spikes(tp, inters,
@@ -416,29 +421,26 @@ struct get_turn_info_linear_linear
                 // degenerate points
                 if ( BOOST_GEOMETRY_CONDITION(AssignPolicy::include_degenerate) )
                 {
-                    typedef typename UmbrellaStrategy::point_in_point_strategy_type
-                        equals_strategy_type;
-
                     only_convert::apply(tp, inters.i_info());
 
                     // if any, only one of those should be true
                     if ( range_p.is_first_segment()
-                      && equals::equals_point_point(range_p.at(0), tp.point, equals_strategy_type()) )
+                      && equals::equals_point_point(range_p.at(0), tp.point, umbrella_strategy) )
                     {
                         tp.operations[0].position = position_front;
                     }
                     else if ( range_p.is_last_segment()
-                           && equals::equals_point_point(range_p.at(1), tp.point, equals_strategy_type()) )
+                           && equals::equals_point_point(range_p.at(1), tp.point, umbrella_strategy) )
                     {
                         tp.operations[0].position = position_back;
                     }
                     else if ( range_q.is_first_segment()
-                           && equals::equals_point_point(range_q.at(0), tp.point, equals_strategy_type()) )
+                           && equals::equals_point_point(range_q.at(0), tp.point, umbrella_strategy) )
                     {
                         tp.operations[1].position = position_front;
                     }
                     else if ( range_q.is_last_segment()
-                           && equals::equals_point_point(range_q.at(1), tp.point, equals_strategy_type()) )
+                           && equals::equals_point_point(range_q.at(1), tp.point, umbrella_strategy) )
                     {
                         tp.operations[1].position = position_back;
                     }
@@ -522,7 +524,7 @@ struct get_turn_info_linear_linear
 
             return true;
         }
-        
+
         return false;
     }
 
@@ -565,9 +567,9 @@ struct get_turn_info_linear_linear
             {
                 tp.operations[0].is_collinear = true;
                 tp.operations[1].is_collinear = false;
-                
+
                 BOOST_GEOMETRY_ASSERT(inters.i_info().count > 1);
-                
+
                 base_turn_handler::assign_point(tp, method_touch_interior,
                                                 inters.i_info(), 1);
             }
@@ -596,7 +598,7 @@ struct get_turn_info_linear_linear
             {
                 tp.operations[0].is_collinear = false;
                 tp.operations[1].is_collinear = true;
-                
+
                 BOOST_GEOMETRY_ASSERT(inters.i_info().count > 0);
 
                 base_turn_handler::assign_point(tp, method_touch_interior, inters.i_info(), 0);
@@ -611,7 +613,7 @@ struct get_turn_info_linear_linear
 
             res = true;
         }
-        
+
         return res;
     }
 

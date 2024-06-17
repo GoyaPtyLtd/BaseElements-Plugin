@@ -113,12 +113,14 @@ doWrite(z_params& zs, Flush flush, error_code& ec)
 
             if(((! r.in.used() && ! r.out.used()) ||
                     flush == Flush::finish) && ! ec)
-                ec = error::need_buffers;
+            {
+                BOOST_BEAST_ASSIGN_EC(ec, error::need_buffers);
+            }
         };
     auto const err =
         [&](error e)
         {
-            ec = e;
+            BOOST_BEAST_ASSIGN_EC(ec, e);
             mode_ = BAD;
         };
 
@@ -516,8 +518,10 @@ doWrite(z_params& zs, Flush flush, error_code& ec)
             BOOST_FALLTHROUGH;
 
         case DONE:
-            ec = error::end_of_stream;
+        {
+            BOOST_BEAST_ASSIGN_EC(ec, error::end_of_stream);
             return done();
+        }
 
         case BAD:
             return done();
@@ -572,7 +576,7 @@ inflate_table(
     code *next;                     // next available space in table
     std::uint16_t const* base;      // base value table to use
     std::uint16_t const* extra;     // extra bits table to use
-    int end;                        // use base and extra for symbol > end
+    unsigned match;                 // use base and extra for symbol >= match
     std::uint16_t count[15+1];      // number of codes of each length
     std::uint16_t offs[15+1];       // offsets in table for each length
 
@@ -584,7 +588,7 @@ inflate_table(
     // Length codes 257..285 extra
     static std::uint16_t constexpr lext[31] = {
         16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18,
-        19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 72, 78};
+        19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 77, 202};
 
     // Distance codes 0..29 base
     static std::uint16_t constexpr dbase[32] = {
@@ -666,13 +670,13 @@ inflate_table(
         left -= count[len];
         if (left < 0)
         {
-            ec = error::over_subscribed_length;
+            BOOST_BEAST_ASSIGN_EC(ec, error::over_subscribed_length);
             return;
         }
     }
     if (left > 0 && (type == build::codes || max != 1))
     {
-        ec = error::incomplete_length_set;
+        BOOST_BEAST_ASSIGN_EC(ec, error::incomplete_length_set);
         return;
     }
 
@@ -722,19 +726,17 @@ inflate_table(
     {
     case build::codes:
         base = extra = work;    /* dummy value--not used */
-        end = 19;
+        match = 20;
         break;
     case build::lens:
         base = lbase;
-        base -= 257;
         extra = lext;
-        extra -= 257;
-        end = 256;
+        match = 257;
         break;
     default:            /* build::dists */
         base = dbase;
         extra = dext;
-        end = -1;
+        match = 0;
     }
 
     /* initialize state for loop */
@@ -764,15 +766,15 @@ inflate_table(
     {
         /* create table entry */
         here.bits = (std::uint8_t)(len - drop);
-        if ((int)(work[sym]) < end)
+        if (work[sym] + 1U < match)
         {
             here.op = (std::uint8_t)0;
             here.val = work[sym];
         }
-        else if ((int)(work[sym]) > end)
+        else if (work[sym] >= match)
         {
-            here.op = (std::uint8_t)(extra[work[sym]]);
-            here.val = base[work[sym]];
+            here.op = (std::uint8_t)(extra[work[sym] - match]);
+            here.val = base[work[sym] - match];
         }
         else
         {
@@ -1039,7 +1041,7 @@ inflate_fast(ranges& r, error_code& ec)
 #ifdef INFLATE_STRICT
                 if(dist > dmax_)
                 {
-                    ec = error::invalid_distance;
+                    BOOST_BEAST_ASSIGN_EC(ec, error::invalid_distance);
                     mode_ = BAD;
                     break;
                 }
@@ -1053,7 +1055,7 @@ inflate_fast(ranges& r, error_code& ec)
                     op = dist - op; // distance back in window
                     if(op > w_.size())
                     {
-                        ec = error::invalid_distance;
+                        BOOST_BEAST_ASSIGN_EC(ec, error::invalid_distance);
                         mode_ = BAD;
                         break;
                     }
@@ -1080,7 +1082,7 @@ inflate_fast(ranges& r, error_code& ec)
             }
             else
             {
-                ec = error::invalid_distance_code;
+                BOOST_BEAST_ASSIGN_EC(ec, error::invalid_distance_code);
                 mode_ = BAD;
                 break;
             }
@@ -1099,7 +1101,7 @@ inflate_fast(ranges& r, error_code& ec)
         }
         else
         {
-            ec = error::invalid_literal_length;
+            BOOST_BEAST_ASSIGN_EC(ec, error::invalid_literal_length);
             mode_ = BAD;
             break;
         }

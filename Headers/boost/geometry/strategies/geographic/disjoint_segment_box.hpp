@@ -67,7 +67,7 @@ public:
     {}
 
     typedef covered_by::spherical_point_box disjoint_point_box_strategy_type;
-    
+
     static inline disjoint_point_box_strategy_type get_disjoint_point_box_strategy()
     {
         return disjoint_point_box_strategy_type();
@@ -91,6 +91,11 @@ public:
                          strategy::normalize::spherical_point(),
                          strategy::covered_by::spherical_point_box(),
                          strategy::disjoint::spherical_box_box());
+    }
+
+    Spheroid const& model() const
+    {
+        return m_spheroid;
     }
 
 private:

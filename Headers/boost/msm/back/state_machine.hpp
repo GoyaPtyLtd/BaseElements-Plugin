@@ -19,6 +19,7 @@
 
 #include <boost/core/no_exceptions_support.hpp>
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/mpl/contains.hpp>
 #include <boost/mpl/deref.hpp>
 #include <boost/mpl/assert.hpp>
@@ -95,11 +96,6 @@ struct direct_entry_event
     direct_entry_event(Event const& evt):m_event(evt){}
     Event const& m_event;
 };
-
-// This declares the statically-initialized dispatch_table instance.
-template <class Fsm,class Stt, class Event,class CompilePolicy>
-const boost::msm::back::dispatch_table<Fsm,Stt, Event,CompilePolicy>
-dispatch_table<Fsm,Stt, Event,CompilePolicy>::instance;
 
 BOOST_PARAMETER_TEMPLATE_KEYWORD(front_end)
 BOOST_PARAMETER_TEMPLATE_KEYWORD(history_policy)
@@ -442,6 +438,7 @@ private:
 
             BOOST_STATIC_CONSTANT(int, current_state = (get_state_id<stt,current_state_type>::type::value));
             BOOST_STATIC_CONSTANT(int, next_state = (get_state_id<stt,next_state_type>::type::value));
+            boost::ignore_unused(state); // Avoid warnings if BOOST_ASSERT expands to nothing.
             BOOST_ASSERT(state == (current_state));
             // if T1 is an exit pseudo state, then take the transition only if the pseudo exit state is active
             if (has_pseudo_exit<T1>::type::value &&
@@ -521,6 +518,7 @@ private:
         {
             BOOST_STATIC_CONSTANT(int, current_state = (get_state_id<stt,current_state_type>::type::value));
             BOOST_STATIC_CONSTANT(int, next_state = (get_state_id<stt,next_state_type>::type::value));
+            boost::ignore_unused(state); // Avoid warnings if BOOST_ASSERT expands to nothing.
             BOOST_ASSERT(state == (current_state));
             // if T1 is an exit pseudo state, then take the transition only if the pseudo exit state is active
             if (has_pseudo_exit<T1>::type::value &&
@@ -584,6 +582,7 @@ private:
         {
             BOOST_STATIC_CONSTANT(int, current_state = (get_state_id<stt,current_state_type>::type::value));
             BOOST_STATIC_CONSTANT(int, next_state = (get_state_id<stt,next_state_type>::type::value));
+            boost::ignore_unused(state); // Avoid warnings if BOOST_ASSERT expands to nothing.
             BOOST_ASSERT(state == (current_state));
 
             // if T1 is an exit pseudo state, then take the transition only if the pseudo exit state is active
@@ -650,6 +649,7 @@ private:
         {
             BOOST_STATIC_CONSTANT(int, current_state = (get_state_id<stt,current_state_type>::type::value));
             BOOST_STATIC_CONSTANT(int, next_state = (get_state_id<stt,next_state_type>::type::value));
+            boost::ignore_unused(state); // Avoid warnings if BOOST_ASSERT expands to nothing.
             BOOST_ASSERT(state == (current_state));
 
             // if T1 is an exit pseudo state, then take the transition only if the pseudo exit state is active
@@ -701,6 +701,7 @@ private:
         {
 
             BOOST_STATIC_CONSTANT(int, current_state = (get_state_id<stt,current_state_type>::type::value));
+            boost::ignore_unused(state, current_state); // Avoid warnings if BOOST_ASSERT expands to nothing.
             BOOST_ASSERT(state == (current_state));
             if (!check_guard(fsm,evt))
             {
@@ -743,6 +744,7 @@ private:
         static HandledEnum execute(library_sm& fsm, int , int state, transition_event const& evt)
         {
             BOOST_STATIC_CONSTANT(int, current_state = (get_state_id<stt,current_state_type>::type::value));
+            boost::ignore_unused(state, current_state); // Avoid warnings if BOOST_ASSERT expands to nothing.
             BOOST_ASSERT(state == (current_state));
             if (!check_guard(fsm,evt))
             {
@@ -770,6 +772,7 @@ private:
         static HandledEnum execute(library_sm& fsm, int , int state, transition_event const& evt)
         {
             BOOST_STATIC_CONSTANT(int, current_state = (get_state_id<stt,current_state_type>::type::value));
+            boost::ignore_unused(state, current_state); // Avoid warnings if BOOST_ASSERT expands to nothing.
             BOOST_ASSERT(state == (current_state));
 
             // call the action method
@@ -797,6 +800,7 @@ private:
         static HandledEnum execute(library_sm& , int , int state, transition_event const& )
         {
             BOOST_STATIC_CONSTANT(int, current_state = (get_state_id<stt,current_state_type>::type::value));
+            boost::ignore_unused(state, current_state); // Avoid warnings if BOOST_ASSERT expands to nothing.
             BOOST_ASSERT(state == (current_state));
             return HANDLED_TRUE;
         }
@@ -1590,7 +1594,7 @@ private:
      }
 
      // Construct with the default initial states
-     state_machine<A0,A1,A2,A3,A4 >()
+     state_machine()
          :Derived()
          ,m_events_queue()
          ,m_deferred_events_queue()
@@ -1608,7 +1612,7 @@ private:
          fill_states(this);
      }
      template <class Expr>
-     state_machine<A0,A1,A2,A3,A4 >
+     state_machine
          (Expr const& expr,typename ::boost::enable_if<typename ::boost::proto::is_expr<Expr>::type >::type* =0)
          :Derived()
          ,m_events_queue()
@@ -1686,8 +1690,7 @@ private:
 
 #else
     template <class ARG0,class... ARG,class=typename ::boost::disable_if<typename ::boost::proto::is_expr<ARG0>::type >::type>
-    state_machine<A0,A1,A2,A3,A4
-    >(ARG0&& t0,ARG&&... t)
+    state_machine(ARG0&& t0,ARG&&... t)
     :Derived(std::forward<ARG0>(t0), std::forward<ARG>(t)...)
      ,m_events_queue()
      ,m_deferred_events_queue()
@@ -1703,8 +1706,7 @@ private:
          fill_states(this);
      }
     template <class Expr,class... ARG,class=typename ::boost::enable_if<typename ::boost::proto::is_expr<Expr>::type >::type>
-    state_machine<A0,A1,A2,A3,A4
-    >(Expr const& expr,ARG&&... t)
+    state_machine(Expr const& expr,ARG&&... t)
     :Derived(std::forward<ARG>(t)...)
      ,m_events_queue()
      ,m_deferred_events_queue()
@@ -1737,8 +1739,7 @@ private:
          }
         return *this;
      }
-     state_machine<A0,A1,A2,A3,A4>
-         (library_sm const& rhs)
+     state_machine(library_sm const& rhs)
          : Derived(rhs)
      {
         if (this != &rhs)
@@ -1978,7 +1979,7 @@ private:
             if (result != HANDLED_TRUE)
             {
                 typedef dispatch_table<library_sm,complete_table,Event,CompilePolicy> table;
-                HandledEnum res_internal = table::instance.entries[0](*self_, 0, self_->m_states[0], evt);
+                HandledEnum res_internal = table::instance().entries[0](*self_, 0, self_->m_states[0], evt);
                 result = (HandledEnum)((int)result | (int)res_internal);
             }
         }
@@ -2002,7 +2003,7 @@ private:
             typedef dispatch_table<library_sm,complete_table,Event,CompilePolicy> table;
             // +1 because index 0 is reserved for this fsm
             HandledEnum res =
-                table::instance.entries[self->m_states[0]+1](
+                table::instance().entries[self->m_states[0]+1](
                 *self, 0, self->m_states[0], evt);
             result = (HandledEnum)((int)result | (int)res);
             // process the event in the internal table of this fsm if the event is processable (present in the table)
@@ -2028,7 +2029,7 @@ private:
                 typedef dispatch_table<library_sm,complete_table,Event,CompilePolicy> table;
                 // +1 because index 0 is reserved for this fsm
                 HandledEnum res =
-                    table::instance.entries[self_->m_states[region_id::value]+1](
+                    table::instance().entries[self_->m_states[region_id::value]+1](
                     *self_, region_id::value , self_->m_states[region_id::value], evt);
                 result_ = (HandledEnum)((int)result_ | (int)res);
                 In< ::boost::mpl::int_<region_id::value+1> >::process(evt,self_,result_);
@@ -2273,10 +2274,12 @@ private:
         BOOST_STATIC_CONSTANT(int, max_state = (mpl::size<state_list>::value));
 
         static flag_handler flags_entries[max_state];
-        // build a state list
-        ::boost::mpl::for_each<state_list, boost::msm::wrap< ::boost::mpl::placeholders::_1> >
-                        (init_flags<Flag>(flags_entries));
-        return flags_entries;
+        // build a state list, but only once
+        static flag_handler* flags_entries_ptr =
+            (::boost::mpl::for_each<state_list, boost::msm::wrap< ::boost::mpl::placeholders::_1> >
+                            (init_flags<Flag>(flags_entries)),
+            flags_entries);
+        return flags_entries_ptr;
     }
 
     // helper used to create a state using the correct constructor

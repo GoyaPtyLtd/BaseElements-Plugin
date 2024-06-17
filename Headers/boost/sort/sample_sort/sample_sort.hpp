@@ -13,6 +13,7 @@
 #ifndef __BOOST_SORT_PARALLEL_DETAIL_SAMPLE_SORT_HPP
 #define __BOOST_SORT_PARALLEL_DETAIL_SAMPLE_SORT_HPP
 
+#include <ciso646>
 #include <functional>
 #include <future>
 #include <iterator>
@@ -272,10 +273,11 @@ sample_sort<Iter_t, Compare>
                     it2 != last and (sw = comp(*it2, *it1)); it1 = it2++);
     if (sw)
     {
+	using std::swap;
         size_t nelem2 = nelem >> 1;
         Iter_t it1 = first, it2 = last - 1;
         for (size_t i = 0; i < nelem2; ++i)
-            std::swap(*(it1++), *(it2--));
+            swap(*(it1++), *(it2--));
         return;
     };
 
@@ -288,7 +290,9 @@ sample_sort<Iter_t, Compare>
     }
     else
     {
-        value_t *ptr = std::get_temporary_buffer<value_t>(nelem).first;
+        value_t * ptr = reinterpret_cast <value_t*>
+						(std::malloc (nelem * sizeof(value_t)));
+
         if (ptr == nullptr) throw std::bad_alloc();
         owner = true;
         global_buf = range_buf(ptr, ptr + nelem);
@@ -331,7 +335,7 @@ void sample_sort<Iter_t, Compare>::destroy_all(void)
         construct = false;
     }
     if (global_buf.first != nullptr and owner)
-        std::return_temporary_buffer(global_buf.first);
+        std::free(global_buf.first);
 }
 //
 //-----------------------------------------------------------------------------
@@ -370,10 +374,10 @@ void sample_sort<Iter_t, Compare>::initial_configuration(void)
 
     for (uint32_t i = 0; i < nthread; ++i)
     {
-        auto func = [=]()
+        auto func = [this, &vmem_thread, i,  &vbuf_thread]()
         {
             bss::spinsort<Iter_t, Compare> (vmem_thread[i].first,
-                            vmem_thread[i].last, comp,
+                            vmem_thread[i].last, this->comp,
                             vbuf_thread[i]);
         };
         vfuture[i] = std::async(std::launch::async, func);

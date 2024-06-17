@@ -1,7 +1,9 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2020, Oracle and/or its affiliates.
+// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
 
+// Copyright (c) 2014-2021, Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -20,7 +22,6 @@
 
 #include <boost/geometry/algorithms/equals.hpp>
 #include <boost/geometry/algorithms/validity_failure_type.hpp>
-#include <boost/geometry/algorithms/detail/check_iterator_range.hpp>
 #include <boost/geometry/algorithms/detail/is_valid/has_invalid_coordinate.hpp>
 #include <boost/geometry/algorithms/detail/is_valid/has_spikes.hpp>
 #include <boost/geometry/algorithms/detail/num_distinct_consecutive_points.hpp>
@@ -31,7 +32,7 @@
 #include <boost/geometry/core/point_type.hpp>
 #include <boost/geometry/core/tags.hpp>
 
-#include <boost/geometry/util/condition.hpp>
+#include <boost/geometry/util/constexpr.hpp>
 
 
 namespace boost { namespace geometry
@@ -64,15 +65,8 @@ struct is_valid_linestring
 
         std::size_t num_distinct = detail::num_distinct_consecutive_points
             <
-                Linestring,
-                3u,
-                true,
-                not_equal_to
-                    <
-                        typename point_type<Linestring>::type,
-                        typename Strategy::equals_point_point_strategy_type
-                    >
-            >::apply(linestring);
+                Linestring, 3u, true
+            >::apply(linestring, strategy);
 
         if (num_distinct < 2u)
         {
@@ -90,11 +84,7 @@ struct is_valid_linestring
         //   is done regardless of VisitPolicy.
         //   An obvious improvement is to avoid calling the algorithm at all if
         //   spikes are allowed which is the default.
-        return ! has_spikes
-                    <
-                        Linestring, closed
-                    >::apply(linestring, visitor,
-                             strategy.get_side_strategy());
+        return ! has_spikes<Linestring>::apply(linestring, visitor, strategy);
     }
 };
 
@@ -116,7 +106,7 @@ namespace dispatch
 // A curve is simple if it does not pass through the same point twice,
 // with the possible exception of its two endpoints
 //
-// There is an option here as to whether spikes are allowed for linestrings; 
+// There is an option here as to whether spikes are allowed for linestrings;
 // here we pass this as an additional template parameter: allow_spikes
 // If allow_spikes is set to true, spikes are allowed, false otherwise.
 // By default, spikes are disallowed
@@ -142,7 +132,6 @@ class is_valid
         MultiLinestring, multi_linestring_tag, AllowEmptyMultiGeometries
     >
 {
-private:
     template <typename VisitPolicy, typename Strategy>
     struct per_linestring
     {
@@ -152,7 +141,7 @@ private:
         {}
 
         template <typename Linestring>
-        inline bool apply(Linestring const& linestring) const
+        inline bool operator()(Linestring const& linestring) const
         {
             return detail::is_valid::is_valid_linestring
                 <
@@ -170,21 +159,19 @@ public:
                              VisitPolicy& visitor,
                              Strategy const& strategy)
     {
-        if (BOOST_GEOMETRY_CONDITION(
-                AllowEmptyMultiGeometries && boost::empty(multilinestring)))
+        if BOOST_GEOMETRY_CONSTEXPR (AllowEmptyMultiGeometries)
         {
-            return visitor.template apply<no_failure>();
+            if (boost::empty(multilinestring))
+            {
+                return visitor.template apply<no_failure>();
+            }
         }
 
-        typedef per_linestring<VisitPolicy, Strategy> per_ls;
+        using per_ls = per_linestring<VisitPolicy, Strategy>;
 
-        return detail::check_iterator_range
-            <
-                per_ls,
-                false // do not check for empty multilinestring (done above)
-            >::apply(boost::begin(multilinestring),
-                     boost::end(multilinestring),
-                     per_ls(visitor, strategy));
+        return std::all_of(boost::begin(multilinestring),
+                           boost::end(multilinestring),
+                           per_ls(visitor, strategy));
     }
 };
 

@@ -4,8 +4,8 @@
 //
 // Copyright (c) 2011-2017 Adam Wulkiewicz, Lodz, Poland.
 //
-// This file was modified by Oracle on 2019-2020.
-// Modifications copyright (c) 2019-2020 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2019-2021.
+// Modifications copyright (c) 2019-2021 Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 //
 // Use, modification and distribution is subject to the Boost Software License,
@@ -15,17 +15,17 @@
 #ifndef BOOST_GEOMETRY_INDEX_PARAMETERS_HPP
 #define BOOST_GEOMETRY_INDEX_PARAMETERS_HPP
 
-
 #include <limits>
 
 #include <boost/geometry/core/static_assert.hpp>
 
 #include <boost/geometry/index/detail/exception.hpp>
 
+#include <boost/geometry/strategies/default_strategy.hpp>
 
 namespace boost { namespace geometry { namespace index {
 
-namespace detail { 
+namespace detail {
 
 template <size_t MaxElements>
 struct default_min_elements_s
@@ -46,7 +46,7 @@ inline size_t default_min_elements_d_calc(size_t max_elements, size_t min_elemen
         size_t raw_value = (max_elements * 3) / 10;
         return 1 <= raw_value ? raw_value : 1;
     }
-    
+
     return min_elements;
 }
 
@@ -67,7 +67,7 @@ inline size_t default_rstar_reinserted_elements_d_calc(size_t max_elements, size
     {
         return (max_elements * 3) / 10;
     }
-    
+
     return reinserted_elements;
 }
 

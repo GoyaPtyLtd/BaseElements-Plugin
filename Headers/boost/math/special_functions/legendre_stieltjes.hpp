@@ -38,8 +38,7 @@ public:
         std::ptrdiff_t n = m - 1;
         std::ptrdiff_t q;
         std::ptrdiff_t r;
-        bool odd = n & 1;
-        if (odd)
+        if ((n & 1) == 1)
         {
            q = 1;
            r = (n-1)/2 + 2;
@@ -75,7 +74,7 @@ public:
     Real norm_sq() const
     {
         Real t = 0;
-        bool odd = m_m & 1;
+        bool odd = ((m_m & 1) == 1);
         for (size_t i = 1; i < m_a.size(); ++i)
         {
             if(odd)
@@ -101,7 +100,7 @@ public:
         Real p1 = x;
 
         Real Em;
-        bool odd = m_m & 1;
+        bool odd = ((m_m & 1) == 1);
         if (odd)
         {
             Em = m_a[1]*p1;
@@ -157,7 +156,7 @@ public:
 
         std::vector<Real> stieltjes_zeros;
         std::vector<Real> legendre_zeros = legendre_p_zeros<Real>(m_m - 1);
-        int k;
+        size_t k;
         if (m_m & 1)
         {
             stieltjes_zeros.resize(legendre_zeros.size() + 1, std::numeric_limits<Real>::quiet_NaN());
@@ -170,14 +169,14 @@ public:
             k = 0;
         }
 
-        while (k < (int)stieltjes_zeros.size())
+        while (k < stieltjes_zeros.size())
         {
             Real lower_bound;
             Real upper_bound;
             if (m_m & 1)
             {
                 lower_bound = legendre_zeros[k - 1];
-                if (k == (int)legendre_zeros.size())
+                if (k == legendre_zeros.size())
                 {
                     upper_bound = 1;
                 }
@@ -189,7 +188,7 @@ public:
             else
             {
                 lower_bound = legendre_zeros[k];
-                if (k == (int)legendre_zeros.size() - 1)
+                if (k == legendre_zeros.size() - 1)
                 {
                     upper_bound = 1;
                 }
@@ -206,7 +205,7 @@ public:
             auto p = boost::math::tools::bisect(g, lower_bound, upper_bound, tol);
 
             Real x_nk_guess = p.first + (p.second - p.first)*half<Real>();
-            boost::uintmax_t number_of_iterations = 500;
+            std::uintmax_t number_of_iterations = 500;
 
             auto f = [&] (Real x) { Real Pn = this->operator()(x);
                                     Real Pn_prime = this->prime(x);
@@ -217,8 +216,8 @@ public:
                                                   tools::digits<Real>(),
                                                   number_of_iterations);
 
-            BOOST_ASSERT(p.first < x_nk);
-            BOOST_ASSERT(x_nk < p.second);
+            BOOST_MATH_ASSERT(p.first < x_nk);
+            BOOST_MATH_ASSERT(x_nk < p.second);
             stieltjes_zeros[k] = x_nk;
             ++k;
         }

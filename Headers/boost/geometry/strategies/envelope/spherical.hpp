@@ -1,6 +1,6 @@
 // Boost.Geometry
 
-// Copyright (c) 2020, Oracle and/or its affiliates.
+// Copyright (c) 2020-2022, Oracle and/or its affiliates.
 
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -13,18 +13,15 @@
 
 #include <type_traits>
 
-#include <boost/geometry/strategy/spherical/envelope.hpp>
 #include <boost/geometry/strategy/spherical/envelope_box.hpp>
-#include <boost/geometry/strategy/spherical/envelope_point.hpp>
+#include <boost/geometry/strategy/spherical/envelope_boxes.hpp>
 #include <boost/geometry/strategy/spherical/envelope_multipoint.hpp>
+#include <boost/geometry/strategy/spherical/envelope_point.hpp>
+#include <boost/geometry/strategy/spherical/envelope_range.hpp>
 #include <boost/geometry/strategy/spherical/envelope_segment.hpp>
 
-#include <boost/geometry/strategy/spherical/expand_box.hpp> // TEMP
-#include <boost/geometry/strategy/spherical/expand_point.hpp>
-#include <boost/geometry/strategy/spherical/expand_segment.hpp> // TEMP
-
-#include <boost/geometry/strategies/detail.hpp>
 #include <boost/geometry/strategies/envelope/services.hpp>
+#include <boost/geometry/strategies/expand/spherical.hpp>
 
 
 namespace boost { namespace geometry
@@ -33,72 +30,89 @@ namespace boost { namespace geometry
 namespace strategies { namespace envelope
 {
 
-template
-<
-    typename CalculationType = void
->
-class spherical : strategies::detail::spherical_base<void>
+#ifndef DOXYGEN_NO_DETAIL
+namespace detail
 {
-    using base_t = strategies::detail::spherical_base<void>;
 
-public:
+template <typename RadiusTypeOrSphere, typename CalculationType>
+struct spherical
+    : strategies::expand::detail::spherical<RadiusTypeOrSphere, CalculationType>
+{
+    spherical() = default;
+
+    template <typename RadiusOrSphere>
+    explicit spherical(RadiusOrSphere const& radius_or_sphere)
+        : strategies::expand::detail::spherical<RadiusTypeOrSphere, CalculationType>(radius_or_sphere)
+    {}
+
     template <typename Geometry, typename Box>
     static auto envelope(Geometry const&, Box const&,
-                         typename util::enable_if_point_t<Geometry> * = nullptr)
+                         util::enable_if_point_t<Geometry> * = nullptr)
     {
         return strategy::envelope::spherical_point();
     }
 
     template <typename Geometry, typename Box>
     static auto envelope(Geometry const&, Box const&,
-                         typename util::enable_if_multi_point_t<Geometry> * = nullptr)
+                         util::enable_if_multi_point_t<Geometry> * = nullptr)
     {
         return strategy::envelope::spherical_multipoint();
     }
 
     template <typename Geometry, typename Box>
     static auto envelope(Geometry const&, Box const&,
-                         typename util::enable_if_box_t<Geometry> * = nullptr)
+                         util::enable_if_box_t<Geometry> * = nullptr)
     {
         return strategy::envelope::spherical_box();
     }
 
     template <typename Geometry, typename Box>
     static auto envelope(Geometry const&, Box const&,
-                         typename util::enable_if_segment_t<Geometry> * = nullptr)
+                         util::enable_if_segment_t<Geometry> * = nullptr)
     {
         return strategy::envelope::spherical_segment<CalculationType>();
     }
 
     template <typename Geometry, typename Box>
     static auto envelope(Geometry const&, Box const&,
-                         typename util::enable_if_polysegmental_t<Geometry> * = nullptr)
+                         util::enable_if_linestring_t<Geometry> * = nullptr)
     {
-        return strategy::envelope::spherical<CalculationType>();
+        return strategy::envelope::spherical_linestring<CalculationType>();
     }
 
-    template <typename Box, typename Geometry>
-    static auto expand(Box const&, Geometry const&,
-                       typename util::enable_if_point_t<Geometry> * = nullptr)
+    template <typename Geometry, typename Box>
+    static auto envelope(Geometry const&, Box const&,
+                         std::enable_if_t
+                            <
+                                util::is_ring<Geometry>::value
+                             || util::is_polygon<Geometry>::value
+                            > * = nullptr)
     {
-        return strategy::expand::spherical_point();
+        return strategy::envelope::spherical_ring<CalculationType>();
     }
 
-    // TEMP
-    template <typename Box, typename Geometry>
-    static auto expand(Box const&, Geometry const&,
-                       typename util::enable_if_box_t<Geometry> * = nullptr)
+    template <typename Geometry, typename Box>
+    static auto envelope(Geometry const&, Box const&,
+                         std::enable_if_t
+                            <
+                                util::is_multi_linestring<Geometry>::value
+                             || util::is_multi_polygon<Geometry>::value
+                             || util::is_geometry_collection<Geometry>::value
+                            > * = nullptr)
     {
-        return strategy::expand::spherical_box();
-    }
-
-    template <typename Box, typename Geometry>
-    static auto expand(Box const&, Geometry const&,
-                       typename util::enable_if_segment_t<Geometry> * = nullptr)
-    {
-        return strategy::expand::spherical_segment<CalculationType>();
+        return strategy::envelope::spherical_boxes();
     }
 };
+
+
+} // namespace detail
+#endif // DOXYGEN_NO_DETAIL
+
+
+template <typename CalculationType = void>
+class spherical
+    : public strategies::envelope::detail::spherical<void, CalculationType>
+{};
 
 
 namespace services

@@ -1,5 +1,5 @@
 // Copyright 2014 Renato Tegon Forti, Antony Polukhin.
-// Copyright 2015-2019 Antony Polukhin.
+// Copyright Antony Polukhin, 2015-2023.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt
@@ -54,7 +54,7 @@ namespace detail {
     */
     template <class T>
     inline boost::dll::fs::path symbol_location_ptr(T ptr_to_symbol, boost::dll::fs::error_code& ec) {
-        BOOST_STATIC_ASSERT_MSG(boost::is_pointer<T>::value, "boost::dll::symbol_location_ptr works only with pointers! `ptr_to_symbol` must be a pointer");
+        static_assert(boost::is_pointer<T>::value, "boost::dll::symbol_location_ptr works only with pointers! `ptr_to_symbol` must be a pointer");
         boost::dll::fs::path ret;
         if (!ptr_to_symbol) {
             ec = boost::dll::fs::make_error_code(
@@ -168,6 +168,8 @@ namespace detail {
     /// @cond
     // We have anonymous namespace here to make sure that `this_line_location()` method is instantiated in
     // current translation unit and is not shadowed by instantiations from other units.
+    //
+    // boost-no-inspect
     namespace {
     /// @endcond
 

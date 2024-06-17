@@ -779,7 +779,7 @@ shrink_to_fit()
         };
 
     // partial last buffer
-    if(list_.size() > 1 && out_ != list_.end())
+    if(out_ != list_.begin() && out_ != list_.end())
     {
         BOOST_ASSERT(out_ ==
             list_.iterator_to(list_.back()));
@@ -815,7 +815,8 @@ shrink_to_fit()
         }
         else
         {
-            BOOST_ASSERT(list_.size() == 1);
+            BOOST_ASSERT(out_ ==
+                list_.iterator_to(list_.back()));
             BOOST_ASSERT(out_pos_ > in_pos_);
             auto const n = out_pos_ - in_pos_;
             auto& e = alloc(n);
@@ -912,15 +913,17 @@ prepare(size_type n) ->
         destroy(reuse);
         if(n > 0)
         {
-            auto const growth_factor = 2.0f;
+            std::size_t const growth_factor = 2;
+            std::size_t altn = in_size_ * growth_factor;
+	    // Overflow detection:
+            if(in_size_ > altn)
+                altn = (std::numeric_limits<std::size_t>::max)();
+            else
+                altn = (std::max<std::size_t>)(512, altn);
             auto const size =
                 (std::min<std::size_t>)(
                     max_ - total,
-                    (std::max<std::size_t>)({
-                        static_cast<std::size_t>(
-                            in_size_ * growth_factor - in_size_),
-                        512,
-                        n}));
+                    (std::max<std::size_t>)(n, altn));
             auto& e = alloc(size);
             list_.push_back(e);
             if(out_ == list_.end())
@@ -1196,15 +1199,6 @@ destroy(list_type& list) noexcept
     for(auto it = list.begin();
             it != list.end();)
         destroy(*it++);
-}
-
-template<class Allocator>
-void
-basic_multi_buffer<Allocator>::
-destroy(const_iter it)
-{
-    auto& e = list_.erase(it);
-    destroy(e);
 }
 
 template<class Allocator>

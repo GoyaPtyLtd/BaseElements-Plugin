@@ -2,8 +2,8 @@
 @file
 Defines `boost::hana::detail::index_if`.
 
-@copyright Louis Dionne 2013-2017
-@copyright Jason Rice 2017
+Copyright Louis Dionne 2013-2022
+Copyright Jason Rice 2017
 Distributed under the Boost Software License, Version 1.0.
 (See accompanying file LICENSE.md or copy at http://boost.org/LICENSE_1_0.txt)
  */
@@ -20,7 +20,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <utility>
 
 
-BOOST_HANA_NAMESPACE_BEGIN namespace detail {
+namespace boost { namespace hana { namespace detail {
     template <std::size_t i, std::size_t N, bool Done>
     struct index_if_helper;
 
@@ -50,6 +50,6 @@ BOOST_HANA_NAMESPACE_BEGIN namespace detail {
         using type = typename index_if_helper<0, sizeof...(Xs), false>
             ::template f<Pred, Xs...>;
     };
-} BOOST_HANA_NAMESPACE_END
+} }} // end namespace boost::hana
 
 #endif // !BOOST_HANA_DETAIL_INDEX_IF_HPP

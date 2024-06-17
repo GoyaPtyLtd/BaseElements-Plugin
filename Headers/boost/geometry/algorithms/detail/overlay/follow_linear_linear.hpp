@@ -74,7 +74,7 @@ static inline bool is_entering(Turn const& turn,
 
 template <typename Turn, typename Operation>
 static inline bool is_staying_inside(Turn const& turn,
-                                     Operation const& operation, 
+                                     Operation const& operation,
                                      bool entered)
 {
     if ( !entered )
@@ -327,21 +327,17 @@ public:
         for (TurnIterator it = first; it != beyond; ++it)
         {
             oit = process_turn(it, boost::begin(it->operations),
-                               entered, enter_count, 
+                               entered, enter_count,
                                linestring,
                                current_piece, current_segment_id,
                                oit,
                                strategy);
         }
 
-#if ! defined(BOOST_GEOMETRY_OVERLAY_NO_THROW)
         if (enter_count != 0)
         {
-            BOOST_THROW_EXCEPTION(inconsistent_turns_exception());
+           return oit;
         }
-#else
-        BOOST_GEOMETRY_ASSERT(enter_count == 0);
-#endif
 
         return process_end(entered, linestring,
                            current_segment_id, current_piece,

@@ -1,5 +1,5 @@
 /* Error observers for a very simple basic_result type
-(C) 2017-2020 Niall Douglas <http://www.nedproductions.biz/> (2 commits)
+(C) 2017-2023 Niall Douglas <http://www.nedproductions.biz/> (2 commits)
 File Created: Oct 2017
 
 
@@ -46,51 +46,59 @@ namespace detail
     constexpr error_type &assume_error() & noexcept
     {
       NoValuePolicy::narrow_error_check(static_cast<basic_result_error_observers &>(*this));
-      return this->_error;
+      return this->_state._error;
     }
-    constexpr const error_type &assume_error() const &noexcept
+    constexpr const error_type &assume_error() const & noexcept
     {
       NoValuePolicy::narrow_error_check(static_cast<const basic_result_error_observers &>(*this));
-      return this->_error;
+      return this->_state._error;
     }
     constexpr error_type &&assume_error() && noexcept
     {
       NoValuePolicy::narrow_error_check(static_cast<basic_result_error_observers &&>(*this));
-      return static_cast<error_type &&>(this->_error);
+      return static_cast<error_type &&>(this->_state._error);
     }
-    constexpr const error_type &&assume_error() const &&noexcept
+    constexpr const error_type &&assume_error() const && noexcept
     {
       NoValuePolicy::narrow_error_check(static_cast<const basic_result_error_observers &&>(*this));
-      return static_cast<const error_type &&>(this->_error);
+      return static_cast<const error_type &&>(this->_state._error);
     }
 
     constexpr error_type &error() &
     {
       NoValuePolicy::wide_error_check(static_cast<basic_result_error_observers &>(*this));
-      return this->_error;
+      return this->_state._error;
     }
     constexpr const error_type &error() const &
     {
       NoValuePolicy::wide_error_check(static_cast<const basic_result_error_observers &>(*this));
-      return this->_error;
+      return this->_state._error;
     }
     constexpr error_type &&error() &&
     {
       NoValuePolicy::wide_error_check(static_cast<basic_result_error_observers &&>(*this));
-      return static_cast<error_type &&>(this->_error);
+      return static_cast<error_type &&>(this->_state._error);
     }
     constexpr const error_type &&error() const &&
     {
       NoValuePolicy::wide_error_check(static_cast<const basic_result_error_observers &&>(*this));
-      return static_cast<const error_type &&>(this->_error);
+      return static_cast<const error_type &&>(this->_state._error);
     }
   };
   template <class Base, class NoValuePolicy> class basic_result_error_observers<Base, void, NoValuePolicy> : public Base
   {
   public:
     using Base::Base;
-    constexpr void assume_error() const noexcept { NoValuePolicy::narrow_error_check(*this); }
-    constexpr void error() const { NoValuePolicy::wide_error_check(*this); }
+
+    constexpr void assume_error() & noexcept { NoValuePolicy::narrow_error_check(static_cast<basic_result_error_observers &>(*this)); }
+    constexpr void assume_error() const & noexcept { NoValuePolicy::narrow_error_check(static_cast<const basic_result_error_observers &>(*this)); }
+    constexpr void assume_error() && noexcept { NoValuePolicy::narrow_error_check(static_cast<basic_result_error_observers &&>(*this)); }
+    constexpr void assume_error() const && noexcept { NoValuePolicy::narrow_error_check(static_cast<const basic_result_error_observers &&>(*this)); }
+
+    constexpr void error() & { NoValuePolicy::wide_error_check(static_cast<basic_result_error_observers &>(*this)); }
+    constexpr void error() const & { NoValuePolicy::wide_error_check(static_cast<const basic_result_error_observers &>(*this)); }
+    constexpr void error() && { NoValuePolicy::wide_error_check(static_cast<basic_result_error_observers &&>(*this)); }
+    constexpr void error() const && { NoValuePolicy::wide_error_check(static_cast<const basic_result_error_observers &&>(*this)); }
   };
 }  // namespace detail
 BOOST_OUTCOME_V2_NAMESPACE_END

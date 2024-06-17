@@ -23,6 +23,7 @@
 #include <boost/core/addressof.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/iterator/iterator_categories.hpp>
+#include <boost/range/size.hpp>
 
 #include <boost/geometry/algorithms/num_interior_rings.hpp>
 #include <boost/geometry/core/assert.hpp>
@@ -217,7 +218,7 @@ private:
 public:
     typedef typename base_type::iterator iterator;
     typedef typename base_type::const_iterator const_iterator;
-    
+
     typedef linestring_tag tag_type;
 
     explicit ring_boundary(Ring& ring)

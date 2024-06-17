@@ -4,8 +4,10 @@
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER)
 # pragma once
+#if !defined(__clang__)
 #pragma inline_depth(255)
 #pragma inline_recursion(on)
+#endif
 #endif
 
 #if defined(__MWERKS__)
@@ -507,7 +509,7 @@ struct save_array_type
         );
         boost::serialization::collection_size_type count(c);
         ar << BOOST_SERIALIZATION_NVP(count);
-        // explict template arguments to pass intel C++ compiler
+        // explicit template arguments to pass intel C++ compiler
         ar << serialization::make_array<
             const value_type,
             boost::serialization::collection_size_type

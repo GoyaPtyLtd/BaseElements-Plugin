@@ -14,12 +14,13 @@
 #include <atomic>
 #include <utility>
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 namespace detail {
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4275) // non dll-interface class used as base for dll-interface class 
+#pragma warning(disable: 4275) // non dll-interface class used as base for dll-interface class
 #endif
 
 struct BOOST_SYMBOL_VISIBLE
@@ -80,6 +81,7 @@ public:
 #endif
 
 } // detail
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost
 
 #endif

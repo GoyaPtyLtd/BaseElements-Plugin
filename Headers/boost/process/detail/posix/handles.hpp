@@ -11,6 +11,8 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <algorithm>
+#include <memory>
+#include <cstdlib>
 #include <boost/process/detail/posix/handler.hpp>
 
 namespace boost { namespace process { namespace detail { namespace posix {
@@ -31,7 +33,7 @@ inline std::vector<native_handle_type> get_handles(std::error_code & ec)
     else
         ec.clear();
 
-    auto my_fd = ::dirfd(dir.get());
+    auto my_fd = dirfd(dir.get());
 
     struct ::dirent * ent_p;
 
@@ -115,7 +117,7 @@ struct limit_handles_ : handler_base_ext
             return;
         }
 
-        auto my_fd = ::dirfd(dir);
+        auto my_fd = dirfd(dir);
         struct ::dirent * ent_p;
 
         while ((ent_p = readdir(dir)) != nullptr)

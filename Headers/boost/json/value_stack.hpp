@@ -16,7 +16,8 @@
 #include <boost/json/value.hpp>
 #include <stddef.h>
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 //----------------------------------------------------------
 
@@ -183,7 +184,7 @@ public:
 
         Constructs an empty stack. Before any
         @ref value can be built, the function
-        @ref reset must be called. 
+        @ref reset must be called.
 
         The `sp` parameter is only used to allocate
         intermediate storage; it will not be used
@@ -503,6 +504,7 @@ public:
     push_null();
 };
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost
 
 #endif

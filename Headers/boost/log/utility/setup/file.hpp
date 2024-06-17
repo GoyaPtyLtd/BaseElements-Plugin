@@ -16,6 +16,7 @@
 #define BOOST_LOG_UTILITY_SETUP_FILE_HPP_INCLUDED_
 
 #include <boost/type_traits/is_void.hpp>
+#include <boost/type_traits/integral_constant.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/parameter/parameters.hpp> // for is_named_argument
@@ -61,12 +62,12 @@ namespace aux {
 
 //! The function creates a file collector according to the specified arguments
 template< typename ArgsT >
-inline shared_ptr< sinks::file::collector > setup_file_collector(ArgsT const&, mpl::true_ const&)
+inline shared_ptr< sinks::file::collector > setup_file_collector(ArgsT const&, boost::true_type)
 {
     return shared_ptr< sinks::file::collector >();
 }
 template< typename ArgsT >
-inline shared_ptr< sinks::file::collector > setup_file_collector(ArgsT const& args, mpl::false_ const&)
+inline shared_ptr< sinks::file::collector > setup_file_collector(ArgsT const& args, boost::false_type)
 {
     return sinks::file::make_collector(args);
 }
@@ -168,7 +169,8 @@ BOOST_PP_REPEAT_FROM_TO(1, BOOST_LOG_MAX_PARAMETER_ARGS, BOOST_LOG_INIT_LOG_TO_F
  *                               after each written record.
  *             \li \c auto_newline_mode - Specifies automatic trailing newline insertion mode. Must be a value of
  *                                        the \c auto_newline_mode enum. By default, is <tt>auto_newline_mode::insert_if_missing</tt>.
- *             \li \c target The target directory to store rotated files in. See <tt>sinks::file::make_collector</tt>.
+ *             \li \c target The target directory to store rotated files in. Enables file collector and, if specified, limits associated
+ *                           with the target directory. See <tt>sinks::file::make_collector</tt>.
  *             \li \c max_size The maximum total size of rotated files in the target directory. See <tt>sinks::file::make_collector</tt>.
  *             \li \c min_free_space Minimum free space in the target directory. See <tt>sinks::file::make_collector</tt>.
  *             \li \c max_files The maximum total number of rotated files in the target directory. See <tt>sinks::file::make_collector</tt>.
@@ -177,7 +179,11 @@ BOOST_PP_REPEAT_FROM_TO(1, BOOST_LOG_MAX_PARAMETER_ARGS, BOOST_LOG_INIT_LOG_TO_F
  *                           or a filter lambda expression.
  *             \li \c format Specifies a formatter to install into the sink. May be a string that represents a formatter,
  *                           or a formatter lambda expression (either streaming or Boost.Format-like notation).
+ *
  * \return Pointer to the constructed sink.
+ *
+ * \note The \c target named argument is required to enable the file collector and the limits associated with the target directory.
+ *       If the parameter is not specified, the file collector will not be created and the limits will not be maintained.
  */
 template< typename... ArgsT >
 shared_ptr< BOOST_LOG_FILE_SINK_FRONTEND_INTERNAL< sinks::text_file_backend > > add_file_log(ArgsT... const& args);

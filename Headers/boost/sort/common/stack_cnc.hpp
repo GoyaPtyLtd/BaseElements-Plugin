@@ -13,8 +13,10 @@
 #ifndef __BOOST_SORT_PARALLEL_DETAIL_UTIL_STACK_CNC_HPP
 #define __BOOST_SORT_PARALLEL_DETAIL_UTIL_STACK_CNC_HPP
 
-#include <boost/sort/common/spinlock.hpp>
+#include <ciso646>
 #include <vector>
+#include <boost/sort/common/spinlock.hpp>
+
 
 namespace boost
 {
@@ -97,7 +99,7 @@ public:
     {
         std::lock_guard < spinlock_t > guard(spl);
         v_t.emplace_back(std::forward< Args > (args)...);
-    };
+    }
 
     //
     //-------------------------------------------------------------------------
@@ -114,7 +116,7 @@ public:
         P = std::move(v_t.back());
         v_t.pop_back();
         return true;
-    };
+    }
     //-------------------------------------------------------------------------
     //  function : push_back
     /// @brief Insert one vector at the end of the container
@@ -130,7 +132,7 @@ public:
             v_t.push_back(v_other[i]);
         }
         return *this;
-    };
+    }
 };
 // end class stack_cnc
 

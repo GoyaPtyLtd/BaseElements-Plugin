@@ -2,9 +2,10 @@
 
 // Copyright (c) 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
 
-// This file was modified by Oracle on 2014-2020.
-// Modifications copyright (c) 2014-2020 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2014-2021.
+// Modifications copyright (c) 2014-2021 Oracle and/or its affiliates.
 
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -25,7 +26,6 @@
 #include <boost/range/size.hpp>
 
 #include <boost/geometry/algorithms/convert.hpp>
-#include <boost/geometry/algorithms/detail/check_iterator_range.hpp>
 #include <boost/geometry/algorithms/detail/point_on_border.hpp>
 #include <boost/geometry/algorithms/detail/overlay/clip_linestring.hpp>
 #include <boost/geometry/algorithms/detail/overlay/follow.hpp>
@@ -49,12 +49,17 @@
 #include <boost/geometry/policies/robustness/segment_ratio_type.hpp>
 #include <boost/geometry/policies/robustness/get_rescale_policy.hpp>
 
+#include <boost/geometry/strategies/default_strategy.hpp>
+#include <boost/geometry/strategies/detail.hpp>
+#include <boost/geometry/strategies/relate/services.hpp>
+
 #include <boost/geometry/views/segment_view.hpp>
 #include <boost/geometry/views/detail/boundary_view.hpp>
 
 #if defined(BOOST_GEOMETRY_DEBUG_FOLLOW)
 #include <boost/geometry/algorithms/detail/overlay/debug_turn_info.hpp>
 #include <boost/geometry/io/wkt/wkt.hpp>
+#include <boost/geometry/util/for_each_with_index.hpp>
 #endif
 
 namespace boost { namespace geometry
@@ -100,7 +105,7 @@ struct intersection_segment_segment_point
         detail::segment_as_subrange<Segment2> sub_range2(segment2);
 
         intersection_return_type
-            is = strategy.apply(sub_range1, sub_range2, policy_type());
+            is = strategy.relate().apply(sub_range1, sub_range2, policy_type());
 
         for (std::size_t i = 0; i < is.count; i++)
         {
@@ -141,11 +146,10 @@ struct intersection_linestring_linestring_point
         geometry::get_intersection_points(linestring1, linestring2,
                                           robust_policy, turns, strategy);
 
-        for (typename boost::range_iterator<std::deque<turn_info> const>::type
-            it = boost::begin(turns); it != boost::end(turns); ++it)
+        for (auto const& turn : turns)
         {
             PointOut p;
-            geometry::convert(it->point, p);
+            geometry::convert(turn.point, p);
             *out++ = p;
         }
         return out;
@@ -208,11 +212,10 @@ struct intersection_of_linestring_with_areal
         bool found_union = false;
         bool found_front = false;
 
-        for (typename Turns::const_iterator it = turns.begin();
-                it != turns.end(); ++it)
+        for (auto const& turn : turns)
         {
-            method_type const method = it->method;
-            operation_type const op = it->operations[0].operation;
+            method_type const method = turn.method;
+            operation_type const op = turn.operations[0].operation;
 
             if (method == method_crosses)
             {
@@ -236,7 +239,7 @@ struct intersection_of_linestring_with_areal
                 return false;
             }
 
-            if (it->operations[0].position == position_front)
+            if (turn.operations[0].position == position_front)
             {
                 found_front = true;
             }
@@ -374,14 +377,12 @@ struct intersection_of_linestring_with_areal
 
             return out;
         }
-        
+
 #if defined(BOOST_GEOMETRY_DEBUG_FOLLOW)
-        int index = 0;
-        for(typename std::deque<turn_info>::const_iterator
-            it = turns.begin(); it != turns.end(); ++it)
+        for_each_with_index(turns, [](auto index, auto const& turn)
         {
-            debug_follow(*it, it->operations[0], index++);
-        }
+            debug_follow(turn, turn.operations[0], index);
+        });
 #endif
 
         return follower::apply
@@ -398,10 +399,9 @@ template <typename Turns, typename OutputIterator>
 inline OutputIterator intersection_output_turn_points(Turns const& turns,
                                                       OutputIterator out)
 {
-    for (typename Turns::const_iterator
-            it = turns.begin(); it != turns.end(); ++it)
+    for (auto const& turn : turns)
     {
-        *out++ = it->point;
+        *out++ = turn.point;
     }
 
     return out;
@@ -1535,11 +1535,11 @@ inline OutputIterator intersection_insert(Geometry1 const& geometry1,
     concepts::check<Geometry1 const>();
     concepts::check<Geometry2 const>();
 
-    typedef typename strategy::intersection::services::default_strategy
+    typedef typename strategies::relate::services::default_strategy
         <
-            typename cs_tag<GeometryOut>::type
+            Geometry1, Geometry2
         >::type strategy_type;
-    
+
     return intersection_insert<GeometryOut>(geometry1, geometry2, out,
                                             strategy_type());
 }

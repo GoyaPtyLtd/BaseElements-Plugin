@@ -2,8 +2,8 @@
 
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 
-// This file was modified by Oracle on 2013, 2014, 2017, 2018.
-// Modifications copyright (c) 2013-2018 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2013-2020.
+// Modifications copyright (c) 2013-2020 Oracle and/or its affiliates.
 
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -111,12 +111,16 @@ namespace detail { namespace overlay {
 class linear_intersections
 {
 public:
-    template <typename Point1, typename Point2, typename IntersectionResult, typename EqPPStrategy>
+    template
+    <
+        typename Point1, typename Point2, typename IntersectionResult,
+        typename Strategy
+    >
     linear_intersections(Point1 const& pi,
                          Point2 const& qi,
                          IntersectionResult const& result,
                          bool is_p_last, bool is_q_last,
-                         EqPPStrategy const& strategy)
+                         Strategy const& strategy)
     {
         int arrival_a = result.direction.arrival[0];
         int arrival_b = result.direction.arrival[1];
@@ -197,7 +201,7 @@ public:
         BOOST_STATIC_ASSERT(I < 2);
         return ips[I];
     }
-    
+
 private:
 
     // only if collinear (same_dirs)
@@ -237,7 +241,7 @@ struct get_turn_info_for_endpoint
              typename TurnInfo,
              typename IntersectionInfo,
              typename OutputIterator,
-             typename EqPPStrategy
+             typename Strategy
     >
     static inline bool apply(UniqueSubRange1 const& range_p,
                              UniqueSubRange2 const& range_q,
@@ -245,7 +249,7 @@ struct get_turn_info_for_endpoint
                              IntersectionInfo const& inters,
                              method_type /*method*/,
                              OutputIterator out,
-                             EqPPStrategy const& strategy)
+                             Strategy const& strategy)
     {
         std::size_t ip_count = inters.i_info().count;
         // no intersection points
@@ -283,7 +287,7 @@ struct get_turn_info_for_endpoint
 
         if ( intersections.template get<1>().p_operation == operation_none )
             return result_ignore_ip0;
-        
+
         bool append1_last
             = analyse_segment_and_assign_ip(range_p, range_q,
                                             intersections.template get<1>(),
@@ -398,8 +402,7 @@ struct get_turn_info_for_endpoint
     {
         boost::ignore_unused(ip_index, tp_model);
 
-        typename IntersectionInfo::side_strategy_type const& sides
-                = inters.get_side_strategy();
+        auto const strategy = inters.strategy();
 
         if ( !first2 && !last2 )
         {
@@ -409,8 +412,8 @@ struct get_turn_info_for_endpoint
                 // may this give false positives for INTs?
                 typename IntersectionResult::point_type const&
                     inters_pt = inters.i_info().intersections[ip_index];
-                BOOST_GEOMETRY_ASSERT(ip_i2 == equals::equals_point_point(i2, inters_pt));
-                BOOST_GEOMETRY_ASSERT(ip_j2 == equals::equals_point_point(j2, inters_pt));
+                BOOST_GEOMETRY_ASSERT(ip_i2 == equals::equals_point_point(i2, inters_pt, strategy));
+                BOOST_GEOMETRY_ASSERT(ip_j2 == equals::equals_point_point(j2, inters_pt, strategy));
 #endif
                 if ( ip_i2 )
                 {
@@ -421,6 +424,7 @@ struct get_turn_info_for_endpoint
                 }
                 else if ( ip_j2 )
                 {
+                    auto const sides = strategy.side();
                     int const side_pj_q2 = sides.apply(range2.at(1), range2.at(2), range1.at(1));
                     int const side_pj_q1 = sides.apply(range2.at(0), range2.at(1), range1.at(1));
                     int const side_qk_q1 = sides.apply(range2.at(0), range2.at(1), range2.at(2));
@@ -432,7 +436,7 @@ struct get_turn_info_for_endpoint
 
                     if ( operations_both(operations, operation_continue) )
                     {
-                        if ( op1 != operation_union 
+                        if ( op1 != operation_union
                           || op2 != operation_union
                           || ! ( G1Index == 0 ? inters.is_spike_q() : inters.is_spike_p() ) )
                         {
@@ -460,8 +464,8 @@ struct get_turn_info_for_endpoint
                 // may this give false positives for INTs?
                 typename IntersectionResult::point_type const&
                     inters_pt = inters.i_info().intersections[ip_index];
-                BOOST_GEOMETRY_ASSERT(ip_i2 == equals::equals_point_point(i2, inters_pt));
-                BOOST_GEOMETRY_ASSERT(ip_j2 == equals::equals_point_point(j2, inters_pt));
+                BOOST_GEOMETRY_ASSERT(ip_i2 == equals::equals_point_point(i2, inters_pt, strategy));
+                BOOST_GEOMETRY_ASSERT(ip_j2 == equals::equals_point_point(j2, inters_pt, strategy));
 #endif
                 if ( ip_i2 )
                 {
@@ -472,6 +476,7 @@ struct get_turn_info_for_endpoint
                 }
                 else if ( ip_j2 )
                 {
+                    auto const sides = strategy.side();
                     int const side_pi_q2 = sides.apply(range2.at(1), range2.at(2), range1.at(0));
                     int const side_pi_q1 = sides.apply(range2.at(0), range2.at(1), range1.at(0));
                     int const side_qk_q1 = sides.apply(range2.at(0), range2.at(1), range2.at(2));
@@ -539,7 +544,7 @@ struct get_turn_info_for_endpoint
                               OutputIterator out)
     {
         TurnInfo tp = tp_model;
-        
+
         //geometry::convert(ip, tp.point);
         //tp.method = method;
         base_turn_handler::assign_point(tp, method, result.intersection_points, ip_index);

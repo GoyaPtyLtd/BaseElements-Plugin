@@ -2,7 +2,7 @@
 @file
 Defines `boost::hana::tap`.
 
-@copyright Louis Dionne 2013-2017
+Copyright Louis Dionne 2013-2022
 Distributed under the Boost Software License, Version 1.0.
 (See accompanying file LICENSE.md or copy at http://boost.org/LICENSE_1_0.txt)
  */
@@ -19,7 +19,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/hana/lift.hpp>
 
 
-BOOST_HANA_NAMESPACE_BEGIN
+namespace boost { namespace hana {
     //! @cond
     template <typename M>
     template <typename F>
@@ -54,6 +54,6 @@ BOOST_HANA_NAMESPACE_BEGIN
         static constexpr auto apply(F&& f)
         { return hana::partial(detail::tap_helper<M>{}, static_cast<F&&>(f)); }
     };
-BOOST_HANA_NAMESPACE_END
+}} // end namespace boost::hana
 
 #endif // !BOOST_HANA_TAP_HPP

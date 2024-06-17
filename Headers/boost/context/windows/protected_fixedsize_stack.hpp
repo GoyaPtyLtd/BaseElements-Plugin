@@ -15,6 +15,7 @@ extern "C" {
 #include <cstddef>
 #include <new>
 
+#include <boost/assert.hpp>
 #include <boost/config.hpp>
 #include <boost/core/ignore_unused.hpp>
 
@@ -43,10 +44,7 @@ public:
 
     stack_context allocate() {
         // calculate how many pages are required
-        const std::size_t pages(        
-            static_cast< std::size_t >(
-                std::ceil(
-                    static_cast< float >( size_) / traits_type::page_size() ) ) );
+        const std::size_t pages = (size_ + traits_type::page_size() - 1) / traits_type::page_size();
         // add one page at bottom that will be used as guard-page
         const std::size_t size__ = ( pages + 1) * traits_type::page_size();
 

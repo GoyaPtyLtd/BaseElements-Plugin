@@ -17,6 +17,7 @@
 #include <boost/beast/websocket/detail/frame.hpp>
 #include <boost/beast/websocket/impl/stream_impl.hpp>
 #include <boost/asio/coroutine.hpp>
+#include <boost/asio/dispatch.hpp>
 #include <boost/asio/post.hpp>
 #include <boost/throw_exception.hpp>
 #include <memory>
@@ -72,7 +73,7 @@ public:
         auto sp = wp_.lock();
         if(! sp)
         {
-            ec = net::error::operation_aborted;
+            BOOST_BEAST_ASSIGN_EC(ec, net::error::operation_aborted);
             return this->complete(cont, ec);
         }
         auto& impl = *sp;
@@ -86,9 +87,12 @@ public:
                     BOOST_ASIO_HANDLER_LOCATION((
                         __FILE__, __LINE__,
                         "websocket::async_ping"));
-
-                    impl.op_ping.emplace(std::move(*this));
+                    this->set_allowed_cancellation(net::cancellation_type::all);
+                    impl.op_ping.emplace(std::move(*this), net::cancellation_type::all);
                 }
+                if (ec)
+                    return this->complete(cont, ec);
+                this->set_allowed_cancellation(net::cancellation_type::terminal);
                 impl.wr_block.lock(this);
                 BOOST_ASIO_CORO_YIELD
                 {
@@ -96,7 +100,8 @@ public:
                         __FILE__, __LINE__,
                         "websocket::async_ping"));
 
-                    net::post(std::move(*this));
+                    const auto ex = this->get_immediate_executor();
+                    net::dispatch(ex, std::move(*this));
                 }
                 BOOST_ASSERT(impl.wr_block.is_locked(this));
             }
@@ -205,8 +210,7 @@ public:
                         __FILE__, __LINE__,
                         "websocket::async_ping"));
 
-                    net::post(
-                        this->get_executor(), std::move(*this));
+                    net::post(sp->stream().get_executor(), std::move(*this));
                 }
                 BOOST_ASSERT(impl.wr_block.is_locked(this));
             }
@@ -323,15 +327,15 @@ pong(ping_data const& payload, error_code& ec)
 }
 
 template<class NextLayer, bool deflateSupported>
-template<BOOST_BEAST_ASYNC_TPARAM1 WriteHandler>
-BOOST_BEAST_ASYNC_RESULT1(WriteHandler)
+template<BOOST_BEAST_ASYNC_TPARAM1 PingHandler>
+BOOST_BEAST_ASYNC_RESULT1(PingHandler)
 stream<NextLayer, deflateSupported>::
-async_ping(ping_data const& payload, WriteHandler&& handler)
+async_ping(ping_data const& payload, PingHandler&& handler)
 {
     static_assert(is_async_stream<next_layer_type>::value,
         "AsyncStream type requirements not met");
     return net::async_initiate<
-        WriteHandler,
+        PingHandler,
         void(error_code)>(
             run_ping_op{},
             handler,
@@ -341,15 +345,15 @@ async_ping(ping_data const& payload, WriteHandler&& handler)
 }
 
 template<class NextLayer, bool deflateSupported>
-template<BOOST_BEAST_ASYNC_TPARAM1 WriteHandler>
-BOOST_BEAST_ASYNC_RESULT1(WriteHandler)
+template<BOOST_BEAST_ASYNC_TPARAM1 PongHandler>
+BOOST_BEAST_ASYNC_RESULT1(PongHandler)
 stream<NextLayer, deflateSupported>::
-async_pong(ping_data const& payload, WriteHandler&& handler)
+async_pong(ping_data const& payload, PongHandler&& handler)
 {
     static_assert(is_async_stream<next_layer_type>::value,
         "AsyncStream type requirements not met");
     return net::async_initiate<
-        WriteHandler,
+        PongHandler,
         void(error_code)>(
             run_ping_op{},
             handler,

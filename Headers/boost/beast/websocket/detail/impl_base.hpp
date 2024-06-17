@@ -137,7 +137,7 @@ struct impl_base<true>
                     return false;
                 if(zs.avail_out >= 6)
                 {
-                    zo.write(zs, zlib::Flush::full, ec);
+                    zo.write(zs, zlib::Flush::sync, ec);
                     BOOST_ASSERT(! ec);
                     // remove flush marker
                     zs.total_out -= 4;
@@ -302,6 +302,11 @@ struct impl_base<true>
         return pmd_ != nullptr;
     }
 
+    bool should_compress(std::size_t n_bytes) const
+    {
+        return n_bytes >= pmd_opts_.msg_size_threshold;
+    }
+
     std::size_t
     read_size_hint_pmd(
         std::size_t initial_size,
@@ -443,6 +448,11 @@ struct impl_base<false>
     }
 
     bool pmd_enabled() const
+    {
+        return false;
+    }
+
+    bool should_compress(std::size_t) const
     {
         return false;
     }

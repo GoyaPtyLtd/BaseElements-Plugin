@@ -15,6 +15,8 @@
 #include <boost/beast/http/message.hpp>
 #include <boost/optional.hpp>
 
+#include <cstdint>
+
 namespace boost {
 namespace beast {
 namespace http {
@@ -78,7 +80,7 @@ struct empty_body
         put(ConstBufferSequence const&,
             error_code& ec)
         {
-            ec = error::unexpected_body;
+            BOOST_BEAST_ASSIGN_EC(ec, error::unexpected_body);
             return 0;
         }
 

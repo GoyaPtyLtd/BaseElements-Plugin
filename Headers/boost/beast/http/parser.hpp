@@ -16,6 +16,7 @@
 #include <boost/beast/http/type_traits.hpp>
 #include <boost/optional.hpp>
 #include <boost/throw_exception.hpp>
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <type_traits>
@@ -345,7 +346,7 @@ private:
         BOOST_ASSERT(! used_);
         if(used_)
         {
-            ec = error::stale_parser;
+            BOOST_BEAST_ASSIGN_EC(ec, error::stale_parser);
             return;
         }
         used_ = true;
@@ -395,7 +396,7 @@ private:
         BOOST_ASSERT(! used_);
         if(used_)
         {
-            ec = error::stale_parser;
+            BOOST_BEAST_ASSIGN_EC(ec, error::stale_parser);
             return;
         }
         used_ = true;

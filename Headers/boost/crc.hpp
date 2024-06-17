@@ -42,12 +42,19 @@
 #include <boost/integer.hpp>         // for boost::uint_t
 #include <boost/type_traits/conditional.hpp>
 #include <boost/type_traits/integral_constant.hpp>
+#include <boost/config/pragma_message.hpp>
 
 #include <climits>  // for CHAR_BIT, etc.
 #include <cstddef>  // for std::size_t
 
 #include <boost/limits.hpp>  // for std::numeric_limits
 
+#if defined(BOOST_NO_CXX11_HDR_ARRAY) || \
+    defined(BOOST_NO_CXX11_NOEXCEPT) // BOOST_NO_CXX11_HDR_TYPE_TRAITS is set for GCC 4.8
+
+BOOST_PRAGMA_MESSAGE("C++03 support is deprecated in Boost.CRC 1.84 and will be removed in Boost.CRC 1.86.")
+
+#endif
 
 // The type of CRC parameters that can go in a template should be related
 // on the CRC's bit count.  This macro expresses that type in a compact
@@ -384,7 +391,7 @@ namespace detail
     Unsigned  reflect_unsigned( Unsigned x, int word_length
      = std::numeric_limits<Unsigned>::digits )
     {
-        for ( Unsigned  l = 1u, h = l << (word_length - 1) ; h > l ; h >>= 1, l
+        for ( Unsigned  l = 1u, h = static_cast<Unsigned>(l << (word_length - 1)) ; h > l ; h >>= 1, l
          <<= 1 )
         {
             Unsigned const  m = h | l, t = x & m;
@@ -566,13 +573,16 @@ namespace detail
             remainder ^= ( new_dividend_bits & 1u ) ? high_bit_mask : 0u;
 
             // perform modulo-2 division
-            bool const  quotient = remainder & high_bit_mask;
+            bool const  quotient = (remainder & high_bit_mask) != 0;
 
             remainder <<= 1;
             remainder ^= quotient ? truncated_divisor : 0u;
 
             // The quotient isn't used for anything, so don't keep it.
         }
+
+        // Clear overflowed bits
+        remainder &= std::numeric_limits<Register>::max() >> (std::numeric_limits<Register>::digits - register_length);
     }
 
     /** \brief  Update a CRC remainder by a single bit, assuming a non-augmented
@@ -675,13 +685,13 @@ namespace detail
         // The natural reading order for division is highest digit/bit first.
         // The "reflect" parameter switches this.  However, building a bit mask
         // for the lowest bit is the easiest....
-        new_dividend_bits = reflect_optionally( new_dividend_bits, not reflect,
+        new_dividend_bits = reflect_optionally( new_dividend_bits, !reflect,
          word_length );
 
         // Perform modulo-2 division for each new dividend input bit
         for ( int  i = word_length ; i ; --i, new_dividend_bits >>= 1 )
         {
-            bool const  quotient = remainder & high_bit_mask;
+            bool const  quotient = (remainder & high_bit_mask) != 0;
 
             remainder <<= 1;
             remainder |= new_dividend_bits & 1u;
@@ -968,7 +978,7 @@ namespace detail
     make_partial_xor_products_table( int register_length, Register
      truncated_divisor, bool reflect )
     {
-        boost::array<Register, ( UINTMAX_C(1) << SubOrder )>  result;
+        boost::array<Register, ( UINTMAX_C(1) << SubOrder )>  result = { 0 };
 
         // Loop over every possible dividend value
         for ( typename boost::uint_t<SubOrder + 1>::fast  dividend = 0u;
@@ -1773,7 +1783,7 @@ crc_basic<Bits>::process_bits
     unsigned char const  high_bit_mask = 1u << ( CHAR_BIT - 1u );
     for ( std::size_t i = bit_length ; i > 0u ; --i, bits <<= 1u )
     {
-        process_bit( static_cast<bool>(bits & high_bit_mask) );
+        process_bit( (bits & high_bit_mask) != 0 );
     }
 }
 

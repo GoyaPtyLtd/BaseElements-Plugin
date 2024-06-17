@@ -13,12 +13,8 @@
 #ifndef __BOOST_SORT_PARALLEL_ALGORITHM_SPIN_SORT_HPP
 #define __BOOST_SORT_PARALLEL_ALGORITHM_SPIN_SORT_HPP
 
-//#include <boost/sort/spinsort/util/indirect.hpp>
-#include <boost/sort/insert_sort/insert_sort.hpp>
-#include <boost/sort/common/util/traits.hpp>
-#include <boost/sort/common/util/algorithm.hpp>
-#include <boost/sort/common/range.hpp>
-#include <boost/sort/common/indirect.hpp>
+
+#include <ciso646>
 #include <cstdlib>
 #include <functional>
 #include <iterator>
@@ -26,6 +22,12 @@
 #include <type_traits>
 #include <vector>
 #include <cstddef>
+#include <boost/sort/insert_sort/insert_sort.hpp>
+#include <boost/sort/common/util/traits.hpp>
+#include <boost/sort/common/util/algorithm.hpp>
+#include <boost/sort/common/range.hpp>
+#include <boost/sort/common/indirect.hpp>
+
 
 namespace boost
 {
@@ -82,7 +84,7 @@ static void sort_range_sort (const range<Iter1_t> &rng_data,
 //-----------------------------------------------------------------------------
 template<class Iter1_t, class Iter2_t, typename Compare>
 static void insert_partial_sort (Iter1_t first, Iter1_t mid, Iter1_t last,
-                                 Compare comp, const range<Iter2_t> &rng_aux)
+                                 Compare comp, const range <Iter2_t> &rng_aux)
 {
     //------------------------------------------------------------------------
     //                 metaprogram
@@ -207,8 +209,10 @@ static bool check_stable_sort(const range<Iter1_t> &rng_data,
     size_t nreverse = it2 - rng_data.first;
     Iter1_t alpha(rng_data.first), beta(it2 - 1), mid(
                     rng_data.first + (nreverse >> 1));
-    while (alpha != mid)
-        std::swap(*(alpha++), *(beta--));
+    while (alpha != mid) {
+	using std::swap;
+        swap(*(alpha++), *(beta--));
+    }
 
     // insert the elements between it1 and last
     if (it2 != rng_data.last)
@@ -416,7 +420,7 @@ public:
             destroy(range<value_t *>(ptr, ptr + nptr));
             construct = false;
         };
-        if (owner and ptr != nullptr) std::return_temporary_buffer(ptr);
+        if (owner and ptr != nullptr) std::free (ptr);
     };
 };
 //----------------------------------------------------------------------------
@@ -468,16 +472,19 @@ spinsort <Iter_t, Compare>
          it2 != last and (sw = comp(*it2, *it1)); it1 = it2++);
     if (sw)
     {
+	using std::swap;
         size_t nelem2 = nelem >> 1;
         Iter_t it1 = first, it2 = last - 1;
         for (size_t i = 0; i < nelem2; ++i)
-            std::swap(*(it1++), *(it2--));
+            swap(*(it1++), *(it2--));
         return;
     };
 
     if (ptr == nullptr)
     {
-        ptr = std::get_temporary_buffer<value_t>(nptr).first;
+		ptr = reinterpret_cast <value_t*> 
+				(std::malloc (nptr * sizeof(value_t)));
+        
         if (ptr == nullptr) throw std::bad_alloc();
         owner = true;
     };

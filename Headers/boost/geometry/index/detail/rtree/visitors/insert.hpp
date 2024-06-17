@@ -2,10 +2,11 @@
 //
 // R-tree inserting visitor implementation
 //
-// Copyright (c) 2011-2015 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2011-2023 Adam Wulkiewicz, Lodz, Poland.
 //
-// This file was modified by Oracle on 2019-2020.
-// Modifications copyright (c) 2019-2020 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2019-2023.
+// Modifications copyright (c) 2019-2023 Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 //
 // Use, modification and distribution is subject to the Boost Software License,
@@ -21,12 +22,15 @@
 
 #include <boost/geometry/algorithms/detail/expand_by_epsilon.hpp>
 #include <boost/geometry/core/static_assert.hpp>
-#include <boost/geometry/util/condition.hpp>
 
 #include <boost/geometry/index/detail/algorithms/bounds.hpp>
 #include <boost/geometry/index/detail/algorithms/content.hpp>
-
+#include <boost/geometry/index/detail/rtree/node/node.hpp>
+#include <boost/geometry/index/detail/rtree/node/node_elements.hpp>
 #include <boost/geometry/index/detail/rtree/node/subtree_destroyer.hpp>
+#include <boost/geometry/index/detail/rtree/options.hpp>
+
+#include <boost/geometry/util/condition.hpp>
 
 namespace boost { namespace geometry { namespace index {
 
@@ -178,7 +182,7 @@ public:
             // in the original node, then, if exception was thrown, the node would always have more than max
             // elements.
             // The alternative is to use moving semantics in the implementations of redistribute_elements,
-            // it will be possible to throw from boost::move() in the case of e.g. static size nodes.
+            // it will be possible to throw from std::move() in the case of e.g. static size nodes.
 
             // redistribute elements
             box_type box2;
@@ -618,7 +622,7 @@ public:
         BOOST_GEOMETRY_INDEX_ASSERT(base::m_traverse_data.current_level == base::m_leafs_level, "unexpected level");
         BOOST_GEOMETRY_INDEX_ASSERT(base::m_level == base::m_traverse_data.current_level ||
                                     base::m_level == (std::numeric_limits<size_t>::max)(), "unexpected level");
-        
+
         rtree::elements(n).push_back(base::m_element);                                                              // MAY THROW, STRONG (V: alloc, copy)
 
         base::post_traverse(n);                                                                                     // MAY THROW (V: alloc, copy, N: alloc)

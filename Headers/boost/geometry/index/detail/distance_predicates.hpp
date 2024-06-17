@@ -5,8 +5,9 @@
 //
 // Copyright (c) 2011-2015 Adam Wulkiewicz, Lodz, Poland.
 //
-// This file was modified by Oracle on 2019-2020.
-// Modifications copyright (c) 2019-2020 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2019-2023.
+// Modifications copyright (c) 2019-2023, Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 //
 // Use, modification and distribution is subject to the Boost Software License,
@@ -18,11 +19,18 @@
 
 #include <boost/geometry/core/static_assert.hpp>
 
+#include <boost/geometry/algorithms/detail/covered_by/interface.hpp>
+#include <boost/geometry/algorithms/detail/disjoint/interface.hpp>
+#include <boost/geometry/algorithms/detail/intersects/interface.hpp>
+#include <boost/geometry/algorithms/detail/overlaps/interface.hpp>
+#include <boost/geometry/algorithms/detail/touches/interface.hpp>
+#include <boost/geometry/algorithms/detail/within/interface.hpp>
+
 #include <boost/geometry/index/detail/algorithms/comparable_distance_near.hpp>
 #include <boost/geometry/index/detail/algorithms/comparable_distance_far.hpp>
 #include <boost/geometry/index/detail/algorithms/comparable_distance_centroid.hpp>
 #include <boost/geometry/index/detail/algorithms/path_intersection.hpp>
-
+#include <boost/geometry/index/detail/predicates.hpp>
 #include <boost/geometry/index/detail/tags.hpp>
 
 namespace boost { namespace geometry { namespace index { namespace detail {
@@ -102,133 +110,37 @@ struct relation< to_furthest<T> >
 
 template
 <
-    typename G1, typename G2, typename Strategy,
-    typename Tag1 = typename geometry::tag<G1>::type,
-    typename Tag2 = typename geometry::tag<G2>::type
->
-struct comparable_distance_call_base
-{
-    typedef typename geometry::default_comparable_distance_result
-        <
-            G1, G2
-        >::type result_type;
-
-    static inline result_type apply(G1 const& g1, G2 const& g2, Strategy const&)
-    {
-        return geometry::comparable_distance(g1, g2);
-    }
-};
-
-template
-<
-    typename G1, typename G2, typename Strategy
->
-struct comparable_distance_call_base<G1, G2, Strategy, point_tag, point_tag>
-{
-    typedef typename geometry::comparable_distance_result
-        <
-            G1, G2,
-            typename Strategy::comparable_distance_point_point_strategy_type
-        >::type result_type;
-
-    static inline result_type apply(G1 const& g1, G2 const& g2, Strategy const& s)
-    {
-        return geometry::comparable_distance(g1, g2,
-                s.get_comparable_distance_point_point_strategy());
-    }
-};
-
-template
-<
-    typename G1, typename G2, typename Strategy
->
-struct comparable_distance_call_base<G1, G2, Strategy, point_tag, box_tag>
-{
-    typedef typename geometry::comparable_distance_result
-        <
-            G1, G2,
-            typename Strategy::comparable_distance_point_box_strategy_type
-        >::type result_type;
-
-    static inline result_type apply(G1 const& g1, G2 const& g2, Strategy const& s)
-    {
-        return geometry::comparable_distance(g1, g2,
-                s.get_comparable_distance_point_box_strategy());
-    }
-};
-
-template
-<
-    typename G1, typename G2, typename Strategy
->
-struct comparable_distance_call_base<G1, G2, Strategy, segment_tag, point_tag>
-{
-    typedef typename geometry::comparable_distance_result
-        <
-            G1, G2,
-            typename Strategy::comparable_distance_point_segment_strategy_type
-        >::type result_type;
-
-    static inline result_type apply(G1 const& g1, G2 const& g2, Strategy const& s)
-    {
-        return geometry::comparable_distance(g1, g2,
-                s.get_comparable_distance_point_segment_strategy());
-    }
-};
-
-template
-<
-    typename G1, typename G2, typename Strategy
->
-struct comparable_distance_call_base<G1, G2, Strategy, segment_tag, box_tag>
-{
-    typedef typename geometry::comparable_distance_result
-        <
-            G1, G2,
-            typename Strategy::comparable_distance_segment_box_strategy_type
-        >::type result_type;
-
-    static inline result_type apply(G1 const& g1, G2 const& g2, Strategy const& s)
-    {
-        return geometry::comparable_distance(g1, g2,
-                s.get_comparable_distance_segment_box_strategy());
-    }
-};
-
-template
-<
-    typename G1, typename G2, typename Strategy
->
-struct comparable_distance_call_base<G1, G2, Strategy, segment_tag, segment_tag>
-{
-    typedef typename geometry::comparable_distance_result
-        <
-            G1, G2,
-            typename Strategy::comparable_distance_point_segment_strategy_type
-        >::type result_type;
-
-    static inline result_type apply(G1 const& g1, G2 const& g2, Strategy const& s)
-    {
-        return geometry::comparable_distance(g1, g2,
-                s.get_comparable_distance_point_segment_strategy());
-    }
-};
-
-template
-<
     typename G1, typename G2, typename Strategy
 >
 struct comparable_distance_call
-    : comparable_distance_call_base<G1, G2, Strategy>
-{};
+{
+    typedef typename geometry::comparable_distance_result
+        <
+            G1, G2, Strategy
+        >::type result_type;
+
+    static inline result_type apply(G1 const& g1, G2 const& g2, Strategy const& s)
+    {
+        return geometry::comparable_distance(g1, g2, s);
+    }
+};
 
 template
 <
     typename G1, typename G2
 >
 struct comparable_distance_call<G1, G2, default_strategy>
-    : comparable_distance_call_base<G1, G2, default_strategy, void, void>
-{};
+{
+    typedef typename geometry::default_comparable_distance_result
+        <
+            G1, G2
+        >::type result_type;
+
+    static inline result_type apply(G1 const& g1, G2 const& g2, default_strategy const&)
+    {
+        return geometry::comparable_distance(g1, g2);
+    }
+};
 
 // ------------------------------------------------------------------ //
 // calculate_distance

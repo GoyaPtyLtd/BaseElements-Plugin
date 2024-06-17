@@ -16,7 +16,7 @@
 #include <boost/beast/core/detail/bind_continuation.hpp>
 #include <boost/beast/core/detail/is_invocable.hpp>
 #include <boost/asio/coroutine.hpp>
-#include <boost/asio/post.hpp>
+#include <boost/asio/dispatch.hpp>
 #include <memory>
 
 namespace boost {
@@ -59,6 +59,7 @@ public:
         , nb_(false)
     {
         (*this)({}, 0, false);
+        this->set_allowed_cancellation(net::cancellation_type::all);
     }
 
     void
@@ -127,7 +128,8 @@ public:
                         "websocket::tcp::async_teardown"
                         ));
 
-                    net::post(bind_front_handler(
+                    const auto ex = this->get_immediate_executor();
+                    net::dispatch(ex, bind_front_handler(
                         std::move(*this), ec));
                 }
             }

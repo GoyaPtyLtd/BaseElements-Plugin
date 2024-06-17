@@ -29,7 +29,7 @@
 #include <boost/geometry/formulas/result_direct.hpp>
 
 namespace boost { namespace geometry {
-    
+
 namespace formula {
 
 template <typename T>
@@ -99,7 +99,7 @@ static inline PointSph cart3d_to_sph(Point3d const& point_3d)
 
     math::normalize_spheroidal_coordinates
         <
-            typename detail::cs_angular_units<PointSph>::type,
+            typename geometry::detail::cs_angular_units<PointSph>::type,
             coord_t
         >(lon, lat);
 

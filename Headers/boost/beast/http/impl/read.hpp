@@ -199,7 +199,7 @@ public:
                     auto const size = read_size(b_, 65536);
                     if(size == 0)
                     {
-                        ec = error::buffer_overflow;
+                        BOOST_BEAST_ASSIGN_EC(ec, error::buffer_overflow);
                         goto upcall;
                     }
                     auto const mb =
@@ -228,7 +228,7 @@ public:
                         BOOST_ASSERT(p_.is_done());
                         goto upcall;
                     }
-                    ec = error::end_of_stream;
+                    BOOST_BEAST_ASSIGN_EC(ec, error::end_of_stream);
                     break;
                 }
                 if(ec)
@@ -244,7 +244,13 @@ public:
                         __FILE__, __LINE__,
                         "http::async_read_some"));
 
-                    net::post(
+
+                    const auto ex =
+                        asio::get_associated_immediate_executor(
+                            self, s_.get_executor());
+
+                    net::dispatch(
+                        ex,
                         beast::bind_front_handler(std::move(self), ec));
                 }
             }
@@ -284,7 +290,11 @@ public:
                         __FILE__, __LINE__,
                         "http::async_read"));
 
-                    net::post(std::move(self));
+                    const auto ex =
+                        asio::get_associated_immediate_executor(
+                            self, s_.get_executor());
+
+                    net::dispatch(ex, std::move(self));
                 }
             }
             else
@@ -337,7 +347,7 @@ read_some(SyncReadStream& s, DynamicBuffer& b, basic_parser<isRequest>& p, error
         auto const size = read_size(b, 65536);
         if(size == 0)
         {
-            ec = error::buffer_overflow;
+            BOOST_BEAST_ASSIGN_EC(ec, error::buffer_overflow);
             return total;
         }
         auto const mb =
@@ -362,7 +372,7 @@ read_some(SyncReadStream& s, DynamicBuffer& b, basic_parser<isRequest>& p, error
                 BOOST_ASSERT(p.is_done());
                 return total;
             }
-            ec = error::end_of_stream;
+            BOOST_BEAST_ASSIGN_EC(ec, error::end_of_stream);
             break;
         }
         if(ec)

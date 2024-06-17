@@ -4,8 +4,8 @@
 // Copyright (c) 2008-2012 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
 
-// This file was modified by Oracle on 2020.
-// Modifications copyright (c) 2020 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2020-2021.
+// Modifications copyright (c) 2020-2021 Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
@@ -27,51 +27,13 @@
 #include <boost/geometry/core/mutable_range.hpp>
 #include <boost/geometry/core/point_type.hpp>
 
+#include <boost/geometry/geometries/concepts/concept_type.hpp>
 #include <boost/geometry/geometries/concepts/point_concept.hpp>
 
 
 
 namespace boost { namespace geometry { namespace concepts
 {
-
-
-/*!
-\brief Linestring concept
-\ingroup concepts
-\par Formal definition:
-The linestring concept is defined as following:
-- there must be a specialization of traits::tag defining linestring_tag as type
-- it must behave like a Boost.Range
-- it must implement a std::back_insert_iterator
-    - either by implementing push_back
-    - or by specializing std::back_insert_iterator
-
-\note to fulfill the concepts, no traits class has to be specialized to
-define the point type.
-
-\par Example:
-
-A custom linestring, defining the necessary specializations to fulfill to the concept.
-
-Suppose that the following linestring is defined:
-\dontinclude doxygen_5.cpp
-\skip custom_linestring1
-\until };
-
-It can then be adapted to the concept as following:
-\dontinclude doxygen_5.cpp
-\skip adapt custom_linestring1
-\until }}
-
-\note
-- There is also the registration macro BOOST_GEOMETRY_REGISTER_LINESTRING
-- For registration of std::vector<P> (and deque, and list) it is enough to
-include the header-file geometries/adapted/std_as_linestring.hpp. That registers
-a vector as a linestring (so it cannot be registered as a linear ring then,
-in the same source code).
-
-
-*/
 
 template <typename Geometry>
 class Linestring
@@ -121,6 +83,20 @@ public :
     }
 #endif
 };
+
+
+template <typename Geometry>
+struct concept_type<Geometry, linestring_tag>
+{
+    using type = Linestring<Geometry>;
+};
+
+template <typename Geometry>
+struct concept_type<Geometry const, linestring_tag>
+{
+    using type = ConstLinestring<Geometry>;
+};
+
 
 }}} // namespace boost::geometry::concepts
 

@@ -53,7 +53,7 @@ public:
 
     inline overlay_invalid_input_exception() {}
 
-    virtual char const* what() const throw()
+    char const* what() const noexcept override
     {
         return "Boost.Geometry Overlay invalid input exception";
     }
@@ -91,10 +91,8 @@ inline bool has_self_intersections(Geometry const& geometry,
 #ifdef BOOST_GEOMETRY_DEBUG_HAS_SELF_INTERSECTIONS
     bool first = true;
 #endif
-    for(typename std::deque<turn_info>::const_iterator it = boost::begin(turns);
-        it != boost::end(turns); ++it)
+    for (auto const& info : turns)
     {
-        turn_info const& info = *it;
         bool const both_union_turn =
             info.operations[0].operation == detail::overlay::operation_union
             && info.operations[1].operation == detail::overlay::operation_union;
@@ -134,27 +132,6 @@ inline bool has_self_intersections(Geometry const& geometry,
 
     }
     return false;
-}
-
-// For backward compatibility
-template <typename Geometry>
-inline bool has_self_intersections(Geometry const& geometry,
-                    bool throw_on_self_intersection = true)
-{
-    typedef typename geometry::point_type<Geometry>::type point_type;
-    typedef typename geometry::rescale_policy_type<point_type>::type
-        rescale_policy_type;
-
-    typename strategy::intersection::services::default_strategy
-        <
-            typename cs_tag<Geometry>::type
-        >::type strategy;
-
-    rescale_policy_type robust_policy
-        = geometry::get_rescale_policy<rescale_policy_type>(geometry, strategy);
-
-    return has_self_intersections(geometry, strategy, robust_policy,
-                                  throw_on_self_intersection);
 }
 
 

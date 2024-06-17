@@ -4,8 +4,8 @@
 // Copyright (c) 2008-2015 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2015 Mateusz Loskot, London, UK.
 
-// This file was modified by Oracle on 2014-2020.
-// Modifications copyright (c) 2014-2020 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2014-2021.
+// Modifications copyright (c) 2014-2021 Oracle and/or its affiliates.
 
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
@@ -20,13 +20,10 @@
 #ifndef BOOST_GEOMETRY_GEOMETRY_HPP
 #define BOOST_GEOMETRY_GEOMETRY_HPP
 
-#if !defined(BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING)
 #include <boost/config.hpp>
+
 #if defined(BOOST_NO_CXX14_CONSTEXPR)
-#include <boost/config/pragma_message.hpp>
-BOOST_PRAGMA_MESSAGE("CAUTION: Boost.Geometry in Boost 1.73 deprecates support for C++03 and will require C++14 from Boost 1.75 onwards.")
-BOOST_PRAGMA_MESSAGE("CAUTION: Define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING to suppress this message.")
-#endif
+#error "Use C++14 or higher to compile Boost.Geometry, or use Boost 1.72 or lower."
 #endif
 
 // Shortcut to include all header files
@@ -36,6 +33,7 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNI
 #include <boost/geometry/core/coordinate_system.hpp>
 #include <boost/geometry/core/coordinate_type.hpp>
 #include <boost/geometry/core/cs.hpp>
+#include <boost/geometry/core/geometry_types.hpp>
 #include <boost/geometry/core/interior_type.hpp>
 #include <boost/geometry/core/point_order.hpp>
 #include <boost/geometry/core/point_type.hpp>
@@ -43,6 +41,7 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNI
 #include <boost/geometry/core/tag.hpp>
 #include <boost/geometry/core/tag_cast.hpp>
 #include <boost/geometry/core/tags.hpp>
+#include <boost/geometry/core/visit.hpp>
 
 // Core algorithms
 #include <boost/geometry/core/access.hpp>
@@ -60,9 +59,11 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNI
 #include <boost/geometry/algorithms/append.hpp>
 #include <boost/geometry/algorithms/area.hpp>
 #include <boost/geometry/algorithms/assign.hpp>
+#include <boost/geometry/algorithms/azimuth.hpp>
 #include <boost/geometry/algorithms/buffer.hpp>
 #include <boost/geometry/algorithms/centroid.hpp>
 #include <boost/geometry/algorithms/clear.hpp>
+#include <boost/geometry/algorithms/closest_points.hpp>
 #include <boost/geometry/algorithms/comparable_distance.hpp>
 #include <boost/geometry/algorithms/convert.hpp>
 #include <boost/geometry/algorithms/convex_hull.hpp>
@@ -81,6 +82,7 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNI
 #include <boost/geometry/algorithms/for_each.hpp>
 #include <boost/geometry/algorithms/intersection.hpp>
 #include <boost/geometry/algorithms/intersects.hpp>
+#include <boost/geometry/algorithms/is_convex.hpp>
 #include <boost/geometry/algorithms/is_empty.hpp>
 #include <boost/geometry/algorithms/is_simple.hpp>
 #include <boost/geometry/algorithms/is_valid.hpp>
@@ -93,6 +95,7 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNI
 #include <boost/geometry/algorithms/num_segments.hpp>
 #include <boost/geometry/algorithms/overlaps.hpp>
 #include <boost/geometry/algorithms/perimeter.hpp>
+#include <boost/geometry/algorithms/point_on_surface.hpp>
 #include <boost/geometry/algorithms/relate.hpp>
 #include <boost/geometry/algorithms/relation.hpp>
 #include <boost/geometry/algorithms/remove_spikes.hpp>
@@ -127,5 +130,8 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNI
 #include <boost/geometry/io/svg/write.hpp>
 #include <boost/geometry/io/wkt/read.hpp>
 #include <boost/geometry/io/wkt/write.hpp>
+
+#include <boost/geometry/algorithms/is_convex.hpp>
+#include <boost/geometry/algorithms/point_on_surface.hpp>
 
 #endif // BOOST_GEOMETRY_GEOMETRY_HPP

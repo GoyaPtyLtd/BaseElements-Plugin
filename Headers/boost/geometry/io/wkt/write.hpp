@@ -1,13 +1,13 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2007-2017 Barend Gehrels, Amsterdam, the Netherlands.
+// Copyright (c) 2007-2022 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2008-2017 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2017 Mateusz Loskot, London, UK.
-// Copyright (c) 2014-2017 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2014-2023 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2020 Baidyanath Kundu, Haldia, India.
 
-// This file was modified by Oracle on 2015-2020.
-// Modifications copyright (c) 2015-2020, Oracle and/or its affiliates.
-
+// This file was modified by Oracle on 2015-2021.
+// Modifications copyright (c) 2015-2021, Oracle and/or its affiliates.
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -21,19 +21,15 @@
 #ifndef BOOST_GEOMETRY_IO_WKT_WRITE_HPP
 #define BOOST_GEOMETRY_IO_WKT_WRITE_HPP
 
+#include <array>
 #include <ostream>
 #include <string>
 
-#include <boost/array.hpp>
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/size.hpp>
 #include <boost/range/value_type.hpp>
-#include <boost/variant/apply_visitor.hpp>
-#include <boost/variant/static_visitor.hpp>
-#include <boost/variant/variant_fwd.hpp>
 
-#include <boost/geometry/algorithms/detail/interior_iterator.hpp>
 #include <boost/geometry/algorithms/assign.hpp>
 #include <boost/geometry/algorithms/convert.hpp>
 #include <boost/geometry/algorithms/detail/disjoint/point_point.hpp>
@@ -42,13 +38,19 @@
 #include <boost/geometry/core/interior_rings.hpp>
 #include <boost/geometry/core/ring_type.hpp>
 #include <boost/geometry/core/tags.hpp>
+#include <boost/geometry/core/visit.hpp>
 
+#include <boost/geometry/geometries/adapted/boost_variant.hpp> // For backward compatibility
 #include <boost/geometry/geometries/concepts/check.hpp>
 #include <boost/geometry/geometries/ring.hpp>
 
 #include <boost/geometry/io/wkt/detail/prefix.hpp>
 
-#include <boost/geometry/util/condition.hpp>
+#include <boost/geometry/strategies/io/cartesian.hpp>
+#include <boost/geometry/strategies/io/geographic.hpp>
+#include <boost/geometry/strategies/io/spherical.hpp>
+
+#include <boost/geometry/util/constexpr.hpp>
 #include <boost/geometry/util/type_traits.hpp>
 
 
@@ -57,8 +59,8 @@ namespace boost { namespace geometry
 
 // Silence warning C4512: 'boost::geometry::wkt_manipulator<Geometry>' : assignment operator could not be generated
 #if defined(_MSC_VER)
-#pragma warning(push)  
-#pragma warning(disable : 4512)  
+#pragma warning(push)
+#pragma warning(disable : 4512)
 #endif
 
 #ifndef DOXYGEN_NO_DETAIL
@@ -84,32 +86,6 @@ struct stream_coordinate<P, Count, Count>
     {}
 };
 
-struct prefix_linestring_par
-{
-    static inline const char* apply() { return "LINESTRING("; }
-};
-
-struct prefix_ring_par_par
-{
-    // Note, double parentheses are intentional, indicating WKT ring begin/end
-    static inline const char* apply() { return "POLYGON(("; }
-};
-
-struct opening_parenthesis
-{
-    static inline const char* apply() { return "("; }
-};
-
-struct closing_parenthesis
-{
-    static inline const char* apply() { return ")"; }
-};
-
-struct double_closing_parenthesis
-{
-    static inline const char* apply() { return "))"; }
-};
-
 /*!
 \brief Stream points as \ref WKT
 */
@@ -127,14 +103,13 @@ struct wkt_point
 
 /*!
 \brief Stream ranges as WKT
-\note policy is used to stream prefix/postfix, enabling derived classes to override this
 */
 template
 <
     typename Range,
-    bool ForceClosurePossible,
     typename PrefixPolicy,
-    typename SuffixPolicy
+    bool ForceClosurePossible = false,
+    bool WriteDoubleBrackets = false
 >
 struct wkt_range
 {
@@ -142,52 +117,62 @@ struct wkt_range
     static inline void apply(std::basic_ostream<Char, Traits>& os,
                 Range const& range, bool force_closure = ForceClosurePossible)
     {
-        typedef typename boost::range_iterator<Range const>::type iterator_type;
-
-        typedef stream_coordinate
+        using stream_type = stream_coordinate
             <
                 point_type, 0, dimension<point_type>::type::value
-            > stream_type;
+            >;
 
         bool first = true;
 
         os << PrefixPolicy::apply();
+        os << "(";
 
-        // TODO: check EMPTY here
-
-        iterator_type begin = boost::begin(range);
-        iterator_type end = boost::end(range);
-        for (iterator_type it = begin; it != end; ++it)
+        if (boost::size(range) > 0)
         {
-            os << (first ? "" : ",");
-            stream_type::apply(os, *it);
-            first = false;
+            if BOOST_GEOMETRY_CONSTEXPR (WriteDoubleBrackets)
+            {
+                os << "(";
+            }
+            auto begin = boost::begin(range);
+            auto const end = boost::end(range);
+            for (auto it = begin; it != end; ++it)
+            {
+                os << (first ? "" : ",");
+                stream_type::apply(os, *it);
+                first = false;
+            }
+
+            // optionally, close range to ring by repeating the first point
+            if BOOST_GEOMETRY_CONSTEXPR (ForceClosurePossible)
+            {
+                if (force_closure
+                    && boost::size(range) > 1
+                    && wkt_range::disjoint(*begin, *(end - 1)))
+                {
+                    os << ",";
+                    stream_type::apply(os, *begin);
+                }
+            }
+            if BOOST_GEOMETRY_CONSTEXPR (WriteDoubleBrackets)
+            {
+                os << ")";
+            }
         }
 
-        // optionally, close range to ring by repeating the first point
-        if (BOOST_GEOMETRY_CONDITION(ForceClosurePossible)
-            && force_closure
-            && boost::size(range) > 1
-            && wkt_range::disjoint(*begin, *(end - 1)))
-        {
-            os << ",";
-            stream_type::apply(os, *begin);
-        }
-
-        os << SuffixPolicy::apply();
+        os << ")";
     }
 
 
 private:
-    typedef typename boost::range_value<Range>::type point_type;
+    using point_type = typename boost::range_value<Range>::type;
 
     static inline bool disjoint(point_type const& p1, point_type const& p2)
     {
         // TODO: pass strategy
-        typedef typename strategy::disjoint::services::default_strategy
+        using strategy_type = typename strategies::io::services::default_strategy
             <
-                point_type, point_type
-            >::type strategy_type;
+                point_type
+            >::type;
 
         return detail::disjoint::disjoint_point_point(p1, p2, strategy_type());
     }
@@ -202,9 +187,8 @@ struct wkt_sequence
     : wkt_range
         <
             Range,
-            ForceClosurePossible,
-            opening_parenthesis,
-            closing_parenthesis
+            prefix_null,
+            ForceClosurePossible
         >
 {};
 
@@ -215,20 +199,29 @@ struct wkt_poly
     static inline void apply(std::basic_ostream<Char, Traits>& os,
                 Polygon const& poly, bool force_closure)
     {
-        typedef typename ring_type<Polygon const>::type ring;
+        using ring = typename ring_type<Polygon const>::type;
+
+        auto const& exterior = exterior_ring(poly);
+        auto const& rings = interior_rings(poly);
+
+        std::size_t point_count = boost::size(exterior);
+        for (auto it = boost::begin(rings); it != boost::end(rings); ++it)
+        {
+            point_count += boost::size(*it);
+        }
 
         os << PrefixPolicy::apply();
-        // TODO: check EMPTY here
-        os << "(";
-        wkt_sequence<ring>::apply(os, exterior_ring(poly), force_closure);
 
-        typename interior_return_type<Polygon const>::type
-            rings = interior_rings(poly);
-        for (typename detail::interior_iterator<Polygon const>::type
-                it = boost::begin(rings); it != boost::end(rings); ++it)
+        os << "(";
+        if (point_count > 0)
         {
-            os << ",";
-            wkt_sequence<ring>::apply(os, *it, force_closure);
+            wkt_sequence<ring>::apply(os, exterior, force_closure);
+
+            for (auto it = boost::begin(rings); it != boost::end(rings); ++it)
+            {
+                os << ",";
+                wkt_sequence<ring>::apply(os, *it, force_closure);
+            }
         }
         os << ")";
     }
@@ -243,13 +236,9 @@ struct wkt_multi
                 Multi const& geometry, bool force_closure)
     {
         os << PrefixPolicy::apply();
-        // TODO: check EMPTY here
         os << "(";
 
-        for (typename boost::range_iterator<Multi const>::type
-                    it = boost::begin(geometry);
-            it != boost::end(geometry);
-            ++it)
+        for (auto it = boost::begin(geometry); it != boost::end(geometry); ++it)
         {
             if (it != boost::begin(geometry))
             {
@@ -265,7 +254,7 @@ struct wkt_multi
 template <typename Box>
 struct wkt_box
 {
-    typedef typename point_type<Box>::type point_type;
+    using point_type = typename point_type<Box>::type;
 
     template <typename Char, typename Traits>
     static inline void apply(std::basic_ostream<Char, Traits>& os,
@@ -309,14 +298,14 @@ struct wkt_box
 template <typename Segment>
 struct wkt_segment
 {
-    typedef typename point_type<Segment>::type point_type;
+    using point_type = typename point_type<Segment>::type;
 
     template <typename Char, typename Traits>
     static inline void apply(std::basic_ostream<Char, Traits>& os,
                 Segment const& segment, bool)
     {
         // Convert to two points, then stream
-        typedef boost::array<point_type, 2> sequence;
+        using sequence = std::array<point_type, 2>;
 
         sequence points;
         geometry::detail::assign_point_from_index<0>(segment, points[0]);
@@ -359,9 +348,7 @@ struct wkt<Linestring, linestring_tag>
     : detail::wkt::wkt_range
         <
             Linestring,
-            false,
-            detail::wkt::prefix_linestring_par,
-            detail::wkt::closing_parenthesis
+            detail::wkt::prefix_linestring
         >
 {};
 
@@ -391,9 +378,9 @@ struct wkt<Ring, ring_tag>
     : detail::wkt::wkt_range
         <
             Ring,
+            detail::wkt::prefix_polygon,
             true,
-            detail::wkt::prefix_ring_par_par,
-            detail::wkt::double_closing_parenthesis
+            true
         >
 {};
 
@@ -453,44 +440,66 @@ struct wkt<Multi, multi_polygon_tag>
 
 
 template <typename Geometry>
-struct devarianted_wkt
+struct wkt<Geometry, dynamic_geometry_tag>
 {
     template <typename OutputStream>
     static inline void apply(OutputStream& os, Geometry const& geometry,
                              bool force_closure)
     {
-        wkt<Geometry>::apply(os, geometry, force_closure);
+        traits::visit<Geometry>::apply([&](auto const& g)
+        {
+            wkt<util::remove_cref_t<decltype(g)>>::apply(os, g, force_closure);
+        }, geometry);
     }
 };
 
-template <BOOST_VARIANT_ENUM_PARAMS(typename T)>
-struct devarianted_wkt<variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
+// TODO: Implement non-recursive version
+template <typename Geometry>
+struct wkt<Geometry, geometry_collection_tag>
 {
     template <typename OutputStream>
-    struct visitor: static_visitor<void>
+    static inline void apply(OutputStream& os, Geometry const& geometry,
+                             bool force_closure)
     {
-        OutputStream& m_os;
-        bool m_force_closure;
+        wkt::output_or_recursive_call(os, geometry, force_closure);
+    }
 
-        visitor(OutputStream& os, bool force_closure)
-            : m_os(os)
-            , m_force_closure(force_closure)
-        {}
+private:
+    template
+    <
+        typename OutputStream, typename Geom,
+        std::enable_if_t<util::is_geometry_collection<Geom>::value, int> = 0
+    >
+    static void output_or_recursive_call(OutputStream& os, Geom const& geom, bool force_closure)
+    {
+        os << "GEOMETRYCOLLECTION(";
 
-        template <typename Geometry>
-        inline void operator()(Geometry const& geometry) const
+        bool first = true;
+        auto const end = boost::end(geom);
+        for (auto it = boost::begin(geom); it != end; ++it)
         {
-            devarianted_wkt<Geometry>::apply(m_os, geometry, m_force_closure);
-        }
-    };
+            if (first)
+                first = false;
+            else
+                os << ',';
 
-    template <typename OutputStream>
-    static inline void apply(
-        OutputStream& os,
-        variant<BOOST_VARIANT_ENUM_PARAMS(T)> const& geometry,
-        bool force_closure)
+            traits::iter_visit<Geom>::apply([&](auto const& g)
+            {
+                wkt::output_or_recursive_call(os, g, force_closure);
+            }, it);
+        }
+
+        os << ')';
+    }
+
+    template
+    <
+        typename OutputStream, typename Geom,
+        std::enable_if_t<! util::is_geometry_collection<Geom>::value, int> = 0
+    >
+    static void output_or_recursive_call(OutputStream& os, Geom const& geom, bool force_closure)
     {
-        boost::apply_visitor(visitor<OutputStream>(os, force_closure), geometry);
+        wkt<Geom>::apply(os, geom, force_closure);
     }
 };
 
@@ -529,7 +538,7 @@ public:
             std::basic_ostream<Char, Traits>& os,
             wkt_manipulator const& m)
     {
-        dispatch::devarianted_wkt<Geometry>::apply(os, m.m_geometry, m.m_force_closure);
+        dispatch::wkt<Geometry>::apply(os, m.m_geometry, m.m_force_closure);
         os.flush();
         return os;
     }
@@ -554,8 +563,33 @@ inline wkt_manipulator<Geometry> wkt(Geometry const& geometry)
     return wkt_manipulator<Geometry>(geometry);
 }
 
+/*!
+\brief WKT-string formulating function
+\tparam Geometry \tparam_geometry
+\param geometry \param_geometry
+\param significant_digits Specifies the no of significant digits to use in the output wkt
+\ingroup wkt
+\qbk{[include reference/io/to_wkt.qbk]}
+*/
+template <typename Geometry>
+inline std::string to_wkt(Geometry const& geometry)
+{
+    std::stringstream ss;
+    ss << boost::geometry::wkt(geometry);
+    return ss.str();
+}
+
+template <typename Geometry>
+inline std::string to_wkt(Geometry const& geometry, int significant_digits)
+{
+    std::stringstream ss;
+    ss.precision(significant_digits);
+    ss << boost::geometry::wkt(geometry);
+    return ss.str();
+}
+
 #if defined(_MSC_VER)
-#pragma warning(pop)  
+#pragma warning(pop)
 #endif
 
 }} // namespace boost::geometry

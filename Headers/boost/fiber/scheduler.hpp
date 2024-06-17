@@ -90,7 +90,7 @@ private:
     // sleep-queue contains context' which have been called
     // scheduler::wait_until()
     sleep_queue_type                                            sleep_queue_{};
-    // worker-queue contains all context' mananged by this scheduler
+    // worker-queue contains all context' managed by this scheduler
     // except main-context and dispatcher-context
     // unlink happens on destruction of a context
     worker_queue_type                                           worker_queue_{};
@@ -109,7 +109,7 @@ private:
     void sleep2ready_() noexcept;
 
 public:
-    scheduler() noexcept;
+    scheduler(algo::algorithm::ptr_t algo) noexcept;
 
     scheduler( scheduler const&) = delete;
     scheduler & operator=( scheduler const&) = delete;

@@ -19,7 +19,8 @@
 #include <initializer_list>
 #include <iterator>
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 #ifndef BOOST_JSON_DOCS
 class value;
@@ -177,20 +178,22 @@ public:
         No-throw guarantee.
     */
     BOOST_JSON_DECL
-    ~array();
+    ~array() noexcept;
 
     //------------------------------------------------------
 
     /** Constructor.
 
         The constructed array is empty with zero
-        capacity, using the default memory resource.
+        capacity, using the [default memory resource].
 
         @par Complexity
         Constant.
 
         @par Exception Safety
         No-throw guarantee.
+
+        [default memory resource]: json/allocators/storage_ptr.html#json.allocators.storage_ptr.default_memory_resource
     */
     array() noexcept
         : t_(&empty_)
@@ -279,7 +282,7 @@ public:
         @par Constraints
 
         @code
-        std::is_constructible_v<value, std::iterator_traits<InputIt>::value_type>
+        std::is_constructible_v<value, std::iterator_traits<InputIt>::reference>
         @endcode
 
         @par Complexity
@@ -309,7 +312,7 @@ public:
         ,class = typename std::enable_if<
             std::is_constructible<value,
                 typename std::iterator_traits<
-                    InputIt>::value_type>::value>::type
+                    InputIt>::reference>::value>::type
     #endif
     >
     array(
@@ -363,7 +366,7 @@ public:
         This is more efficient than move construction, when
         it is known that the moved-from object will be
         immediately destroyed afterwards.
-        
+
         @par Complexity
         Constant.
 
@@ -396,7 +399,7 @@ public:
         After construction, the moved-from array behaves
         as if newly constructed with its current storage
         pointer.
-        
+
         @par Complexity
         Constant.
 
@@ -429,7 +432,7 @@ public:
         element-wise copy is performed, which may throw.
         In this case, the moved-from array is not
         changed.
-        
+
         @par Complexity
         At most, linear in `other.size()`.
 
@@ -590,36 +593,28 @@ public:
         Returns a reference to the element specified at
         location `pos`, with bounds checking. If `pos` is
         not within the range of the container, an exception
-        of type `std::out_of_range` is thrown.
+        of type @ref system_error is thrown.
 
         @par Complexity
         Constant.
 
         @param pos A zero-based index.
 
-        @throw std::out_of_range `pos >= size()`
+        @throw system_error `pos >= size()`
     */
+    /* @{ */
     inline
     value&
-    at(std::size_t pos);
+    at(std::size_t pos) &;
 
-    /** Access an element, with bounds checking.
+    inline
+    value&&
+    at(std::size_t pos) &&;
 
-        Returns a reference to the element specified at
-        location `pos`, with bounds checking. If `pos` is
-        not within the range of the container, an exception
-        of type `std::out_of_range` is thrown.
-
-        @par Complexity
-        Constant.
-
-        @param pos A zero-based index.
-
-        @throw std::out_of_range `pos >= size()`
-    */
     inline
     value const&
-    at(std::size_t pos) const;
+    at(std::size_t pos) const&;
+    /* @} */
 
     /** Access an element.
 
@@ -634,26 +629,19 @@ public:
 
         @param pos A zero-based index
     */
+    /* @{ */
     inline
     value&
-    operator[](std::size_t pos) noexcept;
+    operator[](std::size_t pos) & noexcept;
 
-    /** Access an element.
+    inline
+    value&&
+    operator[](std::size_t pos) && noexcept;
 
-        Returns a reference to the element specified at
-        location `pos`. No bounds checking is performed.
-
-        @par Precondition
-        `pos < size()`
-
-        @par Complexity
-        Constant.
-
-        @param pos A zero-based index
-    */
     inline
     value const&
-    operator[](std::size_t pos) const noexcept;
+    operator[](std::size_t pos) const& noexcept;
+    /* @} */
 
     /** Access the first element.
 
@@ -665,23 +653,19 @@ public:
         @par Complexity
         Constant.
     */
+    /* @{ */
     inline
     value&
-    front() noexcept;
+    front() & noexcept;
 
-    /** Access the first element.
+    inline
+    value&&
+    front() && noexcept;
 
-        Returns a reference to the first element.
-
-        @par Precondition
-        `not empty()`
-
-        @par Complexity
-        Constant.
-    */
     inline
     value const&
-    front() const noexcept;
+    front() const& noexcept;
+    /* @} */
 
     /** Access the last element.
 
@@ -693,23 +677,19 @@ public:
         @par Complexity
         Constant.
     */
+    /* @{ */
     inline
     value&
-    back() noexcept;
+    back() & noexcept;
 
-    /** Access the last element.
+    inline
+    value&&
+    back() && noexcept;
 
-        Returns a reference to the last element.
-
-        @par Precondition
-        `not empty()`
-
-        @par Complexity
-        Constant.
-    */
     inline
     value const&
-    back() const noexcept;
+    back() const& noexcept;
+    /* @} */
 
     /** Access the underlying array directly.
 
@@ -1090,7 +1070,7 @@ public:
 
         @param new_capacity The new capacity of the array.
 
-        @throw std::length_error `new_capacity > max_size()`
+        @throw system_error `new_capacity > max_size()`
     */
     inline
     void
@@ -1224,7 +1204,7 @@ public:
         be inserted. This may be the @ref end() iterator.
 
         @param count The number of copies to insert.
-        
+
         @param v The value to insert. Copies will be made
         using container's associated @ref memory_resource.
 
@@ -1259,7 +1239,7 @@ public:
 
         @par Mandates
         @code
-        std::is_constructible_v<value, std::iterator_traits<InputIt>::value_type>
+        std::is_constructible_v<value, std::iterator_traits<InputIt>::reference>
         @endcode
 
         @par Complexity
@@ -1274,7 +1254,7 @@ public:
 
         @param pos Iterator before which the content will
         be inserted. This may be the @ref end() iterator.
-        
+
         @param first An input iterator pointing to the first
         element to insert, or pointing to the end of the range.
 
@@ -1290,7 +1270,7 @@ public:
         ,class = typename std::enable_if<
             std::is_constructible<value,
                 typename std::iterator_traits<
-                    InputIt>::value_type>::value>::type
+                    InputIt>::reference>::value>::type
     #endif
     >
     iterator
@@ -1318,7 +1298,7 @@ public:
 
         @param pos Iterator before which the content will
         be inserted. This may be the @ref end() iterator.
-        
+
         @param init The initializer list to insert
 
         @return An iterator to the first inserted value, or
@@ -1351,7 +1331,7 @@ public:
 
         @param pos Iterator before which the element will
         be inserted. This may be the @ref end() iterator.
-        
+
         @param arg The argument to forward to the @ref value
         constructor.
 
@@ -1388,7 +1368,7 @@ public:
         The elements in the range `{first, last)` are removed.
 
         @par Complexity
-        Linear in `std::distance(first, last) + std::distance(pos, end())`
+        Linear in `std::distance(first, end())`
 
         @par Exception Safety
         No-throw guarantee.
@@ -1401,7 +1381,7 @@ public:
         range.
 
         @return Iterator following the last removed element.
-        If the iterator `pos` refers to the last element,
+        If the iterator `last` refers to the last element,
         the @ref end() iterator is returned.
     */
     BOOST_JSON_DECL
@@ -1476,7 +1456,7 @@ public:
         @par Exception Safety
         Strong guarantee.
         Calls to `memory_resource::allocate` may throw.
-        
+
         @param arg The argument to forward to the @ref value
         constructor.
 
@@ -1513,7 +1493,7 @@ public:
 
         @li If `size() < count`, additional null values
         are appended.
-        
+
         @par Complexity
         Linear in `abs(size() - count)`, plus the cost of
         reallocation if @ref capacity() is less than `count`.
@@ -1541,7 +1521,7 @@ public:
 
         @li If `size() < count`, additional copies of `v`
         are appended.
-        
+
         @par Complexity
         Linear in `abs(size() - count)`, plus the cost of
         reallocation if @ref capacity() is less than `count`.
@@ -1575,7 +1555,7 @@ public:
         the contents are logically swapped by making copies,
         which can throw. In this case all iterators and
         references are invalidated.
-        
+
         @par Complexity
         Constant or linear in @ref size() plus `other.size()`.
 
@@ -1610,7 +1590,7 @@ public:
         @code
         lhs.swap( rhs );
         @endcode
-        
+
         @par Complexity
         Constant or linear in `lhs.size() + rhs.size()`.
 
@@ -1682,6 +1662,30 @@ public:
         return ! (lhs == rhs);
     }
 
+    /** Serialize @ref array to an output stream.
+
+        This function serializes an `array` as JSON into the output stream.
+
+        @return Reference to `os`.
+
+        @par Complexity
+        Constant or linear in the size of `arr`.
+
+        @par Exception Safety
+        Strong guarantee.
+        Calls to `memory_resource::allocate` may throw.
+
+        @param os The output stream to serialize to.
+
+        @param arr The value to serialize.
+    */
+    BOOST_JSON_DECL
+    friend
+    std::ostream&
+    operator<<(
+        std::ostream& os,
+        array const& arr);
+
 private:
     template<class It>
     using iter_cat = typename
@@ -1738,7 +1742,20 @@ private:
     equal(array const& other) const noexcept;
 };
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost
+
+// std::hash specialization
+#ifndef BOOST_JSON_DOCS
+namespace std {
+template <>
+struct hash< ::boost::json::array > {
+    BOOST_JSON_DECL
+    std::size_t
+    operator()(::boost::json::array const& ja) const noexcept;
+};
+} // std
+#endif
 
 // Must be included here for this file to stand alone
 #include <boost/json/value.hpp>

@@ -34,17 +34,24 @@ namespace boost {
 namespace histogram {
 namespace axis {
 
-/**
-  Axis for non-equidistant bins on the real line.
+/** Axis for non-equidistant bins on the real line.
 
   Binning is a O(log(N)) operation. If speed matters and the problem domain
   allows it, prefer a regular axis, possibly with a transform.
 
-  @tparam Value input value type, must be floating point.
-  @tparam MetaData type to store meta data.
-  @tparam Options see boost::histogram::axis::option (all values allowed).
+  If the axis has an overflow bin (the default), a value on the upper edge of the last
+  bin is put in the overflow bin. The axis range represents a semi-open interval.
+
+  If the overflow bin is deactivated, then a value on the upper edge of the last bin is
+  still counted towards the last bin. The axis range represents a closed interval. This
+  is the desired behavior for random numbers drawn from a bounded interval, which is
+  usually closed.
+
+  @tparam Value     input value type, must be floating point.
+  @tparam MetaData  type to store meta data.
+  @tparam Options   see boost::histogram::axis::option.
   @tparam Allocator allocator to use for dynamic memory management.
- */
+*/
 template <class Value, class MetaData, class Options, class Allocator>
 class variable : public iterator_mixin<variable<Value, MetaData, Options, Allocator>>,
                  public metadata_base_t<MetaData> {
@@ -57,66 +64,103 @@ class variable : public iterator_mixin<variable<Value, MetaData, Options, Alloca
   using allocator_type = Allocator;
   using vector_type = std::vector<Value, allocator_type>;
 
-  static_assert(
-      std::is_floating_point<value_type>::value,
-      "current version of variable axis requires floating point type; "
-      "if you need a variable axis with an integral type, please submit an issue");
-
-  static_assert(
-      (!options_type::test(option::circular) && !options_type::test(option::growth)) ||
-          (options_type::test(option::circular) ^ options_type::test(option::growth)),
-      "circular and growth options are mutually exclusive");
-
 public:
   constexpr variable() = default;
   explicit variable(allocator_type alloc) : vec_(alloc) {}
 
-  /** Construct from iterator range of bin edges.
-   *
-   * \param begin begin of edge sequence.
-   * \param end   end of edge sequence.
-   * \param meta  description of the axis.
-   * \param alloc allocator instance to use.
+  /** Construct from forward iterator range of bin edges.
+
+    @param begin   begin of edge sequence.
+    @param end     end of edge sequence.
+    @param meta    description of the axis (optional).
+    @param options see boost::histogram::axis::option (optional).
+    @param alloc   allocator instance to use (optional).
+
+    The constructor throws `std::invalid_argument` if iterator range is invalid, if less
+    than two edges are provided or if bin edges are not in ascending order.
+
+    The arguments meta and alloc are passed by value. If you move either of them into the
+    axis and the constructor throws, their values are lost. Do not move if you cannot
+    guarantee that the bin description is not valid.
    */
   template <class It, class = detail::requires_iterator<It>>
-  variable(It begin, It end, metadata_type meta = {}, allocator_type alloc = {})
+  variable(It begin, It end, metadata_type meta = {}, options_type options = {},
+           allocator_type alloc = {})
       : metadata_base(std::move(meta)), vec_(std::move(alloc)) {
-    if (std::distance(begin, end) < 2)
-      BOOST_THROW_EXCEPTION(std::invalid_argument("bins > 0 required"));
+    // static_asserts were moved here from class scope to satisfy deduction in gcc>=11
+    static_assert(
+        std::is_floating_point<value_type>::value,
+        "current version of variable axis requires floating point type; "
+        "if you need a variable axis with an integral type, please submit an issue");
+    static_assert((!options.test(option::circular) && !options.test(option::growth)) ||
+                      (options.test(option::circular) ^ options.test(option::growth)),
+                  "circular and growth options are mutually exclusive");
 
-    vec_.reserve(std::distance(begin, end));
+    const auto n = std::distance(begin, end);
+    if (n < 0)
+      BOOST_THROW_EXCEPTION(
+          std::invalid_argument("end must be reachable by incrementing begin"));
+
+    if (n < 2) BOOST_THROW_EXCEPTION(std::invalid_argument("bins > 1 required"));
+
+    vec_.reserve(n);
     vec_.emplace_back(*begin++);
     bool strictly_ascending = true;
     for (; begin != end; ++begin) {
       strictly_ascending &= vec_.back() < *begin;
       vec_.emplace_back(*begin);
     }
+
     if (!strictly_ascending)
       BOOST_THROW_EXCEPTION(
           std::invalid_argument("input sequence must be strictly ascending"));
   }
 
+  // kept for backward compatibility; requires_allocator is a workaround for deduction
+  // guides in gcc>=11
+  template <class It, class A, class = detail::requires_iterator<It>,
+            class = detail::requires_allocator<A>>
+  variable(It begin, It end, metadata_type meta, A alloc)
+      : variable(begin, end, std::move(meta), {}, std::move(alloc)) {}
+
   /** Construct variable axis from iterable range of bin edges.
-   *
-   * \param iterable iterable range of bin edges.
-   * \param meta     description of the axis.
-   * \param alloc    allocator instance to use.
+
+     @param iterable iterable range of bin edges.
+     @param meta     description of the axis (optional).
+     @param options  see boost::histogram::axis::option (optional).
+     @param alloc    allocator instance to use (optional).
    */
   template <class U, class = detail::requires_iterable<U>>
-  variable(const U& iterable, metadata_type meta = {}, allocator_type alloc = {})
-      : variable(std::begin(iterable), std::end(iterable), std::move(meta),
+  variable(const U& iterable, metadata_type meta = {}, options_type options = {},
+           allocator_type alloc = {})
+      : variable(std::begin(iterable), std::end(iterable), std::move(meta), options,
+                 std::move(alloc)) {}
+
+  // kept for backward compatibility; requires_allocator is a workaround for deduction
+  // guides in gcc>=11
+  template <class U, class A, class = detail::requires_iterable<U>,
+            class = detail::requires_allocator<A>>
+  variable(const U& iterable, metadata_type meta, A alloc)
+      : variable(std::begin(iterable), std::end(iterable), std::move(meta), {},
                  std::move(alloc)) {}
 
   /** Construct variable axis from initializer list of bin edges.
-   *
-   * @param list  `std::initializer_list` of bin edges.
-   * @param meta  description of the axis.
-   * @param alloc allocator instance to use.
+
+     @param list     `std::initializer_list` of bin edges.
+     @param meta     description of the axis (optional).
+     @param options  see boost::histogram::axis::option (optional).
+     @param alloc    allocator instance to use (optional).
    */
   template <class U>
   variable(std::initializer_list<U> list, metadata_type meta = {},
-           allocator_type alloc = {})
-      : variable(list.begin(), list.end(), std::move(meta), std::move(alloc)) {}
+           options_type options = {}, allocator_type alloc = {})
+      : variable(list.begin(), list.end(), std::move(meta), options, std::move(alloc)) {}
+
+  // kept for backward compatibility; requires_allocator is a workaround for deduction
+  // guides in gcc>=11
+  template <class U, class A, class = detail::requires_allocator<A>>
+  variable(std::initializer_list<U> list, metadata_type meta, A alloc)
+      : variable(list.begin(), list.end(), std::move(meta), {}, std::move(alloc)) {}
 
   /// Constructor used by algorithm::reduce to shrink and rebin (not for users).
   variable(const variable& src, index_type begin, index_type end, unsigned merge)
@@ -136,6 +180,8 @@ public:
       const auto b = vec_[size()];
       x -= std::floor((x - a) / (b - a)) * (b - a);
     }
+    // upper edge of last bin is inclusive if overflow bin is not present
+    if (!options_type::test(option::overflow) && x == vec_.back()) return size() - 1;
     return static_cast<index_type>(std::upper_bound(vec_.begin(), vec_.end(), x) -
                                    vec_.begin() - 1);
   }
@@ -221,26 +267,36 @@ private:
 
 template <class T>
 variable(std::initializer_list<T>)
-    ->variable<detail::convert_integer<T, double>, null_type>;
+    -> variable<detail::convert_integer<T, double>, null_type>;
 
 template <class T, class M>
 variable(std::initializer_list<T>, M)
-    ->variable<detail::convert_integer<T, double>,
-               detail::replace_type<std::decay_t<M>, const char*, std::string>>;
+    -> variable<detail::convert_integer<T, double>,
+                detail::replace_type<std::decay_t<M>, const char*, std::string>>;
+
+template <class T, class M, unsigned B>
+variable(std::initializer_list<T>, M, const option::bitset<B>&)
+    -> variable<detail::convert_integer<T, double>,
+                detail::replace_type<std::decay_t<M>, const char*, std::string>,
+                option::bitset<B>>;
 
 template <class Iterable, class = detail::requires_iterable<Iterable>>
-variable(Iterable)
-    ->variable<
-        detail::convert_integer<
-            std::decay_t<decltype(*std::begin(std::declval<Iterable&>()))>, double>,
-        null_type>;
+variable(Iterable) -> variable<
+    detail::convert_integer<
+        std::decay_t<decltype(*std::begin(std::declval<Iterable&>()))>, double>,
+    null_type>;
 
 template <class Iterable, class M>
-variable(Iterable, M)
-    ->variable<
-        detail::convert_integer<
-            std::decay_t<decltype(*std::begin(std::declval<Iterable&>()))>, double>,
-        detail::replace_type<std::decay_t<M>, const char*, std::string>>;
+variable(Iterable, M) -> variable<
+    detail::convert_integer<
+        std::decay_t<decltype(*std::begin(std::declval<Iterable&>()))>, double>,
+    detail::replace_type<std::decay_t<M>, const char*, std::string>>;
+
+template <class Iterable, class M, unsigned B>
+variable(Iterable, M, const option::bitset<B>&) -> variable<
+    detail::convert_integer<
+        std::decay_t<decltype(*std::begin(std::declval<Iterable&>()))>, double>,
+    detail::replace_type<std::decay_t<M>, const char*, std::string>, option::bitset<B>>;
 
 #endif
 

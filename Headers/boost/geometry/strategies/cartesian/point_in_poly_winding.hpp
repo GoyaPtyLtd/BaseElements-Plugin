@@ -3,8 +3,8 @@
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2013 Adam Wulkiewicz, Lodz, Poland.
 
-// This file was modified by Oracle on 2013-2020.
-// Modifications copyright (c) 2013-2020 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2013-2021.
+// Modifications copyright (c) 2013-2021 Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
@@ -24,10 +24,10 @@
 #include <boost/geometry/util/select_calculation_type.hpp>
 
 #include <boost/geometry/strategy/cartesian/expand_point.hpp>
+#include <boost/geometry/strategies/side.hpp>
 
 #include <boost/geometry/strategies/cartesian/point_in_box.hpp>
 #include <boost/geometry/strategies/cartesian/disjoint_box_box.hpp>
-#include <boost/geometry/strategies/cartesian/side_by_triangle.hpp>
 #include <boost/geometry/strategies/covered_by.hpp>
 #include <boost/geometry/strategies/within.hpp>
 
@@ -38,27 +38,18 @@ namespace boost { namespace geometry
 namespace strategy { namespace within
 {
 
+#ifndef DOXYGEN_NO_DETAIL
+namespace detail
+{
 
 /*!
 \brief Within detection using winding rule in cartesian coordinate system.
 \ingroup strategies
-\tparam Point_ \tparam_point
-\tparam PointOfSegment_ \tparam_segment_point
+\tparam SideStrategy A strategy defining creation along sides
 \tparam CalculationType \tparam_calculation
-\author Barend Gehrels
-
-\qbk{
-[heading See also]
-[link geometry.reference.algorithms.within.within_3_with_strategy within (with strategy)]
-}
  */
-template
-<
-    typename Point_ = void, // for backward compatibility
-    typename PointOfSegment_ = Point_, // for backward compatibility
-    typename CalculationType = void
->
-class cartesian_winding
+template <typename SideStrategy, typename CalculationType>
+class cartesian_winding_base
 {
     template <typename Point, typename PointOfSegment>
     struct calculation_type
@@ -69,7 +60,7 @@ class cartesian_winding
                 CalculationType
             >
     {};
-    
+
     /*! subclass to keep state */
     class counter
     {
@@ -82,7 +73,7 @@ class cartesian_winding
         }
 
     public :
-        friend class cartesian_winding;
+        friend class cartesian_winding_base;
 
         inline counter()
             : m_count(0)
@@ -93,43 +84,6 @@ class cartesian_winding
 
 public:
     typedef cartesian_tag cs_tag;
-
-    typedef side::side_by_triangle<CalculationType> side_strategy_type;
-
-    static inline side_strategy_type get_side_strategy()
-    {
-        return side_strategy_type();
-    }
-
-    typedef expand::cartesian_point expand_point_strategy_type;
-
-    typedef typename side_strategy_type::envelope_strategy_type envelope_strategy_type;
-
-    static inline envelope_strategy_type get_envelope_strategy()
-    {
-        return side_strategy_type::get_envelope_strategy();
-    }
-
-    typedef typename side_strategy_type::disjoint_strategy_type disjoint_strategy_type;
-
-    static inline disjoint_strategy_type get_disjoint_strategy()
-    {
-        return side_strategy_type::get_disjoint_strategy();
-    }
-
-    typedef typename side_strategy_type::equals_point_point_strategy_type equals_point_point_strategy_type;
-    static inline equals_point_point_strategy_type get_equals_point_point_strategy()
-    {
-        return side_strategy_type::get_equals_point_point_strategy();
-    }
-
-    typedef disjoint::cartesian_box_box disjoint_box_box_strategy_type;
-    static inline disjoint_box_box_strategy_type get_disjoint_box_box_strategy()
-    {
-        return disjoint_box_box_strategy_type();
-    }
-
-    typedef covered_by::cartesian_point_box disjoint_point_box_strategy_type;
 
     // Typedefs and static methods to fulfill the concept
     typedef counter state_type;
@@ -153,9 +107,9 @@ public:
             else // count == 2 || count == -2
             {
                 // 1 left, -1 right
-                side = side_strategy_type::apply(s1, s2, point);
+                side = SideStrategy::apply(s1, s2, point);
             }
-            
+
             if (side == 0)
             {
                 // Point is lying on segment
@@ -263,6 +217,34 @@ private:
     }
 };
 
+} // namespace detail
+#endif // DOXYGEN_NO_DETAIL
+
+/*!
+\brief Within detection using winding rule in cartesian coordinate system.
+\ingroup strategies
+\tparam Point_ \tparam_point
+\tparam PointOfSegment_ \tparam_segment_point
+\tparam CalculationType \tparam_calculation
+
+\qbk{
+[heading See also]
+[link geometry.reference.algorithms.within.within_3_with_strategy within (with strategy)]
+}
+ */
+template
+<
+    typename Point_ = void, // for backward compatibility
+    typename PointOfSegment_ = Point_, // for backward compatibility
+    typename CalculationType = void
+>
+class cartesian_winding
+    : public detail::cartesian_winding_base
+        <
+            typename side::services::default_strategy<cartesian_tag, CalculationType>::type,
+            CalculationType
+        >
+{};
 
 #ifndef DOXYGEN_NO_STRATEGY_SPECIALIZATIONS
 
@@ -272,13 +254,13 @@ namespace services
 template <typename PointLike, typename Geometry, typename AnyTag1, typename AnyTag2>
 struct default_strategy<PointLike, Geometry, AnyTag1, AnyTag2, pointlike_tag, polygonal_tag, cartesian_tag, cartesian_tag>
 {
-    typedef cartesian_winding<> type;
+    using type = cartesian_winding<>;
 };
 
 template <typename PointLike, typename Geometry, typename AnyTag1, typename AnyTag2>
 struct default_strategy<PointLike, Geometry, AnyTag1, AnyTag2, pointlike_tag, linear_tag, cartesian_tag, cartesian_tag>
 {
-    typedef cartesian_winding<> type;
+    using type = cartesian_winding<>;
 };
 
 } // namespace services
@@ -296,13 +278,13 @@ namespace strategy { namespace covered_by { namespace services
 template <typename PointLike, typename Geometry, typename AnyTag1, typename AnyTag2>
 struct default_strategy<PointLike, Geometry, AnyTag1, AnyTag2, pointlike_tag, polygonal_tag, cartesian_tag, cartesian_tag>
 {
-    typedef within::cartesian_winding<> type;
+    using type = within::cartesian_winding<>;
 };
 
 template <typename PointLike, typename Geometry, typename AnyTag1, typename AnyTag2>
 struct default_strategy<PointLike, Geometry, AnyTag1, AnyTag2, pointlike_tag, linear_tag, cartesian_tag, cartesian_tag>
 {
-    typedef within::cartesian_winding<> type;
+    using type = within::cartesian_winding<>;
 };
 
 }}} // namespace strategy::covered_by::services

@@ -41,7 +41,7 @@ enum class error
 
         This error is returned during parsing when additional
         octets are needed. The caller should append more data
-        to the existing buffer and retry the parse operaetion.
+        to the existing buffer and retry the parse operation.
     */
     need_more,
 
@@ -145,6 +145,9 @@ enum class error
 
     /// An obs-fold exceeded an internal limit.
     bad_obs_fold,
+
+    /// The response contains multiple and conflicting Content-Length.
+    multiple_content_length,
 
     /** The parser is stale.
 

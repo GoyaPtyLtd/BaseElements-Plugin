@@ -16,6 +16,8 @@
 #include <boost/beast/http/message.hpp>
 #include <boost/beast/http/type_traits.hpp>
 #include <boost/optional.hpp>
+
+#include <cstdint>
 #include <type_traits>
 #include <utility>
 
@@ -124,7 +126,7 @@ struct buffer_body
         {
             if(! body_.data)
             {
-                ec = error::need_buffer;
+                BOOST_BEAST_ASSIGN_EC(ec, error::need_buffer);
                 return 0;
             }
             auto const bytes_transferred =
@@ -136,7 +138,9 @@ struct buffer_body
             if(bytes_transferred == buffer_bytes(buffers))
                 ec = {};
             else
-                ec = error::need_buffer;
+            {
+                BOOST_BEAST_ASSIGN_EC(ec, error::need_buffer);
+            }
             return bytes_transferred;
         }
 
@@ -186,7 +190,7 @@ struct buffer_body
                 if(body_.more)
                 {
                     toggle_ = false;
-                    ec = error::need_buffer;
+                    BOOST_BEAST_ASSIGN_EC(ec, error::need_buffer);
                 }
                 else
                 {
@@ -202,7 +206,9 @@ struct buffer_body
                     body_.data, body_.size}, body_.more}};
             }
             if(body_.more)
-                ec = error::need_buffer;
+            {
+                BOOST_BEAST_ASSIGN_EC(ec, error::need_buffer);
+            }
             else
                 ec = {};
             return boost::none;
