@@ -12,6 +12,7 @@
 
 #import "BEMacFunctions.h"
 #import "BEPluginGlobalDefines.h"
+#import "BEFileMakerPlugin.h"
 #import "apple/BEMacNotificationResponse.h"
 #import "ProgressDialogWindowController.h"
 
@@ -20,6 +21,13 @@
 
 
 using namespace std;
+
+#pragma mark -
+#pragma mark Globals
+#pragma mark -
+
+extern BEFileMakerPlugin * g_be_plugin;
+
 
 
 const std::wstring SelectFileOrFolder ( const std::wstring& prompt, const std::wstring& in_folder, bool choose_file );
@@ -35,17 +43,19 @@ void InitialiseForPlatform ( )
 	
 	// notifications
 	
-	if ( @available ( macOS 10.14, * ) ) {
-		
-		auto authorizationOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
-		auto center = [UNUserNotificationCenter currentNotificationCenter];
-		[center requestAuthorizationWithOptions: authorizationOptions completionHandler:^(BOOL /* granted */, NSError * _Nullable /* error */) {
-//			NSLog(@"%i %@",granted, error);
-		}];
-		
-		notificationCenterDelegate = [[BENotificationResponse alloc] init];
-		center.delegate = (id)notificationCenterDelegate; // auto ncd =
-		
+	if ( @available ( macOS 10.14, * ) ) { //OBJECTIVE C
+	
+		if ( !g_be_plugin->running_on_server() ) { //C++
+			
+			auto authorizationOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
+			auto center = [UNUserNotificationCenter currentNotificationCenter];
+			[center requestAuthorizationWithOptions: authorizationOptions completionHandler:^(BOOL /* granted */, NSError * _Nullable /* error */) {
+				//			NSLog(@"%i %@",granted, error);
+			}];
+			
+			notificationCenterDelegate = [[BENotificationResponse alloc] init];
+			center.delegate = (id)notificationCenterDelegate; // auto ncd =
+		}
 	}
 }
 

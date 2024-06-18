@@ -85,14 +85,12 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 {
 #pragma unused ( plugin_call )
 
-	InitialiseForPlatform ( );
-	InitialiseLibXSLT();
-
-
 	QuadCharUniquePtr plugin_id ( PLUGIN_ID );
 	g_be_plugin = new BEFileMakerPlugin ( *plugin_id );
 	g_be_plugin->set_fmx_application ( plugin_call->parm1 );
 
+	InitialiseForPlatform ( );
+	InitialiseLibXSLT();
 
 #ifndef FMX_IOS_TARGET
     Magick::InitializeMagick ( NULL );
