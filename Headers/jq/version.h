@@ -1,1 +1,1 @@
-#define JQ_VERSION "1.6"
+#define JQ_VERSION "1.7.1"
