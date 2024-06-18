@@ -21,8 +21,8 @@
 // this is the only place the version information is set
 // building the macOS version will automatically set the version information for win/linux
 
-#define	AUTO_UPDATE_VERSION "05010001"
-#define VERSION_NUMBER_STRING "5.1.0" // e.g. 4.0.1
+#define	AUTO_UPDATE_VERSION "05009901"
+#define VERSION_NUMBER_STRING "5.1.0b1" // e.g. 4.0.1
 #define VERSION_STRING "5.1.0"	// e.g. 4.0.1b2
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/" VERSION_STRING
