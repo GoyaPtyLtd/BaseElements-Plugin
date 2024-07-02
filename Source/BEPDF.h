@@ -45,8 +45,8 @@ class BEPDFObject : public PoDoFo::PdfObject {
 public:
 
 	BEPDFObject ( const PoDoFo::PdfReference & rRef, const PoDoFo::PdfVariant & rVariant ) : PoDoFo::PdfObject ( rRef, rVariant ){};
-	void SetOwner ( PoDoFo::PdfIndirectObjectList* pVecObjects );
-	PoDoFo::PdfMemoryObjectStream* GetInputStream();
+	void SetOwner ( PoDoFo::PdfVecObjects* pVecObjects );
+	PoDoFo::PdfStream* GetStream();
 
 };
 
@@ -61,7 +61,7 @@ public:
 
 
 
-class BEPDFVectorObjects : public PoDoFo::PdfIndirectObjectList {
+class BEPDFVectorObjects : public PoDoFo::PdfVecObjects {
 	
 public:
 
@@ -70,7 +70,7 @@ public:
 };
 
 
-void FixPageReferences ( PoDoFo::PdfIndirectObjectList& objects, PoDoFo::PdfObject* pObject, std::unordered_map<PoDoFo::uint32_t, PoDoFo::uint32_t>& oldNumToNewNum );
+void FixPageReferences ( PoDoFo::PdfVecObjects& objects, PoDoFo::PdfObject* pObject, std::unordered_map<PoDoFo::pdf_objnum, PoDoFo::pdf_objnum>& oldNumToNewNum );
 
 
 

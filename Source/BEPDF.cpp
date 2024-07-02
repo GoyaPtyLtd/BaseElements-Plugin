@@ -15,8 +15,8 @@
 void BEPDFDocument::InsertPages ( const PoDoFo::PdfMemDocument & rDoc, std::vector<long> pageNumbers )
 {
 	std::unordered_set<PoDoFo::PdfObject*> totalSet;
-	std::vector<PoDoFo::uint32_t> oldObjNumPages;
-	std::unordered_map<PoDoFo::uint32_t, PoDoFo::uint32_t> oldObjNumToNewObjNum;
+	std::vector<PoDoFo::pdf_objnum> oldObjNumPages;
+	std::unordered_map<PoDoFo::pdf_objnum, PoDoFo::pdf_objnum> oldObjNumToNewObjNum;
 
 	std::vector<PoDoFo::PdfObject*> newPageObjects;
 
@@ -48,7 +48,7 @@ void BEPDFDocument::InsertPages ( const PoDoFo::PdfMemDocument & rDoc, std::vect
 			free(buf);
 
 		}
-		oldObjNumToNewObjNum.insert(std::pair<PoDoFo::uint32_t, PoDoFo::uint32_t>((*it)->Reference().ObjectNumber(), length+1));
+		oldObjNumToNewObjNum.insert(std::pair<PoDoFo::pdf_objnum, PoDoFo::pdf_objnum>((*it)->Reference().ObjectNumber(), length+1));
 		GetObjects().push_back((PoDoFo::PdfObject*)pObj);
 		newPageObjects.push_back((PoDoFo::PdfObject*)pObj);
 	}
@@ -68,7 +68,7 @@ void BEPDFDocument::InsertPages ( const PoDoFo::PdfMemDocument & rDoc, std::vect
 }
 
 
-void BEPDFObject::SetOwner ( PoDoFo::PdfIndirectObjectList* pVecObjects )
+void BEPDFObject::SetOwner ( PoDoFo::PdfVecObjects* pVecObjects )
 {
 	if ( m_pOwner == pVecObjects )
 	{
@@ -105,7 +105,7 @@ std::unordered_set<PoDoFo::PdfObject *>* BEPDFPage::GetPageDependencies() const
 	return set;
 }
 
-// Optimized version of PdfIndirectObjectList::GetObjectDependencies
+// Optimized version of PdfVecObjects::GetObjectDependencies
 void BEPDFVectorObjects::GetObjectDependencies (const PoDoFo::PdfObject* pObj, std::unordered_set<PoDoFo::PdfObject*> &refMap ) const
 {
 	// Check objects referenced from this object
@@ -142,7 +142,7 @@ void BEPDFVectorObjects::GetObjectDependencies (const PoDoFo::PdfObject* pObj, s
 	}
 }
 
-void FixPageReferences ( PoDoFo::PdfIndirectObjectList& objects, PoDoFo::PdfObject* pObject, std::unordered_map<PoDoFo::uint32_t, PoDoFo::uint32_t>& oldNumToNewNum ) {
+void FixPageReferences ( PoDoFo::PdfVecObjects& objects, PoDoFo::PdfObject* pObject, std::unordered_map<PoDoFo::pdf_objnum, PoDoFo::pdf_objnum>& oldNumToNewNum ) {
 	if( !pObject)
 	{
 		PODOFO_RAISE_ERROR( PoDoFo::ePdfError_InvalidHandle );
@@ -173,8 +173,8 @@ void FixPageReferences ( PoDoFo::PdfIndirectObjectList& objects, PoDoFo::PdfObje
 	{
 		//PdfObject* referencedObj = objects.GetObject(pObject->GetReference());
 
-		PoDoFo::uint32_t oldnum = pObject->GetReference().ObjectNumber();
-		PoDoFo::uint32_t newnum = oldNumToNewNum[oldnum];
+		PoDoFo::pdf_objnum oldnum = pObject->GetReference().ObjectNumber();
+		PoDoFo::pdf_objnum newnum = oldNumToNewNum[oldnum];
 
 		if (!newnum) throw new std::runtime_error("No new object number for old object number");
 
