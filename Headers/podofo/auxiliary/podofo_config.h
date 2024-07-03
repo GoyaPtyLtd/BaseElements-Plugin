@@ -10,8 +10,8 @@
 // PoDoFo configuration options
 
 // Libraries
-/* #undef PODOFO_HAVE_JPEG_LIB */
-/* #undef PODOFO_HAVE_PNG_LIB */
+#define PODOFO_HAVE_JPEG_LIB
+#define PODOFO_HAVE_PNG_LIB
 /* #undef PODOFO_HAVE_TIFF_LIB */
 #define PODOFO_HAVE_FONTCONFIG
 /* #undef PODOFO_HAVE_WIN32GDI */
