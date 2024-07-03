@@ -4,22 +4,7 @@ BaseElements Plugin is compatible with FileMaker server, with some caveats :
 
 **Server Compatible Functions**
 
-Some functions will return error 3 when called on platforms they do not work, on but not all functions can be relied on to work in every environment.  Access to the environment is different on different platforms, and can be affected by permissions, operating system and other factors beyond the control of the plugin.  Testing on multiple platforms is critical.
-
-**BaseElements Plugin and threads**
-
-The BaseElements plugin is currently thread safe as of version 4.0.4 for all functions.
-
-**If you're using older versions of the plugin prior to 4.0.4**
-
-In previous versions of the plugin, an instance of the plugin had a single store of temporary storage that it's using during and in between operations ( things like storing the SMTP settings, before the SMTP send, or the HTTP headers before a call ).
-Because of this, if you're running two instances of the plugin on a single machine, they can interfere with each other and step on each other's toes in terms of threads and operations, and therefore cause issues.  Again, running in this way is not documented or tested, and is not recommended.
-
-If you're calling scripts via PSOS or Schedules that use the BE plugin, we recommend that you do this in a way that limits the scripting to one process at a time.  So either you a system to flag when other processes are active and pauses until the flag is cleared.  Or you run a single process via schedule, that repeats and waits for a queue of "event" records to process.  Each one can be different actions to run, but they run in sequence as they come in.
-
-Either of these methods work to keep the plugin to a single instance, and therefore reduce the dependency issues that may come up and so prevent crashes or other issues.
-
-Upgrading to version 4.0.4 will negate the need for any of these precautions.
+Some functions will return error 3 when called on platforms they do not work on, but not all functions can be relied on to work in every environment.  Access to the environment is different on different platforms, and can be affected by permissions, operating system and other factors beyond the control of the plugin.  Testing on multiple platforms is critical.
 
 ## File Permissions when running under FMS
 
@@ -55,25 +40,53 @@ These file: prefixes that you get from things like the Get ( FilePath ) function
 
 **Plugin Paths Examples**
 
+To get an example of the sorts of paths that the plugin uses, use the **BE_SelectFile** function in the Data Viewer, and choose a file with a known path.  This will return an example of the sort of path used by the function.
+
 Mac :
-/Users/John Smith/Documents/test.xlsx"
+/Users/John Smith/Documents/test.xlsx
+
 Windows :
 C:\Users\John Smith\Documents\test.xlsx
+
 Linux :
 /etc/hosts
-To get an example of the sorts of paths that the plugin uses, use the **BE_SelectFile** function in the Data Viewer, and choose a file with a known path.  This will return an example of the sort of path used by the function.  You can then adjust this path to suit whatever location you need, or to get an example of the difference between selecting a file on the desktop and running the **Get ( DesktopFolder )** function.
 
 **FileMaker Path Examples**
 
-    file:///Volumes/Clients/contacts.txt
-    file:///C:/Users/John%20Smith/Documents/test.xlsx
-    file:///etc/hosts
+Mac :
+file:/Volumes/Clients/contacts.txt
+filemac:/Volumes/Clients/contacts.txt
+
+Windows :
+file:/C:/Users/John%20Smith/Documents/test.xlsx
+filewin:/C:/Users/John%20Smith/Documents/test.xlsx
+
+Linux :
+file:/etc/hosts
 
 Note the consistency of the type of slash used, vs the difference in \ vs / in Windows/Mac.
 
-Conversion of paths between typesThe best way to convert paths is to use the native FileMaker functions ConvertFromFileMakerPath and ConvertToFileMakerPath.  A "plugin" path is the same as the PosixPath for Mac or Linux, and the WinPath for windows operating systems.
+**Conversion of paths between types**
+
+The best way to convert paths is to use the native FileMaker functions **ConvertFromFileMakerPath** and **ConvertToFileMakerPath**.  A "plugin" path is the same as the PosixPath for Mac or Linux, and the WinPath for windows operating systems.
 
     ConvertFromFileMakerPath ( $filemakerPath ; PosixPath ) //Convert FileMaker to Mac/Linux Plugin Path
     ConvertFromFileMakerPath ( $filemakerPath ; WinPath ) //Convert FileMaker to Windows Plugin Path
     ConvertToFileMakerPath ( $pluginPath ; PosixPath ) //Convert Mac/Linux Plugin Path to file://Mac path.
     ConvertToFileMakerPath ( $pluginPath ; WinPath ) //Convert Windows Plugin Path to file://Windows path.
+
+## BaseElements Plugin and threads
+
+The BaseElements plugin is currently thread safe as of version 4.0.4 for all functions.
+
+**If you're using older versions of the plugin prior to 4.0.4**
+
+In previous versions of the plugin, an instance of the plugin had a single store of temporary storage that it was using during and in between operations ( things like storing the SMTP settings before the send, or the HTTP headers before a call ).
+
+Because of this, if you're running two instances of the plugin on a single machine, they can interfere with each other and step on each other's toes in terms of threads and operations, and therefore cause issues.  Again, running in this way is not documented or tested, and is not recommended.
+
+If you're calling scripts via PSOS or Schedules that use the BE plugin, we recommend that you do this in a way that limits the scripting to one process at a time.  So either you a system to flag when other processes are active and pauses until the flag is cleared.  Or you run a single process via schedule, that repeats and waits for a queue of "event" records to process.  Each one can be different actions to run, but they run in sequence as they come in.
+
+Either of these methods work to keep the plugin to a single instance, and therefore reduce the dependency issues that may come up and so prevent crashes or other issues.
+
+Upgrading to version 4.0.4 will negate the need for any of these precautions.

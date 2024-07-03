@@ -2,6 +2,8 @@ About.md
 
 The BaseElements plugin is a free and open source plugin, available to everyone to extend the built in functions of the Claris FileMaker Platform.
 
+It is open source and has no registration requirements, or anything within it that reports usage, so is entirely private and unrestricted.
+
 ##Functionality
 
 The BaseElements plugin has functions for file manipulation, dialogs, XSLT operations, clipboard manipulation, performing shell scripts and FileMaker scripts, internal SQL operations, MD5 and SHA hashing and more. There is a full list of the functions and the details on this site.
