@@ -47,7 +47,7 @@ Which can be called with the BE HTTP functions, or the native *Insert From URL* 
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
 | FMS | Yes  |  
-| iOS | Yes  |  
+| iOS | No  |  
 | Linux | Yes  |  
 
 **Example Code**

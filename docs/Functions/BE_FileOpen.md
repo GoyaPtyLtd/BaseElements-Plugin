@@ -36,7 +36,7 @@ In technical terms, the two are asynchronous - meaning we get back the first "do
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
 | FMS | Yes  |  
-| iOS | Yes  |  
-| Linux | Yes  |  
+| iOS | No  |  
+| Linux | No  |  
 
 **Example Code**
