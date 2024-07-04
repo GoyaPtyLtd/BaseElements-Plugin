@@ -36,7 +36,7 @@ You can only set a single format when setting the clipboard from BE, even though
 | Status | Active |  
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
-| FMS | Yes  |  
+| FMS | No |  
 | iOS | No  |  
 | Linux | No  |  
 
