@@ -32,9 +32,9 @@ Notes
 | Status | Active |  
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
-| FMS | Yes  |  
-| iOS | Yes  |  
-| Linux | Yes  |  
+| FMS | No  |  
+| iOS | No  |  
+| Linux | No  |  
 
 **Example Code**
 

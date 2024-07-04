@@ -35,7 +35,7 @@ If the plugin can't read the file, but it is a PDF then you may get an invalid r
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
 | FMS | Yes  |  
-| iOS | Yes  |  
+| iOS | No  |  
 | Linux | Yes  |  
 
 **Example Code**

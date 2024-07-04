@@ -29,7 +29,7 @@ Be careful, there is no undo.
 | Status | Active |  
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
-| FMS | Yes  |  
+| FMS | No  |  
 | iOS | Yes  |  
 | Linux | Yes  |  
 

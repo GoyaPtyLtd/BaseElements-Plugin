@@ -29,7 +29,7 @@ Notes
 | Status | Active |  
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
-| FMS | Yes  |  
+| FMS | No  |  
 | iOS | Yes  |  
 | Linux | Yes  |  
 

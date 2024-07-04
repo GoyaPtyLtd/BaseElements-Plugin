@@ -29,9 +29,9 @@ There are also two callback functions, so you can call FileMaker calculations us
 | Status | Testing |  
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
-| FMS | Yes  |  
-| iOS | Yes  |  
-| Linux | Yes  |  
+| FMS | No  |  
+| iOS | No  |  
+| Linux | No  |  
 
 Marked as **Testing** as it's not widely used, and functionality may change in the future, or even be removed.
 

@@ -60,7 +60,7 @@ Parameters of type List are expected to contain tags whose values are used to co
 | Status | Active |  
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
-| FMS | Yes  |  
+| FMS | No  |  
 | iOS | Yes  |  
 | Linux | Yes  |  
 
