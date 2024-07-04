@@ -69,18 +69,6 @@ The best outcome would be more widespread adoption of the plugin, with more peop
 
 If that translated to more income from Sponsors so that we could dedicate more resources to it, then that would be a great outcome for everyone.
 
-It doesn't matter to us if that income is solely with Goya, or is widespread across the community because of widespread assistance.
+It doesn't matter to us if that income is solely with Goya, or is widespread across the community because of widespread assistance - either would be a good outcome for everyone.
 
-#### Corporate Sponsor Options
-
-We've removed for now the $399 company sponsor option and are considering a broader Corporate Sponsor package.  This would be much more aligned with a small number of companies, at a higher financial level, who are more closely aligned with the goals of the plugin.
-
-There's a whole lot of possible option we're considering here :
-
-* New custom dedicated functions.
-* Sponsor thanks in the code repo here.
-* Custom builds of the plugin, either for branding purposes, or locked down functionality.
-* What else ???
-
-If any of this interests you, please contact us.
 

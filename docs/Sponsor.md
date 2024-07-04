@@ -32,7 +32,19 @@ Yes.  :)  That's what the sponsor option is for, you can use the support options
 We've built a heap of sample files for sponsors to show them exactly how to do that one weird thing they're trying to achieve but not sure how to get working.
 
 If you've got a similar issue, give the sponsor option a go.
- 
+
+#### Corporate Sponsor Options
+
+We've removed for now the $399 company sponsor option and are considering a larger Corporate Sponsor package.  This is likely to be much more closely aligned with a small number of companies, at a higher financial support level, and by companies who are willing to do more to assist with the goals of the plugin.
+
+There's a whole lot of possible option we're considering here :
+
+* New custom dedicated functions.
+* Sponsor thanks in the code repo here.
+* Custom builds of the plugin, either for branding purposes, or locked down functionality.
+* What else ???
+
+If any of this interests you, please contact us.
 
 ### Thanks already
 
