@@ -28,7 +28,7 @@ File Select Dialog
 
 **Notes**
 
-Notes
+PLUGIN PATHS ARE NOT FILEMAKER PATHS. The plugin uses the same path structure as your operating system, and you cannot pass to the plugin paths that start with file:/ or filewin:/ etc.  Read the FAQ for more info about paths.
 
 **Compatibility** 
 
