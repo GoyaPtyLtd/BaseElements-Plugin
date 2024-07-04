@@ -34,7 +34,7 @@ If the format is a binary file type, and has a filename, then that parameter is 
 | Status | Active |  
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
-| FMS | No |  
+| FMS | Yes  |  
 | iOS | No  |  
 | Linux | No  |  
 

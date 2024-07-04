@@ -38,7 +38,7 @@ The *BE_SetTextEncoding* function does have an effect on how this result is used
 | Status | Active |  
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
-| FMS | No |  
+| FMS | Yes  |  
 | iOS | No  |  
 | Linux | No  |  
 

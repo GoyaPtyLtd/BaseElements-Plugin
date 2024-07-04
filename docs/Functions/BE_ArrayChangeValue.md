@@ -4,7 +4,7 @@
 
 **Description**  
 
-Changes the *array* item at *valueNumber* to *newValue*.
+Changes the array item at valueNumber to newValue in array number array.
 
 **Parameters**
 
