@@ -4,7 +4,7 @@
 
 **Description**  
 
-Parses an XML file at path to determine if it's properly formed. Does not check XSD details, just whether every tag is properly opened and closed.
+Parses an XML file at *pathOrXMLText* to determine if it's properly formed. Does not check XSD details, just whether every tag is properly opened and closed.
 
 The result will be empty when successful with a *BE_GetLastError* returning 0.
 

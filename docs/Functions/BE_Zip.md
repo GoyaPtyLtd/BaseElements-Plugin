@@ -4,14 +4,14 @@
 
 **Description**  
 
-Compresses the file(s) found at the filePathList.
+Compresses the file(s) found at the *filePathList* and optionally saves the zip file to *archiveFilePath*.
 
 **Parameters**
 
 * *filePathList* : a plugin file path, or a container field.
 * *archiveFilePath* : a plugin file path to put the result.
 
-If the *archiveFilePath* parameter is not specified, then the zip file is put into the same folder as first file in the list, and has the .zip extension appended to the filename. This will overwrite an existing file if it exists with that name already.
+If the *archiveFilePath* parameter is not specified, then the zip file is put into the same folder as first filename in the list, and has the .zip extension appended to the filename. This will overwrite an existing file if it exists with that name already.
  
 **Keywords**  
 
