@@ -33,66 +33,15 @@ We have options to [sponsor](https://github.com/sponsors/GoyaPtyLtd) the plugin 
 
 Downloads
 
-Prices and Licencing
-
 Translations and Localisation
 
-##Frequently Asked Questions
+[Frequently Asked Questions](FAQ.md)
 
-How to install the BaseElements Plugin
+[How to install the BaseElements Plugin](Installation.md)
 
-BaseElements Plugin on FileMaker Server
-
-Plugin File Permissions when running on FileMaker Server
-
-How Paths work in the BaseElements Plugin
-
-BE Operating System Compatibility
-
-Feature Requests and Ideas
+[Feature Requests and Ideas](Ideas.md)
 
 ## How To Guides
 
-Connecting to an IMAP server with the BaseElements Plugin
+[Connecting to an IMAP server with the BaseElements Plugin](Guides/IMAP.md)
 
-## Functions
-
-### Arrays
-
-### Clipboard
-
-### Constants
-
-### Containers
-
-### Data Manipulation
-
-### Dialogs
-
-### Encoding and Encryption
-
-### Error Checking
-
-### Files and Folders
-
-### HTTP and URLs
-
-### Miscellaneous
-
-### PDF
-
-### Preferences
-
-### SMTP Email
-
-### Time
-
-### Value Lists
-
-### Vectors
-
-### XML, XSLT, and JSON
-
-### Zip and Gzip
-
-### Deprecated and Removed Functions
