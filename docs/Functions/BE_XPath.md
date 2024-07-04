@@ -4,7 +4,7 @@
 
 **Description**  
 
-This finds the first instance of a node at the path xpath within the text xml. 
+This finds the first instance of a node at the path *xpathText* within the text *xmlText*. 
 
 **Parameters**
 
@@ -13,7 +13,7 @@ This finds the first instance of a node at the path xpath within the text xml.
 * *namespaceListText* ( optional ) : Namespace list as "prefix1=href1 prefix2=href2...".
 * *asTextBoolean* ( optional, default:False ) : Whether to return the XML nodeset as text instead of the standard XPath result.
 
-The *asTextBoolean* parameter when set to True allows you to get raw XML from the source - normally where the XPath function would return a node, with it's opening and closing tag, this will return the value inside that tag instead
+The *asTextBoolean* parameter when set to True allows you to get raw XML from the source - normally where the XPath function would return a node, with it's opening and closing tag, this will return the value inside that tag instead.
 
 **Keywords**  
 

@@ -12,7 +12,7 @@ Sends the url to the users default web browser.
 
 **Keywords**  
 
-keyword keyword
+URL
 
 **Version History**
 

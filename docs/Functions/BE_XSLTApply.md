@@ -4,7 +4,7 @@
 
 **Description**  
 
-Applies the XSLT given by the xsltText parameter, to the XML file at xmlPath, and writes the output to outputPath.
+Applies the XSLT given by the *xsltText* parameter, to the XML file at *xmlFilePath*, and writes the output to *outputFilePath*.
 
 **Parameters**
 
@@ -29,7 +29,7 @@ XML XSLT Memory
 
 **Notes**
 
-When the scriptName option is used, the script parameter is the response from the XSLT function, if present, and the outputFilePath otherwise.
+When the *scriptName* option is used, the script parameter sent to *scriptName* is the response from the XSLT function if present, or the *outputFilePath* otherwise.
 
 **Compatibility** 
 

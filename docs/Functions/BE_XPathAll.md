@@ -4,7 +4,7 @@
 
 **Description**  
 
-This finds all instances of a node at the path xpath within the text xml.  Similar to running *BE_XPath* in a loop. 
+This finds all instances of a node at the path *xpathText* within the text *xmlText*. 
 
 **Parameters**
 
@@ -18,8 +18,9 @@ XML XPath
 
 **Version History**
 
-* 1.0.0 : First Release
-* 1.2.0 : 
+* 1.2.0 : First Release
+* 2.2.0 : support objects of type XPATH_BOOLEAN, XPATH_NUMBER and XPATH_STRING
+* 2.2.1 : return an empty string when getting an empty node set as xml
 
 **Notes**
 

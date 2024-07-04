@@ -13,7 +13,7 @@ Removes duplicate values from listOfValues.
 
 **Keywords**  
 
-Values Unique
+Values Unique List
 
 **Version History**
 
