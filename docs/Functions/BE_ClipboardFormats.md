@@ -43,8 +43,7 @@ or copying plain text from FileMaker on the Mac will give :
 
 So it's possible to utilise different types depending on your intended use.  The different formats can be quite different, content wise, for example if you copied RichText with formatting, you clipboard may contain types of :
 
-	public.rtf
-	public.utf8-plain-text
+	public.rtf	public.utf8-plain-text
 	
 Only the first type would retain the format information.
 
@@ -55,7 +54,7 @@ Only the first type would retain the format information.
 | Status | Active |  
 | Mac FMP | Yes  |  
 | Win FMP | Yes  |  
-| FMS | No |  
+| FMS | Yes |  
 | iOS | No  |  
 | Linux | No  |  
 
