@@ -1,14 +1,14 @@
 ## BE_VariableGet
 
-	BE_VariableGet ( name )
+    BE_VariableGet ( name )
 
 **Description**  
 
-This function gets the previously stored variable of name.
+Gets the value of the previously stored plugin variable with *name*.
 
 **Parameters**
 
-* *name* : The name of the variable to return.
+* *name* : the name of the variable to return.
 
 **Keywords**  
 
@@ -22,6 +22,8 @@ Variable Get
 
 Plugin variables are much like $local and $$global FileMaker variables, except the scope is the instance of the plugin, so will persist across FileMaker files and even on closing and opening of files.  They are only lost when the plugin is loaded or unloaded, usually only ever when FileMaker restarts.
 
+On FileMaker Server they exist in a single session, and not across different sessions as each session is a new application launch effectively.
+
 **Compatibility** 
 
 | Platform | Compatibility |
@@ -34,4 +36,3 @@ Plugin variables are much like $local and $$global FileMaker variables, except t
 | Linux | Yes  |  
 
 **Example Code**
-

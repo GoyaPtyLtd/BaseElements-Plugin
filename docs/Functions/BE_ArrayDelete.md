@@ -4,7 +4,7 @@
 
 **Description**  
 
-Removes the array from memory.
+Removes *array* from memory.
 
 **Parameters**
 
