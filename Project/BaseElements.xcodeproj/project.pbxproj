@@ -169,7 +169,6 @@
 		4D8E92F529B97F54001C8ABA /* BEMacNotificationResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E92F429B97F54001C8ABA /* BEMacNotificationResponse.mm */; };
 		4D8E92F629B97F54001C8ABA /* BEMacNotificationResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E92F429B97F54001C8ABA /* BEMacNotificationResponse.mm */; };
 		4D8E92F729B97F54001C8ABA /* BEMacNotificationResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D8E92F429B97F54001C8ABA /* BEMacNotificationResponse.mm */; };
-		4D9B306928657134004B4853 /* libde265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43213428126C170014BBD3 /* libde265.a */; };
 		4D9B306A28657188004B4853 /* libde265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43213428126C170014BBD3 /* libde265.a */; };
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
 		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
@@ -894,7 +893,6 @@
 				4D432123281268720014BBD3 /* libpng16.a in Frameworks */,
 				4DBB490727C45AD000D3D232 /* FMWrapper.framework in Frameworks */,
 				4DBB490827C45AD000D3D232 /* DiskArbitration.framework in Frameworks */,
-				4D9B306928657134004B4853 /* libde265.a in Frameworks */,
 				4DBB490927C45AD000D3D232 /* Cocoa.framework in Frameworks */,
 				4D29455B28643DBC00C94A27 /* libde265.a in Frameworks */,
 				4DC4FE052817BC0000C3A339 /* libheif.a in Frameworks */,
@@ -2331,8 +2329,9 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				HEADER_SEARCH_PATHS = (
-					../Headers,
+					../Headers/,
 					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
 				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
@@ -2385,8 +2384,9 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				HEADER_SEARCH_PATHS = (
-					../Headers,
+					../Headers/,
 					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
 				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
