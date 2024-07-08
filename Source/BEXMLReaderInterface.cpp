@@ -21,13 +21,13 @@
 
 const int BEXMLReaderInterface::last_error ( const int default_error )
 {
-	xmlErrorPtr xml_error = xmlGetLastError();
+	const xmlError *xml_error = xmlGetLastError();
 	
 	// don't crash if there's no xml_error
 	int error;
 	if ( xml_error ) {
 		error = xml_error->code;
-		xmlResetError ( xml_error );
+		xmlResetLastError();
 	} else {
 		error = default_error;
 	}

@@ -66,7 +66,6 @@ const std::string validate_xml ( const std::string xml, const std::string schema
 {
 	g_xsd_errors.clear( );
 
-	xmlInitMemory();
 	xmlSubstituteEntitiesDefault ( 1 );
 	xmlLoadExtDtdDefaultValue = 1;
 	xmlLineNumbersDefault ( 1 );
