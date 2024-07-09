@@ -27,6 +27,11 @@
 
 
 namespace Poco {
+
+
+class FileInputStream;
+
+
 namespace Net {
 
 
@@ -39,6 +44,13 @@ class Net_API SocketImpl: public Poco::RefCountedObject
 	/// You should not create any instances of this class.
 {
 public:
+	enum Type
+	{
+		SOCKET_TYPE_STREAM = SOCK_STREAM,
+		SOCKET_TYPE_DATAGRAM = SOCK_DGRAM,
+		SOCKET_TYPE_RAW = SOCK_RAW
+	};
+
 	enum SelectMode
 	{
 		SELECT_READ  = 1,
@@ -85,7 +97,7 @@ public:
 		/// If reuseAddress is true, sets the SO_REUSEADDR
 		/// socket option.
 
-	virtual void bind(const SocketAddress& address, bool reuseAddress, bool reusePort );
+	virtual void bind(const SocketAddress& address, bool reuseAddress, bool reusePort);
 		/// Bind a local address to the socket.
 		///
 		/// This is usually only done when establishing a server
@@ -115,7 +127,7 @@ public:
 		/// If the library has not been built with IPv6 support,
 		/// a Poco::NotImplementedException will be thrown.
 
-	virtual void bind6(const SocketAddress& address, bool reuseAddress, bool reusePort,  bool ipV6Only);
+	virtual void bind6(const SocketAddress& address, bool reuseAddress, bool reusePort, bool ipV6Only);
 		/// Bind a local IPv6 address to the socket.
 		///
 		/// This is usually only done when establishing a server
@@ -134,6 +146,13 @@ public:
 		///
 		/// If the library has not been built with IPv6 support,
 		/// a Poco::NotImplementedException will be thrown.
+
+	void useFileDescriptor(poco_socket_t fd);
+		/// Use a external file descriptor for the socket. Required to be careful
+		/// about what kind of file descriptor you're passing to make sure it's compatible
+		/// with how you plan on using it. These specifics are platform-specific.
+		/// Not valid to call this if the internal socket is already initialized.
+		/// Poco takes ownership of the file descriptor, closing it when this socket is closed.
 
 	virtual void listen(int backlog = 64);
 		/// Puts the socket into listening state.
@@ -169,7 +188,8 @@ public:
 		/// value denoting a certain condition.
 
 	virtual int sendBytes(const SocketBufVec& buffers, int flags = 0);
-		/// Receives data from the socket and stores it in buffers.
+		/// Sends the contents of the given buffers through
+		/// the socket.
 		///
 		/// Returns the number of bytes received.
 		///
@@ -270,6 +290,12 @@ public:
 		///
 		/// Returns true if the next operation corresponding to
 		/// mode will not block, false otherwise.
+
+	Type type();
+		/// Returns the socket type.
+
+	virtual int getError();
+		/// Returns the socket error.
 
 	virtual void setSendBufferSize(int size);
 		/// Sets the size of the send buffer.
@@ -452,6 +478,11 @@ public:
 	bool initialized() const;
 		/// Returns true iff the underlying socket is initialized.
 
+	Poco::Int64 sendFile(FileInputStream &FileInputStream, Poco::UInt64 offset = 0);
+		/// Sends file using system function
+		/// for posix systems - with sendfile[64](...)
+		/// for windows - with TransmitFile(...)
+
 protected:
 	SocketImpl();
 		/// Creates a SocketImpl.
@@ -526,6 +557,17 @@ private:
 //
 // inlines
 //
+inline SocketImpl::Type SocketImpl::type()
+{
+	int type;
+	getOption(SOL_SOCKET, SO_TYPE, type);
+	poco_assert_dbg(type == SOCK_STREAM ||
+					type == SOCK_DGRAM ||
+					type == SOCK_RAW);
+	return static_cast<Type>(type);
+}
+
+
 inline poco_socket_t SocketImpl::sockfd() const
 {
 	return _sockfd;
@@ -556,5 +598,9 @@ inline bool SocketImpl::getBlocking() const
 
 } } // namespace Poco::Net
 
+
+#if defined(POCO_OS_FAMILY_WINDOWS)
+	#pragma comment(lib, "mswsock.lib") 
+#endif 
 
 #endif // Net_SocketImpl_INCLUDED

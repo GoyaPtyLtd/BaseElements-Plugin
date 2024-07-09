@@ -34,8 +34,22 @@
 
 
 namespace Poco {
+
 namespace JSON {
 
+class JSON_API Object;
+
+}
+
+#if defined(POCO_OS_FAMILY_WINDOWS)
+// Explicitly instatiated shared pointer in JSON library
+extern template class Poco::SharedPtr<Poco::JSON::Object>;
+#else
+// Explicitly instatiated shared pointer in JSON library
+extern template class JSON_API Poco::SharedPtr<Poco::JSON::Object>;
+#endif
+
+namespace JSON {
 
 class JSON_API Object
 	/// Represents a JSON object. Object provides a representation based on
@@ -101,7 +115,13 @@ public:
 
 	bool getEscapeUnicode() const;
 		/// Returns the flag for escaping unicode.
+	
+	void setLowercaseHex(bool lowercaseHex);
+		/// Sets the flag for using lowercase hex numbers
 
+	bool getLowercaseHex() const;
+		/// Returns the flag for using lowercase hex numbers
+	
 	Iterator begin();
 		/// Returns begin iterator for values.
 
@@ -255,6 +275,7 @@ private:
 	{
 		int options = Poco::JSON_WRAP_STRINGS;
 		options |= _escapeUnicode ? Poco::JSON_ESCAPE_UNICODE : 0;
+		options |= _lowercaseHex ? Poco::JSON_LOWERCASE_HEX : 0;
 
 		out << '{';
 
@@ -267,7 +288,7 @@ private:
 			for (unsigned int i = 0; i < indent; i++) out << ' ';
 
 			Stringifier::stringify(getKey(it), out, indent, step, options);
-			out << ((indent > 0) ? " : " : ":");
+			out << ((indent > 0) ? ": " : ":");
 
 			Stringifier::stringify(getValue(it), out, indent + step, step, options);
 
@@ -349,6 +370,7 @@ private:
 	//  because Object can be returned stringified from Dynamic::Var::toString(),
 	//  so it must know whether to escape unicode or not.
 	bool              _escapeUnicode;
+	bool              _lowercaseHex;
 	mutable StructPtr    _pStruct;
 	mutable OrdStructPtr _pOrdStruct;
 	mutable bool         _modified;
@@ -368,6 +390,17 @@ inline void Object::setEscapeUnicode(bool escape)
 inline bool Object::getEscapeUnicode() const
 {
 	return _escapeUnicode;
+}
+
+inline void Object::setLowercaseHex(bool lowercaseHex)
+{
+	_lowercaseHex = lowercaseHex;
+}
+
+
+inline bool Object::getLowercaseHex() const
+{
+	return _lowercaseHex;
 }
 
 
@@ -443,7 +476,6 @@ inline std::size_t Object::size() const
 
 inline void Object::remove(const std::string& key)
 {
-	_values.erase(key);
 	if (_preserveInsOrder)
 	{
 		KeyList::iterator it = _keys.begin();
@@ -457,6 +489,7 @@ inline void Object::remove(const std::string& key)
 			}
 		}
 	}
+	_values.erase(key);
 	_modified = true;
 }
 
@@ -570,7 +603,7 @@ public:
 	void convert(std::string& s) const
 	{
 		std::ostringstream oss;
-		_val->stringify(oss, 2);
+		_val->stringify(oss);
 		s = oss.str();
 	}
 
@@ -712,7 +745,7 @@ public:
 	void convert(std::string& s) const
 	{
 		std::ostringstream oss;
-		_val.stringify(oss, 2);
+		_val.stringify(oss);
 		s = oss.str();
 	}
 

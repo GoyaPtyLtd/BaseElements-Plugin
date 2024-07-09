@@ -65,7 +65,7 @@ public:
 
 	virtual int handleResponse(char* buffer, int length);
 		/// Handles responses from UDP server. For non-POCO UDP servers,
-		/// this function should be overriden in inheriting class.
+		/// this function should be overridden in inheriting class.
 
 	void setOption(int opt, int val);
 		/// Sets socket option.
@@ -86,7 +86,7 @@ private:
 	DatagramSocket      _socket;
 	SocketAddress       _address;
 	Thread*             _pThread;
-	bool                _stop;
+	std::atomic<bool>   _stop;
 	Poco::AtomicCounter _dataBacklog;
 	Poco::AtomicCounter _errorBacklog;
 };
