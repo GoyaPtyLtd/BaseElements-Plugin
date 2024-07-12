@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		014614362C40F7C60098C862 /* libunistring.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 014614352C40F7C60098C862 /* libunistring.a */; };
+		014614372C40F7DA0098C862 /* libunistring.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 014614352C40F7C60098C862 /* libunistring.a */; };
 		4D0BBAE4267AC1D60021DA56 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0BBAE3267AC1D60021DA56 /* libPocoNet.a */; };
 		4D11F3E91F271B0C00D78042 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3E81F271B0C00D78042 /* libssl.a */; };
 		4D11F3EB1F271B1F00D78042 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3EA1F271B1F00D78042 /* libcrypto.a */; };
@@ -556,6 +558,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		014614352C40F7C60098C862 /* libunistring.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libunistring.a; path = ../Libraries/macOS/libunistring.a; sourceTree = "<group>"; };
 		4D05792C1B3B83550000585F /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/macOS/FMWrapper.framework; sourceTree = "<group>"; };
 		4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPEmailMessage.cpp; path = ../Source/Net/BESMTPEmailMessage.cpp; sourceTree = "<group>"; };
 		4D0BA9B118BEF74D00F8FD45 /* BESMTPEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTPEmailMessage.h; path = ../Source/Net/BESMTPEmailMessage.h; sourceTree = "<group>"; };
@@ -855,6 +858,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				014614372C40F7DA0098C862 /* libunistring.a in Frameworks */,
 				4DBC861E28812E4200E4CD1D /* libjq.a in Frameworks */,
 				4D432129281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
 				4DBB48EC27C45AD000D3D232 /* libPocoNet.a in Frameworks */,
@@ -970,6 +974,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				014614362C40F7C60098C862 /* libunistring.a in Frameworks */,
 				4D8E92F129B6E8A6001C8ABA /* UserNotifications.framework in Frameworks */,
 				4D423CF628B5F47E00C0BB2C /* libjq.a in Frameworks */,
 				4D432127281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
@@ -1283,6 +1288,7 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				014614352C40F7C60098C862 /* libunistring.a */,
 				4D8E92EC29B6E88C001C8ABA /* UserNotifications.framework */,
 				4D8E92EE29B6E894001C8ABA /* UserNotifications.framework */,
 				4DDF7314299B350100B9C608 /* libPocoCrypto.a */,
