@@ -31,6 +31,9 @@
  *   files in the program, then also delete it here.                       *
  ***************************************************************************/
 
+#ifndef PDFMUTEXIMPL_WIN32_H
+#define PDFMUTEXIMPL_WIN32_H
+
 #include "../PdfDefines.h"
 #include "../PdfDefinesPrivate.h"
 
@@ -86,13 +89,13 @@ PdfMutexImpl::PdfMutexImpl()
 	// on Windows XP / Server 2003. The exception was eliminated in Windows Vista / Server 2008,
 	// so don't warn if building for Vista or later.
 
-#if ( WINVER >= _WIN32_WINNT_VISTA )
+#if defined(_MSC_VER) && ( WINVER >= _WIN32_WINNT_VISTA )
 	#pragma warning(disable : 28125)
 #endif
 
     InitializeCriticalSection( &m_cs );
 
-#if ( WINVER >= _WIN32_WINNT_VISTA )
+#if defined(_MSC_VER) && ( WINVER >= _WIN32_WINNT_VISTA )
 	#pragma warning(default : 28125)
 #endif
 
@@ -121,3 +124,5 @@ void PdfMutexImpl::UnLock()
 
 }; // Util
 }; // PoDoFo
+
+#endif // PDFMUTEXIMPL_WIN32_H

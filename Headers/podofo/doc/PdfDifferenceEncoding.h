@@ -206,7 +206,9 @@ class PODOFO_DOC_API PdfDifferenceEncoding : public PdfEncoding, private PdfElem
      *  \param bAutoDelete if true the encoding is deleted by its owning font
      *  \param bExplicitNames if true, glyph names are meaningless explicit keys on the font (used for Type3 fonts)
      */
-    PdfDifferenceEncoding( PdfObject* pObject, bool bAutoDelete = true, bool bExplicitNames = false );
+    PdfDifferenceEncoding(PdfObject* pObject, bool bAutoDelete = true,
+                          bool bExplicitNames = false,
+                          PdfObject* pToUnicode = NULL);
 
     /** Convert a standard character name to a unicode code point
      * 
@@ -282,6 +284,21 @@ class PODOFO_DOC_API PdfDifferenceEncoding : public PdfEncoding, private PdfElem
      *  Will throw an exception if nIndex is out of range.
      */
     virtual pdf_utf16be GetCharCode( int nIndex ) const;
+
+    pdf_uint16 GetEncodedUnicode( pdf_uint16 unicodeValue ) const
+    {
+#ifdef PODOFO_IS_LITTLE_ENDIAN
+        unicodeValue = ((unicodeValue & 0xff00) >> 8) | ((unicodeValue & 0xff) << 8);
+#endif // PODOFO_IS_LITTLE_ENDIAN
+
+        char val;
+        if (!m_differences.ContainsUnicodeValue( unicodeValue, val ))
+        {
+            val = static_cast<const PdfSimpleEncoding*>(GetBaseEncoding())->GetUnicodeCharCode( unicodeValue );
+        }
+
+        return static_cast<unsigned char>(val);
+    }
 
  protected:
 

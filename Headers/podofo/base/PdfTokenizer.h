@@ -58,6 +58,7 @@ typedef std::deque<TTokenizerPair>           TTokenizerQueque;
 typedef TTokenizerQueque::iterator           TITokenizerQueque;
 typedef TTokenizerQueque::const_iterator     TCITokenizerQueque;
 
+class PdfObject;
 
 /**
  * A simple tokenizer for PDF files and PDF content streams
@@ -70,6 +71,44 @@ class PODOFO_API PdfTokenizer {
     PdfTokenizer( const PdfRefCountedInputDevice & rDevice, const PdfRefCountedBuffer & rBuffer );
 
     virtual ~PdfTokenizer();
+
+    class RecursionGuard
+    {
+    // RAII recursion guard ensures recursion depth is always decremented
+    // because the destructor is always called when control leaves a method
+    // via return or an exception.
+    // see http://en.cppreference.com/w/cpp/language/raii
+
+    // It's used like this:
+    // PdfRecursionGuard guard;
+
+    public:
+        RecursionGuard() { Enter(); }
+        ~RecursionGuard() { Exit(); }
+        
+        // set maximum recursion depth (set to 0 to disable recursion check)
+        static void SetMaxRecursionDepth( int32_t maxRecursionDepth )
+        {
+            s_maxRecursionDepth = maxRecursionDepth;
+        }
+
+        static int32_t GetMaxRecursionDepth()
+        {
+            return s_maxRecursionDepth;
+        }
+
+    private:
+        void Enter();
+        void Exit();
+
+        static int s_maxRecursionDepth;
+
+    #if defined(PODOFO_MULTI_THREAD)
+        static thread_local int s_nRecursionDepth; // PoDoFo is multi-threaded and requires a C++11 compiler with thread_local support
+    #else
+        static int s_nRecursionDepth; // PoDoFo is single-threaded
+    #endif    
+    };    
 
     /** Reads the next token from the current file position
      *  ignoring all comments.
@@ -144,7 +183,7 @@ class PODOFO_API PdfTokenizer {
     /**
      * True if the passed character is a regular character according to the PDF
      * reference (Section 3.1.1, Character Set); ie it is neither a white-space
-     * nor a delimeter character.
+     * nor a delimiter character.
      */
     PODOFO_NOTHROW inline static bool IsRegular(const unsigned char ch);
 
@@ -273,7 +312,7 @@ class PODOFO_API PdfTokenizer {
     // A vector which is used as a buffer to read strings.
     // It is a member of the class to avoid reallocations while parsing.
     std::vector<char> m_vecBuffer; // we use a vector instead of a string
-                                   // because we might read a unicode
+                                   // because we might read a Unicode
                                    // string which is allowed to contain 0 bytes.
 
     /// An istringstream which is used

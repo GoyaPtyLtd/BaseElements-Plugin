@@ -66,13 +66,13 @@ class RC4CryptoEngine;
 
 
 /** A class that is used to encrypt a PDF file and 
- *  set document permisions on the PDF file.
+ *  set document permissions on the PDF file.
  *
- *  As a user of this class, you have only to instanciate a
+ *  As a user of this class, you have only to instantiate a
  *  object of this class and pass it to PdfWriter, PdfMemDocument,
  *  PdfStreamedDocument or PdfImmediateWriter.
  *  You do not have to call any other method of this class. The above
- *  classes know how to handle encryption using Pdfencrypt.
+ *  classes know how to handle encryption using PdfEncrypt.
  *
  */
 class PODOFO_API PdfEncrypt
@@ -100,11 +100,11 @@ public:
      */
     typedef enum {
         ePdfPermissions_Print		= 0x00000004,  ///< Allow printing the document
-        ePdfPermissions_Edit		= 0x00000008,  ///< Allow modifying the document besides annotations, form fields or chaning pages
+        ePdfPermissions_Edit		= 0x00000008,  ///< Allow modifying the document besides annotations, form fields or changing pages
         ePdfPermissions_Copy		= 0x00000010,  ///< Allow text and graphic extraction
-        ePdfPermissions_EditNotes	= 0x00000020,  ///< Add or modify text annoations or form fields (if ePdfPermissions_Edit is set also allow to create interactive form fields including signature)
+        ePdfPermissions_EditNotes	= 0x00000020,  ///< Add or modify text annotations or form fields (if ePdfPermissions_Edit is set also allow to create interactive form fields including signature)
         ePdfPermissions_FillAndSign	= 0x00000100,  ///< Fill in existing form or signature fields 
-        ePdfPermissions_Accessible	= 0x00000200,  ///< Extract text and graphics to support user with disabillities
+        ePdfPermissions_Accessible	= 0x00000200,  ///< Extract text and graphics to support user with disabilities
         ePdfPermissions_DocAssembly	= 0x00000400,  ///< Assemble the document: insert, create, rotate delete pages or add bookmarks
         ePdfPermissions_HighPrint	= 0x00000800   ///< Print a high resolution version of the document
     } EPdfPermissions;
@@ -120,6 +120,7 @@ public:
         ePdfEncryptAlgorithm_AESV2 = 4  ///< AES encryption with a 128 bit key (PDF1.6)
 #ifdef PODOFO_HAVE_LIBIDN
         ,ePdfEncryptAlgorithm_AESV3 = 8 ///< AES encryption with a 256 bit key (PDF1.7 extension 3) - Support added by P. Zent
+        ,ePdfEncryptAlgorithm_AESV3R6 = 16 ///< AES encryption with a 256 bit key, Revision 6 (PDF1.7 extension 8, PDF 2.0)
 #endif //PODOFO_HAVE_LIBIDN
     } EPdfEncryptAlgorithm;
 
@@ -173,7 +174,7 @@ public:
      * Retrieve the list of encryption algorithms that are used
      * when loading a PDF document.
      *
-     * By default all alogrithms are enabled.
+     * By default all algorithms are enabled.
      *
      * \see IsEncryptionEnabled
      * \see SetEnabledEncryptionAlgorithms
@@ -197,7 +198,7 @@ public:
     /**
      * Test if a certain encryption algorithm is enabled for loading PDF documents.
      *
-     * \returns ture if the encryption algorithm is enabled
+     * \returns true if the encryption algorithm is enabled
      * \see GetEnabledEncryptionAlgorithms
      * \see SetEnabledEncryptionAlgorithms
      */
@@ -231,7 +232,7 @@ public:
      *  \param pOutputStream the created PdfOutputStream writes all encrypted
      *         data to this output stream.
      *
-     *  \returns a PdfOutputStream that encryts all data.
+     *  \returns a PdfOutputStream that encrypts all data.
      */
     virtual PdfOutputStream* CreateEncryptionOutputStream( PdfOutputStream* pOutputStream ) = 0;
 
@@ -262,6 +263,17 @@ public:
      */
     inline EPdfEncryptAlgorithm GetEncryptAlgorithm() const;
 
+    /** Checks if an owner password is set.
+     *  An application reading PDF must adhere to permissions for printing,
+     *  copying, etc., unless the owner password was used to open it.
+     *
+     *  \returns true if the owner password is set, in which case
+     *  IsPrintAllowed etc. should be ignored
+     *
+     *  \see PdfEncrypt to set own document permissions.
+     */
+    inline bool IsOwnerPasswordSet() const { return !m_ownerPass.empty(); }; 
+
     /** Checks if printing this document is allowed.
      *  Every PDF consuming applications has to adhere this value!
      *
@@ -271,10 +283,10 @@ public:
      */
     inline bool IsPrintAllowed() const; 
 
-    /** Checks if modifiying this document (besides annotations, form fields or changing pages) is allowed.
+    /** Checks if modifying this document (besides annotations, form fields or changing pages) is allowed.
      *  Every PDF consuming applications has to adhere this value!
      *
-     *  \returns true if you are allowed to modfiy this document
+     *  \returns true if you are allowed to modify this document
      *
      *  \see PdfEncrypt to set own document permissions.
      */
@@ -307,10 +319,10 @@ public:
      */
     inline bool IsFillAndSignAllowed() const;
 
-    /** Checks if it is allowed to extract text and graphics to support users with disabillities
+    /** Checks if it is allowed to extract text and graphics to support users with disabilities
      *  Every PDF consuming applications has to adhere this value!
      *
-     *  \returns true if you are allowed to extract text and graphics to support users with disabillities
+     *  \returns true if you are allowed to extract text and graphics to support users with disabilities
      *
      *  \see PdfEncrypt to set own document permissions.
      */
@@ -483,6 +495,9 @@ protected:
     
     /// Compute encryption key to be used with AES-256
     void ComputeEncryptionKey();
+    
+    /// Compute hash for password and salt with optional uValue
+    void ComputeHash(const unsigned char * pswd, int pswdLen, unsigned char salt[8], unsigned char uValue[48], unsigned char hashValue[32]);
     
     /// Generate the U and UE entries 
     void ComputeUserKey(const unsigned char * userpswd, int len);
@@ -699,7 +714,7 @@ public:
     /*
      *	Constructors of PdfEncryptAESV3
      */
-    PdfEncryptAESV3(PdfString oValue, PdfString oeValue, PdfString uValue, PdfString ueValue, int pValue, PdfString permsValue);
+    PdfEncryptAESV3(PdfString oValue, PdfString oeValue, PdfString uValue, PdfString ueValue, int pValue, PdfString permsValue, EPdfEncryptAlgorithm eAlgorithm = ePdfEncryptAlgorithm_AESV3);
     PdfEncryptAESV3( const PdfEncrypt & rhs ) : PdfEncryptSHABase(rhs) {}
     PdfEncryptAESV3( const std::string & userPassword,
                   const std::string & ownerPassword, 
@@ -710,7 +725,8 @@ public:
                   ePdfPermissions_FillAndSign |
                   ePdfPermissions_Accessible |
                   ePdfPermissions_DocAssembly |
-                  ePdfPermissions_HighPrint
+                  ePdfPermissions_HighPrint,
+                  EPdfEncryptAlgorithm eAlgorithm = ePdfEncryptAlgorithm_AESV3
                   );	
     
     /*
