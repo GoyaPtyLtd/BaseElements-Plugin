@@ -1,6 +1,6 @@
 /*
  * C++ interface to libheif
- * Copyright (c) 2018 struktur AG, Dirk Farin <farin@struktur.de>
+ * Copyright (c) 2018 Dirk Farin <dirk.farin@gmail.com>
  *
  * This file is part of libheif.
  *
@@ -24,6 +24,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <cassert>
 
 extern "C" {
 #include <libheif/heif.h>
@@ -44,6 +45,8 @@ namespace heif {
 
     Error(const heif_error& err)
     {
+      assert(err.message);
+
       m_code = err.code;
       m_subcode = err.subcode;
       m_message = err.message;
@@ -56,7 +59,7 @@ namespace heif {
       m_message = msg;
     }
 
-    std::string get_message() const
+    const std::string& get_message() const
     { return m_message; }
 
     heif_error_code get_code() const
@@ -96,7 +99,7 @@ namespace heif {
     };
 
     // throws Error
-    void read_from_file(std::string filename, const ReadingOptions& opts = ReadingOptions());
+    void read_from_file(const std::string& filename, const ReadingOptions& opts = ReadingOptions());
 
     // DEPRECATED. Use read_from_memory_without_copy() instead.
     // throws Error
@@ -108,8 +111,7 @@ namespace heif {
     class Reader
     {
     public:
-      virtual ~Reader()
-      {}
+      virtual ~Reader() = default;
 
       virtual int64_t get_position() const = 0;
 
@@ -173,8 +175,7 @@ namespace heif {
     class Writer
     {
     public:
-      virtual ~Writer()
-      {}
+      virtual ~Writer() = default;
 
       virtual heif_error write(const void* data, size_t size) = 0;
     };
@@ -183,7 +184,7 @@ namespace heif {
     void write(Writer&);
 
     // throws Error
-    void write_to_file(std::string filename) const;
+    void write_to_file(const std::string& filename) const;
 
   private:
     std::shared_ptr<heif_context> m_context;
@@ -200,8 +201,7 @@ namespace heif {
   class ImageHandle
   {
   public:
-    ImageHandle()
-    {}
+    ImageHandle() = default;
 
     ImageHandle(heif_image_handle* handle);
 
@@ -287,6 +287,9 @@ namespace heif {
 
     bool is_full_range() const;
 
+    void set_color_primaries(heif_color_primaries cp);
+
+    // DEPRECATED: typo in function name. Use set_color_primaries() instead.
     void set_color_primaties(heif_color_primaries cp);
 
     void set_transfer_characteristics(heif_transfer_characteristics tc);
@@ -308,8 +311,7 @@ namespace heif {
   class Image
   {
   public:
-    Image()
-    {}
+    Image() = default;
 
     Image(heif_image* image);
 
@@ -387,14 +389,19 @@ namespace heif {
 
     enum heif_compression_format get_compression_format() const noexcept;
 
+    // DEPRECATED: typo in function name
     bool supportes_lossy_compression() const noexcept;
 
+    // DEPRECATED: typo in function name
     bool supportes_lossless_compression() const noexcept;
 
 
     // throws Error
     Encoder get_encoder() const;
 
+    bool supports_lossy_compression() const noexcept;
+
+    bool supports_lossless_compression() const noexcept;
 
   private:
     EncoderDescriptor(const struct heif_encoder_descriptor* descr) : m_descriptor(descr)
@@ -445,21 +452,21 @@ namespace heif {
 
     std::vector<EncoderParameter> list_parameters() const noexcept;
 
-    void set_integer_parameter(std::string parameter_name, int value);
+    void set_integer_parameter(const std::string& parameter_name, int value);
 
-    int get_integer_parameter(std::string parameter_name) const;
+    int get_integer_parameter(const std::string& parameter_name) const;
 
-    void set_boolean_parameter(std::string parameter_name, bool value);
+    void set_boolean_parameter(const std::string& parameter_name, bool value);
 
-    bool get_boolean_parameter(std::string parameter_name) const;
+    bool get_boolean_parameter(const std::string& parameter_name) const;
 
-    void set_string_parameter(std::string parameter_name, std::string value);
+    void set_string_parameter(const std::string& parameter_name, const std::string& value);
 
-    std::string get_string_parameter(std::string parameter_name) const;
+    std::string get_string_parameter(const std::string& parameter_name) const;
 
-    void set_parameter(std::string parameter_name, std::string parameter_value);
+    void set_parameter(const std::string& parameter_name, const std::string& parameter_value);
 
-    std::string get_parameter(std::string parameter_name) const;
+    std::string get_parameter(const std::string& parameter_name) const;
 
   private:
     Encoder(struct heif_encoder*) noexcept;
@@ -483,7 +490,7 @@ namespace heif {
                                               [](heif_context* c) { heif_context_free(c); });
   }
 
-  inline void Context::read_from_file(std::string filename, const ReadingOptions& /*opts*/)
+  inline void Context::read_from_file(const std::string& filename, const ReadingOptions& /*opts*/)
   {
     Error err = Error(heif_context_read_from_file(m_context.get(), filename.c_str(), NULL));
     if (err) {
@@ -638,7 +645,7 @@ namespace heif {
     }
   }
 
-  inline void Context::write_to_file(std::string filename) const
+  inline void Context::write_to_file(const std::string& filename) const
   {
     Error err = Error(heif_context_write_to_file(m_context.get(), filename.c_str()));
     if (err) {
@@ -795,7 +802,7 @@ namespace heif {
 
   inline ColorProfile_nclx::~ColorProfile_nclx()
   {
-    delete mProfile;
+    heif_nclx_color_profile_free(mProfile);
   }
 
   inline heif_color_primaries ColorProfile_nclx::get_color_primaries() const
@@ -810,8 +817,11 @@ namespace heif {
   inline bool ColorProfile_nclx::is_full_range() const
   { return mProfile->full_range_flag; }
 
-  inline void ColorProfile_nclx::set_color_primaties(heif_color_primaries cp)
+  inline void ColorProfile_nclx::set_color_primaries(heif_color_primaries cp)
   { mProfile->color_primaries = cp; }
+
+  inline void ColorProfile_nclx::set_color_primaties(heif_color_primaries cp)
+  { set_color_primaries(cp); }
 
   inline void ColorProfile_nclx::set_transfer_characteristics(heif_transfer_characteristics tc)
   { mProfile->transfer_characteristics = tc; }
@@ -1001,6 +1011,7 @@ namespace heif {
                                                           maxDescriptors);
       if (nDescriptors < maxDescriptors) {
         std::vector<EncoderDescriptor> outDescriptors;
+        outDescriptors.reserve(nDescriptors);
         for (int i = 0; i < nDescriptors; i++) {
           outDescriptors.push_back(EncoderDescriptor(descriptors[i]));
         }
@@ -1034,12 +1045,22 @@ namespace heif {
 
   inline bool EncoderDescriptor::supportes_lossy_compression() const noexcept
   {
-    return heif_encoder_descriptor_supportes_lossy_compression(m_descriptor);
+    return heif_encoder_descriptor_supports_lossy_compression(m_descriptor);
+  }
+
+  inline bool EncoderDescriptor::supports_lossy_compression() const noexcept
+  {
+    return heif_encoder_descriptor_supports_lossy_compression(m_descriptor);
   }
 
   inline bool EncoderDescriptor::supportes_lossless_compression() const noexcept
   {
-    return heif_encoder_descriptor_supportes_lossless_compression(m_descriptor);
+    return heif_encoder_descriptor_supports_lossless_compression(m_descriptor);
+  }
+
+  inline bool EncoderDescriptor::supports_lossless_compression() const noexcept
+  {
+    return heif_encoder_descriptor_supports_lossless_compression(m_descriptor);
   }
 
   inline Encoder EncoderDescriptor::get_encoder() const
@@ -1163,7 +1184,7 @@ namespace heif {
     }
   }
 
-  inline void Encoder::set_integer_parameter(std::string parameter_name, int value)
+  inline void Encoder::set_integer_parameter(const std::string& parameter_name, int value)
   {
     Error err = Error(heif_encoder_set_parameter_integer(m_encoder.get(), parameter_name.c_str(), value));
     if (err) {
@@ -1171,7 +1192,7 @@ namespace heif {
     }
   }
 
-  inline int Encoder::get_integer_parameter(std::string parameter_name) const
+  inline int Encoder::get_integer_parameter(const std::string& parameter_name) const
   {
     int value;
     Error err = Error(heif_encoder_get_parameter_integer(m_encoder.get(), parameter_name.c_str(), &value));
@@ -1181,7 +1202,7 @@ namespace heif {
     return value;
   }
 
-  inline void Encoder::set_boolean_parameter(std::string parameter_name, bool value)
+  inline void Encoder::set_boolean_parameter(const std::string& parameter_name, bool value)
   {
     Error err = Error(heif_encoder_set_parameter_boolean(m_encoder.get(), parameter_name.c_str(), value));
     if (err) {
@@ -1189,7 +1210,7 @@ namespace heif {
     }
   }
 
-  inline bool Encoder::get_boolean_parameter(std::string parameter_name) const
+  inline bool Encoder::get_boolean_parameter(const std::string& parameter_name) const
   {
     int value;
     Error err = Error(heif_encoder_get_parameter_boolean(m_encoder.get(), parameter_name.c_str(), &value));
@@ -1199,7 +1220,7 @@ namespace heif {
     return value;
   }
 
-  inline void Encoder::set_string_parameter(std::string parameter_name, std::string value)
+  inline void Encoder::set_string_parameter(const std::string& parameter_name, const std::string& value)
   {
     Error err = Error(heif_encoder_set_parameter_string(m_encoder.get(), parameter_name.c_str(), value.c_str()));
     if (err) {
@@ -1207,7 +1228,7 @@ namespace heif {
     }
   }
 
-  inline std::string Encoder::get_string_parameter(std::string parameter_name) const
+  inline std::string Encoder::get_string_parameter(const std::string& parameter_name) const
   {
     const int max_size = 250;
     char value[max_size];
@@ -1219,7 +1240,7 @@ namespace heif {
     return value;
   }
 
-  inline void Encoder::set_parameter(std::string parameter_name, std::string parameter_value)
+  inline void Encoder::set_parameter(const std::string& parameter_name, const std::string& parameter_value)
   {
     Error err = Error(heif_encoder_set_parameter(m_encoder.get(), parameter_name.c_str(),
                                                  parameter_value.c_str()));
@@ -1228,7 +1249,7 @@ namespace heif {
     }
   }
 
-  inline std::string Encoder::get_parameter(std::string parameter_name) const
+  inline std::string Encoder::get_parameter(const std::string& parameter_name) const
   {
     const int max_size = 250;
     char value[max_size];

@@ -27,24 +27,24 @@ extern "C" {
 */
 #define MagickPackageName "ImageMagick"
 #define MagickCopyright  "(C) 1999 ImageMagick Studio LLC"
-#define MagickLibVersion  0x710
-#define MagickLibVersionText  "7.1.0"
-#define MagickLibVersionNumber  10,0,0
+#define MagickLibVersion  0x711
+#define MagickLibVersionText  "7.1.1"
+#define MagickLibVersionNumber  10,0,1
 #define MagickLibAddendum  "-29"
 #define MagickLibInterface  10
 #define MagickLibMinInterface  10
 #define MagickPlatform  "x86_64"
-#define MagickppLibVersionText  "7.1.0"
+#define MagickppLibVersionText  "7.1.1"
 #define MagickppLibVersionNumber  5:0:0
 #define MagickppLibAddendum  "-29"
 #define MagickppLibInterface  5
 #define MagickppLibMinInterface  5
-#define MagickGitRevision  "19841"
-#define MagickReleaseDate  "2022-03-27"
+#define MagickGitRevision  "cfc71f0aa:20240225"
+#define MagickReleaseDate  "2024-02-25"
 #define MagickAuthoritativeLicense  \
   "https://imagemagick.org/script/license.php"
 #define MagickAuthoritativeURL  "https://imagemagick.org"
-#define MagickHomeURL  "file:///home/goya/Desktop/ImageMagick-7.1.0-29/_build_linux/share/doc/ImageMagick-7/index.html"
+#define MagickHomeURL  "file:///Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/ImageMagick/_build_x86_64/share/doc/ImageMagick-7/index.html"
 #if (MAGICKCORE_QUANTUM_DEPTH == 8)
 #define MagickQuantumDepth  "Q8"
 #define MagickQuantumRange  "255"

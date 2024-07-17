@@ -105,7 +105,9 @@ typedef enum
   MagickAutoThresholdOptions,
   MagickToolOptions,
   MagickCLIOptions,
-  MagickIlluminantOptions
+  MagickIlluminantOptions,
+  MagickWordBreakOptions,
+  MagickPagesizeOptions
 } CommandOption;
 
 typedef enum
@@ -123,13 +125,14 @@ typedef enum
   ImportExportValidate = 0x00100,
   MontageValidate = 0x00200,
   StreamValidate = 0x00400,
+  MagickValidate = 0x00800,
   AllValidate = 0x7fffffff
 } ValidateType;
 
 /*
   Flags to describe classes of image processing options.
   These are used to determine how a option should be processed, and
-  avoid attempting to process all options in every way posible.
+  avoid attempting to process all options in every way possible.
 */
 typedef enum
 {

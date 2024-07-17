@@ -637,7 +637,7 @@ namespace Magick
     std::string attribute(const std::string name_) const;
 
     // Extracts the 'mean' from the image and adjust the image to try
-    // make set its gamma appropriatally.
+    // make set its gamma appropriately.
     void autoGamma(void);
     void autoGammaChannel(const ChannelType channel_);
 
@@ -650,7 +650,7 @@ namespace Magick
     void autoOrient(void);
 
     // Automatically selects a threshold and replaces each pixel in the image
-    // with a black pixel if the image intentsity is less than the selected
+    // with a black pixel if the image intensity is less than the selected
     // threshold otherwise white.
     void autoThreshold(const AutoThresholdMethod method_);
 
@@ -676,7 +676,7 @@ namespace Magick
 
     // Changes the brightness and/or contrast of an image. It converts the
     // brightness and contrast parameters into slope and intercept and calls
-    // a polynomical function to apply to the image.
+    // a polynomial function to apply to the image.
     void brightnessContrast(const double brightness_=0.0,
       const double contrast_=0.0);
     void brightnessContrastChannel(const ChannelType channel_,
@@ -851,7 +851,7 @@ namespace Magick
 
     // Distort image.  distorts an image using various distortion methods, by
     // mapping color lookups of the source image to a new destination image
-    // usally of the same size as the source image, unless 'bestfit' is set to
+    // usually of the same size as the source image, unless 'bestfit' is set to
     // true.
     void distort(const DistortMethod method_,
       const size_t numberArguments_,const double *arguments_,
@@ -863,10 +863,10 @@ namespace Magick
     // Draw on image using a drawable list
     void draw(const std::vector<Magick::Drawable> &drawable_);
 
-    // Edge image (hilight edges in image)
+    // Edge image (highlight edges in image)
     void edge(const double radius_=0.0);
 
-    // Emboss image (hilight edges with 3D effect)
+    // Emboss image (highlight edges with 3D effect)
     // The radius_ parameter specifies the radius of the Gaussian, in
     // pixels, not counting the center pixel.  The sigma_ parameter
     // specifies the standard deviation of the Laplacian, in pixels.
@@ -985,14 +985,16 @@ namespace Magick
       const double sigma_);
 
     // Transfers read-only pixels from the image to the pixel cache as
-    // defined by the specified region
+    // defined by the specified region.
     const Quantum *getConstPixels(const ::ssize_t x_, const ::ssize_t y_,
       const size_t columns_,const size_t rows_) const;
 
-    // Obtain immutable image pixel metacontent (valid for PseudoClass images)
+    // Obtain immutable image pixel metacontent. The selected region is defined
+    // by the prior getPixels(), getConstPixels(), or setPixels() call.
     const void *getConstMetacontent(void) const;
 
-    // Obtain mutable image pixel metacontent (valid for PseudoClass images)
+    // Obtain mutable image pixel metacontent. The selected region is defined
+    // by a prior getPixels(), getConstPixels(), or setPixels() call.
     void *getMetacontent(void);
 
     // Transfers pixels from the image to the pixel cache as defined
@@ -1100,7 +1102,7 @@ namespace Magick
     // Returns the normalized moments of one or more image channels.
     ImageMoments moments(void) const;
 
-    // Applies a kernel to the image according to the given mophology method.
+    // Applies a kernel to the image according to the given morphology method.
     void morphology(const MorphologyMethod method_,const std::string kernel_,
       const ssize_t iterations_=1);
     void morphology(const MorphologyMethod method_,
@@ -1118,7 +1120,7 @@ namespace Magick
     // pixels, not counting the center pixel.  The sigma_ parameter
     // specifies the standard deviation of the Laplacian, in pixels.
     // The angle_ parameter specifies the angle the object appears
-    // to be comming from (zero degrees is from the right).
+    // to be coming from (zero degrees is from the right).
     void motionBlur(const double radius_,const double sigma_,
       const double angle_);
 
@@ -1267,9 +1269,9 @@ namespace Magick
     void resize(const Geometry &geometry_);
 
     // Roll image (rolls image vertically and horizontally) by specified
-    // number of columnms and rows)
+    // number of columns and rows)
     void roll(const Geometry &roll_);
-    void roll(const size_t columns_,const size_t rows_);
+    void roll(const ssize_t columns_,const ssize_t rows_);
 
     // Rotate image clockwise by specified number of degrees. Specify a
     // negative number for degrees to rotate counter-clockwise.
@@ -1310,7 +1312,7 @@ namespace Magick
     void sepiaTone(const double threshold_);
 
     // Sets meanErrorPerPixel, normalizedMaxError, and normalizedMeanError
-    // in the current image. False is returned if the images are not identical.
+    // in the current image. True is returned if the images are identical.
     bool setColorMetric(const Image &reference_);
 
     // Allocates a pixel cache region to store image pixels as defined
@@ -1343,7 +1345,7 @@ namespace Magick
 
     // adjust the image contrast with a non-linear sigmoidal contrast algorithm
     void sigmoidalContrast(const bool sharpen_,const double contrast,
-      const double midpoint=QuantumRange/2.0);
+      const double midpoint=(double) QuantumRange/2.0);
 
     // Image signature. Set force_ to true in order to re-calculate
     // the signature regardless of whether the image data has been
@@ -1374,7 +1376,7 @@ namespace Magick
     void splice(const Geometry &geometry_,const Color &backgroundColor_,
       const GravityType gravity_);
 
-    // Spread pixels randomly within image by specified ammount
+    // Spread pixels randomly within image by specified amount
     void spread(const double amount_=3.0);
 
     // Returns the statistics for this image.
@@ -1460,7 +1462,7 @@ namespace Magick
     //    the percentage of the difference between the original and
     //    the blur image that is added back into the original.
     // threshold_
-    //   the threshold in pixels needed to apply the diffence amount.
+    //   the threshold in pixels needed to apply the difference amount.
     void unsharpmask(const double radius_,const double sigma_,
       const double amount_,const double threshold_);
     void unsharpmaskChannel(const ChannelType channel_,const double radius_,

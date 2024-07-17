@@ -1,6 +1,6 @@
 /*
  * HEIF codec.
- * Copyright (c) 2017 struktur AG, Dirk Farin <farin@struktur.de>
+ * Copyright (c) 2017 Dirk Farin <dirk.farin@gmail.com>
  *
  * This file is part of libheif.
  *
@@ -40,6 +40,8 @@ extern "C" {
 //  1.1          1         1          1
 //  1.4          1         1          2
 //  1.8          1         2          2
+//  1.13         2         3          2
+//  1.15         3         3          2
 
 
 // ====================================================================================================
@@ -50,8 +52,8 @@ extern "C" {
 
 struct heif_decoder_plugin
 {
-  // API version supported by this plugin
-  int plugin_api_version; // current version: 1
+  // API version supported by this plugin (see table above for supported versions)
+  int plugin_api_version;
 
 
   // --- version 1 functions ---
@@ -67,7 +69,7 @@ struct heif_decoder_plugin
 
   // Query whether the plugin supports decoding of the given format
   // Result is a priority value. The plugin with the largest value wins.
-  // Default priority is 100.
+  // Default priority is 100. Returning 0 indicates that the plugin cannot decode this format.
   int (* does_support_format)(enum heif_compression_format format);
 
   // Create a new decoder context for decoding an image
@@ -88,6 +90,8 @@ struct heif_decoder_plugin
 
   // --- version 2 functions will follow below ... ---
 
+  void (*set_strict_decoding)(void* decoder, int flag);
+
   // If not NULL, this can provide a specialized function to convert YCbCr to sRGB, because
   // only the codec itself knows how to interpret the chroma samples and their locations.
   /*
@@ -99,6 +103,12 @@ struct heif_decoder_plugin
 
   // Reset decoder, such that we can feed in new data for another image.
   // void (*reset_image)(void* decoder);
+
+  // --- version 3 functions will follow below ... ---
+
+  const char* id_name;
+
+  // --- version 4 functions will follow below ... ---
 };
 
 
@@ -124,8 +134,8 @@ enum heif_image_input_class
 
 struct heif_encoder_plugin
 {
-  // API version supported by this plugin
-  int plugin_api_version; // current version: 2
+  // API version supported by this plugin (see table above for supported versions)
+  int plugin_api_version;
 
 
   // --- version 1 functions ---
@@ -216,6 +226,7 @@ struct heif_encoder_plugin
   // The encoded image size may be different from the input frame size, e.g. because
   // of required rounding, or a required minimum size. Use this function to return
   // the encoded size for a given input image size.
+  // You may set this to NULL if no padding is required for any image size.
   void (* query_encoded_size)(void* encoder, uint32_t input_width, uint32_t input_height,
                               uint32_t* encoded_width, uint32_t* encoded_height);
 
@@ -229,6 +240,7 @@ struct heif_encoder_plugin
 
 // For use only by the encoder plugins.
 // Application programs should use the access functions.
+// NOLINTNEXTLINE(clang-analyzer-optin.performance.Padding)
 struct heif_encoder_parameter
 {
   int version; // current version: 2
@@ -275,6 +287,18 @@ extern struct heif_error heif_error_ok;
 extern struct heif_error heif_error_unsupported_parameter;
 extern struct heif_error heif_error_invalid_parameter_value;
 
+#define HEIF_WARN_OR_FAIL(strict, image, cmd, cleanupBlock) \
+{ struct heif_error e = cmd;                  \
+  if (e.code != heif_error_Ok) {              \
+    if (strict) {                             \
+      cleanupBlock                            \
+      return e;                               \
+    }                                         \
+    else {                                    \
+      heif_image_add_decoding_warning(image, e); \
+    }                                         \
+  }                                           \
+}
 #ifdef __cplusplus
 }
 #endif
