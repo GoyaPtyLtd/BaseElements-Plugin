@@ -2,7 +2,7 @@
  BERegularExpression.h
  BaseElements Plug-In
  
- Copyright 2015-2021 Goya. All rights reserved.
+ Copyright 2015-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -42,7 +42,7 @@ template <typename T>
 T regular_expression ( const T& text, const T& expression, const std::string options = "", const T& replace_with = "", const bool replace = false )
 {
     
-	int constructor_options = 0;
+	int constructor_options = Poco::RegularExpression::RE_NEWLINE_ANY;
     int runtime_options = Poco::RegularExpression::RE_NOTEMPTY; // poco.re hangs when the expression evalutes as "empty" unless this is set;
     
     T regex_options = options;
