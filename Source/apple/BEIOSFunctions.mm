@@ -200,9 +200,3 @@ const std::string get_system_drive ( )
 }
 
 
-const fmx::errcode display_system_notification ( std::string& /* title */, std::string& /* message */, std::string& /* fmp_uri */ )
-{
-	return kNotImplemented;
-}
-
-

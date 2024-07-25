@@ -187,15 +187,6 @@ const std::wstring get_machine_name ( )
 
 }
 
-
-const fmx::errcode display_system_notification ( std::string& title, std::string& message, std::string&fmp_uri )
-{
-	throw BEPlugin_Exception ( kCommandIsUnavailableError );
-
-	return kCommandIsUnavailableError;
-}
-
-
 const std::string get_system_drive ( )
 {
 	return ""; // matching Get ( SystemDrive )

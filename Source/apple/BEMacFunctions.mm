@@ -13,12 +13,9 @@
 #import "BEMacFunctions.h"
 #import "BEPluginGlobalDefines.h"
 #import "BEFileMakerPlugin.h"
-#import "apple/BEMacNotificationResponse.h"
 #import "ProgressDialogWindowController.h"
 
 #import <Cocoa/Cocoa.h>
-#import <UserNotifications/UserNotifications.h>
-
 
 using namespace std;
 
@@ -33,7 +30,6 @@ extern BEFileMakerPlugin * g_be_plugin;
 const std::wstring SelectFileOrFolder ( const std::wstring& prompt, const std::wstring& in_folder, bool choose_file );
 
 
-BENotificationResponse * notificationCenterDelegate;
 ProgressDialogWindowController* progressDialog;
 
 
@@ -41,22 +37,6 @@ void InitialiseForPlatform ( )
 {
 	progressDialog = nil;
 	
-	// notifications
-	
-	if ( @available ( macOS 10.14, * ) ) { //OBJECTIVE C
-	
-		if ( !g_be_plugin->running_on_server() ) { //C++
-			
-			auto authorizationOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
-			auto center = [UNUserNotificationCenter currentNotificationCenter];
-			[center requestAuthorizationWithOptions: authorizationOptions completionHandler:^(BOOL /* granted */, NSError * _Nullable /* error */) {
-				//			NSLog(@"%i %@",granted, error);
-			}];
-			
-			notificationCenterDelegate = [[BENotificationResponse alloc] init];
-			center.delegate = (id)notificationCenterDelegate; // auto ncd =
-		}
-	}
 }
 
 
@@ -433,49 +413,5 @@ const std::string get_system_drive ( )
 	return system_drive;
 	
 } // get_system_drive
-
-
-const fmx::errcode display_system_notification ( std::string& title, std::string& message, std::string& fmp_uri )
-{
-	__block fmx::errcode error = kNoError;
-	
-	if ( @available ( macOS 10.14, * ) ) {
-		
-		auto content = [[UNMutableNotificationContent alloc] init];
-		content.title = [NSString localizedUserNotificationStringForKey: NSStringFromString ( title ) arguments: nil];
-		content.body = [NSString localizedUserNotificationStringForKey: NSStringFromString ( message ) arguments: nil];
-		content.userInfo = [[NSDictionary alloc] initWithObjectsAndKeys: NSStringFromString ( fmp_uri ), @"fmp_uri", nil];
-		
-		if ( @available ( macOS 12.0, * ) ) {
-			content.interruptionLevel = UNNotificationInterruptionLevelActive;
-		} else {
-			// do diddly on earlier versions
-		}
-		
-		content.sound = [UNNotificationSound defaultSound];
-
-		auto uuid = CFUUIDCreate ( nil );
-		auto requestIdentifier = (NSString*)CFBridgingRelease ( CFUUIDCreateString ( nil, uuid ) );
-		CFRelease ( uuid );
-
-		auto request = [UNNotificationRequest requestWithIdentifier: requestIdentifier content: content trigger: nil];
-		[[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest: request withCompletionHandler: ^(NSError * _Nullable notificationError) {
-			
-			if ( notificationError ) {
-				error = notificationError.code;
-			} else {
-				error = kNoError;
-			}
-
-		}];
-		
-	} else {
-		// earlier versions
-		error = kNotImplemented;
-	}
-
-	return error;
-	
-} // display_system_notification
 
 

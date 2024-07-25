@@ -143,7 +143,6 @@ const std::map<unsigned long, std::string> function_strings = {
 	{ 507, "BE_DecryptWithKey ( encryptedText ; keyText )" },
 	{ 508, "BE_CreateKeyPair" },
 	{ 509, "BE_GetPublicKey ( privateKey )" },
-	{ 540, "BE_Notification ( title ; message {; fmpURL } )" },
 	{ 600, "BE_EvaluateJavaScript ( javaScript )" },
 	{ 650, "BE_ArraySetFromValueList ( valueList { ; retainEmptyBoolean } )" },
 	{ 651, "BE_ArrayGetSize ( array )" },

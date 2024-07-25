@@ -4822,30 +4822,4 @@ fmx::errcode BE_GetSystemDrive ( short /* funcId */, const ExprEnv& /* environme
 } // BE_GetSystemDrive
 
 
-fmx::errcode BE_Notification ( short /* funcId */, const ExprEnv& /* environment */, const DataVect& parameters, Data& /* results */ )
-{
-	errcode error = NoError();
-
-	try {
-
-		auto title = ParameterAsUTF8String ( parameters );
-		auto message = ParameterAsUTF8String ( parameters, 1 );
-		auto fmp_uri = ParameterAsUTF8String ( parameters, 2 );
-
-		error = display_system_notification ( title, message, fmp_uri );
-//		SetResult ( error, results );
-
-	} catch ( BEPlugin_Exception& e ) {
-		error = e.code();
-	} catch ( bad_alloc& /* e */ ) {
-		error = kLowMemoryError;
-	} catch ( exception& /* e */ ) {
-		error = kErrorUnknown;
-	}
-
-	return MapError ( error );
-
-} // BE_Notification
-
-
 

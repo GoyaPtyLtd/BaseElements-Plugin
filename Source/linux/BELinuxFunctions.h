@@ -57,8 +57,6 @@ bool OpenFile ( std::wstring& path );
 const std::wstring get_machine_name ( );
 const std::string get_system_drive ( );
 
-const fmx::errcode display_system_notification ( std::string& title, std::string& message, std::string&fmp_uri );
-
 
 // used by Do_GetString
 unsigned long Sub_LoadString ( const unsigned long string_id, FMX_Unichar * string, const long intoHereMax );

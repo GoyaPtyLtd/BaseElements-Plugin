@@ -119,7 +119,6 @@
 "507" = "BE_DecryptWithKey ( encryptedText ; keyText )|Decrypt Private Public Key|Decrypt the supplied text. The decrypted data is returned base64 encoded.";
 "508" = "BE_CreateKeyPair|Create Key Pair RSA Private|Create and RSA key pair and return the private key. To get the public key pass the return value to BE_GetPublicKey";
 "509" = "BE_GetPublicKey ( privateKey )|Key Pair RSA public|Return a public key for the supplied private key.";
-"540" = "BE_Notification ( title ; message {; fmpURL } )|Notification|Experimental! Use at your own risk. May not be included in future versions.\nAsk the OS to display message as a system notification. Only available in macOS FileMaker clients.";
 "600" = "BE_EvaluateJavaScript ( javaScript )|BaseElements Internal : function not yet documented.";
 "650" = "BE_ArraySetFromValueList ( valueList { ; retainEmptyBoolean } )|Array Set ValueList|Stores the ValueList as an array within the plugin memory space and returns an index number that you can use to reference the array via memory.";
 "651" = "BE_ArrayGetSize ( array )|Array Size Get|Returns the size in number of elements in a stored array. Technically equivalent to ValueCount for the list before it was stored as an array.";

@@ -265,7 +265,6 @@ enum functions {
 	kBE_DecryptWithKey = 507,
 	kBE_CreateKeyPair = 508,
 	kBE_GetPublicKey = 509,
-	kBE_Notification = 540,
 //	kBE_HMAC_Deprecated = 550,, // removed in version 4.2
 //	kBE_Encoding_TextToHex = 570, // removed
 //	kBE_Encoding_HexToText = 571, // removed
