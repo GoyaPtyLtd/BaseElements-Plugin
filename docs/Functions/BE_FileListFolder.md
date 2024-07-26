@@ -8,15 +8,11 @@ Lists the contents of a folder at the *path*, both files and folders by default 
 
 **Parameters**
 
-* *path* : description.
-* *type* : description.
+* *path* : Operating System path to start from.
+* *type* ( optional, default:BE_FileTypeAll ) : one of BE_FileTypeAll, BE_FileTypeFile, BE_FileTypeFolder.
 * *includeSubdirBoolean* ( optional, default:False ) : whether to scan sub directories.
-* *useFullPathBoolean* ( optional, default:False ) : whether to include the full path in the output.
+* *useFullPathBoolean* ( optional, default:False ) : whether to include the full path ( True ) or just filenames ( False ) in the output.
 * *includeHiddenBoolean* ( optional, default:False ) : whether to include files or folder not normally visible.
-
-With the *includeSubdirectories* parameter set to true, it will recursively go into every sub folder and return all the results it finds. Be aware that this could go on for a long time, and is not recommended.
-
-With *useFullPath* set to True it will change the output to include full paths instead of just filenames.
 
 **Keywords**  
 
@@ -32,7 +28,7 @@ File Folder List Path
 
 **Notes**
 
-The includeSubdirectories option means that it will try every single subfolder. Be cautious when using this as it may take a long time to traverse all the sub folders.
+The *includeSubdirectories* option means that it will try every single subfolder. Be cautious when using this as it may take a long time to traverse all the sub folders.  
 
 Also it is more than likely that at some point it will throw an error as it will come across a folder or file it doesn't have access to. Then the function will stop and return error 13, and no data. Managing individual errors like that amongst a potentially large set of files is beyond the scope of this function as implemented.
 
@@ -55,11 +51,11 @@ If you're getting error 13 when using this flag, consider doing without it and t
 
 	BE_FileListFolder ( "/Users/nick/Desktop" )
 
-	BE_FileListFolder ( $path ; BE_FileType_Folder ; False ; True ; True )
+	BE_FileListFolder ( $path ; BE_FileTypeFolder ; False ; True ; True )
 	
 This last one will start at $path, but only return folders, and will not include subdirectories, will return a full path not just the folder names, and will include any hidden folders. :
 
-	BE_FileListFolder ( $path ; BE_FileType_Folder ;
+	BE_FileListFolder ( $path ; BE_FileTypeFolder ;
 	False ; //don't scan sub folders
 	True ; //include a full path
 	True ) //include hidden files
