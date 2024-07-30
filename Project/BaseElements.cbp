@@ -81,8 +81,8 @@
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
 			<Add library="FMWrapper" />
 			<Add library="libMagick++-7.Q16HDRI.a" />
-			<Add library="libMagickCore-7.Q16HDRI.a" />
 			<Add library="libMagickWand-7.Q16HDRI.a" />
+			<Add library="libMagickCore-7.Q16HDRI.a" />
 			<Add library="libboost_atomic.a" />
 			<Add library="libboost_date_time.a" />
 			<Add library="libboost_filesystem.a" />
