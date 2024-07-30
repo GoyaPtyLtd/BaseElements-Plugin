@@ -2,6 +2,9 @@
 PlugInSDK
 !PlugInSDK/README
 
+# Ignore cmake build directory
+build
+
 # Ignore generated Visual Studio files
 
 Project/BaseElements.sdf

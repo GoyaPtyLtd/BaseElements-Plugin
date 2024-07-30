@@ -80,9 +80,25 @@ To get setup on a fresh ubuntu install :
 Then download the source repository and open codeblocks to compile :
 
     git clone --recurse-submodules https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
+
     cd BaseElements-Plugin
+    unzip {path/to/}fm_plugin_sdk_21.0.1.53.zip     # FileMaker PlugInSDK
+
+    cd BaseElements-Plugin-Libraries/scripts
+    ./1_getSource.sh                                # Only need to do this once
+    ./2_build.sh
+    cd ../..
 
     codeblocks Project/BaseElements.cbp
+
+    # OR use CMake as follows:
+
+    mkdir build
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+    make -j$(($(nproc)+1))
+    make install
+    sudo chown -f fmserver:fmsadmin "/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx"
 
 Use llvm clang as the default compiler.
 
