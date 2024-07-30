@@ -101,12 +101,11 @@
 			<Add library="libPocoZip.a" />
 			<Add library="libPocoXML.a" />
 			<Add library="libpodofo.a" />
-			<Add library="libunistring.a" />
 			<Add library="libfontconfig.a" />
 			<Add library="libfreetype.a" />
 			<Add library="libiconv.a" />
 			<Add library="libheif.a" />
-			<Add library="libde265.a" />
+			<Add library="liblibde265.a" />
 			<Add library="libjpeg.a" />
 			<Add library="libpng16.a" />
 			<Add library="libz.a" />
