@@ -102,6 +102,7 @@
 			<Add library="libPocoZip.a" />
 			<Add library="libPocoXML.a" />
 			<Add library="libpodofo.a" />
+			<Add library="libunistring.a" />
 			<Add library="libfontconfig.a" />
 			<Add library="libfreetype.a" />
 			<Add library="libiconv.a" />

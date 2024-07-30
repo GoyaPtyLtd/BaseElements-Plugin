@@ -27,9 +27,14 @@ using namespace std;
   https://stackoverflow.com/a/59674427/162358
  
   https://boringssl.googlesource.com/boringssl/+/517073cd4b/crypto/cpu-intel.c#76
+
+  2024-07-30 - GAV
+    This doesn't appear to be a problem on Linux, make this conditional.
  
  */
+#if !defined(__linux__)
 uint32_t OPENSSL_ia32cap_P[4] = { 0 };
+#endif
 
 const vector<unsigned char> HexOrContainer ( const fmx::DataVect& parameters, const fmx::uint32 which )
 {
