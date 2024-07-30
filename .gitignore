@@ -1,3 +1,11 @@
+# External files within this project
+Headers
+!Headers/README
+Libraries
+!Libraries/README
+PlugInSDK
+!PlugInSDK/README
+
 # Ignore generated Visual Studio files
 
 Project/BaseElements.sdf
