@@ -1,0 +1,3 @@
+[submodule "BaseElements-Plugin-Libraries"]
+	path = BaseElements-Plugin-Libraries
+	url = https://github.com/GoyaPtyLtd/BaseElements-Plugin-Libraries.git

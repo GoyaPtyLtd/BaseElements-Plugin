@@ -71,21 +71,18 @@ To get setup on a fresh ubuntu install :
     sudo apt update
     sudo apt upgrade
     sudo apt install git-all git-lfs
-    sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+    #sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
     sudo apt install codeblocks cmake gperf libc++-dev libc++abi-dev libexpat1-dev lld lldb liblldb-dev libomp5 libomp-dev llvm llvm-dev llvm-runtime libllvm-ocaml-dev clang clangd clang-format clang-tidy clang-tools clang libclang-dev libclang1 python3-clang
 
 **Install FileMaker Server first.**
 
-Then download the plugin and open codeblocks to compile :
+Then download the source repository and open codeblocks to compile :
 
-    mkdir ~/source
-    cd ~/source
-    git clone https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
+    git clone --recurse-submodules https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
+    cd BaseElements-Plugin
 
-    sudo codeblocks
-
-( sudo possibly not required, but at the moment solves a tonne of issues )
+    codeblocks Project/BaseElements.cbp
 
 Use llvm clang as the default compiler.
 
