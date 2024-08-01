@@ -1,9 +1,6 @@
-# External files within this project
-PlugInSDK
-!PlugInSDK/README
-
-# Ignore cmake build directory
+# Ignore build directories
 build
+PlugInSDK
 
 # Ignore generated Visual Studio files
 

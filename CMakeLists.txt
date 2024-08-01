@@ -10,6 +10,7 @@
 #
 # Other options:
 #   -DCMAKE_BUILD_TYPE=Debug    # This is the default build target
+#   -DCMAKE_INSTALL_PREFIX=...  # Override DEFAULT_INSTALL_PREFIX
 #
 # Copyright (C) 2024 Goya Pty Ltd
 #
@@ -20,7 +21,9 @@ cmake_minimum_required(VERSION 3.22)
 project(BaseElements-Plugin)
 
 # Configurable variables
-set(SONAME "5.1.0")
+set(SONAME                          "5.1.0")
+set(INSTALL_OWNER                   "fmserver:fmsadmin")
+set(DEFAULT_INSTALL_PREFIX          "/opt/FileMaker/FileMaker Server/Database Server/Extensions")
 
 # Compiler and linker flags
 set(CMAKE_C_COMPILER                "clang")
@@ -37,10 +40,27 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "-O2 -g")
 
 set(CMAKE_MODULE_LINKER_FLAGS       "-m64 -Wl,-soname=${SONAME} -Wl,--exclude-libs,ALL -Wl,--no-undefined")
 
-set(CMAKE_INSTALL_PREFIX            "/opt/FileMaker/FileMaker Server/Database Server/Extensions")
+# Install configuration
 set(CMAKE_INSTALL_RPATH             "/opt/FileMaker/lib")
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set_property(CACHE CMAKE_INSTALL_PREFIX PROPERTY VALUE "${DEFAULT_INSTALL_PREFIX}")
+endif()
 
-# What we are building
+# FileMaker Plugin SDK target
+include(ExternalProject)
+ExternalProject_Add(
+    fm_plugin_sdk
+    PREFIX "${CMAKE_BINARY_DIR}/fm_plugin_sdk"  # Download here
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/PlugInSDK"  # Unpack contents here
+    # See: https://www.claris.com/resources/downloads/
+    URL https://downloads.claris.com/DEVREL/sdk/fm_plugin_sdk_21.0.1.53.zip
+    URL_HASH SHA256=422017d7952668addaa4e212e327eadc88ffbd2318abceae22382ce3458c38d5
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+)
+
+# BaseElements plugin library/module target
 add_library(
     BaseElements
 
@@ -89,17 +109,13 @@ add_library(
 )
 
 set_target_properties(
-    BaseElements
-    PROPERTIES
-
-    PREFIX ""           # We don't want the "lib" prefix
-    SUFFIX ".fmx"       # We don't want the ".so" suffix
+    BaseElements PROPERTIES
+        PREFIX ""           # We don't want the "lib" prefix
+        SUFFIX ".fmx"       # We don't want the ".so" suffix
 )
 
 target_include_directories(
-    BaseElements
-
-    PUBLIC
+    BaseElements PUBLIC
 
     Source
     PlugInSDK/Headers
@@ -108,21 +124,19 @@ target_include_directories(
 )
 
 target_link_directories(
-    BaseElements
-
-    PUBLIC
+    BaseElements PUBLIC
 
     PlugInSDK/Libraries/Linux/U22/x64
     BaseElements-Plugin-Libraries/Output/Libraries/linux
 )
 
 add_library(libuuid SHARED IMPORTED)
-set_target_properties(libuuid PROPERTIES IMPORTED_LOCATION /usr/lib/x86_64-linux-gnu/libuuid.so.1)
+set_target_properties(
+    libuuid PROPERTIES
+        IMPORTED_LOCATION /usr/lib/x86_64-linux-gnu/libuuid.so.1)
 
 target_link_libraries(
-    BaseElements
-
-    PUBLIC
+    BaseElements PUBLIC
 
     FMWrapper
     Magick++-7.Q16HDRI
@@ -170,4 +184,13 @@ target_link_libraries(
     m
 )
 
-install(TARGETS BaseElements LIBRARY DESTINATION .)
+# Make BaseElements target dependent upon fm_plugin_sdk target
+add_dependencies(BaseElements fm_plugin_sdk)
+
+# Install target
+install(
+    TARGETS BaseElements
+    LIBRARY DESTINATION .)
+
+# Try to set file ownsership on installed plugin file
+install(CODE "execute_process(COMMAND chown -f \"${INSTALL_OWNER}\" \"${CMAKE_INSTALL_PREFIX}/BaseElements.fmx\" COMMAND_ECHO STDOUT)")
