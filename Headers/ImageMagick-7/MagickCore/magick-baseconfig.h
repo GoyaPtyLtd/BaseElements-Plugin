@@ -1092,7 +1092,9 @@
 /* #undef JBIG_DELEGATE */
 
 /* Define if you have JPEG library */
-/* #undef JPEG_DELEGATE */
+#ifndef MAGICKCORE_JPEG_DELEGATE
+#define MAGICKCORE_JPEG_DELEGATE 1
+#endif
 
 /* Define if you have jpeg-xl library */
 /* #undef JXL_DELEGATE */

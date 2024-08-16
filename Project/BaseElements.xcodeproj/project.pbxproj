@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010874AE2C6EFCF300E1EFE6 /* libnghttp2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 010874AD2C6EFCF300E1EFE6 /* libnghttp2.a */; };
 		01265D5B2C58A030006AFE9C /* libboost_atomic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01265D5A2C58A027006AFE9C /* libboost_atomic.a */; };
 		01265D5D2C58A04A006AFE9C /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01265D5C2C58A048006AFE9C /* libexpat.a */; };
-		01265D5F2C58A07B006AFE9C /* libPocoPDF.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01265D5E2C58A079006AFE9C /* libPocoPDF.a */; };
 		01265D602C58A087006AFE9C /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D432130281269D30014BBD3 /* libz.a */; };
 		014614362C40F7C60098C862 /* libunistring.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 014614352C40F7C60098C862 /* libunistring.a */; };
 		014614372C40F7DA0098C862 /* libunistring.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 014614352C40F7C60098C862 /* libunistring.a */; };
@@ -548,9 +548,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		010874AD2C6EFCF300E1EFE6 /* libnghttp2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnghttp2.a; path = ../Libraries/macOS/libnghttp2.a; sourceTree = "<group>"; };
 		01265D5A2C58A027006AFE9C /* libboost_atomic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_atomic.a; path = ../Libraries/macOS/libboost_atomic.a; sourceTree = "<group>"; };
 		01265D5C2C58A048006AFE9C /* libexpat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexpat.a; path = ../Libraries/macOS/libexpat.a; sourceTree = "<group>"; };
-		01265D5E2C58A079006AFE9C /* libPocoPDF.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoPDF.a; path = ../Libraries/macOS/libPocoPDF.a; sourceTree = "<group>"; };
 		014614352C40F7C60098C862 /* libunistring.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libunistring.a; path = ../Libraries/macOS/libunistring.a; sourceTree = "<group>"; };
 		4D05792C1B3B83550000585F /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/macOS/FMWrapper.framework; sourceTree = "<group>"; };
 		4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPEmailMessage.cpp; path = ../Source/Net/BESMTPEmailMessage.cpp; sourceTree = "<group>"; };
@@ -830,8 +830,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				010874AE2C6EFCF300E1EFE6 /* libnghttp2.a in Frameworks */,
 				014614372C40F7DA0098C862 /* libunistring.a in Frameworks */,
 				4DBC861E28812E4200E4CD1D /* libjq.a in Frameworks */,
+				4D432123281268720014BBD3 /* libpng16.a in Frameworks */,
 				4D432129281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
 				4DBB48EC27C45AD000D3D232 /* libPocoNet.a in Frameworks */,
 				4DBB48ED27C45AD000D3D232 /* libPocoXML.a in Frameworks */,
@@ -847,7 +849,6 @@
 				4DBB48F727C45AD000D3D232 /* libssh2.a in Frameworks */,
 				4DBB48F827C45AD000D3D232 /* libcurl.a in Frameworks */,
 				4DBB48F927C45AD000D3D232 /* libboost_date_time.a in Frameworks */,
-				01265D5F2C58A07B006AFE9C /* libPocoPDF.a in Frameworks */,
 				4DBB48FB27C45AD000D3D232 /* libboost_filesystem.a in Frameworks */,
 				4D432126281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
 				4DA72E79285AE5F20036CC90 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
@@ -866,7 +867,6 @@
 				4D29455C286441AC00C94A27 /* libjpeg.a in Frameworks */,
 				01265D602C58A087006AFE9C /* libz.a in Frameworks */,
 				4D414DB12872B01E00749AE0 /* SystemConfiguration.framework in Frameworks */,
-				4D432123281268720014BBD3 /* libpng16.a in Frameworks */,
 				01265D5B2C58A030006AFE9C /* libboost_atomic.a in Frameworks */,
 				4DBB490727C45AD000D3D232 /* FMWrapper.framework in Frameworks */,
 				4DBB490827C45AD000D3D232 /* DiskArbitration.framework in Frameworks */,
@@ -1254,7 +1254,7 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				01265D5E2C58A079006AFE9C /* libPocoPDF.a */,
+				010874AD2C6EFCF300E1EFE6 /* libnghttp2.a */,
 				01265D5C2C58A048006AFE9C /* libexpat.a */,
 				01265D5A2C58A027006AFE9C /* libboost_atomic.a */,
 				014614352C40F7C60098C862 /* libunistring.a */,
