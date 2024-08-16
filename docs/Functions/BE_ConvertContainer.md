@@ -35,7 +35,7 @@ Use this function with a Set Field script step to convert from a container field
 3. Other known formats are ( all four character codes - note the space after PDF ):
 
 "snd " *
-"JPEG”"
+"JPEG"
 "GIFf" *
 "EPS " *
 "META" *

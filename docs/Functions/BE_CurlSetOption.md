@@ -68,6 +68,10 @@ The *CURLOPT_HTTPAUTH* and *CURLOPT_PROXYAUTH* options can also be set with thes
 
 **Common use cases**
 
+Follow redirects ( 301 response codes )
+
+	BE_CurlSetOption ( "CURLOPT_FOLLOWLOCATION" ; True )
+
 Use "Basic" Authentication
 
 	BE_CurlSetOption ( "CURLOPT_HTTPAUTH" ; 1 ) 
