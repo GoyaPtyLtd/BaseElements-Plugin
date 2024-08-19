@@ -9,7 +9,7 @@
 [BE_ArrayGetValue](Functions/BE_ArrayGetValue.md)
 [BE_ArraySetFromValueList](Functions/BE_ArraySetFromValueList.md)
 
-### Clipboar
+### Clipboard
 
 [BE_ClipboardFormats](Functions/BE_ClipboardFormats.md)
 [BE_ClipboardGetFile](Functions/BE_ClipboardGetFile.md)
