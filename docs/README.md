@@ -1,10 +1,14 @@
+If you've arrived here unexpectedly, this is the new home for all the BaseElements plugin documentation.  All documenation is now open source along with the plugin and source code.
+
+If you have any questions, please use the Issues or Discussions tabs above.
+
+## About the BaseElements plugin
+
 The BaseElements Plugin is a Claris FileMaker plugin, that is free, open source and available on Mac, Windows and Ubuntu Linux.
 
 It was originally built as a small addition to the BaseElements developer tool, to provide additional required functionality that wasn’t in FileMaker Pro itself. However the free/open nature of it meant that FileMaker developers around the world started using it for their own solutions, and over time it expanded to include more functionality and become more widely used.
 
-The documentation here describes how to install and use the plugin, as well as how to build it from scratch if that interests you. We provide pre built binaries so you don’t need to build your own copy.
-
-( These are all placeholders for future articles, mostly copied from the HelpScout docs pages. )
+The documentation here describes how to install and use the plugin, as well as how to compile it yourself if that interests you. We provide pre built binaries so you don’t need to build your own copy.
 
 ## Version History
 
@@ -24,22 +28,23 @@ Feel free to submit an issue if you've found an issue with the plugin, or post q
 
 We have options to [sponsor](https://github.com/sponsors/GoyaPtyLtd) the plugin through GitHub.
 
-
 # Documentation Sections
 
-##General
+## General
 
 [About the BaseElements Plugin](About.md) 
 
-Downloads
-
-Translations and Localisation
+[Downloads](Downloads.md)
 
 [Frequently Asked Questions](FAQ.md)
+
+[Functions](Functions) 
 
 [How to install the BaseElements Plugin](Installation.md)
 
 [Feature Requests and Ideas](Ideas.md)
+
+[Translations and Localisation](Translations.md)
 
 ## How To Guides
 
