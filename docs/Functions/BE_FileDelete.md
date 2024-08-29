@@ -38,10 +38,10 @@ PLUGIN PATHS ARE NOT FILEMAKER PATHS. The plugin uses the same path structure as
 
 **Example Code**
 
-	BE_DeleteFile ( "/Users/username/Desktop/myNewFolder" )
+	BE_FileDelete ( "/Users/username/Desktop/myNewFolder" )
 
 deletes a folder and all of it's contents
 
-	BE_DeleteFile ( "/Users/username/Desktop/fileA.fp7" )
+	BE_FileDelete ( "/Users/username/Desktop/fileA.fp7" )
 
 deletes a file
