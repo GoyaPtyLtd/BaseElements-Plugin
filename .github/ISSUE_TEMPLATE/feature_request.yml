@@ -15,7 +15,8 @@ body:
       label: Type of Feature
       description: Select the type of feature request.
       options:
-        - "New Feature"
+        - "New Function"
+        - "Existing Function Change"
         - "Documentation"
         - "Performance Improvements"
         - "New Test"
