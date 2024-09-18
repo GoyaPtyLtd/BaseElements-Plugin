@@ -22,13 +22,11 @@ Windows : place the FMWrapper directory inside the SDK's Headers directory in th
 
 Ubuntu : Needs to be documented - TODO.
 
-## Pre Built Open Source Libraries
+## Open Source Libraries
 
-So you do not need to compile the individual libraries to compile the plugin. All the required built versions of the libraries are included in this repo.
+The code for the libraries changes all the time, so any time we want to add an updated library, we need to recompile it for all the platforms ( Mac, iOS, iOS Simulator, Windows, Ubuntu 20 x86, Ubuntu 22 x86, Ubuntu 22 ARM ) and then bring all that new compiled code into this repo.
 
-The code for the kibraries changes all the time, so any time we want to add an updated library, we need to recompile it for all the platforms ( Mac, iOS, iOS Simulator, Windows, Ubuntu 20 x86, Ubuntu 22 x86, Ubuntu 22 ARM ) adn then bring all that new compiled code into this repo. Obvioulsy that's a lot of work, but we don't want that work to prevent people from trying to build their own version of the BE plugin, so they are provided compiled at the most recent version.
-
-However, if you'd like to help us with compiling the libraries as well, there is now a separate repo for all the libraries. As of this writing the work to automat the compiling is only partially complete, so if you can assist we'd love your help.
+If you'd like to help us with compiling the libraries, there is now a separate repo for them. As of this writing the work to automate the compiling is only partially complete, so if you can assist we'd love your help.
 
 https://github.com/GoyaPtyLtd/BaseElements-Plugin-Libraries
 
@@ -71,7 +69,6 @@ To get setup on a fresh ubuntu install :
     sudo apt update
     sudo apt upgrade
     sudo apt install git-all git-lfs
-    #sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
     sudo apt install codeblocks cmake gperf libc++-dev libc++abi-dev libexpat1-dev lld lldb liblldb-dev libomp5 libomp-dev llvm llvm-dev llvm-runtime libllvm-ocaml-dev clang clangd clang-format clang-tidy clang-tools clang libclang-dev libclang1 python3-clang
 
@@ -80,17 +77,17 @@ To get setup on a fresh ubuntu install :
 Then download the source repository and build :
 
     git clone --depth 1 [--branch {branch}] https://github.com/GoyaPtyLtd/BaseElements-Plugin-Libraries.git
+    git clone --depth 1 [--branch {branch}] https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
+
     cd BaseElements-Plugin-Libraries/Scripts
     ./1_getSource.sh                                # Only need to do this once
     ./2_build.sh
 
-    git clone --depth 1 [--branch {branch}] https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
-    cd BaseElements-Plugin
-
-    unzip {path/to/}fm_plugin_sdk_21.0.1.53.zip     # FileMaker PlugInSDK
+    cd ../../BaseElements-Plugin
 
     # Use codeblocks:
 
+    unzip {path/to/}fm_plugin_sdk_21.0.1.53.zip     # FileMaker PlugInSDK
     codeblocks Project/BaseElements.cbp
 
     # OR use CMake as follows:
