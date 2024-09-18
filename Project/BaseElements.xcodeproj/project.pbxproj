@@ -2290,11 +2290,7 @@
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				HEADER_SEARCH_PATHS = (
-					../Headers/,
-					"../Headers/ImageMagick-7/",
-					../Headers/iconv/,
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2311,11 +2307,7 @@
 				STRIP_STYLE = "non-global";
 				SYMROOT = /tmp/Xcode/Build;
 				TEST_AFTER_BUILD = NO;
-				USER_HEADER_SEARCH_PATHS = (
-					"-isystem",
-					"\"$(SRCROOT)/../Headers\"",
-					"\"$(SRCROOT)/../Source\"",
-				);
+				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 			};
 			name = Release;
 		};
@@ -2345,11 +2337,7 @@
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				HEADER_SEARCH_PATHS = (
-					../Headers/,
-					"../Headers/ImageMagick-7/",
-					../Headers/iconv/,
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2367,11 +2355,7 @@
 				STRIP_STYLE = "non-global";
 				SYMROOT = /tmp/Xcode/Build;
 				TEST_AFTER_BUILD = NO;
-				USER_HEADER_SEARCH_PATHS = (
-					"-isystem",
-					"\"$(SRCROOT)/../Headers\"",
-					"\"$(SRCROOT)/../Source\"",
-				);
+				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 			};
 			name = Debug;
 		};
@@ -2678,11 +2662,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				HEADER_SEARCH_PATHS = (
-					../Headers/,
-					"../Headers/ImageMagick-7/",
-					../Headers/iconv/,
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "${INFOPLIST_FILE}";
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2698,11 +2678,7 @@
 				STRIP_STYLE = "non-global";
 				SYMROOT = /tmp/Xcode/Build;
 				TEST_AFTER_BUILD = NO;
-				USER_HEADER_SEARCH_PATHS = (
-					"-isystem",
-					"\"$(SRCROOT)/../Headers\"",
-					"\"$(SRCROOT)/../Source\"",
-				);
+				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 			};
 			name = Release;
 		};
@@ -2728,11 +2704,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				HEADER_SEARCH_PATHS = (
-					../Headers/,
-					"../Headers/ImageMagick-7/",
-					../Headers/iconv/,
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "${INFOPLIST_FILE}";
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2749,11 +2721,7 @@
 				STRIP_STYLE = "non-global";
 				SYMROOT = /tmp/Xcode/Build;
 				TEST_AFTER_BUILD = NO;
-				USER_HEADER_SEARCH_PATHS = (
-					"-isystem",
-					"\"$(SRCROOT)/../Headers\"",
-					"\"$(SRCROOT)/../Source\"",
-				);
+				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 			};
 			name = Debug;
 		};
@@ -2919,15 +2887,16 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = (
-					../Headers/,
-					"../Headers/ImageMagick-7/",
+					"../BaseElements-Plugin-Libraries/Output/Headers",
+					"../BaseElements-Plugin-Libraries/Output/Headers/iconv",
+					"../BaseElements-Plugin-Libraries/Output/Headers/ImageMagick-7",
 				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
+				LIBRARY_SEARCH_PATHS = "../BaseElements-Plugin-Libraries/Output/Libraries/macOS";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CFLAGS = (
@@ -3033,15 +3002,16 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = (
-					../Headers/,
-					"../Headers/ImageMagick-7/",
+					"../BaseElements-Plugin-Libraries/Output/Headers",
+					"../BaseElements-Plugin-Libraries/Output/Headers/iconv",
+					"../BaseElements-Plugin-Libraries/Output/Headers/ImageMagick-7",
 				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
 				INFOPLIST_PREFIX_HEADER = "";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LIBRARY_SEARCH_PATHS = ../Libraries/macOS;
+				LIBRARY_SEARCH_PATHS = "../BaseElements-Plugin-Libraries/Output/Libraries/macOS";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
