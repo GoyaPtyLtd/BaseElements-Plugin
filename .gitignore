@@ -2,6 +2,12 @@
 build
 PlugInSDK
 
+# Ignore any external Libraries and Headers (except README placeholders)
+Headers
+!Headers/README
+Libraries
+!Libraries/README
+
 # Ignore generated Visual Studio files
 
 Project/BaseElements.sdf
