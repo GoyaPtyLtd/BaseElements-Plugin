@@ -148,6 +148,7 @@ target_link_libraries(
     boost_program_options
     boost_regex
     boost_thread
+    nghttp2
     curl
     PocoNet
     ssh2
