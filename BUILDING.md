@@ -71,22 +71,34 @@ To get setup on a fresh ubuntu install :
     sudo apt update
     sudo apt upgrade
     sudo apt install git-all git-lfs
-    sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+    #sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
     sudo apt install codeblocks cmake gperf libc++-dev libc++abi-dev libexpat1-dev lld lldb liblldb-dev libomp5 libomp-dev llvm llvm-dev llvm-runtime libllvm-ocaml-dev clang clangd clang-format clang-tidy clang-tools clang libclang-dev libclang1 python3-clang
 
 **Install FileMaker Server first.**
 
-Then download the plugin and open codeblocks to compile :
+Then download the source repository and build :
 
-    mkdir ~/source
-    cd ~/source
-    git clone https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
+    git clone --depth 1 [--branch {branch}] https://github.com/GoyaPtyLtd/BaseElements-Plugin-Libraries.git
+    cd BaseElements-Plugin-Libraries/Scripts
+    ./1_getSource.sh                                # Only need to do this once
+    ./2_build.sh
 
-    sudo codeblocks
+    git clone --depth 1 [--branch {branch}] https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
+    cd BaseElements-Plugin
 
-( sudo possibly not required, but at the moment solves a tonne of issues )
+    unzip {path/to/}fm_plugin_sdk_21.0.1.53.zip     # FileMaker PlugInSDK
 
-Use llvm clang as the default compiler.
+    # Use codeblocks:
 
-This likely needs a lot more documentation about which settings to use.
+    codeblocks Project/BaseElements.cbp
+
+    # OR use CMake as follows:
+
+    mkdir build
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+    make -j$(($(nproc)+1))
+    make install
+    sudo chown -f fmserver:fmsadmin "/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx"
+

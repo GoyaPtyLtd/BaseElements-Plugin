@@ -69,9 +69,10 @@
 			<Add option="-Wno-unknown-pragmas" />
 			<Add option="-fvisibility=hidden" />
 			<Add option="-D_LIBCPP_STD_VER=17" />
-			<Add directory="../Headers" />
 			<Add directory="../Source" />
-			<Add directory="../Headers/ImageMagick-7" />
+			<Add directory="../PlugInSDK/Headers" />
+			<Add directory="../BaseElements-Plugin-Libraries/Output/Headers" />
+			<Add directory="../BaseElements-Plugin-Libraries/Output/Headers/ImageMagick-7" />
 		</Compiler>
 		<Linker>
 			<Add option="-m64" />
@@ -114,7 +115,6 @@
 			<Add library="libjq.a" />
 			<Add library="libopenjp2.a" />
 			<Add library="libPocoUtil.a" />
-			<Add library="libPocoPDF.a" />
 			<Add library="libPocoCrypto.a" />
 			<Add library="libPocoFoundation.a" />
 			<Add library="libcharset.a" />
@@ -124,7 +124,8 @@
 			<Add library="dl" />
 			<Add library="pthread" />
 			<Add library="m" />
-			<Add directory="../Libraries/linux" />
+			<Add directory="../PlugInSDK/Libraries/Linux/U22/x64" />
+			<Add directory="../BaseElements-Plugin-Libraries/Output/Libraries/linux" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
