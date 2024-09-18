@@ -62,7 +62,7 @@ Some notes for windows :
 
 ### Linux
 
-The plug-in was built using Code::Blocks 20.03 on Ubuntu 22.04.3 (64-bit). The BaseElements plug-in is built as a static library ( all third-party libraries are built from source as static libraries ).
+The plug-in was built on Ubuntu 22.04 (64-bit). The BaseElements plug-in is built as a static library ( all third-party libraries are built from source as static libraries ).
 
 To get setup on a fresh ubuntu install :
 
@@ -85,17 +85,9 @@ Then download the source repository and build :
 
     cd ../../BaseElements-Plugin
 
-    # Use codeblocks:
-
-    unzip {path/to/}fm_plugin_sdk_21.0.1.53.zip     # FileMaker PlugInSDK
-    codeblocks Project/BaseElements.cbp
-
-    # OR use CMake as follows:
-
     mkdir build
     cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..             # Add -DPRO=1 for Pro version.
     make -j$(($(nproc)+1))
-    make install
-    sudo chown -f fmserver:fmsadmin "/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx"
+    sudo make install
 
