@@ -119,15 +119,15 @@ target_include_directories(
 
     Source
     PlugInSDK/Headers
-    Headers
-    Headers/ImageMagick-7
+    BaseElements-Plugin-Libraries/Output/Headers
+    BaseElements-Plugin-Libraries/Output/Headers/ImageMagick-7
 )
 
 target_link_directories(
     BaseElements PUBLIC
 
     PlugInSDK/Libraries/Linux/U22/x64
-    Libraries/linux
+    BaseElements-Plugin-Libraries/Output/Libraries/linux
 )
 
 add_library(libuuid SHARED IMPORTED)
@@ -174,7 +174,6 @@ target_link_libraries(
     jq
     openjp2
     PocoUtil
-    PocoPDF
     PocoCrypto
     PocoFoundation
     charset
