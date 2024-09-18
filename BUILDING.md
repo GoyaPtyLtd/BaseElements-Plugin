@@ -97,7 +97,7 @@ Then download the source repository and build :
 
     mkdir build
     cd build
-    cmake -DCMAKE_BUILD_TYPE=Release ..
+    cmake -DCMAKE_BUILD_TYPE=Release ..             # Add -DPRO=1 for Pro version.
     make -j$(($(nproc)+1))
     make install
     sudo chown -f fmserver:fmsadmin "/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx"
