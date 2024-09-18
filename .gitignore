@@ -1,3 +1,7 @@
+# Ignore build directories
+build
+PlugInSDK
+
 # Ignore generated Visual Studio files
 
 Project/BaseElements.sdf
