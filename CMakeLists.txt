@@ -40,6 +40,12 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "-O2 -g")
 
 set(CMAKE_MODULE_LINKER_FLAGS       "-m64 -Wl,-soname=${SONAME} -Wl,--exclude-libs,ALL -Wl,--no-undefined")
 
+# Extend compiler flags if PRO
+if(PRO)
+    set(CMAKE_C_FLAGS               "${CMAKE_C_FLAGS} -DBEP_PRO_VERSION=${PRO}")
+    set(CMAKE_CXX_FLAGS             "${CMAKE_CXX_FLAGS} -DBEP_PRO_VERSION=${PRO}")
+endif()
+
 # Install configuration
 set(CMAKE_INSTALL_RPATH             "/opt/FileMaker/lib")
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
