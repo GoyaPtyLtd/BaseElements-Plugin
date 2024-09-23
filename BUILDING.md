@@ -40,11 +40,11 @@ If you want to submit a change to the plugin, the best way to do that is to fork
 
 ## Building the plugin
 
-The code uses Xcode on the Mac, Visual Studio on Windows and CodeBlocks on Linux. ( CodeBlocks is launched with sudo, and although this should not be necessary it does seem to solve a lot of other issues. )
+The code uses Xcode on the Mac, Visual Studio on Windows and cmake on Linux.
 
 You will need your own certificates for Mac or Win versions, you can get a Mac Developer certificate from Apple, and the Windows Certificates from most certificate providers. You don't need the certificate to compile and test if you authorise the plugin to run in FileMaker Pro.
 
-You should have FileMaker Pro installed before compiling as the project puts the final version in the Extensions folder to start testing with. ( install FMS on linux instead ).
+You should have FileMaker Pro and/or Server installed before compiling as the project puts the final version in the Extensions folder to start testing with.  You need FMS installed on linux.
 
 ### macOS
 
@@ -60,34 +60,69 @@ Some notes for windows :
 - Unicode is used rather than the multi-byte character set.
 - When doing both debug and release builds clean the project when switching from one tp the other.
 
-### Linux
+### Linux Setup
 
-The plug-in was built on Ubuntu 22.04 (64-bit). The BaseElements plug-in is built as a static library ( all third-party libraries are built from source as static libraries ).
+The BaseElements plug-in is built as a static library ( all third-party libraries are built from source as static libraries ).
 
 To get setup on a fresh ubuntu install :
 
     sudo apt update
     sudo apt upgrade
-    sudo apt install git-all git-lfs
+    sudo apt install zip
 
-    sudo apt install codeblocks cmake gperf libc++-dev libc++abi-dev libexpat1-dev lld lldb liblldb-dev libomp5 libomp-dev llvm llvm-dev llvm-runtime libllvm-ocaml-dev clang clangd clang-format clang-tidy clang-tools clang libclang-dev libclang1 python3-clang
+Then install FileMaker Server : 
 
-**Install FileMaker Server first.**
+**For Ubuntu 20**
+    wget https://downloads.claris.com/esd/fms_21.0.2.202_Ubuntu20_amd64.zip
+    unzip fms_21.0.2.202_Ubuntu20_amd64.zip
+    
+**For Ubuntu 22 x86**
+    wget https://downloads.claris.com/esd/fms_21.0.2.202_Ubuntu22_amd64.zip
+    unzip fms_21.0.2.202_Ubuntu22_amd64.zip
 
-Then download the source repository and build :
+**For Ubuntu 22 arm**
+    wget https://downloads.claris.com/esd/fms_21.0.2.202_Ubuntu22_arm64.zip
+    unzip fms_21.0.2.202_Ubuntu22_arm64.zip
 
-    git clone --depth 1 [--branch {branch}] https://github.com/GoyaPtyLtd/BaseElements-Plugin-Libraries.git
-    git clone --depth 1 [--branch {branch}] https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
+Then install FMS : 
 
-    cd BaseElements-Plugin-Libraries/Scripts
+    sudo apt install ./filemaker-server-21.0.2.202-amd64.deb
+
+Install other required software :
+
+    sudo apt install build-essential gperf cmake
+    sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+
+Grab the repos from GitHub : 
+ 
+    cd ~
+    mkdir source
+    cd source
+    git clone https://github.com/GoyaPtyLtd/BaseElements-Plugin-Libraries.git
+    git clone --depth 1 --branch development https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
+
+As a one off, on ubuntu 20, you need to reconfigure clang so that the command line tools can find the correct binaries.
+
+    cd BaseElements-Plugin-Libraries/scripts/install
+    sudo ./update-alternatives-clang.sh
+
+If you didn't previously build the libraries or otherwise download a prebuilt library package :
+
+    cd ~/source/BaseElements-Plugin-Libraries/Scripts
     ./1_getSource.sh                                # Only need to do this once
     ./2_build.sh
 
-    cd ../../BaseElements-Plugin
+### Linux Build
+
+    cd ~/source/BaseElements-Plugin
 
     mkdir build
     cd build
-    cmake -DCMAKE_BUILD_TYPE=Release ..             # Add -DPRO=1 for Pro version.
+
+# Add -DPRO=1 to the cmake config for Pro version.
+
+    cmake -DCMAKE_BUILD_TYPE=Release ..             
+
     make -j$(($(nproc)+1))
     sudo make install
 
