@@ -126,11 +126,11 @@ If you didn't previously build the libraries or otherwise download a prebuilt li
     make -j$(($(nproc)+1))
     sudo make install
 
-The make install will put a copy of the BE plugin into the correct Extensions folder.  You need to open the FMS Admin for this machine, and enable Script Engine plugins on the Connectors tab.  Sometimes you may need to restart fmse after installing a new build : 
+The **make install** will put a copy of the BE plugin into the correct Extensions folder.  You need to open the FMS Admin for this machine, and enable Script Engine plugins on the Connectors tab.  Sometimes you may need to restart fmse after installing a new build : 
 
     fmsadmin restart fmse
 
-And to build a second time, you may need to disable the old plugin, before deleting it via : 
+And to build a second time, you may need to disable the plugin in the admin, before deleting it via : 
 
     sudo rm "/opt/FileMaker/FileMaker Server/Database Server/Extensions/./BaseElements.fmx"
 
