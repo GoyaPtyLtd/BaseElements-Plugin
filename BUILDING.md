@@ -73,24 +73,26 @@ To get setup on a fresh ubuntu install :
 Then install FileMaker Server : 
 
 **For Ubuntu 20**
+
     wget https://downloads.claris.com/esd/fms_21.0.2.202_Ubuntu20_amd64.zip
     unzip fms_21.0.2.202_Ubuntu20_amd64.zip
+    sudo apt install ./filemaker-server-21.0.2.202-amd64.deb
     
 **For Ubuntu 22 x86**
+
     wget https://downloads.claris.com/esd/fms_21.0.2.202_Ubuntu22_amd64.zip
     unzip fms_21.0.2.202_Ubuntu22_amd64.zip
+    sudo apt install ./filemaker-server-21.0.2.202-amd64.deb
 
 **For Ubuntu 22 arm**
+
     wget https://downloads.claris.com/esd/fms_21.0.2.202_Ubuntu22_arm64.zip
     unzip fms_21.0.2.202_Ubuntu22_arm64.zip
-
-Then install FMS : 
-
     sudo apt install ./filemaker-server-21.0.2.202-amd64.deb
 
 Install other required software :
 
-    sudo apt install build-essential gperf cmake
+    sudo apt install build-essential gperf cmake git git-lfs
     sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
 Grab the repos from GitHub : 
@@ -101,9 +103,9 @@ Grab the repos from GitHub :
     git clone https://github.com/GoyaPtyLtd/BaseElements-Plugin-Libraries.git
     git clone --depth 1 --branch development https://github.com/GoyaPtyLtd/BaseElements-Plugin.git
 
-As a one off, on ubuntu 20, you need to reconfigure clang so that the command line tools can find the correct binaries.
+As a one off, you need to reconfigure clang so that the command line tools can find the correct binaries.  We've provided a script to do this automatically for clang-18.
 
-    cd BaseElements-Plugin-Libraries/scripts/install
+    cd ~/source/BaseElements-Plugin-Libraries/scripts/install
     sudo ./update-alternatives-clang.sh
 
 If you didn't previously build the libraries or otherwise download a prebuilt library package :
@@ -115,13 +117,12 @@ If you didn't previously build the libraries or otherwise download a prebuilt li
 ### Linux Build
 
     cd ~/source/BaseElements-Plugin
-
     mkdir build
     cd build
 
-# Add -DPRO=1 to the cmake config for Pro version.
+# Change DPRO to -DPRO=1 to the cmake config for Pro version.
 
-    cmake -DCMAKE_BUILD_TYPE=Release ..             
+    cmake -DCMAKE_BUILD_TYPE=Release -DPRO=0 ..
 
     make -j$(($(nproc)+1))
     sudo make install
@@ -132,6 +133,6 @@ The **make install** will put a copy of the BE plugin into the correct Extension
 
 And to build a second time, you may need to disable the plugin in the admin, before deleting it via : 
 
-    sudo rm "/opt/FileMaker/FileMaker Server/Database Server/Extensions/./BaseElements.fmx"
+    sudo rm "/opt/FileMaker/FileMaker Server/Database Server/Extensions/BaseElements.fmx"
 
 And then restarting fmse again to clear it out.
