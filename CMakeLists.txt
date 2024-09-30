@@ -151,7 +151,6 @@ target_link_libraries(
     boost_atomic
     boost_date_time
     boost_filesystem
-    boost_locale
     boost_program_options
     boost_regex
     boost_thread
