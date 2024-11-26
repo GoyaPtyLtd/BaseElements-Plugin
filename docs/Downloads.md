@@ -1,9 +1,9 @@
 The latest final release can be found at the following links :
 
-Mac : https://goya.com.au/files/beplugin/current/BaseElements.fmplugin.dmg
-Windows 64 bit : https://goya.com.au/files/beplugin/current/BaseElements.fmx64.zip
-Linux Version for Ubuntu 20 : https://goya.com.au/files/beplugin/current/BaseElements_ubuntu20.fmx.zip
-Linux Version for Ubuntu 22 : https://goya.com.au/files/beplugin/current/BaseElements_ubuntu22.fmx.zip
+Mac : https://goya.com.au/files/beplugin/current/BaseElements.fmplugin.dmg  
+Windows 64 bit : https://goya.com.au/files/beplugin/current/BaseElements.fmx64.zip  
+Linux Version for Ubuntu 20 : https://goya.com.au/files/beplugin/current/BaseElements_ubuntu20.fmx.zip  
+Linux Version for Ubuntu 22 : https://goya.com.au/files/beplugin/current/BaseElements_ubuntu22.fmx.zip  
 
 ### Beta Releases ( when available )
 
