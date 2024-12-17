@@ -2,7 +2,7 @@
  BEPluginUtilities.h
  BaseElements Plug-In
 	
- Copyright 2010-2022 Goya. All rights reserved.
+ Copyright 2010-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -18,10 +18,7 @@
 #include "Images/BEImage.h"
 #include "BEValueList.h"
 
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/fstream.hpp>
-
+#include <filesystem>
 #include <map>
 #include <vector>
 #include <stdint.h>
@@ -77,7 +74,7 @@ const BEValueListStringSharedPtr ParameterAsStringValueList ( const fmx::DataVec
 const std::vector<char> ParameterAsVectorChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::vector<unsigned char> ParameterAsVectorUnsignedChar ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
-const boost::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const boost::filesystem::path default_path = "" );
+const std::filesystem::path ParameterAsPath ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0, const std::filesystem::path default_path = "" );
 const std::string ParameterFileName ( const fmx::DataVect& parameters, const FMX_UInt32 which = 0 );
 const std::string ParameterPathOrContainerAsUTF8 ( const fmx::DataVect& parameters, const fmx::uint32 which = 0 );
 
@@ -92,8 +89,8 @@ const std::vector<char> BinaryDataAsVectorChar ( const fmx::BinaryData& data, co
 const std::vector<char> DataAsVectorChar ( const fmx::Data& data, const FMX_UInt32 which = 0 );
 const bool StreamIsCompressed ( const fmx::BinaryData& data );
 
-const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path );
-std::string ReadFileAsUTF8 ( const boost::filesystem::path path );
+const std::vector<char> ReadFileAsBinary ( const std::filesystem::path path );
+std::string ReadFileAsUTF8 ( const std::filesystem::path path );
 
 std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from = g_text_encoding );
 std::string ConvertTextEncoding ( std::string& in, const std::string& to, const std::string& from = g_text_encoding );

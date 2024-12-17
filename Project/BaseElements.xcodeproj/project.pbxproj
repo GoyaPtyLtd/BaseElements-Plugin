@@ -16,7 +16,6 @@
 		4D11F3EF1F271B6300D78042 /* libxslt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3EE1F271B6300D78042 /* libxslt.a */; };
 		4D11F3F11F271B8E00D78042 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3F01F271B8E00D78042 /* libxml2.a */; };
 		4D11F4031F271C0B00D78042 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */; };
-		4D11F4041F271C0B00D78042 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */; };
 		4D11F4051F271C0B00D78042 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FF1F271C0B00D78042 /* libboost_regex.a */; };
 		4D11F4071F271C0B00D78042 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F4011F271C0B00D78042 /* libboost_thread.a */; };
 		4D11F40B1F271C3B00D78042 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40A1F271C3B00D78042 /* libcurl.a */; };
@@ -151,6 +150,7 @@
 		4D76243E1E0A37F600266C0D /* libpodofo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D76243B1E0A37F600266C0D /* libpodofo.a */; };
 		4D7624421E0A3FFE00266C0D /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D7624411E0A3FFE00266C0D /* libexpat.tbd */; };
 		4D79CA9C26312C660024B789 /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D79CA9B26312C660024B789 /* DiskArbitration.framework */; };
+		4D7E22A72D1134D800B0146C /* libunistring.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 014614352C40F7C60098C862 /* libunistring.a */; };
 		4D807F001A9C255000E27E38 /* BEImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807EFE1A9C255000E27E38 /* BEImage.cpp */; };
 		4D807F041A9C27AB00E27E38 /* BEJPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D807F021A9C27AB00E27E38 /* BEJPEG.cpp */; };
 		4D8265E41E70D13D00257462 /* BEXMLSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8265E21E70D13D00257462 /* BEXMLSchema.cpp */; };
@@ -226,7 +226,6 @@
 		4DBB48F827C45AD000D3D232 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40A1F271C3B00D78042 /* libcurl.a */; };
 		4DBB48F927C45AD000D3D232 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */; };
 		4DBB48FA27C45AD000D3D232 /* libldap.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4C06781C23B3B6006899FE /* libldap.tbd */; };
-		4DBB48FB27C45AD000D3D232 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */; };
 		4DBB48FC27C45AD000D3D232 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FF1F271C0B00D78042 /* libboost_regex.a */; };
 		4DBB48FD27C45AD000D3D232 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F4011F271C0B00D78042 /* libboost_thread.a */; };
 		4DBB48FE27C45AD000D3D232 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3F01F271B8E00D78042 /* libxml2.a */; };
@@ -411,7 +410,6 @@
 		4DE2FD0A2682C57E0091A9AD /* BESMTPContainerAttachments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB857A11C646DF600D0192A /* BESMTPContainerAttachments.cpp */; };
 		4DE2FD0B2682C5D10091A9AD /* FMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D05792C1B3B83550000585F /* FMWrapper.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		4DE2FD0C2682C5D10091A9AD /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */; };
-		4DE2FD0D2682C5D10091A9AD /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */; };
 		4DE2FD0E2682C5D10091A9AD /* libboost_program_options.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D33C6C3229BC90200CEA53F /* libboost_program_options.a */; };
 		4DE2FD0F2682C5D10091A9AD /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3FF1F271C0B00D78042 /* libboost_regex.a */; };
 		4DE2FD102682C5D10091A9AD /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F4011F271C0B00D78042 /* libboost_thread.a */; };
@@ -561,7 +559,6 @@
 		4D11F3EE1F271B6300D78042 /* libxslt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxslt.a; path = ../Libraries/macOS/libxslt.a; sourceTree = "<group>"; };
 		4D11F3F01F271B8E00D78042 /* libxml2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxml2.a; path = ../Libraries/macOS/libxml2.a; sourceTree = "<group>"; };
 		4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../Libraries/macOS/libboost_date_time.a; sourceTree = "<group>"; };
-		4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../Libraries/macOS/libboost_filesystem.a; sourceTree = "<group>"; };
 		4D11F3FF1F271C0B00D78042 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../Libraries/macOS/libboost_regex.a; sourceTree = "<group>"; };
 		4D11F4011F271C0B00D78042 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../Libraries/macOS/libboost_thread.a; sourceTree = "<group>"; };
 		4D11F40A1F271C3B00D78042 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../Libraries/macOS/libcurl.a; sourceTree = "<group>"; };
@@ -859,7 +856,6 @@
 				4DBB48F827C45AD000D3D232 /* libcurl.a in Frameworks */,
 				4DBB48F927C45AD000D3D232 /* libboost_date_time.a in Frameworks */,
 				4DBB48FA27C45AD000D3D232 /* libldap.tbd in Frameworks */,
-				4DBB48FB27C45AD000D3D232 /* libboost_filesystem.a in Frameworks */,
 				4D432126281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
 				4DA72E79285AE5F20036CC90 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
 				4DC4FE062817D30F00C3A339 /* libopenjp2.a in Frameworks */,
@@ -974,7 +970,6 @@
 				4D11F40B1F271C3B00D78042 /* libcurl.a in Frameworks */,
 				4D11F4031F271C0B00D78042 /* libboost_date_time.a in Frameworks */,
 				4D35B3C6262FE4E20098C93F /* libldap.tbd in Frameworks */,
-				4D11F4041F271C0B00D78042 /* libboost_filesystem.a in Frameworks */,
 				4D432124281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
 				4DDF7317299B38B200B9C608 /* libPocoCrypto.a in Frameworks */,
 				4D43212A281268720014BBD3 /* libopenjp2.a in Frameworks */,
@@ -1002,6 +997,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D7E22A72D1134D800B0146C /* libunistring.a in Frameworks */,
 				4DCC540B29BA963F0060223E /* libPocoCrypto.a in Frameworks */,
 				4D3A80102890C2DD006EC1B4 /* SystemConfiguration.framework in Frameworks */,
 				4D3A800F2890C2A3006EC1B4 /* libjq.a in Frameworks */,
@@ -1015,7 +1011,6 @@
 				4DE2FD0C2682C5D10091A9AD /* libboost_date_time.a in Frameworks */,
 				4D432125281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
 				4D432132281269D30014BBD3 /* libz.a in Frameworks */,
-				4DE2FD0D2682C5D10091A9AD /* libboost_filesystem.a in Frameworks */,
 				4DE2FD0E2682C5D10091A9AD /* libboost_program_options.a in Frameworks */,
 				4DE2FD0F2682C5D10091A9AD /* libboost_regex.a in Frameworks */,
 				4DE2FD102682C5D10091A9AD /* libboost_thread.a in Frameworks */,
@@ -1345,7 +1340,6 @@
 				4D11F40C1F271C5400D78042 /* libssh2.a */,
 				4D11F40A1F271C3B00D78042 /* libcurl.a */,
 				4D11F3FD1F271C0B00D78042 /* libboost_date_time.a */,
-				4D11F3FE1F271C0B00D78042 /* libboost_filesystem.a */,
 				4D11F3FF1F271C0B00D78042 /* libboost_regex.a */,
 				4D11F4011F271C0B00D78042 /* libboost_thread.a */,
 				4D11F3F01F271B8E00D78042 /* libxml2.a */,
@@ -2018,7 +2012,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2042,11 +2036,16 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
+				);
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2083,7 +2082,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2105,7 +2104,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -2115,6 +2114,11 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
+				);
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2183,6 +2187,11 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
+				);
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2254,6 +2263,11 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
+				);
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2285,7 +2299,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2299,7 +2313,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = GUZF844KMZ;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"",
 					"BEP_PRO_VERSION=1",
@@ -2315,6 +2329,7 @@
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 5.0.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
@@ -2340,7 +2355,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2354,7 +2369,7 @@
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DEVELOPMENT_TEAM = GUZF844KMZ;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"",
 					"BEP_PRO_VERSION=1",
@@ -2370,6 +2385,7 @@
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 5.0.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
@@ -2398,7 +2414,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2427,7 +2443,7 @@
 					../Libraries/iOS/iPhoneOSSimulator,
 					"$(SDKROOT)/System/iOSSupport/System/Library/Frameworks",
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"",
 					"BEP_PRO_VERSION=1",
@@ -2435,6 +2451,11 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
+				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -2470,7 +2491,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2497,7 +2518,7 @@
 					../Libraries/iOS/iPhoneOSSimulator,
 					"$(SDKROOT)/System/iOSSupport/System/Library/Frameworks",
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -2508,6 +2529,11 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
+				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -2543,7 +2569,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2567,7 +2593,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"",
 					"BEP_PRO_VERSION=1",
@@ -2575,6 +2601,11 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
+				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
@@ -2611,7 +2642,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2633,7 +2664,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -2644,6 +2675,11 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
+				);
 				INFOPLIST_FILE = ../Resources/Base.lproj/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
@@ -2677,7 +2713,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2690,13 +2726,14 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = GUZF844KMZ;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				HEADER_SEARCH_PATHS = (
 					../Headers/,
 					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
 				);
 				INFOPLIST_FILE = "${INFOPLIST_FILE}";
 				INSTALL_PATH = /Library/Frameworks;
@@ -2726,7 +2763,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2739,13 +2776,14 @@
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DEVELOPMENT_TEAM = GUZF844KMZ;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREPROCESSOR_DEFINITIONS = "BE_PLUGIN_BUNDLE_IDENTIFIER=\\\"$(PRODUCT_BUNDLE_IDENTIFIER)\\\"";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				HEADER_SEARCH_PATHS = (
 					../Headers/,
 					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
 				);
 				INFOPLIST_FILE = "${INFOPLIST_FILE}";
 				INSTALL_PATH = /Library/Frameworks;
@@ -2776,7 +2814,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2794,10 +2832,15 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = GUZF844KMZ;
 				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
+				);
 				INFOPLIST_FILE = BE_Plugin_Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2820,7 +2863,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2836,7 +2879,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = GUZF844KMZ;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -2845,6 +2888,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					../Headers/,
+					"../Headers/ImageMagick-7/",
+					../Headers/iconv/,
+				);
 				INFOPLIST_FILE = BE_Plugin_Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2868,7 +2916,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_TIDY_BUGPRONE_REDUNDANT_BRANCH_CONDITION = YES;
 				CLANG_TIDY_MISC_REDUNDANT_EXPRESSION = YES;
@@ -2901,7 +2949,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = ../Libraries/macOS;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -2981,7 +3029,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_TIDY_BUGPRONE_REDUNDANT_BRANCH_CONDITION = YES;
 				CLANG_TIDY_MISC_REDUNDANT_EXPRESSION = YES;
@@ -3015,7 +3063,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = ../Libraries/macOS;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;

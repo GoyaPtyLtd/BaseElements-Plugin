@@ -2,7 +2,7 @@
  BEXMLReader.cpp
  BaseElements Plug-In
  
- Copyright 2012-2022 Goya. All rights reserved.
+ Copyright 2012-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -15,24 +15,23 @@
 #include "BEFileTextReader.h"
 
 #include <algorithm>
+#include <filesystem>
+#include <fstream>
 #include <string>
 
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/fstream.hpp>
 #include <boost/algorithm/string.hpp>
 
 
 using namespace std;
-using namespace boost::filesystem;
 
 
-int StripXMLNodes ( const std::string xml, const path output_file, const vector<string> node_names )
+int StripXMLNodes ( const string xml, const filesystem::path output_file, const vector<string> node_names )
 {
 
 	try {
 		
-		std::unique_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( xml ) );
-		std::shared_ptr<BEXMLTextWriter> writer ( new BEXMLTextWriter ( output_file ) );
+		unique_ptr<BEXMLTextReader> reader ( new BEXMLTextReader ( xml ) );
+		shared_ptr<BEXMLTextWriter> writer ( new BEXMLTextWriter ( output_file ) );
 		
 		reader->read();
 		
@@ -106,12 +105,12 @@ int StripXMLNodes ( const std::string xml, const path output_file, const vector<
 } // StripXMLNodes
 
 
-int SplitBEXMLFiles ( const path input_file )
+int SplitBEXMLFiles ( const filesystem::path input_file )
 {
 	
 	try {
 		
-		std::shared_ptr<BEFileTextReader> reader ( new BEFileTextReader ( input_file ) );
+		shared_ptr<BEFileTextReader> reader ( new BEFileTextReader ( input_file ) );
 		
 		reader->read();
 		
@@ -123,15 +122,15 @@ int SplitBEXMLFiles ( const path input_file )
 				
 				try {
 					
-					path output_path = input_file;
+					auto output_path = input_file;
 					output_path.remove_filename() /= reader->name_attribute ();
 					
 					string type = reader->type_attribute();
 					output_path.replace_extension ( type );
 					
 					ios_base::openmode mode = reader->overwrite() ? ios_base::trunc : ios_base::app;
-					boost::filesystem::ofstream output_file ( output_path, ios_base::out | mode );
-					output_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
+					ofstream output_file ( output_path, ios_base::out | mode );
+					output_file.exceptions ( ofstream::badbit | ofstream::failbit );
 					
 					string payload;
 					
@@ -144,7 +143,7 @@ int SplitBEXMLFiles ( const path input_file )
 					output_file.write ( payload.c_str(), payload.size() );
 					output_file.close();
 
-				} catch ( filesystem_error& e ) {
+				} catch ( filesystem::filesystem_error& e ) {
 					g_last_error = e.code().value();
 				} catch ( exception& /* e */ ) {
 					g_last_error = errno; // unable to write to the file

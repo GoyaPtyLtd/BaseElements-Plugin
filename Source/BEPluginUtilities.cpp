@@ -46,18 +46,20 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcomma"
 #include <boost/format.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/fstream.hpp>
 #pragma GCC diagnostic pop
 
 #include <../Headers/iconv/iconv.h>
 #include <zlib/zlib.h>
 
+#include <filesystem>
+#include <fstream>
+#include <filesystem>
+#include <fstream>
 #include <sstream>
-#include <iostream>
 
-using namespace std;
+
 using namespace fmx;
+using namespace std;
 
 
 thread_local extern errcode g_last_ddl_error;
@@ -69,7 +71,7 @@ thread_local extern errcode g_last_ddl_error;
 
 // convenience functions that handle most of the work needed to return text from a function
 
-const errcode TextConstantFunction ( const std::wstring& text, Data& results )
+const errcode TextConstantFunction ( const wstring& text, Data& results )
 {
 
 	errcode error = kNoError;
@@ -123,7 +125,7 @@ void SetResult ( const Text& text, Data& results )
 }
 
 
-void SetResult ( const std::string& text, Data& results )
+void SetResult ( const string& text, Data& results )
 {
 
 	if ( IsValidUTF8 ( text ) ) {
@@ -151,7 +153,7 @@ void SetResult ( const wstring& text, Data& results )
 void SetResult ( vector<char>& data, Data& results )
 {
 	data.push_back ( '\0' );
-	const std::string data_string ( data.data() );//, data.size() );
+	const string data_string ( data.data() );//, data.size() );
 	SetResult ( data_string, results );
 }
 
@@ -163,14 +165,14 @@ void SetResult ( const vector<unsigned char>& data, Data& results )
 }
 
 
-void SetResult ( const std::string& filename, const vector<unsigned char>& data, Data& results, const std::string data_type )
+void SetResult ( const string& filename, const vector<unsigned char>& data, Data& results, const string data_type )
 {
 	vector<char> char_data ( data.begin(), data.end() );
 	return SetResult ( filename, char_data, data_type, results );
 }
 
 
-void SetResult ( const std::string& filename, const vector<char>& data, const std::string& type, Data& results )
+void SetResult ( const string& filename, const vector<char>& data, const string& type, Data& results )
 {
 	auto as_binary = !filename.empty();
 
@@ -218,7 +220,7 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 			// filemaker will go into an infinite loop if non-utf8 data is set as utf8
 			// so try to convert it first
 
-			std::string utf8 = ConvertTextToUTF8 ( (char *)data.data(), data.size() );
+			string utf8 = ConvertTextToUTF8 ( (char *)data.data(), data.size() );
 
 			if ( compress ) {
 				vector<char> utf8_text ( utf8.begin(), utf8.end() );
@@ -236,7 +238,7 @@ void SetResult ( const std::string& filename, const vector<char>& data, const st
 } // SetResult
 
 
-void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results )
+void SetResult ( const string& filename, BEImage& image, fmx::Data& results )
 {
 
 	const vector<unsigned char> unsigned_char_data = image.get_data();
@@ -247,13 +249,13 @@ void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results
 } // SetResult
 
 
-void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results )
+void SetResult ( const string& filename, const vector<char>& data, fmx::Data& results )
 {
 	return SetResult ( filename, data, FILE_CONTAINER_TYPE, results );
 }
 
 
-void SetResult ( const std::string& filename, const std::vector<unsigned char>& data, fmx::Data& results )
+void SetResult ( const string& filename, const vector<unsigned char>& data, fmx::Data& results )
 {
 	return SetResult ( filename, data, results, FILE_CONTAINER_TYPE );
 }
@@ -308,10 +310,10 @@ const long ParameterAsIndex ( const fmx::DataVect& parameters, const FMX_UInt32 
 }
 
 
-const std::string ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which, const std::string default_value )
+const string ParameterAsUTF8String ( const DataVect& parameters, const FMX_UInt32 which, const string default_value )
 {
 
-	std::string result ( default_value );
+	string result ( default_value );
 
 	try {
 		result.assign ( TextAsUTF8String ( parameters.AtAsText ( which ) ) );
@@ -324,10 +326,10 @@ const std::string ParameterAsUTF8String ( const DataVect& parameters, const FMX_
 } // ParameterAsUTF8String
 
 
-const std::wstring ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which, const std::wstring default_value )
+const wstring ParameterAsWideString ( const DataVect& parameters, const FMX_UInt32 which, const wstring default_value )
 {
 
-	std::wstring result ( default_value );
+	wstring result ( default_value );
 
 	try {
 
@@ -412,7 +414,7 @@ const vector<char> ParameterAsVectorChar ( const DataVect& parameters, const FMX
 			// if we don't have any streams try getting as text
 			// note: we also end up here for anything inserted as QuickTime, which is probably not what the user wants, but...
 
-			std::string text = ParameterAsUTF8String ( parameters, which );
+			string text = ParameterAsUTF8String ( parameters, which );
 			output.assign ( text.begin(), text.end() );
 
 		}
@@ -435,10 +437,10 @@ const vector<unsigned char> ParameterAsVectorUnsignedChar ( const DataVect& para
 } // ParameterAsVectorUnsignedChar
 
 
-const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which )
+const vector<double> ParameterAsVectorDouble ( const fmx::DataVect& parameters, const FMX_UInt32 which )
 {
 
-	std::string value_list = ParameterAsUTF8String ( parameters, which );
+	string value_list = ParameterAsUTF8String ( parameters, which );
 	BEValueListStringUniquePtr values ( new BEValueList<string> ( value_list ) );
 
 	return values->get_as_vector_double();
@@ -446,10 +448,10 @@ const std::vector<double> ParameterAsVectorDouble ( const fmx::DataVect& paramet
 } // ParameterAsVectorDouble
 
 
-const boost::filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which, const boost::filesystem::path default_path )
+const filesystem::path ParameterAsPath ( const DataVect& parameters, const FMX_UInt32 which, const filesystem::path default_path )
 {
 
-	boost::filesystem::path path = ParameterAsWideString ( parameters, which, default_path.wstring() );
+	filesystem::path path = ParameterAsWideString ( parameters, which, default_path.wstring() );
 	path.make_preferred();
 
 	return path;
@@ -457,10 +459,10 @@ const boost::filesystem::path ParameterAsPath ( const DataVect& parameters, cons
 }
 
 
-const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt32 which )
+const string ParameterFileName ( const DataVect& parameters, const FMX_UInt32 which )
 {
 
-	std::string file_name;
+	string file_name;
 
 	// make sure there's a parameter to get
 	if ( parameters.Size() > which ) {
@@ -471,11 +473,11 @@ const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt
 
 			fmx::TextUniquePtr name_as_fmx_text;
 			data->GetFNAMData ( *name_as_fmx_text );
-			std::string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
+			string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
 
 			// if the file name is for an image strip the image: prefix
 			auto colon = name_as_string.find ( ":" );
-			if ( colon != std::string::npos ) {
+			if ( colon != string::npos ) {
 				name_as_string.erase ( 0, colon + 1 );
 			}
 
@@ -493,15 +495,15 @@ const std::string ParameterFileName ( const DataVect& parameters, const FMX_UInt
 } // ParameterFileName
 
 
-const std::string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, const fmx::uint32 which )
+const string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, const fmx::uint32 which )
 {
-	std::string file_contents;
+	string file_contents;
 
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 
 		auto binary_contents = ParameterAsVectorChar ( parameters, which );
 		auto binary_contents_as_utf8 = ConvertTextEncoding ( (char *)binary_contents.data(), binary_contents.size(), UTF8, g_text_encoding );
-		const std::string temporary_contents ( binary_contents_as_utf8.begin(), binary_contents_as_utf8.end() );
+		const string temporary_contents ( binary_contents_as_utf8.begin(), binary_contents_as_utf8.end() );
 		file_contents = temporary_contents;
 
 	} else {
@@ -516,9 +518,9 @@ const std::string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, c
 } // ParameterPathOrContainerAsUTF8
 
 
-std::unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& parameters, const fmx::uint32 which )
+unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& parameters, const fmx::uint32 which )
 {
-	std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document ( new PoDoFo::PdfMemDocument ( ) );
+	unique_ptr<PoDoFo::PdfMemDocument> pdf_document ( new PoDoFo::PdfMemDocument ( ) );
 
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 		auto pdf = ParameterAsVectorChar ( parameters, which );
@@ -625,7 +627,7 @@ const bool BinaryDataAvailable ( const DataVect& parameters, const FMX_UInt32 wh
 #pragma mark -
 
 
-const fmx::int32 IndexForStream ( const BinaryData& data, const std::string stream_type, const bool resolve_main_stream )
+const fmx::int32 IndexForStream ( const BinaryData& data, const string stream_type, const bool resolve_main_stream )
 {
 
 	fmx::int32 stream_index = kBE_DataType_Not_Found;
@@ -633,7 +635,7 @@ const fmx::int32 IndexForStream ( const BinaryData& data, const std::string stre
 	try {
 		unique_ptr<BEQuadChar> quad_char ( new BEQuadChar ( stream_type ) );
 		stream_index = data.GetIndex ( *(quad_char->get_type()) );
-	} catch ( std::out_of_range& /* e */ ) {
+	} catch ( out_of_range& /* e */ ) {
 		; // do nothing, we return an error
 	}
 
@@ -691,10 +693,10 @@ const bool StreamIsCompressed ( const BinaryData& data )
 #pragma mark -
 
 
-const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path )
+const vector<char> ReadFileAsBinary ( const filesystem::path path )
 {
 
-	std::vector<char> file_data;
+	vector<char> file_data;
 
 	if ( exists ( path ) ) {
 		size_t length = (size_t)file_size ( path ); // boost::uintmax_t
@@ -702,8 +704,8 @@ const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path )
 		if ( length > 0 ) {
 
 			// slurp up the file contents
-			boost::filesystem::ifstream input_file ( path, ios_base::in | ios_base::binary | ios_base::ate );
-			input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
+			ifstream input_file ( path, ios_base::in | ios_base::binary | ios_base::ate );
+			input_file.exceptions ( ofstream::badbit | ofstream::failbit );
 			input_file.seekg ( 0, ios::beg );
 			file_data.resize ( length );
 			input_file.read ( file_data.data(), length );
@@ -719,21 +721,21 @@ const std::vector<char> ReadFileAsBinary ( const boost::filesystem::path path )
 } // ReadFileAsBinary
 
 
-std::string ReadFileAsUTF8 ( const boost::filesystem::path path )
+string ReadFileAsUTF8 ( const filesystem::path path )
 {
 
-	std::string result;
+	string result;
 
 	if ( exists ( path ) ) {
 		size_t length = (size_t)file_size ( path ); // boost::uintmax_t
 
 		if ( length > 0 ) {
 
-			boost::filesystem::ifstream inFile ( path, ios_base::in | ios_base::binary | ios_base::ate );
+			ifstream inFile ( path, ios_base::in | ios_base::binary | ios_base::ate );
 			inFile.seekg ( 0, ios::beg );
 
 			// slurp up the file contents
-			std::vector<char> buffer ( length );
+			vector<char> buffer ( length );
 			inFile.read ( buffer.data(), length );
 			inFile.close ();
 
@@ -784,7 +786,7 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 		size_t start_length = length;
 
         size_t available = (length * 4) + 1;	// worst case for utf-32 to utf-8 ?
-		std::vector<char> encoded ( available );
+		vector<char> encoded ( available );
 		char * encoded_start = encoded.data();
 		size_t remaining = available;
 
@@ -815,15 +817,15 @@ vector<char> ConvertTextEncoding ( char * in, const size_t length, const string&
 
 
 
-std::string ConvertTextEncoding ( std::string& in, const string& to, const std::string& from )
+string ConvertTextEncoding ( string& in, const string& to, const string& from )
 {
 	vector<char> text = ConvertTextEncoding ( (char *)in.c_str(), (const size_t)in.size() - 1, to, from );
-	std::string out ( text.begin(), text.end() );
+	string out ( text.begin(), text.end() );
 	return out;
 }
 
 
-const bool IsValidUTF8 ( const std::string& utf8 )
+const bool IsValidUTF8 ( const string& utf8 )
 {
 	auto valid = true;
 
@@ -836,7 +838,7 @@ const bool IsValidUTF8 ( const std::string& utf8 )
 
 		char * start = (char *)utf8.c_str();
 		size_t start_length = utf8.length();
-		std::vector<char> encoded ( start_length );
+		vector<char> encoded ( start_length );
 		char * encoded_start = encoded.data();
 		size_t remaining = start_length;
 
@@ -864,20 +866,20 @@ const bool IsValidUTF8 ( const std::string& utf8 )
 // convert text to utf-8
 // currently handles utf-16, ascii and utf-8 text
 
-std::string ConvertTextToUTF8 ( char * in, const size_t length, const std::string& from )
+string ConvertTextToUTF8 ( char * in, const size_t length, const string& from )
 {
 	auto text = ConvertTextEncoding ( in, length, UTF8, from );
-	std::string utf8 ( text.begin(), text.end() );
+	string utf8 ( text.begin(), text.end() );
 
 	return utf8;
 
 } // ConvertToUTF8
 
 
-std::string TextAsUTF8String ( const Text& fmx_text )
+string TextAsUTF8String ( const Text& fmx_text )
 {
 
-	std::string result;
+	string result;
 
 	try {
 
@@ -896,15 +898,15 @@ std::string TextAsUTF8String ( const Text& fmx_text )
 } // TextAsString
 
 
-std::string TextAsNumberString ( const Text& fmx_text )
+string TextAsNumberString ( const Text& fmx_text )
 {
 	auto number_string = TextAsUTF8String ( fmx_text );
 
 	if ( !number_string.empty() ) {
 
 		// bug in fm text to float conversion removes a leading 0
-		const std::string decimal_point = ".";
-		auto found = std::mismatch ( decimal_point.begin(), decimal_point.end(), number_string.begin() );
+		const string decimal_point = ".";
+		auto found = mismatch ( decimal_point.begin(), decimal_point.end(), number_string.begin() );
 		if ( found.first == decimal_point.end() ) {
 			number_string = "0" + number_string;
 		}
@@ -999,7 +1001,7 @@ errcode ExecuteScript ( const Text& script_name, const Text& file_name, const Da
 } // ExecuteScript
 
 
-errcode ExecuteScript ( const std::string& script_name, const std::string& file_name, const std::string& script_parameter, const FMX_ScriptControl script_control )
+errcode ExecuteScript ( const string& script_name, const string& file_name, const string& script_parameter, const FMX_ScriptControl script_control )
 {
 	errcode error = kNoError;
 
@@ -1087,7 +1089,7 @@ errcode MapError ( const errcode error, const bool map )
  convert filemaker line ending in the text to line feeds
  */
 
-std::string ConvertFileMakerEOLs ( std::string& in )
+string ConvertFileMakerEOLs ( string& in )
 {
 	size_t look_here = 0;
 	string from = FILEMAKER_END_OF_LINE;
@@ -1105,7 +1107,7 @@ std::string ConvertFileMakerEOLs ( std::string& in )
 } // ConvertFileMakerEOLs
 
 
-void set_name_value_pair ( const DataVect& parameters, std::map<std::string, std::string>& pairs )
+void set_name_value_pair ( const DataVect& parameters, map<string, string>& pairs )
 {
 
 	if ( parameters.Size() == 0 ) {
@@ -1135,7 +1137,7 @@ bool AllowUserAbort ( const ExprEnv& environment )
 } // AllowUserAbort
 
 
-std::string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
+string GetFileMakerTemporaryDirectory ( const ExprEnv& environment )
 {
 
 	DataUniquePtr reply;

@@ -2,7 +2,7 @@
  BEXMLTextReader.cpp
  BaseElements Plug-In
 
- Copyright 2012-2022 Goya. All rights reserved.
+ Copyright 2012-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -14,11 +14,11 @@
 #include "BEXMLTextReader.h"
 
 #include <algorithm>
-#include <string>
+#include <filesystem>
 #include <iostream>
 #include <sstream>
+#include <string>
 
-#include <boost/filesystem.hpp>
 
 #include <libxml/xmlreader.h>
 
@@ -28,12 +28,16 @@
 	#include <io.h>
 #endif
 
+
+using namespace std;
+
+
 #pragma mark -
 #pragma mark Constructors
 #pragma mark -
 
 
-BEXMLTextReader::BEXMLTextReader ( const std::string xml )
+BEXMLTextReader::BEXMLTextReader ( const string xml )
 {
 	initialise();
 
@@ -59,7 +63,7 @@ BEXMLTextReader::BEXMLTextReader ( const std::string xml )
 #endif
 		
 		file.make_preferred();
-		auto file_exists = boost::filesystem::exists ( file );
+		auto file_exists = filesystem::exists ( file );
 		if ( file_exists ) {
 
 #if defined ( FMX_WIN_TARGET )
@@ -134,14 +138,14 @@ void BEXMLTextReader::read ( )
 
 void BEXMLTextReader::error_reader ( void * arg, const char * msg, xmlParserSeverities /* severity */, xmlTextReaderLocatorPtr locator )
 {
-	std::ostringstream error;
+	ostringstream error;
 
 	const xmlChar * uri = xmlTextReaderLocatorBaseURI ( locator );
 	if ( uri ) {
 		error << uri;
 		xmlFree ( (void *)uri );
 	} else {
-		boost::filesystem::path path = *((boost::filesystem::path *)arg);
+		filesystem::path path = *((filesystem::path *)arg);
 		error << path.string();
 	}
 
@@ -149,13 +153,13 @@ void BEXMLTextReader::error_reader ( void * arg, const char * msg, xmlParserSeve
 	error << xmlTextReaderLocatorLineNumber ( locator );
 	error << " ";
 	error << msg;
-	error << std::endl;
+	error << endl;
 
 	error_report.append ( error.str() );
 }
 
 
-std::string BEXMLTextReader::parse ( )
+string BEXMLTextReader::parse ( )
 {
 
 	xmlTextReaderSetErrorHandler ( reader, (xmlTextReaderErrorFunc) BEXMLTextReader::error_reader, &file );
@@ -171,10 +175,10 @@ std::string BEXMLTextReader::parse ( )
 } // validate
 
 
-std::string BEXMLTextReader::name()
+string BEXMLTextReader::name()
 {
 	const xmlChar * node_name = xmlTextReaderName ( reader );
-	std::string name = "";
+	string name = "";
 	if ( node_name ) {
 		name = (const char *)node_name;
 		xmlFree ( (xmlChar *)node_name );
@@ -236,10 +240,10 @@ void BEXMLTextReader::move_to_element()
 }
 
 
-std::string BEXMLTextReader::get_attribute ( const std::string attribute_name )
+string BEXMLTextReader::get_attribute ( const string attribute_name )
 {
 	const xmlChar * attribute_value = xmlTextReaderGetAttribute ( reader, (xmlChar *)attribute_name.c_str() );
-	std::string value;
+	string value;
 	if ( attribute_value ) {
 		value = (const char *)attribute_value;
 		xmlFree ( (xmlChar *)attribute_value );
@@ -273,10 +277,10 @@ bool BEXMLTextReader::empty()
 }
 
 
-std::string BEXMLTextReader::value()
+string BEXMLTextReader::value()
 {
 	const xmlChar * reader_value = xmlTextReaderValue ( reader );
-	std::string value;
+	string value;
 
 	if ( reader_value ) {
 		value = (const char *)reader_value;
@@ -288,9 +292,9 @@ std::string BEXMLTextReader::value()
 }
 
 
-std::string BEXMLTextReader::inner_xml()
+string BEXMLTextReader::inner_xml()
 {
-	std::string inner_xml;
+	string inner_xml;
 
 	const xmlChar * raw_xml = xmlTextReaderReadInnerXml ( reader );
 	const xmlError *xml_error = xmlGetLastError();
@@ -309,9 +313,9 @@ std::string BEXMLTextReader::inner_xml()
 } // inner_xml
 
 
-std::string BEXMLTextReader::outer_xml()
+string BEXMLTextReader::outer_xml()
 {
-	std::string outer_xml;
+	string outer_xml;
 
 	const xmlChar * raw_xml = xmlTextReaderReadOuterXml ( reader );
 	const xmlError *xml_error = xmlGetLastError();
@@ -330,19 +334,19 @@ std::string BEXMLTextReader::outer_xml()
 } // outer_xml
 
 
-std::string BEXMLTextReader::content()
+string BEXMLTextReader::content()
 {
 	const xmlChar * xml_data = xmlNodeGetContent ( xmlTextReaderCurrentNode ( reader ) );
-	const std::string xml_result ( (char *)xml_data, xmlStrlen ( xml_data ) );
+	const string xml_result ( (char *)xml_data, xmlStrlen ( xml_data ) );
 	xmlFree ( (xmlChar *)xml_data );
 
 	return xml_result;
 } // content
 
 
-std::string BEXMLTextReader::as_string()
+string BEXMLTextReader::as_string()
 {
-	std::string value;
+	string value;
 
 	const xmlChar * reader_value = xmlTextReaderReadString ( reader );
 	if ( reader_value ) {

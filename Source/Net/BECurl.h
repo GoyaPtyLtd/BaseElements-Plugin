@@ -2,7 +2,7 @@
  BECurl.h
  BaseElements Plug-In
  
- Copyright 2011-2022 Goya. All rights reserved.
+ Copyright 2011-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -84,7 +84,7 @@ public:
 	
 	BECurl ( );
 	
-	BECurl ( const std::string download_this, const be_http_method method = kBE_HTTP_METHOD_GET, const boost::filesystem::path to_file = "", const std::string username = "", const std::string password = "", const std::string post_parameters = "", const std::vector<char> put_data = std::vector<char>() );
+	BECurl ( const std::string download_this, const be_http_method method = kBE_HTTP_METHOD_GET, const std::filesystem::path to_file = "", const std::string username = "", const std::string password = "", const std::string post_parameters = "", const std::vector<char> put_data = std::vector<char>() );
 	
 	~BECurl();
 	
@@ -116,7 +116,7 @@ protected:
 	
 	be_http_method http_method;
 
-	boost::filesystem::path filename;
+	std::filesystem::path filename;
 	FILE * upload_file;
 	
 	std::vector<char> upload_data;

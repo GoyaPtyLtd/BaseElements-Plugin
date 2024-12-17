@@ -2,7 +2,7 @@
  BEXSLT.cpp
  BaseElements Plug-In
  
- Copyright 2010-2022 Goya. All rights reserved.
+ Copyright 2010-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -44,23 +44,24 @@
 	#include <tchar.h>
 #endif
 
-using namespace std;
+
 using namespace fmx;
+using namespace std;
 
 
-const std::string ReportXSLTError ( const xmlChar * url );
+const string ReportXSLTError ( const xmlChar * url );
 void ResetXMLErrors ( void );
 
 
 int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList );
-const std::string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
-const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj );
-const std::string NodeSetToValueList ( xmlNodeSetPtr node_set );
+const string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj );
+const string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj );
+const string NodeSetToValueList ( xmlNodeSetPtr node_set );
 
 
 // globals for error reporting
 
-thread_local std::string g_last_xslt_error_text;
+thread_local string g_last_xslt_error_text;
 thread_local errcode g_last_xslt_error;
 
 
@@ -95,10 +96,10 @@ static void XSLTErrorFunction ( void *context ATTRIBUTE_UNUSED, const char *mess
 
 // format an error as per xsltproc
 
-const std::string ReportXSLTError ( const xmlChar * url )
+const string ReportXSLTError ( const xmlChar * url )
 {
 	
-	std::string result_text = g_last_xslt_error_text;
+	string result_text = g_last_xslt_error_text;
 
 	if ( url != NULL && xmlStrlen ( url ) > 0 ) {
 
@@ -149,13 +150,13 @@ void ResetXMLErrors ( void )
 //	ApplyXSLTInMemory includes code supplied by Magnus Strand, http://www.smartasystem.se/
 ////////////////////////////////////////////////////////////////////////////////////////
 
-const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string& xslt_as_filemaker_text, const boost::filesystem::path csv_path, const boost::filesystem::path xml_path )
+const string ApplyXSLTInMemory ( const string& xml, const string& xslt_as_filemaker_text, const filesystem::path csv_path, const filesystem::path xml_path )
 {
 	ResetXMLErrors();
-	std::string result;
+	string result;
 	
 	// parse the stylesheet
-	std::string xslt = xslt_as_filemaker_text;
+	string xslt = xslt_as_filemaker_text;
 	ConvertFileMakerEOLs ( xslt ); // otherwise all errors occur on line 1
 	auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC;
 
@@ -174,9 +175,9 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 				// aaaarrrgggghhhhhh!!!!!
 				auto wide_path = xml_path.wstring();
 				int size = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, NULL, 0, NULL, NULL );
-				std::vector<char> utf8_data ( size );
+				vector<char> utf8_data ( size );
 				auto bytesConverted = WideCharToMultiByte ( CP_UTF8, 0, wide_path.c_str(), -1, utf8_data.data(), (int)utf8_data.size(), NULL, NULL );
-				std::string utf8 ( utf8_data.begin(), utf8_data.end() );
+				string utf8 ( utf8_data.begin(), utf8_data.end() );
 				xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), utf8.c_str(), UTF8, options );
 #else
 				xmlDocPtr xml_doc = xmlReadDoc ( (xmlChar *)xml.c_str(), xml_path.string().c_str(), UTF8, options );
@@ -310,11 +311,11 @@ int RegisterNamespaces ( xmlXPathContextPtr xpathCtx, const xmlChar* nsList )
 
 
 
-const std::string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
+const string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 {
 	
-	std::string result;
-	std::unique_ptr<xmlChar> oject_as_string;
+	string result;
+	unique_ptr<xmlChar> oject_as_string;
 
 	switch ( xpathObj->type ) {
 			
@@ -356,9 +357,9 @@ const std::string XPathObjectAsText ( const xmlXPathObjectPtr xpathObj )
 }
 
 
-const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj )
+const string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPathObjectPtr xpathObj )
 {
-	std::string result;
+	string result;
 	
 	xmlBufferPtr xml_buffer = xmlBufferCreate();
 	const xmlError *xml_error = xmlGetLastError();
@@ -405,7 +406,7 @@ const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPat
 }
 
 
-const std::string NodeSetToValueList ( xmlNodeSetPtr node_set )
+const string NodeSetToValueList ( xmlNodeSetPtr node_set )
 {
 	
 	if ( (node_set == NULL) || (node_set->nodeNr == 0) || (node_set->nodeTab == NULL) ) {
@@ -420,7 +421,7 @@ const std::string NodeSetToValueList ( xmlNodeSetPtr node_set )
 
 	for ( int i = 0; i < node_set->nodeNr; i++ ) {
 
-		const std::unique_ptr<xmlChar> node_as_string ( xmlXPathCastNodeToString ( node_set->nodeTab[i] ) );
+		const unique_ptr<xmlChar> node_as_string ( xmlXPathCastNodeToString ( node_set->nodeTab[i] ) );
 
 		if ( node_as_string ) {
 			
@@ -436,10 +437,10 @@ const std::string NodeSetToValueList ( xmlNodeSetPtr node_set )
 }
 
 
-const std::string ApplyXPathExpression ( const std::string& xml, const std::string& xpath, const std::string& ns_list, const xmlXPathObjectType xpath_object_type )
+const string ApplyXPathExpression ( const string& xml, const string& xpath, const string& ns_list, const xmlXPathObjectType xpath_object_type )
 {
 	ResetXMLErrors();
-	std::string result;
+	string result;
 	
 	// parse the xml
 	auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC;

@@ -2,7 +2,7 @@
  BECurl.cpp
  BaseElements Plug-In
 
- Copyright 2011-2023 Goya. All rights reserved.
+ Copyright 2011-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -36,6 +36,8 @@
 
 #endif
 
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <errno.h>
@@ -49,16 +51,14 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #pragma clang diagnostic pop
 
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/fstream.hpp>
 #include <boost/scoped_ptr.hpp>
 #pragma GCC diagnostic pop
 
 #include <Poco/URI.h>
 #include <Poco/Path.h>
 
+
 using namespace std;
-using namespace boost::filesystem;
 
 
 #define FTP_DELETE_COMMAND "dele";
@@ -335,7 +335,7 @@ BECurl::BECurl ( )
 }
 
 
-BECurl::BECurl ( const string download_this, const be_http_method method, const boost::filesystem::path to_file, const string _username, const string _password, const string post_parameters, const vector<char> put_data )
+BECurl::BECurl ( const string download_this, const be_http_method method, const filesystem::path to_file, const string _username, const string _password, const string post_parameters, const vector<char> put_data )
 {
 
 	Init ();
@@ -578,8 +578,8 @@ void BECurl::set_parameters ( )
 			parameters.erase ( parameters.begin() );
 
 			// slurp up the file contents
-			boost::filesystem::ifstream input_file ( parameters, ios_base::in | ios_base::binary | ios_base::ate );
-			input_file.exceptions ( boost::filesystem::ofstream::badbit | boost::filesystem::ofstream::failbit );
+			ifstream input_file ( parameters, ios_base::in | ios_base::binary | ios_base::ate );
+			input_file.exceptions ( ofstream::badbit | ofstream::failbit );
 			input_file.seekg ( 0, ios::beg );
 			vector<char> file_data ( (std::istreambuf_iterator<char> ( input_file ) ), std::istreambuf_iterator<char>() );
 
@@ -909,7 +909,7 @@ vector<char> BECurl::upload ( )
 
 		perform ( );
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		error = (CURLcode)e.code().value();
 	} catch ( BECurl_Exception& e ) {
 		error = e.code();

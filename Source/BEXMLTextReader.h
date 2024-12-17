@@ -2,7 +2,7 @@
  BEXMLTextReader.h
  BaseElements Plug-In
  
- Copyright 2012-2022 Goya. All rights reserved.
+ Copyright 2012-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -18,8 +18,6 @@
 #include "BEPluginUtilities.h"
 #include "BEXMLReaderInterface.h"
 
-#include <boost/filesystem/path.hpp>
-
 #include <libxml/xmlreader.h>
 
 
@@ -32,7 +30,7 @@ class BEXMLTextReader : public BEXMLReaderInterface {
 	
 public:
 	
-	BEXMLTextReader ( const boost::filesystem::path path ) : BEXMLTextReader ( path.string() ) {};
+	BEXMLTextReader ( const std::filesystem::path path ) : BEXMLTextReader ( path.string() ) {};
 	BEXMLTextReader ( const std::string xml );
 	~BEXMLTextReader();
 	
@@ -64,7 +62,7 @@ public:
 	
 protected:
 	
-	boost::filesystem::path file;
+	std::filesystem::path file;
 	bool last_node;
 	xmlTextReaderPtr reader;
 	xmlDocPtr xml_document;

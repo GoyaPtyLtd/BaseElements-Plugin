@@ -2,7 +2,7 @@
  BETask.cpp
  BaseElements Plug-In
 
- Copyright 2021-2022 Goya. All rights reserved.
+ Copyright 2021-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -16,7 +16,10 @@
 #include <future>
 
 
-const BETaskResult xslt_task ( std::vector<boost::filesystem::path>& csv_paths, std::vector<std::string>& xslt, const std::string& xml, const boost::filesystem::path& xml_path, const std::string& script_name, const std::string& database_name )
+using namespace std;
+
+
+const BETaskResult xslt_task ( vector<filesystem::path>& csv_paths, vector<string>& xslt, const string& xml, const filesystem::path& xml_path, const string& script_name, const string& database_name )
 {
 
 	auto output_path = csv_paths.front();
@@ -25,10 +28,10 @@ const BETaskResult xslt_task ( std::vector<boost::filesystem::path>& csv_paths, 
 	auto stylesheet = xslt.front();
 	xslt.erase ( xslt.begin() );
 
-	std::promise<BETaskResult> thread_result;
+	promise<BETaskResult> thread_result;
 	auto task_reply = thread_result.get_future();
 
-	std::thread task ( [xml_path, output_path, stylesheet, xml, script_name, database_name, &thread_result] {
+	thread task ( [xml_path, output_path, stylesheet, xml, script_name, database_name, &thread_result] {
 
 		if ( !output_path.empty() || !stylesheet.size() ) {
 			

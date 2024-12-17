@@ -65,6 +65,8 @@
 			<Add option="-fPIC" />
 			<Add option="-m64" />
 			<Add option="-Wall" />
+			<Add option="-std=c++20" />
+			<Add option="-std=c11" />
 			<Add option="-fexceptions" />
 			<Add option="-Wno-unknown-pragmas" />
 			<Add option="-fvisibility=hidden" />
@@ -85,7 +87,6 @@
 			<Add library="libMagickWand-7.Q16HDRI.a" />
 			<Add library="libboost_atomic.a" />
 			<Add library="libboost_date_time.a" />
-			<Add library="libboost_filesystem.a" />
 			<Add library="libboost_program_options.a" />
 			<Add library="libboost_regex.a" />
 			<Add library="libboost_thread.a" />

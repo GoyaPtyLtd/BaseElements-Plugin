@@ -92,6 +92,9 @@
 #include "Images/BEJPEG.h"
 
 #include <algorithm>
+#include <chrono>
+#include <filesystem>
+#include <fstream>
 #include <list>
 #include <numeric> // for inner_product
 #include <thread>
@@ -103,8 +106,6 @@
 #include <boost/algorithm/string_regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/fstream.hpp>
 #include <boost/foreach.hpp>
 #include <boost/interprocess/exceptions.hpp>
 #include <boost/tokenizer.hpp>
@@ -120,9 +121,8 @@
 #pragma GCC diagnostic pop
 
 
-using namespace std;
 using namespace fmx;
-using namespace boost::filesystem;
+using namespace std;
 
 
 #pragma mark -
@@ -350,11 +350,11 @@ fmx::errcode BE_FolderCreate ( short /* funcId */, const ExprEnv& /* environment
 
 	try {
 
-		path directory_path = ParameterAsPath ( parameters );
+		auto directory_path = ParameterAsPath ( parameters );
 
 		try {
 			create_directories ( directory_path );
-		} catch ( filesystem_error& e ) {
+		} catch ( filesystem::filesystem_error& e ) {
 			g_last_error = e.code().value();
 		}
 
@@ -379,11 +379,11 @@ fmx::errcode BE_FileDelete ( short /* funcId */, const ExprEnv& /* environment *
 
 	try {
 
-		path path = ParameterAsPath ( parameters );
+		auto path = ParameterAsPath ( parameters );
 
 		try {
 			remove_all ( path ); // if path is a directory then path and all it's contents are deleted
-		} catch ( filesystem_error& e ) {
+		} catch ( filesystem::filesystem_error& e ) {
 			g_last_error = e.code().value();
 		}
 
@@ -408,13 +408,13 @@ fmx::errcode BE_FileExists ( short /* funcId */, const ExprEnv& /* environment *
 
 	try {
 
-		path path = ParameterAsPath ( parameters );
+		auto path = ParameterAsPath ( parameters );
 
-		bool file_exists = exists ( path );
+		auto file_exists = exists ( path );
 
 		SetResult ( file_exists, results );
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -441,7 +441,7 @@ fmx::errcode BE_FileSize ( short /* funcId */, const ExprEnv& /* environment */,
 
 		SetResult ( (double)size, results );
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -462,14 +462,16 @@ fmx::errcode BE_FileModificationTimestamp ( short /* funcId */, const ExprEnv& /
 
     try {
 
-        const path path = ParameterAsPath ( parameters );
+        const auto path = ParameterAsPath ( parameters );
 
-        const std::time_t last_modified = boost::filesystem::last_write_time ( path );
-		const fmx::int64 timestamp = std_time_to_timestamp ( last_modified );
+        const auto last_modified = std::filesystem::last_write_time ( path );
+		const auto last_modified_time = duration_cast<std::chrono::seconds>( last_modified.time_since_epoch() ).count();
+		const auto timestamp = std_time_to_timestamp ( last_modified_time );
+		
 
-		SetResult ( (double)timestamp, results );
+		SetResult ( timestamp, results );
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
         g_last_error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -585,7 +587,7 @@ fmx::errcode BE_FileReadText ( short /* funcId */, const ExprEnv& /* environment
 
 //        SetResult ( file_contents, results );
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -606,7 +608,7 @@ fmx::errcode BE_FileWriteText ( short /* funcId */, const ExprEnv& /* environmen
 
 	try {
 
-		path path = ParameterAsPath ( parameters );
+		auto path = ParameterAsPath ( parameters );
 
 		// should the text be appended to the file or replace any existing contents
 
@@ -660,9 +662,9 @@ fmx::errcode BE_XMLStripInvalidCharacters ( short /* funcId */, const ExprEnv& /
 
 		boost::uintmax_t length = file_size ( source ); // throws if the source does not exist
 
-		boost::filesystem::ifstream input_file ( source, ios_base::in | ios_base::binary | ios_base::ate );
+		ifstream input_file ( source, ios_base::in | ios_base::binary | ios_base::ate );
 		input_file.seekg ( 0, ios::beg );
-		boost::filesystem::ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
+		ofstream output_file ( destination, ios_base::out | ios_base::binary | ios_base::ate );
 
 		const size_t size = 2; // read (and write) 2 bytes at a time
 		boost::uintmax_t skipped = 0;
@@ -739,7 +741,7 @@ fmx::errcode BE_XMLStripInvalidCharacters ( short /* funcId */, const ExprEnv& /
 
 		SetResult ( (double)skipped, results );
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -763,14 +765,15 @@ fmx::errcode BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /* envi
 
 		auto field_contents = ParameterAsVectorChar ( parameters );
 
-		path destination;
+		filesystem::path destination;
 
 		auto number_of_parameters = parameters.Size();
 		if ( number_of_parameters == 2 ) {
 			destination = ParameterAsPath ( parameters, 1 );
 		} else {
 			// write out a temporary file
-			destination = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
+			const filesystem::path temporary_file_name = tmpnam ( NULL );  // std::filesystem::unique_path() does yet not exist
+			destination = std::filesystem::temp_directory_path() / temporary_file_name;
 		}
 
 		error = write_to_file ( destination, field_contents );
@@ -807,9 +810,9 @@ fmx::errcode BE_FileImport ( short /* funcId */, const ExprEnv& /* environment *
 
 		SetResult ( from.filename().string(), file_data, data_type, results );
 
-	} catch ( boost::filesystem::ifstream::failure& /* e */ ) {
+	} catch ( ifstream::failure& /* e */ ) {
 		error = errno; // cannot read the file
-	} catch ( boost::filesystem::filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -849,7 +852,7 @@ fmx::errcode BE_FilePatternCount ( short /* funcId */, const ExprEnv& /* environ
 
 				for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
 
-					boost::filesystem::path text_file_path ( *it );
+					std::filesystem::path text_file_path ( *it );
 					text_file_path.make_preferred();
 					auto hay = ReadFileAsUTF8 ( text_file_path );
 					std::transform ( hay.begin(), hay.end(), hay.begin(), ::tolower ); // case insensitive
@@ -857,9 +860,9 @@ fmx::errcode BE_FilePatternCount ( short /* funcId */, const ExprEnv& /* environ
 
 				}
 
-			} catch ( boost::filesystem::ifstream::failure& /* e */ ) {
+			} catch ( ifstream::failure& /* e */ ) {
 				error = errno; // cannot read the file
-			} catch ( boost::filesystem::filesystem_error& e ) {
+			} catch ( std::filesystem::filesystem_error& e ) {
 				error = e.code().value();
 			}
 
@@ -937,7 +940,7 @@ fmx::errcode BE_FileReplaceText ( short /* funcId */, const fmx::ExprEnv& /* env
 		}
 
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -968,7 +971,7 @@ fmx::errcode BE_FileMove ( short /* funcId */, const ExprEnv& /* environment */,
 
 			try {
 				rename ( from, to );
-			} catch ( filesystem_error& e ) {
+			} catch ( filesystem::filesystem_error& e ) {
 				g_last_error = e.code().value();
 			}
 
@@ -1014,13 +1017,13 @@ fmx::errcode BE_FileCopy ( short /* funcId */, const ExprEnv& /* environment */,
 
 		try {
 
-			auto options = copy_options::recursive | copy_options::copy_symlinks;
+			auto options = filesystem::copy_options::recursive | filesystem::copy_options::copy_symlinks;
 			if ( overwrite_existing ) {
-				options |= copy_options::overwrite_existing;
+				options |= filesystem::copy_options::overwrite_existing;
 			}
 			copy ( from, to, options );
 
-		} catch ( filesystem_error& e ) {
+		} catch ( filesystem::filesystem_error& e ) {
 			g_last_error = e.code().value();
 		}
 
@@ -1046,7 +1049,7 @@ fmx::errcode BE_FileListFolder ( short /* funcId */, const ExprEnv& /* environme
 
 	try {
 
-		const path directory = ParameterAsPath ( parameters );
+		const auto directory = ParameterAsPath ( parameters );
 		const long file_type_wanted = ParameterAsLong ( parameters, 1, kBE_FileTypeFile );
 		const bool include_subfolders = ParameterAsBoolean ( parameters, 2, false );
 		const bool use_full_path = ParameterAsBoolean ( parameters, 3, false );
@@ -1296,7 +1299,7 @@ fmx::errcode BE_XSLT_Apply ( short function_id, const ExprEnv& /* environment */
 			auto xml = ParameterPathOrContainerAsUTF8 ( parameters );
 
 			std::vector<std::string> stylesheets { xslt };
-			std::vector<boost::filesystem::path> output_paths { csv_path };
+			std::vector<std::filesystem::path> output_paths { csv_path };
 
 			auto script_name = ParameterAsUTF8String ( parameters, 3 );
 			auto database_name = ParameterAsUTF8String ( parameters, 4 );
@@ -1432,7 +1435,7 @@ fmx::errcode BE_SplitBEFileNodes ( short /* funcId */, const ExprEnv& /* environ
 
 	try {
 
-		path input_file = ParameterAsPath ( parameters );
+		auto input_file = ParameterAsPath ( parameters );
 
 		int result = SplitBEXMLFiles ( input_file );
 
@@ -2056,7 +2059,7 @@ fmx::errcode BE_Unzip ( const short fucnction_id, const ExprEnv& /* environment 
 			SetResult ( error, results );
 		}
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -2097,7 +2100,7 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 
 			for ( typename BEValueList<string>::iterator it = values->begin() ; it != values->end(); ++it ) {
 
-				boost::filesystem::path file_path ( *it );
+				std::filesystem::path file_path ( *it );
 				auto file_name = boost::algorithm::to_lower_copy ( file_path.filename().string() );
 				auto inserted = unique_file_names.insert ( { file_name, file_path.string() } );
 
@@ -2122,7 +2125,7 @@ fmx::errcode BE_Zip ( short /*funcId*/, const ExprEnv& /* environment */, const 
 
 		SetResult ( error, results );
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		g_last_error = e.code().value();
 	} catch ( BEPlugin_Exception& e ) {
 		error = e.code();
@@ -2355,7 +2358,7 @@ fmx::errcode BE_Gzip ( short /*funcId*/, const ExprEnv& /* environment */, const
 
 			const vector<char> compressed = CompressContainerStream ( to_compress );
 
-			path filename = ParameterAsPath ( parameters, 1 );
+			auto filename = ParameterAsPath ( parameters, 1 );
 			if ( filename.empty() ) {
 				filename = ParameterFileName ( parameters );
 				filename += GZIP_FILE_EXTENSION;
@@ -2389,7 +2392,7 @@ fmx::errcode BE_UnGzip ( short /*funcId*/, const ExprEnv& /* environment */, con
 
 			const vector<char> uncompressed = UncompressContainerStream ( gzipped );
 
-			path filename = ParameterAsPath ( parameters, 1 );
+			auto filename = ParameterAsPath ( parameters, 1 );
 			if ( filename.empty() ) {
 				filename = ParameterFileName ( parameters );
 				if ( filename.extension() == GZIP_FILE_EXTENSION ) {
@@ -2833,7 +2836,7 @@ fmx::errcode BE_HTTP_GETFile ( short /* funcId */, const ExprEnv& /* environment
 	try {
 
 		auto url = ParameterAsUTF8String ( parameters );
-		path filename = ParameterAsPath ( parameters, 1 );
+		auto filename = ParameterAsPath ( parameters, 1 );
 		auto username = ParameterAsUTF8String ( parameters, 2 );
 		auto password = ParameterAsUTF8String ( parameters, 3 );
 
@@ -2885,7 +2888,7 @@ fmx::errcode BE_HTTP_POST_PUT_PATCH ( short funcId, const ExprEnv& /* environmen
 
 		} else if ( funcId == kBE_HTTP_PUTFile ) {
 
-			path filename = ParameterAsPath ( parameters, 1 );
+			auto filename = ParameterAsPath ( parameters, 1 );
 			BECurl curl ( url, kBE_HTTP_METHOD_PUT, filename, username, password );
 			response = curl.http_put ( );
 
@@ -3822,7 +3825,7 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 
 			for ( typename BEValueList<string>::iterator it = file_list->begin() ; it != file_list->end(); ++it ) {
 
-				boost::filesystem::path pdf_path ( *it );
+				std::filesystem::path pdf_path ( *it );
 				pdf_path.make_preferred();
 
 				std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
@@ -3835,7 +3838,8 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 		} // if ( BinaryDataAvailable...
 
 		// write out a temporary file
-		auto temporary_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
+		const filesystem::path temporary_file_name = tmpnam ( NULL );  // std::filesystem::unique_path() does yet not exist
+		auto temporary_file = std::filesystem::temp_directory_path() / temporary_file_name;
 		pdf_document->Write ( temporary_file.c_str() );
 		pdf_document.reset(); // make sure to close the file
 
@@ -3854,7 +3858,7 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 
 		}
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		error = e.code().value();
 	} catch ( const PoDoFo::PdfError& e ) {
 		error = e.GetError();
@@ -3881,7 +3885,7 @@ fmx::errcode BE_PDFPageCount ( short /* funcId */, const ExprEnv& /* environment
 		auto page_count = pdf_document->GetPageCount();
 		SetResult ( page_count, results );
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		error = e.code().value();
 	} catch ( const PoDoFo::PdfError& e ) {
 		error = e.GetError();
@@ -3931,7 +3935,8 @@ fmx::errcode BE_PDFGetPages ( short /* funcId */, const ExprEnv& /* environment 
 			pdf_document.reset(); // make sure to close the file
 
 			// write out a temporary file
-			auto temporary_file = boost::filesystem::temp_directory_path() / boost::filesystem::unique_path();
+			const filesystem::path temporary_file_name = tmpnam ( NULL ); // std::filesystem::unique_path() does yet not exist
+			auto temporary_file = std::filesystem::temp_directory_path() / temporary_file_name;
 			new_pdf->Write ( temporary_file.c_str() );
 			new_pdf.reset(); // make sure to close the file
 
@@ -3951,7 +3956,7 @@ fmx::errcode BE_PDFGetPages ( short /* funcId */, const ExprEnv& /* environment 
 		}
 
 
-	} catch ( filesystem_error& e ) {
+	} catch ( filesystem::filesystem_error& e ) {
 		error = e.code().value();
 	} catch ( const PoDoFo::PdfError& e ) {
 		error = e.GetError();
@@ -4385,7 +4390,7 @@ fmx::errcode BE_FileOpen ( short /*funcId*/, const ExprEnv& /* environment */, c
 
 	try {
 
-		// in this instance the string is a better choice than boost::filesystem::path
+		// in this instance the string is a better choice than std::filesystem::path
 		auto path = ParameterAsWideString ( parameters );
 
 		bool succeeded = OpenFile ( path );

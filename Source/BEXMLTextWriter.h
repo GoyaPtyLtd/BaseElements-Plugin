@@ -2,7 +2,7 @@
  BEXMLTextWriter.h
  BaseElements Plug-In
  
- Copyright 2012-2016 Goya. All rights reserved.
+ Copyright 2012-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -17,7 +17,7 @@
 #include "BEPluginUtilities.h"
 #include "BEXMLReaderInterface.h"
 
-#include <boost/filesystem/path.hpp>
+#include <filesystem>
 
 #include <libxml/xmlwriter.h>
 
@@ -29,7 +29,7 @@ class BEXMLTextWriter : public BEXMLReaderInterface {
 	
 public:
 	
-	BEXMLTextWriter ( const boost::filesystem::path path );
+	BEXMLTextWriter ( const std::filesystem::path path );
 	~BEXMLTextWriter();
 
 	void start_element ( const std::string name );
@@ -43,7 +43,7 @@ public:
 
 protected:
 	
-	boost::filesystem::path file;
+	std::filesystem::path output_path;
 
 	xmlTextWriterPtr writer;
 	xmlBufferPtr memory;
