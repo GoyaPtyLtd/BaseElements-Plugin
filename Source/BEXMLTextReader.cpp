@@ -41,7 +41,7 @@ BEXMLTextReader::BEXMLTextReader ( const string xml )
 {
 	initialise();
 
-	auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC;
+	const auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC | XML_PARSE_NOENT | XML_PARSE_DTDLOAD;
 			
 	// if the input, excluding whitespace, begins with < we treat it as xml... if not, treat it as a file path
 	auto it = find_if_not ( xml.begin(), xml.end(), [](int c){ return isspace(c); } );

@@ -2,7 +2,7 @@
  BEXMLSchema.cpp
  BaseElements Plug-In
 
- Copyright (c) 2017-2021 Goya. All rights reserved.
+ Copyright (c) 2017-2024 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -66,11 +66,7 @@ const std::string validate_xml ( const std::string xml, const std::string schema
 {
 	g_xsd_errors.clear( );
 
-	xmlSubstituteEntitiesDefault ( 1 );
-	xmlLoadExtDtdDefaultValue = 1;
-	xmlLineNumbersDefault ( 1 );
-
-	const int options = XML_PARSE_HUGE;
+	const auto options = XML_PARSE_HUGE | XML_PARSE_NOENT | XML_PARSE_DTDLOAD;
 
 	xmlDocPtr schema_document = xmlReadDoc ( (xmlChar *)schema.c_str(), NULL, NULL, options );
 
@@ -118,12 +114,7 @@ const std::string validate_xml ( const std::string xml, const std::string schema
 const std::string canonical_xml ( const std::string xml )
 {
 
-	xmlInitMemory();
-    xmlSubstituteEntitiesDefault ( 1 );
-	xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-	xmlLineNumbersDefault ( 1 );
-
-	const int options = XML_PARSE_HUGE;
+	const auto options = XML_PARSE_HUGE | XML_PARSE_NOENT | XML_PARSE_DTDLOAD;
 
 	xmlDocPtr xml_document = xmlReadDoc ( (xmlChar *) xml.c_str(), NULL, NULL, options );
 

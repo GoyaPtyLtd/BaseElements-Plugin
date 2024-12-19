@@ -120,10 +120,6 @@ void InitialiseLibXSLT ( void )
 {
 	xmlInitParser();
 
-	xmlSubstituteEntitiesDefault ( 1 );
-	xmlLoadExtDtdDefaultValue = 1;
-    xmlLineNumbersDefault ( 1 );
-
 	xsltInit();
 	xsltRegisterAllExtras();
 	exsltRegisterAll();
@@ -158,7 +154,7 @@ const string ApplyXSLTInMemory ( const string& xml, const string& xslt_as_filema
 	// parse the stylesheet
 	string xslt = xslt_as_filemaker_text;
 	ConvertFileMakerEOLs ( xslt ); // otherwise all errors occur on line 1
-	auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC;
+	const auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC | XML_PARSE_NOENT | XML_PARSE_DTDLOAD;
 
 	xmlDocPtr xslt_doc = xmlReadDoc ( (xmlChar *) xslt.c_str(), NULL, UTF8, options );
 	if ( xslt_doc ) {
@@ -443,7 +439,7 @@ const string ApplyXPathExpression ( const string& xml, const string& xpath, cons
 	string result;
 	
 	// parse the xml
-	auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC;
+	const auto options = XML_PARSE_HUGE | XML_PARSE_IGNORE_ENC | XML_PARSE_NOENT | XML_PARSE_DTDLOAD;
 	xmlDocPtr doc = xmlReadDoc ( (xmlChar *)xml.c_str(), NULL, UTF8, options );
 	if ( doc ) {
 		
