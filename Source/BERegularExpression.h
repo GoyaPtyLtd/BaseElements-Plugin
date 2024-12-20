@@ -21,6 +21,8 @@
 #include <Poco/String.h>
 
 
+using namespace std;
+
 
 /*
  notes
@@ -39,7 +41,7 @@
 
 
 template <typename T>
-T regular_expression ( const T& text, const T& expression, const std::string options = "", const T& replace_with = "", const bool replace = false )
+T regular_expression ( const T& text, const T& expression, const string options = "", const T& replace_with = "", const bool replace = false )
 {
     
 	int constructor_options = Poco::RegularExpression::RE_NEWLINE_ANY;
@@ -48,28 +50,28 @@ T regular_expression ( const T& text, const T& expression, const std::string opt
     T regex_options = options;
     Poco::toLowerInPlace ( regex_options );
     
-    std::size_t found = regex_options.find ( "i" );
-    if ( found != std::string::npos ) {
+    size_t found = regex_options.find ( "i" );
+    if ( found != string::npos ) {
         constructor_options |= Poco::RegularExpression::RE_CASELESS;
     }
 
     found = regex_options.find ( "m" );
-    if ( found != std::string::npos ) {
+    if ( found != string::npos ) {
         constructor_options |= Poco::RegularExpression::RE_MULTILINE;
     }
         
     found = regex_options.find ( "s" );
-    if ( found != std::string::npos ) {
+    if ( found != string::npos ) {
         constructor_options |= Poco::RegularExpression::RE_DOTALL;
     }
         
     found = regex_options.find ( "x" );
-    if ( found != std::string::npos ) {
+    if ( found != string::npos ) {
         constructor_options |= Poco::RegularExpression::RE_EXTENDED;
     }
         
     found = regex_options.find ( "g" );
-    if ( found != std::string::npos ) {
+    if ( found != string::npos ) {
         runtime_options |= Poco::RegularExpression::RE_GLOBAL;
     }
         
@@ -92,14 +94,14 @@ T regular_expression ( const T& text, const T& expression, const std::string opt
 				
 				// match all
 
-				Poco::RegularExpression::Match match_details = { 0, 0 };
-				std::string::size_type search_offset = 0;
+				Poco::RegularExpression::Match match_details = { }; // let the compiler initialise the struct
+				string::size_type search_offset = 0;
 				
 				do {
 					
 					re.match ( text, search_offset, match_details, runtime_options );
 					
-					if ( std::string::npos != match_details.offset ) {
+					if ( string::npos != match_details.offset ) {
 						
 						if ( text_matched.length() > 0 ) {
 							text_matched += FILEMAKER_END_OF_LINE;
@@ -109,7 +111,7 @@ T regular_expression ( const T& text, const T& expression, const std::string opt
 						search_offset = match_details.offset + match_details.length;
 					}
 				
-				} while ( std::string::npos != match_details.offset );
+				} while ( string::npos != match_details.offset );
 				
 			} else {
 
