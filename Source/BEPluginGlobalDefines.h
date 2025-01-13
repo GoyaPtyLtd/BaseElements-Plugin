@@ -2,7 +2,7 @@
  BEPluginGlobalDefines.h
  BaseElements Plug-In
 
- Copyright 2010-2023 Goya. All rights reserved.
+ Copyright 2010-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -120,7 +120,7 @@ enum {
 };
 
 
-enum functions {
+enum functions : short {
 	kBE_Version = 102,
 	kBE_VersionAutoUpdate = 103,
 	kBE_ClipboardFormats = 104,
@@ -290,7 +290,7 @@ enum functions {
 };
 
 
-enum dialog_buttons {
+enum dialog_buttons : short {
 	kBE_ButtonOK = 1,
 	kBE_ButtonCancel = 2,
 	kBE_ButtonAlternate = 3
@@ -361,7 +361,7 @@ enum errors {
 	kCipherInvalidIvSize = 17020
 };
 
-enum {
+enum offsets : short {
 	kBE_NumericConstantOffset = 1000,
 	kBE_ButtonOffset = 1000,
 	kBE_MessageDigestAlgorithmOffset = 2000,
@@ -370,7 +370,7 @@ enum {
 	kBE_ScriptControlOffset = 5000
 };
 
-enum file_type {
+enum file_type : short {
 	kBE_FileTypeAll = 0,
 	kBE_FileTypeFile = 1,
 	kBE_FileTypeFolder = 2

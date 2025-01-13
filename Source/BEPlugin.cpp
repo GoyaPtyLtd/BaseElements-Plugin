@@ -2,7 +2,7 @@
  BEPlugin.cpp
  BaseElements Plug-in
 
- Copyright 2010-2023 Goya. All rights reserved.
+ Copyright 2010-2025 Goya. All rights reserved.
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -360,11 +360,11 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 	g_be_plugin->RegisterFunction ( kBE_GetMachineName, BE_GetMachineName );
 
-
-	g_be_plugin->RegisterFunction ( kFMXT_Halt + kBE_ScriptControlOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kFMXT_Exit + kBE_ScriptControlOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kFMXT_Resume + kBE_ScriptControlOffset, BE_NumericConstants );
-	g_be_plugin->RegisterFunction ( kFMXT_Pause + kBE_ScriptControlOffset, BE_NumericConstants );
+	// the fmx api does not define the enum type
+	g_be_plugin->RegisterFunction ( short ( kFMXT_Halt ) + kBE_ScriptControlOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( short ( kFMXT_Exit ) + kBE_ScriptControlOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( short ( kFMXT_Resume ) + kBE_ScriptControlOffset, BE_NumericConstants );
+	g_be_plugin->RegisterFunction ( short ( kFMXT_Pause ) + kBE_ScriptControlOffset, BE_NumericConstants );
 
 
 	return kCurrentExtnVersion;	// enable the plug-in

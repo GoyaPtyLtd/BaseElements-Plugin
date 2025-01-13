@@ -2,7 +2,7 @@
  BEMessageDigest.h
  BaseElements Plug-In
  
- Copyright 2011-2020 Goya. All rights reserved.
+ Copyright 2011-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -19,7 +19,7 @@
 #include "openssl/evp.h"
 
 
-enum message_digest_algorithm {
+enum message_digest_algorithm : short {
 	kBE_MessageDigestAlgorithmMD5 = 1,
 	kBE_MessageDigestAlgorithmSHA256 = 2,
 	kBE_MessageDigestAlgorithmMDC2 = 4,
@@ -31,7 +31,7 @@ enum message_digest_algorithm {
 };
 
 
-enum message_digest_encoding {
+enum message_digest_encoding : short {
 	kBE_EncodingNone = 0,
 	kBE_EncodingHex = 1,
 	kBE_EncodingBase64 = 2
