@@ -44,7 +44,6 @@
 		4D3629F71F2079A60036B751 /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C918DA773900DFC47A /* BEBase64.cpp */; };
 		4D3629F81F2079A60036B751 /* BEOpenSSLAES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */; };
 		4D3629F91F2079A60036B751 /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
-		4D3629FB1F2079A60036B751 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4D3629FC1F2079A60036B751 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4D3629FD1F2079A60036B751 /* BEPluginUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */; };
 		4D3629FE1F2079A60036B751 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
@@ -91,7 +90,6 @@
 		4D362A791F2085880036B751 /* BEBase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C918DA773900DFC47A /* BEBase64.cpp */; };
 		4D362A7A1F2085880036B751 /* BEOpenSSLAES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */; };
 		4D362A7B1F2085880036B751 /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
-		4D362A7D1F2085880036B751 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4D362A7E1F2085880036B751 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4D362A7F1F2085880036B751 /* BEPluginUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */; };
 		4D362A801F2085880036B751 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
@@ -164,7 +162,6 @@
 		4D8D8E161B167A2C005FEBD3 /* BEQuadChar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */; };
 		4D9B306A28657188004B4853 /* libde265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D43213428126C170014BBD3 /* libde265.a */; };
 		4D9CFD6F1A3FED7E008D72D1 /* BEProgressDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DD613EE16FBAB7C00C25A3E /* BEProgressDialog.xib */; };
-		4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4DA0C72629A6DA4200BC1952 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA0C72529A6DA2B00BC1952 /* libPocoCrypto.a */; };
 		4DA0C72829A6DA6700BC1952 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA0C72729A6DA5600BC1952 /* libPocoCrypto.a */; };
 		4DA0C72929A6DA8D00BC1952 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA0C72729A6DA5600BC1952 /* libPocoCrypto.a */; };
@@ -194,7 +191,6 @@
 		4DBB48D327C45AD000D3D232 /* BEZlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DC182C9144CEC0900E27CAA /* BEZlib.cpp */; };
 		4DBB48D427C45AD000D3D232 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4DBB48D527C45AD000D3D232 /* BEXMLReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3BA85115A3FE3F008AC145 /* BEXMLReader.cpp */; };
-		4DBB48D727C45AD000D3D232 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4DBB48D827C45AD000D3D232 /* BEXMLTextReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7815AD50E2001A0BAF /* BEXMLTextReader.cpp */; };
 		4DBB48D927C45AD000D3D232 /* BEXMLTextWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7C15AD52C7001A0BAF /* BEXMLTextWriter.cpp */; };
 		4DBB48DA27C45AD000D3D232 /* BEXMLReaderInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D760F7F15AD648F001A0BAF /* BEXMLReaderInterface.cpp */; };
@@ -277,7 +273,6 @@
 		4DC9276C27C5A79100FA1655 /* BEOpenSSLAES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */; };
 		4DC9276D27C5A79100FA1655 /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
 		4DC9276E27C5A79100FA1655 /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
-		4DC9277027C5A79100FA1655 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4DC9277127C5A79100FA1655 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4DC9277227C5A79100FA1655 /* BEPluginUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */; };
 		4DC9277327C5A79100FA1655 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
@@ -340,7 +335,6 @@
 		4DC927B827C5A81300FA1655 /* BEOpenSSLAES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */; };
 		4DC927B927C5A81300FA1655 /* BESystemCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D33C6BA229BC8A900CEA53F /* BESystemCommand.cpp */; };
 		4DC927BA27C5A81300FA1655 /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
-		4DC927BC27C5A81300FA1655 /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4DC927BD27C5A81300FA1655 /* BESQLCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D10AD931484202000814440 /* BESQLCommand.cpp */; };
 		4DC927BE27C5A81300FA1655 /* BEPluginUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8824E511E93F6000F94475 /* BEPluginUtilities.cpp */; };
 		4DC927BF27C5A81300FA1655 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
@@ -463,7 +457,6 @@
 		4DE2FD4A2682C85E0091A9AD /* BEOpenSSLAES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D3969C618DA54CA00DFC47A /* BEOpenSSLAES.cpp */; };
 		4DE2FD4B2682C8620091A9AD /* BEOpenSSLRSA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */; };
 		4DE2FD4C2682C8640091A9AD /* BEMessageDigest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */; };
-		4DE2FD4E2682C86B0091A9AD /* BEBio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E26D11B292032002F7DD3 /* BEBio.cpp */; };
 		4DE2FD4F2682C8730091A9AD /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 4D668AA31A36BC8900D14592 /* duktape.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4DE2FD502682C88A0091A9AD /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4DE2FD522682C9080091A9AD /* LDAP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DE2FD512682C9080091A9AD /* LDAP.framework */; };
@@ -672,8 +665,6 @@
 		4D8D8E141B167A2C005FEBD3 /* BEQuadChar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEQuadChar.cpp; path = ../Source/BEQuadChar.cpp; sourceTree = "<group>"; };
 		4D8D8E151B167A2C005FEBD3 /* BEQuadChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEQuadChar.h; path = ../Source/BEQuadChar.h; sourceTree = "<group>"; };
 		4D8E64181917561D00C9F2BE /* BEPluginException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEPluginException.h; path = ../Source/BEPluginException.h; sourceTree = "<group>"; };
-		4D9E26D11B292032002F7DD3 /* BEBio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BEBio.cpp; sourceTree = "<group>"; };
-		4D9E26D21B292032002F7DD3 /* BEBio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEBio.h; sourceTree = "<group>"; };
 		4D9F2DD611E934BC003D75BB /* BEMacFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMacFunctions.h; path = ../Source/apple/BEMacFunctions.h; sourceTree = "<group>"; };
 		4D9F2DD711E934BC003D75BB /* BEMacFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BEMacFunctions.mm; path = ../Source/apple/BEMacFunctions.mm; sourceTree = "<group>"; };
 		4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEPlugin.cpp; path = ../Source/BEPlugin.cpp; sourceTree = SOURCE_ROOT; usesTabs = 1; };
@@ -1097,8 +1088,6 @@
 				B282D74B201C9DBE0074C4BE /* BEOpenSSLRSA.cpp */,
 				4D156AE1135D8BC2001A249B /* BEMessageDigest.h */,
 				4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */,
-				4D9E26D21B292032002F7DD3 /* BEBio.h */,
-				4D9E26D11B292032002F7DD3 /* BEBio.cpp */,
 			);
 			name = Crypto;
 			path = ../Source/Crypto;
@@ -1699,7 +1688,6 @@
 				4D3629F81F2079A60036B751 /* BEOpenSSLAES.cpp in Sources */,
 				4D33C6BD229BC8A900CEA53F /* BESystemCommand.cpp in Sources */,
 				4D3629F91F2079A60036B751 /* BEMessageDigest.cpp in Sources */,
-				4D3629FB1F2079A60036B751 /* BEBio.cpp in Sources */,
 				4D3629FC1F2079A60036B751 /* BESQLCommand.cpp in Sources */,
 				4D3629FD1F2079A60036B751 /* BEPluginUtilities.cpp in Sources */,
 				4D3629FE1F2079A60036B751 /* BEFileSystem.cpp in Sources */,
@@ -1744,7 +1732,6 @@
 				4D362A7A1F2085880036B751 /* BEOpenSSLAES.cpp in Sources */,
 				4D33C6BE229BC8A900CEA53F /* BESystemCommand.cpp in Sources */,
 				4D362A7B1F2085880036B751 /* BEMessageDigest.cpp in Sources */,
-				4D362A7D1F2085880036B751 /* BEBio.cpp in Sources */,
 				4D362A7E1F2085880036B751 /* BESQLCommand.cpp in Sources */,
 				4D362A7F1F2085880036B751 /* BEPluginUtilities.cpp in Sources */,
 				4D362A801F2085880036B751 /* BEFileSystem.cpp in Sources */,
@@ -1782,7 +1769,6 @@
 				4DBB48D427C45AD000D3D232 /* BESQLCommand.cpp in Sources */,
 				4DBB48D527C45AD000D3D232 /* BEXMLReader.cpp in Sources */,
 				4DBC8617287FEC1F00E4CD1D /* BEJSON.cpp in Sources */,
-				4DBB48D727C45AD000D3D232 /* BEBio.cpp in Sources */,
 				4DBB48D827C45AD000D3D232 /* BEXMLTextReader.cpp in Sources */,
 				4DBB48D927C45AD000D3D232 /* BEXMLTextWriter.cpp in Sources */,
 				4DBB48DA27C45AD000D3D232 /* BEXMLReaderInterface.cpp in Sources */,
@@ -1836,7 +1822,6 @@
 				4DC9276C27C5A79100FA1655 /* BEOpenSSLAES.cpp in Sources */,
 				4DC9276D27C5A79100FA1655 /* BESystemCommand.cpp in Sources */,
 				4DC9276E27C5A79100FA1655 /* BEMessageDigest.cpp in Sources */,
-				4DC9277027C5A79100FA1655 /* BEBio.cpp in Sources */,
 				4DC9277127C5A79100FA1655 /* BESQLCommand.cpp in Sources */,
 				4DC9277227C5A79100FA1655 /* BEPluginUtilities.cpp in Sources */,
 				4DC9277327C5A79100FA1655 /* BEFileSystem.cpp in Sources */,
@@ -1881,7 +1866,6 @@
 				4DC927B827C5A81300FA1655 /* BEOpenSSLAES.cpp in Sources */,
 				4DC927B927C5A81300FA1655 /* BESystemCommand.cpp in Sources */,
 				4DC927BA27C5A81300FA1655 /* BEMessageDigest.cpp in Sources */,
-				4DC927BC27C5A81300FA1655 /* BEBio.cpp in Sources */,
 				4DC927BD27C5A81300FA1655 /* BESQLCommand.cpp in Sources */,
 				4DC927BE27C5A81300FA1655 /* BEPluginUtilities.cpp in Sources */,
 				4DC927BF27C5A81300FA1655 /* BEFileSystem.cpp in Sources */,
@@ -1919,7 +1903,6 @@
 				4DCD49591A195B0C00EFCF7F /* BESQLCommand.cpp in Sources */,
 				4DCD495A1A195B0C00EFCF7F /* BEXMLReader.cpp in Sources */,
 				4DBC8613287FEC1F00E4CD1D /* BEJSON.cpp in Sources */,
-				4D9E26D31B292032002F7DD3 /* BEBio.cpp in Sources */,
 				4DCD495B1A195B0C00EFCF7F /* BEXMLTextReader.cpp in Sources */,
 				4DCD495C1A195B0C00EFCF7F /* BEXMLTextWriter.cpp in Sources */,
 				4DCD495D1A195B0C00EFCF7F /* BEXMLReaderInterface.cpp in Sources */,
@@ -1959,7 +1942,6 @@
 				4DE2FD482682C7530091A9AD /* BEPDF.cpp in Sources */,
 				4D3A800E2890BFDE006EC1B4 /* Test_JSON_jq.mm in Sources */,
 				4DE2FD2E2682C6BB0091A9AD /* BEFileSystem.cpp in Sources */,
-				4DE2FD4E2682C86B0091A9AD /* BEBio.cpp in Sources */,
 				4DE2FD342682C6F50091A9AD /* BESystemCommand.cpp in Sources */,
 				4DE2FD3E2682C7280091A9AD /* BEXMLReaderInterface.cpp in Sources */,
 				4DE2FD4A2682C85E0091A9AD /* BEOpenSSLAES.cpp in Sources */,
