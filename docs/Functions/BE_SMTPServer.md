@@ -10,8 +10,8 @@ Stores the SMTP connection details for future calls to the *BE_SMTPSend* functio
 
 * *server* : A domain name or IP address of the SMTP server to connect to.
 * *port* : the port number ( a required parameter, but can be an empty string ).
+* *userName* ( optional ) : The userName if the url requires authentication.
 * *password* ( optional ) : The password if the url requires authentication.
-* *fileName* ( optional ) : The filename to send when sending binary data.
 * *keepOpen* ( optional, default:False , ProOnly ) : Whether to keep the connection open for future sends.
 
 To use the *keepOpen* option, set this to True when sending multiple messages via SMTP in a loop to avoid closing the connection to the server and re-opening it every time.  This will be faster and less work for the server and the plugin.  To close the connection, use the same command but change the keepOpen parameter to False.
