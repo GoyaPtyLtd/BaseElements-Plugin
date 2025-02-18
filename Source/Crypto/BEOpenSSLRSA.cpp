@@ -2,7 +2,7 @@
  BEOpenSSLRSA.cpp
  BaseElements Plug-In
  
- Copyright 2018-2021 Goya. All rights reserved.
+ Copyright 2018-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -64,19 +64,15 @@ const vector<char> SignatureGenerate_RSA ( const vector<unsigned char> data, con
 
 	// Without this, passwordCallback is not invoked.
 	OpenSSL_add_all_algorithms();
-	unique_ptr<RSA, decltype(&RSA_free)> priKeyRsa ( PEM_read_bio_RSAPrivateKey ( priKeyBio.get(), NULL, passwordCallback, &privateKeyPassword ), &RSA_free );
-	if ( !priKeyRsa ) {
+
+	unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)> evpPkey ( PEM_read_bio_PrivateKey ( priKeyBio.get(), NULL, passwordCallback, &privateKeyPassword ), &EVP_PKEY_free );
+	if ( !evpPkey ) {
 		throw BEPlugin_Exception ( kRSAReadPrivateKeyFailed );
 	}
 
-	unique_ptr<EVP_MD_CTX, decltype ( &EVP_MD_CTX_free )> ctx ( EVP_MD_CTX_create(), &EVP_MD_CTX_free );
-	unique_ptr<EVP_PKEY, decltype ( &EVP_PKEY_free )> evpPkey ( EVP_PKEY_new(), &EVP_PKEY_free );
-
-	if ( EVP_PKEY_set1_RSA( evpPkey.get(), priKeyRsa.get() ) <= 0 ) {
-		throw BEPlugin_Exception ( kRSAReadPrivateKeyFailed );
-	}
 
 	const EVP_MD * digest = getDigestByName ( digestName );
+	unique_ptr<EVP_MD_CTX, decltype ( &EVP_MD_CTX_free )> ctx ( EVP_MD_CTX_create(), &EVP_MD_CTX_free );
 
 	if ( EVP_SignInit_ex ( ctx.get(), digest, NULL ) <= 0 ) {
 		throw BEPlugin_Exception ( kRSASignInitFailed );
@@ -112,21 +108,11 @@ const bool SignatureVerify_RSA ( const vector<unsigned char> data, const string 
 		throw BEPlugin_Exception ( kLowMemoryError );
 	}
 
-	// Try to read the public key as PKCS#1
-	unique_ptr<RSA, decltype(&RSA_free)> pkeyPkcs1 ( PEM_read_bio_RSAPublicKey ( pubKeyBio.get(), NULL, NULL, NULL ), &RSA_free );
-	if ( pkeyPkcs1 ) {
-		// It's PKCS#1. Convert it from RSA to EVP_PKEY.
-		if ( EVP_PKEY_set1_RSA ( evpPkey.get(), pkeyPkcs1.get() ) <= 0 ) {
-			throw BEPlugin_Exception ( kRSAReadPublicKeyFailed );
-		}
-	} else {
-		BIO_reset ( pubKeyBio.get() );
-		// Retry as PKCS#8
-		evpPkey = unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)> ( PEM_read_bio_PUBKEY ( pubKeyBio.get(), NULL, NULL, NULL ), &EVP_PKEY_free );
-		if ( !evpPkey ) {
-			// The public key is invalid or in unknown format.
-			throw BEPlugin_Exception ( kRSAReadPublicKeyFailed );
-		}
+	// Try to read the public key as PKCS#8
+	evpPkey = unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)> ( PEM_read_bio_PUBKEY ( pubKeyBio.get(), NULL, NULL, NULL ), &EVP_PKEY_free );
+	if ( !evpPkey ) {
+		// The public key is invalid or in unknown format.
+		throw BEPlugin_Exception ( kRSAReadPublicKeyFailed );
 	}
 
 	unique_ptr<EVP_MD_CTX, decltype ( &EVP_MD_CTX_free )> ctx ( EVP_MD_CTX_create(), &EVP_MD_CTX_free );
