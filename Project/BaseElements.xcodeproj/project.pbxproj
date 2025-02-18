@@ -2039,7 +2039,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.goya.baseelements;
@@ -2112,7 +2112,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.goya.baseelements;
@@ -2450,7 +2450,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.baseelements-plugin.BaseElementsIOS";
 				PRODUCT_NAME = BaseElementsIOSSimulator;
@@ -2528,7 +2528,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOSSimulator,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.baseelements-plugin.BaseElementsIOS";
 				PRODUCT_NAME = BaseElementsIOSSimulator;
@@ -2600,7 +2600,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.goya.baseelements;
 				PRODUCT_NAME = BaseElementsIOS;
@@ -2674,7 +2674,7 @@
 					../Libraries/iOS,
 					../Libraries/iOS/iPhoneOS,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.goya.baseelements;
