@@ -6,7 +6,7 @@
 
 Displays the standard OS select file dialog with the title of the dialog to the *prompt* specified, and starting path of the *inFolderPath*.
 
-Result is the path to the file selected by the user.  Check BE_GetLastError = -1 for when the user hits cancel or a value other than 0 for any other error.
+Result is the path to the file selected by the user.  Returns an empty string when the user hits cancel or a path otherwise, but also check BE_GetLastError for non zero error codes.
 
 **Parameters**
 
