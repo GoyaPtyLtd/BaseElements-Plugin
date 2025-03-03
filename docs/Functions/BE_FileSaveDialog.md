@@ -6,7 +6,7 @@
 
 Displays the standard OS save file dialog. Changes the title of the dialog to the *prompt* specified, and defaults to *fileName* and sets the starting location as *inFolder*.
 
-Returns the file path and filename that the user selected.  Check BE_GetLastError = -1 for when the user hits cancel or a value other than 0 for any other error.
+Returns the file path and filename that the user selected.  Returns an empty string when the user hits cancel or a path otherwise, but also check BE_GetLastError for non zero error codes.
 
 **Parameters**
 
