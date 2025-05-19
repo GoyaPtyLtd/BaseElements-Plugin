@@ -392,7 +392,6 @@
     <ClCompile Include="..\Source\BEFileTextReader.cpp" />
     <ClCompile Include="..\Source\BEJavaScript.cpp" />
     <ClCompile Include="..\Source\Net\BESMTPContainerAttachments.cpp" />
-    <ClCompile Include="..\Source\Crypto\BEBio.cpp" />
     <ClCompile Include="..\Source\Crypto\BEMessageDigest.cpp">
       <DeploymentContent>false</DeploymentContent>
     </ClCompile>
@@ -464,7 +463,6 @@
     <ClInclude Include="..\Source\BERegularExpression.h" />
     <ClInclude Include="..\Source\BEPluginVersion.h" />
     <ClInclude Include="..\Source\Net\BESMTPContainerAttachments.h" />
-    <ClInclude Include="..\Source\Crypto\BEBio.h" />
     <ClInclude Include="..\Source\Crypto\BEMessageDigest.h" />
     <ClInclude Include="..\Source\Crypto\BEOpenSSLAES.h" />
     <ClInclude Include="..\Source\BEPluginException.h" />

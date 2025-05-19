@@ -188,7 +188,6 @@
 		<Unit filename="../Source/BEXSLT.cpp" />
 		<Unit filename="../Source/BEZlib.cpp" />
 		<Unit filename="../Source/Crypto/BEBase64.cpp" />
-		<Unit filename="../Source/Crypto/BEBio.cpp" />
 		<Unit filename="../Source/Crypto/BEMessageDigest.cpp" />
 		<Unit filename="../Source/Crypto/BEOpenSSLAES.cpp" />
 		<Unit filename="../Source/Crypto/BEOpenSSLRSA.cpp" />
