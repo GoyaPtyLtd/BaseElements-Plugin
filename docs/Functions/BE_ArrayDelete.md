@@ -1,4 +1,4 @@
-## BE_ArrayChangeValue
+## BE_ArrayDelete
 
     BE_ArrayDelete ( array )
 
