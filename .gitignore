@@ -61,3 +61,7 @@ Project/core
 Project/CodeSigning/*
 *.vsidx
 *.lock
+
+# Ignore build products
+PluginSDK/
+build/

@@ -62,6 +62,8 @@
 			</Target>
 		</Build>
 		<Compiler>
+		  	<Add option="-Wno-error=enum-constexpr-conversion" />
+      		<Add option="-Wno-enum-constexpr-conversion" />
 			<Add option="-fPIC" />
 			<Add option="-m64" />
 			<Add option="-Wall" />
