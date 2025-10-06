@@ -52,7 +52,7 @@ More examples can be found here : [http://perldoc.perl.org/perlre.html#Regular-E
 	
 To get a list of all the file paths that end in ".fmp12" : 
 
-	BE_ValuesUnique ( BE_RegularExpression ( BE_FileListFolder ( $path ) ; "^.*fmp12$" ; "v" ) )
+	BE_ValuesUnique ( BE_RegularExpression ( BE_FileListFolder ( $path ) ; "^.*\\.fmp12$" ; "v" ) )
 	
 The above example uses *BE_ValuesUnique* because the function leaves empty lines where the criteria doesn't match, so you'd have as many "values" as there were originally files, but anything not matching the criteria would be blank text in the list.
 
