@@ -2,7 +2,7 @@
  BEPluginUtilities.cpp
  BaseElements Plug-In
 
- Copyright 2010-2024 Goya. All rights reserved.
+ Copyright 2010-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -655,15 +655,15 @@ const fmx::int32 IndexForStream ( const BinaryData& data, const string stream_ty
 
 const vector<char> BinaryDataAsVectorChar ( const BinaryData& data, const FMX_UInt32 which )
 {
-	uint32 size = data.GetSize ( which );
-	char * output_buffer = new char [ size ];
-	data.GetData ( which, 0, size, (void *)output_buffer );
+	auto size = data.GetSize ( which );
+	vector<char> binary_data ( size, 0 );
+	auto error = data.GetData ( which, 0, size, (void *)binary_data.data() );
 
-	vector<char> output ( output_buffer, output_buffer + size );
+	if ( kNoError != error ) {
+		throw BEPlugin_Exception ( error );
+	}
 
-	delete[] output_buffer;
-
-	return output;
+	return binary_data;
 }
 
 
