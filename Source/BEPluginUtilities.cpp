@@ -190,21 +190,24 @@ void SetResult ( const string& filename, const vector<char>& data, const string&
 		if ( !data_type.is_defined_type() || compress || is_file ) {
 
 			BinaryDataUniquePtr resultBinary;
-			resultBinary->AddFNAMData ( *file ); // error =
+			auto add_file_name_error = resultBinary->AddFNAMData ( *file );
+			if ( kNoError == add_file_name_error ) {
+				
+				if ( compress ) {
+					output = CompressContainerStream ( data );
+				}
 
-			if ( compress ) {
-				output = CompressContainerStream ( data );
+				if ( !data.empty() ) {
+					resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)output.data() ); // error =
+				} else {
+					void * empty_file = NULL;
+					resultBinary->Add ( *(data_type.get_type()), 0, empty_file ); // error =
+				}
+
+				results.SetBinaryData ( *resultBinary, true );
+
 			}
-
-			if ( !data.empty() ) {
-				resultBinary->Add ( *(data_type.get_type()), (FMX_UInt32)output.size(), (void *)output.data() ); // error =
-			} else {
-				void * empty_file = NULL;
-				resultBinary->Add ( *(data_type.get_type()), 0, empty_file ); // error =
-			}
-
-			results.SetBinaryData ( *resultBinary, true );
-
+			
 		} else {
 
 			BinaryDataUniquePtr resultBinary ( *file, (FMX_UInt32)output.size(), (void *)output.data() );
@@ -472,17 +475,21 @@ const string ParameterFileName ( const DataVect& parameters, const FMX_UInt32 wh
 			const BinaryDataUniquePtr data ( parameters.AtAsBinaryData ( which ) );
 
 			fmx::TextUniquePtr name_as_fmx_text;
-			data->GetFNAMData ( *name_as_fmx_text );
-			string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
+			auto get_file_name_error = data->GetFNAMData ( *name_as_fmx_text );
+			if ( kNoError == get_file_name_error ) {
 
-			// if the file name is for an image strip the image: prefix
-			auto colon = name_as_string.find ( ":" );
-			if ( colon != string::npos ) {
-				name_as_string.erase ( 0, colon + 1 );
+				string name_as_string = TextAsUTF8String ( *name_as_fmx_text );
+
+				// if the file name is for an image strip the image: prefix
+				auto colon = name_as_string.find ( ":" );
+				if ( colon != string::npos ) {
+					name_as_string.erase ( 0, colon + 1 );
+				}
+
+				file_name.assign ( name_as_string );
+
 			}
-
-			file_name.assign ( name_as_string );
-
+			
 		} else {
 			auto path = ParameterAsPath ( parameters, which );
 			file_name = path.filename().string();
@@ -643,8 +650,10 @@ const fmx::int32 IndexForStream ( const BinaryData& data, const string stream_ty
 
 		// the type we want is stored in the first 4 bytes of MAIN
 		char quad_char [ QUAD_CHAR_SIZE + 1 ] = {0};
-		data.GetData ( stream_index, 0, QUAD_CHAR_SIZE, quad_char ); // error =
-		stream_index = IndexForStream ( data, quad_char );
+		auto get_data_error = data.GetData ( stream_index, 0, QUAD_CHAR_SIZE, quad_char );
+		if ( kNoError == get_data_error ) {
+			stream_index = IndexForStream ( data, quad_char );
+		}
 
 	}
 
@@ -657,10 +666,10 @@ const vector<char> BinaryDataAsVectorChar ( const BinaryData& data, const FMX_UI
 {
 	auto size = data.GetSize ( which );
 	vector<char> binary_data ( size, 0 );
-	auto error = data.GetData ( which, 0, size, (void *)binary_data.data() );
+	auto get_data_error = data.GetData ( which, 0, size, (void *)binary_data.data() );
 
-	if ( kNoError != error ) {
-		throw BEPlugin_Exception ( error );
+	if ( kNoError != get_data_error ) {
+		throw BEPlugin_Exception ( get_data_error );
 	}
 
 	return binary_data;

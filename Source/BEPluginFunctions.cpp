@@ -2,7 +2,7 @@
  BEPluginFunctions.cpp
  BaseElements Plug-In
 
- Copyright 2010-2024 Goya. All rights reserved.
+ Copyright 2010-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -2297,22 +2297,22 @@ fmx::errcode BE_ContainerGetType ( short /* funcId */, const fmx::ExprEnv& /* en
 		if ( kBE_DataType_Not_Found != stream_index ) {
 
 			fmx::TextUniquePtr file_name;
-			auto fnam_error = container->GetFNAMData ( *file_name );
+			auto get_file_name_error = container->GetFNAMData ( *file_name );
 
 			short width = 0;
 			short height = 0;
-			auto size_error = container->GetSIZEData ( width, height );
+			auto get_size_error = container->GetSIZEData ( width, height );
 
 			if ( stream_type == SIZE_CONTAINER_TYPE ) {
 
-				error = size_error;
+				error = get_size_error;
 				stringstream size;
 				size << width << FILEMAKER_END_OF_LINE << height;
 				SetResult ( size.str(), results );
 
 			} else if ( stream_type == FILENAME_CONTAINER_TYPE ) {
 
-				error = fnam_error;
+				error = get_file_name_error;
 				SetResult ( *file_name, results );
 
 			} else if ( stream_type == MAIN_CONTAINER_TYPE ) {
