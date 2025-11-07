@@ -49,6 +49,7 @@ Linux : https://goya.com.au/files/beplugin/4.0.0/BaseElements.fmx.zip
 
 Versions of the .fmx version of the plugin prior to 4 will be win32. From there on, it will be a linux build. Release version numbers are :
 
+```
 1.0.0
 1.1.0
 1.2.0
@@ -99,5 +100,6 @@ Versions of the .fmx version of the plugin prior to 4 will be win32. From there 
 4.2.4
 4.2.5
 4.2.6
+```
 
 Details about each release are in the change log.
