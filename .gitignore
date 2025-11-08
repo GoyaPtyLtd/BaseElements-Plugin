@@ -63,5 +63,9 @@ Project/CodeSigning/*
 *.lock
 
 # Ignore build products
-PluginSDK/
-build/
+PlugInSDK/
+/build*/
+
+
+# Ignore external libraries
+/external/

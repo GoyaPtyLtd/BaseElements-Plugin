@@ -21,25 +21,68 @@ cmake_minimum_required(VERSION 3.16.3)
 project(BaseElements-Plugin)
 
 # Configurable variables
-set(SONAME                          "5.1.0")
+set(SONAME                          "5.0.0")
 set(INSTALL_OWNER                   "fmserver:fmsadmin")
 set(DEFAULT_INSTALL_PREFIX          "/opt/FileMaker/FileMaker Server/Database Server/Extensions")
 
+# Detect native CPU architecture
+execute_process(
+    COMMAND uname -m
+    OUTPUT_VARIABLE NATIVE_ARCH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+if(NATIVE_ARCH MATCHES "aarch64|arm64")
+    set(TARGET_ARCH "aarch64")
+    set(TARGET_ARCH_DIR "arm64")  # FileMaker SDK uses "arm64" directory name
+    set(TARGET_LIB_DIR "aarch64-linux-gnu")
+    set(ARCH_FLAG "")  # No -m64 for ARM
+else()
+    set(TARGET_ARCH "x86_64")
+    set(TARGET_ARCH_DIR "x64")
+    set(TARGET_LIB_DIR "x86_64-linux-gnu")
+    set(ARCH_FLAG "-m64")
+endif()
+
+# Detect Ubuntu version for FileMaker SDK path (U22 or U24)
+execute_process(
+    COMMAND sh -c "lsb_release -rs 2>/dev/null || (cat /etc/os-release | grep VERSION_ID | cut -d'\"' -f2 | cut -d'.' -f1)"
+    OUTPUT_VARIABLE UBUNTU_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+
+if(UBUNTU_VERSION MATCHES "^22")
+    set(UBUNTU_SDK_DIR "U22")
+elseif(UBUNTU_VERSION MATCHES "^24")
+    set(UBUNTU_SDK_DIR "U24")
+else()
+    # Default to U24 if detection fails
+    set(UBUNTU_SDK_DIR "U24")
+    message(WARNING "Could not detect Ubuntu version, defaulting to U24")
+endif()
+
+message(STATUS "Detected native architecture: ${NATIVE_ARCH} -> ${TARGET_ARCH}")
+message(STATUS "Detected Ubuntu version: ${UBUNTU_VERSION} -> Using ${UBUNTU_SDK_DIR}")
+message(STATUS "Using FileMaker SDK path: PlugInSDK/Libraries/Linux/${UBUNTU_SDK_DIR}/${TARGET_ARCH_DIR}")
 
 # Compiler and linker flags
 set(CMAKE_C_COMPILER                "clang")
-set(CMAKE_C_FLAGS                   "-Wno-enum-constexpr-conversion -Wno-error=enum-constexpr-conversion -std=gnu11 -fPIC -m64 -Wall -fexceptions -Wno-unknown-pragmas -fvisibility=hidden -D_LIBCPP_STD_VER=17")
+set(CMAKE_C_FLAGS                   "-Wno-enum-constexpr-conversion -Wno-error=enum-constexpr-conversion -std=gnu11 -fPIC ${ARCH_FLAG} -Wall -fexceptions -Wno-unknown-pragmas -fvisibility=hidden -D_LIBCPP_STD_VER=17")
 set(CMAKE_C_FLAGS_DEBUG             "-g")
 set(CMAKE_C_FLAGS_RELEASE           "-O2")
 set(CMAKE_C_FLAGS_RELWITHDEBINFO    "-O2 -g")
 
 set(CMAKE_CXX_COMPILER              "clang++")
-set(CMAKE_CXX_FLAGS                 "-Wno-enum-constexpr-conversion -Wno-error=enum-constexpr-conversion -fPIC -m64 -Wall -fexceptions -Wno-unknown-pragmas -fvisibility=hidden -D_LIBCPP_STD_VER=17")
+set(CMAKE_CXX_FLAGS                 "-Wno-enum-constexpr-conversion -Wno-error=enum-constexpr-conversion -fPIC ${ARCH_FLAG} -Wall -fexceptions -Wno-unknown-pragmas -fvisibility=hidden -D_LIBCPP_STD_VER=17")
 set(CMAKE_CXX_FLAGS_DEBUG           "-g")
 set(CMAKE_CXX_FLAGS_RELEASE         "-O2")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "-O2 -g")
 
-set(CMAKE_MODULE_LINKER_FLAGS       "-m64 -Wl,-soname=${SONAME} -Wl,--exclude-libs,ALL -Wl,--no-undefined")
+set(CMAKE_MODULE_LINKER_FLAGS       "${ARCH_FLAG} -Wl,-soname=${SONAME} -Wl,--exclude-libs,ALL -Wl,--no-undefined")
+# Strip symbols in Release build (matches CodeBlocks Release build which uses -s)
+set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "-s")
+set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "-s")
 
 # Extend compiler flags if PRO
 if(PRO)
@@ -119,7 +162,9 @@ set_target_properties(
     BaseElements PROPERTIES
         PREFIX ""           # We don't want the "lib" prefix
         SUFFIX ".fmx"       # We don't want the ".so" suffix
-)
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_RPATH "/opt/FileMaker/lib"
+        BUILD_RPATH "/opt/FileMaker/lib")
 
 target_include_directories(
     BaseElements PUBLIC
@@ -134,7 +179,7 @@ target_include_directories(
 target_link_directories(
     BaseElements PUBLIC
 
-    PlugInSDK/Libraries/Linux/U24/x64
+    PlugInSDK/Libraries/Linux/${UBUNTU_SDK_DIR}/${TARGET_ARCH_DIR}
     Libraries/linux
 )
 
@@ -181,7 +226,7 @@ target_link_libraries(
     z
     jq
     openjp2
-    PocoUtil
+    #PocoUtil  # Not available for Linux, only used in Windows code
     PocoCrypto
     PocoFoundation
     charset
@@ -194,6 +239,12 @@ target_link_libraries(
 
 # Make BaseElements target dependent upon fm_plugin_sdk target
 add_dependencies(BaseElements fm_plugin_sdk)
+
+# Generate SHA256 checksum after build
+add_custom_command(TARGET BaseElements POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E sha256sum $<TARGET_FILE:BaseElements> > $<TARGET_FILE:BaseElements>.sha256
+    COMMENT "Generating SHA256 checksum for BaseElements.fmx"
+)
 
 # Install target
 install(

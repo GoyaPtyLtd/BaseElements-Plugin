@@ -27,7 +27,7 @@
 
 #define	AUTO_UPDATE_VERSION "05000002"
 #define VERSION_NUMBER_STRING "5.0.0" // e.g. 4.0.1
-#define VERSION_STRING "5.0.0"	// e.g. 4.0.1b2
+#define VERSION_STRING "5.0.0cmake-build-test"	// e.g. 4.0.1b2
 
 #define USER_AGENT_STRING "libcurl-agent-base-elements-plugin/" VERSION_STRING
 
