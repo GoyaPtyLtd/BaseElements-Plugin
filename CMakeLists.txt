@@ -237,7 +237,8 @@ target_include_directories(
     
     # ImageMagick headers need special path (they're nested deeper)
     external/${PLATFORM_DIR}/include/ImageMagick-7
-    internal/${PLATFORM_DIR}/include/ImageMagick-7  # Internal ImageMagick headers
+    internal/include/ImageMagick-7  # Shared ImageMagick headers (works on all platforms)
+    internal/${PLATFORM_DIR}/include/ImageMagick-7  # Platform-specific ImageMagick headers
 
     # Internal library headers (files that stay in this repository)
     # Note: These directories are also searched recursively
