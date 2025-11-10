@@ -227,24 +227,17 @@ target_include_directories(
     
     # FileMaker SDK headers (downloaded by ExternalProject)
     external/PlugInSDK/Headers
-    
+    # ImageMagick headers need special path (they're nested deeper)
+    external/${PLATFORM_DIR}/include/ImageMagick-7
     # External library headers (from BaseElements-Plugin-Libraries build)
     # Note: These directories are searched recursively - the compiler will look in
     # all subdirectories (e.g., include/boost/, include/Poco/, etc.)
     external/${PLATFORM_DIR}/include
+    
     external/${PLATFORM_DIR}/lib  # Some libraries put headers in lib/ subdirectories
     external/${PLATFORM_DIR}/src  # External source files (e.g., duktape headers)
     
-    # ImageMagick headers need special path (they're nested deeper)
-    external/${PLATFORM_DIR}/include/ImageMagick-7
-    internal/include/ImageMagick-7  # Shared ImageMagick headers (works on all platforms)
-    internal/${PLATFORM_DIR}/include/ImageMagick-7  # Platform-specific ImageMagick headers
 
-    # Internal library headers (files that stay in this repository)
-    # Note: These directories are also searched recursively
-    internal/include  # Shared headers that work on all platforms (most headers go here)
-    internal/${PLATFORM_DIR}/include  # Platform-specific headers (only for headers that differ by platform)
-    internal/${PLATFORM_DIR}/lib  # Some libraries put headers in lib/ subdirectories
 )
 
 # ============================================================================
@@ -261,9 +254,7 @@ target_link_directories(
     
     # External library files (from BaseElements-Plugin-Libraries build)
     external/${PLATFORM_DIR}/lib
-    
-    # Internal library files (files that stay in this repository)
-    internal/${PLATFORM_DIR}/lib
+
 )
 
 # ============================================================================
@@ -332,7 +323,7 @@ target_link_libraries(
     podofo
     
     # Font and text processing
-    #unistring  # Not currently used
+    unistring  # Unicode helpers required by PoDoFo
     fontconfig # Font configuration
     freetype   # Font rendering
     iconv      # Character encoding conversion
@@ -340,7 +331,7 @@ target_link_libraries(
     
     # Image format libraries (continued)
     heif       # HEIF image format
-    libde265   # HEVC video codec
+    de265      # HEVC video codec
     jq         # JSON query processor
     openjp2    # JPEG 2000 support
     

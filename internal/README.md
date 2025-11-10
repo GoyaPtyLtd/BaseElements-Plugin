@@ -8,17 +8,17 @@ This directory contains libraries and headers that remain in the main repository
   - Headers are alongside source files (e.g., `src/BEPlugin.cpp` and `src/BEPlugin.h`)
   - CMakeLists.txt uses `internal/src` as an include directory
 
-- `include/` - Shared header files (.h, .hpp) for third-party libraries - **shared across all platforms**
-  - Most headers are platform-agnostic and work on all platforms
-  - Examples: FMWrapper, Boost, Poco, ImageMagick, zlib, etc.
-  - CMakeLists.txt uses `internal/include` as an include directory
+- ~~`include/`~~ - Legacy third-party headers slated for removal
+  - Historically shared across platforms; the Ubuntu CMake build no longer reads from here
+  - Left in-tree for now until we confirm nothing still depends on them
 
 Platform-specific folders matching the BaseElements-Plugin-Libraries output structure:
 
-- `ubuntu24.04-x86_64/{include,lib}/` - Ubuntu 24.04 x86_64
-- `ubuntu24.04-aarch64/{include,lib}/` - Ubuntu 24.04 ARM64
-- `ubuntu22.04-x86_64/{include,lib}/` - Ubuntu 22.04 x86_64
-- `ubuntu22.04-aarch64/{include,lib}/` - Ubuntu 22.04 ARM64
+- ~~`ubuntu24.04-x86_64/{include,lib}/` - Ubuntu 24.04 x86_64~~ *(deprecated)*
+- ~~`ubuntu24.04-aarch64/{include,lib}/` - Ubuntu 24.04 ARM64~~ *(deprecated)*
+- ~~`ubuntu22.04-x86_64/{include,lib}/` - Ubuntu 22.04 x86_64~~ *(deprecated)*
+- ~~`ubuntu22.04-aarch64/{include,lib}/` - Ubuntu 22.04 ARM64~~ *(deprecated)*
+- These copies have been phased out; Linux now pulls all libraries from `external/`
 - `macos-arm64-x86_64/{include,lib}/` - macOS (universal binary)
 - `win64/{include,lib}/` - Windows
 

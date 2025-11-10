@@ -42,7 +42,7 @@ Files that should be placed in `external/`:
 ## Relationship to internal/
 
 - `external/` - Files from BaseElements-Plugin-Libraries build system or pre-built releases
-- `internal/` - FileMaker SDK files and other files tracked directly in git
+- `internal/` - other files tracked directly in git
 
 ## Building and Updating
 

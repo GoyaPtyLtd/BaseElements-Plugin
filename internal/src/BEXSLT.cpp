@@ -193,7 +193,7 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 				
 				// apply the stylesheet
 				xmlDocPtr xslt_result = xsltApplyStylesheetUser ( stylesheet, xml_doc, NULL, NULL, NULL, context );
-				xmlErrorPtr xml_error = xmlGetLastError();
+				const xmlError* xml_error = xmlGetLastError();
 				if ( xslt_result && xml_error == NULL ) {
 					
 					// save the output
@@ -227,7 +227,7 @@ const std::string ApplyXSLTInMemory ( const std::string& xml, const std::string&
 					result = ReportXSLTError ( xml_doc->URL );
 				}
 				xmlFreeDoc ( xslt_result );
-				xmlResetError ( xml_error );
+				xmlResetLastError();
 				xsltFreeTransformContext ( context );
 				
 			}
@@ -362,7 +362,7 @@ const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPat
 	std::string result;
 	
 	xmlBufferPtr xml_buffer = xmlBufferCreate();
-	xmlErrorPtr xml_error = xmlGetLastError();
+	const xmlError* xml_error = xmlGetLastError();
 	
 	if ( xml_buffer && xml_error == NULL && xpathObj->nodesetval != NULL ) {
 			
@@ -399,7 +399,7 @@ const std::string XPathObjectAsXML ( const xmlDocPtr xml_document, const xmlXPat
 	}
 
 	xmlBufferFree ( xml_buffer );
-	xmlResetError ( xml_error );
+	xmlResetLastError();
 
 	return result;
 
@@ -473,14 +473,14 @@ const std::string ApplyXPathExpression ( const std::string& xml, const std::stri
 
 	}
 	
-	xmlErrorPtr xml_error = xmlGetLastError();
+	const xmlError* xml_error = xmlGetLastError();
 	
 	if ( xml_error != NULL ) {
 		g_last_xslt_error_text = xml_error->message;
 		result = ReportXSLTError ( NULL );
 	}
 
-	xmlResetError ( xml_error );
+	xmlResetLastError();
 	xmlFreeDoc ( doc );
 
 	return result;
