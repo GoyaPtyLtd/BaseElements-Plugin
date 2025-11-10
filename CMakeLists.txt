@@ -241,7 +241,8 @@ target_include_directories(
 
     # Internal library headers (files that stay in this repository)
     # Note: These directories are also searched recursively
-    internal/${PLATFORM_DIR}/include
+    internal/include  # Shared headers that work on all platforms (most headers go here)
+    internal/${PLATFORM_DIR}/include  # Platform-specific headers (only for headers that differ by platform)
     internal/${PLATFORM_DIR}/lib  # Some libraries put headers in lib/ subdirectories
 )
 

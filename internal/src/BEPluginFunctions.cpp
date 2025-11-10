@@ -57,7 +57,7 @@
 #endif
 
 
-#include <../Headers/iconv/iconv.h>
+#include <iconv/iconv.h>
 
 #include "BEPluginFunctions.h"
 

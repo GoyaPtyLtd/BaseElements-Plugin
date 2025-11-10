@@ -50,7 +50,7 @@
 #include <boost/filesystem/fstream.hpp>
 #pragma GCC diagnostic pop
 
-#include <../Headers/iconv/iconv.h>
+#include <iconv/iconv.h>
 #include <zlib/zlib.h>
 
 #include <sstream>
