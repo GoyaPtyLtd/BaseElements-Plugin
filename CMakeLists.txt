@@ -140,14 +140,26 @@ endif()
 # The SDK contains headers and libraries needed to build FileMaker plugins
 
 include(ExternalProject)
+set(FM_PLUGIN_SDK_URL        https://downloads.claris.com/DEVREL/sdk/fm_plugin_sdk_22.0.1.68.zip)
+set(FM_PLUGIN_SDK_URL_HASH   SHA256=ae3ca6b37a96c063e51993d1c7934b3000d9ad27e58996cb99f64b9776df07cd)
+
+set(FM_PLUGIN_SDK_DOWNLOAD_ARGS
+    URL       ${FM_PLUGIN_SDK_URL}
+    URL_HASH  ${FM_PLUGIN_SDK_URL_HASH}
+)
+
+# DOWNLOAD_EXTRACT_TIMESTAMP was added in CMake 3.24; older versions (e.g. Ubuntu 22 / CMake 3.22)
+# treat it as part of URL_HASH and error out, so only enable it when supported.
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24")
+    list(APPEND FM_PLUGIN_SDK_DOWNLOAD_ARGS DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
+endif()
+
 ExternalProject_Add(
     fm_plugin_sdk
     PREFIX "${CMAKE_BINARY_DIR}/fm_plugin_sdk"  # Temporary download location
     SOURCE_DIR "${CMAKE_SOURCE_DIR}/external/PlugInSDK"  # Where to extract the SDK
     # Download from Claris website
-    URL https://downloads.claris.com/DEVREL/sdk/fm_plugin_sdk_22.0.1.68.zip
-    URL_HASH SHA256=ae3ca6b37a96c063e51993d1c7934b3000d9ad27e58996cb99f64b9776df07cd
-    DOWNLOAD_EXTRACT_TIMESTAMP TRUE  # Use extraction time for file timestamps (fixes CMake warning in ubuntu24.04)
+    ${FM_PLUGIN_SDK_DOWNLOAD_ARGS}
     CONFIGURE_COMMAND ""  # No configuration step needed
     BUILD_COMMAND ""      # No build step needed (it's pre-built)
     INSTALL_COMMAND ""    # No install step needed
@@ -403,3 +415,4 @@ install(
 
 # Set correct file ownership after installation
 install(CODE "execute_process(COMMAND chown -f \"${INSTALL_OWNER}\" \"${CMAKE_INSTALL_PREFIX}/BaseElements.fmx\" COMMAND_ECHO STDOUT)")
+
