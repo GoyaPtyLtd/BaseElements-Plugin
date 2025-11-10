@@ -34,8 +34,7 @@ Project/Extras/Recover.log
 Project/BaseElements.VC.opendb
 Project/BaseElements.VC.db
 Project/BaseElements.VC.VC.opendb
-Libraries/x64/libmimetic.log
-Libraries/win64/libmimetic.log
+libmimetic.log
 Project/BaseElements.depend
 Project/BaseElements.layout
 Project/BaseElements.xcodeproj/project.xcworkspace/xcshareddata/BaseElements.xcscmblueprint
@@ -63,9 +62,8 @@ Project/CodeSigning/*
 *.lock
 
 # Ignore build products
-PlugInSDK/
 /build*/
 
-
 # Ignore external libraries
-/external/
+/external/*
+!/external/README.md
