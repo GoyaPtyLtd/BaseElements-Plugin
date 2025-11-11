@@ -85,7 +85,7 @@ set(PLATFORM_DIR "ubuntu${UBUNTU_VERSION}-${TARGET_ARCH}")
 # Print what we detected (helpful for debugging)
 message(STATUS "Detected native architecture: ${NATIVE_ARCH} -> ${TARGET_ARCH}")
 message(STATUS "Detected Ubuntu version: ${UBUNTU_VERSION} -> Using ${UBUNTU_SDK_DIR}")
-message(STATUS "Using FileMaker SDK path: external/PlugInSDK/Libraries/Linux/${UBUNTU_SDK_DIR}/${TARGET_ARCH_DIR}")
+message(STATUS "Using FileMaker SDK: external/${PLATFORM_DIR}/PlugInSDK/")
 message(STATUS "Using internal platform directory: internal/${PLATFORM_DIR}")
 message(STATUS "Using external platform directory: external/${PLATFORM_DIR}")
 
@@ -132,38 +132,18 @@ set(CMAKE_INSTALL_RPATH             "/opt/FileMaker/lib")
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set_property(CACHE CMAKE_INSTALL_PREFIX PROPERTY VALUE "${DEFAULT_INSTALL_PREFIX}")
 endif()
-
-# ============================================================================
-# FILEMAKER PLUGIN SDK
-# ============================================================================
-# Automatically download the FileMaker Plugin SDK if it doesn't exist
-# The SDK contains headers and libraries needed to build FileMaker plugins
-
-include(ExternalProject)
-set(FM_PLUGIN_SDK_URL        https://downloads.claris.com/DEVREL/sdk/fm_plugin_sdk_22.0.1.68.zip)
-set(FM_PLUGIN_SDK_URL_HASH   SHA256=ae3ca6b37a96c063e51993d1c7934b3000d9ad27e58996cb99f64b9776df07cd)
-
-set(FM_PLUGIN_SDK_DOWNLOAD_ARGS
-    URL       ${FM_PLUGIN_SDK_URL}
-    URL_HASH  ${FM_PLUGIN_SDK_URL_HASH}
-)
-
 # DOWNLOAD_EXTRACT_TIMESTAMP was added in CMake 3.24; older versions (e.g. Ubuntu 22 / CMake 3.22)
 # treat it as part of URL_HASH and error out, so only enable it when supported.
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24")
     list(APPEND FM_PLUGIN_SDK_DOWNLOAD_ARGS DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
 endif()
-
-ExternalProject_Add(
-    fm_plugin_sdk
-    PREFIX "${CMAKE_BINARY_DIR}/fm_plugin_sdk"  # Temporary download location
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/external/PlugInSDK"  # Where to extract the SDK
-    # Download from Claris website
-    ${FM_PLUGIN_SDK_DOWNLOAD_ARGS}
-    CONFIGURE_COMMAND ""  # No configuration step needed
-    BUILD_COMMAND ""      # No build step needed (it's pre-built)
-    INSTALL_COMMAND ""    # No install step needed
-)
+# ============================================================================
+# FILEMAKER PLUGIN SDK
+# ============================================================================
+# The FileMaker Plugin SDK is provided as part of the external libraries
+# It is pre-extracted to external/${PLATFORM_DIR}/PlugInSDK/
+# Headers: external/${PLATFORM_DIR}/PlugInSDK/Headers
+# Libraries: external/${PLATFORM_DIR}/PlugInSDK/Libraries/Linux/${UBUNTU_SDK_DIR}/${TARGET_ARCH_DIR}
 
 # ============================================================================
 # PLUGIN SOURCE FILES
@@ -238,7 +218,7 @@ target_include_directories(
     internal/src
     
     # FileMaker SDK headers (downloaded by ExternalProject)
-    external/PlugInSDK/Headers
+    external/${PLATFORM_DIR}/PlugInSDK/Headers
     # ImageMagick headers need special path (they're nested deeper)
     external/${PLATFORM_DIR}/include/ImageMagick-7
     # External library headers (from BaseElements-Plugin-Libraries build)
@@ -262,7 +242,7 @@ target_link_directories(
     BaseElements PUBLIC
 
     # FileMaker SDK libraries (downloaded by ExternalProject)
-    external/PlugInSDK/Libraries/Linux/${UBUNTU_SDK_DIR}/${TARGET_ARCH_DIR}
+    external/${PLATFORM_DIR}/PlugInSDK/Libraries/Linux/${UBUNTU_SDK_DIR}/${TARGET_ARCH_DIR}
     
     # External library files (from BaseElements-Plugin-Libraries build)
     external/${PLATFORM_DIR}/lib
@@ -364,9 +344,7 @@ target_link_libraries(
 # ============================================================================
 # BUILD DEPENDENCIES
 # ============================================================================
-# Make sure the FileMaker SDK is downloaded before we try to build the plugin
-
-add_dependencies(BaseElements fm_plugin_sdk)
+# No external dependencies needed - all libraries are pre-extracted in external/
 
 # ============================================================================
 # OUTPUT FILE CONFIGURATION
