@@ -1,3 +1,0 @@
-When building the BaseElements Plugin the place the headers from third-party libraries in this directory.
-
-For the headers needed please see the build instructions in the README file in the top level directory.
