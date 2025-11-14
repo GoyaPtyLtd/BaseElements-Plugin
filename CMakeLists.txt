@@ -397,4 +397,3 @@ install(
 
 # Set correct file ownership after installation
 install(CODE "execute_process(COMMAND chown -f \"${INSTALL_OWNER}\" \"${CMAKE_INSTALL_PREFIX}/BaseElements.fmx\" COMMAND_ECHO STDOUT)")
-
