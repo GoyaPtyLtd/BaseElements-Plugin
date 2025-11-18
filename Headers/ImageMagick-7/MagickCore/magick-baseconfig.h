@@ -37,7 +37,7 @@
 
 /* Directory where architecture-dependent configuration files live. */
 #ifndef MAGICKCORE_CONFIGURE_PATH
-#define MAGICKCORE_CONFIGURE_PATH "/Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/ImageMagick/_build_x86_64/etc/ImageMagick-7/"
+#define MAGICKCORE_CONFIGURE_PATH "/Users/runner/work/BaseElements-Plugin-Libraries/BaseElements-Plugin-Libraries/output/platforms/macos-arm64_x86_64/src/ImageMagick-7/_build_x86_64/etc/ImageMagick-7/"
 #endif
 
 /* Subdirectory of lib where architecture-dependent configuration files live.
@@ -54,7 +54,7 @@
 
 /* Directory where ImageMagick documents live. */
 #ifndef MAGICKCORE_DOCUMENTATION_PATH
-#define MAGICKCORE_DOCUMENTATION_PATH "/Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/ImageMagick/_build_x86_64/share/doc/ImageMagick-7/"
+#define MAGICKCORE_DOCUMENTATION_PATH "/Users/runner/work/BaseElements-Plugin-Libraries/BaseElements-Plugin-Libraries/output/platforms/macos-arm64_x86_64/src/ImageMagick-7/_build_x86_64/share/doc/ImageMagick-7/"
 #endif
 
 /* Define to 1 to enable distributed pixel cache support. */
@@ -70,7 +70,7 @@
 
 /* Directory where executables are installed. */
 #ifndef MAGICKCORE_EXECUTABLE_PATH
-#define MAGICKCORE_EXECUTABLE_PATH "/Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/ImageMagick/_build_x86_64/bin/"
+#define MAGICKCORE_EXECUTABLE_PATH "/Users/runner/work/BaseElements-Plugin-Libraries/BaseElements-Plugin-Libraries/output/platforms/macos-arm64_x86_64/src/ImageMagick-7/_build_x86_64/bin/"
 #endif
 
 /* Define if you have FFTW library */
@@ -1075,12 +1075,12 @@
 
 /* Directory where ImageMagick architecture headers live. */
 #ifndef MAGICKCORE_INCLUDEARCH_PATH
-#define MAGICKCORE_INCLUDEARCH_PATH "/Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/ImageMagick/_build_x86_64/include/ImageMagick-7/"
+#define MAGICKCORE_INCLUDEARCH_PATH "/Users/runner/work/BaseElements-Plugin-Libraries/BaseElements-Plugin-Libraries/output/platforms/macos-arm64_x86_64/src/ImageMagick-7/_build_x86_64/include/ImageMagick-7/"
 #endif
 
 /* Directory where ImageMagick headers live. */
 #ifndef MAGICKCORE_INCLUDE_PATH
-#define MAGICKCORE_INCLUDE_PATH "/Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/ImageMagick/_build_x86_64/include/ImageMagick-7/"
+#define MAGICKCORE_INCLUDE_PATH "/Users/runner/work/BaseElements-Plugin-Libraries/BaseElements-Plugin-Libraries/output/platforms/macos-arm64_x86_64/src/ImageMagick-7/_build_x86_64/include/ImageMagick-7/"
 #endif
 
 /* ImageMagick is formally installed under prefix */
@@ -1101,13 +1101,11 @@
 /* #undef LCMS_DELEGATE */
 
 /* Define if you have OPENJP2 library */
-#ifndef MAGICKCORE_LIBOPENJP2_DELEGATE
-#define MAGICKCORE_LIBOPENJP2_DELEGATE 1
-#endif
+/* #undef LIBOPENJP2_DELEGATE */
 
 /* Directory where architecture-dependent files live. */
 #ifndef MAGICKCORE_LIBRARY_PATH
-#define MAGICKCORE_LIBRARY_PATH "/Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/ImageMagick/_build_x86_64/lib/ImageMagick-7.1.1/"
+#define MAGICKCORE_LIBRARY_PATH "/Users/runner/work/BaseElements-Plugin-Libraries/BaseElements-Plugin-Libraries/output/platforms/macos-arm64_x86_64/src/ImageMagick-7/_build_x86_64/lib/ImageMagick-7.1.1/"
 #endif
 
 /* Subdirectory of lib where ImageMagick architecture dependent files are
@@ -1257,7 +1255,7 @@
 
 /* Directory where architecture-independent configuration files live. */
 #ifndef MAGICKCORE_SHARE_PATH
-#define MAGICKCORE_SHARE_PATH "/Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/ImageMagick/_build_x86_64/share/ImageMagick-7/"
+#define MAGICKCORE_SHARE_PATH "/Users/runner/work/BaseElements-Plugin-Libraries/BaseElements-Plugin-Libraries/output/platforms/macos-arm64_x86_64/src/ImageMagick-7/_build_x86_64/share/ImageMagick-7/"
 #endif
 
 /* Subdirectory of lib where architecture-independent configuration files
@@ -1470,10 +1468,14 @@
 /* #undef ZIP_DELEGATE */
 
 /* Define if you have ZLIB library */
-/* #undef ZLIB_DELEGATE */
+#ifndef MAGICKCORE_ZLIB_DELEGATE
+#define MAGICKCORE_ZLIB_DELEGATE 1
+#endif
 
 /* Define if you have ZSTD library */
-/* #undef ZSTD_DELEGATE */
+#ifndef MAGICKCORE_ZSTD_DELEGATE
+#define MAGICKCORE_ZSTD_DELEGATE 1
+#endif
 
 /* Number of bits in a file offset, on hosts where this is settable. */
 /* #undef _FILE_OFFSET_BITS */

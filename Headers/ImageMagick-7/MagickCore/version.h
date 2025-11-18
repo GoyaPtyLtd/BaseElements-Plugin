@@ -44,7 +44,7 @@ extern "C" {
 #define MagickAuthoritativeLicense  \
   "https://imagemagick.org/script/license.php"
 #define MagickAuthoritativeURL  "https://imagemagick.org"
-#define MagickHomeURL  "file:///Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/ImageMagick/_build_x86_64/share/doc/ImageMagick-7/index.html"
+#define MagickHomeURL  "file:///Users/runner/work/BaseElements-Plugin-Libraries/BaseElements-Plugin-Libraries/output/platforms/macos-arm64_x86_64/src/ImageMagick-7/_build_x86_64/share/doc/ImageMagick-7/index.html"
 #if (MAGICKCORE_QUANTUM_DEPTH == 8)
 #define MagickQuantumDepth  "Q8"
 #define MagickQuantumRange  "255"

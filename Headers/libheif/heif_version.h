@@ -33,6 +33,6 @@
 /* Version string */
 #define LIBHEIF_VERSION "1.17.6"
 
-#define LIBHEIF_PLUGIN_DIRECTORY "/Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/libheif/_build/lib/libheif"
+#define LIBHEIF_PLUGIN_DIRECTORY "/Users/runner/work/BaseElements-Plugin-Libraries/BaseElements-Plugin-Libraries/output/platforms/macos-arm64_x86_64/src/libheif/_build/lib/libheif"
 
 #endif  // LIBHEIF_HEIF_VERSION_H

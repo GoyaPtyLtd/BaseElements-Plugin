@@ -10,6 +10,8 @@
 		010B8AAD2ECC23F20022815F /* libnghttp2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 010B8AAC2ECC23F20022815F /* libnghttp2.a */; };
 		010B8AD82ECC24850022815F /* libnghttp2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 010B8AC32ECC24720022815F /* libnghttp2.a */; };
 		010B8AD92ECC25370022815F /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 010B8ABE2ECC24720022815F /* libjpeg.a */; };
+		010B8ADA2ECC41A20022815F /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 010B8AD52ECC24720022815F /* libz.a */; };
+		010B8ADB2ECC42980022815F /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 010B8AD52ECC24720022815F /* libz.a */; };
 		014614362C40F7C60098C862 /* libunistring.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 014614352C40F7C60098C862 /* libunistring.a */; };
 		014614372C40F7DA0098C862 /* libunistring.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 014614352C40F7C60098C862 /* libunistring.a */; };
 		4D0BBAE4267AC1D60021DA56 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0BBAE3267AC1D60021DA56 /* libPocoNet.a */; };
@@ -875,6 +877,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				010B8ADA2ECC41A20022815F /* libz.a in Frameworks */,
 				014614372C40F7DA0098C862 /* libunistring.a in Frameworks */,
 				4DBC861E28812E4200E4CD1D /* libjq.a in Frameworks */,
 				4D432129281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
@@ -896,7 +899,6 @@
 				4DBB48F927C45AD000D3D232 /* libboost_date_time.a in Frameworks */,
 				4DBB48FA27C45AD000D3D232 /* libldap.tbd in Frameworks */,
 				4D432126281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
-				4DA72E79285AE5F20036CC90 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
 				4DDF7318299B3D2200B9C608 /* libPocoCrypto.a in Frameworks */,
 				4DC4FE062817D30F00C3A339 /* libopenjp2.a in Frameworks */,
 				4DBB48FC27C45AD000D3D232 /* libboost_regex.a in Frameworks */,
@@ -907,11 +909,12 @@
 				4DBB490127C45AD000D3D232 /* libfreetype.a in Frameworks */,
 				4DBB490227C45AD000D3D232 /* libfontconfig.a in Frameworks */,
 				4DBB490327C45AD000D3D232 /* libpodofo.a in Frameworks */,
-				4D414DAF2872B00300749AE0 /* CoreFoundation.framework in Frameworks */,
 				4DBB490527C45AD000D3D232 /* libexpat.tbd in Frameworks */,
-				4D29455C286441AC00C94A27 /* libjpeg.a in Frameworks */,
-				4D414DB12872B01E00749AE0 /* SystemConfiguration.framework in Frameworks */,
 				4D432123281268720014BBD3 /* libpng16.a in Frameworks */,
+				4D29455C286441AC00C94A27 /* libjpeg.a in Frameworks */,
+				4D414DAF2872B00300749AE0 /* CoreFoundation.framework in Frameworks */,
+				4DA72E79285AE5F20036CC90 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
+				4D414DB12872B01E00749AE0 /* SystemConfiguration.framework in Frameworks */,
 				4DBB490727C45AD000D3D232 /* FMWrapper.framework in Frameworks */,
 				4DBB490827C45AD000D3D232 /* DiskArbitration.framework in Frameworks */,
 				4DBB490927C45AD000D3D232 /* Cocoa.framework in Frameworks */,
@@ -988,6 +991,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				010B8ADB2ECC42980022815F /* libz.a in Frameworks */,
 				014614362C40F7C60098C862 /* libunistring.a in Frameworks */,
 				4D423CF628B5F47E00C0BB2C /* libjq.a in Frameworks */,
 				4D432127281268720014BBD3 /* libMagickCore-7.Q16HDRI.a in Frameworks */,
@@ -1011,7 +1015,6 @@
 				4D432124281268720014BBD3 /* libMagick++-7.Q16HDRI.a in Frameworks */,
 				4DDF7317299B38B200B9C608 /* libPocoCrypto.a in Frameworks */,
 				4D43212A281268720014BBD3 /* libopenjp2.a in Frameworks */,
-				4D414DB22872B05800749AE0 /* CoreFoundation.framework in Frameworks */,
 				4D11F4051F271C0B00D78042 /* libboost_regex.a in Frameworks */,
 				4D11F4071F271C0B00D78042 /* libboost_thread.a in Frameworks */,
 				4D11F3F11F271B8E00D78042 /* libxml2.a in Frameworks */,
@@ -1023,8 +1026,9 @@
 				4D7624421E0A3FFE00266C0D /* libexpat.tbd in Frameworks */,
 				4D432121281268720014BBD3 /* libpng16.a in Frameworks */,
 				010B8AD92ECC25370022815F /* libjpeg.a in Frameworks */,
-				4D414DB32872B06100749AE0 /* SystemConfiguration.framework in Frameworks */,
+				4D414DB22872B05800749AE0 /* CoreFoundation.framework in Frameworks */,
 				4D43212D281268720014BBD3 /* libMagickWand-7.Q16HDRI.a in Frameworks */,
+				4D414DB32872B06100749AE0 /* SystemConfiguration.framework in Frameworks */,
 				6570DD341E0107D8007B61E7 /* FMWrapper.framework in Frameworks */,
 				4D79CA9C26312C660024B789 /* DiskArbitration.framework in Frameworks */,
 				4DCD49711A195B0C00EFCF7F /* Cocoa.framework in Frameworks */,
