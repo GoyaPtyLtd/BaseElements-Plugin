@@ -112,7 +112,7 @@ extern "C" {
 #ifndef WITH_MODULES
 #define WITH_MODULES
 #endif
-#define LIBXSLT_DEFAULT_PLUGINS_PATH() "/Users/nick/Documents/GitHub/BaseElements-Plugin-Libraries/source/macOS/libxslt/_build/lib/libxslt-plugins"
+#define LIBXSLT_DEFAULT_PLUGINS_PATH() "/Users/runner/work/BaseElements-Plugin-Libraries/BaseElements-Plugin-Libraries/output/platforms/macos-arm64_x86_64/src/libxslt/_build/lib/libxslt-plugins"
 #endif
 
 /**
