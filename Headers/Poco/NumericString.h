@@ -242,7 +242,8 @@ bool strToInt(const char* pStr, I& outResult, short base, char thSep = ',')
 		if (*pStr == thSep)
 		{
 			if (base == 10) continue;
-			throw Poco::SyntaxException("strToInt: thousand separators only allowed for base 10");
+			// thousand separators only allowed for base 10
+			return false;
 		}
 		if (result > (limitCheck / base)) return false;
 		if (!safeMultiply(result, result, base)) return false;
@@ -369,10 +370,10 @@ namespace Impl {
 };
 
 template <typename T>
-using EnableSigned = typename std::enable_if< std::is_signed<T>::value >::type*;
+using EnableSigned = typename std::enable_if_t< std::is_signed<T>::value >*;
 
 template <typename T>
-using EnableUnsigned = typename std::enable_if< std::is_unsigned<T>::value >::type*;
+using EnableUnsigned = typename std::enable_if_t< std::is_unsigned<T>::value >*;
 
 } // namespace Impl
 
@@ -536,7 +537,7 @@ bool intToStr(T value,
 
 
 template <typename T>
-[[deprecated("use intToStr instead")]]
+POCO_DEPRECATED("use intToStr instead")
 bool uIntToStr(T value,
 	unsigned short base,
 	char* result,
@@ -581,7 +582,7 @@ bool intToStr (T number,
 
 
 template <typename T>
-[[deprecated("use intToStr instead")]]
+POCO_DEPRECATED("use intToStr instead")
 bool uIntToStr (T number,
 	unsigned short base,
 	std::string& result,

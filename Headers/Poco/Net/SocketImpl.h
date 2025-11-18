@@ -170,12 +170,22 @@ public:
 	virtual void shutdownReceive();
 		/// Shuts down the receiving part of the socket connection.
 
-	virtual void shutdownSend();
+	virtual int shutdownSend();
 		/// Shuts down the sending part of the socket connection.
+		///
+		/// Returns 0 for a non-blocking socket. May return
+		/// a negative value for a non-blocking socket in case
+		/// of a TLS connection. In that case, the operation should
+		/// be retried once the underlying socket becomes writable.
 
-	virtual void shutdown();
+	virtual int shutdown();
 		/// Shuts down both the receiving and the sending part
 		/// of the socket connection.
+		///
+		/// Returns 0 for a non-blocking socket. May return
+		/// a negative value for a non-blocking socket in case
+		/// of a TLS connection. In that case, the operation should
+		/// be retried once the underlying socket becomes writable.
 
 	virtual int sendBytes(const void* buffer, int length, int flags = 0);
 		/// Sends the contents of the given buffer through
@@ -276,6 +286,29 @@ public:
 		///
 		/// The preferred way for a socket to receive urgent data
 		/// is by enabling the SO_OOBINLINE option.
+
+	virtual std::streamsize sendFile(Poco::FileInputStream& FileInputStream, std::streamoff offset = 0, std::streamsize count = 0);
+		/// Sends the contents of a file over the socket, using operating
+		/// system-specific APIs, if available. The socket must not have
+		/// been set to non-blocking.
+		///
+		/// If count is != 0, sends the given number of bytes, otherwise
+		/// sends all bytes, starting from the given offset.
+		///
+		/// On Linux, macOS and FreeBSD systems, the implementation
+		/// uses sendfile() or sendfile64().
+		/// On Windows, the implementation uses TransmitFile().
+		///
+		/// If neither sendfile() nor TransmitFile() is available,
+		/// or the socket is a secure one (secure() returne true),
+		/// falls back to reading the file block by block and calling sendBytes().
+		///
+		/// Returns the number of bytes sent, which should be the same
+		/// as count, unless count is 0.
+		///
+		/// Throws NetException (or a subclass) in case of any errors.
+		/// Also throws a NetException if the socket has been set to
+		/// non-blocking.
 
 	virtual int available();
 		/// Returns the number of bytes available that can be read
@@ -478,11 +511,6 @@ public:
 	bool initialized() const;
 		/// Returns true iff the underlying socket is initialized.
 
-	Poco::Int64 sendFile(FileInputStream &FileInputStream, Poco::UInt64 offset = 0);
-		/// Sends file using system function
-		/// for posix systems - with sendfile[64](...)
-		/// for windows - with TransmitFile(...)
-
 protected:
 	SocketImpl();
 		/// Creates a SocketImpl.
@@ -522,6 +550,14 @@ protected:
 		/// Allows subclasses to set the socket manually, iff no valid socket is set yet.
 
 	void checkBrokenTimeout(SelectMode mode);
+
+	std::streamsize sendFileNative(Poco::FileInputStream& FileInputStream, std::streamoff offset, std::streamsize count);
+		/// Implements sendFile() using an OS-specific API like
+		/// sendfile() or TransmitFile().
+
+	std::streamsize sendFileBlockwise(Poco::FileInputStream& FileInputStream, std::streamoff offset, std::streamsize count);
+		/// Implements sendFile() by reading the file blockwise and
+		/// calling sendBytes() for each block.
 
 	static int lastError();
 		/// Returns the last error code.
@@ -600,7 +636,7 @@ inline bool SocketImpl::getBlocking() const
 
 
 #if defined(POCO_OS_FAMILY_WINDOWS)
-	#pragma comment(lib, "mswsock.lib") 
-#endif 
+	#pragma comment(lib, "mswsock.lib")
+#endif
 
 #endif // Net_SocketImpl_INCLUDED
