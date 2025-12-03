@@ -21,7 +21,7 @@
 #ifndef LIBHEIF_HEIF_PROPERTIES_H
 #define LIBHEIF_HEIF_PROPERTIES_H
 
-#include "libheif/heif.h"
+#include "heif.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,7 +37,10 @@ enum heif_item_property_type
   heif_item_property_type_transform_mirror = heif_fourcc('i', 'm', 'i', 'r'),
   heif_item_property_type_transform_rotation = heif_fourcc('i', 'r', 'o', 't'),
   heif_item_property_type_transform_crop = heif_fourcc('c', 'l', 'a', 'p'),
-  heif_item_property_type_image_size = heif_fourcc('i', 's', 'p', 'e')
+  heif_item_property_type_image_size = heif_fourcc('i', 's', 'p', 'e'),
+  heif_item_property_type_uuid = heif_fourcc('u', 'u', 'i', 'd'),
+  heif_item_property_type_tai_clock_info = heif_fourcc('t', 'a', 'i', 'c'),
+  heif_item_property_type_tai_timestamp = heif_fourcc('i', 't', 'a', 'i')
 };
 
 // Get the heif_property_id for a heif_item_id.
@@ -46,7 +49,7 @@ enum heif_item_property_type
 // The number of properties is returned, which are not more than 'count' if (out_list != nullptr).
 // By setting out_list==nullptr, you can query the number of properties, 'count' is ignored.
 LIBHEIF_API
-int heif_item_get_properties_of_type(const struct heif_context* context,
+int heif_item_get_properties_of_type(const heif_context* context,
                                      heif_item_id id,
                                      enum heif_item_property_type type,
                                      heif_property_id* out_list,
@@ -57,18 +60,18 @@ int heif_item_get_properties_of_type(const struct heif_context* context,
 // The number of properties is returned, which are not more than 'count' if (out_list != nullptr).
 // By setting out_list==nullptr, you can query the number of properties, 'count' is ignored.
 LIBHEIF_API
-int heif_item_get_transformation_properties(const struct heif_context* context,
+int heif_item_get_transformation_properties(const heif_context* context,
                                             heif_item_id id,
                                             heif_property_id* out_list,
                                             int count);
 
 LIBHEIF_API
-enum heif_item_property_type heif_item_get_property_type(const struct heif_context* context,
+enum heif_item_property_type heif_item_get_property_type(const heif_context* context,
                                                          heif_item_id id,
                                                          heif_property_id property_id);
 
 // The strings are managed by libheif. They will be deleted in heif_property_user_description_release().
-struct heif_property_user_description
+typedef struct heif_property_user_description
 {
   int version;
 
@@ -78,28 +81,28 @@ struct heif_property_user_description
   const char* name;
   const char* description;
   const char* tags;
-};
+} heif_property_user_description;
 
 // Get the "udes" user description property content.
 // Undefined strings are returned as empty strings.
 LIBHEIF_API
-struct heif_error heif_item_get_property_user_description(const struct heif_context* context,
-                                                          heif_item_id itemId,
-                                                          heif_property_id propertyId,
-                                                          struct heif_property_user_description** out);
+heif_error heif_item_get_property_user_description(const heif_context* context,
+                                                   heif_item_id itemId,
+                                                   heif_property_id propertyId,
+                                                   heif_property_user_description** out);
 
 // Add a "udes" user description property to the item.
 // If any string pointers are NULL, an empty string will be used instead.
 LIBHEIF_API
-struct heif_error heif_item_add_property_user_description(const struct heif_context* context,
-                                                          heif_item_id itemId,
-                                                          const struct heif_property_user_description* description,
-                                                          heif_property_id* out_propertyId);
+heif_error heif_item_add_property_user_description(const heif_context* context,
+                                                   heif_item_id itemId,
+                                                   const heif_property_user_description* description,
+                                                   heif_property_id* out_propertyId);
 
 // Release all strings and the object itself.
 // Only call for objects that you received from heif_item_get_property_user_description().
 LIBHEIF_API
-void heif_property_user_description_release(struct heif_property_user_description*);
+void heif_property_user_description_release(heif_property_user_description*);
 
 enum heif_transform_mirror_direction
 {
@@ -110,14 +113,14 @@ enum heif_transform_mirror_direction
 
 // Will return 'heif_transform_mirror_direction_invalid' in case of error.
 LIBHEIF_API
-enum heif_transform_mirror_direction heif_item_get_property_transform_mirror(const struct heif_context* context,
+enum heif_transform_mirror_direction heif_item_get_property_transform_mirror(const heif_context* context,
                                                                              heif_item_id itemId,
                                                                              heif_property_id propertyId);
 
 // Returns only 0, 90, 180, or 270 angle values.
 // Returns -1 in case of error (but it will only return an error in case of wrong usage).
 LIBHEIF_API
-int heif_item_get_property_transform_rotation_ccw(const struct heif_context* context,
+int heif_item_get_property_transform_rotation_ccw(const heif_context* context,
                                                   heif_item_id itemId,
                                                   heif_property_id propertyId);
 
@@ -125,11 +128,101 @@ int heif_item_get_property_transform_rotation_ccw(const struct heif_context* con
 // Because of the way this data is stored, you have to pass the image size at the moment of the crop operation
 // to compute the cropped border sizes.
 LIBHEIF_API
-void heif_item_get_property_transform_crop_borders(const struct heif_context* context,
+void heif_item_get_property_transform_crop_borders(const heif_context* context,
                                                    heif_item_id itemId,
                                                    heif_property_id propertyId,
                                                    int image_width, int image_height,
                                                    int* left, int* top, int* right, int* bottom);
+
+/**
+ * @param context     The heif_context for the file
+ * @param itemId      The image item id to which this property belongs.
+ * @param fourcc_type The short four-cc type of the property to add.
+ * @param uuid_type   If fourcc_type=='uuid', this should point to a 16-byte UUID type. It is ignored otherwise and can be NULL.
+ * @param data        Data to insert for this property (including a full-box header, if required for this box).
+ * @param size        Length of data in bytes.
+ * @param is_essential   Whether this property is essential (boolean).
+ * @param out_propertyId Outputs the id of the inserted property. Can be NULL.
+*/
+LIBHEIF_API
+heif_error heif_item_add_raw_property(const heif_context* context,
+                                      heif_item_id itemId,
+                                      uint32_t fourcc_type,
+                                      const uint8_t* uuid_type,
+                                      const uint8_t* data, size_t size,
+                                      int is_essential,
+                                      heif_property_id* out_propertyId);
+
+LIBHEIF_API
+heif_error heif_item_get_property_raw_size(const heif_context* context,
+                                           heif_item_id itemId,
+                                           heif_property_id propertyId,
+                                           size_t* out_size);
+
+/**
+ * @param out_data User-supplied array to write the property data to. The required size of the output array is given by heif_item_get_property_raw_size().
+*/
+LIBHEIF_API
+heif_error heif_item_get_property_raw_data(const heif_context* context,
+                                           heif_item_id itemId,
+                                           heif_property_id propertyId,
+                                           uint8_t* out_data);
+
+/**
+ * Get the extended type for an extended "uuid" box.
+ *
+ * This provides the UUID for the extended box.
+ *
+ * This method should only be called on properties of type `heif_item_property_type_uuid`.
+ *
+ * @param context the heif_context containing the HEIF file
+ * @param itemId the image item id to which this property belongs.
+ * @param propertyId the property index (1-based) to get the extended type for
+ * @param out_extended_type output of the call, must be a pointer to at least 16-bytes.
+ * @return heif_error_success or an error indicating the failure
+ */
+LIBHEIF_API
+heif_error heif_item_get_property_uuid_type(const heif_context* context,
+                                            heif_item_id itemId,
+                                            heif_property_id propertyId,
+                                            uint8_t out_extended_type[16]);
+
+
+// ------------------------- intrinsic and extrinsic matrices -------------------------
+
+typedef struct heif_camera_intrinsic_matrix
+{
+  double focal_length_x;
+  double focal_length_y;
+  double principal_point_x;
+  double principal_point_y;
+  double skew;
+} heif_camera_intrinsic_matrix;
+
+
+LIBHEIF_API
+int heif_image_handle_has_camera_intrinsic_matrix(const heif_image_handle* handle);
+
+LIBHEIF_API
+heif_error heif_image_handle_get_camera_intrinsic_matrix(const heif_image_handle* handle,
+                                                         heif_camera_intrinsic_matrix* out_matrix);
+
+
+typedef struct heif_camera_extrinsic_matrix heif_camera_extrinsic_matrix;
+
+LIBHEIF_API
+int heif_image_handle_has_camera_extrinsic_matrix(const heif_image_handle* handle);
+
+LIBHEIF_API
+heif_error heif_image_handle_get_camera_extrinsic_matrix(const heif_image_handle* handle,
+                                                         heif_camera_extrinsic_matrix** out_matrix);
+
+LIBHEIF_API
+void heif_camera_extrinsic_matrix_release(heif_camera_extrinsic_matrix*);
+
+LIBHEIF_API
+heif_error heif_camera_extrinsic_matrix_get_rotation_matrix(const heif_camera_extrinsic_matrix*,
+                                                            double* out_matrix_row_major);
 
 #ifdef __cplusplus
 }

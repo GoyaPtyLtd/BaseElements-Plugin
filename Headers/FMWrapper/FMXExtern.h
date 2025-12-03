@@ -1,6 +1,6 @@
 /*
 
- Copyright © 1998 - 2022 Claris International Inc.
+ Copyright © 1998 - 2025 Claris International Inc.
  All rights reserved.
 
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
@@ -89,30 +89,16 @@ extern "C++"
 	#if defined( _MSC_VER )
 		typedef __int64             int64;
 		typedef unsigned __int64    uint64;
-
-		#if defined( _M_X64)
 		typedef uint64              ptrtype;
-		#else
-		typedef uint32              ptrtype;
-		#endif
 		typedef int16               unusedid;
 	#else
-		#if defined( _LP64 )
 		typedef long                int64;
 		typedef unsigned long       uint64;
 		typedef uint64              ptrtype;
 		typedef int32               unusedid;
-		#else
-		typedef long long           int64;
-		typedef unsigned long long  uint64;
-		typedef uint32              ptrtype;
-		typedef int16               unusedid;
-		#endif
 	#endif
 		typedef short               errcode;
 		typedef unsigned short      unichar16;
-
-		typedef DEPRECATED unichar16 unichar; // DEPRECATED in version 15. unichar conflicts often with Cocoa's definition of it
 
 	}
 }
@@ -177,7 +163,12 @@ enum
 	k195ExtnVersion     = 67,
 	k196ExtnVersion     = 68,
     k201ExtnVersion     = 71,
-	kCurrentExtnVersion = 71,
+	k202ExtnVersion     = 72,
+	k203ExtnVersion     = 73,
+	k210ExtnVersion     = 74,
+	k211ExtnVersion     = 75,
+	k220ExtnVersion     = 76,
+	kCurrentExtnVersion = 76,
 	kMinExtnVersion     = 4,
 	kMaxExtnVersion     = 255
 };
@@ -194,7 +185,10 @@ enum
 
 	// New to FileMaker Pro 15 (API VERSION 56) and later
 	kFMXT_SessionShutdown   = 8,        // Enabled by kFMXT_OptionsStr character 10
-	kFMXT_FileShutdown      = 9         // Enabled by kFMXT_OptionsStr character 10
+	kFMXT_FileShutdown      = 9,        // Enabled by kFMXT_OptionsStr character 10
+
+	// New to FileMaker Pro 21.1 (API VERSION 75) and later
+	kFMXT_SchemaChange      = 10        // Enabled by kFMXT_OptionsStr character 10
 };
 
 typedef FMX_UChar   FMX_Strings;        // Different strings that may be asked for by kFMXT_GetString
@@ -230,7 +224,9 @@ enum
 	kFMXT_XDBC              = 6,        // This process does not currently load plug-ins
 	kFMXT_SASE              = 7,        // Server scripting process
 	kFMXT_IWP               = 8,        // This process no longer exists
-	kFMXT_FMDAPI            = 9         // FileMaker Data API process
+	kFMXT_FMDAPI            = 9,        // FileMaker Data API process
+	kFMXT_OData             = 11,       // OData API process (does not currently load plug-ins)
+	kFMXT_Tool              = 99        // FileMaker command line tool (like FMDeveloperTool)
 };
 
 struct              FMX_ExternCallStruct;
@@ -258,15 +254,15 @@ struct FMX_ExternCallStruct
 	//  Msg =                   Parm1                       Parm2                           Parm3
 	//  kFMXT_Init              FMX_Application value       App vers unicode c str*         [unused]
 	//  kFMXT_Idle              FMX_IdleLevel value         Session ID                      [unused]
-	//  kFMXT_External          [unused]                    Funct str index                 Parameter text**
 	//  kFMXT_Shutdown          [unused]                    [unused]                        [unused]
 	//  kFMXT_DoAppPreferences  [unused]                    [unused]                        [unused]
 	//  kFMXT_GetString         FMX_Strings value           Windows lang ID                 Maximum size of string to return
 	//  kFMXT_SessionShutdown   [unused]                    Session ID                      [unused]
 	//  kFMXT_FileShutdown      [unused]                    Session ID                      File ID
+	//  kFMXT_SchemaChange      [unused]                    char* to utf8 JSON text**       Length of utf8 JSON text
 	//
 	//(* same as GetAppVersion, e.g. "Pro 13.0v2" )
-	//(** Parameter from calculation as text, in kEncoding_ASCII_Mac or kEncoding_ShiftJIS_Mac; Result passed back to FileMaker must match encoding.)
+	//(** This message only sent to plug-ins loaded in the server side scripting process)
 
 	// Passed in every call
 		FMX_PtrType             instanceID;                     // ID of the plug-in

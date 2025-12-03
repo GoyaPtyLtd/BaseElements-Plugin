@@ -3,6 +3,7 @@
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
+// Copyright (c) 2024 Adam Wulkiewicz, Lodz, Poland.
 
 // This file was modified by Oracle on 2020.
 // Modifications copyright (c) 2020 Oracle and/or its affiliates.
@@ -37,7 +38,7 @@ namespace traits
 \par Geometries:
     - all geometries
 \par Specializations should provide:
-    - typedef XXX_tag type; (point_tag, box_tag, ...)
+    - using type = XXX_tag; (point_tag, box_tag, ...)
 \tparam Geometry geometry
 */
 template <typename Geometry, typename Enable = void>
@@ -62,11 +63,16 @@ struct tag
 template <typename Geometry>
 struct tag
 {
-    typedef typename traits::tag
+    using type = typename traits::tag
         <
-            typename util::remove_cptrref<Geometry>::type
-        >::type type;
+            util::remove_cptrref_t<Geometry>
+        >::type;
 };
+
+
+template <typename Geometry>
+using tag_t = typename tag<Geometry>::type;
+
 
 }} // namespace boost::geometry
 

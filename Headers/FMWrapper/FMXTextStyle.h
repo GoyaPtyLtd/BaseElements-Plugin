@@ -1,6 +1,6 @@
 /*
 
- Copyright © 1998 - 2021  Claris International Inc.
+ Copyright © 1998 - 2024  Claris International Inc.
  All rights reserved.
 
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
@@ -46,28 +46,6 @@ extern "C++"
 			typedef unsigned short FontSize;
 			typedef unsigned char ColorChannel;
 			typedef unsigned short ColorChannel16;
-
-			// DEPRECATED in FileMaker Pro 14. Fonts no longer belong to "scripts"
-			typedef unsigned short FontScript;
-			enum
-			{
-				kRoman                  = 0,
-				kGreek                  = 1,
-				kCyrillic               = 2,
-				kCentralEurope          = 3,
-				kShiftJIS               = 4,
-				kTraditionalChinese     = 5,
-				kSimplifiedChinese      = 6,
-				kOEM                    = 7,
-				kSymbol                 = 8,
-				kNative                 = 9,
-				kOther                  = 10,
-				kKorean                 = 11,
-				kDingbats               = 12,
-				kTurkish                = 13,
-
-				kInvalidFont            = 0xFFFF
-			};
 
 			class Color
 			{

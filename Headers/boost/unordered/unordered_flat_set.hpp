@@ -1,4 +1,5 @@
 // Copyright (C) 2022-2023 Christian Mazakas
+// Copyright (C) 2024-2025 Joaquin M Lopez Munoz
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -71,6 +72,10 @@ namespace boost {
         typename boost::allocator_const_pointer<allocator_type>::type;
       using iterator = typename table_type::iterator;
       using const_iterator = typename table_type::const_iterator;
+
+#if defined(BOOST_UNORDERED_ENABLE_STATS)
+      using stats = typename table_type::stats;
+#endif
 
       unordered_flat_set() : unordered_flat_set(0) {}
 
@@ -173,6 +178,7 @@ namespace boost {
       {
       }
 
+      template <bool avoid_explicit_instantiation = true>
       unordered_flat_set(
         concurrent_flat_set<Key, Hash, KeyEqual, Allocator>&& other)
           : table_(std::move(other.table_))
@@ -191,6 +197,13 @@ namespace boost {
         noexcept(std::declval<table_type&>() = std::declval<table_type&&>()))
       {
         table_ = std::move(other.table_);
+        return *this;
+      }
+
+      unordered_flat_set& operator=(std::initializer_list<value_type> il)
+      {
+        this->clear();
+        this->insert(il.begin(), il.end());
         return *this;
       }
 
@@ -317,6 +330,11 @@ namespace boost {
       erase(K const& key)
       {
         return table_.erase(key);
+      }
+
+      BOOST_FORCEINLINE init_type pull(const_iterator pos)
+      {
+        return table_.pull(pos);
       }
 
       void swap(unordered_flat_set& rhs) noexcept(
@@ -473,6 +491,14 @@ namespace boost {
       void rehash(size_type n) { table_.rehash(n); }
 
       void reserve(size_type n) { table_.reserve(n); }
+
+#if defined(BOOST_UNORDERED_ENABLE_STATS)
+      /// Stats
+      ///
+      stats get_stats() const { return table_.get_stats(); }
+
+      void reset_stats() noexcept { table_.reset_stats(); }
+#endif
 
       /// Observers
       ///

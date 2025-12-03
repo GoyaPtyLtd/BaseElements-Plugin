@@ -45,7 +45,7 @@ namespace detail { namespace disjoint
 template
 <
     typename SegmentOrBox,
-    typename Tag = typename tag<SegmentOrBox>::type
+    typename Tag = tag_t<SegmentOrBox>
 >
 struct disjoint_point_segment_or_box
     : not_implemented<Tag>
@@ -86,7 +86,7 @@ struct disjoint_range_segment_or_box
                              SegmentOrBox const& segment_or_box,
                              Strategy const& strategy)
     {
-        using point_type = typename point_type<Range>::type;
+        using point_type = point_type_t<Range>;
         using range_segment = typename geometry::model::referring_segment<point_type const>;
 
         detail::closed_view<Range const> const view(range);
@@ -135,7 +135,7 @@ template
 <
     typename Linear,
     typename SegmentOrBox,
-    typename Tag = typename tag<Linear>::type
+    typename Tag = tag_t<Linear>
 >
 struct disjoint_linear_segment_or_box
     : not_implemented<Linear, SegmentOrBox>

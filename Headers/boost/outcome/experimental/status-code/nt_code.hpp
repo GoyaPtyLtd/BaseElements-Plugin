@@ -1,5 +1,5 @@
 /* Proposed SG14 status_code
-(C) 2018-2024 Niall Douglas <http://www.nedproductions.biz/> (5 commits)
+(C) 2018-2025 Niall Douglas <http://www.nedproductions.biz/> (5 commits)
 File Created: Feb 2018
 
 
@@ -36,6 +36,11 @@ DEALINGS IN THE SOFTWARE.
 #endif
 
 #include "win32_code.hpp"
+
+#if defined(_MSC_VER) && !defined(__clang__)
+#pragma warning(push)
+#pragma warning(disable : 6326)  // constant comparison
+#endif
 
 BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE_BEGIN
 
@@ -237,5 +242,9 @@ inline constexpr const _nt_code_domain &_nt_code_domain::get()
 }
 
 BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE_END
+
+#if defined(_MSC_VER) && !defined(__clang__)
+#pragma warning(pop)
+#endif
 
 #endif

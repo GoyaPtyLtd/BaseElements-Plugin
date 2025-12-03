@@ -2,8 +2,8 @@
 
 // Copyright (c) 2017 Adam Wulkiewicz, Lodz, Poland.
 
-// Copyright (c) 2015-2020, Oracle and/or its affiliates.
-
+// Copyright (c) 2015-2024, Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -65,10 +65,9 @@ template
 >
 struct point_single_point
 {
-    template <typename RobustPolicy, typename OutputIterator, typename Strategy>
+    template <typename OutputIterator, typename Strategy>
     static inline OutputIterator apply(Point const& point,
                                        Geometry const& geometry,
-                                       RobustPolicy const&,
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
@@ -91,10 +90,9 @@ template
 >
 struct multipoint_single_point
 {
-    template <typename RobustPolicy, typename OutputIterator, typename Strategy>
+    template <typename OutputIterator, typename Strategy>
     static inline OutputIterator apply(MultiPoint const& multipoint,
                                        Geometry const& geometry,
-                                       RobustPolicy const&,
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
@@ -219,8 +217,8 @@ private:
     class segment_range
     {
     public:
-        typedef geometry::segment_iterator<Linear const> const_iterator;
-        typedef const_iterator iterator;
+        using const_iterator = geometry::segment_iterator<Linear const>;
+        using iterator = const_iterator;
 
         explicit segment_range(Linear const& linear)
             : m_linear(linear)
@@ -269,17 +267,16 @@ private:
     }
 
 public:
-    template <typename RobustPolicy, typename OutputIterator, typename Strategy>
+    template <typename OutputIterator, typename Strategy>
     static inline OutputIterator apply(MultiPoint const& multipoint,
                                        Linear const& linear,
-                                       RobustPolicy const& robust_policy,
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
-        typedef std::vector
+        using point_vector_type = std::vector
             <
                 typename boost::range_value<MultiPoint>::type
-            > point_vector_type;
+            >;
 
         point_vector_type common_points;
 
@@ -291,7 +288,7 @@ public:
         return multipoint_multipoint_point
             <
                 MultiPoint, point_vector_type, PointOut, OverlayType
-            >::apply(multipoint, common_points, robust_policy, oit, strategy);
+            >::apply(multipoint, common_points, oit, strategy);
     }
 };
 

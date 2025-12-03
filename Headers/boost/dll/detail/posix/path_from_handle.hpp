@@ -1,5 +1,5 @@
 // Copyright 2014-2015 Renato Tegon Forti, Antony Polukhin.
-// Copyright Antony Polukhin, 2016-2024.
+// Copyright Antony Polukhin, 2016-2025.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt
@@ -24,13 +24,13 @@
 #   include <cstddef> // for std::ptrdiff_t
 
 namespace boost { namespace dll { namespace detail {
-    inline void* strip_handle(void* handle) BOOST_NOEXCEPT {
+    inline void* strip_handle(void* handle) noexcept {
         return reinterpret_cast<void*>(
             (reinterpret_cast<std::ptrdiff_t>(handle) >> 2) << 2
         );
     }
 
-    inline boost::dll::fs::path path_from_handle(void* handle, boost::dll::fs::error_code &ec) {
+    inline boost::dll::fs::path path_from_handle(void* handle, std::error_code &ec) {
         handle = strip_handle(handle);
 
         // Iterate through all images currently in memory
@@ -53,8 +53,8 @@ namespace boost { namespace dll { namespace detail {
         }
 
         boost::dll::detail::reset_dlerror();
-        ec = boost::dll::fs::make_error_code(
-            boost::dll::fs::errc::bad_file_descriptor
+        ec = std::make_error_code(
+            std::errc::bad_file_descriptor
         );
 
         return boost::dll::fs::path();
@@ -78,7 +78,7 @@ namespace boost { namespace dll { namespace detail {
         // ...          // Ignoring remaning parts of the structure
     };
 
-    inline boost::dll::fs::path path_from_handle(const void* handle, boost::dll::fs::error_code &ec) {
+    inline boost::dll::fs::path path_from_handle(const void* handle, std::error_code &ec) {
         static const std::size_t work_around_b_24465209__offset = 128;
         const struct soinfo* si = reinterpret_cast<const struct soinfo*>(
             static_cast<const char*>(handle) + work_around_b_24465209__offset
@@ -104,6 +104,15 @@ namespace boost { namespace dll { namespace detail {
 #if BOOST_OS_QNX
 // QNX's copy of <elf.h> and <link.h> reside in sys folder
 #   include <sys/link.h>
+#elif BOOST_OS_CYGWIN
+// Cygwin returns the opaque pointer-sized handle of type `HMODULE` on the invoke of `dlopen`,
+// which cannot be interpreted. As GCC on Cygwin always links to KERNEL32.DLL, we can use the
+// standard Win32 API `GetModuleFileNameW` to implement `path_from_handle`
+//
+// Introduce the Win32 API `GetModuleFileNameW` here
+extern "C" void GetModuleFileNameW(void*, wchar_t*, unsigned long long);
+// Introduce the Win32 API `GetLastError` here
+extern "C" unsigned long long GetLastError();
 #else
 #   include <link.h>    // struct link_map
 #endif
@@ -119,7 +128,7 @@ namespace boost { namespace dll { namespace detail {
     };
 #endif // #if BOOST_OS_QNX
 
-    inline boost::dll::fs::path path_from_handle(void* handle, boost::dll::fs::error_code &ec) {
+    inline boost::dll::fs::path path_from_handle(void* handle, std::error_code &ec) {
         // RTLD_DI_LINKMAP (RTLD_DI_ORIGIN returns only folder and is not suitable for this case)
         // Obtain the Link_map for the handle  that  is  specified.
         // The  p  argument  points to a Link_map pointer (Link_map
@@ -129,9 +138,29 @@ namespace boost { namespace dll { namespace detail {
         // Unfortunately we can not use `dlinfo(handle, RTLD_DI_LINKMAP, &link_map) < 0`
         // because it is not supported on MacOS X 10.3, NetBSD 3.0, OpenBSD 3.8, AIX 5.1,
         // HP-UX 11, IRIX 6.5, OSF/1 5.1, Cygwin, mingw, Interix 3.5, BeOS.
-        // Fortunately investigating the sources of open source projects brought the understanding, that
+        // Fortunately, investigating the sources of open source projects brought the understanding, that
         // `handle` is just a `struct link_map*` that contains full library name.
 
+#if BOOST_OS_CYGWIN
+        // Cygwin doesn't have <link.h> header
+        unsigned long long buffer_size = 4096;
+        std::vector<wchar_t> buffer;
+        do
+        {
+            buffer.resize(buffer_size);
+            GetModuleFileNameW(handle, buffer.data(), buffer.size());
+            buffer_size *= 2;
+        } while (GetLastError() == 122 /* ERROR_INSUFFICIENT_BUFFER */);
+        if (GetLastError() == 0)
+        {
+            return boost::filesystem::path(buffer.data());
+        } else
+        {
+            boost::dll::detail::reset_dlerror();
+            ec = std::make_error_code(std::errc::bad_file_descriptor);
+            return boost::filesystem::path();
+        }
+#else
         const struct link_map* link_map = 0;
 #if BOOST_OS_BSD_FREE
         // FreeBSD has it's own logic http://code.metager.de/source/xref/freebsd/libexec/rtld-elf/rtld.c
@@ -144,8 +173,8 @@ namespace boost { namespace dll { namespace detail {
 #endif
         if (!link_map) {
             boost::dll::detail::reset_dlerror();
-            ec = boost::dll::fs::make_error_code(
-                boost::dll::fs::errc::bad_file_descriptor
+            ec = std::make_error_code(
+                std::errc::bad_file_descriptor
             );
 
             return boost::dll::fs::path();
@@ -156,6 +185,7 @@ namespace boost { namespace dll { namespace detail {
         }
 
         return boost::dll::fs::path(link_map->l_name);
+#endif
     }
 
 }}} // namespace boost::dll::detail

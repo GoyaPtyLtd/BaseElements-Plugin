@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2024 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -9,55 +9,59 @@
 #define BOOST_MYSQL_IMPL_INTERNAL_SANSIO_PING_HPP
 
 #include <boost/mysql/diagnostics.hpp>
-#include <boost/mysql/error_code.hpp>
 
 #include <boost/mysql/detail/algo_params.hpp>
 
+#include <boost/mysql/impl/internal/coroutine.hpp>
+#include <boost/mysql/impl/internal/protocol/serialization.hpp>
 #include <boost/mysql/impl/internal/sansio/connection_state_data.hpp>
-#include <boost/mysql/impl/internal/sansio/sansio_algorithm.hpp>
-
-#include <boost/asio/coroutine.hpp>
-
-#include <cstdint>
 
 namespace boost {
 namespace mysql {
 namespace detail {
 
-class ping_algo : public sansio_algorithm, asio::coroutine
+class read_ping_response_algo
 {
-    diagnostics* diag_;
+    int resume_point_{0};
     std::uint8_t seqnum_{0};
 
 public:
-    ping_algo(connection_state_data& st, ping_algo_params params) noexcept
-        : sansio_algorithm(st), diag_(params.diag)
-    {
-    }
+    read_ping_response_algo(std::uint8_t seqnum) noexcept : seqnum_(seqnum) {}
 
-    next_action resume(error_code ec)
+    next_action resume(connection_state_data& st, diagnostics& diag, error_code ec)
     {
-        if (ec)
-            return ec;
-
-        BOOST_ASIO_CORO_REENTER(*this)
+        switch (resume_point_)
         {
-            // Clear diagnostics
-            diag_->clear();
+        case 0:
 
-            // Send the request
-            BOOST_ASIO_CORO_YIELD return write(ping_command(), seqnum_);
+            // Issue a read
+            BOOST_MYSQL_YIELD(resume_point_, 1, st.read(seqnum_))
+            if (ec)
+                return ec;
 
-            // Read the response
-            BOOST_ASIO_CORO_YIELD return read(seqnum_);
-
-            // Process the OK packet
-            return st_->deserialize_ok(*diag_);
+            // Process the OK packet and done
+            ec = st.deserialize_ok(diag);
         }
 
-        return next_action();
+        return ec;
     }
 };
+
+inline run_pipeline_algo_params setup_ping_pipeline(connection_state_data& st)
+{
+    // The ping request is fixed size and small. No buffer limit is enforced on it.
+    st.write_buffer.clear();
+    st.shared_pipeline_stages[0] = {
+        pipeline_stage_kind::ping,
+        serialize_top_level_checked(ping_command{}, st.write_buffer),
+        {}
+    };
+    return {
+        st.write_buffer,
+        {st.shared_pipeline_stages.data(), 1},
+        nullptr
+    };
+}
 
 }  // namespace detail
 }  // namespace mysql

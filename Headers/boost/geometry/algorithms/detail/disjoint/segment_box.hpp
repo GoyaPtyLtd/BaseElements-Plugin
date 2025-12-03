@@ -84,8 +84,7 @@ struct disjoint_segment_box_sphere_or_spheroid
                              DisjointPointBoxStrategy const& disjoint_point_box_strategy,
                              DisjointBoxBoxStrategy const& disjoint_box_box_strategy)
     {
-        typedef typename point_type<Segment>::type segment_point;
-        segment_point vertex;
+        point_type_t<Segment> vertex;
         return apply(segment, box, vertex,
                      azimuth_strategy,
                      normalize_strategy,
@@ -112,13 +111,13 @@ struct disjoint_segment_box_sphere_or_spheroid
     {
         assert_dimension_equal<Segment, Box>();
 
-        typedef typename point_type<Segment>::type segment_point_type;
+        using segment_point_type = point_type_t<Segment>;
 
         segment_point_type p0, p1;
         geometry::detail::assign_point_from_index<0>(segment, p0);
         geometry::detail::assign_point_from_index<1>(segment, p1);
 
-        //vertex not computed here
+        // Vertex is not computed here
         disjoint_info disjoint_return_value = disjoint_info::disjoint_no_vertex;
 
         // Simplest cases first
@@ -132,17 +131,17 @@ struct disjoint_segment_box_sphere_or_spheroid
 
         // Case 2: disjoint if bounding boxes are disjoint
 
-        typedef typename coordinate_type<segment_point_type>::type CT;
+        using coor_t = coordinate_type_t<segment_point_type>;
 
         segment_point_type p0_normalized;
         NormalizeStrategy::apply(p0, p0_normalized);
         segment_point_type p1_normalized;
         NormalizeStrategy::apply(p1, p1_normalized);
 
-        CT lon1 = geometry::get_as_radian<0>(p0_normalized);
-        CT lat1 = geometry::get_as_radian<1>(p0_normalized);
-        CT lon2 = geometry::get_as_radian<0>(p1_normalized);
-        CT lat2 = geometry::get_as_radian<1>(p1_normalized);
+        coor_t lon1 = geometry::get_as_radian<0>(p0_normalized);
+        coor_t lat1 = geometry::get_as_radian<1>(p0_normalized);
+        coor_t lon2 = geometry::get_as_radian<0>(p1_normalized);
+        coor_t lat2 = geometry::get_as_radian<1>(p1_normalized);
 
         if (lon1 > lon2)
         {
@@ -167,12 +166,12 @@ struct disjoint_segment_box_sphere_or_spheroid
 
         // Case 3: test intersection by comparing angles
 
-        CT alp1, a_b0, a_b1, a_b2, a_b3;
+        coor_t alp1, a_b0, a_b1, a_b2, a_b3;
 
-        CT b_lon_min = geometry::get_as_radian<geometry::min_corner, 0>(box);
-        CT b_lat_min = geometry::get_as_radian<geometry::min_corner, 1>(box);
-        CT b_lon_max = geometry::get_as_radian<geometry::max_corner, 0>(box);
-        CT b_lat_max = geometry::get_as_radian<geometry::max_corner, 1>(box);
+        coor_t b_lon_min = geometry::get_as_radian<geometry::min_corner, 0>(box);
+        coor_t b_lat_min = geometry::get_as_radian<geometry::min_corner, 1>(box);
+        coor_t b_lon_max = geometry::get_as_radian<geometry::max_corner, 0>(box);
+        coor_t b_lat_max = geometry::get_as_radian<geometry::max_corner, 1>(box);
 
         azimuth_strategy.apply(lon1, lat1, lon2, lat2, alp1);
         azimuth_strategy.apply(lon1, lat1, b_lon_min, b_lat_min, a_b0);
@@ -213,12 +212,12 @@ struct disjoint_segment_box_sphere_or_spheroid
         // points of the box are above (below) the segment in northern (southern)
         // hemisphere. Then we have to compute the vertex of the segment
 
-        CT vertex_lat;
+        coor_t vertex_lat;
 
         if ((lat1 < b_lat_min && vertex_north)
                 || (lat1 > b_lat_max && !vertex_north))
         {
-            CT b_lat_below; //latitude of box closest to equator
+            coor_t b_lat_below; //latitude of box closest to equator
 
             if (vertex_north)
             {
@@ -231,7 +230,7 @@ struct disjoint_segment_box_sphere_or_spheroid
 
             //optimization TODO: computing the spherical longitude should suffice for
             // the majority of cases
-            CT vertex_lon = geometry::formula::vertex_longitude<CT, CS_Tag>
+            coor_t vertex_lon = geometry::formula::vertex_longitude<coor_t, CS_Tag>
                                     ::apply(lon1, lat1,
                                             lon2, lat2,
                                             vertex_lat,

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2024 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,11 +13,10 @@
 
 #include <boost/mysql/detail/algo_params.hpp>
 #include <boost/mysql/detail/execution_processor/execution_processor.hpp>
+#include <boost/mysql/detail/next_action.hpp>
 
+#include <boost/mysql/impl/internal/coroutine.hpp>
 #include <boost/mysql/impl/internal/sansio/connection_state_data.hpp>
-#include <boost/mysql/impl/internal/sansio/sansio_algorithm.hpp>
-
-#include <boost/asio/coroutine.hpp>
 
 namespace boost {
 namespace mysql {
@@ -60,54 +59,94 @@ inline error_code process_field_definition(
     return proc.on_meta(coldef, diag);
 }
 
-class read_resultset_head_algo : public sansio_algorithm, asio::coroutine
+class read_resultset_head_algo
 {
-    read_resultset_head_algo_params params_;
+    execution_processor* proc_;
+    bool is_top_level_;
+
+    struct state_t
+    {
+        int resume_point{0};
+    } state_;
+
+    // Status changes are only performed if we're the top-level algorithm.
+    // After an error, multi-function operations are considered finished
+    void maybe_set_status_ready(connection_state_data& st) const
+    {
+        if (is_top_level_)
+            st.status = connection_status::ready;
+    }
 
 public:
-    read_resultset_head_algo(connection_state_data& st, read_resultset_head_algo_params params) noexcept
-        : sansio_algorithm(st), params_(params)
+    read_resultset_head_algo(read_resultset_head_algo_params params, bool is_top_level = true) noexcept
+        : proc_(params.proc), is_top_level_(is_top_level)
     {
     }
 
-    read_resultset_head_algo_params params() const noexcept { return params_; }
+    void reset() { state_ = state_t{}; }
 
-    next_action resume(error_code ec)
+    execution_processor& processor() { return *proc_; }
+
+    next_action resume(connection_state_data& st, diagnostics& diag, error_code ec)
     {
-        if (ec)
-            return ec;
-
-        BOOST_ASIO_CORO_REENTER(*this)
+        switch (state_.resume_point)
         {
-            // Clear diagnostics
-            params_.diag->clear();
+        case 0:
 
-            // If we're not reading head, return
-            if (!params_.proc->is_reading_head())
+            // If we're not reading head, return (for compatibility, we don't error here).
+            if (!proc_->is_reading_head())
                 return next_action();
 
-            // Read the response
-            BOOST_ASIO_CORO_YIELD return read(params_.proc->sequence_number());
-
-            // Response may be: ok_packet, err_packet, local infile request
-            // (not implemented), or response with fields
-            ec = process_execution_response(*st_, *params_.proc, st_->reader.message(), *params_.diag);
-            if (ec)
-                return ec;
-
-            // Read all of the field definitions
-            while (params_.proc->is_reading_meta())
+            // Check connection status. The check is only correct if we're the top-level algorithm
+            if (is_top_level_)
             {
-                // Read a message
-                BOOST_ASIO_CORO_YIELD return read(params_.proc->sequence_number());
-
-                // Process the metadata packet
-                ec = process_field_definition(*params_.proc, st_->reader.message(), *params_.diag);
+                ec = st.check_status_multi_function();
                 if (ec)
                     return ec;
             }
 
+            // Read the response
+            BOOST_MYSQL_YIELD(state_.resume_point, 1, st.read(proc_->sequence_number()))
+            if (ec)
+            {
+                maybe_set_status_ready(st);
+                return ec;
+            }
+
+            // Response may be: ok_packet, err_packet, local infile request
+            // (not implemented), or response with fields
+            ec = process_execution_response(st, *proc_, st.reader.message(), diag);
+            if (ec)
+            {
+                maybe_set_status_ready(st);
+                return ec;
+            }
+
+            // Read all of the field definitions
+            while (proc_->is_reading_meta())
+            {
+                // Read a message
+                BOOST_MYSQL_YIELD(state_.resume_point, 2, st.read(proc_->sequence_number()))
+                if (ec)
+                {
+                    maybe_set_status_ready(st);
+                    return ec;
+                }
+
+                // Process the metadata packet
+                ec = process_field_definition(*proc_, st.reader.message(), diag);
+                if (ec)
+                {
+                    maybe_set_status_ready(st);
+                    return ec;
+                }
+            }
+
             // No EOF packet is expected here, as we require deprecate EOF capabilities
+
+            // If the received the final OK packet, we're no longer running a multi-function op
+            if (proc_->is_complete() && is_top_level_)
+                st.status = connection_status::ready;
         }
 
         return next_action();

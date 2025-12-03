@@ -128,11 +128,7 @@ using system_error
     the library.
 
  */
-#ifdef BOOST_URL_DOCS
-error_category const& generic_category();
-#else
 using boost::system::generic_category;
-#endif
 
 /** A function to return the system error category used by the library
 
@@ -152,11 +148,7 @@ using boost::system::generic_category;
     the library.
 
  */
-#ifdef BOOST_URL_DOCS
-error_category const& system_category();
-#else
 using boost::system::system_category;
-#endif
 
 /** The set of constants used for cross-platform error codes
 
@@ -176,14 +168,7 @@ using boost::system::system_category;
     the library.
 
  */
-#ifdef BOOST_URL_DOCS
-enum errc
-{
-    __see_below__
-};
-#else
 namespace errc = boost::system::errc;
-#endif
 
 /** The type of result returned by library functions
 

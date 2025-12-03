@@ -48,8 +48,6 @@ namespace strategy { namespace centroid
 \ingroup strategies
 \details Calculates centroid using triangulation method published by
     Bashein / Detmer
-\tparam Point point type of centroid to calculate
-\tparam PointOfSegment point type of segments, defaults to Point
 \tparam CalculationType \tparam_calculation
 
 \author Adapted from  "Centroid of a Polygon" by
@@ -136,8 +134,8 @@ private :
                 std::is_void<CalculationType>::value,
                 typename select_most_precise
                     <
-                        typename coordinate_type<GeometryPoint>::type,
-                        typename coordinate_type<ResultPoint>::type,
+                        coordinate_type_t<GeometryPoint>,
+                        coordinate_type_t<ResultPoint>,
                         double
                     >::type,
                 CalculationType
@@ -213,10 +211,7 @@ public :
             calc_type const v3 = 3;
             calc_type const a3 = v3 * state.sum_a2;
 
-            typedef typename geometry::coordinate_type
-                <
-                    ResultPoint
-                >::type coordinate_type;
+            using coordinate_type = geometry::coordinate_type_t<ResultPoint>;
 
             // Prevent NaN centroid coordinates
             if (boost::math::isfinite(a3))
@@ -249,7 +244,7 @@ struct default_strategy<cartesian_tag, areal_tag, 2, Point, Geometry>
     typedef bashein_detmer
         <
             Point,
-            typename point_type<Geometry>::type
+            point_type_t<Geometry>
         > type;
 };
 

@@ -10,8 +10,10 @@
 #ifndef BOOST_BEAST_HTTP_SPAN_BODY_HPP
 #define BOOST_BEAST_HTTP_SPAN_BODY_HPP
 
-#include <boost/beast/core/detail/config.hpp>
+#include <boost/beast/http/span_body_fwd.hpp>
+
 #include <boost/beast/core/buffer_traits.hpp>
+#include <boost/beast/core/detail/config.hpp>
 #include <boost/beast/core/span.hpp>
 #include <boost/beast/http/error.hpp>
 #include <boost/beast/http/message.hpp>
@@ -37,7 +39,8 @@ struct span_body
 {
 private:
     static_assert(
-        std::is_trivial<T>::value &&
+        std::is_trivially_default_constructible<T>::value &&
+        std::is_trivially_copyable<T>::value &&
         std::is_standard_layout<T>::value,
             "POD requirements not met");
 

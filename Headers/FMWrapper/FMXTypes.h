@@ -83,6 +83,9 @@ extern "C++"
 				kType_DAN               = 19,   // Danish
 				kType_NLD               = 20,   // Dutch
 				kType_ENG               = 21,   // English
+#ifdef XUNIX
+				kType_ENG_INTL          = 77,   // English Intl
+#endif
 				kType_FIN               = 22,   // Finnish
 				kType_FIN_fmi           = 23,   // Finnish (FileMaker custom)
 				kType_FRA               = 24,   // French
