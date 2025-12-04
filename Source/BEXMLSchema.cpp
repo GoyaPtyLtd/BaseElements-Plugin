@@ -2,7 +2,7 @@
  BEXMLSchema.cpp
  BaseElements Plug-In
 
- Copyright (c) 2017-2024 Goya. All rights reserved.
+ Copyright (c) 2017-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -35,7 +35,7 @@
 thread_local std::string g_xsd_errors;
 
 
-static void XSDErrorFunction ( void *context ATTRIBUTE_UNUSED, const char *message, ... )
+static void XSDErrorFunction ( void * /* context */, const char *message, ... )
 {
 	va_list parameters;
 	va_start ( parameters, message );

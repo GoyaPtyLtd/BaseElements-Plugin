@@ -2,7 +2,7 @@
  BEXMLTextWriter.cpp
  BaseElements Plug-In
  
- Copyright 2012-2024 Goya. All rights reserved.
+ Copyright 2012-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -127,8 +127,8 @@ void BEXMLTextWriter::save ( )
 		output_file.exceptions ( ofstream::badbit | ofstream::failbit );
 
 		xmlTextWriterEndDocument ( writer );
-		
-		output_file.write ( (const char *) memory->content, memory->use );
+
+		output_file.write ( (const char *) xmlBufferContent ( memory ), xmlBufferLength ( memory ) );
 		output_file.close();
 		
 	} catch ( ofstream::failure& /* e */ ) {
