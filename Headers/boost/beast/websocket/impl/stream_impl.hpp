@@ -300,7 +300,7 @@ struct stream<NextLayer, deflateSupported>::impl_type
         if(initial_size == 0)
             return 1; // buffer is full
         return this->read_size_hint_pmd(
-            initial_size, rd_done, rd_remain, rd_fh);
+            initial_size, rd_done, rd_msg_max, rd_remain, rd_fh);
     }
 
     template<class DynamicBuffer>
@@ -825,8 +825,7 @@ parse_fh(
     {
     case 126:
     {
-
-        std::uint16_t len_be;
+        std::uint16_t len_be = {};
         BOOST_ASSERT(buffer_bytes(cb) >= sizeof(len_be));
         cb.consume(net::buffer_copy(
             net::mutable_buffer(&len_be, sizeof(len_be)), cb));
@@ -841,7 +840,7 @@ parse_fh(
     }
     case 127:
     {
-        std::uint64_t len_be;
+        std::uint64_t len_be = {};
         BOOST_ASSERT(buffer_bytes(cb) >= sizeof(len_be));
         cb.consume(net::buffer_copy(
             net::mutable_buffer(&len_be, sizeof(len_be)), cb));
@@ -857,7 +856,7 @@ parse_fh(
     }
     if(fh.mask)
     {
-        std::uint32_t key_le;
+        std::uint32_t key_le = {};
         BOOST_ASSERT(buffer_bytes(cb) >= sizeof(key_le));
         cb.consume(net::buffer_copy(
             net::mutable_buffer(&key_le, sizeof(key_le)), cb));
@@ -886,6 +885,9 @@ parse_fh(
                 return false;
             }
         }
+        // The final size of a deflated frame is unknown. In certain cases,
+        // post-inflation, it might shrink and become <= rd_msg_max.
+        // Therefore, we will verify the size during the inflation process.
         if(! this->rd_deflated())
         {
             if(rd_msg_max && beast::detail::sum_exceeds(

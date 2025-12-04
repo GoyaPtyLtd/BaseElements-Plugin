@@ -17,8 +17,21 @@
 
 namespace boost {
 namespace urls {
+namespace implementation_defined {
+struct query_rule_t
+{
+    using value_type = params_encoded_view;
 
-/** Rule for query
+    BOOST_URL_DECL
+    system::result<value_type>
+    parse(
+        char const*& it,
+        char const* end
+            ) const noexcept;
+};
+} // implementation_defined
+
+/** Rule for a query string
 
     @par Value Type
     @code
@@ -54,23 +67,7 @@ namespace urls {
         @ref grammar::parse,
         @ref params_encoded_view.
 */
-#ifdef BOOST_URL_DOCS
-constexpr __implementation_defined__ query_rule;
-#else
-struct query_rule_t
-{
-    using value_type = params_encoded_view;
-
-    BOOST_URL_DECL
-    system::result<value_type>
-    parse(
-        char const*& it,
-        char const* end
-            ) const noexcept;
-};
-
-constexpr query_rule_t query_rule{};
-#endif
+constexpr implementation_defined::query_rule_t query_rule{};
 
 } // urls
 } // boost

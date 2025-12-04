@@ -500,6 +500,7 @@ class list_impl
    //! <b>Throws</b>: Nothing.
    //!
    //! <b>Complexity</b>: Constant.
+   BOOST_INTRUSIVE_NO_DANGLING
    inline static list_impl &container_from_end_iterator(iterator end_iterator) BOOST_NOEXCEPT
    {  return list_impl::priv_container_from_end_iterator(end_iterator);   }
 
@@ -511,6 +512,7 @@ class list_impl
    //! <b>Throws</b>: Nothing.
    //!
    //! <b>Complexity</b>: Constant.
+   BOOST_INTRUSIVE_NO_DANGLING
    inline static const list_impl &container_from_end_iterator(const_iterator end_iterator) BOOST_NOEXCEPT
    {  return list_impl::priv_container_from_end_iterator(end_iterator);   }
 
@@ -1258,7 +1260,7 @@ class list_impl
       }
    }
 
-   //! <b>Requires</b>: value must be a reference to a value inserted in a list.
+   //! <b>Requires</b>: `value` must be a reference to a value inserted in an instance of this container type.
    //!
    //! <b>Effects</b>: This function returns a const_iterator pointing to the element
    //!
@@ -1295,7 +1297,7 @@ class list_impl
       return const_iterator(value_traits::to_node_ptr(r), const_value_traits_ptr());
    }
 
-   //! <b>Requires</b>: value must be a reference to a value inserted in a list.
+   //! <b>Requires</b>: `value` must be a reference to a value inserted in an instance of this container type.
    //!
    //! <b>Effects</b>: This function returns a const_iterator pointing to the element
    //!
@@ -1391,6 +1393,7 @@ class list_impl
    /// @cond
 
    private:
+   BOOST_INTRUSIVE_NO_DANGLING
    static list_impl &priv_container_from_end_iterator(const const_iterator &end_iterator) BOOST_NOEXCEPT
    {
       BOOST_INTRUSIVE_STATIC_ASSERT((has_container_from_iterator));
@@ -1501,9 +1504,11 @@ class list
    inline void clone_from(BOOST_RV_REF(list) src, Cloner cloner, Disposer disposer)
    {  Base::clone_from(BOOST_MOVE_BASE(Base, src), cloner, disposer);  }
 
+   BOOST_INTRUSIVE_NO_DANGLING
    inline static list &container_from_end_iterator(iterator end_iterator) BOOST_NOEXCEPT
    {  return static_cast<list &>(Base::container_from_end_iterator(end_iterator));   }
 
+   BOOST_INTRUSIVE_NO_DANGLING
    inline static const list &container_from_end_iterator(const_iterator end_iterator) BOOST_NOEXCEPT
    {  return static_cast<const list &>(Base::container_from_end_iterator(end_iterator));   }
 };

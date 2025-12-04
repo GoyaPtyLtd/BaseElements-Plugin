@@ -16,6 +16,45 @@
 namespace boost {
 namespace urls {
 namespace grammar {
+namespace implementation_defined {
+struct hexdig_chars_t
+{
+    /** Determine if a character is a hexadecimal digit
+
+        @param c The character to test
+        @return `true` if `c` is a hexadecimal digit.
+    */
+    constexpr
+    bool
+    operator()(char c) const noexcept
+    {
+        return
+            (c >= '0' && c <= '9') ||
+            (c >= 'A' && c <= 'F') ||
+            (c >= 'a' && c <= 'f');
+    }
+
+#ifdef BOOST_URL_USE_SSE2
+    char const*
+    find_if(
+        char const* first,
+        char const* last) const noexcept
+    {
+        return detail::find_if_pred(
+            *this, first, last);
+    }
+
+    char const*
+    find_if_not(
+        char const* first,
+        char const* last) const noexcept
+    {
+        return detail::find_if_not_pred(
+            *this, first, last);
+    }
+#endif
+};
+}
 
 /** The set of hexadecimal digits
 
@@ -55,52 +94,7 @@ namespace grammar {
         @ref parse,
         @ref token_rule.
 */
-#ifdef BOOST_URL_DOCS
-constexpr __implementation_defined__ hexdig_chars;
-#else
-struct hexdig_chars_t
-{
-    /** Return true if c is in the character set.
-    */
-    constexpr
-    bool
-    operator()(char c) const noexcept
-    {
-        return
-            (c >= '0' && c <= '9') ||
-            (c >= 'A' && c <= 'F') ||
-            (c >= 'a' && c <= 'f');
-    }
-
-#ifdef BOOST_URL_USE_SSE2
-    char const*
-    find_if(
-        char const* first,
-        char const* last) const noexcept
-    {
-        return detail::find_if_pred(
-            *this, first, last);
-    }
-
-    char const*
-    find_if_not(
-        char const* first,
-        char const* last) const noexcept
-    {
-        return detail::find_if_not_pred(
-            *this, first, last);
-    }
-#endif
-};
-
-constexpr hexdig_chars_t hexdig_chars{};
-#endif
-
-// VFALCO We can declare
-// these later if needed
-//
-//struct hexdig_upper_chars;
-//struct hexdig_lower_chars;
+constexpr implementation_defined::hexdig_chars_t hexdig_chars{};
 
 /** Return the decimal value of a hex character
 
@@ -124,7 +118,7 @@ inline
 signed char
 hexdig_value(char ch) noexcept
 {
-    // Idea for switch statement to
+    // Idea for a switch statement to
     // minimize emitted assembly from
     // Glen Fernandes
     signed char res;

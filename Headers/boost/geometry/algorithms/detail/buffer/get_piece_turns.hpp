@@ -3,8 +3,9 @@
 // Copyright (c) 2012-2014 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2017 Adam Wulkiewicz, Lodz, Poland.
 
-// This file was modified by Oracle on 2017-2020.
-// Modifications copyright (c) 2017-2020 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2017-2024.
+// Modifications copyright (c) 2017-2024 Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -42,8 +43,8 @@ namespace detail { namespace buffer
 template <typename Ring>
 struct unique_sub_range_from_piece
 {
-    typedef typename boost::range_iterator<Ring const>::type iterator_type;
-    typedef typename geometry::point_type<Ring const>::type point_type;
+    using iterator_type = typename boost::range_iterator<Ring const>::type;
+    using point_type = geometry::point_type_t<Ring const>;
 
     unique_sub_range_from_piece(Ring const& ring,
                                 iterator_type iterator_at_i, iterator_type iterator_at_j)
@@ -117,8 +118,7 @@ template
     typename Pieces,
     typename Rings,
     typename Turns,
-    typename Strategy,
-    typename RobustPolicy
+    typename Strategy
 >
 class piece_turn_visitor
 {
@@ -126,7 +126,6 @@ class piece_turn_visitor
     Rings const& m_rings;
     Turns& m_turns;
     Strategy const& m_strategy;
-    RobustPolicy const& m_robust_policy;
 
     template <typename Piece>
     inline bool is_adjacent(Piece const& piece1, Piece const& piece2) const
@@ -161,8 +160,7 @@ class piece_turn_visitor
                 && it_begin + 1 != it_beyond
                 && detail::section::preceding<Dimension>(dir, *(it_begin + 1),
                                                          this_bounding_box,
-                                                         other_bounding_box,
-                                                         m_robust_policy);
+                                                         other_bounding_box);
             ++it_begin, index++)
         {}
     }
@@ -177,7 +175,7 @@ class piece_turn_visitor
             && it_beyond - 2 != it_begin)
         {
             if (detail::section::exceeding<Dimension>(dir, *(it_beyond - 2),
-                        this_bounding_box, other_bounding_box, m_robust_policy))
+                        this_bounding_box, other_bounding_box))
             {
                 --it_beyond;
             }
@@ -192,8 +190,8 @@ class piece_turn_visitor
     inline void calculate_turns(Piece const& piece1, Piece const& piece2,
         Section const& section1, Section const& section2)
     {
-        typedef typename boost::range_value<Rings const>::type ring_type;
-        typedef typename boost::range_value<Turns const>::type turn_type;
+        using ring_type = typename boost::range_value<Rings const>::type;
+        using turn_type = typename boost::range_value<Turns const>::type;
 
         signed_size_type const piece1_first_index = piece1.first_seg_id.segment_index;
         signed_size_type const piece2_first_index = piece2.first_seg_id.segment_index;
@@ -263,15 +261,14 @@ class piece_turn_visitor
             {
                 unique_sub_range_from_piece<ring_type> unique_sub_range2(ring2, prev2, it2);
 
-                typedef detail::overlay::get_turn_info
+                using turn_policy = detail::overlay::get_turn_info
                     <
                         detail::overlay::assign_policy_only_start_turns
-                    > turn_policy;
+                    >;
 
                 turn_policy::apply(unique_sub_range1, unique_sub_range2,
                                    the_model,
                                    m_strategy,
-                                   m_robust_policy,
                                    std::back_inserter(m_turns));
             }
         }
@@ -282,13 +279,11 @@ public:
     piece_turn_visitor(Pieces const& pieces,
             Rings const& ring_collection,
             Turns& turns,
-            Strategy const& strategy,
-            RobustPolicy const& robust_policy)
+            Strategy const& strategy)
         : m_pieces(pieces)
         , m_rings(ring_collection)
         , m_turns(turns)
         , m_strategy(strategy)
-        , m_robust_policy(robust_policy)
     {}
 
     template <typename Section>
@@ -297,9 +292,8 @@ public:
     {
         boost::ignore_unused(first);
 
-        typedef typename boost::range_value<Pieces const>::type piece_type;
-        piece_type const& piece1 = m_pieces[section1.ring_id.source_index];
-        piece_type const& piece2 = m_pieces[section2.ring_id.source_index];
+        auto const& piece1 = m_pieces[section1.ring_id.source_index];
+        auto const& piece2 = m_pieces[section2.ring_id.source_index];
 
         if ( piece1.index == piece2.index
           || is_adjacent(piece1, piece2)

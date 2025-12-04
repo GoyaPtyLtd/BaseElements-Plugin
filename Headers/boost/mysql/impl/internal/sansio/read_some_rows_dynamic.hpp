@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2024 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,7 +8,6 @@
 #ifndef BOOST_MYSQL_IMPL_INTERNAL_SANSIO_READ_SOME_ROWS_DYNAMIC_HPP
 #define BOOST_MYSQL_IMPL_INTERNAL_SANSIO_READ_SOME_ROWS_DYNAMIC_HPP
 
-#include <boost/mysql/diagnostics.hpp>
 #include <boost/mysql/error_code.hpp>
 #include <boost/mysql/rows_view.hpp>
 
@@ -29,16 +28,17 @@ namespace detail {
 class read_some_rows_dynamic_algo : public read_some_rows_algo
 {
 public:
-    read_some_rows_dynamic_algo(connection_state_data& st, read_some_rows_dynamic_algo_params params) noexcept
-        : read_some_rows_algo(st, read_some_rows_algo_params{params.diag, params.exec_st, output_ref()})
+    // This algorithm is always top-level
+    read_some_rows_dynamic_algo(read_some_rows_dynamic_algo_params params) noexcept
+        : read_some_rows_algo(read_some_rows_algo_params{params.exec_st, output_ref()})
     {
     }
 
-    rows_view result() const noexcept
+    rows_view result(const connection_state_data& st) const
     {
-        std::size_t num_rows = read_some_rows_algo::result();
-        std::size_t num_cols = static_cast<const execution_state_impl&>(*params().proc).meta().size();
-        return access::construct<rows_view>(st_->shared_fields.data(), num_rows * num_cols, num_cols);
+        std::size_t num_rows = read_some_rows_algo::result(st);
+        std::size_t num_cols = static_cast<const execution_state_impl&>(processor()).meta().size();
+        return access::construct<rows_view>(st.shared_fields.data(), num_rows * num_cols, num_cols);
     }
 };
 

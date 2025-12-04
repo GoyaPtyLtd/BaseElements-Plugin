@@ -14,6 +14,7 @@
 #include <boost/math/policies/error_handling.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <boost/math/special_functions/next.hpp>
+#include <boost/math/tools/precision.hpp>
 
 namespace boost{ namespace math{ namespace detail{
 
@@ -28,9 +29,7 @@ T ulp_imp(const T& val, const std::true_type&, const Policy& pol)
 
    if(fpclass == FP_NAN)
    {
-      return policies::raise_domain_error<T>(
-         function,
-         "Argument must be finite, but got %1%", val, pol);
+      return policies::raise_domain_error<T>(function, "Argument must be finite, but got %1%", val, pol);
    }
    else if((fpclass == (int)FP_INFINITE) || (fabs(val) >= tools::max_value<T>()))
    {
@@ -62,9 +61,7 @@ T ulp_imp(const T& val, const std::false_type&, const Policy& pol)
 
    if(fpclass == FP_NAN)
    {
-      return policies::raise_domain_error<T>(
-         function,
-         "Argument must be finite, but got %1%", val, pol);
+      return policies::raise_domain_error<T>(function,"Argument must be finite, but got %1%", val, pol);
    }
    else if((fpclass == FP_INFINITE) || (fabs(val) >= tools::max_value<T>()))
    {
@@ -80,7 +77,7 @@ T ulp_imp(const T& val, const std::false_type&, const Policy& pol)
    T diff = scalbn(T(1), expon - std::numeric_limits<T>::digits);
    if(diff == 0)
       diff = detail::get_smallest_value<T>();
-   return diff;
+   return diff;  // LCOV_EXCL_LINE previous lines are covered so this one must be too.
 }
 
 }

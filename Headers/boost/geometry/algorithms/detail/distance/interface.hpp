@@ -187,8 +187,8 @@ namespace resolve_dynamic
 template
 <
     typename Geometry1, typename Geometry2,
-    typename Tag1 = typename geometry::tag<Geometry1>::type,
-    typename Tag2 = typename geometry::tag<Geometry2>::type
+    typename Tag1 = geometry::tag_t<Geometry1>,
+    typename Tag2 = geometry::tag_t<Geometry2>
 >
 struct distance
 {
@@ -297,7 +297,7 @@ struct distance<DynamicGeometry1, DynamicGeometry2, dynamic_geometry_tag, dynami
 \* [link geometry.reference.strategies.strategy_distance_haversine Haversine (spherical)]
 \* [link geometry.reference.strategies.strategy_distance_cross_track Cross track (spherical\, point-to-segment)]
 \* [link geometry.reference.strategies.strategy_distance_projected_point Projected point (cartesian\, point-to-segment)]
-\* more (currently extensions): Vincenty\, Andoyer (geographic)
+\* One of the geographic point to point strategies
 }
  */
 

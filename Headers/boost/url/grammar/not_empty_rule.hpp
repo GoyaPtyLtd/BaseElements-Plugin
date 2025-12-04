@@ -18,6 +18,31 @@ namespace boost {
 namespace urls {
 namespace grammar {
 
+namespace implementation_defined {
+template<class R>
+struct not_empty_rule_t
+{
+    using value_type =
+        typename R::value_type;
+
+    auto
+    parse(
+        char const*& it,
+        char const* end) const ->
+            system::result<value_type>;
+
+    constexpr
+    not_empty_rule_t(
+        R const& r) noexcept
+        : r_(r)
+    {
+    }
+
+private:
+    R r_;
+};
+} // implementation_defined
+
 /** Match another rule, if the result is not empty
 
     This adapts another rule such that
@@ -37,67 +62,30 @@ namespace grammar {
     @endcode
 
     @param r The rule to match
+    @return The adapted rule
 
     @see
         @ref parse,
         @ref pct_encoded_rule,
         @ref unreserved_chars.
 */
-#ifdef BOOST_URL_DOCS
-template<class Rule>
-constexpr
-__implementation_defined__
-not_empty_rule( Rule r );
-#else
-template<class R>
-struct not_empty_rule_t
-{
-    using value_type =
-        typename R::value_type;
-
-    auto
-    parse(
-        char const*& it,
-        char const* end) const ->
-            system::result<value_type>;
-
-    template<class R_>
-    friend
-    constexpr
-    auto
-    not_empty_rule(
-        R_ const& r) ->
-            not_empty_rule_t<R_>;
-
-private:
-    constexpr
-    not_empty_rule_t(
-        R const& r) noexcept
-        : r_(r)
-    {
-    }
-
-    R r_;
-};
-
-template<class Rule>
+template<BOOST_URL_CONSTRAINT(Rule) R>
 auto
 constexpr
 not_empty_rule(
-    Rule const& r) ->
-        not_empty_rule_t<Rule>
+    R const& r) ->
+        implementation_defined::not_empty_rule_t<R>
 {
     // If you get a compile error here it
     // means that your rule does not meet
     // the type requirements. Please check
     // the documentation.
     static_assert(
-        is_rule<Rule>::value,
+        is_rule<R>::value,
         "Rule requirements not met");
 
     return { r };
 }
-#endif
 
 } // grammar
 } // urls

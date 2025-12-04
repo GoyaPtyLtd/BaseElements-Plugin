@@ -22,6 +22,10 @@
 namespace boost {
 namespace urls {
 
+namespace implementation_defined {
+    struct query_rule_t;
+}
+
 /** A view representing query parameters in a URL
 
     Objects of this type are used to interpret
@@ -57,7 +61,7 @@ class BOOST_URL_DECL params_encoded_view
     friend class url_view_base;
     friend class params_view;
     friend class params_encoded_ref;
-    friend struct query_rule_t;
+    friend struct implementation_defined::query_rule_t;
 
     params_encoded_view(
         detail::query_ref const& ref) noexcept;
@@ -106,6 +110,8 @@ public:
 
         @par Exception Safety
         Throws nothing
+
+        @param other The object to copy
     */
     params_encoded_view(
         params_encoded_view const& other) = default;
@@ -186,10 +192,13 @@ public:
 
         @par Exception Safety
         Throws nothing
+
+        @param other The object to assign
+        @return `*this`
     */
     params_encoded_view&
     operator=(
-        params_encoded_view const&) = default;
+        params_encoded_view const& other) = default;
 
     /** Conversion
 
@@ -219,6 +228,8 @@ public:
 
         @par Exception Safety
         Throws nothing
+
+        @return A new view with percent escapes decoded.
     */
     operator
     params_view() const noexcept;

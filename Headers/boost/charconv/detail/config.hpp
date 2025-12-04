@@ -27,11 +27,6 @@
 #  define BOOST_CHARCONV_UINT128_MAX (2 * static_cast<boost::uint128_type>(BOOST_CHARCONV_INT128_MAX) + 1)
 #endif
 
-#if defined(BOOST_HAS_FLOAT128) && !defined(__STRICT_ANSI__) && !defined(BOOST_CHARCONV_NO_QUADMATH)
-#  define BOOST_CHARCONV_HAS_FLOAT128
-#  include <quadmath.h>
-#endif
-
 #ifndef BOOST_NO_CXX14_CONSTEXPR
 #  define BOOST_CHARCONV_CXX14_CONSTEXPR BOOST_CXX14_CONSTEXPR
 #  define BOOST_CHARCONV_CXX14_CONSTEXPR_NO_INLINE BOOST_CXX14_CONSTEXPR
@@ -78,14 +73,6 @@
 #  else
 #    define BOOST_CHARCONV_HAS_MSVC_32BIT_INTRINSICS
 #  endif
-#elif (defined(__x86_64__) || defined(__i386__))
-#  include <x86intrin.h>
-#  define BOOST_CHARCONV_HAS_X86_INTRINSICS
-#elif defined(__ARM_NEON__)
-#  include <arm_neon.h>
-#  define BOOST_CHARCONV_HAS_ARM_INTRINSICS
-#else
-#  define BOOST_CHARCONV_HAS_NO_INTRINSICS
 #endif
 
 static_assert((BOOST_CHARCONV_ENDIAN_BIG_BYTE || BOOST_CHARCONV_ENDIAN_LITTLE_BYTE) &&
@@ -200,5 +187,19 @@ static_assert((BOOST_CHARCONV_ENDIAN_BIG_BYTE || BOOST_CHARCONV_ENDIAN_LITTLE_BY
 #ifdef __STDCPP_BFLOAT16_T__
 #  define BOOST_CHARCONV_HAS_BRAINFLOAT16
 #endif
+
+// Check for PPC64LE with IEEE long double (which is an alias to __float128)
+// See: https://github.com/boostorg/boost/issues/1035
+//
+// IBM128 has 106 Mantissa Digits whereas IEEE128 has 113
+// https://developers.redhat.com/articles/2023/05/16/benefits-fedora-38-long-double-transition-ppc64le#
+#if (defined(__ppc64__) || defined(__PPC64__) || defined(__ppc64le__) || defined(__PPC64LE__)) && (defined(__LONG_DOUBLE_IEEE128__) || LDBL_MANT_DIG == 113)
+
+#define BOOST_CHARCONV_LDBL_IS_FLOAT128
+#define BOOST_CHARCONV_UNSUPPORTED_LONG_DOUBLE
+static_assert(std::is_same<long double, __float128>::value, "__float128 should be an alias to long double. Please open an issue at: https://github.com/boostorg/charconv");
+
+#endif
+
 
 #endif // BOOST_CHARCONV_DETAIL_CONFIG_HPP

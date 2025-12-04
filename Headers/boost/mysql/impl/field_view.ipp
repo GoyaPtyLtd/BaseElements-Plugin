@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2024 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -81,7 +81,7 @@ std::ostream& boost::mysql::operator<<(std::ostream& os, const field_view& value
     case field_kind::date: return os << value.get_date();
     case field_kind::datetime: return os << value.get_datetime();
     case field_kind::time: return detail::print_time(os, value.get_time());
-    default: BOOST_ASSERT(false); return os;
+    default: BOOST_ASSERT(false); return os;  // LCOV_EXCL_LINE
     }
 }
 

@@ -13,9 +13,9 @@
 #ifndef BOOST_RANDOM_BETA_DISTRIBUTION_HPP
 #define BOOST_RANDOM_BETA_DISTRIBUTION_HPP
 
-#include <cassert>
 #include <istream>
 #include <iosfwd>
+#include <boost/assert.hpp>
 #include <boost/random/detail/operators.hpp>
 #include <boost/random/gamma_distribution.hpp>
 
@@ -48,8 +48,8 @@ public:
                             RealType beta_arg = RealType(1.0))
           : _alpha(alpha_arg), _beta(beta_arg)
         {
-            assert(alpha_arg > 0);
-            assert(beta_arg > 0);
+            BOOST_ASSERT(alpha_arg > 0);
+            BOOST_ASSERT(beta_arg > 0);
         }
 
         /** Returns the "alpha" parameter of the distribtuion. */
@@ -86,8 +86,8 @@ public:
                                RealType beta_arg = RealType(1.0))
       : _alpha(alpha_arg), _beta(beta_arg)
     {
-        assert(alpha_arg > 0);
-        assert(beta_arg > 0);
+        BOOST_ASSERT(alpha_arg > 0);
+        BOOST_ASSERT(beta_arg > 0);
     }
     /** Constructs an @c beta_distribution from its parameters. */
     explicit beta_distribution(const param_type& parm)
@@ -101,8 +101,18 @@ public:
     template<class URNG>
     RealType operator()(URNG& urng) const
     {
-        RealType a = gamma_distribution<RealType>(_alpha, RealType(1.0))(urng);
-        RealType b = gamma_distribution<RealType>(_beta, RealType(1.0))(urng);
+        const auto alpha_dist = gamma_distribution<RealType>(_alpha, RealType(1.0));
+        const auto beta_dist = gamma_distribution<RealType>(_beta, RealType(1.0));
+
+        RealType a = 0;
+        RealType b = 0;
+
+        do
+        {
+            a = alpha_dist(urng);
+            b = beta_dist(urng);
+        } while (a + b == RealType(0));
+
         return a / (a + b);
     }
 

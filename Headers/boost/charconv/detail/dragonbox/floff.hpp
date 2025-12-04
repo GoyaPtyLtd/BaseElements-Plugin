@@ -1333,6 +1333,7 @@ BOOST_CHARCONV_SAFEBUFFERS to_chars_result floff(const double x, int precision, 
 
     auto buffer_size = static_cast<std::size_t>(last - first);
     auto buffer = first;
+    bool trailing_zeros_removed = false;
 
     BOOST_CHARCONV_ASSERT(precision >= 0);
     using namespace detail;
@@ -1763,10 +1764,22 @@ BOOST_CHARCONV_SAFEBUFFERS to_chars_result floff(const double x, int precision, 
 
             const auto initial_digits = static_cast<std::uint32_t>(prod >> 32);
 
-            buffer -= (initial_digits < 10 ? 1 : 0);
+            buffer -= (initial_digits < 10 && buffer != first ? 1 : 0);
             remaining_digits -= (2 - (initial_digits < 10 ? 1 : 0));
-            print_2_digits(initial_digits, buffer);
-            buffer += 2;
+
+            // Avoid the situation where we have a leading 0 that we don't need
+            // Typically used to account for inserting a decimal, but we know
+            // we won't need that in the 0 precision case
+            if (precision == 0 && initial_digits < 10)
+            {
+                print_1_digit(initial_digits, buffer);
+                ++buffer;
+            }
+            else
+            {
+                print_2_digits(initial_digits, buffer);
+                buffer += 2;
+            }
 
             if (remaining_digits > remaining_digits_in_the_current_subsegment) 
             {
@@ -2411,7 +2424,7 @@ BOOST_CHARCONV_SAFEBUFFERS to_chars_result floff(const double x, int precision, 
                                         uint_with_known_number_of_digits<2>{next_digits}, [&] {
                                             return static_cast<std::uint32_t>(prod) >=
                                                         (additional_static_data_holder::
-                                                            fractional_part_rounding_thresholds32[digits_in_the_second_segment - 1] & 0x7fffffff)
+                                                            fractional_part_rounding_thresholds32[digits_in_the_second_segment - 3] & UINT32_C(0x7fffffff))
                                                     || has_further_digits<1, 0, ExtendedCache>(significand, exp2_base, k, uconst1, uconst0);
                                         })) 
                                 {
@@ -3795,7 +3808,7 @@ BOOST_CHARCONV_SAFEBUFFERS to_chars_result floff(const double x, int precision, 
 
 fill_remaining_digits_with_0s:
     // This is probably not needed for the general format, but currently I am not 100% sure.
-    // (When fixed format is eventually choosed, we do not remove trailing zeros in the integer part.
+    // (When fixed format is eventually chosen, we do not remove trailing zeros in the integer part.
     // I am not sure if those trailing zeros are guaranteed to be already printed or not.)
     std::memset(buffer, '0', static_cast<std::size_t>(remaining_digits));
     buffer += remaining_digits;
@@ -3837,6 +3850,7 @@ insert_decimal_dot:
         }
 
         // Remove trailing zeros.
+        trailing_zeros_removed = true;
         while (true)
         {
             auto prev = buffer - 1;
@@ -3891,7 +3905,16 @@ insert_decimal_dot:
             print_2_digits(static_cast<std::uint32_t>(decimal_exponent_normalized), buffer);
             buffer += 2;
         }
-    }    
+    }
+    else if (!trailing_zeros_removed && buffer - (decimal_dot_pos + 1) < precision)
+    {
+        // If we have fixed precision, and we don't have enough digits after the decimal yet
+        // insert a sufficient amount of zeros
+        const auto remaining_zeros = precision - (buffer - (decimal_dot_pos + 1));
+        BOOST_CHARCONV_ASSERT(remaining_zeros > 0);
+        std::memset(buffer, '0', static_cast<std::size_t>(remaining_zeros));
+        buffer += remaining_zeros;
+    }
 
     return {buffer, std::errc()};
 
@@ -4006,9 +4029,10 @@ round_up_all_9s:
                 ++decimal_dot_pos;
             }
         }
-        else if (decimal_exponent_normalized == 0)
+        else if (decimal_exponent_normalized == 0 || remaining_digits == 1)
         {
             // For the case 0.99...9 -> 1.00...0, the rounded digit is one before the first digit written.
+            // This same case applies for 0.099 -> 0.10 in the precision = 2 instance
             // Note: decimal_exponent_normalized was negative before the increment (++decimal_exponent_normalized),
             //       so we already have printed "00" onto the buffer.
             //       Hence, --digit_starting_pos doesn't go more than the starting position of the buffer.

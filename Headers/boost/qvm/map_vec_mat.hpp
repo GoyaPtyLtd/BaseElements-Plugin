@@ -1,8 +1,7 @@
 #ifndef BOOST_QVM_MAP_VEC_MAT_HPP_INCLUDED
 #define BOOST_QVM_MAP_VEC_MAT_HPP_INCLUDED
 
-// Copyright 2008-2022 Emil Dotchevski and Reverge Studios, Inc.
-
+// Copyright 2008-2024 Emil Dotchevski and Reverge Studios, Inc.
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -79,7 +78,7 @@ qvm_detail
         scalar_type &
         write_element_idx( int row, int col, this_matrix & x )
             {
-            BOOST_QVM_ASSERT(col==0);
+            BOOST_QVM_ASSERT(col==0); (void)col;
             BOOST_QVM_ASSERT(row>=0);
             BOOST_QVM_ASSERT(row<rows);
             return vec_traits<OriginalVector>::write_element_idx(row,reinterpret_cast<OriginalVector &>(x));
@@ -112,7 +111,7 @@ qvm_detail
         void
         write_element_idx( int row, int col, this_matrix & x, scalar_type s )
             {
-            BOOST_QVM_ASSERT(col==0);
+            BOOST_QVM_ASSERT(col==0); (void)col;
             BOOST_QVM_ASSERT(row>=0);
             BOOST_QVM_ASSERT(row<rows);
             vec_traits<OriginalVector>::write_element_idx(row,reinterpret_cast<OriginalVector &>(x), s);
@@ -147,7 +146,7 @@ mat_traits< qvm_detail::col_mat_<OriginalVector> >:
     scalar_type
     read_element_idx( int row, int col, this_matrix const & x )
         {
-        BOOST_QVM_ASSERT(col==0);
+        BOOST_QVM_ASSERT(col==0); (void)col;
         BOOST_QVM_ASSERT(row>=0);
         BOOST_QVM_ASSERT(row<rows);
         return vec_traits<OriginalVector>::read_element_idx(row,reinterpret_cast<OriginalVector const &>(x));
@@ -255,7 +254,7 @@ qvm_detail
         scalar_type &
         write_element_idx( int row, int col, this_matrix & x )
             {
-            BOOST_QVM_ASSERT(row==0);
+            BOOST_QVM_ASSERT(row==0); (void)row;
             BOOST_QVM_ASSERT(col>=0);
             BOOST_QVM_ASSERT(col<cols);
             return vec_traits<OriginalVector>::write_element_idx(col,reinterpret_cast<OriginalVector &>(x));
@@ -288,7 +287,7 @@ qvm_detail
         void
         write_element_idx( int row, int col, this_matrix & x, scalar_type s )
             {
-            BOOST_QVM_ASSERT(row==0);
+            BOOST_QVM_ASSERT(row==0); (void)row;
             BOOST_QVM_ASSERT(col>=0);
             BOOST_QVM_ASSERT(col<cols);
             vec_traits<OriginalVector>::write_element_idx(col,reinterpret_cast<OriginalVector &>(x), s);
@@ -323,7 +322,7 @@ mat_traits< qvm_detail::row_mat_<OriginalVector> >:
     scalar_type
     read_element_idx( int row, int col, this_matrix const & x )
         {
-        BOOST_QVM_ASSERT(row==0);
+        BOOST_QVM_ASSERT(row==0); (void)row;
         BOOST_QVM_ASSERT(col>=0);
         BOOST_QVM_ASSERT(col<cols);
         return vec_traits<OriginalVector>::read_element_idx(col,reinterpret_cast<OriginalVector const &>(x));
@@ -492,7 +491,7 @@ qvm_detail
             {
             BOOST_QVM_ASSERT(row>=0);
             BOOST_QVM_ASSERT(row<rows-1);
-            BOOST_QVM_ASSERT(col==cols-1);
+            BOOST_QVM_ASSERT(col==cols-1); (void)col;
             return vec_traits<OriginalVector>::write_element_idx(row,reinterpret_cast<OriginalVector &>(x));
             }
         };
@@ -529,7 +528,7 @@ qvm_detail
             {
             BOOST_QVM_ASSERT(row>=0);
             BOOST_QVM_ASSERT(row<rows);
-            BOOST_QVM_ASSERT(col==cols-1);
+            BOOST_QVM_ASSERT(col==cols-1); (void)col;
             BOOST_QVM_ASSERT(col!=row);
             vec_traits<OriginalVector>::write_element_idx(row,reinterpret_cast<OriginalVector &>(x), s);
             }
@@ -680,7 +679,7 @@ qvm_detail
             {
             BOOST_QVM_ASSERT(row>=0);
             BOOST_QVM_ASSERT(row<rows);
-            BOOST_QVM_ASSERT(row==col);
+            BOOST_QVM_ASSERT(row==col); (void)col;
             return vec_traits<OriginalVector>::write_element_idx(row,reinterpret_cast<OriginalVector &>(x));
             }
         };
@@ -713,7 +712,7 @@ qvm_detail
             {
             BOOST_QVM_ASSERT(row>=0);
             BOOST_QVM_ASSERT(row<rows);
-            BOOST_QVM_ASSERT(row==col);
+            BOOST_QVM_ASSERT(row==col); (void)col;
             vec_traits<OriginalVector>::write_element_idx(row,reinterpret_cast<OriginalVector &>(x), s);
             }
         };

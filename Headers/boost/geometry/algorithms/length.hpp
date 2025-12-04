@@ -64,8 +64,7 @@ struct segment_length
     static inline typename default_length_result<Segment>::type
     apply(Segment const& segment, Strategies const& strategies)
     {
-        typedef typename point_type<Segment>::type point_type;
-        point_type p1, p2;
+        point_type_t<Segment> p1, p2;
         geometry::detail::assign_point_from_index<0>(segment, p1);
         geometry::detail::assign_point_from_index<1>(segment, p2);
         return strategies.distance(p1, p2).apply(p1, p2);
@@ -117,7 +116,7 @@ namespace dispatch
 {
 
 
-template <typename Geometry, typename Tag = typename tag<Geometry>::type>
+template <typename Geometry, typename Tag = tag_t<Geometry>>
 struct length : detail::calculate_null
 {
     typedef typename default_length_result<Geometry>::type return_type;
@@ -221,7 +220,7 @@ struct length<default_strategy, false>
 
 namespace resolve_dynamic {
 
-template <typename Geometry, typename Tag = typename geometry::tag<Geometry>::type>
+template <typename Geometry, typename Tag = geometry::tag_t<Geometry>>
 struct length
 {
     template <typename Strategy>

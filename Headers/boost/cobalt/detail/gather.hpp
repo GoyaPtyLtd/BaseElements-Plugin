@@ -40,6 +40,7 @@ struct gather_variadic_impl
 {
   using tuple_type = std::tuple<decltype(get_awaitable_type(std::declval<Args&&>()))...>;
 
+  BOOST_COBALT_MSVC_NOINLINE
   gather_variadic_impl(Args && ... args)
       : args{std::forward<Args>(args)...}
   {
@@ -93,7 +94,7 @@ struct gather_variadic_impl
     // GCC doesn't like member funs
     template<std::size_t Idx>
     static detail::fork await_impl(awaitable & this_)
-    try
+    BOOST_TRY
     {
       auto & aw = std::get<Idx>(this_.aws);
       // check manually if we're ready
@@ -124,10 +125,11 @@ struct gather_variadic_impl
           std::get<Idx>(this_.result).template emplace<1u>(aw.await_resume());
       }
     }
-    catch(...)
+    BOOST_CATCH(...)
     {
       std::get<Idx>(this_.result).template emplace<2u>(std::current_exception());
     }
+    BOOST_CATCH_END
 
     std::array<detail::fork(*)(awaitable&), tuple_size> impls {
       []<std::size_t ... Idx>(std::index_sequence<Idx...>)
@@ -162,7 +164,7 @@ struct gather_variadic_impl
 #if defined(BOOST_ASIO_ENABLE_HANDLER_TRACKING)
       this->loc = loc;
 #endif
-      this->exec = &cobalt::detail::get_executor(h);
+      this->exec = cobalt::detail::get_executor(h);
       last_forked.release().resume();
       while (last_index < tuple_size)
         impls[last_index++](*this).release();
@@ -187,9 +189,7 @@ struct gather_variadic_impl
     template<typename T>
     using result_part = system::result<co_await_result_t<T>, std::exception_ptr>;
 
-#if _MSC_VER
-    BOOST_NOINLINE
-#endif
+    BOOST_COBALT_MSVC_NOINLINE
     std::tuple<result_part<Args> ...> await_resume()
     {
       return mp11::tuple_transform(
@@ -256,6 +256,7 @@ struct gather_ranged_impl
 #endif
 
 
+
     awaitable(Range & aws_, std::false_type /* needs operator co_await */)
       : fork::shared_state((512 + sizeof(co_awaitable_type<type>)) * std::size(aws_))
       , aws{alloc}
@@ -301,7 +302,7 @@ struct gather_ranged_impl
     }
 
     static detail::fork await_impl(awaitable & this_, std::size_t idx)
-    try
+    BOOST_TRY
     {
       auto & aw = *std::next(std::begin(this_.aws), idx);
       auto rd = aw.await_ready();
@@ -328,11 +329,12 @@ struct gather_ranged_impl
           this_.result[idx].template emplace<1u>(aw.await_resume());
       }
     }
-    catch(...)
+    BOOST_CATCH(...)
     {
       this_.result[idx].template emplace<2u>(std::current_exception());
 
     }
+    BOOST_CATCH_END
 
     detail::fork last_forked;
     std::size_t last_index = 0u;
@@ -360,7 +362,7 @@ struct gather_ranged_impl
 #if defined(BOOST_ASIO_ENABLE_HANDLER_TRACKING)
       this->loc = loc;
 #endif
-      exec = &detail::get_executor(h);
+      exec =  detail::get_executor(h);
 
       last_forked.release().resume();
       while (last_index < cancel.size())
@@ -382,9 +384,7 @@ struct gather_ranged_impl
       return true;
     }
 
-#if _MSC_VER
-    BOOST_NOINLINE
-#endif
+    BOOST_COBALT_MSVC_NOINLINE
     auto await_resume()
     {
 #if !defined(BOOST_COBALT_NO_PMR)

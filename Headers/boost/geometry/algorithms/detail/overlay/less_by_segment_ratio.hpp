@@ -2,9 +2,9 @@
 
 // Copyright (c) 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
 
-// This file was modified by Oracle on 2017-2020.
-// Modifications copyright (c) 2017-2020 Oracle and/or its affiliates.
-
+// This file was modified by Oracle on 2017-2024.
+// Modifications copyright (c) 2017-2024 Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -24,7 +24,9 @@
 #include <boost/range/value_type.hpp>
 
 #include <boost/geometry/algorithms/detail/overlay/copy_segment_point.hpp>
-#include <boost/geometry/algorithms/detail/overlay/sort_by_side.hpp>
+#include <boost/geometry/algorithms/detail/overlay/overlay_type.hpp>
+#include <boost/geometry/algorithms/detail/overlay/segment_identifier.hpp>
+#include <boost/geometry/algorithms/detail/overlay/turn_info.hpp>
 #include <boost/geometry/strategies/side.hpp>
 
 namespace boost { namespace geometry
@@ -39,23 +41,25 @@ namespace detail { namespace overlay
 template <typename TurnOperation>
 struct indexed_turn_operation
 {
-    typedef TurnOperation type;
+    using type = TurnOperation;
 
     std::size_t turn_index;
     std::size_t operation_index;
-    bool skip;
     // use pointers to avoid copies, const& is not possible because of usage in vector
     segment_identifier const* other_seg_id; // segment id of other segment of intersection of two segments
     TurnOperation const* subject;
+    bool discarded{false};
+    bool skip{false};
 
     inline indexed_turn_operation(std::size_t ti, std::size_t oi,
                 TurnOperation const& sub,
-                segment_identifier const& oid)
+                segment_identifier const& oid,
+                bool dc = false)
         : turn_index(ti)
         , operation_index(oi)
-        , skip(false)
         , other_seg_id(&oid)
         , subject(boost::addressof(sub))
+        , discarded(dc)
     {}
 
 };
@@ -65,7 +69,6 @@ template
     typename Turns,
     typename Indexed,
     typename Geometry1, typename Geometry2,
-    typename RobustPolicy,
     typename Strategy,
     bool Reverse1, bool Reverse2
 >
@@ -74,12 +77,10 @@ struct less_by_segment_ratio
     inline less_by_segment_ratio(Turns const& turns
             , Geometry1 const& geometry1
             , Geometry2 const& geometry2
-            , RobustPolicy const& robust_policy
             , Strategy const& strategy)
         : m_turns(turns)
         , m_geometry1(geometry1)
         , m_geometry2(geometry2)
-        , m_robust_policy(robust_policy)
         , m_strategy(strategy)
     {
     }
@@ -89,10 +90,9 @@ private :
     Turns const& m_turns;
     Geometry1 const& m_geometry1;
     Geometry2 const& m_geometry2;
-    RobustPolicy const& m_robust_policy;
     Strategy const& m_strategy;
 
-    typedef typename geometry::point_type<Geometry1>::type point_type;
+    using point_type = geometry::point_type_t<Geometry1>;
 
     inline bool default_order(Indexed const& left, Indexed const& right) const
     {

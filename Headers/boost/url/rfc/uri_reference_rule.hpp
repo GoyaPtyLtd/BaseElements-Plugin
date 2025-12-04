@@ -16,13 +16,27 @@
 
 namespace boost {
 namespace urls {
+namespace implementation_defined {
+struct uri_reference_rule_t
+{
+    using value_type = url_view;
+
+    BOOST_URL_DECL
+    auto
+    parse(
+        char const*& it,
+        char const* end
+            ) const noexcept ->
+    system::result<value_type>;
+};
+} // implementation_defined
 
 /** Rule for URI-reference
 
     @par Value Type
     @code
     using value_type = url_view;
-    @endcode;
+    @endcode
 
     @par Example
     Rules are used with the function @ref grammar::parse.
@@ -47,24 +61,7 @@ namespace urls {
         @ref parse_uri_reference,
         @ref url_view.
 */
-#ifdef BOOST_URL_DOCS
-constexpr __implementation_defined__ uri_reference_rule{};
-#else
-struct uri_reference_rule_t
-{
-    using value_type = url_view;
-
-    BOOST_URL_DECL
-    auto
-    parse(
-        char const*& it,
-        char const* end
-            ) const noexcept ->
-    system::result<value_type>;
-};
-
-constexpr uri_reference_rule_t uri_reference_rule{};
-#endif
+constexpr implementation_defined::uri_reference_rule_t uri_reference_rule{};
 
 } // urls
 } // boost

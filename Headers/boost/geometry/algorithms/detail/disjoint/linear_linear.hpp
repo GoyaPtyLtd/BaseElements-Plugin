@@ -5,11 +5,11 @@
 // Copyright (c) 2009-2014 Mateusz Loskot, London, UK.
 // Copyright (c) 2013-2014 Adam Wulkiewicz, Lodz, Poland.
 
-// This file was modified by Oracle on 2013-2020.
-// Modifications copyright (c) 2013-2020, Oracle and/or its affiliates.
-
-// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
+// This file was modified by Oracle on 2013-2024.
+// Modifications copyright (c) 2013-2024, Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
+// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
 // (geolib/GGL), copyright (c) 1995-2010 Geodan, Amsterdam, the Netherlands.
@@ -36,7 +36,6 @@
 #include <boost/geometry/geometries/helper_geometry.hpp>
 
 #include <boost/geometry/policies/disjoint_interrupt_policy.hpp>
-#include <boost/geometry/policies/robustness/no_rescale_policy.hpp>
 
 #include <boost/geometry/algorithms/dispatch/disjoint.hpp>
 
@@ -56,14 +55,12 @@ struct disjoint_segment
     static inline bool apply(Segment1 const& segment1, Segment2 const& segment2,
                              Strategy const& strategy)
     {
-        typedef typename point_type<Segment1>::type point_type;
-
-        typedef segment_intersection_points<point_type> intersection_return_type;
-
-        typedef policies::relate::segments_intersection_points
+        using point_type = point_type_t<Segment1>;
+        using intersection_return_type = segment_intersection_points<point_type>;
+        using intersection_policy = policies::relate::segments_intersection_points
             <
                 intersection_return_type
-            > intersection_policy;
+            >;
 
         detail::segment_as_subrange<Segment1> sub_range1(segment1);
         detail::segment_as_subrange<Segment2> sub_range2(segment2);
@@ -93,12 +90,9 @@ struct disjoint_linear
                              Geometry2 const& geometry2,
                              Strategy const& strategy)
     {
-        using point_type = typename geometry::point_type<Geometry1>::type;
+        using point_type = geometry::point_type_t<Geometry1>;
         using mutable_point_type = typename helper_geometry<point_type>::type;
-        using ratio_type = geometry::segment_ratio
-            <
-                typename coordinate_type<point_type>::type
-            > ;
+        using ratio_type = geometry::segment_ratio<coordinate_type_t<point_type>>;
         using turn_info_type = overlay::turn_info
             <
                 mutable_point_type,
@@ -117,8 +111,8 @@ struct disjoint_linear
         disjoint_interrupt_policy interrupt_policy;
         dispatch::get_turns
             <
-                typename geometry::tag<Geometry1>::type,
-                typename geometry::tag<Geometry2>::type,
+                geometry::tag_t<Geometry1>,
+                geometry::tag_t<Geometry2>,
                 Geometry1,
                 Geometry2,
                 overlay::do_reverse<geometry::point_order<Geometry1>::value>::value, // should be false
@@ -128,7 +122,7 @@ struct disjoint_linear
                         Geometry1, Geometry2, assign_disjoint_policy
                     >
             >::apply(0, geometry1, 1, geometry2,
-                     strategy, detail::no_rescale_policy(), turns, interrupt_policy);
+                     strategy, turns, interrupt_policy);
 
         return !interrupt_policy.has_intersections;
     }

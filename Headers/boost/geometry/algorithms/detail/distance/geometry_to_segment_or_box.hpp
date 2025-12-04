@@ -51,7 +51,7 @@ namespace detail { namespace distance
 template
 <
     typename SegmentOrBox,
-    typename Tag = typename tag<SegmentOrBox>::type
+    typename Tag = tag_t<SegmentOrBox>
 >
 struct segment_or_box_point_range_closure
     : not_implemented<SegmentOrBox>
@@ -76,32 +76,28 @@ template
     typename Geometry,
     typename SegmentOrBox,
     typename Strategies,
-    typename Tag = typename tag<Geometry>::type
+    typename Tag = tag_t<Geometry>
 >
 class geometry_to_segment_or_box
 {
 private:
-    typedef typename point_type<SegmentOrBox>::type segment_or_box_point;
-
-    typedef distance::strategy_t<Geometry, SegmentOrBox, Strategies> strategy_type;
-
-    typedef detail::closest_feature::point_to_point_range
+    using segment_or_box_point = point_type_t<SegmentOrBox>;
+    using strategy_type = distance::strategy_t<Geometry, SegmentOrBox, Strategies>;
+    using point_to_point_range = detail::closest_feature::point_to_point_range
         <
-            typename point_type<Geometry>::type,
+            point_type_t<Geometry>,
             std::vector<segment_or_box_point>,
             segment_or_box_point_range_closure<SegmentOrBox>::value
-        > point_to_point_range;
-
-    typedef detail::closest_feature::geometry_to_range geometry_to_range;
-
-    typedef distance::creturn_t<Geometry, SegmentOrBox, Strategies> comparable_return_type;
+        >;
+    using geometry_to_range = detail::closest_feature::geometry_to_range;
+    using comparable_return_type = distance::creturn_t<Geometry, SegmentOrBox, Strategies>;
 
     // assign the new minimum value for an iterator of the point range
     // of a segment or a box
     template
     <
         typename SegOrBox,
-        typename SegOrBoxTag = typename tag<SegOrBox>::type
+        typename SegOrBoxTag = tag_t<SegOrBox>
     >
     struct assign_new_min_iterator
         : not_implemented<SegOrBox>
@@ -132,7 +128,7 @@ private:
     <
         typename SegOrBox,
         typename PointRange,
-        typename SegOrBoxTag = typename tag<SegOrBox>::type
+        typename SegOrBoxTag = tag_t<SegOrBox>
     >
     struct assign_segment_or_box_points
     {};
@@ -320,7 +316,7 @@ public:
             :
             dispatch::distance
                 <
-                    typename point_type<MultiPoint>::type,
+                    point_type_t<MultiPoint>,
                     SegmentOrBox,
                     Strategies
                 >::apply(*it_min, segment_or_box, strategies);

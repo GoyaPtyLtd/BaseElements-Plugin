@@ -92,7 +92,7 @@ struct copy_segment_point_polygon
         // Call ring-version with the right ring
         return copy_segment_point_range
             <
-                typename geometry::ring_type<Polygon>::type,
+                geometry::ring_type_t<Polygon>,
                 Reverse,
                 SegmentIdentifier,
                 PointOut
@@ -115,7 +115,7 @@ struct copy_segment_point_box
             SegmentIdentifier const& seg_id, signed_size_type offset,
             PointOut& point)
     {
-        std::array<typename point_type<Box>::type, 4> bp;
+        std::array<point_type_t<Box>, 4> bp;
         assign_box_corners_oriented<Reverse>(box, bp);
 
         signed_size_type const target = circular_offset(4, seg_id.segment_index, offset);
@@ -288,7 +288,7 @@ inline bool copy_segment_point(Geometry const& geometry,
 
     return dispatch::copy_segment_point
         <
-            typename tag<Geometry>::type,
+            tag_t<Geometry>,
             Geometry,
             Reverse,
             SegmentIdentifier,
@@ -322,7 +322,7 @@ inline bool copy_segment_point(Geometry1 const& geometry1, Geometry2 const& geom
     {
         return dispatch::copy_segment_point
             <
-                typename tag<Geometry1>::type,
+                tag_t<Geometry1>,
                 Geometry1,
                 Reverse1,
                 SegmentIdentifier,
@@ -333,7 +333,7 @@ inline bool copy_segment_point(Geometry1 const& geometry1, Geometry2 const& geom
     {
         return dispatch::copy_segment_point
             <
-                typename tag<Geometry2>::type,
+                tag_t<Geometry2>,
                 Geometry2,
                 Reverse2,
                 SegmentIdentifier,

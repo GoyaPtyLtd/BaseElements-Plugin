@@ -93,16 +93,16 @@ class WithinStrategyPolygonal
 {
 #ifndef DOXYGEN_NO_CONCEPT_MEMBERS
 
-    typedef typename geometry::point_type<Polygonal>::type point_of_segment;
+    using point_of_segment = geometry::point_type_t<Polygonal>;
 
     // 0)
-    typedef typename concepts::detail::relate_strategy_dispatch
+    using strategy_type = typename concepts::detail::relate_strategy_dispatch
         <
             Point, Polygonal, Strategy
-        >::type strategy_type;
+        >::type;
 
     // 1) must define state_type
-    typedef typename strategy_type::state_type state_type;
+    using state_type = typename strategy_type::state_type;
 
     struct checker
     {
@@ -369,9 +369,9 @@ inline void check()
         <
             Geometry1,
             Geometry2,
-            typename tag<Geometry1>::type,
-            typename tag<Geometry2>::type,
-            typename tag_cast<typename tag<Geometry2>::type, areal_tag>::type,
+            tag_t<Geometry1>,
+            tag_t<Geometry2>,
+            tag_cast_t<tag_t<Geometry2>, areal_tag>,
             Strategy
         > c;
     boost::ignore_unused(c);
