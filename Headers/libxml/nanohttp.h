@@ -1,14 +1,11 @@
-/**
- * @file
- * 
- * @brief minimal HTTP implementation
- * 
- * minimal HTTP implementation allowing to fetch resources
+/*
+ * Summary: minimal HTTP implementation
+ * Description: minimal HTTP implementation allowing to fetch resources
  *              like external subset.
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef __NANO_HTTP_H__
@@ -16,7 +13,7 @@
 
 #include <libxml/xmlversion.h>
 
-#ifdef LIBXML_HTTP_STUBS_ENABLED
+#ifdef LIBXML_HTTP_ENABLED
 
 #ifdef __cplusplus
 extern "C" {
@@ -97,5 +94,5 @@ XMLPUBFUN void
 }
 #endif
 
-#endif /* LIBXML_HTTP_STUBS_ENABLED */
+#endif /* LIBXML_HTTP_ENABLED */
 #endif /* __NANO_HTTP_H__ */

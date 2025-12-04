@@ -1,14 +1,11 @@
-/**
- * @file
- * 
- * @brief interface for the memory allocator
- * 
- * provides interfaces for the memory allocator,
+/*
+ * Summary: interface for the memory allocator
+ * Description: provides interfaces for the memory allocator,
  *              including debugging capabilities.
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 
@@ -26,33 +23,40 @@ extern "C" {
  * The XML memory wrapper support 4 basic overloadable functions.
  */
 /**
- * Signature for a free() implementation.
+ * xmlFreeFunc:
+ * @mem: an already allocated block of memory
  *
- * @param mem  an already allocated block of memory
+ * Signature for a free() implementation.
  */
 typedef void (*xmlFreeFunc)(void *mem);
 /**
+ * xmlMallocFunc:
+ * @size:  the size requested in bytes
+ *
  * Signature for a malloc() implementation.
  *
- * @param size  the size requested in bytes
- * @returns a pointer to the newly allocated block or NULL in case of error.
+ * Returns a pointer to the newly allocated block or NULL in case of error.
  */
-typedef void *(*xmlMallocFunc)(size_t size) LIBXML_ATTR_ALLOC_SIZE(1);
+typedef void *(LIBXML_ATTR_ALLOC_SIZE(1) *xmlMallocFunc)(size_t size);
 
 /**
+ * xmlReallocFunc:
+ * @mem: an already allocated block of memory
+ * @size:  the new size requested in bytes
+ *
  * Signature for a realloc() implementation.
  *
- * @param mem  an already allocated block of memory
- * @param size  the new size requested in bytes
- * @returns a pointer to the newly reallocated block or NULL in case of error.
+ * Returns a pointer to the newly reallocated block or NULL in case of error.
  */
 typedef void *(*xmlReallocFunc)(void *mem, size_t size);
 
 /**
+ * xmlStrdupFunc:
+ * @str: a zero terminated string
+ *
  * Signature for an strdup() implementation.
  *
- * @param str  a zero terminated string
- * @returns the copy of the string or NULL in case of error.
+ * Returns the copy of the string or NULL in case of error.
  */
 typedef char *(*xmlStrdupFunc)(const char *str);
 
@@ -65,49 +69,32 @@ typedef char *(*xmlStrdupFunc)(const char *str);
  *    - xmlMemStrdup
  *    - xmlFree
  */
+/** DOC_DISABLE */
 #ifdef LIBXML_THREAD_ALLOC_ENABLED
-
-XMLPUBFUN xmlMallocFunc *__xmlMalloc(void);
-XMLPUBFUN xmlMallocFunc *__xmlMallocAtomic(void);
-XMLPUBFUN xmlReallocFunc *__xmlRealloc(void);
-XMLPUBFUN xmlFreeFunc *__xmlFree(void);
-XMLPUBFUN xmlStrdupFunc *__xmlMemStrdup(void);
-
-#ifndef XML_GLOBALS_NO_REDEFINITION
-  #define xmlMalloc (*__xmlMalloc())
-  #define xmlMallocAtomic (*__xmlMallocAtomic())
-  #define xmlRealloc (*__xmlRealloc())
-  #define xmlFree (*__xmlFree())
-  #define xmlMemStrdup (*__xmlMemStrdup())
-#endif
-
+  #define XML_GLOBALS_ALLOC \
+    XML_OP(xmlMalloc, xmlMallocFunc, XML_NO_ATTR) \
+    XML_OP(xmlMallocAtomic, xmlMallocFunc, XML_NO_ATTR) \
+    XML_OP(xmlRealloc, xmlReallocFunc, XML_NO_ATTR) \
+    XML_OP(xmlFree, xmlFreeFunc, XML_NO_ATTR) \
+    XML_OP(xmlMemStrdup, xmlStrdupFunc, XML_NO_ATTR)
+  #define XML_OP XML_DECLARE_GLOBAL
+    XML_GLOBALS_ALLOC
+  #undef XML_OP
+  #if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
+    #define xmlMalloc XML_GLOBAL_MACRO(xmlMalloc)
+    #define xmlMallocAtomic XML_GLOBAL_MACRO(xmlMallocAtomic)
+    #define xmlRealloc XML_GLOBAL_MACRO(xmlRealloc)
+    #define xmlFree XML_GLOBAL_MACRO(xmlFree)
+    #define xmlMemStrdup XML_GLOBAL_MACRO(xmlMemStrdup)
+  #endif
 #else
-
-/**
- * The variable holding the libxml malloc() implementation
- */
-XMLPUBVAR xmlMallocFunc xmlMalloc;
-/**
- * The variable holding the libxml malloc() implementation for atomic
- * data (i.e. blocks not containing pointers), useful when using a
- * garbage collecting allocator.
- *
- * @deprecated Use #xmlMalloc
- */
-XMLPUBVAR xmlMallocFunc xmlMallocAtomic;
-/**
- * The variable holding the libxml realloc() implementation
- */
-XMLPUBVAR xmlReallocFunc xmlRealloc;
-/**
- * The variable holding the libxml free() implementation
- */
-XMLPUBVAR xmlFreeFunc xmlFree;
-/**
- * The variable holding the libxml strdup() implementation
- */
-XMLPUBVAR xmlStrdupFunc xmlMemStrdup;
-
+  #define XML_GLOBALS_ALLOC
+/** DOC_ENABLE */
+  XMLPUBVAR xmlMallocFunc xmlMalloc;
+  XMLPUBVAR xmlMallocFunc xmlMallocAtomic;
+  XMLPUBVAR xmlReallocFunc xmlRealloc;
+  XMLPUBVAR xmlFreeFunc xmlFree;
+  XMLPUBVAR xmlStrdupFunc xmlMemStrdup;
 #endif
 
 /*
@@ -125,14 +112,12 @@ XMLPUBFUN int
 			 xmlMallocFunc *mallocFunc,
 			 xmlReallocFunc *reallocFunc,
 			 xmlStrdupFunc *strdupFunc);
-XML_DEPRECATED
 XMLPUBFUN int
 	xmlGcMemSetup	(xmlFreeFunc freeFunc,
 			 xmlMallocFunc mallocFunc,
 			 xmlMallocFunc mallocAtomicFunc,
 			 xmlReallocFunc reallocFunc,
 			 xmlStrdupFunc strdupFunc);
-XML_DEPRECATED
 XMLPUBFUN int
 	xmlGcMemGet	(xmlFreeFunc *freeFunc,
 			 xmlMallocFunc *mallocFunc,

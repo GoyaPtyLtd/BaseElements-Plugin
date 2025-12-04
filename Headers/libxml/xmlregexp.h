@@ -1,14 +1,11 @@
-/**
- * @file
- * 
- * @brief Regular expressions
- * 
- * A regular expression engine used for DTD and XML Schema
- * validation.
+/*
+ * Summary: regular expressions handling
+ * Description: basic API for libxml regular expressions handling used
+ *              for XML Schemas and validation.
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_REGEXP_H__
@@ -25,12 +22,17 @@ extern "C" {
 #endif
 
 /**
- * A libxml regular expression
+ * xmlRegexpPtr:
+ *
+ * A libxml regular expression, they can actually be far more complex
+ * thank the POSIX regex expressions.
  */
 typedef struct _xmlRegexp xmlRegexp;
 typedef xmlRegexp *xmlRegexpPtr;
 
 /**
+ * xmlRegExecCtxtPtr:
+ *
  * A libxml progressive regular expression evaluation context
  */
 typedef struct _xmlRegExecCtxt xmlRegExecCtxt;
@@ -39,28 +41,28 @@ typedef xmlRegExecCtxt *xmlRegExecCtxtPtr;
 /*
  * The POSIX like API
  */
-XMLPUBFUN xmlRegexp *
+XMLPUBFUN xmlRegexpPtr
 		    xmlRegexpCompile	(const xmlChar *regexp);
-XMLPUBFUN void			 xmlRegFreeRegexp(xmlRegexp *regexp);
+XMLPUBFUN void			 xmlRegFreeRegexp(xmlRegexpPtr regexp);
 XMLPUBFUN int
-		    xmlRegexpExec	(xmlRegexp *comp,
+		    xmlRegexpExec	(xmlRegexpPtr comp,
 					 const xmlChar *value);
-XML_DEPRECATED
 XMLPUBFUN void
 		    xmlRegexpPrint	(FILE *output,
-					 xmlRegexp *regexp);
+					 xmlRegexpPtr regexp);
 XMLPUBFUN int
-		    xmlRegexpIsDeterminist(xmlRegexp *comp);
+		    xmlRegexpIsDeterminist(xmlRegexpPtr comp);
 
 /**
- * Callback function when doing a transition in the automata
+ * xmlRegExecCallbacks:
+ * @exec: the regular expression context
+ * @token: the current token string
+ * @transdata: transition data
+ * @inputdata: input data
  *
- * @param exec  the regular expression context
- * @param token  the current token string
- * @param transdata  transition data
- * @param inputdata  input data
+ * Callback function when doing a transition in the automata
  */
-typedef void (*xmlRegExecCallbacks) (xmlRegExecCtxt *exec,
+typedef void (*xmlRegExecCallbacks) (xmlRegExecCtxtPtr exec,
 	                             const xmlChar *token,
 				     void *transdata,
 				     void *inputdata);
@@ -68,42 +70,142 @@ typedef void (*xmlRegExecCallbacks) (xmlRegExecCtxt *exec,
 /*
  * The progressive API
  */
-XML_DEPRECATED
-XMLPUBFUN xmlRegExecCtxt *
-		    xmlRegNewExecCtxt	(xmlRegexp *comp,
+XMLPUBFUN xmlRegExecCtxtPtr
+		    xmlRegNewExecCtxt	(xmlRegexpPtr comp,
 					 xmlRegExecCallbacks callback,
 					 void *data);
-XML_DEPRECATED
 XMLPUBFUN void
-		    xmlRegFreeExecCtxt	(xmlRegExecCtxt *exec);
-XML_DEPRECATED
+		    xmlRegFreeExecCtxt	(xmlRegExecCtxtPtr exec);
 XMLPUBFUN int
-		    xmlRegExecPushString(xmlRegExecCtxt *exec,
+		    xmlRegExecPushString(xmlRegExecCtxtPtr exec,
 					 const xmlChar *value,
 					 void *data);
-XML_DEPRECATED
 XMLPUBFUN int
-		    xmlRegExecPushString2(xmlRegExecCtxt *exec,
+		    xmlRegExecPushString2(xmlRegExecCtxtPtr exec,
 					 const xmlChar *value,
 					 const xmlChar *value2,
 					 void *data);
 
-XML_DEPRECATED
 XMLPUBFUN int
-		    xmlRegExecNextValues(xmlRegExecCtxt *exec,
+		    xmlRegExecNextValues(xmlRegExecCtxtPtr exec,
 					 int *nbval,
 					 int *nbneg,
 					 xmlChar **values,
 					 int *terminal);
-XML_DEPRECATED
 XMLPUBFUN int
-		    xmlRegExecErrInfo	(xmlRegExecCtxt *exec,
+		    xmlRegExecErrInfo	(xmlRegExecCtxtPtr exec,
 					 const xmlChar **string,
 					 int *nbval,
 					 int *nbneg,
 					 xmlChar **values,
 					 int *terminal);
+#ifdef LIBXML_EXPR_ENABLED
+/*
+ * Formal regular expression handling
+ * Its goal is to do some formal work on content models
+ */
 
+/* expressions are used within a context */
+typedef struct _xmlExpCtxt xmlExpCtxt;
+typedef xmlExpCtxt *xmlExpCtxtPtr;
+
+XMLPUBFUN void
+			xmlExpFreeCtxt	(xmlExpCtxtPtr ctxt);
+XMLPUBFUN xmlExpCtxtPtr
+			xmlExpNewCtxt	(int maxNodes,
+					 xmlDictPtr dict);
+
+XMLPUBFUN int
+			xmlExpCtxtNbNodes(xmlExpCtxtPtr ctxt);
+XMLPUBFUN int
+			xmlExpCtxtNbCons(xmlExpCtxtPtr ctxt);
+
+/* Expressions are trees but the tree is opaque */
+typedef struct _xmlExpNode xmlExpNode;
+typedef xmlExpNode *xmlExpNodePtr;
+
+typedef enum {
+    XML_EXP_EMPTY = 0,
+    XML_EXP_FORBID = 1,
+    XML_EXP_ATOM = 2,
+    XML_EXP_SEQ = 3,
+    XML_EXP_OR = 4,
+    XML_EXP_COUNT = 5
+} xmlExpNodeType;
+
+/*
+ * 2 core expressions shared by all for the empty language set
+ * and for the set with just the empty token
+ */
+XMLPUBVAR xmlExpNodePtr forbiddenExp;
+XMLPUBVAR xmlExpNodePtr emptyExp;
+
+/*
+ * Expressions are reference counted internally
+ */
+XMLPUBFUN void
+			xmlExpFree	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr);
+XMLPUBFUN void
+			xmlExpRef	(xmlExpNodePtr expr);
+
+/*
+ * constructors can be either manual or from a string
+ */
+XMLPUBFUN xmlExpNodePtr
+			xmlExpParse	(xmlExpCtxtPtr ctxt,
+					 const char *expr);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpNewAtom	(xmlExpCtxtPtr ctxt,
+					 const xmlChar *name,
+					 int len);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpNewOr	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr left,
+					 xmlExpNodePtr right);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpNewSeq	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr left,
+					 xmlExpNodePtr right);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpNewRange	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr subset,
+					 int min,
+					 int max);
+/*
+ * The really interesting APIs
+ */
+XMLPUBFUN int
+			xmlExpIsNillable(xmlExpNodePtr expr);
+XMLPUBFUN int
+			xmlExpMaxToken	(xmlExpNodePtr expr);
+XMLPUBFUN int
+			xmlExpGetLanguage(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr,
+					 const xmlChar**langList,
+					 int len);
+XMLPUBFUN int
+			xmlExpGetStart	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr,
+					 const xmlChar**tokList,
+					 int len);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpStringDerive(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr,
+					 const xmlChar *str,
+					 int len);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpExpDerive	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr,
+					 xmlExpNodePtr sub);
+XMLPUBFUN int
+			xmlExpSubsume	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr,
+					 xmlExpNodePtr sub);
+XMLPUBFUN void
+			xmlExpDump	(xmlBufferPtr buf,
+					 xmlExpNodePtr expr);
+#endif /* LIBXML_EXPR_ENABLED */
 #ifdef __cplusplus
 }
 #endif

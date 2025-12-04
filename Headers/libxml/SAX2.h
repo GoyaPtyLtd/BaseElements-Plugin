@@ -1,14 +1,11 @@
-/**
- * @file
- * 
- * @brief SAX2 parser interface used to build the DOM tree
- * 
- * those are the default SAX2 interfaces used by
+/*
+ * Summary: SAX2 parser interface used to build the DOM tree
+ * Description: those are the default SAX2 interfaces used by
  *              the library when building DOM tree.
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 
@@ -27,7 +24,7 @@ XMLPUBFUN const xmlChar *
 		xmlSAX2GetSystemId		(void *ctx);
 XMLPUBFUN void
 		xmlSAX2SetDocumentLocator	(void *ctx,
-						 xmlSAXLocator *loc);
+						 xmlSAXLocatorPtr loc);
 
 XMLPUBFUN int
 		xmlSAX2GetLineNumber		(void *ctx);
@@ -44,20 +41,20 @@ XMLPUBFUN int
 XMLPUBFUN void
 		xmlSAX2InternalSubset		(void *ctx,
 						 const xmlChar *name,
-						 const xmlChar *publicId,
-						 const xmlChar *systemId);
+						 const xmlChar *ExternalID,
+						 const xmlChar *SystemID);
 XMLPUBFUN void
 		xmlSAX2ExternalSubset		(void *ctx,
 						 const xmlChar *name,
-						 const xmlChar *publicId,
-						 const xmlChar *systemId);
-XMLPUBFUN xmlEntity *
+						 const xmlChar *ExternalID,
+						 const xmlChar *SystemID);
+XMLPUBFUN xmlEntityPtr
 		xmlSAX2GetEntity		(void *ctx,
 						 const xmlChar *name);
-XMLPUBFUN xmlEntity *
+XMLPUBFUN xmlEntityPtr
 		xmlSAX2GetParameterEntity	(void *ctx,
 						 const xmlChar *name);
-XMLPUBFUN xmlParserInput *
+XMLPUBFUN xmlParserInputPtr
 		xmlSAX2ResolveEntity		(void *ctx,
 						 const xmlChar *publicId,
 						 const xmlChar *systemId);
@@ -76,12 +73,12 @@ XMLPUBFUN void
 						 int type,
 						 int def,
 						 const xmlChar *defaultValue,
-						 xmlEnumeration *tree);
+						 xmlEnumerationPtr tree);
 XMLPUBFUN void
 		xmlSAX2ElementDecl		(void *ctx,
 						 const xmlChar *name,
 						 int type,
-						 xmlElementContent *content);
+						 xmlElementContentPtr content);
 XMLPUBFUN void
 		xmlSAX2NotationDecl		(void *ctx,
 						 const xmlChar *name,
@@ -98,15 +95,16 @@ XMLPUBFUN void
 		xmlSAX2StartDocument		(void *ctx);
 XMLPUBFUN void
 		xmlSAX2EndDocument		(void *ctx);
-XML_DEPRECATED
+#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
+    defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_LEGACY_ENABLED)
 XMLPUBFUN void
 		xmlSAX2StartElement		(void *ctx,
 						 const xmlChar *fullname,
 						 const xmlChar **atts);
-XML_DEPRECATED
 XMLPUBFUN void
 		xmlSAX2EndElement		(void *ctx,
 						 const xmlChar *name);
+#endif /* LIBXML_SAX1_ENABLED or LIBXML_HTML_ENABLED or LIBXML_LEGACY_ENABLED */
 XMLPUBFUN void
 		xmlSAX2StartElementNs		(void *ctx,
 						 const xmlChar *localname,

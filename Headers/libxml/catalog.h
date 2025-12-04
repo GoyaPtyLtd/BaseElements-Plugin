@@ -1,9 +1,6 @@
 /**
- * @file
- *
- * @brief interfaces to the Catalog handling system
- * 
- * the catalog module implements the support for
+ * Summary: interfaces to the Catalog handling system
+ * Description: the catalog module implements the support for
  * XML Catalogs and SGML catalogs
  *
  * SGML Open Technical Resolution TR9401:1997.
@@ -12,9 +9,9 @@
  * XML Catalogs Working Draft 06 August 2001
  * http://www.oasis-open.org/committees/entity/spec-2001-08-06.html
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_CATALOG_H__
@@ -33,17 +30,19 @@ extern "C" {
 #endif
 
 /**
+ * XML_CATALOGS_NAMESPACE:
+ *
  * The namespace for the XML Catalogs elements.
  */
 #define XML_CATALOGS_NAMESPACE					\
     (const xmlChar *) "urn:oasis:names:tc:entity:xmlns:xml:catalog"
 /**
+ * XML_CATALOG_PI:
+ *
  * The specific XML Catalog Processing Instruction name.
  */
 #define XML_CATALOG_PI						\
     (const xmlChar *) "oasis-xml-catalog"
-
-/** @cond ignore */
 
 /*
  * The API is voluntarily limited to general cataloging.
@@ -61,68 +60,50 @@ typedef enum {
     XML_CATA_ALLOW_ALL = 3
 } xmlCatalogAllow;
 
-/** @endcond */
-
-/** XML catalog */
 typedef struct _xmlCatalog xmlCatalog;
 typedef xmlCatalog *xmlCatalogPtr;
 
 /*
  * Operations on a given catalog.
  */
-XML_DEPRECATED
-XMLPUBFUN xmlCatalog *
+XMLPUBFUN xmlCatalogPtr
 		xmlNewCatalog		(int sgml);
-XML_DEPRECATED
-XMLPUBFUN xmlCatalog *
+XMLPUBFUN xmlCatalogPtr
 		xmlLoadACatalog		(const char *filename);
-#ifdef LIBXML_SGML_CATALOG_ENABLED
-XML_DEPRECATED
-XMLPUBFUN xmlCatalog *
+XMLPUBFUN xmlCatalogPtr
 		xmlLoadSGMLSuperCatalog	(const char *filename);
-XML_DEPRECATED
 XMLPUBFUN int
-		xmlConvertSGMLCatalog	(xmlCatalog *catal);
-#endif /* LIBXML_SGML_CATALOG_ENABLED */
-XML_DEPRECATED
+		xmlConvertSGMLCatalog	(xmlCatalogPtr catal);
 XMLPUBFUN int
-		xmlACatalogAdd		(xmlCatalog *catal,
+		xmlACatalogAdd		(xmlCatalogPtr catal,
 					 const xmlChar *type,
 					 const xmlChar *orig,
 					 const xmlChar *replace);
-XML_DEPRECATED
 XMLPUBFUN int
-		xmlACatalogRemove	(xmlCatalog *catal,
+		xmlACatalogRemove	(xmlCatalogPtr catal,
 					 const xmlChar *value);
-XML_DEPRECATED
 XMLPUBFUN xmlChar *
-		xmlACatalogResolve	(xmlCatalog *catal,
+		xmlACatalogResolve	(xmlCatalogPtr catal,
 					 const xmlChar *pubID,
 	                                 const xmlChar *sysID);
-XML_DEPRECATED
 XMLPUBFUN xmlChar *
-		xmlACatalogResolveSystem(xmlCatalog *catal,
+		xmlACatalogResolveSystem(xmlCatalogPtr catal,
 					 const xmlChar *sysID);
-XML_DEPRECATED
 XMLPUBFUN xmlChar *
-		xmlACatalogResolvePublic(xmlCatalog *catal,
+		xmlACatalogResolvePublic(xmlCatalogPtr catal,
 					 const xmlChar *pubID);
-XML_DEPRECATED
 XMLPUBFUN xmlChar *
-		xmlACatalogResolveURI	(xmlCatalog *catal,
+		xmlACatalogResolveURI	(xmlCatalogPtr catal,
 					 const xmlChar *URI);
 #ifdef LIBXML_OUTPUT_ENABLED
-XML_DEPRECATED
 XMLPUBFUN void
-		xmlACatalogDump		(xmlCatalog *catal,
+		xmlACatalogDump		(xmlCatalogPtr catal,
 					 FILE *out);
 #endif /* LIBXML_OUTPUT_ENABLED */
-XML_DEPRECATED
 XMLPUBFUN void
-		xmlFreeCatalog		(xmlCatalog *catal);
-XML_DEPRECATED
+		xmlFreeCatalog		(xmlCatalogPtr catal);
 XMLPUBFUN int
-		xmlCatalogIsEmpty	(xmlCatalog *catal);
+		xmlCatalogIsEmpty	(xmlCatalogPtr catal);
 
 /*
  * Global operations.
@@ -154,14 +135,10 @@ XMLPUBFUN int
 					 const xmlChar *replace);
 XMLPUBFUN int
 		xmlCatalogRemove	(const xmlChar *value);
-XML_DEPRECATED
-XMLPUBFUN xmlDoc *
+XMLPUBFUN xmlDocPtr
 		xmlParseCatalogFile	(const char *filename);
-#ifdef LIBXML_SGML_CATALOG_ENABLED
-XML_DEPRECATED
 XMLPUBFUN int
 		xmlCatalogConvert	(void);
-#endif /* LIBXML_SGML_CATALOG_ENABLED */
 
 /*
  * Strictly minimal interfaces for per-document catalogs used
@@ -184,7 +161,6 @@ XMLPUBFUN xmlChar *
  */
 XMLPUBFUN int
 		xmlCatalogSetDebug	(int level);
-XML_DEPRECATED
 XMLPUBFUN xmlCatalogPrefer
 		xmlCatalogSetDefaultPrefer(xmlCatalogPrefer prefer);
 XMLPUBFUN void
@@ -194,10 +170,8 @@ XMLPUBFUN xmlCatalogAllow
 
 
 /* DEPRECATED interfaces */
-XML_DEPRECATED
 XMLPUBFUN const xmlChar *
 		xmlCatalogGetSystem	(const xmlChar *sysID);
-XML_DEPRECATED
 XMLPUBFUN const xmlChar *
 		xmlCatalogGetPublic	(const xmlChar *pubID);
 

@@ -1,14 +1,11 @@
 /**
- * @file
- *
- * @brief library of generic URI related routines
- * 
- * library of generic URI related routines
+ * Summary: library of generic URI related routines
+ * Description: library of generic URI related routines
  *              Implements RFC 2396
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_URI_H__
@@ -22,19 +19,18 @@
 extern "C" {
 #endif
 
-/** Parsed URI */
-typedef struct _xmlURI xmlURI;
-typedef xmlURI *xmlURIPtr;
 /**
- * A parsed URI reference.
+ * xmlURI:
  *
- * This is a struct containing the various fields
+ * A parsed URI reference. This is a struct containing the various fields
  * as described in RFC 2396 but separated for further processing.
  *
  * Note: query is a deprecated field which is incorrectly unescaped.
  * query_raw takes precedence over query if the former is set.
- * See: http://mail.gnome.org/archives/xml/2007-April/thread.html\#00127
+ * See: http://mail.gnome.org/archives/xml/2007-April/thread.html#00127
  */
+typedef struct _xmlURI xmlURI;
+typedef xmlURI *xmlURIPtr;
 struct _xmlURI {
     char *scheme;	/* the URI scheme */
     char *opaque;	/* opaque part */
@@ -49,7 +45,12 @@ struct _xmlURI {
     char *query_raw;	/* the query string (as it appears in the URI) */
 };
 
-XMLPUBFUN xmlURI *
+/*
+ * This function is in tree.h:
+ * xmlChar *	xmlNodeGetBase	(xmlDocPtr doc,
+ *                               xmlNodePtr cur);
+ */
+XMLPUBFUN xmlURIPtr
 		xmlCreateURI		(void);
 XMLPUBFUN int
 		xmlBuildURISafe		(const xmlChar *URI,
@@ -65,22 +66,22 @@ XMLPUBFUN int
 XMLPUBFUN xmlChar *
 		xmlBuildRelativeURI	(const xmlChar *URI,
 					 const xmlChar *base);
-XMLPUBFUN xmlURI *
+XMLPUBFUN xmlURIPtr
 		xmlParseURI		(const char *str);
 XMLPUBFUN int
 		xmlParseURISafe		(const char *str,
-					 xmlURI **uri);
-XMLPUBFUN xmlURI *
+					 xmlURIPtr *uri);
+XMLPUBFUN xmlURIPtr
 		xmlParseURIRaw		(const char *str,
 					 int raw);
 XMLPUBFUN int
-		xmlParseURIReference	(xmlURI *uri,
+		xmlParseURIReference	(xmlURIPtr uri,
 					 const char *str);
 XMLPUBFUN xmlChar *
-		xmlSaveUri		(xmlURI *uri);
+		xmlSaveUri		(xmlURIPtr uri);
 XMLPUBFUN void
 		xmlPrintURI		(FILE *stream,
-					 xmlURI *uri);
+					 xmlURIPtr uri);
 XMLPUBFUN xmlChar *
 		xmlURIEscapeStr         (const xmlChar *str,
 					 const xmlChar *list);
@@ -93,7 +94,7 @@ XMLPUBFUN int
 XMLPUBFUN xmlChar *
 		xmlURIEscape		(const xmlChar *str);
 XMLPUBFUN void
-		xmlFreeURI		(xmlURI *uri);
+		xmlFreeURI		(xmlURIPtr uri);
 XMLPUBFUN xmlChar*
 		xmlCanonicPath		(const xmlChar *path);
 XMLPUBFUN xmlChar*

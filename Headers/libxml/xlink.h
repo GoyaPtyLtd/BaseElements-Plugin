@@ -1,13 +1,10 @@
-/**
- * @file
- * 
- * @brief unfinished XLink detection module
- * 
- * This module is deprecated, don't use.
+/*
+ * Summary: unfinished XLink detection module
+ * Description: unfinished XLink detection module
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_XLINK_H__
@@ -21,8 +18,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/** @cond ignore */
 
 /**
  * Various defines for the various Link properties.
@@ -58,16 +53,15 @@ typedef enum {
     XLINK_ACTUATE_ONREQUEST
 } xlinkActuate;
 
-/** @endcond */
-
 /**
+ * xlinkNodeDetectFunc:
+ * @ctx:  user data pointer
+ * @node:  the node to check
+ *
  * This is the prototype for the link detection routine.
  * It calls the default link detection callbacks upon link detection.
- *
- * @param ctx  user data pointer
- * @param node  the node to check
  */
-typedef void (*xlinkNodeDetectFunc) (void *ctx, xmlNode *node);
+typedef void (*xlinkNodeDetectFunc) (void *ctx, xmlNodePtr node);
 
 /*
  * The link detection module interact with the upper layers using
@@ -75,41 +69,43 @@ typedef void (*xlinkNodeDetectFunc) (void *ctx, xmlNode *node);
  */
 
 /**
- * This is the prototype for a simple link detection callback.
+ * xlinkSimpleLinkFunk:
+ * @ctx:  user data pointer
+ * @node:  the node carrying the link
+ * @href:  the target of the link
+ * @role:  the role string
+ * @title:  the link title
  *
- * @param ctx  user data pointer
- * @param node  the node carrying the link
- * @param href  the target of the link
- * @param role  the role string
- * @param title  the link title
+ * This is the prototype for a simple link detection callback.
  */
 typedef void
 (*xlinkSimpleLinkFunk)	(void *ctx,
-			 xmlNode *node,
+			 xmlNodePtr node,
 			 const xlinkHRef href,
 			 const xlinkRole role,
 			 const xlinkTitle title);
 
 /**
- * This is the prototype for a extended link detection callback.
+ * xlinkExtendedLinkFunk:
+ * @ctx:  user data pointer
+ * @node:  the node carrying the link
+ * @nbLocators: the number of locators detected on the link
+ * @hrefs:  pointer to the array of locator hrefs
+ * @roles:  pointer to the array of locator roles
+ * @nbArcs: the number of arcs detected on the link
+ * @from:  pointer to the array of source roles found on the arcs
+ * @to:  pointer to the array of target roles found on the arcs
+ * @show:  array of values for the show attributes found on the arcs
+ * @actuate:  array of values for the actuate attributes found on the arcs
+ * @nbTitles: the number of titles detected on the link
+ * @title:  array of titles detected on the link
+ * @langs:  array of xml:lang values for the titles
  *
- * @param ctx  user data pointer
- * @param node  the node carrying the link
- * @param nbLocators  the number of locators detected on the link
- * @param hrefs  pointer to the array of locator hrefs
- * @param roles  pointer to the array of locator roles
- * @param nbArcs  the number of arcs detected on the link
- * @param from  pointer to the array of source roles found on the arcs
- * @param to  pointer to the array of target roles found on the arcs
- * @param show  array of values for the show attributes found on the arcs
- * @param actuate  array of values for the actuate attributes found on the arcs
- * @param nbTitles  the number of titles detected on the link
- * @param titles  array of titles detected on the link
- * @param langs  array of xml:lang values for the titles
+ * This is the prototype for a extended link detection callback.
  */
 typedef void
 (*xlinkExtendedLinkFunk)(void *ctx,
-			 xmlNode *node,
+			 xmlNodePtr node,
 			 int nbLocators,
 			 const xlinkHRef *hrefs,
 			 const xlinkRole *roles,
@@ -123,20 +119,21 @@ typedef void
 			 const xmlChar **langs);
 
 /**
- * This is the prototype for a extended link set detection callback.
+ * xlinkExtendedLinkSetFunk:
+ * @ctx:  user data pointer
+ * @node:  the node carrying the link
+ * @nbLocators: the number of locators detected on the link
+ * @hrefs:  pointer to the array of locator hrefs
+ * @roles:  pointer to the array of locator roles
+ * @nbTitles: the number of titles detected on the link
+ * @title:  array of titles detected on the link
+ * @langs:  array of xml:lang values for the titles
  *
- * @param ctx  user data pointer
- * @param node  the node carrying the link
- * @param nbLocators  the number of locators detected on the link
- * @param hrefs  pointer to the array of locator hrefs
- * @param roles  pointer to the array of locator roles
- * @param nbTitles  the number of titles detected on the link
- * @param titles  array of titles detected on the link
- * @param langs  array of xml:lang values for the titles
+ * This is the prototype for a extended link set detection callback.
  */
 typedef void
 (*xlinkExtendedLinkSetFunk)	(void *ctx,
-				 xmlNode *node,
+				 xmlNodePtr node,
 				 int nbLocators,
 				 const xlinkHRef *hrefs,
 				 const xlinkRole *roles,
@@ -144,14 +141,14 @@ typedef void
 				 const xlinkTitle *titles,
 				 const xmlChar **langs);
 
-typedef struct _xlinkHandler xlinkHandler;
-typedef xlinkHandler *xlinkHandlerPtr;
 /**
  * This is the structure containing a set of Links detection callbacks.
  *
  * There is no default xlink callbacks, if one want to get link
  * recognition activated, those call backs must be provided before parsing.
  */
+typedef struct _xlinkHandler xlinkHandler;
+typedef xlinkHandler *xlinkHandlerPtr;
 struct _xlinkHandler {
     xlinkSimpleLinkFunk simple;
     xlinkExtendedLinkFunk extended;
@@ -163,30 +160,25 @@ struct _xlinkHandler {
  * detection callbacks.
  */
 
-XML_DEPRECATED
 XMLPUBFUN xlinkNodeDetectFunc
 		xlinkGetDefaultDetect	(void);
-XML_DEPRECATED
 XMLPUBFUN void
 		xlinkSetDefaultDetect	(xlinkNodeDetectFunc func);
 
 /*
  * Routines to set/get the default handlers.
  */
-XML_DEPRECATED
-XMLPUBFUN xlinkHandler *
+XMLPUBFUN xlinkHandlerPtr
 		xlinkGetDefaultHandler	(void);
-XML_DEPRECATED
 XMLPUBFUN void
-		xlinkSetDefaultHandler	(xlinkHandler *handler);
+		xlinkSetDefaultHandler	(xlinkHandlerPtr handler);
 
 /*
  * Link detection module itself.
  */
-XML_DEPRECATED
 XMLPUBFUN xlinkType
-		xlinkIsLink		(xmlDoc *doc,
-					 xmlNode *node);
+		xlinkIsLink		(xmlDocPtr doc,
+					 xmlNodePtr node);
 
 #ifdef __cplusplus
 }

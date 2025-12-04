@@ -1,14 +1,11 @@
-/**
- * @file
- * 
- * @brief string dictionary
- * 
- * dictionary of reusable strings, just used to avoid allocation
+/*
+ * Summary: string dictionary
+ * Description: dictionary of reusable strings, just used to avoid allocation
  *         and freeing operations.
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_DICT_H__
@@ -22,8 +19,8 @@
 extern "C" {
 #endif
 
-/**
- * Dictionary (pool for interned strings)
+/*
+ * The dictionary.
  */
 typedef struct _xmlDict xmlDict;
 typedef xmlDict *xmlDictPtr;
@@ -37,40 +34,40 @@ XMLPUBFUN int  xmlInitializeDict(void);
 /*
  * Constructor and destructor.
  */
-XMLPUBFUN xmlDict *
+XMLPUBFUN xmlDictPtr
 			xmlDictCreate	(void);
 XMLPUBFUN size_t
-			xmlDictSetLimit	(xmlDict *dict,
+			xmlDictSetLimit	(xmlDictPtr dict,
                                          size_t limit);
 XMLPUBFUN size_t
-			xmlDictGetUsage (xmlDict *dict);
-XMLPUBFUN xmlDict *
-			xmlDictCreateSub(xmlDict *sub);
+			xmlDictGetUsage (xmlDictPtr dict);
+XMLPUBFUN xmlDictPtr
+			xmlDictCreateSub(xmlDictPtr sub);
 XMLPUBFUN int
-			xmlDictReference(xmlDict *dict);
+			xmlDictReference(xmlDictPtr dict);
 XMLPUBFUN void
-			xmlDictFree	(xmlDict *dict);
+			xmlDictFree	(xmlDictPtr dict);
 
 /*
  * Lookup of entry in the dictionary.
  */
 XMLPUBFUN const xmlChar *
-			xmlDictLookup	(xmlDict *dict,
+			xmlDictLookup	(xmlDictPtr dict,
 		                         const xmlChar *name,
 		                         int len);
 XMLPUBFUN const xmlChar *
-			xmlDictExists	(xmlDict *dict,
+			xmlDictExists	(xmlDictPtr dict,
 		                         const xmlChar *name,
 		                         int len);
 XMLPUBFUN const xmlChar *
-			xmlDictQLookup	(xmlDict *dict,
+			xmlDictQLookup	(xmlDictPtr dict,
 		                         const xmlChar *prefix,
 		                         const xmlChar *name);
 XMLPUBFUN int
-			xmlDictOwns	(xmlDict *dict,
+			xmlDictOwns	(xmlDictPtr dict,
 					 const xmlChar *str);
 XMLPUBFUN int
-			xmlDictSize	(xmlDict *dict);
+			xmlDictSize	(xmlDictPtr dict);
 
 /*
  * Cleanup function

@@ -1,14 +1,11 @@
-/**
- * @file
- * 
- * @brief set of routines to process strings
- * 
- * type and interfaces needed for the internal string handling
+/*
+ * Summary: set of routines to process strings
+ * Description: type and interfaces needed for the internal string handling
  *              of the library, especially UTF8 processing.
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_STRING_H__
@@ -22,6 +19,8 @@ extern "C" {
 #endif
 
 /**
+ * xmlChar:
+ *
  * This is a basic byte in an UTF-8 encoded string.
  * It's unsigned allowing to pinpoint case where char * are assigned
  * to xmlChar * (possibly making serialization back impossible).
@@ -29,6 +28,8 @@ extern "C" {
 typedef unsigned char xmlChar;
 
 /**
+ * BAD_CAST:
+ *
  * Macro to cast a string to an xmlChar * when one know its safe.
  */
 #define BAD_CAST (xmlChar *)

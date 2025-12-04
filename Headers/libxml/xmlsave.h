@@ -1,13 +1,10 @@
-/**
- * @file
- * 
- * @brief XML/HTML serializer
- * 
- * API to save documents or subtrees of documents.
+/*
+ * Summary: the XML document serializer
+ * Description: API to save document or subtree of document
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_XMLSAVE_H__
@@ -24,87 +21,41 @@ extern "C" {
 #endif
 
 /**
+ * xmlSaveOption:
+ *
  * This is the set of XML save options that can be passed down
- * to the #xmlSaveToFd and similar calls.
+ * to the xmlSaveToFd() and similar calls.
  */
 typedef enum {
-    /**
-     * Format output. This adds newlines and enables indenting
-     * by default.
-     */
-    XML_SAVE_FORMAT     = 1<<0,
-    /**
-     * Don't emit an XML declaration.
-     */
-    XML_SAVE_NO_DECL    = 1<<1,
-    /**
-     * Don't emit empty tags.
-     */
-    XML_SAVE_NO_EMPTY	= 1<<2,
-    /**
-     * Don't serialize as XHTML.
-     */
-    XML_SAVE_NO_XHTML	= 1<<3,
-    /**
-     * Always serialize as XHTML.
-     */
-    XML_SAVE_XHTML	= 1<<4,
-    /**
-     * Serialize HTML documents as XML.
-     */
-    XML_SAVE_AS_XML     = 1<<5,
-    /**
-     * Serialize XML documents as HTML.
-     */
-    XML_SAVE_AS_HTML    = 1<<6,
-    /**
-     * Format with non-significant whitespace.
-     * TODO: What does this mean?
-     */
-    XML_SAVE_WSNONSIG   = 1<<7,
-    /**
-     * Always emit empty tags. This is the default unless the
-     * deprecated thread-local setting xmlSaveNoEmptyTags is
-     * set to 1.
-     *
-     * @since 2.14
-     */
-    XML_SAVE_EMPTY      = 1<<8,
-    /**
-     * Don't indent output when formatting.
-     *
-     * @since 2.14
-     */
-    XML_SAVE_NO_INDENT  = 1<<9,
-    /**
-     * Always indent output when formatting. This is the default
-     * unless the deprecated thread-local setting
-     * xmlIndentTreeOutput is set to 0.
-     *
-     * @since 2.14
-     */
-    XML_SAVE_INDENT     = 1<<10
+    XML_SAVE_FORMAT     = 1<<0,	/* format save output */
+    XML_SAVE_NO_DECL    = 1<<1,	/* drop the xml declaration */
+    XML_SAVE_NO_EMPTY	= 1<<2, /* no empty tags */
+    XML_SAVE_NO_XHTML	= 1<<3, /* disable XHTML1 specific rules */
+    XML_SAVE_XHTML	= 1<<4, /* force XHTML1 specific rules */
+    XML_SAVE_AS_XML     = 1<<5, /* force XML serialization on HTML doc */
+    XML_SAVE_AS_HTML    = 1<<6, /* force HTML serialization on XML doc */
+    XML_SAVE_WSNONSIG   = 1<<7  /* format with non-significant whitespace */
 } xmlSaveOption;
 
-/** XML and HTML serializer */
+
 typedef struct _xmlSaveCtxt xmlSaveCtxt;
 typedef xmlSaveCtxt *xmlSaveCtxtPtr;
 
-XMLPUBFUN xmlSaveCtxt *
+XMLPUBFUN xmlSaveCtxtPtr
 		xmlSaveToFd		(int fd,
 					 const char *encoding,
 					 int options);
-XMLPUBFUN xmlSaveCtxt *
+XMLPUBFUN xmlSaveCtxtPtr
 		xmlSaveToFilename	(const char *filename,
 					 const char *encoding,
 					 int options);
 
-XMLPUBFUN xmlSaveCtxt *
-		xmlSaveToBuffer		(xmlBuffer *buffer,
+XMLPUBFUN xmlSaveCtxtPtr
+		xmlSaveToBuffer		(xmlBufferPtr buffer,
 					 const char *encoding,
 					 int options);
 
-XMLPUBFUN xmlSaveCtxt *
+XMLPUBFUN xmlSaveCtxtPtr
 		xmlSaveToIO		(xmlOutputWriteCallback iowrite,
 					 xmlOutputCloseCallback ioclose,
 					 void *ioctx,
@@ -112,28 +63,23 @@ XMLPUBFUN xmlSaveCtxt *
 					 int options);
 
 XMLPUBFUN long
-		xmlSaveDoc		(xmlSaveCtxt *ctxt,
-					 xmlDoc *doc);
+		xmlSaveDoc		(xmlSaveCtxtPtr ctxt,
+					 xmlDocPtr doc);
 XMLPUBFUN long
-		xmlSaveTree		(xmlSaveCtxt *ctxt,
-					 xmlNode *node);
+		xmlSaveTree		(xmlSaveCtxtPtr ctxt,
+					 xmlNodePtr node);
 
 XMLPUBFUN int
-		xmlSaveFlush		(xmlSaveCtxt *ctxt);
+		xmlSaveFlush		(xmlSaveCtxtPtr ctxt);
 XMLPUBFUN int
-		xmlSaveClose		(xmlSaveCtxt *ctxt);
-XMLPUBFUN xmlParserErrors
-		xmlSaveFinish		(xmlSaveCtxt *ctxt);
+		xmlSaveClose		(xmlSaveCtxtPtr ctxt);
 XMLPUBFUN int
-		xmlSaveSetIndentString	(xmlSaveCtxt *ctxt,
-					 const char *indent);
-XML_DEPRECATED
+		xmlSaveFinish		(xmlSaveCtxtPtr ctxt);
 XMLPUBFUN int
-		xmlSaveSetEscape	(xmlSaveCtxt *ctxt,
+		xmlSaveSetEscape	(xmlSaveCtxtPtr ctxt,
 					 xmlCharEncodingOutputFunc escape);
-XML_DEPRECATED
 XMLPUBFUN int
-		xmlSaveSetAttrEscape	(xmlSaveCtxt *ctxt,
+		xmlSaveSetAttrEscape	(xmlSaveCtxtPtr ctxt,
 					 xmlCharEncodingOutputFunc escape);
 
 XML_DEPRECATED

@@ -1,9 +1,6 @@
-/**
- * @file
- * 
- * @brief XML Path Language implementation
- * 
- * API for the XML Path Language implementation
+/*
+ * Summary: XML Path Language implementation
+ * Description: API for the XML Path Language implementation
  *
  * XML Path Language implementation
  * XPath is a language for addressing parts of an XML document,
@@ -14,9 +11,9 @@
  * W3C Recommendation 16 November 1999
  *     http://www.w3.org/TR/1999/REC-xpath-19991116
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_XPATH_H__
@@ -29,15 +26,18 @@
 #include <libxml/xmlerror.h>
 #include <libxml/tree.h>
 #include <libxml/hash.h>
+#endif /* LIBXML_XPATH_ENABLED */
 
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef __cplusplus
 extern "C" {
 #endif
+#endif /* LIBXML_XPATH_ENABLED or LIBXML_SCHEMAS_ENABLED */
 
-/** XPath context */
+#ifdef LIBXML_XPATH_ENABLED
+
 typedef struct _xmlXPathContext xmlXPathContext;
 typedef xmlXPathContext *xmlXPathContextPtr;
-/** XPath parser and evaluation context */
 typedef struct _xmlXPathParserContext xmlXPathParserContext;
 typedef xmlXPathParserContext *xmlXPathParserContextPtr;
 
@@ -75,62 +75,59 @@ typedef enum {
     XPATH_RECURSION_LIMIT_EXCEEDED
 } xmlXPathError;
 
-/** XPath node set */
-typedef struct _xmlNodeSet xmlNodeSet;
-typedef xmlNodeSet *xmlNodeSetPtr;
-/**
+/*
  * A node-set (an unordered collection of nodes without duplicates).
  */
+typedef struct _xmlNodeSet xmlNodeSet;
+typedef xmlNodeSet *xmlNodeSetPtr;
 struct _xmlNodeSet {
-    /** number of nodes in the set */
-    int nodeNr;
-    /** size of the array as allocated */
-    int nodeMax;
-    /** array of nodes in no particular order */
-    xmlNode **nodeTab;
+    int nodeNr;			/* number of nodes in the set */
+    int nodeMax;		/* size of the array as allocated */
+    xmlNodePtr *nodeTab;	/* array of nodes in no particular order */
+    /* @@ with_ns to check whether namespace nodes should be looked at @@ */
 };
 
-/**
+/*
  * An expression is evaluated to yield an object, which
  * has one of the following four basic types:
- *
  *   - node-set
  *   - boolean
  *   - number
  *   - string
+ *
+ * @@ XPointer will add more types !
  */
+
 typedef enum {
     XPATH_UNDEFINED = 0,
     XPATH_NODESET = 1,
     XPATH_BOOLEAN = 2,
     XPATH_NUMBER = 3,
     XPATH_STRING = 4,
+#ifdef LIBXML_XPTR_LOCS_ENABLED
+    XPATH_POINT = 5,
+    XPATH_RANGE = 6,
+    XPATH_LOCATIONSET = 7,
+#endif
     XPATH_USERS = 8,
     XPATH_XSLT_TREE = 9  /* An XSLT value tree, non modifiable */
 } xmlXPathObjectType;
 
-/** @cond IGNORE */
+#ifndef LIBXML_XPTR_LOCS_ENABLED
+/** DOC_DISABLE */
 #define XPATH_POINT 5
 #define XPATH_RANGE 6
 #define XPATH_LOCATIONSET 7
-/** @endcond */
+/** DOC_ENABLE */
+#endif
 
-/** XPath object */
 typedef struct _xmlXPathObject xmlXPathObject;
 typedef xmlXPathObject *xmlXPathObjectPtr;
-/**
- * An XPath object
- */
 struct _xmlXPathObject {
-    /** object type */
     xmlXPathObjectType type;
-    /** node set */
-    xmlNodeSet *nodesetval;
-    /** boolean */
+    xmlNodeSetPtr nodesetval;
     int boolval;
-    /** number */
     double floatval;
-    /** string */
     xmlChar *stringval;
     void *user;
     int index;
@@ -138,12 +135,22 @@ struct _xmlXPathObject {
     int index2;
 };
 
-/** @cond ignore */
+/**
+ * xmlXPathConvertFunc:
+ * @obj:  an XPath object
+ * @type:  the number of the target type
+ *
+ * A conversion function is associated to a type and used to cast
+ * the new type to primitive values.
+ *
+ * Returns -1 in case of error, 0 otherwise
+ */
+typedef int (*xmlXPathConvertFunc) (xmlXPathObjectPtr obj, int type);
 
 /*
- * unused
+ * Extra type: a name and a conversion function.
  */
-typedef int (*xmlXPathConvertFunc) (xmlXPathObject *obj, int type);
+
 typedef struct _xmlXPathType xmlXPathType;
 typedef xmlXPathType *xmlXPathTypePtr;
 struct _xmlXPathType {
@@ -152,20 +159,31 @@ struct _xmlXPathType {
 };
 
 /*
- * unused
+ * Extra variable: a name and a value.
  */
+
 typedef struct _xmlXPathVariable xmlXPathVariable;
 typedef xmlXPathVariable *xmlXPathVariablePtr;
 struct _xmlXPathVariable {
     const xmlChar       *name;		/* the variable name */
-    xmlXPathObject *value;		/* the value */
+    xmlXPathObjectPtr value;		/* the value */
 };
 
-/*
- * unused
+/**
+ * xmlXPathEvalFunc:
+ * @ctxt: an XPath parser context
+ * @nargs: the number of arguments passed to the function
+ *
+ * An XPath evaluation function, the parameters are on the XPath context stack.
  */
-typedef void (*xmlXPathEvalFunc)(xmlXPathParserContext *ctxt,
+
+typedef void (*xmlXPathEvalFunc)(xmlXPathParserContextPtr ctxt,
 	                         int nargs);
+
+/*
+ * Extra function: a name and a evaluation function.
+ */
+
 typedef struct _xmlXPathFunct xmlXPathFunct;
 typedef xmlXPathFunct *xmlXPathFuncPtr;
 struct _xmlXPathFunct {
@@ -173,11 +191,25 @@ struct _xmlXPathFunct {
     xmlXPathEvalFunc func;		/* the evaluation function */
 };
 
-/*
- * unused
+/**
+ * xmlXPathAxisFunc:
+ * @ctxt:  the XPath interpreter context
+ * @cur:  the previous node being explored on that axis
+ *
+ * An axis traversal function. To traverse an axis, the engine calls
+ * the first time with cur == NULL and repeat until the function returns
+ * NULL indicating the end of the axis traversal.
+ *
+ * Returns the next node in that axis or NULL if at the end of the axis.
  */
-typedef xmlXPathObject *(*xmlXPathAxisFunc) (xmlXPathParserContext *ctxt,
-				 xmlXPathObject *cur);
+
+typedef xmlXPathObjectPtr (*xmlXPathAxisFunc) (xmlXPathParserContextPtr ctxt,
+				 xmlXPathObjectPtr cur);
+
+/*
+ * Extra axis: a name and an axis function.
+ */
+
 typedef struct _xmlXPathAxis xmlXPathAxis;
 typedef xmlXPathAxis *xmlXPathAxisPtr;
 struct _xmlXPathAxis {
@@ -185,62 +217,72 @@ struct _xmlXPathAxis {
     xmlXPathAxisFunc func;		/* the search function */
 };
 
-/** @endcond */
-
 /**
+ * xmlXPathFunction:
+ * @ctxt:  the XPath interprestation context
+ * @nargs:  the number of arguments
+ *
  * An XPath function.
  * The arguments (if any) are popped out from the context stack
  * and the result is pushed on the stack.
- *
- * @param ctxt  the XPath interprestation context
- * @param nargs  the number of arguments
  */
 
-typedef void (*xmlXPathFunction) (xmlXPathParserContext *ctxt, int nargs);
+typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
 
 /*
  * Function and Variable Lookup.
  */
 
 /**
+ * xmlXPathVariableLookupFunc:
+ * @ctxt:  an XPath context
+ * @name:  name of the variable
+ * @ns_uri:  the namespace name hosting this variable
+ *
  * Prototype for callbacks used to plug variable lookup in the XPath
  * engine.
  *
- * @param ctxt  an XPath context
- * @param name  name of the variable
- * @param ns_uri  the namespace name hosting this variable
- * @returns the XPath object value or NULL if not found.
+ * Returns the XPath object value or NULL if not found.
  */
-typedef xmlXPathObject *(*xmlXPathVariableLookupFunc) (void *ctxt,
+typedef xmlXPathObjectPtr (*xmlXPathVariableLookupFunc) (void *ctxt,
                                          const xmlChar *name,
                                          const xmlChar *ns_uri);
 
 /**
+ * xmlXPathFuncLookupFunc:
+ * @ctxt:  an XPath context
+ * @name:  name of the function
+ * @ns_uri:  the namespace name hosting this function
+ *
  * Prototype for callbacks used to plug function lookup in the XPath
  * engine.
  *
- * @param ctxt  an XPath context
- * @param name  name of the function
- * @param ns_uri  the namespace name hosting this function
- * @returns the XPath function or NULL if not found.
+ * Returns the XPath function or NULL if not found.
  */
 typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
 					 const xmlChar *name,
 					 const xmlChar *ns_uri);
 
 /**
+ * xmlXPathFlags:
  * Flags for XPath engine compilation and runtime
  */
 /**
+ * XML_XPATH_CHECKNS:
+ *
  * check namespaces at compilation
  */
 #define XML_XPATH_CHECKNS (1<<0)
 /**
+ * XML_XPATH_NOVAR:
+ *
  * forbid variables in expression
  */
 #define XML_XPATH_NOVAR	  (1<<1)
 
 /**
+ * xmlXPathContext:
+ *
  * Expression evaluation occurs with respect to a context.
  * he context consists of:
  *    - a node (the context node)
@@ -254,98 +296,71 @@ typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
  * for an XPath evaluation so you may need to initialize it again
  * before the next call.
  */
+
 struct _xmlXPathContext {
-    /** The current document */
-    xmlDoc *doc;
-    /** The current node */
-    xmlNode *node;
+    xmlDocPtr doc;			/* The current document */
+    xmlNodePtr node;			/* The current node */
 
-    /* unused (hash table) */
-    int nb_variables_unused;
-    /* unused (hash table) */
-    int max_variables_unused;
-    /* Hash table of defined variables */
-    xmlHashTable *varHash;
+    int nb_variables_unused;		/* unused (hash table) */
+    int max_variables_unused;		/* unused (hash table) */
+    xmlHashTablePtr varHash;		/* Hash table of defined variables */
 
-    /* number of defined types */
-    int nb_types;
-    /* max number of types */
-    int max_types;
-    /* Array of defined types */
-    xmlXPathType *types;
+    int nb_types;			/* number of defined types */
+    int max_types;			/* max number of types */
+    xmlXPathTypePtr types;		/* Array of defined types */
 
-    /* unused (hash table) */
-    int nb_funcs_unused;
-    /* unused (hash table) */
-    int max_funcs_unused;
-    /* Hash table of defined funcs */
-    xmlHashTable *funcHash;
+    int nb_funcs_unused;		/* unused (hash table) */
+    int max_funcs_unused;		/* unused (hash table) */
+    xmlHashTablePtr funcHash;		/* Hash table of defined funcs */
 
-    /* number of defined axis */
-    int nb_axis;
-    /* max number of axis */
-    int max_axis;
-    /* Array of defined axis */
-    xmlXPathAxis *axis;
+    int nb_axis;			/* number of defined axis */
+    int max_axis;			/* max number of axis */
+    xmlXPathAxisPtr axis;		/* Array of defined axis */
 
-    /* Array of namespaces */
-    xmlNs **namespaces;
-    /* number of namespace in scope */
-    int nsNr;
-    /* function to free */
-    void *user;
+    /* the namespace nodes of the context node */
+    xmlNsPtr *namespaces;		/* Array of namespaces */
+    int nsNr;				/* number of namespace in scope */
+    void *user;				/* function to free */
 
-    /** the context size */
-    int contextSize;
-    /** the proximity position */
-    int proximityPosition;
+    /* extra variables */
+    int contextSize;			/* the context size */
+    int proximityPosition;		/* the proximity position */
 
-    /* is this an XPointer context? */
-    int xptr;
-    /* for here() */
-    xmlNode *here;
-    /* for origin() */
-    xmlNode *origin;
+    /* extra stuff for XPointer */
+    int xptr;				/* is this an XPointer context? */
+    xmlNodePtr here;			/* for here() */
+    xmlNodePtr origin;			/* for origin() */
 
-    /* The namespaces hash table */
-    xmlHashTable *nsHash;
-    /* variable lookup func */
-    xmlXPathVariableLookupFunc varLookupFunc;
-    /* variable lookup data */
-    void *varLookupData;
+    /* the set of namespace declarations in scope for the expression */
+    xmlHashTablePtr nsHash;		/* The namespaces hash table */
+    xmlXPathVariableLookupFunc varLookupFunc;/* variable lookup func */
+    void *varLookupData;		/* variable lookup data */
 
-    /* needed for XSLT */
-    void *extra;
+    /* Possibility to link in an extra item */
+    void *extra;                        /* needed for XSLT */
 
-    /* The function name when calling a function */
+    /* The function name and URI when calling a function */
     const xmlChar *function;
-    /* The namespace URI when calling a function */
     const xmlChar *functionURI;
 
-    /* function lookup func */
-    xmlXPathFuncLookupFunc funcLookupFunc;
-    /* function lookup data */
-    void *funcLookupData;
+    /* function lookup function and data */
+    xmlXPathFuncLookupFunc funcLookupFunc;/* function lookup func */
+    void *funcLookupData;		/* function lookup data */
 
-    /* Array of temp namespaces */
-    xmlNs **tmpNsList;
-    /* number of namespaces in scope */
-    int tmpNsNr;
+    /* temporary namespace lists kept for walking the namespace axis */
+    xmlNsPtr *tmpNsList;		/* Array of namespaces */
+    int tmpNsNr;			/* number of namespaces in scope */
 
-    /* user specific data block */
-    void *userData;
-    /* the callback in case of errors */
-    xmlStructuredErrorFunc error;
-    /* the last error */
-    xmlError lastError;
-    /* the source node XSLT */
-    xmlNode *debugNode;
+    /* error reporting mechanism */
+    void *userData;                     /* user specific data block */
+    xmlStructuredErrorFunc error;       /* the callback in case of errors */
+    xmlError lastError;			/* the last error */
+    xmlNodePtr debugNode;		/* the source node XSLT */
 
-    /* dictionary if any */
-    xmlDict *dict;
+    /* dictionary */
+    xmlDictPtr dict;			/* dictionary if any */
 
-    /** flags to control compilation */
-    int flags;
+    int flags;				/* flags to control compilation */
 
     /* Cache for reusal of XPath objects */
     void *cache;
@@ -356,45 +371,36 @@ struct _xmlXPathContext {
     int depth;
 };
 
-/** Compiled XPath expression */
+/*
+ * The structure of a compiled expression form is not public.
+ */
+
 typedef struct _xmlXPathCompExpr xmlXPathCompExpr;
 typedef xmlXPathCompExpr *xmlXPathCompExprPtr;
 
 /**
+ * xmlXPathParserContext:
+ *
  * An XPath parser context. It contains pure parsing information,
  * an xmlXPathContext, and the stack of objects.
- *
- * This struct is used for evaluation as well and misnamed.
  */
 struct _xmlXPathParserContext {
-    /* the current char being parsed */
-    const xmlChar *cur;
-    /* the full expression */
-    const xmlChar *base;
+    const xmlChar *cur;			/* the current char being parsed */
+    const xmlChar *base;			/* the full expression */
 
-    /** error code */
-    int error;
+    int error;				/* error code */
 
-    /** the evaluation context */
-    xmlXPathContext    *context;
-    /** the current value */
-    xmlXPathObject       *value;
-    /* number of values stacked */
-    int                 valueNr;
-    /* max number of values stacked */
-    int                valueMax;
-    /* stack of values */
-    xmlXPathObject **valueTab;
+    xmlXPathContextPtr  context;	/* the evaluation context */
+    xmlXPathObjectPtr     value;	/* the current value */
+    int                 valueNr;	/* number of values stacked */
+    int                valueMax;	/* max number of values stacked */
+    xmlXPathObjectPtr *valueTab;	/* stack of values */
 
-    /* the precompiled expression */
-    xmlXPathCompExpr *comp;
-    /* it this an XPointer expression */
-    int xptr;
-    /* used for walking preceding axis */
-    xmlNode           *ancestor;
+    xmlXPathCompExprPtr comp;		/* the precompiled expression */
+    int xptr;				/* it this an XPointer expression */
+    xmlNodePtr         ancestor;	/* used for walking preceding axis */
 
-    /* always zero for compatibility */
-    int              valueFrame;
+    int              valueFrame;        /* always zero for compatibility */
 };
 
 /************************************************************************
@@ -407,30 +413,29 @@ struct _xmlXPathParserContext {
  * Objects and Nodesets handling
  */
 
-/** @cond ignore */
-
-XML_DEPRECATED
 XMLPUBVAR double xmlXPathNAN;
-XML_DEPRECATED
 XMLPUBVAR double xmlXPathPINF;
-XML_DEPRECATED
 XMLPUBVAR double xmlXPathNINF;
 
 /* These macros may later turn into functions */
 /**
+ * xmlXPathNodeSetGetLength:
+ * @ns:  a node-set
+ *
  * Implement a functionality similar to the DOM NodeList.length.
  *
- * @param ns  a node-set
- * @returns the number of nodes in the node-set.
+ * Returns the number of nodes in the node-set.
  */
 #define xmlXPathNodeSetGetLength(ns) ((ns) ? (ns)->nodeNr : 0)
 /**
+ * xmlXPathNodeSetItem:
+ * @ns:  a node-set
+ * @index:  index of a node in the set
+ *
  * Implements a functionality similar to the DOM NodeList.item().
  *
- * @param ns  a node-set
- * @param index  index of a node in the set
- * @returns the xmlNode at the given `index` in `ns` or NULL if
- *         `index` is out of range (0 to length-1)
+ * Returns the xmlNodePtr at the given @index in @ns or NULL if
+ *         @index is out of range (0 to length-1)
  */
 #define xmlXPathNodeSetItem(ns, index)				\
 		((((ns) != NULL) &&				\
@@ -438,29 +443,30 @@ XMLPUBVAR double xmlXPathNINF;
 		 (ns)->nodeTab[(index)]				\
 		 : NULL)
 /**
- * Checks whether `ns` is empty or not.
+ * xmlXPathNodeSetIsEmpty:
+ * @ns: a node-set
  *
- * @param ns  a node-set
- * @returns %TRUE if `ns` is an empty node-set.
+ * Checks whether @ns is empty or not.
+ *
+ * Returns %TRUE if @ns is an empty node-set.
  */
 #define xmlXPathNodeSetIsEmpty(ns)                                      \
     (((ns) == NULL) || ((ns)->nodeNr == 0) || ((ns)->nodeTab == NULL))
 
-/** @endcond */
 
 XMLPUBFUN void
-		    xmlXPathFreeObject		(xmlXPathObject *obj);
-XMLPUBFUN xmlNodeSet *
-		    xmlXPathNodeSetCreate	(xmlNode *val);
+		    xmlXPathFreeObject		(xmlXPathObjectPtr obj);
+XMLPUBFUN xmlNodeSetPtr
+		    xmlXPathNodeSetCreate	(xmlNodePtr val);
 XMLPUBFUN void
-		    xmlXPathFreeNodeSetList	(xmlXPathObject *obj);
+		    xmlXPathFreeNodeSetList	(xmlXPathObjectPtr obj);
 XMLPUBFUN void
-		    xmlXPathFreeNodeSet		(xmlNodeSet *obj);
-XMLPUBFUN xmlXPathObject *
-		    xmlXPathObjectCopy		(xmlXPathObject *val);
+		    xmlXPathFreeNodeSet		(xmlNodeSetPtr obj);
+XMLPUBFUN xmlXPathObjectPtr
+		    xmlXPathObjectCopy		(xmlXPathObjectPtr val);
 XMLPUBFUN int
-		    xmlXPathCmpNodes		(xmlNode *node1,
-						 xmlNode *node2);
+		    xmlXPathCmpNodes		(xmlNodePtr node1,
+						 xmlNodePtr node2);
 /**
  * Conversion functions to basic types.
  */
@@ -469,52 +475,52 @@ XMLPUBFUN int
 XMLPUBFUN int
 		    xmlXPathCastStringToBoolean	(const xmlChar * val);
 XMLPUBFUN int
-		    xmlXPathCastNodeSetToBoolean(xmlNodeSet *ns);
+		    xmlXPathCastNodeSetToBoolean(xmlNodeSetPtr ns);
 XMLPUBFUN int
-		    xmlXPathCastToBoolean	(xmlXPathObject *val);
+		    xmlXPathCastToBoolean	(xmlXPathObjectPtr val);
 
 XMLPUBFUN double
 		    xmlXPathCastBooleanToNumber	(int val);
 XMLPUBFUN double
 		    xmlXPathCastStringToNumber	(const xmlChar * val);
 XMLPUBFUN double
-		    xmlXPathCastNodeToNumber	(xmlNode *node);
+		    xmlXPathCastNodeToNumber	(xmlNodePtr node);
 XMLPUBFUN double
-		    xmlXPathCastNodeSetToNumber	(xmlNodeSet *ns);
+		    xmlXPathCastNodeSetToNumber	(xmlNodeSetPtr ns);
 XMLPUBFUN double
-		    xmlXPathCastToNumber	(xmlXPathObject *val);
+		    xmlXPathCastToNumber	(xmlXPathObjectPtr val);
 
 XMLPUBFUN xmlChar *
 		    xmlXPathCastBooleanToString	(int val);
 XMLPUBFUN xmlChar *
 		    xmlXPathCastNumberToString	(double val);
 XMLPUBFUN xmlChar *
-		    xmlXPathCastNodeToString	(xmlNode *node);
+		    xmlXPathCastNodeToString	(xmlNodePtr node);
 XMLPUBFUN xmlChar *
-		    xmlXPathCastNodeSetToString	(xmlNodeSet *ns);
+		    xmlXPathCastNodeSetToString	(xmlNodeSetPtr ns);
 XMLPUBFUN xmlChar *
-		    xmlXPathCastToString	(xmlXPathObject *val);
+		    xmlXPathCastToString	(xmlXPathObjectPtr val);
 
-XMLPUBFUN xmlXPathObject *
-		    xmlXPathConvertBoolean	(xmlXPathObject *val);
-XMLPUBFUN xmlXPathObject *
-		    xmlXPathConvertNumber	(xmlXPathObject *val);
-XMLPUBFUN xmlXPathObject *
-		    xmlXPathConvertString	(xmlXPathObject *val);
+XMLPUBFUN xmlXPathObjectPtr
+		    xmlXPathConvertBoolean	(xmlXPathObjectPtr val);
+XMLPUBFUN xmlXPathObjectPtr
+		    xmlXPathConvertNumber	(xmlXPathObjectPtr val);
+XMLPUBFUN xmlXPathObjectPtr
+		    xmlXPathConvertString	(xmlXPathObjectPtr val);
 
 /**
  * Context handling.
  */
-XMLPUBFUN xmlXPathContext *
-		    xmlXPathNewContext		(xmlDoc *doc);
+XMLPUBFUN xmlXPathContextPtr
+		    xmlXPathNewContext		(xmlDocPtr doc);
 XMLPUBFUN void
-		    xmlXPathFreeContext		(xmlXPathContext *ctxt);
+		    xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
 XMLPUBFUN void
-		    xmlXPathSetErrorHandler(xmlXPathContext *ctxt,
+		    xmlXPathSetErrorHandler(xmlXPathContextPtr ctxt,
 					    xmlStructuredErrorFunc handler,
 					    void *context);
 XMLPUBFUN int
-		    xmlXPathContextSetCache(xmlXPathContext *ctxt,
+		    xmlXPathContextSetCache(xmlXPathContextPtr ctxt,
 				            int active,
 					    int value,
 					    int options);
@@ -522,40 +528,41 @@ XMLPUBFUN int
  * Evaluation functions.
  */
 XMLPUBFUN long
-		    xmlXPathOrderDocElems	(xmlDoc *doc);
+		    xmlXPathOrderDocElems	(xmlDocPtr doc);
 XMLPUBFUN int
-		    xmlXPathSetContextNode	(xmlNode *node,
-						 xmlXPathContext *ctx);
-XMLPUBFUN xmlXPathObject *
-		    xmlXPathNodeEval		(xmlNode *node,
+		    xmlXPathSetContextNode	(xmlNodePtr node,
+						 xmlXPathContextPtr ctx);
+XMLPUBFUN xmlXPathObjectPtr
+		    xmlXPathNodeEval		(xmlNodePtr node,
 						 const xmlChar *str,
-						 xmlXPathContext *ctx);
-XMLPUBFUN xmlXPathObject *
+						 xmlXPathContextPtr ctx);
+XMLPUBFUN xmlXPathObjectPtr
 		    xmlXPathEval		(const xmlChar *str,
-						 xmlXPathContext *ctx);
-XMLPUBFUN xmlXPathObject *
+						 xmlXPathContextPtr ctx);
+XMLPUBFUN xmlXPathObjectPtr
 		    xmlXPathEvalExpression	(const xmlChar *str,
-						 xmlXPathContext *ctxt);
+						 xmlXPathContextPtr ctxt);
 XMLPUBFUN int
-		    xmlXPathEvalPredicate	(xmlXPathContext *ctxt,
-						 xmlXPathObject *res);
+		    xmlXPathEvalPredicate	(xmlXPathContextPtr ctxt,
+						 xmlXPathObjectPtr res);
 /**
  * Separate compilation/evaluation entry points.
  */
-XMLPUBFUN xmlXPathCompExpr *
+XMLPUBFUN xmlXPathCompExprPtr
 		    xmlXPathCompile		(const xmlChar *str);
-XMLPUBFUN xmlXPathCompExpr *
-		    xmlXPathCtxtCompile		(xmlXPathContext *ctxt,
+XMLPUBFUN xmlXPathCompExprPtr
+		    xmlXPathCtxtCompile		(xmlXPathContextPtr ctxt,
 						 const xmlChar *str);
-XMLPUBFUN xmlXPathObject *
-		    xmlXPathCompiledEval	(xmlXPathCompExpr *comp,
-						 xmlXPathContext *ctx);
+XMLPUBFUN xmlXPathObjectPtr
+		    xmlXPathCompiledEval	(xmlXPathCompExprPtr comp,
+						 xmlXPathContextPtr ctx);
 XMLPUBFUN int
-		    xmlXPathCompiledEvalToBoolean(xmlXPathCompExpr *comp,
-						 xmlXPathContext *ctxt);
+		    xmlXPathCompiledEvalToBoolean(xmlXPathCompExprPtr comp,
+						 xmlXPathContextPtr ctxt);
 XMLPUBFUN void
-		    xmlXPathFreeCompExpr	(xmlXPathCompExpr *comp);
-
+		    xmlXPathFreeCompExpr	(xmlXPathCompExprPtr comp);
+#endif /* LIBXML_XPATH_ENABLED */
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 XML_DEPRECATED
 XMLPUBFUN void
 		    xmlXPathInit		(void);
@@ -568,5 +575,5 @@ XMLPUBFUN int
 }
 #endif
 
-#endif /* LIBXML_XPATH_ENABLED */
+#endif /* LIBXML_XPATH_ENABLED or LIBXML_SCHEMAS_ENABLED*/
 #endif /* ! __XML_XPATH_H__ */

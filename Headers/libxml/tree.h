@@ -1,15 +1,12 @@
-/**
- * @file
+/*
+ * Summary: interfaces for tree manipulation
+ * Description: this module describes the structures found in an tree resulting
+ *              from an XML or HTML parsing, as well as the API provided for
+ *              various processing on that tree
  *
- * @brief Document tree API
+ * Copy: See Copyright for the status of this software.
  *
- * Data structures and functions to build, modify, query and
- * serialize XML and HTML document trees. Also contains the
- * buffer API.
- *
- * @copyright See Copyright for the status of this software.
- *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef XML_TREE_INTERNALS
@@ -22,9 +19,7 @@
 #else /* XML_TREE_INTERNALS */
 
 #ifndef __XML_TREE_H__
-/** @cond ignore */
 #define __XML_TREE_H__
-/** @endcond */
 
 #include <stdio.h>
 #include <limits.h>
@@ -38,58 +33,55 @@ extern "C" {
 #endif
 
 /*
- * Backward compatibility
- */
-/** @cond ignore */
-#define xmlBufferAllocScheme XML_BUFFER_ALLOC_EXACT
-#define xmlDefaultBufferSize 4096
-#define XML_GET_CONTENT(n) \
-    ((n)->type == XML_ELEMENT_NODE ? NULL : (n)->content)
-#define XML_GET_LINE(n)	xmlGetLineNo(n)
-/** @endcond */
-
-/*
  * Some of the basic types pointer to structures:
  */
 /* xmlIO.h */
-/**
- * Parser input buffer
- *
- * This struct and all related functions should ultimately
- * be removed from the public interface.
- */
 typedef struct _xmlParserInputBuffer xmlParserInputBuffer;
 typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
 
-/** Output buffer */
 typedef struct _xmlOutputBuffer xmlOutputBuffer;
 typedef xmlOutputBuffer *xmlOutputBufferPtr;
 
 /* parser.h */
-/** Parser input */
 typedef struct _xmlParserInput xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
 
-/** Parser context */
 typedef struct _xmlParserCtxt xmlParserCtxt;
 typedef xmlParserCtxt *xmlParserCtxtPtr;
 
-/** SAX locator */
 typedef struct _xmlSAXLocator xmlSAXLocator;
 typedef xmlSAXLocator *xmlSAXLocatorPtr;
 
-/** SAX handler */
 typedef struct _xmlSAXHandler xmlSAXHandler;
 typedef xmlSAXHandler *xmlSAXHandlerPtr;
 
 /* entities.h */
-/** Entity declaration */
 typedef struct _xmlEntity xmlEntity;
 typedef xmlEntity *xmlEntityPtr;
 
 /**
- * Removed, buffers always use XML_BUFFER_ALLOC_IO now.
+ * BASE_BUFFER_SIZE:
+ *
+ * default buffer size 4000.
  */
+#define BASE_BUFFER_SIZE 4096
+
+/**
+ * LIBXML_NAMESPACE_DICT:
+ *
+ * Defines experimental behaviour:
+ * 1) xmlNs gets an additional field @context (a xmlDoc)
+ * 2) when creating a tree, xmlNs->href is stored in the dict of xmlDoc.
+ */
+/* #define LIBXML_NAMESPACE_DICT */
+
+/**
+ * xmlBufferAllocationScheme:
+ *
+ * A buffer allocation scheme can be defined to either match exactly the
+ * need or double it's allocated size each time it is found too small.
+ */
+
 typedef enum {
     XML_BUFFER_ALLOC_DOUBLEIT,	/* double each time one need to grow */
     XML_BUFFER_ALLOC_EXACT,	/* grow only to the minimal size */
@@ -99,39 +91,51 @@ typedef enum {
     XML_BUFFER_ALLOC_BOUNDED	/* limit the upper size of the buffer */
 } xmlBufferAllocationScheme;
 
-/** Buffer type */
+/**
+ * xmlBuffer:
+ *
+ * A buffer structure, this old construct is limited to 2GB and
+ * is being deprecated, use API with xmlBuf instead
+ */
 typedef struct _xmlBuffer xmlBuffer;
 typedef xmlBuffer *xmlBufferPtr;
-/**
- * A buffer structure, this old construct is limited to 2GB and
- * is being deprecated, use API with xmlBuf instead.
- */
 struct _xmlBuffer {
-    /**
-     * @deprecated Use #xmlBufferContent
-     *
-     * The buffer content UTF8
-     */
-    xmlChar *content XML_DEPRECATED_MEMBER;
-    /**
-     * @deprecated Use #xmlBufferLength
-     *
-     * The buffer size used
-     */
-    unsigned int use XML_DEPRECATED_MEMBER;
-    /* The buffer size */
-    unsigned int size XML_DEPRECATED_MEMBER;
-    /* The realloc method */
-    xmlBufferAllocationScheme alloc XML_DEPRECATED_MEMBER;
-    /* in IO mode we may have a different base */
-    xmlChar *contentIO XML_DEPRECATED_MEMBER;
+    xmlChar *content;		/* The buffer content UTF8 */
+    unsigned int use;		/* The buffer size used */
+    unsigned int size;		/* The buffer size */
+    xmlBufferAllocationScheme alloc; /* The realloc method */
+    xmlChar *contentIO;		/* in IO mode we may have a different base */
 };
 
-/** Buffer with 64-bit support */
+/**
+ * xmlBuf:
+ *
+ * A buffer structure, new one, the actual structure internals are not public
+ */
+
 typedef struct _xmlBuf xmlBuf;
-typedef xmlBuf *xmlBufPtr;
 
 /**
+ * xmlBufPtr:
+ *
+ * A pointer to a buffer structure, the actual structure internals are not
+ * public
+ */
+
+typedef xmlBuf *xmlBufPtr;
+
+/*
+ * A few public routines for xmlBuf. As those are expected to be used
+ * mostly internally the bulk of the routines are internal in buf.h
+ */
+XMLPUBFUN xmlChar*       xmlBufContent	(const xmlBuf* buf);
+XMLPUBFUN xmlChar*       xmlBufEnd      (xmlBufPtr buf);
+XMLPUBFUN size_t         xmlBufUse      (const xmlBufPtr buf);
+XMLPUBFUN size_t         xmlBufShrink	(xmlBufPtr buf, size_t len);
+
+/*
+ * LIBXML2_NEW_BUFFER:
+ *
  * Macro used to express that the API use the new buffers for
  * xmlParserInputBuffer and xmlOutputBuffer. The change was
  * introduced in 2.9.0.
@@ -139,6 +143,8 @@ typedef xmlBuf *xmlBufPtr;
 #define LIBXML2_NEW_BUFFER
 
 /**
+ * XML_XML_NAMESPACE:
+ *
  * This is the namespace for the special xml: prefix predefined in the
  * XML Namespace specification.
  */
@@ -146,166 +152,70 @@ typedef xmlBuf *xmlBufPtr;
     (const xmlChar *) "http://www.w3.org/XML/1998/namespace"
 
 /**
+ * XML_XML_ID:
+ *
  * This is the name for the special xml:id attribute
  */
 #define XML_XML_ID (const xmlChar *) "xml:id"
 
-/**
+/*
  * The different element types carried by an XML tree.
  *
- * NOTE: This is synchronized with DOM Level 1 values.
+ * NOTE: This is synchronized with DOM Level1 values
  *       See http://www.w3.org/TR/REC-DOM-Level-1/
  *
- * Actually this had diverged a bit, and XML_DTD_NODE is used instead
- * of XML_DOCUMENT_TYPE_NODE.
+ * Actually this had diverged a bit, and now XML_DOCUMENT_TYPE_NODE should
+ * be deprecated to use an XML_DTD_NODE.
  */
 typedef enum {
-    /**
-     * An element.
-     *
-     * Objects of this type are an xmlNode.
-     */
     XML_ELEMENT_NODE=		1,
-    /**
-     * An attribute.
-     *
-     * Objects of this type are an xmlAttr.
-     */
     XML_ATTRIBUTE_NODE=		2,
-    /**
-     * A text node.
-     *
-     * Objects of this type are an xmlNode.
-     */
     XML_TEXT_NODE=		3,
-    /**
-     * A CDATA section.
-     *
-     * Objects of this type are an xmlNode.
-     */
     XML_CDATA_SECTION_NODE=	4,
-    /**
-     * An entity reference.
-     *
-     * Objects of this type are an xmlNode. The `children` member
-     * points to the entity declaration if available.
-     */
     XML_ENTITY_REF_NODE=	5,
-    /** unused */
-    XML_ENTITY_NODE=		6,
-    /**
-     * A processing instruction.
-     *
-     * Objects of this type are an xmlNode.
-     */
+    XML_ENTITY_NODE=		6,  /* unused */
     XML_PI_NODE=		7,
-    /**
-     * A comment.
-     *
-     * Objects of this type are an xmlNode.
-     */
     XML_COMMENT_NODE=		8,
-    /**
-     * A document.
-     *
-     * Objects of this type are an xmlDoc.
-     */
     XML_DOCUMENT_NODE=		9,
-    /** unused */
-    XML_DOCUMENT_TYPE_NODE=	10,
-    /**
-     * A document fragment.
-     *
-     * Objects of this type are an xmlNode.
-     */
+    XML_DOCUMENT_TYPE_NODE=	10, /* unused */
     XML_DOCUMENT_FRAG_NODE=	11,
-    /** A notation, unused */
-    XML_NOTATION_NODE=		12,
-    /**
-     * An HTML document.
-     *
-     * Objects of this type are an xmlDoc.
-     */
+    XML_NOTATION_NODE=		12, /* unused */
     XML_HTML_DOCUMENT_NODE=	13,
-    /**
-     * A document type definition.
-     *
-     * Objects of this type are an xmlDtd.
-     */
     XML_DTD_NODE=		14,
-    /**
-     * An element declaration.
-     *
-     * Objects of this type are an xmlElement.
-     */
     XML_ELEMENT_DECL=		15,
-    /**
-     * An attribute declaration.
-     *
-     * Objects of this type are an xmlAttribute.
-     */
     XML_ATTRIBUTE_DECL=		16,
-    /**
-     * An entity declaration.
-     *
-     * Objects of this type are an xmlEntity.
-     */
     XML_ENTITY_DECL=		17,
-    /**
-     * An XPath namespace node.
-     *
-     * Can only be returned by the XPath engine. Objects of this
-     * type are an xmlNs which has a completely different layout
-     * than xmlNode. The `next` member contains a pointer to the
-     * xmlNode element to which the namespace applies.
-     *
-     * Nodes of this type must be handled with extreme care to
-     * avoid type confusion bugs.
-     */
     XML_NAMESPACE_DECL=		18,
-    /**
-     * An XInclude start marker.
-     *
-     * Objects of this type are an xmlNode. Inserted as preceding
-     * sibling of XIncluded content.
-     */
     XML_XINCLUDE_START=		19,
-    /**
-     * An XInclude end marker.
-     *
-     * Objects of this type are an xmlNode. Inserted as following
-     * sibling of XIncluded content.
-     */
     XML_XINCLUDE_END=		20
     /* XML_DOCB_DOCUMENT_NODE=	21 */ /* removed */
 } xmlElementType;
 
-/** @cond IGNORE */
+/** DOC_DISABLE */
 /* For backward compatibility */
 #define XML_DOCB_DOCUMENT_NODE 21
-/** @endcond */
+/** DOC_ENABLE */
 
-/** Notation declaration */
+/**
+ * xmlNotation:
+ *
+ * A DTD Notation definition.
+ */
+
 typedef struct _xmlNotation xmlNotation;
 typedef xmlNotation *xmlNotationPtr;
-/**
- * A DTD Notation definition.
- *
- * Should be treated as opaque. Accessing members directly
- * is deprecated.
- */
 struct _xmlNotation {
-    /** Notation name */
-    const xmlChar               *name;
-    /** Public identifier, if any */
-    const xmlChar               *PublicID;
-    /** System identifier, if any */
-    const xmlChar               *SystemID;
+    const xmlChar               *name;	        /* Notation name */
+    const xmlChar               *PublicID;	/* Public identifier, if any */
+    const xmlChar               *SystemID;	/* System identifier, if any */
 };
 
 /**
+ * xmlAttributeType:
+ *
  * A DTD Attribute type definition.
  */
+
 typedef enum {
     XML_ATTRIBUTE_CDATA = 1,
     XML_ATTRIBUTE_ID,
@@ -320,8 +230,11 @@ typedef enum {
 } xmlAttributeType;
 
 /**
+ * xmlAttributeDefault:
+ *
  * A DTD Attribute default definition.
  */
+
 typedef enum {
     XML_ATTRIBUTE_NONE = 1,
     XML_ATTRIBUTE_REQUIRED,
@@ -329,68 +242,50 @@ typedef enum {
     XML_ATTRIBUTE_FIXED
 } xmlAttributeDefault;
 
-/** Enumeration in a DTD */
+/**
+ * xmlEnumeration:
+ *
+ * List structure used when there is an enumeration in DTDs.
+ */
+
 typedef struct _xmlEnumeration xmlEnumeration;
 typedef xmlEnumeration *xmlEnumerationPtr;
-/**
- * List structure used when there is an enumeration in DTDs.
- *
- * Should be treated as opaque. Accessing members directly
- * is deprecated.
- */
 struct _xmlEnumeration {
-    /** next enumeration */
-    struct _xmlEnumeration    *next XML_DEPRECATED_MEMBER;
-    /** value */
-    const xmlChar            *name XML_DEPRECATED_MEMBER;
+    struct _xmlEnumeration    *next;	/* next one */
+    const xmlChar            *name;	/* Enumeration name */
 };
 
-/** Attribute declaration */
+/**
+ * xmlAttribute:
+ *
+ * An Attribute declaration in a DTD.
+ */
+
 typedef struct _xmlAttribute xmlAttribute;
 typedef xmlAttribute *xmlAttributePtr;
-/**
- * An Attribute declaration in a DTD.
- *
- * Should be treated as opaque. Accessing members directly
- * is deprecated.
- */
 struct _xmlAttribute {
-    /** application data */
-    void           *_private;
-    /** XML_ATTRIBUTE_DECL */
-    xmlElementType          type;
-    /** attribute name */
-    const xmlChar          *name;
-    /** NULL */
-    struct _xmlNode    *children;
-    /** NULL */
-    struct _xmlNode        *last;
-    /** DTD */
-    struct _xmlDtd       *parent;
-    /** next sibling */
-    struct _xmlNode        *next;
-    /** previous sibling */
-    struct _xmlNode        *prev;
-    /** containing document */
-    struct _xmlDoc          *doc;
+    void           *_private;	        /* application data */
+    xmlElementType          type;       /* XML_ATTRIBUTE_DECL, must be second ! */
+    const xmlChar          *name;	/* Attribute name */
+    struct _xmlNode    *children;	/* NULL */
+    struct _xmlNode        *last;	/* NULL */
+    struct _xmlDtd       *parent;	/* -> DTD */
+    struct _xmlNode        *next;	/* next sibling link  */
+    struct _xmlNode        *prev;	/* previous sibling link  */
+    struct _xmlDoc          *doc;       /* the containing document */
 
-    /** next in hash table */
-    struct _xmlAttribute  *nexth;
-    /** attribute type */
-    xmlAttributeType       atype;
-    /** attribute default */
-    xmlAttributeDefault      def;
-    /** default value */
-    xmlChar *defaultValue;
-    /** enumeration tree if any */
-    xmlEnumeration         *tree XML_DEPRECATED_MEMBER;
-    /** namespace prefix if any */
-    const xmlChar        *prefix;
-    /** element name */
-    const xmlChar          *elem;
+    struct _xmlAttribute  *nexth;	/* next in hash table */
+    xmlAttributeType       atype;	/* The attribute type */
+    xmlAttributeDefault      def;	/* the default */
+    const xmlChar  *defaultValue;	/* or the default value */
+    xmlEnumerationPtr       tree;       /* or the enumeration tree if any */
+    const xmlChar        *prefix;	/* the namespace prefix if any */
+    const xmlChar          *elem;	/* Element holding the attribute */
 };
 
 /**
+ * xmlElementContentType:
+ *
  * Possible definitions of element content types.
  */
 typedef enum {
@@ -401,6 +296,8 @@ typedef enum {
 } xmlElementContentType;
 
 /**
+ * xmlElementContentOccur:
+ *
  * Possible definitions of element content occurrences.
  */
 typedef enum {
@@ -410,36 +307,31 @@ typedef enum {
     XML_ELEMENT_CONTENT_PLUS
 } xmlElementContentOccur;
 
-/** Element content in element declarations */
-typedef struct _xmlElementContent xmlElementContent;
-typedef xmlElementContent *xmlElementContentPtr;
 /**
+ * xmlElementContent:
+ *
  * An XML Element content as stored after parsing an element definition
  * in a DTD.
- *
- * Should be treated as opaque. Accessing members directly
- * is deprecated.
  */
+
+typedef struct _xmlElementContent xmlElementContent;
+typedef xmlElementContent *xmlElementContentPtr;
 struct _xmlElementContent {
-    /** PCDATA, ELEMENT, SEQ or OR */
-    xmlElementContentType     type XML_DEPRECATED_MEMBER;
-    /** ONCE, OPT, MULT or PLUS */
-    xmlElementContentOccur    ocur XML_DEPRECATED_MEMBER;
-    /** element name */
-    const xmlChar             *name XML_DEPRECATED_MEMBER;
-    /** first child */
-    struct _xmlElementContent *c1 XML_DEPRECATED_MEMBER;
-    /** second child */
-    struct _xmlElementContent *c2 XML_DEPRECATED_MEMBER;
-    /** parent */
-    struct _xmlElementContent *parent XML_DEPRECATED_MEMBER;
-    /** namespace prefix */
-    const xmlChar             *prefix XML_DEPRECATED_MEMBER;
+    xmlElementContentType     type;	/* PCDATA, ELEMENT, SEQ or OR */
+    xmlElementContentOccur    ocur;	/* ONCE, OPT, MULT or PLUS */
+    const xmlChar             *name;	/* Element name */
+    struct _xmlElementContent *c1;	/* first child */
+    struct _xmlElementContent *c2;	/* second child */
+    struct _xmlElementContent *parent;	/* parent */
+    const xmlChar             *prefix;	/* Namespace prefix */
 };
 
 /**
+ * xmlElementTypeVal:
+ *
  * The different possibilities for an element content type.
  */
+
 typedef enum {
     XML_ELEMENT_TYPE_UNDEFINED = 0,
     XML_ELEMENT_TYPE_EMPTY = 1,
@@ -448,424 +340,279 @@ typedef enum {
     XML_ELEMENT_TYPE_ELEMENT
 } xmlElementTypeVal;
 
-/** Element declaration */
+/**
+ * xmlElement:
+ *
+ * An XML Element declaration from a DTD.
+ */
+
 typedef struct _xmlElement xmlElement;
 typedef xmlElement *xmlElementPtr;
-/**
- * An XML Element declaration from a DTD.
- *
- * Should be treated as opaque. Accessing members directly
- * is deprecated.
- */
 struct _xmlElement {
-    /** application data */
-    void           *_private;
-    /** XML_ELEMENT_DECL */
-    xmlElementType          type;
-    /** element name */
-    const xmlChar          *name;
-    /** NULL */
-    struct _xmlNode    *children;
-    /** NULL */
-    struct _xmlNode        *last;
-    /** -> DTD */
-    struct _xmlDtd       *parent;
-    /** next sibling */
-    struct _xmlNode        *next;
-    /** previous sibling */
-    struct _xmlNode        *prev;
-    /** containing document */
-    struct _xmlDoc          *doc;
+    void           *_private;	        /* application data */
+    xmlElementType          type;       /* XML_ELEMENT_DECL, must be second ! */
+    const xmlChar          *name;	/* Element name */
+    struct _xmlNode    *children;	/* NULL */
+    struct _xmlNode        *last;	/* NULL */
+    struct _xmlDtd       *parent;	/* -> DTD */
+    struct _xmlNode        *next;	/* next sibling link  */
+    struct _xmlNode        *prev;	/* previous sibling link  */
+    struct _xmlDoc          *doc;       /* the containing document */
 
-    /** element type */
-    xmlElementTypeVal      etype;
-    /** allowed element content */
-    xmlElementContent *content;
-    /** list of declared attributes */
-    xmlAttribute     *attributes;
-    /** namespace prefix if any */
-    const xmlChar        *prefix;
+    xmlElementTypeVal      etype;	/* The type */
+    xmlElementContentPtr content;	/* the allowed element content */
+    xmlAttributePtr   attributes;	/* List of the declared attributes */
+    const xmlChar        *prefix;	/* the namespace prefix if any */
 #ifdef LIBXML_REGEXP_ENABLED
-    /** validating regexp */
-    xmlRegexp         *contModel XML_DEPRECATED_MEMBER;
+    xmlRegexpPtr       contModel;	/* the validating regexp */
 #else
-    void	      *contModel XML_DEPRECATED_MEMBER;
+    void	      *contModel;
 #endif
 };
 
 
 /**
+ * XML_LOCAL_NAMESPACE:
+ *
  * A namespace declaration node.
  */
 #define XML_LOCAL_NAMESPACE XML_NAMESPACE_DECL
 typedef xmlElementType xmlNsType;
 
-/** Namespace declaration */
-typedef struct _xmlNs xmlNs;
-typedef xmlNs *xmlNsPtr;
 /**
+ * xmlNs:
+ *
  * An XML namespace.
  * Note that prefix == NULL is valid, it defines the default namespace
  * within the subtree (until overridden).
  *
  * xmlNsType is unified with xmlElementType.
- *
- * Note that the XPath engine returns XPath namespace nodes as
- * xmlNs cast to xmlNode. This is a terrible design decision that
- * can easily cause type confusion errors. In this case, the `next`
- * member points to the xmlNode element to which the namespace
- * node belongs.
  */
+
+typedef struct _xmlNs xmlNs;
+typedef xmlNs *xmlNsPtr;
 struct _xmlNs {
-    /** next namespace */
-    struct _xmlNs  *next;
-    /** XML_NAMESPACE_DECL */
-    xmlNsType      type;
-    /** namespace URI */
-    const xmlChar *href;
-    /** namespace prefix */
-    const xmlChar *prefix;
-    /** application data */
-    void           *_private;
-    /** normally an xmlDoc */
-    struct _xmlDoc *context XML_DEPRECATED_MEMBER;
+    struct _xmlNs  *next;	/* next Ns link for this node  */
+    xmlNsType      type;	/* global or local */
+    const xmlChar *href;	/* URL for the namespace */
+    const xmlChar *prefix;	/* prefix for the namespace */
+    void           *_private;   /* application data */
+    struct _xmlDoc *context;		/* normally an xmlDoc */
 };
 
-/** Document type definition (DTD) */
-typedef struct _xmlDtd xmlDtd;
-typedef xmlDtd *xmlDtdPtr;
 /**
+ * xmlDtd:
+ *
  * An XML DTD, as defined by <!DOCTYPE ... There is actually one for
  * the internal subset and for the external subset.
- *
- * Should be treated as opaque. Accessing members directly
- * is deprecated.
  */
+typedef struct _xmlDtd xmlDtd;
+typedef xmlDtd *xmlDtdPtr;
 struct _xmlDtd {
-    /** application data */
-    void           *_private;
-    /** XML_DTD_NODE */
-    xmlElementType  type;
-    /** name of the DTD */
-    const xmlChar *name;
-    /** first child */
-    struct _xmlNode *children;
-    /** last child */
-    struct _xmlNode *last;
-    /** parent node */
-    struct _xmlDoc  *parent;
-    /** next sibling */
-    struct _xmlNode *next;
-    /** previous sibling */
-    struct _xmlNode *prev;
-    /** containing document */
-    struct _xmlDoc  *doc;
+    void           *_private;	/* application data */
+    xmlElementType  type;       /* XML_DTD_NODE, must be second ! */
+    const xmlChar *name;	/* Name of the DTD */
+    struct _xmlNode *children;	/* the value of the property link */
+    struct _xmlNode *last;	/* last child link */
+    struct _xmlDoc  *parent;	/* child->parent link */
+    struct _xmlNode *next;	/* next sibling link  */
+    struct _xmlNode *prev;	/* previous sibling link  */
+    struct _xmlDoc  *doc;	/* the containing document */
 
     /* End of common part */
-
-    /** hash table for notations if any */
-    void          *notations;
-    /** hash table for elements if any */
-    void          *elements;
-    /** hash table for attributes if any */
-    void          *attributes;
-    /** hash table for entities if any */
-    void          *entities;
-    /** public identifier */
-    xmlChar *ExternalID;
-    /** system identifier */
-    xmlChar *SystemID;
-    /** hash table for parameter entities if any */
-    void          *pentities;
+    void          *notations;   /* Hash table for notations if any */
+    void          *elements;    /* Hash table for elements if any */
+    void          *attributes;  /* Hash table for attributes if any */
+    void          *entities;    /* Hash table for entities if any */
+    const xmlChar *ExternalID;	/* External identifier for PUBLIC DTD */
+    const xmlChar *SystemID;	/* URI for a SYSTEM or PUBLIC DTD */
+    void          *pentities;   /* Hash table for param entities if any */
 };
 
-/** Attribute of an element */
+/**
+ * xmlAttr:
+ *
+ * An attribute on an XML node.
+ */
 typedef struct _xmlAttr xmlAttr;
 typedef xmlAttr *xmlAttrPtr;
-/**
- * An attribute of element.
- */
 struct _xmlAttr {
-    /** application data */
-    void           *_private;
-    /** XML_ATTRIBUTE_NODE */
-    xmlElementType   type;
-    /** local name */
-    const xmlChar   *name;
-    /** first child */
-    struct _xmlNode *children;
-    /** last child */
-    struct _xmlNode *last;
-    /** parent node */
-    struct _xmlNode *parent;
-    /** next sibling */
-    struct _xmlAttr *next;
-    /** previous sibling */
-    struct _xmlAttr *prev;
-    /** containing document */
-    struct _xmlDoc  *doc;
-    /** namespace if any */
-    xmlNs           *ns;
-    /** attribute type if validating */
-    xmlAttributeType atype;
-    /** for type/PSVI information */
-    void            *psvi;
-    /** ID struct if any */
-    struct _xmlID   *id XML_DEPRECATED_MEMBER;
+    void           *_private;	/* application data */
+    xmlElementType   type;      /* XML_ATTRIBUTE_NODE, must be second ! */
+    const xmlChar   *name;      /* the name of the property */
+    struct _xmlNode *children;	/* the value of the property */
+    struct _xmlNode *last;	/* NULL */
+    struct _xmlNode *parent;	/* child->parent link */
+    struct _xmlAttr *next;	/* next sibling link  */
+    struct _xmlAttr *prev;	/* previous sibling link  */
+    struct _xmlDoc  *doc;	/* the containing document */
+    xmlNs           *ns;        /* pointer to the associated namespace */
+    xmlAttributeType atype;     /* the attribute type if validating */
+    void            *psvi;	/* for type/PSVI information */
+    struct _xmlID   *id;        /* the ID struct */
 };
 
-/** Extra data for ID attributes */
+/**
+ * xmlID:
+ *
+ * An XML ID instance.
+ */
+
 typedef struct _xmlID xmlID;
 typedef xmlID *xmlIDPtr;
-/**
- * An XML ID instance.
- *
- * Should be treated as opaque. Accessing members directly
- * is deprecated.
- */
 struct _xmlID {
-    /* next ID */
-    struct _xmlID    *next XML_DEPRECATED_MEMBER;
-    /* The ID name */
-    xmlChar *value XML_DEPRECATED_MEMBER;
-    /* The attribute holding it */
-    xmlAttr          *attr XML_DEPRECATED_MEMBER;
-    /* The attribute if attr is not available */
-    const xmlChar    *name XML_DEPRECATED_MEMBER;
-    /* The line number if attr is not available */
-    int               lineno XML_DEPRECATED_MEMBER;
-    /* The document holding the ID */
-    struct _xmlDoc   *doc XML_DEPRECATED_MEMBER;
+    struct _xmlID    *next;	/* next ID */
+    const xmlChar    *value;	/* The ID name */
+    xmlAttrPtr        attr;	/* The attribute holding it */
+    const xmlChar    *name;	/* The attribute if attr is not available */
+    int               lineno;	/* The line number if attr is not available */
+    struct _xmlDoc   *doc;	/* The document holding the ID */
 };
 
-/** @cond ignore */
-typedef struct _xmlRef xmlRef;
-typedef xmlRef *xmlRefPtr;
-/*
+/**
+ * xmlRef:
+ *
  * An XML IDREF instance.
  */
-struct _xmlRef {
-    /* next Ref */
-    struct _xmlRef    *next XML_DEPRECATED_MEMBER;
-    /* The Ref name */
-    const xmlChar     *value XML_DEPRECATED_MEMBER;
-    /* The attribute holding it */
-    xmlAttr          *attr XML_DEPRECATED_MEMBER;
-    /* The attribute if attr is not available */
-    const xmlChar    *name XML_DEPRECATED_MEMBER;
-    /* The line number if attr is not available */
-    int               lineno XML_DEPRECATED_MEMBER;
-};
-/** @endcond */
 
-/** Generic node type in an XML or HTML tree */
+typedef struct _xmlRef xmlRef;
+typedef xmlRef *xmlRefPtr;
+struct _xmlRef {
+    struct _xmlRef    *next;	/* next Ref */
+    const xmlChar     *value;	/* The Ref name */
+    xmlAttrPtr        attr;	/* The attribute holding it */
+    const xmlChar    *name;	/* The attribute if attr is not available */
+    int               lineno;	/* The line number if attr is not available */
+};
+
+/**
+ * xmlNode:
+ *
+ * A node in an XML tree.
+ */
 typedef struct _xmlNode xmlNode;
 typedef xmlNode *xmlNodePtr;
-/**
- * Generic node type in an XML or HTML tree.
- *
- * This is used for
- *
- * - XML_ELEMENT_NODE
- * - XML_TEXT_NODE
- * - XML_CDATA_SECTION_NODE
- * - XML_ENTITY_REF_NODE
- * - XML_PI_NODE
- * - XML_COMMENT_NODE
- * - XML_DOCUMENT_FRAG_NODE
- * - XML_XINCLUDE_START_NODE
- * - XML_XINCLUDE_END_NODE
- *
- * Other node types have a different struct layout than xmlNode,
- * see xmlElementType. Except for XML_NAMESPACE_DECL all nodes
- * share the following members at the same offset:
- *
- * - `_private`
- * - `type` (also for XML_NAMESPACE_DECL)
- * - `name`
- * - `children`
- * - `last`
- * - `parent`
- * - `next`
- * - `prev`
- * - `doc`
- *
- * xmlNode and xmlAttr also share the `ns` member.
- */
 struct _xmlNode {
-    /** Application data. Often used by language bindings. */
-    void           *_private;
-    /** Type enum, an xmlElementType value */
-    xmlElementType   type;
-    /**
-     * Name of the node.
-     *
-     * - Local name of elements or attributes. As a corner case,
-     *   this can also contain Names which are invalid QNames in
-     *   non-namespace-wellformed documents.
-     * - Name of entity references
-     * - Target of processing instructions
-     * - Fixed string for text and comments
-     * - Unused otherwise
-     */
-    const xmlChar   *name;
-    /** First child. Entity declaration of entity references. */
-    struct _xmlNode *children;
-    /** Last child */
-    struct _xmlNode *last;
-    /** Parent node. NULL for documents or unlinked root nodes. */
-    struct _xmlNode *parent;
-    /** Next sibling */
-    struct _xmlNode *next;
-    /** Previous sibling */
-    struct _xmlNode *prev;
-    /**
-     * Associated document.
-     *
-     * Used to access DTDs, entities, ID tables, dictionary or
-     * other document properties. All children of a node share the
-     * same document.
-     */
-    struct _xmlDoc  *doc;
+    void           *_private;	/* application data */
+    xmlElementType   type;	/* type number, must be second ! */
+    const xmlChar   *name;      /* the name of the node, or the entity */
+    struct _xmlNode *children;	/* parent->childs link */
+    struct _xmlNode *last;	/* last child link */
+    struct _xmlNode *parent;	/* child->parent link */
+    struct _xmlNode *next;	/* next sibling link  */
+    struct _xmlNode *prev;	/* previous sibling link  */
+    struct _xmlDoc  *doc;	/* the containing document */
 
     /* End of common part */
-
-    /** Namespace of element if any */
-    xmlNs           *ns;
-    /**
-     * Content of text, comment, PI nodes.
-     *
-     * Sort index for elements after calling #xmlXPathOrderDocElems.
-     * Content of internal entities for entity references.
-     */
-    xmlChar         *content;
-    /**
-     * First attribute of element.
-     *
-     * Also used to store small strings with XML_PARSE_COMPACT.
-     */
-    struct _xmlAttr *properties;
-    /** First namespace definition of element */
-    xmlNs           *nsDef;
-    /** For type/PSVI information */
-    void            *psvi;
-    /** Line number */
-    unsigned short   line;
-    /** Extra data for XPath/XSLT */
-    unsigned short   extra;
+    xmlNs           *ns;        /* pointer to the associated namespace */
+    xmlChar         *content;   /* the content */
+    struct _xmlAttr *properties;/* properties list */
+    xmlNs           *nsDef;     /* namespace definitions on this node */
+    void            *psvi;	/* for type/PSVI information */
+    unsigned short   line;	/* line number */
+    unsigned short   extra;	/* extra data for XPath/XSLT */
 };
 
 /**
- * Set of properties of the document as found by the parser.
- * Some of them are linked to similarly named xmlParserOption.
+ * XML_GET_CONTENT:
+ *
+ * Macro to extract the content pointer of a node.
+ */
+#define XML_GET_CONTENT(n)					\
+    ((n)->type == XML_ELEMENT_NODE ? NULL : (n)->content)
+
+/**
+ * XML_GET_LINE:
+ *
+ * Macro to extract the line number of an element node.
+ */
+#define XML_GET_LINE(n)						\
+    (xmlGetLineNo(n))
+
+/**
+ * xmlDocProperty
+ *
+ * Set of properties of the document as found by the parser
+ * Some of them are linked to similarly named xmlParserOption
  */
 typedef enum {
-    /** document is XML well formed */
-    XML_DOC_WELLFORMED		= 1<<0,
-    /** document is Namespace valid */
-    XML_DOC_NSVALID		= 1<<1,
-    /** parsed with old XML-1.0 parser */
-    XML_DOC_OLD10		= 1<<2,
-    /** DTD validation was successful */
-    XML_DOC_DTDVALID		= 1<<3,
-    /** XInclude substitution was done */
-    XML_DOC_XINCLUDE		= 1<<4,
-    /** Document was built using the API and not by parsing an instance */
-    XML_DOC_USERBUILT		= 1<<5,
-    /** built for internal processing */
-    XML_DOC_INTERNAL		= 1<<6,
-    /** parsed or built HTML document */
-    XML_DOC_HTML		= 1<<7
+    XML_DOC_WELLFORMED		= 1<<0, /* document is XML well formed */
+    XML_DOC_NSVALID		= 1<<1, /* document is Namespace valid */
+    XML_DOC_OLD10		= 1<<2, /* parsed with old XML-1.0 parser */
+    XML_DOC_DTDVALID		= 1<<3, /* DTD validation was successful */
+    XML_DOC_XINCLUDE		= 1<<4, /* XInclude substitution was done */
+    XML_DOC_USERBUILT		= 1<<5, /* Document was built using the API
+                                           and not by parsing an instance */
+    XML_DOC_INTERNAL		= 1<<6, /* built for internal processing */
+    XML_DOC_HTML		= 1<<7  /* parsed or built HTML document */
 } xmlDocProperties;
 
-/** XML or HTML document */
+/**
+ * xmlDoc:
+ *
+ * An XML document.
+ */
 typedef struct _xmlDoc xmlDoc;
 typedef xmlDoc *xmlDocPtr;
-/**
- * An XML or HTML document.
- */
 struct _xmlDoc {
-    /** application data */
-    void           *_private;
-    /** XML_DOCUMENT_NODE or XML_HTML_DOCUMENT_NODE */
-    xmlElementType  type;
-    /** NULL */
-    char           *name;
-    /** first child */
-    struct _xmlNode *children;
-    /** last child */
-    struct _xmlNode *last;
-    /** parent node */
-    struct _xmlNode *parent;
-    /** next sibling */
-    struct _xmlNode *next;
-    /** previous sibling */
-    struct _xmlNode *prev;
-    /** reference to itself */
-    struct _xmlDoc  *doc;
+    void           *_private;	/* application data */
+    xmlElementType  type;       /* XML_DOCUMENT_NODE, must be second ! */
+    char           *name;	/* name/filename/URI of the document */
+    struct _xmlNode *children;	/* the document tree */
+    struct _xmlNode *last;	/* last child link */
+    struct _xmlNode *parent;	/* child->parent link */
+    struct _xmlNode *next;	/* next sibling link  */
+    struct _xmlNode *prev;	/* previous sibling link  */
+    struct _xmlDoc  *doc;	/* autoreference to itself */
 
     /* End of common part */
-
-    /** level of zlib compression */
-    int             compression;
-    /**
-     * standalone document (no external refs)
-     *
-     * - 1 if standalone="yes",
-     * - 0 if standalone="no",
-     * - -1 if there is no XML declaration,
-     * - -2 if there is an XML declaration, but no
-     *   standalone attribute was specified
-     */
-    int             standalone;
-    /** internal subset */
-    struct _xmlDtd  *intSubset;
-    /** external subset */
-    struct _xmlDtd  *extSubset;
-    /** used to hold the XML namespace if needed */
-    struct _xmlNs   *oldNs;
-    /** version string from XML declaration */
-    xmlChar  *version;
-    /** actual encoding if any */
-    xmlChar  *encoding;
-    /** hash table for ID attributes if any */
-    void           *ids;
-    /** hash table for IDREFs attributes if any */
-    void           *refs XML_DEPRECATED_MEMBER;
-    /** URI of the document */
-    xmlChar  *URL;
-    /** unused */
-    int             charset;
-    /** dict used to allocate names if any */
-    struct _xmlDict *dict;
-    /** for type/PSVI information */
-    void           *psvi;
-    /** xmlParserOption enum used to parse the document */
-    int             parseFlags;
-    /** xmlDocProperties of the document */
-    int             properties;
+    int             compression;/* level of zlib compression */
+    int             standalone; /* standalone document (no external refs)
+				     1 if standalone="yes"
+				     0 if standalone="no"
+				    -1 if there is no XML declaration
+				    -2 if there is an XML declaration, but no
+					standalone attribute was specified */
+    struct _xmlDtd  *intSubset;	/* the document internal subset */
+    struct _xmlDtd  *extSubset;	/* the document external subset */
+    struct _xmlNs   *oldNs;	/* Global namespace, the old way */
+    const xmlChar  *version;	/* the XML version string */
+    const xmlChar  *encoding;   /* actual encoding, if any */
+    void           *ids;        /* Hash table for ID attributes if any */
+    void           *refs;       /* Hash table for IDREFs attributes if any */
+    const xmlChar  *URL;	/* The URI for that document */
+    int             charset;    /* unused */
+    struct _xmlDict *dict;      /* dict used to allocate names or NULL */
+    void           *psvi;	/* for type/PSVI information */
+    int             parseFlags;	/* set of xmlParserOption used to parse the
+				   document */
+    int             properties;	/* set of xmlDocProperties for this document
+				   set at the end of parsing */
 };
 
 
-/** Context for DOM wrapper operations */
 typedef struct _xmlDOMWrapCtxt xmlDOMWrapCtxt;
 typedef xmlDOMWrapCtxt *xmlDOMWrapCtxtPtr;
 
 /**
+ * xmlDOMWrapAcquireNsFunction:
+ * @ctxt:  a DOM wrapper context
+ * @node:  the context node (element or attribute)
+ * @nsName:  the requested namespace name
+ * @nsPrefix:  the requested namespace prefix
+ *
  * A function called to acquire namespaces (xmlNs) from the wrapper.
  *
- * @param ctxt  a DOM wrapper context
- * @param node  the context node (element or attribute)
- * @param nsName  the requested namespace name
- * @param nsPrefix  the requested namespace prefix
- * @returns an xmlNs or NULL in case of an error.
+ * Returns an xmlNsPtr or NULL in case of an error.
  */
-typedef xmlNs *(*xmlDOMWrapAcquireNsFunction) (xmlDOMWrapCtxt *ctxt,
-						 xmlNode *node,
+typedef xmlNsPtr (*xmlDOMWrapAcquireNsFunction) (xmlDOMWrapCtxtPtr ctxt,
+						 xmlNodePtr node,
 						 const xmlChar *nsName,
 						 const xmlChar *nsPrefix);
 
 /**
+ * xmlDOMWrapCtxt:
+ *
  * Context for DOM wrapper-operations.
  */
 struct _xmlDOMWrapCtxt {
@@ -880,27 +627,31 @@ struct _xmlDOMWrapCtxt {
     */
     void * namespaceMap;
     /*
-    * Use this one to acquire an xmlNs intended for node->ns.
+    * Use this one to acquire an xmlNsPtr intended for node->ns.
     * (Note that this is not intended for elem->nsDef).
     */
     xmlDOMWrapAcquireNsFunction getNsForNodeFunc;
 };
 
 /**
+ * xmlRegisterNodeFunc:
+ * @node: the current node
+ *
  * Signature for the registration callback of a created node
- *
- * @param node  the current node
  */
-typedef void (*xmlRegisterNodeFunc) (xmlNode *node);
+typedef void (*xmlRegisterNodeFunc) (xmlNodePtr node);
 
 /**
+ * xmlDeregisterNodeFunc:
+ * @node: the current node
+ *
  * Signature for the deregistration callback of a discarded node
- *
- * @param node  the current node
  */
-typedef void (*xmlDeregisterNodeFunc) (xmlNode *node);
+typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
 
 /**
+ * xmlChildrenNode:
+ *
  * Macro for compatibility naming layer with libxml1. Maps
  * to "children."
  */
@@ -909,6 +660,8 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNode *node);
 #endif
 
 /**
+ * xmlRootNode:
+ *
  * Macro for compatibility naming layer with libxml1. Maps
  * to "children".
  */
@@ -920,21 +673,27 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNode *node);
  * Variables.
  */
 
-/** @cond ignore */
+/** DOC_DISABLE */
+#define XML_GLOBALS_TREE \
+  XML_OP(xmlBufferAllocScheme, xmlBufferAllocationScheme, XML_DEPRECATED) \
+  XML_OP(xmlDefaultBufferSize, int, XML_DEPRECATED) \
+  XML_OP(xmlRegisterNodeDefaultValue, xmlRegisterNodeFunc, XML_DEPRECATED) \
+  XML_OP(xmlDeregisterNodeDefaultValue, xmlDeregisterNodeFunc, \
+         XML_DEPRECATED)
 
-XML_DEPRECATED
-XMLPUBFUN xmlRegisterNodeFunc *__xmlRegisterNodeDefaultValue(void);
-XML_DEPRECATED
-XMLPUBFUN xmlDeregisterNodeFunc *__xmlDeregisterNodeDefaultValue(void);
+#define XML_OP XML_DECLARE_GLOBAL
+XML_GLOBALS_TREE
+#undef XML_OP
 
-#ifndef XML_GLOBALS_NO_REDEFINITION
+#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
+  #define xmlBufferAllocScheme XML_GLOBAL_MACRO(xmlBufferAllocScheme)
+  #define xmlDefaultBufferSize XML_GLOBAL_MACRO(xmlDefaultBufferSize)
   #define xmlRegisterNodeDefaultValue \
-    (*__xmlRegisterNodeDefaultValue())
+    XML_GLOBAL_MACRO(xmlRegisterNodeDefaultValue)
   #define xmlDeregisterNodeDefaultValue \
-    (*__xmlDeregisterNodeDefaultValue())
+    XML_GLOBAL_MACRO(xmlDeregisterNodeDefaultValue)
 #endif
-
-/** @endcond */
+/** DOC_ENABLE */
 
 /*
  * Some helper functions
@@ -943,6 +702,7 @@ XMLPUBFUN int
 		xmlValidateNCName	(const xmlChar *value,
 					 int space);
 
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 XMLPUBFUN int
 		xmlValidateQName	(const xmlChar *value,
 					 int space);
@@ -952,6 +712,7 @@ XMLPUBFUN int
 XMLPUBFUN int
 		xmlValidateNMToken	(const xmlChar *value,
 					 int space);
+#endif
 
 XMLPUBFUN xmlChar *
 		xmlBuildQName		(const xmlChar *ncname,
@@ -966,160 +727,236 @@ XMLPUBFUN const xmlChar *
 					 int *len);
 
 /*
+ * Handling Buffers, the old ones see @xmlBuf for the new ones.
+ */
+
+XMLPUBFUN void
+		xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme);
+XMLPUBFUN xmlBufferAllocationScheme
+		xmlGetBufferAllocationScheme(void);
+
+XMLPUBFUN xmlBufferPtr
+		xmlBufferCreate		(void);
+XMLPUBFUN xmlBufferPtr
+		xmlBufferCreateSize	(size_t size);
+XMLPUBFUN xmlBufferPtr
+		xmlBufferCreateStatic	(void *mem,
+					 size_t size);
+XMLPUBFUN int
+		xmlBufferResize		(xmlBufferPtr buf,
+					 unsigned int size);
+XMLPUBFUN void
+		xmlBufferFree		(xmlBufferPtr buf);
+XMLPUBFUN int
+		xmlBufferDump		(FILE *file,
+					 xmlBufferPtr buf);
+XMLPUBFUN int
+		xmlBufferAdd		(xmlBufferPtr buf,
+					 const xmlChar *str,
+					 int len);
+XMLPUBFUN int
+		xmlBufferAddHead	(xmlBufferPtr buf,
+					 const xmlChar *str,
+					 int len);
+XMLPUBFUN int
+		xmlBufferCat		(xmlBufferPtr buf,
+					 const xmlChar *str);
+XMLPUBFUN int
+		xmlBufferCCat		(xmlBufferPtr buf,
+					 const char *str);
+XMLPUBFUN int
+		xmlBufferShrink		(xmlBufferPtr buf,
+					 unsigned int len);
+XMLPUBFUN int
+		xmlBufferGrow		(xmlBufferPtr buf,
+					 unsigned int len);
+XMLPUBFUN void
+		xmlBufferEmpty		(xmlBufferPtr buf);
+XMLPUBFUN const xmlChar*
+		xmlBufferContent	(const xmlBuffer *buf);
+XMLPUBFUN xmlChar*
+		xmlBufferDetach         (xmlBufferPtr buf);
+XMLPUBFUN void
+		xmlBufferSetAllocationScheme(xmlBufferPtr buf,
+					 xmlBufferAllocationScheme scheme);
+XMLPUBFUN int
+		xmlBufferLength		(const xmlBuffer *buf);
+
+/*
  * Creating/freeing new structures.
  */
-XMLPUBFUN xmlDtd *
-		xmlCreateIntSubset	(xmlDoc *doc,
+XMLPUBFUN xmlDtdPtr
+		xmlCreateIntSubset	(xmlDocPtr doc,
 					 const xmlChar *name,
-					 const xmlChar *publicId,
-					 const xmlChar *systemId);
-XMLPUBFUN xmlDtd *
-		xmlNewDtd		(xmlDoc *doc,
+					 const xmlChar *ExternalID,
+					 const xmlChar *SystemID);
+XMLPUBFUN xmlDtdPtr
+		xmlNewDtd		(xmlDocPtr doc,
 					 const xmlChar *name,
-					 const xmlChar *publicId,
-					 const xmlChar *systemId);
-XMLPUBFUN xmlDtd *
+					 const xmlChar *ExternalID,
+					 const xmlChar *SystemID);
+XMLPUBFUN xmlDtdPtr
 		xmlGetIntSubset		(const xmlDoc *doc);
 XMLPUBFUN void
-		xmlFreeDtd		(xmlDtd *cur);
-XMLPUBFUN xmlNs *
-		xmlNewNs		(xmlNode *node,
+		xmlFreeDtd		(xmlDtdPtr cur);
+#ifdef LIBXML_LEGACY_ENABLED
+XML_DEPRECATED
+XMLPUBFUN xmlNsPtr
+		xmlNewGlobalNs		(xmlDocPtr doc,
+					 const xmlChar *href,
+					 const xmlChar *prefix);
+#endif /* LIBXML_LEGACY_ENABLED */
+XMLPUBFUN xmlNsPtr
+		xmlNewNs		(xmlNodePtr node,
 					 const xmlChar *href,
 					 const xmlChar *prefix);
 XMLPUBFUN void
-		xmlFreeNs		(xmlNs *cur);
+		xmlFreeNs		(xmlNsPtr cur);
 XMLPUBFUN void
-		xmlFreeNsList		(xmlNs *cur);
-XMLPUBFUN xmlDoc *
+		xmlFreeNsList		(xmlNsPtr cur);
+XMLPUBFUN xmlDocPtr
 		xmlNewDoc		(const xmlChar *version);
 XMLPUBFUN void
-		xmlFreeDoc		(xmlDoc *cur);
-XMLPUBFUN xmlAttr *
-		xmlNewDocProp		(xmlDoc *doc,
+		xmlFreeDoc		(xmlDocPtr cur);
+XMLPUBFUN xmlAttrPtr
+		xmlNewDocProp		(xmlDocPtr doc,
 					 const xmlChar *name,
 					 const xmlChar *value);
-XMLPUBFUN xmlAttr *
-		xmlNewProp		(xmlNode *node,
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED)
+XMLPUBFUN xmlAttrPtr
+		xmlNewProp		(xmlNodePtr node,
 					 const xmlChar *name,
 					 const xmlChar *value);
-XMLPUBFUN xmlAttr *
-		xmlNewNsProp		(xmlNode *node,
-					 xmlNs *ns,
+#endif
+XMLPUBFUN xmlAttrPtr
+		xmlNewNsProp		(xmlNodePtr node,
+					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *value);
-XMLPUBFUN xmlAttr *
-		xmlNewNsPropEatName	(xmlNode *node,
-					 xmlNs *ns,
+XMLPUBFUN xmlAttrPtr
+		xmlNewNsPropEatName	(xmlNodePtr node,
+					 xmlNsPtr ns,
 					 xmlChar *name,
 					 const xmlChar *value);
 XMLPUBFUN void
-		xmlFreePropList		(xmlAttr *cur);
+		xmlFreePropList		(xmlAttrPtr cur);
 XMLPUBFUN void
-		xmlFreeProp		(xmlAttr *cur);
-XMLPUBFUN xmlAttr *
-		xmlCopyProp		(xmlNode *target,
-					 xmlAttr *cur);
-XMLPUBFUN xmlAttr *
-		xmlCopyPropList		(xmlNode *target,
-					 xmlAttr *cur);
-XMLPUBFUN xmlDtd *
-		xmlCopyDtd		(xmlDtd *dtd);
-XMLPUBFUN xmlDoc *
-		xmlCopyDoc		(xmlDoc *doc,
+		xmlFreeProp		(xmlAttrPtr cur);
+XMLPUBFUN xmlAttrPtr
+		xmlCopyProp		(xmlNodePtr target,
+					 xmlAttrPtr cur);
+XMLPUBFUN xmlAttrPtr
+		xmlCopyPropList		(xmlNodePtr target,
+					 xmlAttrPtr cur);
+#ifdef LIBXML_TREE_ENABLED
+XMLPUBFUN xmlDtdPtr
+		xmlCopyDtd		(xmlDtdPtr dtd);
+#endif /* LIBXML_TREE_ENABLED */
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+XMLPUBFUN xmlDocPtr
+		xmlCopyDoc		(xmlDocPtr doc,
 					 int recursive);
+#endif /* defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) */
 /*
  * Creating new nodes.
  */
-XMLPUBFUN xmlNode *
-		xmlNewDocNode		(xmlDoc *doc,
-					 xmlNs *ns,
+XMLPUBFUN xmlNodePtr
+		xmlNewDocNode		(xmlDocPtr doc,
+					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNode *
-		xmlNewDocNodeEatName	(xmlDoc *doc,
-					 xmlNs *ns,
+XMLPUBFUN xmlNodePtr
+		xmlNewDocNodeEatName	(xmlDocPtr doc,
+					 xmlNsPtr ns,
 					 xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNode *
-		xmlNewNode		(xmlNs *ns,
+XMLPUBFUN xmlNodePtr
+		xmlNewNode		(xmlNsPtr ns,
 					 const xmlChar *name);
-XMLPUBFUN xmlNode *
-		xmlNewNodeEatName	(xmlNs *ns,
+XMLPUBFUN xmlNodePtr
+		xmlNewNodeEatName	(xmlNsPtr ns,
 					 xmlChar *name);
-XMLPUBFUN xmlNode *
-		xmlNewChild		(xmlNode *parent,
-					 xmlNs *ns,
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+XMLPUBFUN xmlNodePtr
+		xmlNewChild		(xmlNodePtr parent,
+					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNode *
+#endif
+XMLPUBFUN xmlNodePtr
 		xmlNewDocText		(const xmlDoc *doc,
 					 const xmlChar *content);
-XMLPUBFUN xmlNode *
+XMLPUBFUN xmlNodePtr
 		xmlNewText		(const xmlChar *content);
-XMLPUBFUN xmlNode *
-		xmlNewDocPI		(xmlDoc *doc,
+XMLPUBFUN xmlNodePtr
+		xmlNewDocPI		(xmlDocPtr doc,
 					 const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNode *
+XMLPUBFUN xmlNodePtr
 		xmlNewPI		(const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNode *
-		xmlNewDocTextLen	(xmlDoc *doc,
+XMLPUBFUN xmlNodePtr
+		xmlNewDocTextLen	(xmlDocPtr doc,
 					 const xmlChar *content,
 					 int len);
-XMLPUBFUN xmlNode *
+XMLPUBFUN xmlNodePtr
 		xmlNewTextLen		(const xmlChar *content,
 					 int len);
-XMLPUBFUN xmlNode *
-		xmlNewDocComment	(xmlDoc *doc,
+XMLPUBFUN xmlNodePtr
+		xmlNewDocComment	(xmlDocPtr doc,
 					 const xmlChar *content);
-XMLPUBFUN xmlNode *
+XMLPUBFUN xmlNodePtr
 		xmlNewComment		(const xmlChar *content);
-XMLPUBFUN xmlNode *
-		xmlNewCDataBlock	(xmlDoc *doc,
+XMLPUBFUN xmlNodePtr
+		xmlNewCDataBlock	(xmlDocPtr doc,
 					 const xmlChar *content,
 					 int len);
-XMLPUBFUN xmlNode *
-		xmlNewCharRef		(xmlDoc *doc,
+XMLPUBFUN xmlNodePtr
+		xmlNewCharRef		(xmlDocPtr doc,
 					 const xmlChar *name);
-XMLPUBFUN xmlNode *
+XMLPUBFUN xmlNodePtr
 		xmlNewReference		(const xmlDoc *doc,
 					 const xmlChar *name);
-XMLPUBFUN xmlNode *
-		xmlCopyNode		(xmlNode *node,
+XMLPUBFUN xmlNodePtr
+		xmlCopyNode		(xmlNodePtr node,
 					 int recursive);
-XMLPUBFUN xmlNode *
-		xmlDocCopyNode		(xmlNode *node,
-					 xmlDoc *doc,
+XMLPUBFUN xmlNodePtr
+		xmlDocCopyNode		(xmlNodePtr node,
+					 xmlDocPtr doc,
 					 int recursive);
-XMLPUBFUN xmlNode *
-		xmlDocCopyNodeList	(xmlDoc *doc,
-					 xmlNode *node);
-XMLPUBFUN xmlNode *
-		xmlCopyNodeList		(xmlNode *node);
-XMLPUBFUN xmlNode *
-		xmlNewTextChild		(xmlNode *parent,
-					 xmlNs *ns,
+XMLPUBFUN xmlNodePtr
+		xmlDocCopyNodeList	(xmlDocPtr doc,
+					 xmlNodePtr node);
+XMLPUBFUN xmlNodePtr
+		xmlCopyNodeList		(xmlNodePtr node);
+#ifdef LIBXML_TREE_ENABLED
+XMLPUBFUN xmlNodePtr
+		xmlNewTextChild		(xmlNodePtr parent,
+					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNode *
-		xmlNewDocRawNode	(xmlDoc *doc,
-					 xmlNs *ns,
+XMLPUBFUN xmlNodePtr
+		xmlNewDocRawNode	(xmlDocPtr doc,
+					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
-XMLPUBFUN xmlNode *
-		xmlNewDocFragment	(xmlDoc *doc);
+XMLPUBFUN xmlNodePtr
+		xmlNewDocFragment	(xmlDocPtr doc);
+#endif /* LIBXML_TREE_ENABLED */
 
 /*
  * Navigating.
  */
 XMLPUBFUN long
 		xmlGetLineNo		(const xmlNode *node);
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_DEBUG_ENABLED)
 XMLPUBFUN xmlChar *
 		xmlGetNodePath		(const xmlNode *node);
-XMLPUBFUN xmlNode *
+#endif /* defined(LIBXML_TREE_ENABLED) || defined(LIBXML_DEBUG_ENABLED) */
+XMLPUBFUN xmlNodePtr
 		xmlDocGetRootElement	(const xmlDoc *doc);
-XMLPUBFUN xmlNode *
+XMLPUBFUN xmlNodePtr
 		xmlGetLastChild		(const xmlNode *parent);
 XMLPUBFUN int
 		xmlNodeIsText		(const xmlNode *node);
@@ -1129,88 +966,104 @@ XMLPUBFUN int
 /*
  * Changing the structure.
  */
-XMLPUBFUN xmlNode *
-		xmlDocSetRootElement	(xmlDoc *doc,
-					 xmlNode *root);
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)
+XMLPUBFUN xmlNodePtr
+		xmlDocSetRootElement	(xmlDocPtr doc,
+					 xmlNodePtr root);
+#endif /* defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED) */
+#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN void
-		xmlNodeSetName		(xmlNode *cur,
+		xmlNodeSetName		(xmlNodePtr cur,
 					 const xmlChar *name);
-XMLPUBFUN xmlNode *
-		xmlAddChild		(xmlNode *parent,
-					 xmlNode *cur);
-XMLPUBFUN xmlNode *
-		xmlAddChildList		(xmlNode *parent,
-					 xmlNode *cur);
-XMLPUBFUN xmlNode *
-		xmlReplaceNode		(xmlNode *old,
-					 xmlNode *cur);
-XMLPUBFUN xmlNode *
-		xmlAddPrevSibling	(xmlNode *cur,
-					 xmlNode *elem);
-XMLPUBFUN xmlNode *
-		xmlAddSibling		(xmlNode *cur,
-					 xmlNode *elem);
-XMLPUBFUN xmlNode *
-		xmlAddNextSibling	(xmlNode *cur,
-					 xmlNode *elem);
+#endif /* LIBXML_TREE_ENABLED */
+XMLPUBFUN xmlNodePtr
+		xmlAddChild		(xmlNodePtr parent,
+					 xmlNodePtr cur);
+XMLPUBFUN xmlNodePtr
+		xmlAddChildList		(xmlNodePtr parent,
+					 xmlNodePtr cur);
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)
+XMLPUBFUN xmlNodePtr
+		xmlReplaceNode		(xmlNodePtr old,
+					 xmlNodePtr cur);
+#endif /* defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED) */
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)
+XMLPUBFUN xmlNodePtr
+		xmlAddPrevSibling	(xmlNodePtr cur,
+					 xmlNodePtr elem);
+#endif /* LIBXML_TREE_ENABLED || LIBXML_HTML_ENABLED || LIBXML_SCHEMAS_ENABLED */
+XMLPUBFUN xmlNodePtr
+		xmlAddSibling		(xmlNodePtr cur,
+					 xmlNodePtr elem);
+XMLPUBFUN xmlNodePtr
+		xmlAddNextSibling	(xmlNodePtr cur,
+					 xmlNodePtr elem);
 XMLPUBFUN void
-		xmlUnlinkNode		(xmlNode *cur);
-XMLPUBFUN xmlNode *
-		xmlTextMerge		(xmlNode *first,
-					 xmlNode *second);
+		xmlUnlinkNode		(xmlNodePtr cur);
+XMLPUBFUN xmlNodePtr
+		xmlTextMerge		(xmlNodePtr first,
+					 xmlNodePtr second);
 XMLPUBFUN int
-		xmlTextConcat		(xmlNode *node,
+		xmlTextConcat		(xmlNodePtr node,
 					 const xmlChar *content,
 					 int len);
 XMLPUBFUN void
-		xmlFreeNodeList		(xmlNode *cur);
+		xmlFreeNodeList		(xmlNodePtr cur);
 XMLPUBFUN void
-		xmlFreeNode		(xmlNode *cur);
+		xmlFreeNode		(xmlNodePtr cur);
 XMLPUBFUN int
-		xmlSetTreeDoc		(xmlNode *tree,
-					 xmlDoc *doc);
+		xmlSetTreeDoc		(xmlNodePtr tree,
+					 xmlDocPtr doc);
 XMLPUBFUN int
-		xmlSetListDoc		(xmlNode *list,
-					 xmlDoc *doc);
+		xmlSetListDoc		(xmlNodePtr list,
+					 xmlDocPtr doc);
 /*
  * Namespaces.
  */
-XMLPUBFUN xmlNs *
-		xmlSearchNs		(xmlDoc *doc,
-					 xmlNode *node,
+XMLPUBFUN xmlNsPtr
+		xmlSearchNs		(xmlDocPtr doc,
+					 xmlNodePtr node,
 					 const xmlChar *nameSpace);
-XMLPUBFUN xmlNs *
-		xmlSearchNsByHref	(xmlDoc *doc,
-					 xmlNode *node,
+XMLPUBFUN xmlNsPtr
+		xmlSearchNsByHref	(xmlDocPtr doc,
+					 xmlNodePtr node,
 					 const xmlChar *href);
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED)
 XMLPUBFUN int
 		xmlGetNsListSafe	(const xmlDoc *doc,
 					 const xmlNode *node,
-					 xmlNs ***out);
-XMLPUBFUN xmlNs **
+					 xmlNsPtr **out);
+XMLPUBFUN xmlNsPtr *
 		xmlGetNsList		(const xmlDoc *doc,
 					 const xmlNode *node);
+#endif /* defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) */
 
 XMLPUBFUN void
-		xmlSetNs		(xmlNode *node,
-					 xmlNs *ns);
-XMLPUBFUN xmlNs *
-		xmlCopyNamespace	(xmlNs *cur);
-XMLPUBFUN xmlNs *
-		xmlCopyNamespaceList	(xmlNs *cur);
+		xmlSetNs		(xmlNodePtr node,
+					 xmlNsPtr ns);
+XMLPUBFUN xmlNsPtr
+		xmlCopyNamespace	(xmlNsPtr cur);
+XMLPUBFUN xmlNsPtr
+		xmlCopyNamespaceList	(xmlNsPtr cur);
 
 /*
  * Changing the content.
  */
-XMLPUBFUN xmlAttr *
-		xmlSetProp		(xmlNode *node,
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)
+XMLPUBFUN xmlAttrPtr
+		xmlSetProp		(xmlNodePtr node,
 					 const xmlChar *name,
 					 const xmlChar *value);
-XMLPUBFUN xmlAttr *
-		xmlSetNsProp		(xmlNode *node,
-					 xmlNs *ns,
+XMLPUBFUN xmlAttrPtr
+		xmlSetNsProp		(xmlNodePtr node,
+					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *value);
+#endif /* defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || \
+	  defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED) */
 XMLPUBFUN int
 		xmlNodeGetAttrValue	(const xmlNode *node,
 					 const xmlChar *name,
@@ -1222,10 +1075,10 @@ XMLPUBFUN xmlChar *
 XMLPUBFUN xmlChar *
 		xmlGetProp		(const xmlNode *node,
 					 const xmlChar *name);
-XMLPUBFUN xmlAttr *
+XMLPUBFUN xmlAttrPtr
 		xmlHasProp		(const xmlNode *node,
 					 const xmlChar *name);
-XMLPUBFUN xmlAttr *
+XMLPUBFUN xmlAttrPtr
 		xmlHasNsProp		(const xmlNode *node,
 					 const xmlChar *name,
 					 const xmlChar *nameSpace);
@@ -1233,55 +1086,61 @@ XMLPUBFUN xmlChar *
 		xmlGetNsProp		(const xmlNode *node,
 					 const xmlChar *name,
 					 const xmlChar *nameSpace);
-XMLPUBFUN xmlNode *
+XMLPUBFUN xmlNodePtr
 		xmlStringGetNodeList	(const xmlDoc *doc,
 					 const xmlChar *value);
-XMLPUBFUN xmlNode *
+XMLPUBFUN xmlNodePtr
 		xmlStringLenGetNodeList	(const xmlDoc *doc,
 					 const xmlChar *value,
 					 int len);
 XMLPUBFUN xmlChar *
-		xmlNodeListGetString	(xmlDoc *doc,
+		xmlNodeListGetString	(xmlDocPtr doc,
 					 const xmlNode *list,
 					 int inLine);
+#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN xmlChar *
 		xmlNodeListGetRawString	(const xmlDoc *doc,
 					 const xmlNode *list,
 					 int inLine);
+#endif /* LIBXML_TREE_ENABLED */
 XMLPUBFUN int
-		xmlNodeSetContent	(xmlNode *cur,
+		xmlNodeSetContent	(xmlNodePtr cur,
 					 const xmlChar *content);
+#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN int
-		xmlNodeSetContentLen	(xmlNode *cur,
+		xmlNodeSetContentLen	(xmlNodePtr cur,
 					 const xmlChar *content,
 					 int len);
+#endif /* LIBXML_TREE_ENABLED */
 XMLPUBFUN int
-		xmlNodeAddContent	(xmlNode *cur,
+		xmlNodeAddContent	(xmlNodePtr cur,
 					 const xmlChar *content);
 XMLPUBFUN int
-		xmlNodeAddContentLen	(xmlNode *cur,
+		xmlNodeAddContentLen	(xmlNodePtr cur,
 					 const xmlChar *content,
 					 int len);
 XMLPUBFUN xmlChar *
 		xmlNodeGetContent	(const xmlNode *cur);
 
 XMLPUBFUN int
-		xmlNodeBufGetContent	(xmlBuffer *buffer,
+		xmlNodeBufGetContent	(xmlBufferPtr buffer,
 					 const xmlNode *cur);
 XMLPUBFUN int
-		xmlBufGetNodeContent	(xmlBuf *buf,
+		xmlBufGetNodeContent	(xmlBufPtr buf,
 					 const xmlNode *cur);
 
 XMLPUBFUN xmlChar *
 		xmlNodeGetLang		(const xmlNode *cur);
 XMLPUBFUN int
 		xmlNodeGetSpacePreserve	(const xmlNode *cur);
+#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN int
-		xmlNodeSetLang		(xmlNode *cur,
+		xmlNodeSetLang		(xmlNodePtr cur,
 					 const xmlChar *lang);
 XMLPUBFUN int
-		xmlNodeSetSpacePreserve (xmlNode *cur,
+		xmlNodeSetSpacePreserve (xmlNodePtr cur,
 					 int val);
+#endif /* LIBXML_TREE_ENABLED */
 XMLPUBFUN int
 		xmlNodeGetBaseSafe	(const xmlDoc *doc,
 					 const xmlNode *cur,
@@ -1289,118 +1148,137 @@ XMLPUBFUN int
 XMLPUBFUN xmlChar *
 		xmlNodeGetBase		(const xmlDoc *doc,
 					 const xmlNode *cur);
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)
 XMLPUBFUN int
-		xmlNodeSetBase		(xmlNode *cur,
+		xmlNodeSetBase		(xmlNodePtr cur,
 					 const xmlChar *uri);
+#endif
 
 /*
  * Removing content.
  */
 XMLPUBFUN int
-		xmlRemoveProp		(xmlAttr *cur);
+		xmlRemoveProp		(xmlAttrPtr cur);
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 XMLPUBFUN int
-		xmlUnsetNsProp		(xmlNode *node,
-					 xmlNs *ns,
+		xmlUnsetNsProp		(xmlNodePtr node,
+					 xmlNsPtr ns,
 					 const xmlChar *name);
 XMLPUBFUN int
-		xmlUnsetProp		(xmlNode *node,
+		xmlUnsetProp		(xmlNodePtr node,
 					 const xmlChar *name);
+#endif /* defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) */
+
+/*
+ * Internal, don't use.
+ */
+XMLPUBFUN void
+		xmlBufferWriteCHAR	(xmlBufferPtr buf,
+					 const xmlChar *string);
+XMLPUBFUN void
+		xmlBufferWriteChar	(xmlBufferPtr buf,
+					 const char *string);
+XMLPUBFUN void
+		xmlBufferWriteQuotedString(xmlBufferPtr buf,
+					 const xmlChar *string);
 
 #ifdef LIBXML_OUTPUT_ENABLED
-XMLPUBFUN void xmlAttrSerializeTxtContent(xmlBuffer *buf,
-					 xmlDoc *doc,
-					 xmlAttr *attr,
+XMLPUBFUN void xmlAttrSerializeTxtContent(xmlBufferPtr buf,
+					 xmlDocPtr doc,
+					 xmlAttrPtr attr,
 					 const xmlChar *string);
 #endif /* LIBXML_OUTPUT_ENABLED */
 
+#ifdef LIBXML_TREE_ENABLED
 /*
  * Namespace handling.
  */
 XMLPUBFUN int
-		xmlReconciliateNs	(xmlDoc *doc,
-					 xmlNode *tree);
+		xmlReconciliateNs	(xmlDocPtr doc,
+					 xmlNodePtr tree);
+#endif
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /*
  * Saving.
  */
 XMLPUBFUN void
-		xmlDocDumpFormatMemory	(xmlDoc *cur,
+		xmlDocDumpFormatMemory	(xmlDocPtr cur,
 					 xmlChar **mem,
 					 int *size,
 					 int format);
 XMLPUBFUN void
-		xmlDocDumpMemory	(xmlDoc *cur,
+		xmlDocDumpMemory	(xmlDocPtr cur,
 					 xmlChar **mem,
 					 int *size);
 XMLPUBFUN void
-		xmlDocDumpMemoryEnc	(xmlDoc *out_doc,
+		xmlDocDumpMemoryEnc	(xmlDocPtr out_doc,
 					 xmlChar **doc_txt_ptr,
 					 int * doc_txt_len,
 					 const char *txt_encoding);
 XMLPUBFUN void
-		xmlDocDumpFormatMemoryEnc(xmlDoc *out_doc,
+		xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc,
 					 xmlChar **doc_txt_ptr,
 					 int * doc_txt_len,
 					 const char *txt_encoding,
 					 int format);
 XMLPUBFUN int
 		xmlDocFormatDump	(FILE *f,
-					 xmlDoc *cur,
+					 xmlDocPtr cur,
 					 int format);
 XMLPUBFUN int
 		xmlDocDump		(FILE *f,
-					 xmlDoc *cur);
+					 xmlDocPtr cur);
 XMLPUBFUN void
 		xmlElemDump		(FILE *f,
-					 xmlDoc *doc,
-					 xmlNode *cur);
+					 xmlDocPtr doc,
+					 xmlNodePtr cur);
 XMLPUBFUN int
 		xmlSaveFile		(const char *filename,
-					 xmlDoc *cur);
+					 xmlDocPtr cur);
 XMLPUBFUN int
 		xmlSaveFormatFile	(const char *filename,
-					 xmlDoc *cur,
+					 xmlDocPtr cur,
 					 int format);
 XMLPUBFUN size_t
-		xmlBufNodeDump		(xmlBuf *buf,
-					 xmlDoc *doc,
-					 xmlNode *cur,
+		xmlBufNodeDump		(xmlBufPtr buf,
+					 xmlDocPtr doc,
+					 xmlNodePtr cur,
 					 int level,
 					 int format);
 XMLPUBFUN int
-		xmlNodeDump		(xmlBuffer *buf,
-					 xmlDoc *doc,
-					 xmlNode *cur,
+		xmlNodeDump		(xmlBufferPtr buf,
+					 xmlDocPtr doc,
+					 xmlNodePtr cur,
 					 int level,
 					 int format);
 
 XMLPUBFUN int
-		xmlSaveFileTo		(xmlOutputBuffer *buf,
-					 xmlDoc *cur,
+		xmlSaveFileTo		(xmlOutputBufferPtr buf,
+					 xmlDocPtr cur,
 					 const char *encoding);
 XMLPUBFUN int
-		xmlSaveFormatFileTo     (xmlOutputBuffer *buf,
-					 xmlDoc *cur,
+		xmlSaveFormatFileTo     (xmlOutputBufferPtr buf,
+					 xmlDocPtr cur,
 				         const char *encoding,
 				         int format);
 XMLPUBFUN void
-		xmlNodeDumpOutput	(xmlOutputBuffer *buf,
-					 xmlDoc *doc,
-					 xmlNode *cur,
+		xmlNodeDumpOutput	(xmlOutputBufferPtr buf,
+					 xmlDocPtr doc,
+					 xmlNodePtr cur,
 					 int level,
 					 int format,
 					 const char *encoding);
 
 XMLPUBFUN int
 		xmlSaveFormatFileEnc    (const char *filename,
-					 xmlDoc *cur,
+					 xmlDocPtr cur,
 					 const char *encoding,
 					 int format);
 
 XMLPUBFUN int
 		xmlSaveFileEnc		(const char *filename,
-					 xmlDoc *cur,
+					 xmlDocPtr cur,
 					 const char *encoding);
 
 #endif /* LIBXML_OUTPUT_ENABLED */
@@ -1417,7 +1295,7 @@ XMLPUBFUN int
 XMLPUBFUN int
 		xmlGetDocCompressMode	(const xmlDoc *doc);
 XMLPUBFUN void
-		xmlSetDocCompressMode	(xmlDoc *doc,
+		xmlSetDocCompressMode	(xmlDocPtr doc,
 					 int mode);
 XML_DEPRECATED
 XMLPUBFUN int
@@ -1429,50 +1307,52 @@ XMLPUBFUN void
 /*
 * DOM-wrapper helper functions.
 */
-XMLPUBFUN xmlDOMWrapCtxt *
+XMLPUBFUN xmlDOMWrapCtxtPtr
 		xmlDOMWrapNewCtxt	(void);
 XMLPUBFUN void
-		xmlDOMWrapFreeCtxt	(xmlDOMWrapCtxt *ctxt);
+		xmlDOMWrapFreeCtxt	(xmlDOMWrapCtxtPtr ctxt);
 XMLPUBFUN int
-	    xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxt *ctxt,
-					 xmlNode *elem,
+	    xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt,
+					 xmlNodePtr elem,
 					 int options);
 XMLPUBFUN int
-	    xmlDOMWrapAdoptNode		(xmlDOMWrapCtxt *ctxt,
-					 xmlDoc *sourceDoc,
-					 xmlNode *node,
-					 xmlDoc *destDoc,
-					 xmlNode *destParent,
+	    xmlDOMWrapAdoptNode		(xmlDOMWrapCtxtPtr ctxt,
+					 xmlDocPtr sourceDoc,
+					 xmlNodePtr node,
+					 xmlDocPtr destDoc,
+					 xmlNodePtr destParent,
 					 int options);
 XMLPUBFUN int
-	    xmlDOMWrapRemoveNode	(xmlDOMWrapCtxt *ctxt,
-					 xmlDoc *doc,
-					 xmlNode *node,
+	    xmlDOMWrapRemoveNode	(xmlDOMWrapCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr node,
 					 int options);
 XMLPUBFUN int
-	    xmlDOMWrapCloneNode		(xmlDOMWrapCtxt *ctxt,
-					 xmlDoc *sourceDoc,
-					 xmlNode *node,
-					 xmlNode **clonedNode,
-					 xmlDoc *destDoc,
-					 xmlNode *destParent,
+	    xmlDOMWrapCloneNode		(xmlDOMWrapCtxtPtr ctxt,
+					 xmlDocPtr sourceDoc,
+					 xmlNodePtr node,
+					 xmlNodePtr *clonedNode,
+					 xmlDocPtr destDoc,
+					 xmlNodePtr destParent,
 					 int deep,
 					 int options);
 
+#ifdef LIBXML_TREE_ENABLED
 /*
  * 5 interfaces from DOM ElementTraversal, but different in entities
  * traversal.
  */
 XMLPUBFUN unsigned long
-            xmlChildElementCount        (xmlNode *parent);
-XMLPUBFUN xmlNode *
-            xmlNextElementSibling       (xmlNode *node);
-XMLPUBFUN xmlNode *
-            xmlFirstElementChild        (xmlNode *parent);
-XMLPUBFUN xmlNode *
-            xmlLastElementChild         (xmlNode *parent);
-XMLPUBFUN xmlNode *
-            xmlPreviousElementSibling   (xmlNode *node);
+            xmlChildElementCount        (xmlNodePtr parent);
+XMLPUBFUN xmlNodePtr
+            xmlNextElementSibling       (xmlNodePtr node);
+XMLPUBFUN xmlNodePtr
+            xmlFirstElementChild        (xmlNodePtr parent);
+XMLPUBFUN xmlNodePtr
+            xmlLastElementChild         (xmlNodePtr parent);
+XMLPUBFUN xmlNodePtr
+            xmlPreviousElementSibling   (xmlNodePtr node);
+#endif
 
 XML_DEPRECATED
 XMLPUBFUN xmlRegisterNodeFunc
@@ -1487,84 +1367,10 @@ XML_DEPRECATED
 XMLPUBFUN xmlDeregisterNodeFunc
             xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 
-/*
- * Handling Buffers, the old ones see `xmlBuf` for the new ones.
- */
-
-XML_DEPRECATED
-XMLPUBFUN void
-		xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme);
-XML_DEPRECATED
-XMLPUBFUN xmlBufferAllocationScheme
-		xmlGetBufferAllocationScheme(void);
-
-XMLPUBFUN xmlBuffer *
-		xmlBufferCreate		(void);
-XMLPUBFUN xmlBuffer *
-		xmlBufferCreateSize	(size_t size);
-XMLPUBFUN xmlBuffer *
-		xmlBufferCreateStatic	(void *mem,
-					 size_t size);
-XML_DEPRECATED
-XMLPUBFUN int
-		xmlBufferResize		(xmlBuffer *buf,
-					 unsigned int size);
-XMLPUBFUN void
-		xmlBufferFree		(xmlBuffer *buf);
-XMLPUBFUN int
-		xmlBufferDump		(FILE *file,
-					 xmlBuffer *buf);
-XMLPUBFUN int
-		xmlBufferAdd		(xmlBuffer *buf,
-					 const xmlChar *str,
-					 int len);
-XMLPUBFUN int
-		xmlBufferAddHead	(xmlBuffer *buf,
-					 const xmlChar *str,
-					 int len);
-XMLPUBFUN int
-		xmlBufferCat		(xmlBuffer *buf,
-					 const xmlChar *str);
-XMLPUBFUN int
-		xmlBufferCCat		(xmlBuffer *buf,
-					 const char *str);
-XML_DEPRECATED
-XMLPUBFUN int
-		xmlBufferShrink		(xmlBuffer *buf,
-					 unsigned int len);
-XML_DEPRECATED
-XMLPUBFUN int
-		xmlBufferGrow		(xmlBuffer *buf,
-					 unsigned int len);
-XMLPUBFUN void
-		xmlBufferEmpty		(xmlBuffer *buf);
-XMLPUBFUN const xmlChar*
-		xmlBufferContent	(const xmlBuffer *buf);
-XMLPUBFUN xmlChar*
-		xmlBufferDetach         (xmlBuffer *buf);
-XMLPUBFUN void
-		xmlBufferSetAllocationScheme(xmlBuffer *buf,
-					 xmlBufferAllocationScheme scheme);
-XMLPUBFUN int
-		xmlBufferLength		(const xmlBuffer *buf);
-XMLPUBFUN void
-		xmlBufferWriteCHAR	(xmlBuffer *buf,
-					 const xmlChar *string);
-XMLPUBFUN void
-		xmlBufferWriteChar	(xmlBuffer *buf,
-					 const char *string);
-XMLPUBFUN void
-		xmlBufferWriteQuotedString(xmlBuffer *buf,
-					 const xmlChar *string);
-
-/*
- * A few public routines for xmlBuf. As those are expected to be used
- * mostly internally the bulk of the routines are internal in buf.h
- */
-XMLPUBFUN xmlChar*       xmlBufContent	(const xmlBuf* buf);
-XMLPUBFUN xmlChar*       xmlBufEnd      (xmlBuf *buf);
-XMLPUBFUN size_t         xmlBufUse      (xmlBuf *buf);
-XMLPUBFUN size_t         xmlBufShrink	(xmlBuf *buf, size_t len);
+XML_DEPRECATED XMLPUBFUN xmlBufferAllocationScheme
+            xmlThrDefBufferAllocScheme  (xmlBufferAllocationScheme v);
+XML_DEPRECATED XMLPUBFUN int
+            xmlThrDefDefaultBufferSize  (int v);
 
 #ifdef __cplusplus
 }

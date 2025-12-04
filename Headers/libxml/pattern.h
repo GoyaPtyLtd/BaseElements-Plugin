@@ -1,14 +1,11 @@
-/**
- * @file
- * 
- * @brief pattern expression handling
- * 
- * allows to compile and test pattern expressions for nodes
+/*
+ * Summary: pattern expression handling
+ * Description: allows to compile and test pattern expressions for nodes
  *              either in a tree or based on a parser state.
  *
- * @copyright See Copyright for the status of this software.
+ * Copy: See Copyright for the status of this software.
  *
- * @author Daniel Veillard
+ * Author: Daniel Veillard
  */
 
 #ifndef __XML_PATTERN_H__
@@ -25,14 +22,19 @@ extern "C" {
 #endif
 
 /**
+ * xmlPattern:
+ *
  * A compiled (XPath based) pattern to select nodes
  */
 typedef struct _xmlPattern xmlPattern;
 typedef xmlPattern *xmlPatternPtr;
 
 /**
- * Internal type. This is the set of options affecting the behaviour
- * of pattern matching with this module.
+ * xmlPatternFlags:
+ *
+ * This is the set of options affecting the behaviour of pattern
+ * matching with this module
+ *
  */
 typedef enum {
     XML_PATTERN_DEFAULT		= 0,	/* simple pattern match */
@@ -42,12 +44,12 @@ typedef enum {
 } xmlPatternFlags;
 
 XMLPUBFUN void
-			xmlFreePattern		(xmlPattern *comp);
+			xmlFreePattern		(xmlPatternPtr comp);
 
 XMLPUBFUN void
-			xmlFreePatternList	(xmlPattern *comp);
+			xmlFreePatternList	(xmlPatternPtr comp);
 
-XMLPUBFUN xmlPattern *
+XMLPUBFUN xmlPatternPtr
 			xmlPatterncompile	(const xmlChar *pattern,
 						 xmlDict *dict,
 						 int flags,
@@ -57,44 +59,44 @@ XMLPUBFUN int
 						 xmlDict *dict,
 						 int flags,
 						 const xmlChar **namespaces,
-						 xmlPattern **patternOut);
+						 xmlPatternPtr *patternOut);
 XMLPUBFUN int
-			xmlPatternMatch		(xmlPattern *comp,
-						 xmlNode *node);
+			xmlPatternMatch		(xmlPatternPtr comp,
+						 xmlNodePtr node);
 
-/** State object for streaming interface */
+/* streaming interfaces */
 typedef struct _xmlStreamCtxt xmlStreamCtxt;
 typedef xmlStreamCtxt *xmlStreamCtxtPtr;
 
 XMLPUBFUN int
-			xmlPatternStreamable	(xmlPattern *comp);
+			xmlPatternStreamable	(xmlPatternPtr comp);
 XMLPUBFUN int
-			xmlPatternMaxDepth	(xmlPattern *comp);
+			xmlPatternMaxDepth	(xmlPatternPtr comp);
 XMLPUBFUN int
-			xmlPatternMinDepth	(xmlPattern *comp);
+			xmlPatternMinDepth	(xmlPatternPtr comp);
 XMLPUBFUN int
-			xmlPatternFromRoot	(xmlPattern *comp);
-XMLPUBFUN xmlStreamCtxt *
-			xmlPatternGetStreamCtxt	(xmlPattern *comp);
+			xmlPatternFromRoot	(xmlPatternPtr comp);
+XMLPUBFUN xmlStreamCtxtPtr
+			xmlPatternGetStreamCtxt	(xmlPatternPtr comp);
 XMLPUBFUN void
-			xmlFreeStreamCtxt	(xmlStreamCtxt *stream);
+			xmlFreeStreamCtxt	(xmlStreamCtxtPtr stream);
 XMLPUBFUN int
-			xmlStreamPushNode	(xmlStreamCtxt *stream,
+			xmlStreamPushNode	(xmlStreamCtxtPtr stream,
 						 const xmlChar *name,
 						 const xmlChar *ns,
 						 int nodeType);
 XMLPUBFUN int
-			xmlStreamPush		(xmlStreamCtxt *stream,
+			xmlStreamPush		(xmlStreamCtxtPtr stream,
 						 const xmlChar *name,
 						 const xmlChar *ns);
 XMLPUBFUN int
-			xmlStreamPushAttr	(xmlStreamCtxt *stream,
+			xmlStreamPushAttr	(xmlStreamCtxtPtr stream,
 						 const xmlChar *name,
 						 const xmlChar *ns);
 XMLPUBFUN int
-			xmlStreamPop		(xmlStreamCtxt *stream);
+			xmlStreamPop		(xmlStreamCtxtPtr stream);
 XMLPUBFUN int
-			xmlStreamWantsAnyNode	(xmlStreamCtxt *stream);
+			xmlStreamWantsAnyNode	(xmlStreamCtxtPtr stream);
 #ifdef __cplusplus
 }
 #endif
