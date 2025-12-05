@@ -227,6 +227,8 @@ public:
                     // Handle ping frame
                     if(impl.rd_fh.op == detail::opcode::ping)
                     {
+                        impl.update_timer(this->get_executor());
+
                         if(impl.ctrl_cb)
                         {
                             if(! cont)
@@ -660,6 +662,7 @@ public:
             }
 
             impl.change_status(status::closing);
+            impl.update_timer(this->get_executor());
 
             if(! impl.wr_close)
             {
@@ -819,13 +822,22 @@ template<class NextLayer, bool deflateSupported>
 struct stream<NextLayer, deflateSupported>::
     run_read_some_op
 {
+    boost::shared_ptr<impl_type> const& self;
+
+    using executor_type = typename stream::executor_type;
+
+    executor_type
+    get_executor() const noexcept
+    {
+        return self->stream().get_executor();
+    }
+
     template<
         class ReadHandler,
         class MutableBufferSequence>
     void
     operator()(
         ReadHandler&& h,
-        boost::shared_ptr<impl_type> const& sp,
         MutableBufferSequence const& b)
     {
         // If you get an error on the following line it means
@@ -841,7 +853,7 @@ struct stream<NextLayer, deflateSupported>::
             typename std::decay<ReadHandler>::type,
             MutableBufferSequence>(
                 std::forward<ReadHandler>(h),
-                sp,
+                self,
                 b);
     }
 };
@@ -850,13 +862,22 @@ template<class NextLayer, bool deflateSupported>
 struct stream<NextLayer, deflateSupported>::
     run_read_op
 {
+    boost::shared_ptr<impl_type> const& self;
+
+    using executor_type = typename stream::executor_type;
+
+    executor_type
+    get_executor() const noexcept
+    {
+        return self->stream().get_executor();
+    }
+
     template<
         class ReadHandler,
         class DynamicBuffer>
     void
     operator()(
         ReadHandler&& h,
-        boost::shared_ptr<impl_type> const& sp,
         DynamicBuffer* b,
         std::size_t limit,
         bool some)
@@ -874,7 +895,7 @@ struct stream<NextLayer, deflateSupported>::
             typename std::decay<ReadHandler>::type,
             DynamicBuffer>(
                 std::forward<ReadHandler>(h),
-                sp,
+                self,
                 *b,
                 limit,
                 some);
@@ -937,9 +958,8 @@ async_read(DynamicBuffer& buffer, ReadHandler&& handler)
     return net::async_initiate<
         ReadHandler,
         void(error_code, std::size_t)>(
-            run_read_op{},
+            run_read_op{impl_},
             handler,
-            impl_,
             &buffer,
             0,
             false);
@@ -986,7 +1006,7 @@ read_some(
     if(! limit)
         limit = (std::numeric_limits<std::size_t>::max)();
     auto const size =
-        clamp(read_size_hint(buffer), limit);
+        clamp(impl_->read_size_hint_db(buffer), limit);
     BOOST_ASSERT(size > 0);
     auto mb = beast::detail::dynamic_buffer_prepare(
         buffer, size, ec, error::buffer_overflow);
@@ -1014,9 +1034,8 @@ async_read_some(
     return net::async_initiate<
         ReadHandler,
         void(error_code, std::size_t)>(
-            run_read_op{},
+            run_read_op{impl_},
             handler,
-            impl_,
             &buffer,
             limit,
             true);
@@ -1395,9 +1414,8 @@ async_read_some(
     return net::async_initiate<
         ReadHandler,
         void(error_code, std::size_t)>(
-            run_read_some_op{},
+            run_read_some_op{impl_},
             handler,
-            impl_,
             buffers);
 }
 

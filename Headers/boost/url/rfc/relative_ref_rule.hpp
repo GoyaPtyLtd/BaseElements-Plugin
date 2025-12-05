@@ -16,6 +16,20 @@
 
 namespace boost {
 namespace urls {
+namespace implementation_defined {
+struct relative_ref_rule_t
+{
+    using value_type = url_view;
+
+    BOOST_URL_DECL
+    auto
+    parse(
+        char const*& it,
+        char const* end
+            ) const noexcept ->
+        system::result<value_type>;
+};
+} // implementation_defined
 
 /** Rule for relative-ref
 
@@ -44,24 +58,7 @@ namespace urls {
         @ref parse_relative_ref,
         @ref url_view.
 */
-#ifdef BOOST_URL_DOCS
-constexpr __implementation_defined__ relative_ref_rule;
-#else
-struct relative_ref_rule_t
-{
-    using value_type = url_view;
-
-    BOOST_URL_DECL
-    auto
-    parse(
-        char const*& it,
-        char const* end
-            ) const noexcept ->
-        system::result<value_type>;
-};
-
-constexpr relative_ref_rule_t relative_ref_rule{};
-#endif
+constexpr implementation_defined::relative_ref_rule_t relative_ref_rule{};
 
 } // urls
 } // boost

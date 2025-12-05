@@ -2,7 +2,7 @@
 
 // Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
 
-// Copyright (c) 2014-2023, Oracle and/or its affiliates.
+// Copyright (c) 2014-2024, Oracle and/or its affiliates.
 
 // Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
@@ -53,7 +53,7 @@ template
 <
     typename PointOut,
     typename GeometryIn,
-    typename TagIn = typename tag<GeometryIn>::type
+    typename TagIn = tag_t<GeometryIn>
 >
 struct copy_points
     : not_implemented<PointOut, GeometryIn>
@@ -149,10 +149,9 @@ template
 >
 struct point_point_point
 {
-    template <typename RobustPolicy, typename OutputIterator, typename Strategy>
+    template <typename OutputIterator, typename Strategy>
     static inline OutputIterator apply(Point1 const& point1,
                                        Point2 const& point2,
-                                       RobustPolicy const& ,
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
@@ -183,10 +182,9 @@ template
 >
 struct multipoint_point_point
 {
-    template <typename RobustPolicy, typename OutputIterator, typename Strategy>
+    template <typename OutputIterator, typename Strategy>
     static inline OutputIterator apply(MultiPoint const& multipoint,
                                        Point const& point,
-                                       RobustPolicy const& ,
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
@@ -217,14 +215,13 @@ template
 >
 struct point_multipoint_point
 {
-    template <typename RobustPolicy, typename OutputIterator, typename Strategy>
+    template <typename OutputIterator, typename Strategy>
     static inline OutputIterator apply(Point const& point,
                                        MultiPoint const& multipoint,
-                                       RobustPolicy const& ,
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
-        typedef action_selector_pl<PointOut, OverlayType> action;
+        using action = action_selector_pl<PointOut, OverlayType>;
 
         for (auto it = boost::begin(multipoint); it != boost::end(multipoint); ++it)
         {
@@ -252,14 +249,13 @@ template
 >
 struct multipoint_multipoint_point
 {
-    template <typename RobustPolicy, typename OutputIterator, typename Strategy>
+    template <typename OutputIterator, typename Strategy>
     static inline OutputIterator apply(MultiPoint1 const& multipoint1,
                                        MultiPoint2 const& multipoint2,
-                                       RobustPolicy const& robust_policy,
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
-        typedef geometry::less<void, -1, Strategy> less_type;
+        using less_type = geometry::less<void, -1, Strategy>;
 
         if BOOST_GEOMETRY_CONSTEXPR (OverlayType != overlay_difference)
         {
@@ -268,11 +264,11 @@ struct multipoint_multipoint_point
                 return multipoint_multipoint_point
                     <
                         MultiPoint2, MultiPoint1, PointOut, OverlayType
-                    >::apply(multipoint2, multipoint1, robust_policy, oit, strategy);
+                    >::apply(multipoint2, multipoint1, oit, strategy);
             }
         }
 
-        typedef typename boost::range_value<MultiPoint2>::type point2_type;
+        using point2_type = typename boost::range_value<MultiPoint2>::type;
 
         std::vector<point2_type> points2(boost::begin(multipoint2),
                                          boost::end(multipoint2));
@@ -414,10 +410,9 @@ template
 >
 struct union_pointlike_pointlike_point
 {
-    template <typename RobustPolicy, typename OutputIterator, typename Strategy>
+    template <typename OutputIterator, typename Strategy>
     static inline OutputIterator apply(PointLike1 const& pointlike1,
                                        PointLike2 const& pointlike2,
-                                       RobustPolicy const& robust_policy,
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
@@ -426,9 +421,9 @@ struct union_pointlike_pointlike_point
         return detail_dispatch::overlay::pointlike_pointlike_point
             <
                 PointLike2, PointLike1, PointOut, overlay_difference,
-                typename tag<PointLike2>::type,
-                typename tag<PointLike1>::type
-            >::apply(pointlike2, pointlike1, robust_policy, oit, strategy);
+                tag_t<PointLike2>,
+                tag_t<PointLike1>
+            >::apply(pointlike2, pointlike1, oit, strategy);
     }
 
 };

@@ -25,13 +25,17 @@ inline int get_real_precision(int precision = -1) noexcept
     // and remove trailing zeros at the end
 
     int real_precision;
-    BOOST_IF_CONSTEXPR (std::is_same<Real, float>::value || std::is_same<Real, double>::value)
+    BOOST_IF_CONSTEXPR (!std::is_same<Real, long double>::value
+                        #ifdef BOOST_CHARCONV_HAS_QUADMATH
+                        && !std::is_same<Real, __float128>::value
+                        #endif
+                        )
     {
         real_precision = precision == -1 ? std::numeric_limits<Real>::max_digits10 : precision;
     }
     else
     {
-        #ifdef BOOST_CHARCONV_HAS_FLOAT128
+        #ifdef BOOST_CHARCONV_HAS_QUADMATH
         BOOST_CHARCONV_IF_CONSTEXPR (std::is_same<Real, __float128>::value)
         {
             real_precision = 33;

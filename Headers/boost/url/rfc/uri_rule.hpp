@@ -16,6 +16,20 @@
 
 namespace boost {
 namespace urls {
+namespace implementation_defined {
+struct uri_rule_t
+{
+    using value_type = url_view;
+
+    BOOST_URL_DECL
+    auto
+    parse(
+        char const*& it,
+        char const* const end
+            ) const noexcept ->
+        system::result<value_type>;
+};
+} // implementation_defined
 
 /** Rule for URI
 
@@ -44,24 +58,7 @@ namespace urls {
         @ref parse_uri,
         @ref url_view.
 */
-#ifdef BOOST_URL_DOCS
-constexpr __implementation_defined__ uri_rule{};
-#else
-struct uri_rule_t
-{
-    using value_type = url_view;
-
-    BOOST_URL_DECL
-    auto
-    parse(
-        char const*& it,
-        char const* const end
-            ) const noexcept ->
-        system::result<value_type>;
-};
-
-constexpr uri_rule_t uri_rule{};
-#endif
+constexpr implementation_defined::uri_rule_t uri_rule{};
 
 } // urls
 } // boost

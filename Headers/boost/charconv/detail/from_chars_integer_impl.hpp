@@ -42,6 +42,47 @@ static constexpr unsigned char uchar_values[] =
 
 static_assert(sizeof(uchar_values) == 256, "uchar_values should represent all 256 values of unsigned char");
 
+static constexpr double log_2_table[] =
+{
+    0.0,
+    0.0,
+    1.0,
+    0.630929753571,
+    0.5,
+    0.430676558073,
+    0.386852807235,
+    0.356207187108,
+    0.333333333333,
+    0.315464876786,
+    0.301029995664,
+    0.289064826318,
+    0.278942945651,
+    0.270238154427,
+    0.262649535037,
+    0.255958024810,
+    0.25,
+    0.244650542118,
+    0.239812466568,
+    0.235408913367,
+    0.231378213160,
+    0.227670248697,
+    0.224243824218,
+    0.221064729458,
+    0.218104291986,
+    0.215338279037,
+    0.212746053553,
+    0.210309917857,
+    0.208014597677,
+    0.205846832460,
+    0.203795047091,
+    0.201849086582,
+    0.2,
+    0.198239863171,
+    0.196561632233,
+    0.194959021894,
+    0.193426403617
+};
+
 // Convert characters for 0-9, A-Z, a-z to 0-35. Anything else is 255
 constexpr unsigned char digit_from_char(char val) noexcept
 {
@@ -52,7 +93,7 @@ constexpr unsigned char digit_from_char(char val) noexcept
 # pragma warning(push)
 # pragma warning(disable: 4146) // unary minus operator applied to unsigned type, result still unsigned
 # pragma warning(disable: 4189) // 'is_negative': local variable is initialized but not referenced
-
+# pragma warning(disable: 4127) // Conditional expression is constant (if constexpr pre-c++17)
 #elif defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wconstant-conversion"
@@ -145,8 +186,11 @@ BOOST_CXX14_CONSTEXPR from_chars_result from_chars_integer_impl(const char* firs
         }
     }
 
-    #ifdef BOOST_CHARCONV_HAS_INT128
-    BOOST_IF_CONSTEXPR (std::is_same<Integer, boost::int128_type>::value)
+    BOOST_IF_CONSTEXPR ((std::numeric_limits<Integer>::is_signed && sizeof(Integer) == 16)
+                        #ifdef BOOST_CHARCONV_HAS_INT128
+                        || std::is_same<boost::int128_type, Integer>::value
+                        #endif
+                        )
     {
         overflow_value /= unsigned_base;
         max_digit %= unsigned_base;
@@ -159,7 +203,6 @@ BOOST_CXX14_CONSTEXPR from_chars_result from_chars_integer_impl(const char* firs
         #endif
     }
     else
-    #endif
     {
         overflow_value /= unsigned_base;
         max_digit %= unsigned_base;
@@ -177,15 +220,27 @@ BOOST_CXX14_CONSTEXPR from_chars_result from_chars_integer_impl(const char* firs
 
     // In non-GNU mode on GCC numeric limits may not be specialized
     #if defined(BOOST_CHARCONV_HAS_INT128) && !defined(__GLIBCXX_TYPE_INT_N_0)
-    constexpr std::ptrdiff_t nd = std::is_same<Integer, boost::int128_type>::value ? 38 :
-                                  std::is_same<Integer, boost::uint128_type>::value ? 38 :
-                                  std::numeric_limits<Integer>::digits10;
+    constexpr std::ptrdiff_t nd_2 = std::is_same<Integer, boost::int128_type>::value ? 127 :
+                                    std::is_same<Integer, boost::uint128_type>::value ? 128 :
+                                    std::numeric_limits<Integer>::digits;
     #else
-    constexpr std::ptrdiff_t nd = std::numeric_limits<Integer>::digits10;
+    constexpr std::ptrdiff_t nd_2 = std::numeric_limits<Integer>::digits;
     #endif
 
+    const auto nd = static_cast<std::ptrdiff_t>(nd_2 * log_2_table[static_cast<std::size_t>(unsigned_base)]);
+
     {
-        std::ptrdiff_t i = 0;
+        // Check that the first character is valid before proceeding
+        const unsigned char first_digit = digit_from_char(*next);
+
+        if (first_digit >= unsigned_base)
+        {
+            return {first, std::errc::invalid_argument};
+        }
+
+        result = static_cast<Unsigned_Integer>(result * unsigned_base + first_digit);
+        ++next;
+        std::ptrdiff_t i = 1;
 
         for( ; i < nd && i < nc; ++i )
         {

@@ -252,7 +252,7 @@ struct serialize_point
     template <typename Archive>
     static inline void save(Archive & ar, P const& p, unsigned int version)
     {
-        typename coordinate_type<P>::type c = get<I>(p);
+        coordinate_type_t<P> c = get<I>(p);
         ar << boost::serialization::make_nvp("c", c);
         serialize_point<P, I+1, D>::save(ar, p, version);
     }
@@ -260,7 +260,7 @@ struct serialize_point
     template <typename Archive>
     static inline void load(Archive & ar, P & p, unsigned int version)
     {
-        typename geometry::coordinate_type<P>::type c;
+        geometry::coordinate_type_t<P> c;
         ar >> boost::serialization::make_nvp("c", c);
         set<I>(p, c);
         serialize_point<P, I+1, D>::load(ar, p, version);
@@ -566,10 +566,7 @@ void load(Archive & ar, boost::geometry::index::rtree<V, P, I, E, A> & rt, unsig
     typedef boost::geometry::index::rtree<V, P, I, E, A> rtree;
     typedef detail::rtree::private_view<rtree> view;
     typedef typename view::size_type size_type;
-    typedef typename view::translator_type translator_type;
-    typedef typename view::value_type value_type;
     typedef typename view::options_type options_type;
-    typedef typename view::box_type box_type;
     typedef typename view::allocators_type allocators_type;
     typedef typename view::members_holder members_holder;
 

@@ -2,7 +2,7 @@
 // detail/std_thread.hpp
 // ~~~~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2024 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2025 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -17,7 +17,7 @@
 
 #include <boost/asio/detail/config.hpp>
 #include <thread>
-#include <boost/asio/detail/noncopyable.hpp>
+#include <boost/asio/detail/memory.hpp>
 
 #include <boost/asio/detail/push_options.hpp>
 
@@ -26,9 +26,14 @@ namespace asio {
 namespace detail {
 
 class std_thread
-  : private noncopyable
 {
 public:
+  // Construct in a non-joinable state.
+  std_thread() noexcept
+    : thread_()
+  {
+  }
+
   // Constructor.
   template <typename Function>
   std_thread(Function f, unsigned int = 0)
@@ -36,10 +41,35 @@ public:
   {
   }
 
+  // Construct with custom allocator.
+  template <typename Allocator, typename Function>
+  std_thread(allocator_arg_t, const Allocator&, Function f, unsigned int = 0)
+    : thread_(f)
+  {
+  }
+
+  // Move constructor.
+  std_thread(std_thread&& other) noexcept
+    : thread_(static_cast<std::thread&&>(other.thread_))
+  {
+  }
+
   // Destructor.
   ~std_thread()
   {
-    join();
+  }
+
+  // Move assignment.
+  std_thread& operator=(std_thread&& other) noexcept
+  {
+    thread_ = static_cast<std::thread&&>(other.thread_);
+    return *this;
+  }
+
+  // Whether the thread can be joined.
+  bool joinable() const
+  {
+    return thread_.joinable();
   }
 
   // Wait for the thread to exit.

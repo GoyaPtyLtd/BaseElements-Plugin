@@ -16,6 +16,21 @@
 namespace boost {
 namespace urls {
 
+namespace implementation_defined {
+struct origin_form_rule_t
+{
+    using value_type =
+        url_view;
+
+    BOOST_URL_DECL
+    system::result<value_type>
+    parse(
+        char const*& it,
+        char const* end
+            ) const noexcept;
+};
+}
+
 /** Rule for origin-form
 
     This appears in the HTTP/1 request-line grammar.
@@ -47,24 +62,7 @@ namespace urls {
         @ref parse_origin_form,
         @ref url_view.
 */
-#ifdef BOOST_URL_DOCS
-constexpr __implementation_defined__ origin_form_rule;
-#else
-struct origin_form_rule_t
-{
-    using value_type =
-        url_view;
-
-    BOOST_URL_DECL
-    system::result<value_type>
-    parse(
-        char const*& it,
-        char const* end
-            ) const noexcept;
-};
-
-constexpr origin_form_rule_t origin_form_rule{};
-#endif
+BOOST_INLINE_CONSTEXPR implementation_defined::origin_form_rule_t origin_form_rule{};
 
 } // urls
 } // boost

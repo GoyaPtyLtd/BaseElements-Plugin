@@ -1,4 +1,4 @@
-// Copyright Antony Polukhin, 2016-2024.
+// Copyright Antony Polukhin, 2016-2025.
 //
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
@@ -19,6 +19,20 @@
 
 #include <boost/stacktrace/detail/frame_decl.hpp>
 #include <boost/stacktrace/detail/push_options.h>
+
+#if defined(BOOST_MSVC) && (defined(BOOST_STACKTRACE_INTERNAL_BUILD_LIBS) || !defined(BOOST_STACKTRACE_LINK))
+extern "C" {
+
+#if defined(BOOST_STACKTRACE_DYN_LINK)
+BOOST_SYMBOL_EXPORT
+#elif defined(BOOST_STACKTRACE_LINK)
+#else
+BOOST_SYMBOL_EXPORT inline
+#endif
+void* boost_stacktrace_impl_return_nullptr() { return nullptr; }
+
+}
+#endif
 
 namespace boost { namespace stacktrace {
 

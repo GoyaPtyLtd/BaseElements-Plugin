@@ -73,11 +73,7 @@ public:
         it is no longer referenced by any
         container or iterator.
     */
-#ifdef BOOST_URL_DOCS
-    using iterator = __see_below__;
-#else
     class iterator;
-#endif
 
     /// @copydoc iterator
     using const_iterator = iterator;
@@ -127,6 +123,8 @@ public:
 
         @par Exception Safety
         Throws nothing.
+
+        @return The maximum number of characters possible.
     */
     static
     constexpr
@@ -153,6 +151,8 @@ public:
 
         @par Exception Safety
         Throws nothing.
+
+        @return A string view of the buffer.
     */
     BOOST_URL_DECL
     pct_string_view
@@ -173,6 +173,8 @@ public:
 
         @par Exception Safety
         Throws nothing.
+
+        @return `true` if the path is absolute, otherwise `false`.
     */
     BOOST_URL_DECL
     bool
@@ -190,6 +192,8 @@ public:
 
         @par Exception Safety
         Throws nothing.
+
+        @return `true` if there are no segments, otherwise `false`.
     */
     BOOST_URL_DECL
     bool
@@ -207,6 +211,8 @@ public:
 
         @par Exception Safety
         Throws nothing.
+
+        @return The number of segments.
     */
     BOOST_URL_DECL
     std::size_t
@@ -240,6 +246,8 @@ public:
 
         @par Exception Safety
         Throws nothing.
+
+        @return The first segment.
     */
     pct_string_view
     front() const noexcept;
@@ -277,6 +285,8 @@ public:
 
         @par Exception Safety
         Throws nothing.
+
+        @return The last segment.
     */
     pct_string_view
     back() const noexcept;
@@ -289,6 +299,8 @@ public:
 
         @par Exception Safety
         Throws nothing.
+
+        @return An iterator to the first segment.
     */
     BOOST_URL_DECL
     iterator
@@ -301,6 +313,8 @@ public:
 
         @par Exception Safety
         Throws nothing.
+
+        @return An iterator to one past the last segment.
     */
     BOOST_URL_DECL
     iterator
@@ -321,6 +335,10 @@ public:
     @code
     return os << ps.buffer();
     @endcode
+
+    @param os The output stream to write to.
+    @param ps The object to format.
+    @return A reference to the output stream.
 */
 BOOST_URL_DECL
 std::ostream&

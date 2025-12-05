@@ -68,7 +68,7 @@ struct point_to_segment
     static inline void apply(Point const& point, Segment const& segment,
                              OutputSegment& shortest_seg, Strategies const& strategies)
     {
-        typename point_type<Segment>::type p[2];
+        point_type_t<Segment> p[2];
         geometry::detail::assign_point_from_index<0>(segment, p[0]);
         geometry::detail::assign_point_from_index<1>(segment, p[1]);
 
@@ -253,7 +253,7 @@ template
     typename MultiGeometry,
     bool CheckCoveredBy = std::is_same
         <
-            typename tag<MultiGeometry>::type, multi_polygon_tag
+            tag_t<MultiGeometry>, multi_polygon_tag
         >::value
 >
 class point_to_multigeometry
@@ -429,7 +429,7 @@ struct closest_points
     > : closest_points
         <
             Point, Linear,
-            point_tag, typename tag<Linear>::type, false
+            point_tag, tag_t<Linear>, false
         >
 {};
 
@@ -441,7 +441,7 @@ struct closest_points
     > : closest_points
         <
             Point, Areal,
-            point_tag, typename tag<Areal>::type, false
+            point_tag, tag_t<Areal>, false
         >
 {};
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2024 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -71,6 +71,19 @@ template <class T>
 struct is_writable_field : std::integral_constant<bool, writable_field_traits<T>::is_supported>
 {
 };
+
+#ifdef BOOST_MYSQL_HAS_CONCEPTS
+
+template <class T>
+concept writable_field = is_writable_field<T>::value;
+
+#define BOOST_MYSQL_WRITABLE_FIELD ::boost::mysql::detail::writable_field
+
+#else
+
+#define BOOST_MYSQL_WRITABLE_FIELD class
+
+#endif
 
 // field_view_forward_iterator
 template <typename T, typename = void>

@@ -2,8 +2,8 @@
 
 // Copyright (c) 2017 Adam Wulkiewicz, Lodz, Poland.
 
-// Copyright (c) 2014-2020, Oracle and/or its affiliates.
-
+// Copyright (c) 2014-2024, Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -60,7 +60,7 @@ namespace following { namespace linear
 // follower for linear/linear geometries set operations
 
 template <typename Turn, typename Operation>
-static inline bool is_entering(Turn const& turn,
+inline bool is_entering(Turn const& turn,
                                Operation const& operation)
 {
     if ( turn.method != method_touch && turn.method != method_touch_interior )
@@ -73,7 +73,7 @@ static inline bool is_entering(Turn const& turn,
 
 
 template <typename Turn, typename Operation>
-static inline bool is_staying_inside(Turn const& turn,
+inline bool is_staying_inside(Turn const& turn,
                                      Operation const& operation,
                                      bool entered)
 {
@@ -92,7 +92,7 @@ static inline bool is_staying_inside(Turn const& turn,
 
 
 template <typename Turn, typename Operation>
-static inline bool is_leaving(Turn const& turn,
+inline bool is_leaving(Turn const& turn,
                               Operation const& operation,
                               bool entered)
 {
@@ -125,7 +125,7 @@ static inline bool is_leaving(Turn const& turn,
 
 
 template <typename Turn, typename Operation>
-static inline bool is_isolated_point(Turn const& turn,
+inline bool is_isolated_point(Turn const& turn,
                                      Operation const& operation,
                                      bool entered)
 {
@@ -181,16 +181,16 @@ class follow_linestring_linear
 {
 protected:
     // allow spikes (false indicates: do not remove spikes)
-    typedef following::action_selector<OverlayType, false> action;
+    using action = following::action_selector<OverlayType, false>;
 
-    typedef geometry::detail::output_geometry_access
+    using linear = geometry::detail::output_geometry_access
         <
             GeometryOut, linestring_tag, linestring_tag
-        > linear;
-    typedef geometry::detail::output_geometry_access
+        >;
+    using pointlike = geometry::detail::output_geometry_access
         <
             GeometryOut, point_tag, linestring_tag
-        > pointlike;
+        >;
 
     template
     <
@@ -212,9 +212,6 @@ protected:
                  OutputIterator oit,
                  SideStrategy const& strategy)
     {
-        // We don't rescale linear/linear
-        detail::no_rescale_policy robust_policy;
-
         if ( is_entering(*it, *op_it) )
         {
             detail::turns::debug_turn(*it, *op_it, "-> Entering");
@@ -226,7 +223,7 @@ protected:
                               linestring,
                               current_segment_id,
                               op_it->seg_id.segment_index,
-                              it->point, *op_it, strategy, robust_policy,
+                              it->point, *op_it, strategy,
                               linear::get(oit));
             }
             ++enter_count;
@@ -243,7 +240,7 @@ protected:
                               linestring,
                               current_segment_id,
                               op_it->seg_id.segment_index,
-                              it->point, *op_it, strategy, robust_policy,
+                              it->point, *op_it, strategy,
                               linear::get(oit));
             }
         }
@@ -284,9 +281,6 @@ protected:
     {
         if ( action::is_entered(entered) )
         {
-            // We don't rescale linear/linear
-            detail::no_rescale_policy robust_policy;
-
             detail::copy_segments::copy_segments_linestring
                 <
                     false, false // do not reverse; do not remove spikes
@@ -294,7 +288,6 @@ protected:
                          current_segment_id,
                          static_cast<signed_size_type>(boost::size(linestring) - 1),
                          strategy,
-                         robust_policy,
                          current_piece);
         }
 
@@ -370,20 +363,20 @@ class follow_multilinestring_linear
         >
 {
 protected:
-    typedef typename boost::range_value<MultiLinestring>::type Linestring;
+    using linestring_t = typename boost::range_value<MultiLinestring>::type;
 
-    typedef follow_linestring_linear
+    using base_t = follow_linestring_linear
         <
-            LinestringOut, Linestring, Linear,
+            LinestringOut, linestring_t, Linear,
             OverlayType, FollowIsolatedPoints, FollowContinueTurns
-        > Base;
+        >;
 
-    typedef following::action_selector<OverlayType> action;
+    using action = following::action_selector<OverlayType>;
 
-    typedef typename boost::range_iterator
+    using linestring_iterator = typename boost::range_iterator
         <
             MultiLinestring const
-        >::type linestring_iterator;
+        >::type;
 
 
     template <typename OutputIt, overlay_type OT>
@@ -446,10 +439,10 @@ public:
     {
         BOOST_GEOMETRY_ASSERT( first != beyond );
 
-        typedef copy_linestrings_in_range
+        using copy_linestrings = copy_linestrings_in_range
             <
                 OutputIterator, OverlayType
-            > copy_linestrings;
+            >;
 
         linestring_iterator ls_first = boost::begin(multilinestring);
         linestring_iterator ls_beyond = boost::end(multilinestring);
@@ -471,7 +464,7 @@ public:
             per_ls_next = std::find_if(per_ls_current, beyond,
                                        has_other_multi_id(current_multi_id));
 
-            oit = Base::apply(*(ls_first + current_multi_id),
+            oit = base_t::apply(*(ls_first + current_multi_id),
                               linear, per_ls_current, per_ls_next, oit, strategy);
 
             signed_size_type next_multi_id = -1;
@@ -506,7 +499,7 @@ template
     overlay_type OverlayType,
     bool FollowIsolatedPoints,
     bool FollowContinueTurns,
-    typename TagIn1 = typename tag<Geometry1>::type
+    typename TagIn1 = tag_t<Geometry1>
 >
 struct follow
     : not_implemented<Geometry1>

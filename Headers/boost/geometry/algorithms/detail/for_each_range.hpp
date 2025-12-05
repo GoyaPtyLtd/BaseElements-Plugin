@@ -29,7 +29,6 @@
 
 #include <boost/geometry/core/static_assert.hpp>
 #include <boost/geometry/core/tag.hpp>
-#include <boost/geometry/core/tag_cast.hpp>
 #include <boost/geometry/core/tags.hpp>
 
 #include <boost/geometry/util/type_traits.hpp>
@@ -134,7 +133,7 @@ namespace dispatch
 template
 <
     typename Geometry,
-    typename Tag = typename tag<Geometry>::type
+    typename Tag = tag_t<Geometry>
 >
 struct for_each_range
 {

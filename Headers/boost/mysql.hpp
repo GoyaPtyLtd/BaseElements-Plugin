@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2024 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -37,6 +37,7 @@
 #include <boost/mysql/field_view.hpp>
 #include <boost/mysql/format_sql.hpp>
 #include <boost/mysql/handshake_params.hpp>
+#include <boost/mysql/is_fatal_error.hpp>
 #include <boost/mysql/mariadb_collations.hpp>
 #include <boost/mysql/mariadb_server_errc.hpp>
 #include <boost/mysql/metadata.hpp>
@@ -44,6 +45,7 @@
 #include <boost/mysql/metadata_mode.hpp>
 #include <boost/mysql/mysql_collations.hpp>
 #include <boost/mysql/mysql_server_errc.hpp>
+#include <boost/mysql/pipeline.hpp>
 #include <boost/mysql/pool_params.hpp>
 #include <boost/mysql/results.hpp>
 #include <boost/mysql/resultset.hpp>
@@ -52,6 +54,7 @@
 #include <boost/mysql/row_view.hpp>
 #include <boost/mysql/rows.hpp>
 #include <boost/mysql/rows_view.hpp>
+#include <boost/mysql/sequence.hpp>
 #include <boost/mysql/ssl_mode.hpp>
 #include <boost/mysql/statement.hpp>
 #include <boost/mysql/static_execution_state.hpp>
@@ -61,7 +64,10 @@
 #include <boost/mysql/tcp_ssl.hpp>
 #include <boost/mysql/throw_on_error.hpp>
 #include <boost/mysql/time.hpp>
+#include <boost/mysql/underlying_row.hpp>
 #include <boost/mysql/unix.hpp>
 #include <boost/mysql/unix_ssl.hpp>
+#include <boost/mysql/with_diagnostics.hpp>
+#include <boost/mysql/with_params.hpp>
 
 #endif
