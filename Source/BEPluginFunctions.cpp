@@ -3807,6 +3807,7 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 	try {
 
 		auto pdf_document = ParameterAsPDF ( parameters );
+		auto& pages_in_pdf = pdf_document->GetPages();
 
 		auto which = 1;
 
