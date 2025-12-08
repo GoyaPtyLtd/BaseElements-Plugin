@@ -14,6 +14,12 @@
 		010B8ADB2ECC42980022815F /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 010B8AD52ECC24720022815F /* libz.a */; };
 		014614362C40F7C60098C862 /* libunistring.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 014614352C40F7C60098C862 /* libunistring.a */; };
 		014614372C40F7DA0098C862 /* libunistring.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 014614352C40F7C60098C862 /* libunistring.a */; };
+		01569FB22EE6C86900B86542 /* libpodofo_3rdparty.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01569FB02EE6C86900B86542 /* libpodofo_3rdparty.a */; };
+		01569FB32EE6C86900B86542 /* libpodofo_private.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01569FB12EE6C86900B86542 /* libpodofo_private.a */; };
+		01569FB42EE6C8CF00B86542 /* libpodofo_3rdparty.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01569FB02EE6C86900B86542 /* libpodofo_3rdparty.a */; };
+		01569FB52EE6C8CF00B86542 /* libpodofo_private.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01569FB12EE6C86900B86542 /* libpodofo_private.a */; };
+		01569FB62EE6C8EC00B86542 /* libpodofo_3rdparty.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01569FB02EE6C86900B86542 /* libpodofo_3rdparty.a */; };
+		01569FB72EE6C8EC00B86542 /* libpodofo_private.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01569FB12EE6C86900B86542 /* libpodofo_private.a */; };
 		4D0BBAE4267AC1D60021DA56 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0BBAE3267AC1D60021DA56 /* libPocoNet.a */; };
 		4D11F3E91F271B0C00D78042 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3E81F271B0C00D78042 /* libssl.a */; };
 		4D11F3EB1F271B1F00D78042 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F3EA1F271B1F00D78042 /* libcrypto.a */; };
@@ -580,6 +586,8 @@
 		010B8AD52ECC24720022815F /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libz.a; sourceTree = "<group>"; };
 		010B8AD62ECC24720022815F /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		014614352C40F7C60098C862 /* libunistring.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libunistring.a; path = ../Libraries/macOS/libunistring.a; sourceTree = "<group>"; };
+		01569FB02EE6C86900B86542 /* libpodofo_3rdparty.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo_3rdparty.a; path = ../Libraries/macOS/libpodofo_3rdparty.a; sourceTree = "<group>"; };
+		01569FB12EE6C86900B86542 /* libpodofo_private.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo_private.a; path = ../Libraries/macOS/libpodofo_private.a; sourceTree = "<group>"; };
 		4D05792C1B3B83550000585F /* FMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FMWrapper.framework; path = ../Libraries/macOS/FMWrapper.framework; sourceTree = "<group>"; };
 		4D0BA9B018BEF74D00F8FD45 /* BESMTPEmailMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BESMTPEmailMessage.cpp; path = ../Source/Net/BESMTPEmailMessage.cpp; sourceTree = "<group>"; };
 		4D0BA9B118BEF74D00F8FD45 /* BESMTPEmailMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BESMTPEmailMessage.h; path = ../Source/Net/BESMTPEmailMessage.h; sourceTree = "<group>"; };
@@ -844,6 +852,8 @@
 				4DA0C72929A6DA8D00BC1952 /* libPocoCrypto.a in Frameworks */,
 				4DF4DAFE271E4B2E007E91B5 /* libssl.a in Frameworks */,
 				4DD0382F25B55A70004AD435 /* libexpat.tbd in Frameworks */,
+				01569FB62EE6C8EC00B86542 /* libpodofo_3rdparty.a in Frameworks */,
+				01569FB72EE6C8EC00B86542 /* libpodofo_private.a in Frameworks */,
 				4DF4DB02271E4EE1007E91B5 /* libPocoZip.a in Frameworks */,
 				4DF4DB0C271E7958007E91B5 /* libexslt.a in Frameworks */,
 				4D3B9BC22717CFC70009E745 /* libPocoJSON.a in Frameworks */,
@@ -868,6 +878,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01569FB22EE6C86900B86542 /* libpodofo_3rdparty.a in Frameworks */,
+				01569FB32EE6C86900B86542 /* libpodofo_private.a in Frameworks */,
 				010B8ADA2ECC41A20022815F /* libz.a in Frameworks */,
 				014614372C40F7DA0098C862 /* libunistring.a in Frameworks */,
 				4DBC861E28812E4200E4CD1D /* libjq.a in Frameworks */,
@@ -982,6 +994,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01569FB42EE6C8CF00B86542 /* libpodofo_3rdparty.a in Frameworks */,
+				01569FB52EE6C8CF00B86542 /* libpodofo_private.a in Frameworks */,
 				010B8ADB2ECC42980022815F /* libz.a in Frameworks */,
 				014614362C40F7C60098C862 /* libunistring.a in Frameworks */,
 				4D423CF628B5F47E00C0BB2C /* libjq.a in Frameworks */,
@@ -1339,6 +1353,8 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				01569FB02EE6C86900B86542 /* libpodofo_3rdparty.a */,
+				01569FB12EE6C86900B86542 /* libpodofo_private.a */,
 				010B8AD72ECC24720022815F /* macOS */,
 				010B8AAC2ECC23F20022815F /* libnghttp2.a */,
 				014614352C40F7C60098C862 /* libunistring.a */,
