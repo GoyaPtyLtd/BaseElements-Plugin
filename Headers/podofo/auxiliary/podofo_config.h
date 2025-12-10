@@ -5,7 +5,7 @@
 
 #define PODOFO_VERSION_MAJOR 1
 #define PODOFO_VERSION_MINOR 0
-#define PODOFO_VERSION_PATCH 2
+#define PODOFO_VERSION_PATCH 3
 
 // PoDoFo configuration options
 
