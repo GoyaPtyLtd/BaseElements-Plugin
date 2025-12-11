@@ -264,6 +264,20 @@ void SetResult ( const string& filename, const vector<unsigned char>& data, fmx:
 }
 
 
+void SetResult ( const string& filename, PoDoFo::PdfMemDocument& pdf, fmx::Data& results )
+{
+	// write out a temporary file
+	// std::filesystem::unique_path() does not (yet) exist
+	const filesystem::path temporary_file_name = tmpnam ( NULL );
+	auto temporary_file = std::filesystem::temp_directory_path() / temporary_file_name;
+	pdf.Save ( temporary_file.c_str() );
+	auto file_data = ReadFileAsBinary ( temporary_file );
+	
+	return SetResult ( filename, file_data, PDF_CONTAINER_TYPE, results );
+
+}
+
+
 void SetResult ( const BEValueList<string>& value_list, fmx::Data& results )
 {
 	SetResult ( value_list.get_as_filemaker_string(), results );
@@ -527,19 +541,19 @@ const string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, const 
 
 unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& parameters, const fmx::uint32 which )
 {
-	unique_ptr<PoDoFo::PdfMemDocument> pdf_document ( new PoDoFo::PdfMemDocument ( ) );
+	PoDoFo::PdfMemDocument pdf_document;
 
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 		auto pdf = ParameterAsVectorChar ( parameters, which );
 		const PoDoFo::bufferview pdf_buffer { pdf.data(), pdf.size() };
-		pdf_document->LoadFromBuffer ( pdf_buffer );
+		pdf_document.LoadFromBuffer ( pdf_buffer );
 	} else {
 		auto pdf_path = ParameterAsPath ( parameters, which );
 		pdf_path.make_preferred();
-		pdf_document->Load ( pdf_path.c_str() );
+		pdf_document.Load ( pdf_path.c_str() );
 	}
 
-	return pdf_document;
+	return std::make_unique<PoDoFo::PdfMemDocument> ( pdf_document );
 
 } // ParameterAsPDF
 

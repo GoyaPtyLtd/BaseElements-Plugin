@@ -2,7 +2,7 @@
  BEPluginUtilities.h
  BaseElements Plug-In
 	
- Copyright 2010-2024 Goya. All rights reserved.
+ Copyright 2010-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -24,7 +24,7 @@
 #include <stdint.h>
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wpedantic"
 #include <podofo/podofo.h>
 #pragma GCC diagnostic pop
 
@@ -61,6 +61,7 @@ void SetResult ( const std::string& filename, const std::vector<char>& data, con
 void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results );
 void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results );
 void SetResult ( const std::string& filename, const std::vector<unsigned char>& data, fmx::Data& results );
+void SetResult ( const std::string& filename, PoDoFo::PdfMemDocument& pdf, fmx::Data& results );
 
 void SetResult ( const BEValueList<std::string>& value_list, fmx::Data& results );
 

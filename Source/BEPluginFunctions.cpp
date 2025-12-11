@@ -3812,14 +3812,8 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 
 		if ( BinaryDataAvailable ( parameters, which ) ) {
 
-			auto pdf = ParameterAsVectorChar ( parameters, which );
-
-			std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
-//			pdf_document_to_append->LoadFromBuffer ( pdf.data(), (long)pdf.size() );
-//			pdf_document->Append ( *pdf_document_to_append );
+			auto pdf_document_to_append = ParameterAsPDF ( parameters, which );
 			pages_in_pdf.AppendDocumentPages ( *pdf_document_to_append );
-			
-			pdf_document_to_append.reset(); // make sure to close the file
 
 		} else {
 
@@ -3830,34 +3824,24 @@ fmx::errcode BE_PDFAppend ( short /* funcId */, const ExprEnv& /* environment */
 				std::filesystem::path pdf_path ( *it );
 				pdf_path.make_preferred();
 
-				std::unique_ptr<PoDoFo::PdfMemDocument> pdf_document_to_append ( new PoDoFo::PdfMemDocument ( ) );
-				pdf_document_to_append->Load ( pdf_path.c_str() );
-//				pdf_document->Append ( *pdf_document_to_append );
-				pages_in_pdf.AppendDocumentPages ( *pdf_document_to_append );
-				pdf_document_to_append.reset(); // make sure to close the file
+				PoDoFo::PdfMemDocument pdf_document_to_append;
+				pdf_document_to_append.Load ( pdf_path.c_str() );
+				pages_in_pdf.AppendDocumentPages ( pdf_document_to_append );
 
 			} // for...
 
 		} // if ( BinaryDataAvailable...
 
-		// write out a temporary file
-		const filesystem::path temporary_file_name = tmpnam ( NULL );  // std::filesystem::unique_path() does yet not exist
-		auto temporary_file = std::filesystem::temp_directory_path() / temporary_file_name;
-		pdf_document->Save ( temporary_file.c_str() );
-		pdf_document.reset(); // make sure to close the file
-
 		auto output_path = ParameterAsPath ( parameters, 2 );
 		if ( output_path.empty() ) {
 
-			auto file_data = ReadFileAsBinary ( temporary_file );
 			auto destination = ParameterFileName ( parameters );
-			SetResult ( destination, file_data, PDF_CONTAINER_TYPE, results );
+			SetResult ( destination, *pdf_document, results );
 
 		} else {
 
-			rename ( temporary_file, output_path );
-
-//			SetResult ( nothing, results );
+			pdf_document->Save ( output_path.c_str() );
+			//	SetResult ( nothing, results );
 
 		}
 
@@ -3887,6 +3871,7 @@ fmx::errcode BE_PDFPageCount ( short /* funcId */, const ExprEnv& /* environment
 		auto pdf_document = ParameterAsPDF ( parameters );
 		auto& pages_in_pdf = pdf_document->GetPages();
 		auto page_count = pages_in_pdf.GetCount();
+		
 		SetResult ( page_count, results );
 
 	} catch ( filesystem::filesystem_error& e ) {
@@ -3915,48 +3900,30 @@ fmx::errcode BE_PDFGetPages ( short /* funcId */, const ExprEnv& /* environment 
 		auto pdf_document = ParameterAsPDF ( parameters );
 
 		auto from = ParameterAsIndex ( parameters, 2, 0 );
-		auto first_page = 0L;
-		if ( from > first_page ) {
-			first_page = from;
-		}
-
-//		auto number_of_pages_in_pdf = pdf_document->GetPageCount();
+		auto first_page = max ( 0L, from );
 		
 		auto& pages_in_pdf = pdf_document->GetPages();
 		auto number_of_pages_in_pdf = pages_in_pdf.GetCount();
+		auto max_pages_to_get = number_of_pages_in_pdf - first_page;
 		
-		
-		auto to = ParameterAsIndex ( parameters, 3, number_of_pages_in_pdf - first_page );
-		auto number_of_pages_to_get = 1 + to - from;
-		if ( number_of_pages_to_get > number_of_pages_in_pdf ) {
-			number_of_pages_to_get = number_of_pages_in_pdf;
-		} else if ( number_of_pages_to_get <= 0 ) {
-			number_of_pages_to_get = 1;
-		}
+		auto to = ParameterAsIndex ( parameters, 3, max_pages_to_get );
+		auto number_of_pages_to_get = min ( 1L + to - from, max_pages_to_get );
 
 		if ( number_of_pages_to_get > 0 ) {
 
-			std::unique_ptr<PoDoFo::PdfMemDocument> new_pdf ( new PoDoFo::PdfMemDocument ( ) );
-			auto& pages_in_new_pdf = new_pdf->GetPages();
+			PoDoFo::PdfMemDocument new_pdf;
+			auto& pages_in_new_pdf = new_pdf.GetPages();
 			pages_in_new_pdf.AppendDocumentPages ( *pdf_document, (int)first_page, (int)number_of_pages_to_get );
-			pdf_document.reset(); // make sure to close the file
-
-			// write out a temporary file
-			const filesystem::path temporary_file_name = tmpnam ( NULL ); // std::filesystem::unique_path() does yet not exist
-			auto temporary_file = std::filesystem::temp_directory_path() / temporary_file_name;
-			new_pdf->Save ( temporary_file.c_str() );
-			new_pdf.reset(); // make sure to close the file
 
 			auto output_path = ParameterAsPath ( parameters, 1 );
 			if ( output_path.empty() ) {
 
-				auto file_data = ReadFileAsBinary ( temporary_file );
 				auto destination = ParameterFileName ( parameters );
-				SetResult ( destination, file_data, PDF_CONTAINER_TYPE, results );
+				SetResult ( destination, new_pdf, results );
 
 			} else {
 
-				rename ( temporary_file, output_path );
+				new_pdf.Save ( output_path.c_str() );
 				//	SetResult ( nothing, results );
 
 			}

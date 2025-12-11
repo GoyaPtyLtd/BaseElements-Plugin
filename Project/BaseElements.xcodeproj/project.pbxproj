@@ -26,6 +26,10 @@
 		4D11F40B1F271C3B00D78042 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40A1F271C3B00D78042 /* libcurl.a */; };
 		4D11F40D1F271C5400D78042 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40C1F271C5400D78042 /* libssh2.a */; };
 		4D11F40F1F271C6F00D78042 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D11F40E1F271C6F00D78042 /* libturbojpeg.a */; };
+		4D1AC4662EE7CA9F0056D4CC /* libpodofo_3rdparty.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1AC4632EE7CA560056D4CC /* libpodofo_3rdparty.a */; };
+		4D1AC4672EE7CA9F0056D4CC /* libpodofo_private.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1AC4622EE7CA550056D4CC /* libpodofo_private.a */; };
+		4D1AC4682EE7CAB70056D4CC /* libpodofo_3rdparty.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1AC4632EE7CA560056D4CC /* libpodofo_3rdparty.a */; };
+		4D1AC4692EE7CAB70056D4CC /* libpodofo_private.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1AC4622EE7CA550056D4CC /* libpodofo_private.a */; };
 		4D1D070D1F21C36700BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070E1F21C37A00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
 		4D1D070F1F21C37C00BCE550 /* BEAppleFunctionsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D1D070C1F21C36700BCE550 /* BEAppleFunctionsCommon.mm */; };
@@ -100,6 +104,8 @@
 		4D362A801F2085880036B751 /* BEFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D70428613BAE5CA00DE4484 /* BEFileSystem.cpp */; };
 		4D362A811F2085880036B751 /* BEPluginFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD911E934BC003D75BB /* BEPluginFunctions.cpp */; };
 		4D362A821F2085880036B751 /* BEPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9F2DD811E934BC003D75BB /* BEPlugin.cpp */; };
+		4D3888622EEA9D4C00551931 /* libpodofo_3rdparty.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1AC4632EE7CA560056D4CC /* libpodofo_3rdparty.a */; };
+		4D3888632EEA9D4C00551931 /* libpodofo_private.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1AC4622EE7CA550056D4CC /* libpodofo_private.a */; };
 		4D3A800E2890BFDE006EC1B4 /* Test_JSON_jq.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D3A800D2890BFDE006EC1B4 /* Test_JSON_jq.mm */; };
 		4D3A800F2890C2A3006EC1B4 /* libjq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBC8618288128B600E4CD1D /* libjq.a */; };
 		4D3A80102890C2DD006EC1B4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D414DB02872B01E00749AE0 /* SystemConfiguration.framework */; };
@@ -599,6 +605,8 @@
 		4D11F40E1F271C6F00D78042 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = ../Libraries/macOS/libturbojpeg.a; sourceTree = "<group>"; };
 		4D156AE1135D8BC2001A249B /* BEMessageDigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMessageDigest.h; path = ../Source/Crypto/BEMessageDigest.h; sourceTree = SOURCE_ROOT; };
 		4D156AE2135D8BC2001A249B /* BEMessageDigest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BEMessageDigest.cpp; path = ../Source/Crypto/BEMessageDigest.cpp; sourceTree = SOURCE_ROOT; };
+		4D1AC4622EE7CA550056D4CC /* libpodofo_private.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo_private.a; path = ../Libraries/macOS/libpodofo_private.a; sourceTree = "<group>"; };
+		4D1AC4632EE7CA560056D4CC /* libpodofo_3rdparty.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpodofo_3rdparty.a; path = ../Libraries/macOS/libpodofo_3rdparty.a; sourceTree = "<group>"; };
 		4D1B526427EBEF2500442764 /* CONTRIBUTING */ = {isa = PBXFileReference; lastKnownFileType = text; name = CONTRIBUTING; path = ../CONTRIBUTING; sourceTree = "<group>"; };
 		4D1B526527EBEF2500442764 /* CHANGE_LOG */ = {isa = PBXFileReference; lastKnownFileType = text; name = CHANGE_LOG; path = ../CHANGE_LOG; sourceTree = "<group>"; };
 		4D1B526627EBEF3300442764 /* Building */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Building; path = ../Building; sourceTree = "<group>"; };
@@ -868,6 +876,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D3888622EEA9D4C00551931 /* libpodofo_3rdparty.a in Frameworks */,
+				4D3888632EEA9D4C00551931 /* libpodofo_private.a in Frameworks */,
 				010B8ADA2ECC41A20022815F /* libz.a in Frameworks */,
 				014614372C40F7DA0098C862 /* libunistring.a in Frameworks */,
 				4DBC861E28812E4200E4CD1D /* libjq.a in Frameworks */,
@@ -982,6 +992,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D1AC4682EE7CAB70056D4CC /* libpodofo_3rdparty.a in Frameworks */,
+				4D1AC4692EE7CAB70056D4CC /* libpodofo_private.a in Frameworks */,
 				010B8ADB2ECC42980022815F /* libz.a in Frameworks */,
 				014614362C40F7C60098C862 /* libunistring.a in Frameworks */,
 				4D423CF628B5F47E00C0BB2C /* libjq.a in Frameworks */,
@@ -1031,6 +1043,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D1AC4662EE7CA9F0056D4CC /* libpodofo_3rdparty.a in Frameworks */,
+				4D1AC4672EE7CA9F0056D4CC /* libpodofo_private.a in Frameworks */,
 				4D7E22A72D1134D800B0146C /* libunistring.a in Frameworks */,
 				4DCC540B29BA963F0060223E /* libPocoCrypto.a in Frameworks */,
 				4D3A80102890C2DD006EC1B4 /* SystemConfiguration.framework in Frameworks */,
@@ -1339,6 +1353,8 @@
 		C7DEDF1507E10BF4002283F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D1AC4632EE7CA560056D4CC /* libpodofo_3rdparty.a */,
+				4D1AC4622EE7CA550056D4CC /* libpodofo_private.a */,
 				010B8AD72ECC24720022815F /* macOS */,
 				010B8AAC2ECC23F20022815F /* libnghttp2.a */,
 				014614352C40F7C60098C862 /* libunistring.a */,
@@ -2914,6 +2930,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.BE-Plugin-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2966,6 +2983,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "au.com.goya.BE-Plugin-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
