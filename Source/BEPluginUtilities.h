@@ -23,8 +23,11 @@
 #include <vector>
 #include <stdint.h>
 
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
+#pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+#pragma GCC diagnostic ignored "-Wcomma"
 #include <podofo/podofo.h>
 #pragma GCC diagnostic pop
 

@@ -14,14 +14,11 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wsign-compare"
+#pragma GCC diagnostic ignored "-Wnewline-eof"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <Poco/Crypto/Cipher.h>
 #include <Poco/Crypto/CipherFactory.h>
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnewline-eof"
 #include <Poco/Crypto/RSAKey.h>
-#pragma clang diagnostic pop
-
 #include <Poco/Dynamic/Var.h>
 #include <Poco/Exception.h>
 #include <Poco/JSON/JSON.h>
