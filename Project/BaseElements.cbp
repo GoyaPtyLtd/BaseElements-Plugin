@@ -108,6 +108,8 @@
 			<Add library="libPocoPDF.a" />
 			<Add library="libPocoCrypto.a" />
 			<Add library="libPocoFoundation.a" />
+			<Add library="libpodofo_3rdparty.a" />
+			<Add library="libpodofo_private.a" />
 			<Add library="libpodofo.a" />
 			<Add library="libfontconfig.a" />
 			<Add library="libfreetype.a" />
@@ -172,7 +174,6 @@
 		<Unit filename="../Source/BEFileTextReader.cpp" />
 		<Unit filename="../Source/BEJSON.cpp" />
 		<Unit filename="../Source/BEJavaScript.cpp" />
-		<Unit filename="../Source/BEPDF.cpp" />
 		<Unit filename="../Source/BEPlugin.cpp" />
 		<Unit filename="../Source/BEPluginFunctions.cpp" />
 		<Unit filename="../Source/BEPluginUtilities.cpp" />
