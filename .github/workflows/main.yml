@@ -1,0 +1,157 @@
+name: Build and Release Libraries
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            arch: x86_64
+            platform: ubuntu22.04-x86_64
+            package_platform: ubuntu22.04-x86_64
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies (Ubuntu)
+        if: startsWith(matrix.runner, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            zip \
+            unzip \
+            wget \
+            gperf \
+            cmake \
+            git \
+            git-lfs \
+            libc++-dev \
+            libc++abi-dev \
+            libexpat1-dev \
+            lld \
+            lldb \
+            liblldb-dev \
+            libomp5 \
+            libomp-dev \
+            llvm \
+            llvm-dev \
+            llvm-runtime \
+            libllvm-ocaml-dev \
+            clang \
+            clangd \
+            clang-format \
+            clang-tidy \
+            clang-tools \
+            libclang-dev \
+            libclang1 \
+            python3-clang
+
+      - name: Install LLVM 18 (Ubuntu)
+        if: startsWith(matrix.runner, 'ubuntu')
+        run: |
+          wget -O /tmp/llvm.sh https://apt.llvm.org/llvm.sh
+          chmod +x /tmp/llvm.sh
+          sudo bash /tmp/llvm.sh 18
+          rm -f /tmp/llvm.sh
+          echo "Checking installed LLVM 18 binaries..."
+          ls -la /usr/bin/llvm-config-18 2>/dev/null && echo "llvm-config-18 found" || echo "llvm-config-18 NOT found"
+          ls -la /usr/bin/clang-18 2>/dev/null && echo "clang-18 found" || echo "clang-18 NOT found"
+
+      - name: Configure clang alternatives (Ubuntu)
+        if: startsWith(matrix.runner, 'ubuntu')
+        run: |
+          VERSION=18
+          PRIORITY=100
+          # Remove existing alternatives if they exist (from base packages)
+          sudo update-alternatives --remove-all clang++ 2>/dev/null || true
+          sudo update-alternatives --remove-all clang 2>/dev/null || true
+          sudo update-alternatives --remove-all llvm-config 2>/dev/null || true
+          
+          # Check if LLVM 18 binaries exist before configuring alternatives
+          if [[ -f /usr/bin/llvm-config-${VERSION} ]] && [[ -f /usr/bin/clang-${VERSION} ]]; then
+            echo "Configuring alternatives for LLVM ${VERSION}..."
+            sudo update-alternatives \
+              --install /usr/bin/llvm-config       llvm-config      /usr/bin/llvm-config-${VERSION} ${PRIORITY} \
+              --slave   /usr/bin/llvm-ar           llvm-ar          /usr/bin/llvm-ar-${VERSION} \
+              --slave   /usr/bin/llvm-as           llvm-as          /usr/bin/llvm-as-${VERSION} \
+              --slave   /usr/bin/llvm-bcanalyzer   llvm-bcanalyzer  /usr/bin/llvm-bcanalyzer-${VERSION} \
+              --slave   /usr/bin/llvm-cov          llvm-cov         /usr/bin/llvm-cov-${VERSION} \
+              --slave   /usr/bin/llvm-diff         llvm-diff        /usr/bin/llvm-diff-${VERSION} \
+              --slave   /usr/bin/llvm-dis          llvm-dis         /usr/bin/llvm-dis-${VERSION} \
+              --slave   /usr/bin/llvm-dwarfdump    llvm-dwarfdump   /usr/bin/llvm-dwarfdump-${VERSION} \
+              --slave   /usr/bin/llvm-extract      llvm-extract     /usr/bin/llvm-extract-${VERSION} \
+              --slave   /usr/bin/llvm-link         llvm-link        /usr/bin/llvm-link-${VERSION} \
+              --slave   /usr/bin/llvm-mc           llvm-mc          /usr/bin/llvm-mc-${VERSION} \
+              --slave   /usr/bin/llvm-nm           llvm-nm          /usr/bin/llvm-nm-${VERSION} \
+              --slave   /usr/bin/llvm-objdump      llvm-objdump     /usr/bin/llvm-objdump-${VERSION} \
+              --slave   /usr/bin/llvm-ranlib       llvm-ranlib      /usr/bin/llvm-ranlib-${VERSION} \
+              --slave   /usr/bin/llvm-readobj      llvm-readobj     /usr/bin/llvm-readobj-${VERSION} \
+              --slave   /usr/bin/llvm-rtdyld       llvm-rtdyld      /usr/bin/llvm-rtdyld-${VERSION} \
+              --slave   /usr/bin/llvm-size         llvm-size        /usr/bin/llvm-size-${VERSION} \
+              --slave   /usr/bin/llvm-stress       llvm-stress      /usr/bin/llvm-stress-${VERSION} \
+              --slave   /usr/bin/llvm-symbolizer   llvm-symbolizer  /usr/bin/llvm-symbolizer-${VERSION} \
+              --slave   /usr/bin/llvm-tblgen       llvm-tblgen      /usr/bin/llvm-tblgen-${VERSION}
+            sudo update-alternatives \
+              --install /usr/bin/clang                 clang                 /usr/bin/clang-${VERSION} ${PRIORITY} \
+              --slave   /usr/bin/clang++               clang++               /usr/bin/clang++-${VERSION}  \
+              --slave   /usr/bin/asan_symbolize        asan_symbolize        /usr/bin/asan_symbolize-${VERSION} \
+              --slave   /usr/bin/clang-cpp             clang-cpp             /usr/bin/clang-cpp-${VERSION} \
+              --slave   /usr/bin/lldb                  lldb                  /usr/bin/lldb-${VERSION} \
+              --slave   /usr/bin/lldb-server           lldb-server           /usr/bin/lldb-server-${VERSION}
+          else
+            echo "Warning: LLVM ${VERSION} binaries not found. Checking available versions..."
+            ls -la /usr/bin/llvm-config-* 2>/dev/null || echo "No llvm-config versions found"
+            ls -la /usr/bin/clang-* 2>/dev/null | head -5 || echo "No clang versions found"
+            echo "Falling back to system defaults."
+          fi
+
+      - name: Debug - Show LLVM and Clang versions (Ubuntu)
+        if: startsWith(matrix.runner, 'ubuntu')
+        run: |
+          echo "=========================================="
+          echo "LLVM and Clang Version Information"
+          echo "=========================================="
+          echo ""
+          echo "=== Clang Version ==="
+          clang --version || echo "clang not found"
+          echo ""
+          echo "=== Clang++ Version ==="
+          clang++ --version || echo "clang++ not found"
+          echo ""
+          echo "=== LLVM Config Version ==="
+          llvm-config --version || echo "llvm-config not found"
+          echo ""
+          echo "=== Which binaries are being used ==="
+          which clang || echo "clang not in PATH"
+          which clang++ || echo "clang++ not in PATH"
+          which llvm-config || echo "llvm-config not in PATH"
+          echo ""
+          echo "=== Real paths (resolving symlinks) ==="
+          readlink -f $(which clang 2>/dev/null) || echo "clang not found"
+          readlink -f $(which clang++ 2>/dev/null) || echo "clang++ not found"
+          readlink -f $(which llvm-config 2>/dev/null) || echo "llvm-config not found"
+          echo ""
+          echo "=========================================="
+
+      - name: Create Build folder
+        run: |
+          mkdir build
+          cd build
+
+      - name: Configure Build
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Debug ..
+
+      - name: Build
+        run: |
+          make
