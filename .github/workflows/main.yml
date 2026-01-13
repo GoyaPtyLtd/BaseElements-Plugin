@@ -6,6 +6,9 @@ on:
       - 'v*'
   workflow_dispatch:
 
+env:
+  BUILD_TYPE: Debug
+
 jobs:
   build:
     runs-on: ${{ matrix.runner }}
@@ -148,10 +151,8 @@ jobs:
           mkdir build
           cd build
 
-      - name: Configure Build
-        run: |
-          cmake -DCMAKE_BUILD_TYPE=Debug ..
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: Build
-        run: |
-          make
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
