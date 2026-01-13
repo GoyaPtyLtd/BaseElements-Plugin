@@ -66,11 +66,11 @@
 			<Add option="-m64" />
 			<Add option="-Wall" />
 			<Add option="-std=c++20" />
-			<Add option="-std=c17" />
+			<Add option="-std=c20" />
 			<Add option="-fexceptions" />
 			<Add option="-Wno-unknown-pragmas" />
 			<Add option="-fvisibility=hidden" />
-			<Add option="-D_LIBCPP_STD_VER=17" />
+			<Add option="-D_LIBCPP_STD_VER=20" />
 			<Add directory="../Headers" />
 			<Add directory="../Source" />
 			<Add directory="../Headers/ImageMagick-7" />
@@ -128,7 +128,7 @@
 			<Add library="dl" />
 			<Add library="pthread" />
 			<Add library="m" />
-			<Add directory="../Libraries/linux" />
+			<Add directory="../Libraries/ubuntu22/x86_64" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
