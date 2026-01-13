@@ -36,7 +36,7 @@ set(CMAKE_C_FLAGS_RELEASE           "-O2")
 set(CMAKE_C_FLAGS_RELWITHDEBINFO    "-O2 -g")
 
 set(CMAKE_CXX_COMPILER              "clang++")
-set(CMAKE_CXX_FLAGS                 "-fPIC -m64 -Wall -fexceptions -Wno-unknown-pragmas -fvisibility=hidden -D_LIBCPP_STD_VER=17")
+set(CMAKE_CXX_FLAGS                 "-fPIC -m64 -Wall -fexceptions -Wno-unknown-pragmas -fvisibility=hidden -D_LIBCPP_STD_VER=20")
 set(CMAKE_CXX_FLAGS_DEBUG           "-g")
 set(CMAKE_CXX_FLAGS_RELEASE         "-O2")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "-O2 -g")
