@@ -1,0 +1,30 @@
+---
+function: BE_Version
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:
+
+  - name: The version is of the x.x.x where x is either one or two digits  
+    test: | 
+      Let ( [ $version = BE_Version ; $len = Length ( $version ) ] ; $len ≥ 5 )
+    debug: | 
+      "Length of version ( " & $version & " ) is " & $len & ", when it should be ≥ 5."
+
+  - name: The version string should only consist of numerals and the (english) decimal separator  
+    test: | 
+      Let ( [ $version = BE_Version ; $filtered = Filter ( $version ; "0123456789.bd" ) ] $filtered = $version )
+    debug: | 
+      "Version string ( " & $version & " ) filter of 0123456789.bd has output of " & $filtered & " - doesn't match original."

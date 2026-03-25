@@ -1,0 +1,31 @@
+---
+function: BE_VersionAutoUpdate
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:
+
+  - name: Should be eight characters long
+    test: | 
+      Let ( [ $version = BE_VersionAutoUpdate ; $len = Length ( $version ) ] ; $len ≥ 5 )
+    debug: | 
+      "Auto Update Version string ( " & $version & " ) is " & $len & ", when it should be 8."
+
+  
+  - name: Should only contain numerals
+    test: | 
+      Let ( [ $version = BE_VersionAutoUpdate ; $filtered = Filter ( $version ; "0123456789" ) ] $filtered = $version )
+    debug: | 
+      "Auto Update Version string ( " & $version & " ) filter of 0123456789 has output of " & $filtered & " - doesn't match original."

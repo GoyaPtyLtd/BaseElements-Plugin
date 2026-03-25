@@ -1,0 +1,25 @@
+---
+function: BE_ButtonAlternate
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:
+
+  - name: Named constant == 3
+    test: | 
+      Let ( $button = BE_ButtonAlternate ; $button = 2 )
+    debug: | 
+      "BE_ButtonAlternate = " & $button & " - should be 2."
+

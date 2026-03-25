@@ -1,0 +1,24 @@
+---
+function: BE_ButtonOK
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:
+
+  - name: Named constant == 
+    test: | 
+      Let ( $button = BE_ButtonOK ; $button = 1 )
+    debug: | 
+      "BE_ButtonOK = " & $button & " - should be 1."

@@ -1,0 +1,96 @@
+---
+function: BE_TextExtractWords
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:
+  
+  - name: test $var extract, space separator, local and global
+    test: | 
+      Let ( $output = BE_TextExtractWords ( "$$global & $variable" ) ; $output = "$$global¶$variable" )
+    debug: | 
+      "Extract from \"$$global & $variable\" is " & Quote ( $output ) & " and should be \"$$global¶$variable\""
+
+  - name: Single line comment
+    test: | 
+      Let ( [ 
+      $string = "//$variable" ; 
+      $output = BE_TextExtractWords ( $string ) ] ; 
+      $output = "" )
+    debug: | 
+      "Extract from " & Quote ( $string ) & " is " & Quote ( $output ) & " and should be empty."
+
+  - name: Quoted string 
+    test: | 
+        Let ( [ 
+        $string = "\"this is a string\" & $a_variable" ; 
+        $output = BE_TextExtractWords ( $string ) ] ; 
+        $output = "$a_variable" )
+    debug: | 
+      "Extract from " & Quote ( $string ) & " is " & Quote ( $output ) & " and should be $a_variable."
+  
+  - name: Multiline comment 
+    test: | 
+        Let ( [ 
+        $string = "/* a $variable is here */" ; 
+        $output = BE_TextExtractWords ( $string ) ] ; 
+        $output = "" )
+    debug: | 
+      "Extract from " & Quote ( $string ) & " is " & Quote ( $output ) & " and should be empty."
+ 
+  - name: Backslash as separator only get each variable once 
+    test: | 
+        Let ( [ 
+        $string = "$this+$that/$this" ; 
+        $output = BE_TextExtractWords ( $string ) ] ; 
+        $output = "$this¶$that" )
+    debug: | 
+      "Extract from " & Quote ( $string ) & " is " & Quote ( $output ) & " and should be $this¶$that."
+ 
+  - name: Two lines, one of which is is a comment 
+    test: | 
+        Let ( [ 
+        $string = "// a $variable¶\"and\" + $another" ; 
+        $output = BE_TextExtractWords ( $string ) ] ; 
+        $output = "$another" )
+    debug: | 
+      "Extract from " & Quote ( $string ) & " is " & Quote ( $output ) & " and should be $another."
+ 
+  - name: Hidden var 
+    test: | 
+        Let ( [ 
+        $string = "$a & /* $hidden */ $one *¶$here" ; 
+        $output = BE_TextExtractWords ( $string ) ] ; 
+        $output = "$a¶$one¶$here" )
+    debug: | 
+      "Extract from " & Quote ( $string ) & " is " & Quote ( $output ) & " and should be $a¶$one¶$here."
+ 
+  - name: Semicolon as a separator 
+    test: | 
+        Let ( [ 
+        $string = "if($a;$b;$c)" ; 
+        $output = BE_TextExtractWords ( $string ) ] ; 
+        $output = "$a¶$b¶$c" )
+    debug: | 
+      "Extract from " & Quote ( $string ) & " is " & Quote ( $output ) & " and should be $a¶$b¶$c."
+
+  - name: Minus as a separator 
+    test: | 
+        Let ( [ 
+        $string = "3-$minus-3" ; 
+        $output = BE_TextExtractWords ( $string ) ] ; 
+        $output = "$minus" )
+    debug: | 
+      "Extract from " & Quote ( $string ) & " is " & Quote ( $output ) & " and should be $minus."
