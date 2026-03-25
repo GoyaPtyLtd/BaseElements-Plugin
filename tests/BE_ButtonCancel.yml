@@ -18,7 +18,6 @@ requires:
 tests:
 
   - name: Named constant == 2  
-    test: | 
-      Let ( $button = BE_ButtonCancel ; $button = 2 )
-    debug: | 
-      "BE_ButtonCancel = " & $button & " - should be 2."
+    evaluate: | 
+      BE_ButtonCancel
+    output: 2

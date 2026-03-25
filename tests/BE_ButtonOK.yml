@@ -17,8 +17,7 @@ requires:
 
 tests:
 
-  - name: Named constant == 
-    test: | 
-      Let ( $button = BE_ButtonOK ; $button = 1 )
-    debug: | 
-      "BE_ButtonOK = " & $button & " - should be 1."
+  - name: Named constant == 1
+    evaluate: | 
+      BE_ButtonOK
+    output: 1

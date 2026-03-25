@@ -15,16 +15,24 @@ requires:
   sftp: false
   smtp: false
 
+vars:
+  version: |
+    BE_Version
+
 tests:
 
-  - name: The version is of the x.x.x where x is either one or two digits  
-    test: | 
-      Let ( [ $version = BE_Version ; $len = Length ( $version ) ] ; $len ≥ 5 )
-    debug: | 
-      "Length of version ( " & $version & " ) is " & $len & ", when it should be ≥ 5."
+  - name: The version is of the x.x.x where x is either one digit
+    evaluate: | 
+      Length ( {{version}} )
+    output: 5
 
-  - name: The version string should only consist of numerals and the (english) decimal separator  
-    test: | 
-      Let ( [ $version = BE_Version ; $filtered = Filter ( $version ; "0123456789.bd" ) ] $filtered = $version )
-    debug: | 
-      "Version string ( " & $version & " ) filter of 0123456789.bd has output of " & $filtered & " - doesn't match original."
+  - name: The version is of the x.x.x and contains 2 dots  
+    evaluate: | 
+      PatternCount ( BE_Version ; "." )
+    output: 2
+
+  - name: The version string should only consist of numerals and the (english) decimal separator
+    evaluate: | 
+      Filter ( {{version}} ; "0123456789.bd" )
+    output: |
+      {{version}}

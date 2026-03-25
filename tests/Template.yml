@@ -1,25 +1,28 @@
 ---
 function: BE_FunctionName
 
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+vars:
+  varname: "sometext"
+  othervar: |
+    EvaluateCalc
+
 tests:  
-  - name: 
-  
-    runs_on:
-      macos: true
-      windows: true
-      ios: true
-      ubuntu: true
-      server: true
-  
-    requires:
-      pro: false
-      interaction: false
-      ftp: false
-      sftp: false
-      smtp: false
-  
-    test: | 
+  - name:   
+    evaluate: | 
       FileMaker Calculation
-  
-    debug: | 
-      "Explanation of output as text."
+    output: | 
+      result

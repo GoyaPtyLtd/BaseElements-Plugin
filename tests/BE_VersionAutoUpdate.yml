@@ -15,17 +15,19 @@ requires:
   sftp: false
   smtp: false
 
+vars:
+  version: |
+    BE_VersionAutoUpdate
+
 tests:
 
   - name: Should be eight characters long
-    test: | 
-      Let ( [ $version = BE_VersionAutoUpdate ; $len = Length ( $version ) ] ; $len ≥ 5 )
-    debug: | 
-      "Auto Update Version string ( " & $version & " ) is " & $len & ", when it should be 8."
+    evaluate: | 
+      Length ( {{version}} )
+    output: 8
 
-  
   - name: Should only contain numerals
-    test: | 
-      Let ( [ $version = BE_VersionAutoUpdate ; $filtered = Filter ( $version ; "0123456789" ) ] $filtered = $version )
-    debug: | 
-      "Auto Update Version string ( " & $version & " ) filter of 0123456789 has output of " & $filtered & " - doesn't match original."
+    evaluate: | 
+      Filter ( {{version}} ; "0123456789" )
+    output: | 
+      {{version}}
