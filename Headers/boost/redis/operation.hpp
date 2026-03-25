@@ -1,4 +1,4 @@
-/* Copyright (c) 2018-2023 Marcelo Zimbres Silva (mzimbres@gmail.com)
+/* Copyright (c) 2018-2024 Marcelo Zimbres Silva (mzimbres@gmail.com)
  *
  * Distributed under the Boost Software License, Version 1.0. (See
  * accompanying file LICENSE.txt)
@@ -10,12 +10,12 @@
 namespace boost::redis {
 
 /** @brief Connection operations that can be cancelled.
- *  @ingroup high-level-api
  *  
  *  The operations listed below can be passed to the
- *  `boost::redis::connection::cancel` member function.
+ *  @ref boost::redis::connection::cancel member function.
  */
-enum class operation {
+enum class operation
+{
    /// Resolve operation.
    resolve,
    /// Connect operation.
@@ -36,6 +36,6 @@ enum class operation {
    all,
 };
 
-} // boost::redis
+}  // namespace boost::redis
 
-#endif // BOOST_REDIS_OPERATION_HPP
+#endif  // BOOST_REDIS_OPERATION_HPP

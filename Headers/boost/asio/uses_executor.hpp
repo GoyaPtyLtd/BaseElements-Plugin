@@ -2,7 +2,7 @@
 // uses_executor.hpp
 // ~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2023 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2025 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -46,7 +46,7 @@ struct executor_arg_t
  * See boost::asio::executor_arg_t and boost::asio::uses_executor
  * for more information.
  */
-constexpr executor_arg_t executor_arg;
+BOOST_ASIO_INLINE_VARIABLE constexpr executor_arg_t executor_arg;
 
 /// The uses_executor trait detects whether a type T has an associated executor
 /// that is convertible from type Executor.

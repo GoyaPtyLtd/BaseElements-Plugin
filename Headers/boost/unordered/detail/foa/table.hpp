@@ -1,7 +1,8 @@
 /* Fast open-addressing hash table.
  *
- * Copyright 2022-2023 Joaquin M Lopez Munoz.
+ * Copyright 2022-2025 Joaquin M Lopez Munoz.
  * Copyright 2023 Christian Mazakas.
+ * Copyright 2024 Braden Ganetsky.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -18,6 +19,7 @@
 #include <boost/core/serialization.hpp>
 #include <boost/unordered/detail/foa/core.hpp>
 #include <boost/unordered/detail/serialize_tracked_address.hpp>
+#include <boost/unordered/detail/type_traits.hpp>
 #include <cstddef>
 #include <iterator>
 #include <memory>
@@ -359,6 +361,10 @@ public:
     const_iterator>::type;
   using erase_return_type=table_erase_return_type<iterator>;
 
+#if defined(BOOST_UNORDERED_ENABLE_STATS)
+  using stats=typename super::stats;
+#endif
+
   table(
     std::size_t n=default_bucket_count,const Hash& h_=Hash(),
     const Pred& pred_=Pred(),const Allocator& al_=Allocator()):
@@ -400,9 +406,32 @@ public:
   template<typename... Args>
   BOOST_FORCEINLINE std::pair<iterator,bool> emplace(Args&&... args)
   {
-    auto x=alloc_make_insert_type<type_policy>(
+    alloc_cted_insert_type<type_policy,Allocator,Args...> x(
       this->al(),std::forward<Args>(args)...);
     return emplace_impl(type_policy::move(x.value()));
+  }
+
+  /* Optimization for value_type and init_type, to avoid constructing twice */
+  template <typename T>
+  BOOST_FORCEINLINE typename std::enable_if<
+    detail::is_similar_to_any<T, value_type, init_type>::value,
+    std::pair<iterator, bool> >::type
+  emplace(T&& x)
+  {
+    return emplace_impl(std::forward<T>(x));
+  }
+
+  /* Optimizations for maps for (k,v) to avoid eagerly constructing value */
+  template <typename K, typename V>
+  BOOST_FORCEINLINE
+    typename std::enable_if<is_emplace_kv_able<table, K>::value,
+      std::pair<iterator, bool> >::type
+    emplace(K&& k, V&& v)
+  {
+    alloc_cted_or_fwded_key_type<type_policy, Allocator, K&&> x(
+      this->al(), std::forward<K>(k));
+    return emplace_impl(
+      try_emplace_args_t{}, x.move_or_fwd(), std::forward<V>(v));
   }
 
   template<typename Key,typename... Args>
@@ -466,6 +495,14 @@ public:
     else return 0;
   }
 
+  BOOST_FORCEINLINE init_type pull(const_iterator pos)
+  {
+    BOOST_ASSERT(pos!=end());
+    erase_on_exit e{*this,pos};
+    (void)e;
+    return type_policy::move(type_policy::value_from(*pos.p()));
+  }
+
   void swap(table& x)
     noexcept(noexcept(std::declval<super&>().swap(std::declval<super&>())))
   {
@@ -517,6 +554,11 @@ public:
   using super::rehash;
   using super::reserve;
 
+#if defined(BOOST_UNORDERED_ENABLE_STATS)
+  using super::get_stats;
+  using super::reset_stats;
+#endif
+
   template<typename Predicate>
   friend std::size_t erase_if(table& x,Predicate& pr)
   {
@@ -559,6 +601,7 @@ private:
     x.arrays=ah.release();
     x.size_ctrl.ml=x.initial_max_load();
     x.size_ctrl.size=0;
+    BOOST_UNORDERED_SWAP_STATS(this->cstats,x.cstats);
   }
 
   template<typename ExclusiveLockGuard>

@@ -53,8 +53,9 @@ class NetSSL_API SecureStreamSocket: public StreamSocket
 public:
 	enum
 	{
-		ERR_SSL_WANT_READ  = -1,
-		ERR_SSL_WANT_WRITE = -2
+		ERR_SSL_WOULD_BLOCK = -1,
+		ERR_SSL_WANT_READ  = -2,
+		ERR_SSL_WANT_WRITE = -3
 	};
 
 	SecureStreamSocket();
@@ -108,10 +109,22 @@ public:
 		///
 		/// The given host name is used for certificate verification.
 
+	SecureStreamSocket(const std::string& hostName);
+		/// Creates a secure stream socket using the default
+		/// client SSL context. The created socket is not connected.
+		///
+		/// The given host name is used for certificate verification.
+
 	SecureStreamSocket(const SocketAddress& address, const std::string& hostName, Context::Ptr pContext);
 		/// Creates a secure stream socket using the given
 		/// client SSL context and connects it to
 		/// the socket specified by address.
+		///
+		/// The given host name is used for certificate verification.
+
+	SecureStreamSocket(const std::string& hostName, Context::Ptr pContext);
+		/// Creates a secure stream socket using the given
+		/// client SSL context. The created socket is not connected.
 		///
 		/// The given host name is used for certificate verification.
 

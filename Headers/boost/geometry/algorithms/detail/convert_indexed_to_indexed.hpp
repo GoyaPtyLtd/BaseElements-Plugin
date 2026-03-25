@@ -17,10 +17,10 @@
 
 #include <cstddef>
 
-#include <boost/numeric/conversion/cast.hpp>
 #include <boost/geometry/core/access.hpp>
 #include <boost/geometry/core/coordinate_dimension.hpp>
 #include <boost/geometry/core/coordinate_type.hpp>
+#include <boost/geometry/util/numeric_cast.hpp>
 
 
 namespace boost { namespace geometry
@@ -42,13 +42,13 @@ struct indexed_to_indexed
 {
     static inline void apply(Source const& source, Destination& destination)
     {
-        typedef typename coordinate_type<Destination>::type coordinate_type;
+        using coordinate_type = coordinate_type_t<Destination>;
 
         geometry::set<min_corner, Dimension>(destination,
-            boost::numeric_cast<coordinate_type>(
+            util::numeric_cast<coordinate_type>(
                 geometry::get<min_corner, Dimension>(source)));
         geometry::set<max_corner, Dimension>(destination,
-            boost::numeric_cast<coordinate_type>(
+            util::numeric_cast<coordinate_type>(
                 geometry::get<max_corner, Dimension>(source)));
 
         indexed_to_indexed

@@ -75,9 +75,19 @@
 # define BOOST_URL_POS (BOOST_CURRENT_LOCATION)
 #endif
 
+#if !defined(BOOST_NO_CXX20_HDR_CONCEPTS) && defined(__cpp_lib_concepts)
+#define BOOST_URL_HAS_CONCEPTS
+#endif
+
+#ifdef  BOOST_URL_HAS_CONCEPTS
+#define BOOST_URL_CONSTRAINT(C) C
+#else
+#define BOOST_URL_CONSTRAINT(C) class
+#endif
+
 // String token parameters
 #ifndef BOOST_URL_STRTOK_TPARAM
-#define BOOST_URL_STRTOK_TPARAM class StringToken = string_token::return_string
+#define BOOST_URL_STRTOK_TPARAM BOOST_URL_CONSTRAINT(string_token::StringToken) StringToken = string_token::return_string
 #endif
 #ifndef BOOST_URL_STRTOK_RETURN
 #define BOOST_URL_STRTOK_RETURN typename StringToken::result_type
@@ -125,10 +135,30 @@
 #endif
 
 // deprecated attribute
-#if defined(BOOST_MSVC) || defined(BOOST_URL_DOCS)
+#if defined(BOOST_MSVC)
 #define BOOST_URL_DEPRECATED(msg)
 #else
 #define BOOST_URL_DEPRECATED(msg) BOOST_DEPRECATED(msg)
+#endif
+
+// Implementation defined type for Doxygen while Clang
+// can still parse the comments into the AST
+#ifndef BOOST_URL_DOCS
+#define BOOST_URL_IMPLEMENTATION_DEFINED(Type) Type
+#else
+#define BOOST_URL_IMPLEMENTATION_DEFINED(Type) __implementation_defined__
+#endif
+
+#ifndef BOOST_URL_DOCS
+#define BOOST_URL_SEE_BELOW(Type) Type
+#else
+#define BOOST_URL_SEE_BELOW(Type) __see_below__
+#endif
+
+#ifdef __cpp_lib_array_constexpr
+#define BOOST_URL_LIB_ARRAY_CONSTEXPR constexpr
+#else
+#define BOOST_URL_LIB_ARRAY_CONSTEXPR
 #endif
 
 // avoid Boost.TypeTraits for these traits

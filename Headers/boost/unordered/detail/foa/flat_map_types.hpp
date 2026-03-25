@@ -1,9 +1,12 @@
 // Copyright (C) 2023 Christian Mazakas
+// Copyright (C) 2024 Braden Ganetsky
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #ifndef BOOST_UNORDERED_DETAIL_FOA_FLAT_MAP_TYPES_HPP
 #define BOOST_UNORDERED_DETAIL_FOA_FLAT_MAP_TYPES_HPP
+
+#include <boost/unordered/detail/foa/types_constructibility.hpp>
 
 #include <boost/core/allocator_access.hpp>
 
@@ -23,6 +26,9 @@ namespace boost {
           using value_type = std::pair<Key const, T>;
 
           using element_type = value_type;
+
+          using types = flat_map_types<Key, T>;
+          using constructibility_checker = map_types_constructibility<types>;
 
           static value_type& value_from(element_type& x) { return x; }
 
@@ -47,12 +53,21 @@ namespace boost {
           template <class A, class... Args>
           static void construct(A& al, init_type* p, Args&&... args)
           {
+            constructibility_checker::check(al, p, std::forward<Args>(args)...);
             boost::allocator_construct(al, p, std::forward<Args>(args)...);
           }
 
           template <class A, class... Args>
           static void construct(A& al, value_type* p, Args&&... args)
           {
+            constructibility_checker::check(al, p, std::forward<Args>(args)...);
+            boost::allocator_construct(al, p, std::forward<Args>(args)...);
+          }
+
+          template <class A, class... Args>
+          static void construct(A& al, key_type* p, Args&&... args)
+          {
+            constructibility_checker::check(al, p, std::forward<Args>(args)...);
             boost::allocator_construct(al, p, std::forward<Args>(args)...);
           }
 
@@ -65,10 +80,15 @@ namespace boost {
           {
             boost::allocator_destroy(al, p);
           }
+
+          template <class A> static void destroy(A& al, key_type* p) noexcept
+          {
+            boost::allocator_destroy(al, p);
+          }
         };
       } // namespace foa
-    }   // namespace detail
-  }     // namespace unordered
+    } // namespace detail
+  } // namespace unordered
 } // namespace boost
 
 #endif // BOOST_UNORDERED_DETAIL_FOA_FLAT_MAP_TYPES_HPP

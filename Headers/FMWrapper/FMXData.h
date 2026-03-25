@@ -1,6 +1,6 @@
 /*
 
- Copyright © 1998 - 2021  Claris International Inc.
+ Copyright © 1998 - 2024  Claris International Inc.
  All rights reserved.
 
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
@@ -94,10 +94,6 @@ extern "C++"
 
 			// GetFontInfo will return false if the given font id is not found in the database
 
-			// New to FileMaker Pro 8 (API VERSION 51) and later
-			DEPRECATED inline CharacterStyle::FontID GetFontID ( const Text &fontDisplayName, CharacterStyle::FontScript fontScript, const ExprEnv &env ) const;
-			DEPRECATED inline bool GetFontInfo ( CharacterStyle::FontID font, Text &fontDisplayName, CharacterStyle::FontScript &fontScript, const ExprEnv &env ) const;
-
 			// New to FileMaker Pro 14 (API VERSION 55) and later
 			inline CharacterStyle::FontID GetFontID ( const Text &fontPostscriptName, const ExprEnv &env ) const;
 			inline bool GetFontInfo ( CharacterStyle::FontID font, Text &fontPostscriptName, const ExprEnv &env ) const;
@@ -147,9 +143,7 @@ extern "C"
 	void FMX_API FM_Data_SetBinaryData ( void *_self, const fmx::BinaryData &binaryData, bool forceBinaryNativeType, fmx::_fmxcpt &_x ) throw ();
 	void FMX_API FM_Data_Delete ( void *_self, fmx::_fmxcpt &_x ) throw ();
 
-	fmx::CharacterStyle::FontID FMX_API FM_Data_GetFontID ( const void *_self, const fmx::Text &fontDisplayName, fmx::CharacterStyle::FontScript fontScript, const fmx::ExprEnv &env,  fmx::_fmxcpt &_x ) throw ();
 	fmx::CharacterStyle::FontID FMX_API FM_Data_GetPostscriptFontID ( const void *_self, const fmx::Text &fontPostscriptName, const fmx::ExprEnv &env,  fmx::_fmxcpt &_x ) throw ();
-	bool FMX_API FM_Data_GetFontInfo ( const void *_self, fmx::CharacterStyle::FontID font, fmx::Text &fontDisplayName, fmx::CharacterStyle::FontScript &fontScript, const fmx::ExprEnv &env, fmx::_fmxcpt &_x ) throw ();
 	bool FMX_API FM_Data_GetPostscriptFontInfo ( const void *_self, fmx::CharacterStyle::FontID font, fmx::Text &fontPostscriptName, const fmx::ExprEnv &env, fmx::_fmxcpt &_x ) throw ();
 
 }
@@ -312,24 +306,10 @@ extern "C++"
 			_x.Check ();
 		}
 
-		inline CharacterStyle::FontID Data::GetFontID( const Text &fontDisplayName, CharacterStyle::FontScript fontScript, const ExprEnv &env ) const
-		{
-			_fmxcpt _x;
-			CharacterStyle::FontID _rtn = FM_Data_GetFontID ( this, fontDisplayName, fontScript, env, _x );
-			_x.Check ();
-			return _rtn;
-		}
 		inline CharacterStyle::FontID Data::GetFontID( const Text &fontPostscriptName, const ExprEnv &env ) const
 		{
 			_fmxcpt _x;
 			CharacterStyle::FontID _rtn = FM_Data_GetPostscriptFontID ( this, fontPostscriptName, env, _x );
-			_x.Check ();
-			return _rtn;
-		}
-		inline bool Data::GetFontInfo( CharacterStyle::FontID font, Text &fontDisplayName, CharacterStyle::FontScript &fontScript, const ExprEnv &env ) const
-		{
-			_fmxcpt _x;
-			bool _rtn = FM_Data_GetFontInfo ( this, font, fontDisplayName, fontScript, env, _x );
 			_x.Check ();
 			return _rtn;
 		}

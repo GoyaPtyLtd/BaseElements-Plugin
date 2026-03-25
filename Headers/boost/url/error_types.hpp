@@ -24,7 +24,7 @@ namespace error_types {
 
 /** The type of error category used by the library
 
-    @note This alias is no longer supported and
+    @warning This alias is no longer supported and
     should not be used in new code. Please use
     `system::error_category` instead.
 
@@ -46,7 +46,7 @@ using error_category
 
 /** The type of error code used by the library
 
-    @note This alias is no longer supported and
+    @warning This alias is no longer supported and
     should not be used in new code. Please use
     `system::error_code` instead.
 
@@ -68,7 +68,7 @@ using error_code
 
 /** The type of error condition used by the library
 
-    @note This alias is no longer supported and
+    @warning This alias is no longer supported and
     should not be used in new code. Please use
     `system::error_condition` instead.
 
@@ -90,7 +90,7 @@ using error_condition
 
 /** The type of system error thrown by the library
 
-    @note This alias is no longer supported and
+    @warning This alias is no longer supported and
     should not be used in new code. Please use
     `system::system_error` instead.
 
@@ -112,7 +112,7 @@ using system_error
 
 /** A function to return the generic error category used by the library
 
-    @note This alias is no longer supported and
+    @warning This alias is no longer supported and
     should not be used in new code. Please use
     `core::string_view` instead.
 
@@ -128,15 +128,11 @@ using system_error
     the library.
 
  */
-#ifdef BOOST_URL_DOCS
-error_category const& generic_category();
-#else
 using boost::system::generic_category;
-#endif
 
 /** A function to return the system error category used by the library
 
-    @note This alias is no longer supported and
+    @warning This alias is no longer supported and
     should not be used in new code. Please use
     `core::string_view` instead.
 
@@ -152,15 +148,11 @@ using boost::system::generic_category;
     the library.
 
  */
-#ifdef BOOST_URL_DOCS
-error_category const& system_category();
-#else
 using boost::system::system_category;
-#endif
 
 /** The set of constants used for cross-platform error codes
 
-    @note This alias is no longer supported and
+    @warning This alias is no longer supported and
     should not be used in new code. Please use
     `core::string_view` instead.
 
@@ -176,18 +168,11 @@ using boost::system::system_category;
     the library.
 
  */
-#ifdef BOOST_URL_DOCS
-enum errc
-{
-    __see_below__
-};
-#else
 namespace errc = boost::system::errc;
-#endif
 
 /** The type of result returned by library functions
 
-    @note This alias is no longer supported and
+    @warning This alias is no longer supported and
     should not be used in new code. Please use
     `system::result` instead.
 

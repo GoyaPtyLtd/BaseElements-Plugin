@@ -2,7 +2,7 @@
  BEXSLT.cpp
  BaseElements Plug-In
  
- Copyright 2010-2024 Goya. All rights reserved.
+ Copyright 2010-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -209,9 +209,11 @@ const string ApplyXSLTInMemory ( const string& xml, const string& xslt_as_filema
 								
 							xmlOutputBufferPtr outputBufPtr = xmlOutputBufferCreateBuffer ( buffer, NULL );
 							if ( outputBufPtr ) {
+								
 								xsltSaveResultTo ( outputBufPtr, xslt_result, stylesheet );
-								result.assign ( (char *)(buffer->content), buffer->use );	// return transformed xml on success
+								result.assign ( (char *)xmlBufferContent ( buffer ), xmlBufferLength ( buffer ) );	// return transformed xml on success
 								xmlOutputBufferClose ( outputBufPtr ); // auto reply =
+								
 							}
 
 							xmlBufferFree ( buffer );

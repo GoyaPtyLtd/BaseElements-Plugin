@@ -89,7 +89,7 @@ public :
         centroid = state.centroid;
         if ( state.count > 0 )
         {
-            using coord_t = typename coordinate_type<ResultPoint>::type;
+            using coord_t = coordinate_type_t<ResultPoint>;
             divide_value(centroid, static_cast<coord_t>(state.count));
             return true;
         }
@@ -118,7 +118,7 @@ struct default_strategy
     typedef average
         <
             Point,
-            typename point_type<Geometry>::type
+            point_type_t<Geometry>
         > type;
 };
 

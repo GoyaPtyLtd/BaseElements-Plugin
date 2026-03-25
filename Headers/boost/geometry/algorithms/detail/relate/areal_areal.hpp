@@ -31,6 +31,8 @@
 
 #include <boost/geometry/geometries/helper_geometry.hpp>
 
+#include <boost/geometry/util/numeric_cast.hpp>
+
 namespace boost { namespace geometry
 {
 
@@ -87,7 +89,7 @@ public:
             return false;
         }
 
-        using point_type = typename geometry::point_type<Areal>::type;
+        using point_type = geometry::point_type_t<Areal>;
         typename helper_geometry<point_type>::type pt;
         bool const ok = geometry::point_on_border(pt, areal);
 
@@ -836,7 +838,7 @@ struct areal_areal
             segment_identifier const& seg_id = turn.operations[OpId].seg_id;
 
             signed_size_type
-                count = boost::numeric_cast<signed_size_type>(
+                count = util::numeric_cast<signed_size_type>(
                             geometry::num_interior_rings(
                                 detail::single_geometry(analyser.geometry, seg_id)));
 

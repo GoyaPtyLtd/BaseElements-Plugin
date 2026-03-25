@@ -106,10 +106,8 @@ struct compare_loop
     template <typename Point1, typename Point2>
     static inline bool apply(Point1 const& left, Point2 const& right)
     {
-        typename geometry::coordinate_type<Point1>::type const&
-            cleft = geometry::get<Dimension>(left);
-        typename geometry::coordinate_type<Point2>::type const&
-            cright = geometry::get<Dimension>(right);
+        auto const& cleft = geometry::get<Dimension>(left);
+        auto const& cright = geometry::get<Dimension>(right);
 
         if (EqualsPolicy::apply(cleft, cright))
         {
@@ -216,8 +214,8 @@ template
     typename Point1,
     typename Point2 = Point1,
     int Dimension = -1,
-    typename CSTag1 = typename cs_tag<Point1>::type,
-    typename CSTag2 = typename cs_tag<Point2>::type
+    typename CSTag1 = cs_tag_t<Point1>,
+    typename CSTag2 = cs_tag_t<Point2>
 >
 struct default_strategy
 {

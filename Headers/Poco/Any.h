@@ -18,18 +18,17 @@
 
 #include "Poco/Exception.h"
 #include "Poco/MetaProgramming.h"
+#include "Poco/Bugcheck.h"
 #include <algorithm>
 #include <typeinfo>
-#include <cstring>
 #include <cstddef>
-
-
-#define poco_any_assert(cond) do { if (!(cond)) std::abort(); } while (0)
 
 
 namespace Poco {
 
 class Any;
+
+using namespace std::string_literals;
 
 namespace Dynamic {
 
@@ -61,7 +60,7 @@ union Placeholder
 	/// it will be placement-new-allocated into the local buffer
 	/// (i.e. there will be no heap-allocation). The local buffer size is one byte
 	/// larger - [POCO_SMALL_OBJECT_SIZE + 1], additional byte value indicating
-	/// where the object was allocated (0 => heap, 1 => local).
+	/// where the object was allocated. See enum Allocation.
 	///
 	/// Important: for SOO builds, only same-type (or trivial both-empty no-op)
 	/// swap operation is allowed.
@@ -79,9 +78,12 @@ public:
 
 #ifndef POCO_NO_SOO
 
-	Placeholder(): pHolder(0)
+	Placeholder(): pHolder(nullptr)
 	{
-		std::memset(holder, 0, sizeof(Placeholder));
+		// Forces to use optimised memset internally
+		// https://travisdowns.github.io/blog/2020/01/20/zero.html
+		std::fill(std::begin(holder), std::end(holder), static_cast<char>(0));
+		setAllocation(Allocation::POCO_ANY_EMPTY);
 	}
 
 	~Placeholder()
@@ -102,32 +104,31 @@ public:
 
 	bool isEmpty() const
 	{
-		static char buf[SizeV+1] = {};
-		return 0 == std::memcmp(holder, buf, SizeV+1);
+		return holder[SizeV] == Allocation::POCO_ANY_EMPTY;
 	}
 
 	bool isLocal() const
 	{
-		return holder[SizeV] != 0;
+		return holder[SizeV] == Allocation::POCO_ANY_LOCAL;
 	}
 
 	template<typename T, typename V,
-		typename std::enable_if<TypeSizeLE<T, Placeholder::Size::value>::value>::type* = nullptr>
+		typename std::enable_if_t<TypeSizeLE<T, Placeholder::Size::value>::value>* = nullptr>
 	PlaceholderT* assign(const V& value)
 	{
 		erase();
 		new (reinterpret_cast<PlaceholderT*>(holder)) T(value);
-		setLocal(true);
+		setAllocation(Allocation::POCO_ANY_LOCAL);
 		return reinterpret_cast<PlaceholderT*>(holder);
 	}
 
 	template<typename T, typename V,
-		typename std::enable_if<TypeSizeGT<T, Placeholder::Size::value>::value>::type* = nullptr>
+		typename std::enable_if_t<TypeSizeGT<T, Placeholder::Size::value>::value>* = nullptr>
 	PlaceholderT* assign(const V& value)
 	{
 		erase();
 		pHolder = new T(value);
-		setLocal(false);
+		setAllocation(Allocation::POCO_ANY_EXTERNAL);
 		return pHolder;
 	}
 
@@ -140,24 +141,56 @@ public:
 	}
 
 private:
-	typedef std::max_align_t AlignerType;
-	static_assert(sizeof(AlignerType) <= SizeV + 1, "Aligner type is bigger than the actual storage, so SizeV should be made bigger otherwise you simply waste unused memory.");
+	using AlignerType = std::max_align_t;
+#ifndef POCO_DOC
+	static_assert(
+		sizeof(AlignerType) < SizeV,
+		"Aligner type is bigger than the actual storage, so SizeV should be made bigger otherwise you simply waste unused memory."
+	);
+#endif
 
-	void setLocal(bool local) const
+	enum Allocation : unsigned char
 	{
-		holder[SizeV] = local ? 1 : 0;
+		POCO_ANY_EMPTY = 0,
+		POCO_ANY_LOCAL = 1,
+		POCO_ANY_EXTERNAL = 2
+	};
+
+	void setAllocation(Allocation alloc) const
+	{
+		holder[SizeV] = alloc;
 	}
 
 	void destruct(bool clear)
 	{
-		if (!isEmpty())
+		const auto allocation {holder[SizeV]};
+		switch (allocation)
 		{
-			if (!isLocal())
-				delete pHolder;
-			else
-				reinterpret_cast<PlaceholderT*>(holder)->~PlaceholderT();
-
-			if (clear) std::memset(holder, 0, sizeof(Placeholder));
+		case Allocation::POCO_ANY_EMPTY:
+			break;
+		case Allocation::POCO_ANY_LOCAL:
+			{
+				// Do not deallocate, just explicitly call destructor
+				auto* h { reinterpret_cast<PlaceholderT*>(holder) };
+				h->~PlaceholderT();
+			}
+			break;
+		case Allocation::POCO_ANY_EXTERNAL:
+			{
+				auto* h { pHolder };
+				pHolder = nullptr;
+				delete h;
+			}
+			break;
+		default:
+			poco_bugcheck();
+			break;
+		}
+		setAllocation(Allocation::POCO_ANY_EMPTY);
+		if (clear)
+		{
+			// Force to use optimised memset internally
+			std::fill(std::begin(holder), std::end(holder), static_cast<char>(0));
 		}
 	}
 
@@ -166,7 +199,7 @@ private:
 
 #else // POCO_NO_SOO
 
-	Placeholder(): pHolder(0)
+	Placeholder(): pHolder(nullptr)
 	{
 	}
 
@@ -183,12 +216,12 @@ private:
 	void erase()
 	{
 		delete pHolder;
-		pHolder = 0;
+		pHolder = nullptr;
 	}
 
 	bool isEmpty() const
 	{
-		return 0 == pHolder;
+		return nullptr == pHolder;
 	}
 
 	bool isLocal() const
@@ -226,10 +259,8 @@ class Any
 {
 public:
 
-	Any()
+	Any() = default;
 		/// Creates an empty any type.
-	{
-	}
 
 	template<typename ValueType>
 	Any(const ValueType & value)
@@ -249,11 +280,18 @@ public:
 			construct(other);
 	}
 
-	~Any()
-		/// Destructor. If Any is locally held, calls ValueHolder destructor;
-		/// otherwise, deletes the placeholder from the heap.
+	Any(Any&& other)
+		/// Move constructor, works with both empty and initialized Any values.
 	{
+		construct(other);
 	}
+
+	~Any() = default;
+		/// Destructor.
+		/// Small Object Optimization mode behavior:
+		/// Invokes the Placeholder destructor, which calls the
+		/// ValueHolder destructor explicitly (locally held Any), or
+		/// deletes the ValueHolder heap memory (heap-allocated Any).
 
 	Any& swap(Any& other) noexcept
 		/// Swaps the content of the two Anys.
@@ -299,11 +337,23 @@ public:
 	Any& operator = (const Any& rhs)
 		/// Assignment operator for Any.
 	{
-		if ((this != &rhs) && !rhs.empty())
-			construct(rhs);
-		else if ((this != &rhs) && rhs.empty())
-			_valueHolder.erase();
+		if (this != &rhs)
+		{
+			if (!rhs.empty())
+				construct(rhs);
+			else
+				_valueHolder.erase();
+		}
+		return *this;
+	}
 
+	Any& operator = (Any&& rhs)
+		/// Move operator for Any.
+	{
+		if (!rhs.empty())
+			construct(rhs);
+		else
+			_valueHolder.erase();
 		return *this;
 	}
 
@@ -348,21 +398,19 @@ private:
 		{
 		}
 
-		virtual const std::type_info& type() const
+		Holder & operator = (const Holder &) = delete;
+
+		const std::type_info& type() const override
 		{
 			return typeid(ValueType);
 		}
 
-		virtual void clone(Placeholder<ValueHolder>* pPlaceholder) const
+		void clone(Placeholder<ValueHolder>* pPlaceholder) const override
 		{
 			pPlaceholder->assign<Holder<ValueType>, ValueType>(_held);
 		}
 
 		ValueType _held;
-
-	private:
-
-		Holder & operator = (const Holder &);
 	};
 
 	ValueHolder* content() const
@@ -390,6 +438,9 @@ private:
 	friend ValueType* AnyCast(Any*);
 
 	template <typename ValueType>
+	friend const ValueType* AnyCast(const Any*);
+
+	template <typename ValueType>
 	friend ValueType* UnsafeAnyCast(Any*);
 
 	template <typename ValueType>
@@ -409,12 +460,12 @@ ValueType* AnyCast(Any* operand)
 	/// to the stored value.
 	///
 	/// Example Usage:
-	///	 MyType* pTmp = AnyCast<MyType*>(pAny).
-	/// Will return NULL if the cast fails, i.e. types don't match.
+	///	 MyType* pTmp = AnyCast<MyType>(pAny).
+	/// Returns nullptr if the types don't match.
 {
 	return operand && operand->type() == typeid(ValueType)
 				? &static_cast<Any::Holder<ValueType>*>(operand->content())->_held
-				: 0;
+				: nullptr;
 }
 
 
@@ -424,10 +475,12 @@ const ValueType* AnyCast(const Any* operand)
 	/// to the stored value.
 	///
 	/// Example Usage:
-	///	 const MyType* pTmp = AnyCast<MyType*>(pAny).
-	/// Will return NULL if the cast fails, i.e. types don't match.
+	///	 const MyType* pTmp = AnyCast<MyType>(pAny).
+	/// Returns nullptr if the types don't match.
 {
-	return AnyCast<ValueType>(const_cast<Any*>(operand));
+	return operand && operand->type() == typeid(ValueType)
+				? &static_cast<const Any::Holder<ValueType>*>(operand->content())->_held
+				: nullptr;
 }
 
 
@@ -442,18 +495,19 @@ ValueType AnyCast(Any& operand)
 	/// Some compilers will accept this code although a copy is returned. Use the RefAnyCast in
 	/// these cases.
 {
-	typedef typename TypeWrapper<ValueType>::TYPE NonRef;
+	using NonRef = typename TypeWrapper<ValueType>::TYPE;
 
 	NonRef* result = AnyCast<NonRef>(&operand);
 	if (!result)
 	{
-		std::string s = "RefAnyCast: Failed to convert between Any types ";
+		std::string s(__func__);
+		s.append(": Failed to convert between Any types "s);
 		if (operand.content())
 		{
 			s.append(1, '(');
-			s.append(operand.content()->type().name());
+			s.append(Poco::demangle(operand.content()->type().name()));
 			s.append(" => ");
-			s.append(typeid(ValueType).name());
+			s.append(Poco::demangle<ValueType>());
 			s.append(1, ')');
 		}
 		throw BadCastException(s);
@@ -473,7 +527,7 @@ ValueType AnyCast(const Any& operand)
 	/// Some compilers will accept this code although a copy is returned. Use the RefAnyCast in
 	/// these cases.
 {
-	typedef typename TypeWrapper<ValueType>::TYPE NonRef;
+	using NonRef = typename TypeWrapper<ValueType>::TYPE;
 
 	return AnyCast<NonRef&>(const_cast<Any&>(operand));
 }
@@ -489,13 +543,14 @@ const ValueType& RefAnyCast(const Any & operand)
 	ValueType* result = AnyCast<ValueType>(const_cast<Any*>(&operand));
 	if (!result)
 	{
-		std::string s = "RefAnyCast: Failed to convert between Any types ";
+		std::string s(__func__);
+		s.append(": Failed to convert between Any types "s);
 		if (operand.content())
 		{
 			s.append(1, '(');
-			s.append(operand.content()->type().name());
+			s.append(Poco::demangle(operand.content()->type().name()));
 			s.append(" => ");
-			s.append(typeid(ValueType).name());
+			s.append(Poco::demangle<ValueType>());
 			s.append(1, ')');
 		}
 		throw BadCastException(s);
@@ -514,13 +569,14 @@ ValueType& RefAnyCast(Any& operand)
 	ValueType* result = AnyCast<ValueType>(&operand);
 	if (!result)
 	{
-		std::string s = "RefAnyCast: Failed to convert between Any types ";
+		std::string s(__func__);
+		s.append(": Failed to convert between Any types "s);
 		if (operand.content())
 		{
 			s.append(1, '(');
-			s.append(operand.content()->type().name());
+			s.append(Poco::demangle(operand.content()->type().name()));
 			s.append(" => ");
-			s.append(typeid(ValueType).name());
+			s.append(Poco::demangle<ValueType>());
 			s.append(1, ')');
 		}
 		throw BadCastException(s);
@@ -550,6 +606,26 @@ const ValueType* UnsafeAnyCast(const Any* operand)
 	/// different shared libraries.
 {
 	return AnyCast<ValueType>(const_cast<Any*>(operand));
+}
+
+
+template <typename ValueType>
+bool AnyHoldsNullPtr(const Any& any)
+	/// Returns true if any holds a null pointer.
+	/// Fails to compile if `ValueType` is not a pointer.
+{
+	poco_static_assert_ptr(ValueType);
+	return (AnyCast<ValueType>(any) == nullptr);
+}
+
+
+template <typename ValueType>
+bool AnyHoldsNullPtr(const Any* pAny)
+	/// Returns true if the Any pointed to holds a null pointer.
+	/// Returns false if `pAny` is a null pointer.
+{
+	if (!pAny) return false;
+	return (AnyHoldsNullPtr<ValueType>(*pAny));
 }
 
 

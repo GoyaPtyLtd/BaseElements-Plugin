@@ -36,7 +36,7 @@ recycled<T>::
         delete it;
         it = next;
     }
-    detail::recycled_remove(
+    implementation_defined::recycled_remove(
         sizeof(U) * n);
 }
 
@@ -57,7 +57,7 @@ acquire() ->
         {
             // reuse
             head_ = head_->next;
-            detail::recycled_remove(
+            implementation_defined::recycled_remove(
                 sizeof(U));
             ++p->refs;
         }
@@ -85,7 +85,7 @@ release(U* u) noexcept
         u->next = head_;
         head_ = u;
     }
-    detail::recycled_add(
+    implementation_defined::recycled_add(
         sizeof(U));
 }
 

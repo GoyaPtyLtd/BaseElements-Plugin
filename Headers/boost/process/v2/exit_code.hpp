@@ -72,7 +72,11 @@ typedef int native_exit_code_type;
 
 namespace detail
 {
-constexpr native_exit_code_type still_active = 0x7f;
+constexpr native_exit_code_type still_active = 0x17f;
+static_assert(WIFSTOPPED(still_active), "Expected still_active to indicate WIFSTOPPED");
+static_assert(!WIFEXITED(still_active), "Expected still_active to not indicate WIFEXITED");
+static_assert(!WIFSIGNALED(still_active), "Expected still_active to not indicate WIFSIGNALED");
+static_assert(!WIFCONTINUED(still_active), "Expected still_active to not indicate WIFCONTINUED");
 }
 
 inline bool process_is_running(int code)
@@ -105,13 +109,12 @@ inline int evaluate_exit_code(int code)
  *      {
  *        return asio::deferred.values(
  *                  check_exit_code(ec, proc.native_exit_code())
- *              );
- *
- *    [](error_code ec)
- *    {
- *      assert(ec.value() == 10);
- *      assert(ec.category() == error::get_exit_code_category());
- *    }));
+ *              ))
+ *      [](error_code ec)
+ *      {
+ *        assert(ec.value() == 10);
+ *        assert(ec.category() == error::get_exit_code_category());
+ *      }));
  * 
  * @endcode
  */

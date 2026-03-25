@@ -1,6 +1,7 @@
 
 // Copyright (C) 2005-2016 Daniel James
 // Copyright (C) 2022 Christian Mazakas
+// Copyright (C) 2024 Braden Ganetsky
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -18,6 +19,7 @@ namespace boost {
         typedef std::pair<K const, M> value_type;
         typedef H hasher;
         typedef P key_equal;
+        typedef K key_type;
         typedef K const const_key_type;
 
         typedef
@@ -38,23 +40,6 @@ namespace boost {
 
         typedef typename table::iterator iterator;
         typedef boost::unordered::insert_return_type_map<iterator, node_type> insert_return_type;
-      };
-
-      template <typename K, typename M, typename H, typename P, typename A>
-      class instantiate_map
-      {
-        typedef boost::unordered_map<K, M, H, P, A> container;
-        container x;
-        typename container::node_type node_type;
-        typename container::insert_return_type insert_return_type;
-      };
-
-      template <typename K, typename M, typename H, typename P, typename A>
-      class instantiate_multimap
-      {
-        typedef boost::unordered_multimap<K, M, H, P, A> container;
-        container x;
-        typename container::node_type node_type;
       };
     }
   }

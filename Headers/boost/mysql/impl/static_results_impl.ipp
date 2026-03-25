@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2023 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +14,7 @@
 #include <boost/mysql/detail/execution_processor/static_results_impl.hpp>
 #include <boost/mysql/detail/row_impl.hpp>
 
-#include <boost/mysql/impl/internal/protocol/protocol.hpp>
+#include <boost/mysql/impl/internal/protocol/deserialization.hpp>
 
 #ifdef BOOST_MYSQL_CXX14
 void boost::mysql::detail::static_results_erased_impl::reset_impl() noexcept

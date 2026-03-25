@@ -2,7 +2,7 @@
 // ssl/stream.hpp
 // ~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2023 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2025 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -56,7 +56,7 @@ namespace ssl {
  * @code
  * boost::asio::io_context my_context;
  * boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23);
- * boost::asio::ssl::stream<asio:ip::tcp::socket> sock(my_context, ctx);
+ * boost::asio::ssl::stream<boost::asio::ip::tcp::socket> sock(my_context, ctx);
  * @endcode
  *
  * @par Concepts:
@@ -188,7 +188,7 @@ public:
    * suitable for passing to functions such as @c SSL_get_verify_result and
    * @c SSL_get_peer_certificate:
    * @code
-   * boost::asio::ssl::stream<asio:ip::tcp::socket> sock(my_context, ctx);
+   * boost::asio::ssl::stream<boost::asio::ip::tcp::socket> sock(io_ctx, ctx);
    *
    * // ... establish connection and perform handshake ...
    *
@@ -482,7 +482,7 @@ public:
    * Regardless of whether the asynchronous operation completes immediately or
    * not, the completion handler will not be invoked from within this function.
    * On immediate completion, invocation of the handler will be performed in a
-   * manner equivalent to using boost::asio::post().
+   * manner equivalent to using boost::asio::async_immediate().
    *
    * @par Completion Signature
    * @code void(boost::system::error_code) @endcode
@@ -539,7 +539,7 @@ public:
    * Regardless of whether the asynchronous operation completes immediately or
    * not, the completion handler will not be invoked from within this function.
    * On immediate completion, invocation of the handler will be performed in a
-   * manner equivalent to using boost::asio::post().
+   * manner equivalent to using boost::asio::async_immediate().
    *
    * @par Completion Signature
    * @code void(boost::system::error_code, std::size_t) @endcode
@@ -619,7 +619,7 @@ public:
    * Regardless of whether the asynchronous operation completes immediately or
    * not, the completion handler will not be invoked from within this function.
    * On immediate completion, invocation of the handler will be performed in a
-   * manner equivalent to using boost::asio::post().
+   * manner equivalent to using boost::asio::async_immediate().
    *
    * @par Completion Signature
    * @code void(boost::system::error_code) @endcode
@@ -723,7 +723,7 @@ public:
    * Regardless of whether the asynchronous operation completes immediately or
    * not, the completion handler will not be invoked from within this function.
    * On immediate completion, invocation of the handler will be performed in a
-   * manner equivalent to using boost::asio::post().
+   * manner equivalent to using boost::asio::async_immediate().
    *
    * @par Completion Signature
    * @code void(boost::system::error_code, std::size_t) @endcode
@@ -831,7 +831,7 @@ public:
    * Regardless of whether the asynchronous operation completes immediately or
    * not, the completion handler will not be invoked from within this function.
    * On immediate completion, invocation of the handler will be performed in a
-   * manner equivalent to using boost::asio::post().
+   * manner equivalent to using boost::asio::async_immediate().
    *
    * @par Completion Signature
    * @code void(boost::system::error_code, std::size_t) @endcode

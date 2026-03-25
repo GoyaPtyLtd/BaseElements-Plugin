@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2023 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -171,7 +171,7 @@ private:
     std::size_t num_fields_at_batch_start_{no_batch};
 
     // Auxiliar
-    static constexpr std::size_t no_batch = std::size_t(-1);
+    static BOOST_INLINE_CONSTEXPR std::size_t no_batch = std::size_t(-1);
 
     bool has_active_batch() const noexcept { return num_fields_at_batch_start_ != no_batch; }
 

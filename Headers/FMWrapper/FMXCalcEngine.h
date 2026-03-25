@@ -1,6 +1,6 @@
 /*
 
- Copyright © 1998 - 2022  Claris International Inc.
+ Copyright © 1998 - 2024 Claris International Inc.
  All rights reserved.
 
  Claris International Inc. grants you a non-exclusive limited license to use this file solely
@@ -90,22 +90,6 @@ extern "C++"
 		public:
 			enum
 			{
-				// DEPRECATED in FileMaker Pro 12. The server database process no longer loads plug-ins. Stored calculations
-				// containing plug-in functions will not evaluate the same way they do on a client with the plug-in if a
-				// schema change forces the server to recalculate the stored calculation's value.
-				kMayEvaluateOnServer    = 0x00000001,
-
-				// DEPRECATED in FileMaker Pro 16. All the following flags will be ignored for the commented purpose in version
-				// 16 and later. Note the change of kDisplayInAllDialogs further below.
-				kDisplayCalcFields      = 0x00000100,   // Calculated fields
-				kDisplayAutoEnter       = 0x00000200,   // Auto enter calculation
-				kDisplayValidation      = 0x00000400,   // Validation by calculation
-				kDisplayCustomFunctions = 0x00000800,   // Custom function definition
-				kDisplayPrivileges      = 0x00001000,   // Row level access calculations
-				kDisplayInFuture1       = 0x00002000,   // As yet undefined calculation dialog
-				kDisplayInFuture2       = 0x00004000,   // As yet undefined calculation dialog
-				kDisplayGeneric         = 0x00008000,   // Dialog used by scripting and replace
-
 				// Changed in FileMaker Pro 16v2. If any of these bits are set, the function will be displayed in any picking
 				// UI control. Future functions should use this constant if they want to be displayed. The function can always
 				// be typed in manually.
@@ -262,11 +246,11 @@ extern "C++"
 				kGet_InstalledFMPluginsAsJSON = 1128,
 				
 				// New to FileMaker Pro 19.4.1
-				kGet_SessionIdentifier = 1129,
+				kGet_SessionIdentifier  = 1129,
 				
 				// New to FileMaker Pro 19.5.1 internal use, new to 20.1.1 Release
-				kGet_CacheFileName = 1130,
-				kGet_CacheFilePath = 1131,
+				kGet_CacheFileName      = 1130,
+				kGet_CacheFilePath      = 1131,
 				
 				// New to FileMaker Pro 19 (API VERSION 62) and later. For new EvaluateConvert... entry points
 				kConvert_PosixPath		= 1,
@@ -275,7 +259,15 @@ extern "C++"
 				
 				// New to FileMaker Pro 19.6
 				kGet_TransactionState	= 1132,
-				kGet_LastErrorLocation 	= 1134
+				kGet_CurrentTimeUTCMicroseconds = 1133,
+				kGet_LastErrorLocation 	= 1134,
+				
+				// New to FileMaker Pro 21.0
+				kGet_LLMLastStepTokensUsed = 1135,
+				
+				// New to FileMaker Pro 21.1
+				kGet_RevertTransactionOnErrorState = 1136,
+				kGet_SystemStorageAvailable = 1137,
 			};
 
 			inline errcode Evaluate ( const Text &expression, Data &result ) const;

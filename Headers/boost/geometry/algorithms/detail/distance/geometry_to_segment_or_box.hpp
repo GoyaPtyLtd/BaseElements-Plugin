@@ -1,7 +1,8 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2021, Oracle and/or its affiliates.
+// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
 
+// Copyright (c) 2014-2021, Oracle and/or its affiliates.
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -35,7 +36,7 @@
 #include <boost/geometry/strategies/distance.hpp>
 #include <boost/geometry/strategies/tags.hpp>
 
-#include <boost/geometry/util/condition.hpp>
+#include <boost/geometry/util/constexpr.hpp>
 
 
 namespace boost { namespace geometry
@@ -50,7 +51,7 @@ namespace detail { namespace distance
 template
 <
     typename SegmentOrBox,
-    typename Tag = typename tag<SegmentOrBox>::type
+    typename Tag = tag_t<SegmentOrBox>
 >
 struct segment_or_box_point_range_closure
     : not_implemented<SegmentOrBox>
@@ -75,32 +76,28 @@ template
     typename Geometry,
     typename SegmentOrBox,
     typename Strategies,
-    typename Tag = typename tag<Geometry>::type
+    typename Tag = tag_t<Geometry>
 >
 class geometry_to_segment_or_box
 {
 private:
-    typedef typename point_type<SegmentOrBox>::type segment_or_box_point;
-
-    typedef distance::strategy_t<Geometry, SegmentOrBox, Strategies> strategy_type;
-
-    typedef detail::closest_feature::point_to_point_range
+    using segment_or_box_point = point_type_t<SegmentOrBox>;
+    using strategy_type = distance::strategy_t<Geometry, SegmentOrBox, Strategies>;
+    using point_to_point_range = detail::closest_feature::point_to_point_range
         <
-            typename point_type<Geometry>::type,
+            point_type_t<Geometry>,
             std::vector<segment_or_box_point>,
             segment_or_box_point_range_closure<SegmentOrBox>::value
-        > point_to_point_range;
-
-    typedef detail::closest_feature::geometry_to_range geometry_to_range;
-
-    typedef distance::creturn_t<Geometry, SegmentOrBox, Strategies> comparable_return_type;
+        >;
+    using geometry_to_range = detail::closest_feature::geometry_to_range;
+    using comparable_return_type = distance::creturn_t<Geometry, SegmentOrBox, Strategies>;
 
     // assign the new minimum value for an iterator of the point range
     // of a segment or a box
     template
     <
         typename SegOrBox,
-        typename SegOrBoxTag = typename tag<SegOrBox>::type
+        typename SegOrBoxTag = tag_t<SegOrBox>
     >
     struct assign_new_min_iterator
         : not_implemented<SegOrBox>
@@ -131,7 +128,7 @@ private:
     <
         typename SegOrBox,
         typename PointRange,
-        typename SegOrBoxTag = typename tag<SegOrBox>::type
+        typename SegOrBoxTag = tag_t<SegOrBox>
     >
     struct assign_segment_or_box_points
     {};
@@ -247,26 +244,28 @@ public:
             }
         }
 
-        if (BOOST_GEOMETRY_CONDITION(is_comparable<strategy_type>::value))
+        if BOOST_GEOMETRY_CONSTEXPR (is_comparable<strategy_type>::value)
         {
             return (std::min)(cd_min1, cd_min2);
         }
-
-        if (cd_min1 < cd_min2)
+        else // else prevents unreachable code warning
         {
-            return strategy.apply(*pit_min, *it_min1, *it_min2);
-        }
-        else
-        {
-            return dispatch::distance
-                <
-                    segment_or_box_point,
-                    typename std::iterator_traits
-                        <
-                            segment_iterator_type
-                        >::value_type,
-                    Strategies
-                >::apply(*it_min, *sit_min, strategies);
+            if (cd_min1 < cd_min2)
+            {
+                return strategy.apply(*pit_min, *it_min1, *it_min2);
+            }
+            else
+            {
+                return dispatch::distance
+                    <
+                        segment_or_box_point,
+                        typename std::iterator_traits
+                            <
+                                segment_iterator_type
+                            >::value_type,
+                        Strategies
+                    >::apply(*it_min, *sit_min, strategies);
+            }
         }
     }
 
@@ -317,7 +316,7 @@ public:
             :
             dispatch::distance
                 <
-                    typename point_type<MultiPoint>::type,
+                    point_type_t<MultiPoint>,
                     SegmentOrBox,
                     Strategies
                 >::apply(*it_min, segment_or_box, strategies);

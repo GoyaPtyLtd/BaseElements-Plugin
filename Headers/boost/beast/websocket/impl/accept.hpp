@@ -296,6 +296,7 @@ public:
         , d_(decorator)
     {
         auto& impl = *sp;
+        impl.reset();
         error_code ec;
         auto const mb =
             beast::detail::dynamic_buffer_prepare(
@@ -368,6 +369,16 @@ template<class NextLayer, bool deflateSupported>
 struct stream<NextLayer, deflateSupported>::
     run_response_op
 {
+    boost::shared_ptr<impl_type> const& self;
+
+    using executor_type = typename stream::executor_type;
+
+    executor_type
+    get_executor() const noexcept
+    {
+        return self->stream().get_executor();
+    }
+
     template<
         class AcceptHandler,
         class Body, class Allocator,
@@ -375,7 +386,6 @@ struct stream<NextLayer, deflateSupported>::
     void
     operator()(
         AcceptHandler&& h,
-        boost::shared_ptr<impl_type> const& sp,
         http::request<Body,
             http::basic_fields<Allocator>> const* m,
         Decorator const& d)
@@ -391,7 +401,7 @@ struct stream<NextLayer, deflateSupported>::
 
         response_op<
             typename std::decay<AcceptHandler>::type>(
-                std::forward<AcceptHandler>(h), sp, *m, d);
+                std::forward<AcceptHandler>(h), self, *m, d);
     }
 };
 
@@ -399,6 +409,16 @@ template<class NextLayer, bool deflateSupported>
 struct stream<NextLayer, deflateSupported>::
     run_accept_op
 {
+    boost::shared_ptr<impl_type> const& self;
+
+    using executor_type = typename stream::executor_type;
+
+    executor_type
+    get_executor() const noexcept
+    {
+        return self->stream().get_executor();
+    }
+
     template<
         class AcceptHandler,
         class Decorator,
@@ -406,7 +426,6 @@ struct stream<NextLayer, deflateSupported>::
     void
     operator()(
         AcceptHandler&& h,
-        boost::shared_ptr<impl_type> const& sp,
         Decorator const& d,
         Buffers const& b)
     {
@@ -423,7 +442,7 @@ struct stream<NextLayer, deflateSupported>::
             typename std::decay<AcceptHandler>::type,
             Decorator>(
                 std::forward<AcceptHandler>(h),
-                sp,
+                self,
                 d,
                 b);
     }
@@ -603,17 +622,19 @@ template<
 BOOST_BEAST_ASYNC_RESULT1(AcceptHandler)
 stream<NextLayer, deflateSupported>::
 async_accept(
-    AcceptHandler&& handler)
+    AcceptHandler&& handler,
+    typename std::enable_if<
+        ! net::is_const_buffer_sequence<
+        AcceptHandler>::value>::type*
+)
 {
     static_assert(is_async_stream<next_layer_type>::value,
         "AsyncStream type requirements not met");
-    impl_->reset();
     return net::async_initiate<
         AcceptHandler,
         void(error_code)>(
-            run_accept_op{},
+            run_accept_op{impl_},
             handler,
-            impl_,
             &default_decorate_res,
             net::const_buffer{});
 }
@@ -628,6 +649,9 @@ async_accept(
     ConstBufferSequence const& buffers,
     AcceptHandler&& handler,
     typename std::enable_if<
+        net::is_const_buffer_sequence<
+        ConstBufferSequence>::value>::type*,
+    typename std::enable_if<
         ! http::detail::is_header<
         ConstBufferSequence>::value>::type*
 )
@@ -637,13 +661,11 @@ async_accept(
     static_assert(net::is_const_buffer_sequence<
         ConstBufferSequence>::value,
             "ConstBufferSequence type requirements not met");
-    impl_->reset();
     return net::async_initiate<
         AcceptHandler,
         void(error_code)>(
-            run_accept_op{},
+            run_accept_op{impl_},
             handler,
-            impl_,
             &default_decorate_res,
             buffers);
 }
@@ -660,13 +682,11 @@ async_accept(
 {
     static_assert(is_async_stream<next_layer_type>::value,
         "AsyncStream type requirements not met");
-    impl_->reset();
     return net::async_initiate<
         AcceptHandler,
         void(error_code)>(
-            run_response_op{},
+            run_response_op{impl_},
             handler,
-            impl_,
             &req,
             &default_decorate_res);
 }

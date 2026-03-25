@@ -2,7 +2,7 @@
  BEXMLTextReader.cpp
  BaseElements Plug-In
 
- Copyright 2012-2024 Goya. All rights reserved.
+ Copyright 2012-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -347,14 +347,27 @@ string BEXMLTextReader::content()
 string BEXMLTextReader::as_string()
 {
 	string value;
-
+	
 	const xmlChar * reader_value = xmlTextReaderReadString ( reader );
+	const xmlError *xml_error = xmlGetLastError();
+	
 	if ( reader_value ) {
+		
 		value = (const char *)reader_value;
 		xmlFree((void *)reader_value);
+		
+	} else if ( NULL != xml_error ) {
+		
+		auto error_code = xml_error->code;
+		xmlResetLastError();
+		
+		throw BEXMLReaderInterface_Exception ( error_code );
+
 	}
 
+	
 	return value;
+	
 } // as_string
 
 

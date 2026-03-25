@@ -51,19 +51,11 @@ enum method_type
 template <typename Point, typename SegmentRatio>
 struct turn_operation
 {
-    typedef SegmentRatio segment_ratio_type;
+    using segment_ratio_type = SegmentRatio;
 
-    operation_type operation;
+    operation_type operation{operation_none};
     segment_identifier seg_id;
-    SegmentRatio fraction;
-
-    typedef typename coordinate_type<Point>::type comparable_distance_type;
-    comparable_distance_type remaining_distance;
-
-    inline turn_operation()
-        : operation(operation_none)
-        , remaining_distance(0)
-    {}
+    segment_ratio_type fraction;
 };
 
 
@@ -79,23 +71,24 @@ struct turn_operation
 template
 <
     typename Point,
-    typename SegmentRatio = geometry::segment_ratio<typename coordinate_type<Point>::type>,
+    typename SegmentRatio = geometry::segment_ratio<coordinate_type_t<Point>>,
     typename Operation = turn_operation<Point, SegmentRatio>,
     typename Container = std::array<Operation, 2>
 >
 struct turn_info
 {
-    typedef Point point_type;
-    typedef SegmentRatio segment_ratio_type;
-    typedef Operation turn_operation_type;
-    typedef Container container_type;
+    using point_type = Point;
+    using segment_ratio_type = SegmentRatio;
+    using turn_operation_type = Operation;
+    using container_type = Container;
 
     Point point;
     method_type method;
     bool touch_only; // True in case of method touch(interior) and lines do not cross
     signed_size_type cluster_id; // For multiple turns on same location, > 0. Else -1. 0 is unused.
     bool discarded;
-    bool has_colocated_both; // Colocated with a uu turn (for union) or ii (other)
+
+    bool is_traversable{true};
 
     Container operations;
 
@@ -104,7 +97,6 @@ struct turn_info
         , touch_only(false)
         , cluster_id(-1)
         , discarded(false)
-        , has_colocated_both(false)
     {}
 
     inline bool both(operation_type type) const

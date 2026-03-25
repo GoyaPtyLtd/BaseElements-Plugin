@@ -164,7 +164,7 @@ bool is_past_the_end_token(
 std::size_t
 parse_number_token(
     string_view sv,
-    error_code& ec) noexcept
+    system::error_code& ec) noexcept
 {
     BOOST_ASSERT( !sv.empty() );
 
@@ -216,7 +216,7 @@ parse_number_token(
 string_view
 next_segment(
     string_view& sv,
-    error_code& ec) noexcept
+    system::error_code& ec) noexcept
 {
     if( sv.empty() )
         return sv;
@@ -285,7 +285,7 @@ Value*
 walk_pointer(
     Value& jv,
     string_view sv,
-    error_code& ec,
+    system::error_code& ec,
     OnObject on_object,
     OnArray on_array,
     OnScalar on_scalar)
@@ -342,17 +342,33 @@ walk_pointer(
 } // namespace detail
 
 value const&
-value::at_pointer(string_view ptr) const&
+value::at_pointer(string_view ptr, source_location const& loc) const&
 {
-    error_code ec;
+    return try_at_pointer(ptr).value(loc);
+}
+
+system::result<value const&>
+value::try_at_pointer(string_view ptr) const noexcept
+{
+    system::error_code ec;
     auto const found = find_pointer(ptr, ec);
     if( !found )
-        detail::throw_system_error( ec );
+        return ec;
+    return *found;
+}
+
+system::result<value&>
+value::try_at_pointer(string_view ptr) noexcept
+{
+    system::error_code ec;
+    auto const found = find_pointer(ptr, ec);
+    if( !found )
+        return ec;
     return *found;
 }
 
 value const*
-value::find_pointer( string_view sv, error_code& ec ) const noexcept
+value::find_pointer( string_view sv, system::error_code& ec ) const noexcept
 {
     return detail::walk_pointer(
         *this,
@@ -362,7 +378,7 @@ value::find_pointer( string_view sv, error_code& ec ) const noexcept
         {
             return detail::if_contains_token(obj, token);
         },
-        []( array const& arr, std::size_t index, error_code& ec )
+        []( array const& arr, std::size_t index, system::error_code& ec )
             -> value const*
         {
             if( ec )
@@ -377,7 +393,7 @@ value::find_pointer( string_view sv, error_code& ec ) const noexcept
 }
 
 value*
-value::find_pointer(string_view ptr, error_code& ec) noexcept
+value::find_pointer(string_view ptr, system::error_code& ec) noexcept
 {
     value const& self = *this;
     return const_cast<value*>(self.find_pointer(ptr, ec));
@@ -386,7 +402,7 @@ value::find_pointer(string_view ptr, error_code& ec) noexcept
 value const*
 value::find_pointer(string_view ptr, std::error_code& ec) const noexcept
 {
-    error_code jec;
+    system::error_code jec;
     value const* result = find_pointer(ptr, jec);
     ec = jec;
     return result;
@@ -403,7 +419,7 @@ value*
 value::set_at_pointer(
     string_view sv,
     value_ref ref,
-    error_code& ec,
+    system::error_code& ec,
     set_pointer_options const& opts )
 {
     value* result = detail::walk_pointer(
@@ -422,7 +438,7 @@ value::set_at_pointer(
             string key( token.begin(), token.end(), obj.storage() );
             return &obj.emplace( std::move(key), nullptr ).first->value();
         },
-        [ &opts ]( array& arr, std::size_t index, error_code& ec ) -> value*
+        [ &opts ]( array& arr, std::size_t index, system::error_code& ec ) -> value*
         {
             if( ec == error::past_the_end )
                 index = arr.size();
@@ -447,7 +463,7 @@ value::set_at_pointer(
             {
                 if( opts.create_arrays )
                 {
-                    error_code ec;
+                    system::error_code ec;
                     detail::parse_number_token( segment, ec );
                     if( !ec.failed() || ec == error::past_the_end )
                     {
@@ -478,21 +494,30 @@ value::set_at_pointer(
     std::error_code& ec,
     set_pointer_options const& opts )
 {
-    error_code jec;
+    system::error_code jec;
     value* result = set_at_pointer( sv, ref, jec, opts );
     ec = jec;
     return result;
+}
+
+system::result<value&>
+value::try_set_at_pointer(
+    string_view sv,
+    value_ref ref,
+    set_pointer_options const& opts )
+{
+    system::error_code ec;
+    value* result = set_at_pointer( sv, ref, ec, opts );
+    if( result )
+        return *result;
+    return ec;
 }
 
 value&
 value::set_at_pointer(
     string_view sv, value_ref ref, set_pointer_options const& opts )
 {
-    error_code ec;
-    value* result = set_at_pointer( sv, ref, ec, opts );
-    if( !result )
-        detail::throw_system_error( ec );
-    return *result;
+    return try_set_at_pointer(sv, ref, opts).value();
 }
 
 } // namespace json

@@ -21,12 +21,11 @@
 
 #include <cstddef>
 
-#include <boost/numeric/conversion/cast.hpp>
-
 #include <boost/geometry/core/access.hpp>
 #include <boost/geometry/core/coordinate_type.hpp>
 #include <boost/geometry/geometries/concepts/check.hpp>
 #include <boost/geometry/util/algorithm.hpp>
+#include <boost/geometry/util/numeric_cast.hpp>
 
 
 namespace boost { namespace geometry
@@ -60,10 +59,7 @@ inline void assign_point_to_index(Point const& point, Geometry& geometry)
     detail::for_each_dimension<Geometry>([&](auto dimension)
     {
         geometry::set<Index, dimension>(geometry,
-            boost::numeric_cast
-                <
-                    typename coordinate_type<Geometry>::type
-                >(geometry::get<dimension>(point)));
+            util::numeric_cast<coordinate_type_t<Geometry>>(geometry::get<dimension>(point)));
     });
 }
 
@@ -92,9 +88,9 @@ inline void assign_point_from_index(Geometry const& geometry, Point& point)
     detail::for_each_dimension<Geometry>([&](auto dimension)
     {
         geometry::set<dimension>(point,
-            boost::numeric_cast
+            util::numeric_cast
                 <
-                    typename coordinate_type<Point>::type
+                    coordinate_type_t<Point>
                 >(geometry::get<Index, dimension>(geometry)));
     });
 }

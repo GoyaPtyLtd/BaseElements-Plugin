@@ -1,7 +1,8 @@
 /* Common base for Boost.Unordered open-addressing tables.
  *
- * Copyright 2022-2023 Joaquin M Lopez Munoz.
+ * Copyright 2022-2025 Joaquin M Lopez Munoz.
  * Copyright 2023 Christian Mazakas.
+ * Copyright 2024 Braden Ganetsky.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -15,6 +16,7 @@
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
 #include <boost/config/workaround.hpp>
+#include <boost/container_hash/hash_is_avalanching.hpp>
 #include <boost/core/allocator_traits.hpp>
 #include <boost/core/bit.hpp>
 #include <boost/core/empty_value.hpp>
@@ -22,11 +24,12 @@
 #include <boost/core/pointer_traits.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/predef.h>
+#include <boost/unordered/detail/allocator_constructed.hpp>
 #include <boost/unordered/detail/narrow_cast.hpp>
 #include <boost/unordered/detail/mulx.hpp>
 #include <boost/unordered/detail/static_assert.hpp>
 #include <boost/unordered/detail/type_traits.hpp>
-#include <boost/unordered/hash_traits.hpp>
+#include <boost/unordered/unordered_printers.hpp>
 #include <climits>
 #include <cmath>
 #include <cstddef>
@@ -37,6 +40,10 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
+
+#if defined(BOOST_UNORDERED_ENABLE_STATS)
+#include <boost/unordered/detail/foa/cumulative_stats.hpp>
+#endif
 
 #if !defined(BOOST_UNORDERED_DISABLE_SSE2)
 #if defined(BOOST_UNORDERED_ENABLE_SSE2)|| \
@@ -862,6 +869,7 @@ struct pow2_quadratic_prober
   pow2_quadratic_prober(std::size_t pos_):pos{pos_}{}
 
   inline std::size_t get()const{return pos;}
+  inline std::size_t length()const{return step+1;}
 
   /* next returns false when the whole array has been traversed, which ends
    * probing (in practice, full-table probing will only happen with very small
@@ -975,7 +983,12 @@ struct arrays_holder
   arrays_holder(arrays_holder const&);
   arrays_holder& operator=(arrays_holder const&)=delete;
 
-  ~arrays_holder(){if(!released_)arrays_.delete_(al_,arrays_);}
+  ~arrays_holder()
+  {
+    if(!released_){
+      arrays_.delete_(typename Arrays::allocator_type(al_),arrays_);
+    }
+  }
 
   const Arrays& release()
   {
@@ -1004,6 +1017,11 @@ struct table_arrays
     typename boost::pointer_traits<value_type_pointer>::template
       rebind<group_type>;
   using group_type_pointer_traits=boost::pointer_traits<group_type_pointer>;
+
+  // For natvis purposes
+  using char_pointer=
+    typename boost::pointer_traits<value_type_pointer>::template
+      rebind<unsigned char>;
 
   table_arrays(
     std::size_t gsi,std::size_t gsm,
@@ -1118,6 +1136,54 @@ struct table_arrays
   value_type_pointer elements_;
 };
 
+#if defined(BOOST_UNORDERED_ENABLE_STATS)
+/* stats support */
+
+struct table_core_cumulative_stats
+{
+  concurrent_cumulative_stats<1> insertion;
+  concurrent_cumulative_stats<2> successful_lookup,
+                                 unsuccessful_lookup;
+};
+
+struct table_core_insertion_stats
+{
+  std::size_t            count;
+  sequence_stats_summary probe_length;
+};
+
+struct table_core_lookup_stats
+{
+  std::size_t            count;
+  sequence_stats_summary probe_length;
+  sequence_stats_summary num_comparisons;
+};
+
+struct table_core_stats
+{
+  table_core_insertion_stats insertion;
+  table_core_lookup_stats    successful_lookup,
+                             unsuccessful_lookup;
+};
+
+#define BOOST_UNORDERED_ADD_STATS(stats,args) stats.add args
+#define BOOST_UNORDERED_SWAP_STATS(stats1,stats2) std::swap(stats1,stats2)
+#define BOOST_UNORDERED_COPY_STATS(stats1,stats2) stats1=stats2
+#define BOOST_UNORDERED_RESET_STATS_OF(x) x.reset_stats()
+#define BOOST_UNORDERED_STATS_COUNTER(name) std::size_t name=0
+#define BOOST_UNORDERED_INCREMENT_STATS_COUNTER(name) ++name
+
+#else
+
+#define BOOST_UNORDERED_ADD_STATS(stats,args) ((void)0)
+#define BOOST_UNORDERED_SWAP_STATS(stats1,stats2) ((void)0)
+#define BOOST_UNORDERED_COPY_STATS(stats1,stats2) ((void)0)
+#define BOOST_UNORDERED_RESET_STATS_OF(x) ((void)0)
+#define BOOST_UNORDERED_STATS_COUNTER(name) ((void)0)
+#define BOOST_UNORDERED_INCREMENT_STATS_COUNTER(name) ((void)0)
+
+#endif
+
 struct if_constexpr_void_else{void operator()()const{}};
 
 template<bool B,typename F,typename G=if_constexpr_void_else>
@@ -1220,22 +1286,15 @@ class alloc_cted_insert_type
     emplace_type,typename TypePolicy::element_type
   >::type;
 
-  alignas(insert_type) unsigned char storage[sizeof(insert_type)];
-  Allocator                          al;
+  using alloc_cted = allocator_constructed<Allocator, insert_type, TypePolicy>;
+  alloc_cted val;
 
 public:
-  alloc_cted_insert_type(const Allocator& al_,Args&&... args):al{al_}
+  alloc_cted_insert_type(const Allocator& al_,Args&&... args):val{al_,std::forward<Args>(args)...}
   {
-    TypePolicy::construct(al,data(),std::forward<Args>(args)...);
   }
 
-  ~alloc_cted_insert_type()
-  {
-    TypePolicy::destroy(al,data());
-  }
-
-  insert_type* data(){return reinterpret_cast<insert_type*>(&storage);}
-  insert_type& value(){return *data();}
+  insert_type& value(){return val.value();}
 };
 
 template<typename TypePolicy,typename Allocator,typename... Args>
@@ -1244,6 +1303,51 @@ alloc_make_insert_type(const Allocator& al,Args&&... args)
 {
   return {al,std::forward<Args>(args)...};
 }
+
+template <typename TypePolicy, typename Allocator, typename KFwdRef,
+  typename = void>
+class alloc_cted_or_fwded_key_type
+{
+  using key_type = typename TypePolicy::key_type;
+  allocator_constructed<Allocator, key_type, TypePolicy> val;
+
+public:
+  alloc_cted_or_fwded_key_type(const Allocator& al_, KFwdRef k)
+      : val(al_, std::forward<KFwdRef>(k))
+  {
+  }
+
+  key_type&& move_or_fwd() { return std::move(val.value()); }
+};
+
+template <typename TypePolicy, typename Allocator, typename KFwdRef>
+class alloc_cted_or_fwded_key_type<TypePolicy, Allocator, KFwdRef,
+  typename std::enable_if<
+    is_similar<KFwdRef, typename TypePolicy::key_type>::value>::type>
+{
+  // This specialization acts as a forwarding-reference wrapper
+  BOOST_UNORDERED_STATIC_ASSERT(std::is_reference<KFwdRef>::value);
+  KFwdRef ref;
+
+public:
+  alloc_cted_or_fwded_key_type(const Allocator&, KFwdRef k)
+      : ref(std::forward<KFwdRef>(k))
+  {
+  }
+
+  KFwdRef move_or_fwd() { return std::forward<KFwdRef>(ref); }
+};
+
+template <typename Container>
+using is_map =
+  std::integral_constant<bool, !std::is_same<typename Container::key_type,
+                                 typename Container::value_type>::value>;
+
+template <typename Container, typename K>
+using is_emplace_kv_able = std::integral_constant<bool,
+  is_map<Container>::value &&
+    (is_similar<K, typename Container::key_type>::value ||
+      is_complete_and_move_constructible<typename Container::key_type>::value)>;
 
 /* table_core. The TypePolicy template parameter is used to generate
  * instantiations suitable for either maps or sets, and introduces non-standard
@@ -1262,7 +1366,7 @@ alloc_make_insert_type(const Allocator& al,Args&&... args)
  *
  *   - TypePolicy::construct and TypePolicy::destroy are used for the
  *     construction and destruction of the internal types: value_type,
- *     init_type and element_type.
+ *     init_type, element_type, and key_type.
  * 
  *   - TypePolicy::move is used to provide move semantics for the internal
  *     types used by the container during rehashing and emplace. These types
@@ -1322,7 +1426,7 @@ public:
   using size_policy=pow2_size_policy;
   using prober=pow2_quadratic_prober;
   using mix_policy=typename std::conditional<
-    hash_is_avalanching<Hash>::value,
+    boost::hash_is_avalanching<Hash>::value,
     no_mix,
     mulx_mix
   >::type;
@@ -1350,6 +1454,16 @@ public:
   using locator=table_locator<group_type,element_type>;
   using arrays_holder_type=arrays_holder<arrays_type,Allocator>;
 
+#if defined(BOOST_UNORDERED_ENABLE_STATS)
+  using cumulative_stats=table_core_cumulative_stats;
+  using stats=table_core_stats;
+#endif
+
+#if defined(BOOST_GCC)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+
   table_core(
     std::size_t n=default_bucket_count,const Hash& h_=Hash(),
     const Pred& pred_=Pred(),const Allocator& al_=Allocator()):
@@ -1357,6 +1471,10 @@ public:
     allocator_base{empty_init,al_},arrays(new_arrays(n)),
     size_ctrl{initial_max_load(),0}
     {}
+
+#if defined(BOOST_GCC)
+#pragma GCC diagnostic pop
+#endif
 
   /* genericize on an ArraysFn so that we can do things like delay an
    * allocation for the group_access data required by cfoa after the move
@@ -1384,6 +1502,7 @@ public:
     x.arrays=ah.release();
     x.size_ctrl.ml=x.initial_max_load();
     x.size_ctrl.size=0;
+    BOOST_UNORDERED_SWAP_STATS(cstats,x.cstats);
   }
 
   table_core(table_core&& x)
@@ -1409,11 +1528,13 @@ public:
       using std::swap;
       swap(arrays,x.arrays);
       swap(size_ctrl,x.size_ctrl);
+      BOOST_UNORDERED_SWAP_STATS(cstats,x.cstats);
     }
     else{
       reserve(x.size());
       clear_on_exit c{x};
       (void)c; /* unused var warning */
+      BOOST_UNORDERED_RESET_STATS_OF(x);
 
       /* This works because subsequent x.clear() does not depend on the
        * elements' values.
@@ -1529,9 +1650,11 @@ public:
         arrays=x.arrays;
         size_ctrl.ml=std::size_t(x.size_ctrl.ml);
         size_ctrl.size=std::size_t(x.size_ctrl.size);
+        BOOST_UNORDERED_COPY_STATS(cstats,x.cstats);
         x.arrays=ah.release();
         x.size_ctrl.ml=x.initial_max_load();
         x.size_ctrl.size=0;
+        BOOST_UNORDERED_RESET_STATS_OF(x);
       }
       else{
         swap(h(),x.h());
@@ -1541,6 +1664,7 @@ public:
         noshrink_reserve(x.size());
         clear_on_exit c{x};
         (void)c; /* unused var warning */
+        BOOST_UNORDERED_RESET_STATS_OF(x);
 
         /* This works because subsequent x.clear() does not depend on the
          * elements' values.
@@ -1594,6 +1718,7 @@ public:
   BOOST_FORCEINLINE locator find(
     const Key& x,std::size_t pos0,std::size_t hash)const
   {    
+    BOOST_UNORDERED_STATS_COUNTER(num_cmps);
     prober pb(pos0);
     do{
       auto pos=pb.get();
@@ -1605,18 +1730,25 @@ public:
         auto p=elements+pos*N;
         BOOST_UNORDERED_PREFETCH_ELEMENTS(p,N);
         do{
+          BOOST_UNORDERED_INCREMENT_STATS_COUNTER(num_cmps);
           auto n=unchecked_countr_zero(mask);
           if(BOOST_LIKELY(bool(pred()(x,key_from(p[n]))))){
+            BOOST_UNORDERED_ADD_STATS(
+              cstats.successful_lookup,(pb.length(),num_cmps));
             return {pg,n,p+n};
           }
           mask&=mask-1;
         }while(mask);
       }
       if(BOOST_LIKELY(pg->is_not_overflowed(hash))){
+        BOOST_UNORDERED_ADD_STATS(
+          cstats.unsuccessful_lookup,(pb.length(),num_cmps));
         return {};
       }
     }
     while(BOOST_LIKELY(pb.next(arrays.groups_size_mask)));
+    BOOST_UNORDERED_ADD_STATS(
+      cstats.unsuccessful_lookup,(pb.length(),num_cmps));
     return {};
   }
 
@@ -1700,6 +1832,38 @@ public:
   {
     rehash(std::size_t(std::ceil(float(n)/mlf)));
   }
+
+#if defined(BOOST_UNORDERED_ENABLE_STATS)
+  stats get_stats()const
+  {
+    auto insertion=cstats.insertion.get_summary();
+    auto successful_lookup=cstats.successful_lookup.get_summary();
+    auto unsuccessful_lookup=cstats.unsuccessful_lookup.get_summary();
+    return{
+      {
+        insertion.count,
+        insertion.sequence_summary[0]
+      },
+      {
+        successful_lookup.count,
+        successful_lookup.sequence_summary[0],
+        successful_lookup.sequence_summary[1]
+      },
+      {
+        unsuccessful_lookup.count,
+        unsuccessful_lookup.sequence_summary[0],
+        unsuccessful_lookup.sequence_summary[1]
+      },
+    };
+  }
+
+  void reset_stats()noexcept
+  {
+    cstats.insertion.reset();
+    cstats.successful_lookup.reset();
+    cstats.unsuccessful_lookup.reset();
+  }
+#endif
 
   friend bool operator==(const table_core& x,const table_core& y)
   {
@@ -1908,8 +2072,12 @@ public:
     return true;
   }
 
-  arrays_type    arrays;
-  size_ctrl_type size_ctrl;
+  arrays_type              arrays;
+  size_ctrl_type           size_ctrl;
+
+#if defined(BOOST_UNORDERED_ENABLE_STATS)
+  mutable cumulative_stats cstats;
+#endif
 
 private:
   template<
@@ -1922,6 +2090,11 @@ private:
   using pred_base=empty_value<Pred,1>;
   using allocator_base=empty_value<Allocator,2>;
 
+#if defined(BOOST_GCC)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+
   /* used by allocator-extended move ctor */
 
   table_core(Hash&& h_,Pred&& pred_,const Allocator& al_):
@@ -1932,9 +2105,13 @@ private:
   {
   }
 
+#if defined(BOOST_GCC)
+#pragma GCC diagnostic pop
+#endif
+
   arrays_type new_arrays(std::size_t n)const
   {
-    return arrays_type::new_(al(),n);
+    return arrays_type::new_(typename arrays_type::allocator_type(al()),n);
   }
 
   arrays_type new_arrays_for_growth()const
@@ -1955,7 +2132,7 @@ private:
 
   void delete_arrays(arrays_type& arrays_)noexcept
   {
-    arrays_type::delete_(al(),arrays_);
+    arrays_type::delete_(typename arrays_type::allocator_type(al()),arrays_);
   }
 
   arrays_holder_type make_arrays(std::size_t n)const
@@ -2198,6 +2375,7 @@ private:
         auto p=arrays_.elements()+pos*N+n;
         construct_element(p,std::forward<Args>(args)...);
         pg->set(n,hash);
+        BOOST_UNORDERED_ADD_STATS(cstats.insertion,(pb.length()));
         return {pg,n,p};
       }
       else pg->mark_overflow(hash);
