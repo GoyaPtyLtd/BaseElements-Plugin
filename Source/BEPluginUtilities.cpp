@@ -56,6 +56,13 @@
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <cerrno>
+
+#if defined FMX_WIN_TARGET
+	#include <stdlib.h>
+#else
+	#include <unistd.h>
+#endif
 
 
 using namespace fmx;
@@ -267,9 +274,7 @@ void SetResult ( const string& filename, const vector<unsigned char>& data, fmx:
 void SetResult ( const string& filename, PoDoFo::PdfMemDocument& pdf, fmx::Data& results )
 {
 	// write out a temporary file
-	// std::filesystem::unique_path() does not (yet) exist
-	const filesystem::path temporary_file_name = tmpnam ( NULL );
-	auto temporary_file = std::filesystem::temp_directory_path() / temporary_file_name;
+	auto temporary_file = TemporaryFilePath();
 	pdf.Save ( temporary_file.c_str() );
 	auto file_data = ReadFileAsBinary ( temporary_file );
 	
@@ -778,6 +783,33 @@ string ReadFileAsUTF8 ( const filesystem::path path )
 	return result;
 
 } // ReadFileAsUTF8
+
+
+filesystem::path TemporaryFilePath ( const string& filename_template )
+{
+	const auto temporary_directory = filesystem::temp_directory_path();
+
+#if defined FMX_WIN_TARGET
+	vector<char> path_template ( filename_template.begin(), filename_template.end() );
+	path_template.push_back ( '\0' );
+	if ( _mktemp_s ( path_template.data(), path_template.size() ) != 0 ) {
+		throw BEPlugin_Exception ( errno );
+	}
+
+	return temporary_directory / path_template.data();
+#else
+	auto template_path = ( temporary_directory / filename_template ).string();
+	vector<char> path_template ( template_path.begin(), template_path.end() );
+	path_template.push_back ( '\0' );
+	const int temporary_file = mkstemp ( path_template.data() );
+	if ( temporary_file == -1 ) {
+		throw BEPlugin_Exception ( errno );
+	}
+
+	close ( temporary_file );
+	return path_template.data();
+#endif
+}
 
 
 #pragma mark -

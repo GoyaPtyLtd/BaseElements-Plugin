@@ -57,6 +57,7 @@
 #include <../Headers/iconv/iconv.h>
 
 #include "BEPluginFunctions.h"
+#include "BEPluginUtilities.h"
 
 #include "Net/BECurl.h"
 #include "Net/BECurlOption.h"
@@ -768,8 +769,7 @@ fmx::errcode BE_ExportFieldContents ( short /* funcId */, const ExprEnv& /* envi
 			destination = ParameterAsPath ( parameters, 1 );
 		} else {
 			// write out a temporary file
-			const filesystem::path temporary_file_name = tmpnam ( NULL );  // std::filesystem::unique_path() does yet not exist
-			destination = std::filesystem::temp_directory_path() / temporary_file_name;
+			destination = TemporaryFilePath();
 		}
 
 		error = write_to_file ( destination, field_contents );
