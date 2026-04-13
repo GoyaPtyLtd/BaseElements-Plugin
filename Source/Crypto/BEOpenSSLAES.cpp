@@ -29,7 +29,11 @@ using namespace std;
   https://boringssl.googlesource.com/boringssl/+/517073cd4b/crypto/cpu-intel.c#76
  
  */
-uint32_t OPENSSL_ia32cap_P[4] = { 0 };
+// iOS-only fallback for environments where this OpenSSL CPU-capability symbol is missing.
+// Keep this off Linux to avoid duplicate symbol conflicts with libcrypto.a on x86_64.
+#if FMX_IOS_TARGET
+ uint32_t OPENSSL_ia32cap_P[4] = { 0 };
+ #endif
 
 const vector<unsigned char> HexOrContainer ( const fmx::DataVect& parameters, const fmx::uint32 which )
 {
