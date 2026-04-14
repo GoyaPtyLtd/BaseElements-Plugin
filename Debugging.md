@@ -24,7 +24,7 @@ To check that the signing works properly, run the command below, but with the pa
 
 The output should include a line like the below, but with your certificate info:
 
-	Authority=Apple Development: Nicholas Orr (4SBZ7HRL36)
+	Authority=Apple Development: Goya Pty Ltd (GUZF844KMZ)
 
 Make note of this as you'll need it in the next step.
 
@@ -35,6 +35,12 @@ Run the two commands below, again replacing the paths with the path to the copy 
 
 	codesign  --remove-signature "/Applications/FileMaker Pro.app"
 	codesign --force --verbose --sign "Developer ID Application: Goya Pty Ltd (GUZF844KMZ)" "/Applications/FileMaker Pro.app"
+
+You should get back a response like:
+
+	/Applications/FileMaker Pro.app: signed app bundle with Mach-O universal (x86_64 arm64) [com.filemaker.client.pro12]
+
+If you get that, then it's worked.
 
 This replaces the certificate that Claris provides with one that matches the plugin certificate, so that you can attach the debugger in Xcode.
 
