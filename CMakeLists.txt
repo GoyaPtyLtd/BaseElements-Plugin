@@ -140,6 +140,9 @@ set_target_properties(
     BaseElements PROPERTIES
         PREFIX ""           # We don't want the "lib" prefix
         SUFFIX ".fmx"       # We don't want the ".so" suffix
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_RPATH "/opt/FileMaker/lib"
+        BUILD_RPATH "/opt/FileMaker/lib"
 )
 
 target_include_directories(
