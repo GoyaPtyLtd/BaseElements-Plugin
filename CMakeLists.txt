@@ -49,19 +49,46 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set_property(CACHE CMAKE_INSTALL_PREFIX PROPERTY VALUE "${DEFAULT_INSTALL_PREFIX}")
 endif()
 
-# FileMaker Plugin SDK target
-include(ExternalProject)
-ExternalProject_Add(
-    fm_plugin_sdk
-    PREFIX "${CMAKE_BINARY_DIR}/fm_plugin_sdk"  # Download here
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/PlugInSDK"  # Unpack contents here
-    # See: https://www.claris.com/resources/downloads/
-    URL https://downloads.claris.com/DEVREL/sdk/fm_plugin_sdk_21.0.1.53.zip
-    URL_HASH SHA256=422017d7952668addaa4e212e327eadc88ffbd2318abceae22382ce3458c38d5
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
+# Platform detection for external/* layout and Linux arch-specific paths
+execute_process(
+    COMMAND uname -m
+    OUTPUT_VARIABLE NATIVE_ARCH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
 )
+
+if(NATIVE_ARCH MATCHES "aarch64|arm64")
+    set(TARGET_ARCH                    "aarch64")
+    set(TARGET_ARCH_DIR                "arm64")
+    set(TARGET_LIB_DIR                 "aarch64-linux-gnu")
+    set(ARCH_FLAG                      "")
+else()
+    set(TARGET_ARCH                    "x86_64")
+    set(TARGET_ARCH_DIR                "x64")
+    set(TARGET_LIB_DIR                 "x86_64-linux-gnu")
+    set(ARCH_FLAG                      "-m64")
+endif()
+
+execute_process(
+    COMMAND sh -c "lsb_release -rs 2>/dev/null || (grep VERSION_ID /etc/os-release | tr -d '\"' | cut -d= -f2)"
+    OUTPUT_VARIABLE UBUNTU_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+
+if(UBUNTU_VERSION MATCHES "^22")
+    set(UBUNTU_SDK_DIR                 "U22")
+    set(LEGACY_UBUNTU_LIB_DIR          "ubuntu22")
+elseif(UBUNTU_VERSION MATCHES "^24")
+    set(UBUNTU_SDK_DIR                 "U24")
+    set(LEGACY_UBUNTU_LIB_DIR          "ubuntu24")
+else()
+    set(UBUNTU_SDK_DIR                 "U24")
+    set(LEGACY_UBUNTU_LIB_DIR          "ubuntu24")
+endif()
+
+set(PLATFORM_DIR                       "ubuntu${UBUNTU_VERSION}-${TARGET_ARCH}")
+set(EXTERNAL_PLATFORM_DIR              "${CMAKE_SOURCE_DIR}/external/${PLATFORM_DIR}")
+set(DUKTAPE_SOURCE_FILE                "${EXTERNAL_PLATFORM_DIR}/src/duktape/duktape.c")
 
 # BaseElements plugin library/module target
 add_library(
@@ -105,7 +132,7 @@ add_library(
     Source/Net/BESMTP.cpp
     Source/Net/BESMTPContainerAttachments.cpp
     Source/Net/BESMTPEmailMessage.cpp
-    Source/duktape/duktape.c
+    ${DUKTAPE_SOURCE_FILE}
     Source/linux/BELinuxFunctions.cpp
 )
 
@@ -117,24 +144,24 @@ set_target_properties(
 
 target_include_directories(
     BaseElements PUBLIC
-
     Source
-    Headers/FMWrapper
-    Headers
-    Headers/ImageMagick-7
+    "${EXTERNAL_PLATFORM_DIR}/PlugInSDK/Headers"
+    "${EXTERNAL_PLATFORM_DIR}/include/ImageMagick-7"
+    "${EXTERNAL_PLATFORM_DIR}/include"
+    "${EXTERNAL_PLATFORM_DIR}/lib"
+    "${EXTERNAL_PLATFORM_DIR}/src"
 )
 
 target_link_directories(
     BaseElements PUBLIC
-
-    PlugInSDK/Libraries/Linux/U22/x64
-    Libraries/ubuntu22/x86_64
+    "${EXTERNAL_PLATFORM_DIR}/PlugInSDK/Libraries/Linux/${UBUNTU_SDK_DIR}/${TARGET_ARCH_DIR}"
+    "${EXTERNAL_PLATFORM_DIR}/lib"
 )
 
 add_library(libuuid SHARED IMPORTED)
 set_target_properties(
     libuuid PROPERTIES
-        IMPORTED_LOCATION /usr/lib/x86_64-linux-gnu/libuuid.so.1)
+        IMPORTED_LOCATION /usr/lib/${TARGET_LIB_DIR}/libuuid.so.1)
 
 target_link_libraries(
     BaseElements PUBLIC
@@ -153,8 +180,6 @@ target_link_libraries(
     curl
     PocoNet
     ssh2
-    ssl
-    crypto
     xslt
     exslt
     xml2
@@ -163,8 +188,8 @@ target_link_libraries(
     PocoZip
     PocoXML
     podofo
-    podofo_3rdparty
     podofo_private
+    podofo_3rdparty
     unistring
     fontconfig
     freetype
@@ -175,10 +200,11 @@ target_link_libraries(
     png16
     z
     jq
-    openjp2
     PocoUtil
     PocoCrypto
     PocoFoundation
+    ssl
+    crypto
     charset
     expat
     libuuid
@@ -186,9 +212,6 @@ target_link_libraries(
     pthread
     m
 )
-
-# Make BaseElements target dependent upon fm_plugin_sdk target
-add_dependencies(BaseElements fm_plugin_sdk)
 
 # Install target
 install(

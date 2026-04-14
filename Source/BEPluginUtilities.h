@@ -95,6 +95,7 @@ const bool StreamIsCompressed ( const fmx::BinaryData& data );
 
 const std::vector<char> ReadFileAsBinary ( const std::filesystem::path path );
 std::string ReadFileAsUTF8 ( const std::filesystem::path path );
+std::filesystem::path TemporaryFilePath ( const std::string& filename_template = "beplugin-XXXXXX.tmp" );
 
 std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from = g_text_encoding );
 std::string ConvertTextEncoding ( std::string& in, const std::string& to, const std::string& from = g_text_encoding );
