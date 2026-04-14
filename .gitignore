@@ -61,3 +61,12 @@ Project/core
 Project/CodeSigning/*
 *.vsidx
 *.lock
+
+/PlugInSDK/
+
+# Ignore build products
+/build*/
+
+# Ignore external libraries
+/external/*
+!/external/README.md
