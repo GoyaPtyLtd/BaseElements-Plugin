@@ -1,18 +1,24 @@
+## BaseElements Plugin Downloads ##
+
 The latest final release can be found at the following links :
 
-Mac : https://goya.com.au/files/beplugin/current/BaseElements.fmplugin.dmg  
-Windows 64 bit : https://goya.com.au/files/beplugin/current/BaseElements.fmx64.zip  
-Linux Version for Ubuntu 20 : https://goya.com.au/files/beplugin/current/BaseElements_ubuntu20.fmx.zip  
-Linux Version for Ubuntu 22 : https://goya.com.au/files/beplugin/current/BaseElements_ubuntu22.fmx.zip  
+#### Final Releases
 
-### Beta Release - 5.1.0b3 ( 05010006 ) 
+- Mac : https://goya.com.au/files/beplugin/current/BaseElements.fmplugin.dmg  
+- Windows 64 bit : https://goya.com.au/files/beplugin/current/BaseElements.fmx64.zip  
+- Linux Version for Ubuntu 20 : https://goya.com.au/files/beplugin/current/BaseElements_ubuntu20.fmx.zip  
+- Linux Version for Ubuntu 22 : https://goya.com.au/files/beplugin/current/BaseElements_ubuntu22.fmx.zip  
 
-Ubuntu 22 ARM - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu22.04-aarch64.zip
-Ubuntu 22 x86 - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu22.04-x86_64.zip
-Ubuntu 24 ARM - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu24.04-aarch64.zip
-Ubuntu 24 x86 - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu24.04-x86_64.zip
+#### Beta Release - 5.1.0b3 ( 05010006 )
 
-macOS - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements.fmplugin.dmg
+Beta releases are made available soublicly sometimes and will be linked directly here.  This version passes our internal tests, but must be tested before being put into production.
+
+Ubuntu 22 ARM - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu22.04-aarch64.zip  
+Ubuntu 22 x86 - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu22.04-x86_64.zip  
+Ubuntu 24 ARM - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu24.04-aarch64.zip  
+Ubuntu 24 x86 - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu24.04-x86_64.zip 
+
+macOS - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements.fmplugin.dmg  
 
 ### iOS versions
 
@@ -22,7 +28,7 @@ https://goya.com.au/files/beplugin/current/BaseElementsIOSPlugin.dmg
 
 ### Old FileMaker Server Centos versions
 
-Version 4.0 through to 4.1.4 was available as a linux build, for FMS running on Centos ONLY.   As of 4.2.0, centos support was removed, and replaced with support for Ubuntu.  If you're running Centos still and require the plugin, we recommend version 4.1.4 :
+Version 4.0 through to 4.1.4 was available as a linux build, for FMS running on **Centos ONLY**.   As of 4.2.0, centos support was removed, and replaced with support for Ubuntu.  If you're running Centos still and require the plugin, we recommend version 4.1.4 :
 
 https://goya.com.au/files/beplugin/4.1.4/BaseElements.fmx.zip
 
