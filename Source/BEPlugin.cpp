@@ -176,12 +176,7 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( static_cast<short>(static_cast<short>(kBE_FileTypeFile) + static_cast<short>(kBE_FileTypeOffset)), BE_NumericConstants );
 	g_be_plugin->RegisterFunction ( static_cast<short>(static_cast<short>(kBE_FileTypeFolder) + static_cast<short>(kBE_FileTypeOffset)), BE_NumericConstants );
 
-#ifdef BEP_PRO_VERSION
 	g_be_plugin->RegisterFunction ( kBE_XSLT_Apply, BE_XSLT_Apply, 3, -1 );
-#else
-	g_be_plugin->RegisterFunction ( kBE_XSLT_Apply, BE_XSLT_Apply, 3 );
-#endif
-
 	g_be_plugin->RegisterFunction ( kBE_XSLT_ApplyInMemory, BE_XSLT_Apply, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_XPath, BE_XPath, 2, 4 );
@@ -201,6 +196,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 
 #if ( FMX_MAC_TARGET || FMX_WIN_TARGET || FMX_LINUX_TARGET )
 	g_be_plugin->RegisterFunction ( kBE_ExecuteSystemCommand, BE_ExecuteSystemCommand, 1, 3 );
+
+	g_be_plugin->RegisterFunction ( kBE_ContainerConvertImage, BE_ContainerConvertImage, 1, 2 );
 #else
 	g_be_plugin->RegisterHiddenFunction ( kBE_ExecuteSystemCommand, BE_NotImplemented, 1, 3 );
 #endif
@@ -218,12 +215,12 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_UnGzip, BE_UnGzip, 1, 2 );
 
 	g_be_plugin->RegisterFunction ( kBE_JSON_ArraySize, BE_JSON_ArraySize, 1, 2 );
+	
 #if ( FMX_WIN_TARGET || FMX_IOS_TARGET )
 	g_be_plugin->RegisterFunction ( kBE_JSON_jq, BE_NotImplemented, 2, 3 );
 #else
 	g_be_plugin->RegisterFunction ( kBE_JSON_jq, BE_JSON_jq, 2, 3 );
 #endif
-
 
 	g_be_plugin->RegisterFunction ( kBE_HTTP_GETFile, BE_HTTP_GET, 1, 4 );
 	g_be_plugin->RegisterFunction ( kBE_SaveURLToFile, BE_HTTP_GETFile, 2, 4 );
@@ -234,10 +231,6 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_SetTextEncoding, BE_SetTextEncoding, 0, 1 );
 
 	g_be_plugin->RegisterFunction ( kBE_JPEGRecompress, BE_JPEGRecompress, 1, 3 );
-
-#if BEP_PRO_VERSION && !FMX_IOS_TARGET
-	g_be_plugin->RegisterFunction ( kBE_ContainerConvertImage, BE_ContainerConvertImage, 1, 2 );
-#endif
 
 	g_be_plugin->RegisterFunction ( kBE_VariableSet, BE_Variable, 2 );
 	g_be_plugin->RegisterFunction ( kBE_VariableGet, BE_Variable, 1 );
@@ -304,18 +297,8 @@ static FMX_Int32 LoadPlugin ( FMX_ExternCallPtr plugin_call )
 	g_be_plugin->RegisterFunction ( kBE_FTP_UploadFile, BE_FTP_Upload, 2, 4 );
 	g_be_plugin->RegisterFunction ( kBE_CurlGetInfo, BE_CurlGetInfo, 1 );
 
-#ifdef BEP_PRO_VERSION
-		
 	g_be_plugin->RegisterFunction ( kBE_BackgroundTaskAdd, BE_BackgroundTaskAdd, 7, 9 );
 	g_be_plugin->RegisterFunction ( kBE_BackgroundTaskList, BE_BackgroundTaskList );
-
-#endif
-
-#ifdef BEP_PRO_VERSION
-	g_be_plugin->RegisterFunction ( kBE_SMTPServer, BE_SMTPServer, 1, 5 );
-#else
-	g_be_plugin->RegisterFunction ( kBE_SMTPServer, BE_SMTPServer, 1, 4 );
-#endif
 
 	g_be_plugin->RegisterFunction ( kBE_SMTPServer, BE_SMTPServer, 1, 5 );
 	g_be_plugin->RegisterFunction ( kBE_SMTPSend, BE_SMTPSend, 4, 9 );
