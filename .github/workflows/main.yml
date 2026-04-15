@@ -210,17 +210,12 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release ..
           make -j"$(nproc)"
   
-      - name: Collect build outputs
-        run: |
-          set -euo pipefail
-          cp "build/BaseElements.fmx" "BaseElements-${{ matrix.platform }}.fmx"
-
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
           name: BaseElements-${{ matrix.platform }}
-          path: BaseElements-${{ matrix.platform }}.fmx
-          retention-days: 30
+          path: build/BaseElements.fmx
+          retention-days: 90
 
   release:
     needs: build
