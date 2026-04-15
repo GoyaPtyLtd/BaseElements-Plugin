@@ -1,7 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2020, Oracle and/or its affiliates.
-
+// Copyright (c) 2020-2024, Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Licensed under the Boost Software License version 1.0.
@@ -183,14 +183,14 @@ private:
     {
         item_visitor_type<OutputIterator, Strategy> item_visitor(multipolygon, oit, strategy);
 
-        typedef geometry::model::point
+        using point_type = geometry::model::point
             <
-                typename geometry::coordinate_type<MultiPoint>::type,
+                geometry::coordinate_type_t<MultiPoint>,
                 geometry::dimension<MultiPoint>::value,
-                typename geometry::coordinate_system<MultiPoint>::type
-            > point_type;
-        typedef geometry::model::box<point_type> box_type;
-        typedef std::pair<box_type, std::size_t> box_pair;
+                geometry::coordinate_system_t<MultiPoint>
+            >;
+        using box_type = geometry::model::box<point_type>;
+        using box_pair = std::pair<box_type, std::size_t>;
         std::vector<box_pair> box_pairs;
         box_pairs.reserve(boost::size(multipolygon));
 
@@ -211,17 +211,16 @@ private:
     }
 
 public:
-    template <typename RobustPolicy, typename OutputIterator, typename Strategy>
+    template <typename OutputIterator, typename Strategy>
     static inline OutputIterator apply(MultiPoint const& multipoint,
                                        MultiPolygon const& multipolygon,
-                                       RobustPolicy const& robust_policy,
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
-        typedef std::vector
+        using point_vector_type = std::vector
             <
                 typename boost::range_value<MultiPoint>::type
-            > point_vector_type;
+            >;
 
         point_vector_type common_points;
 
@@ -233,7 +232,7 @@ public:
         return multipoint_multipoint_point
             <
                 MultiPoint, point_vector_type, PointOut, OverlayType
-            >::apply(multipoint, common_points, robust_policy, oit, strategy);
+            >::apply(multipoint, common_points, oit, strategy);
     }
 };
 

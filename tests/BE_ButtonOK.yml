@@ -1,0 +1,23 @@
+---
+function: BE_ButtonOK
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:
+
+  - name: Named constant == 1
+    evaluate: | 
+      BE_ButtonOK
+    output: 1

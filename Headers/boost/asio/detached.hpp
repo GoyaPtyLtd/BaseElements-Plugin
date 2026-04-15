@@ -2,7 +2,7 @@
 // detached.hpp
 // ~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2023 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2025 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -39,7 +39,7 @@ namespace asio {
 class detached_t
 {
 public:
-  /// Constructor. 
+  /// Constructor.
   constexpr detached_t()
   {
   }
@@ -95,7 +95,7 @@ public:
 /**
  * See the documentation for boost::asio::detached_t for a usage example.
  */
-constexpr detached_t detached;
+BOOST_ASIO_INLINE_VARIABLE constexpr detached_t detached;
 
 } // namespace asio
 } // namespace boost

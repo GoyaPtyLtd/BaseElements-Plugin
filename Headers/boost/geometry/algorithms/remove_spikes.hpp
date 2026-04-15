@@ -3,7 +3,7 @@
 // Copyright (c) 2007-2013 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2008-2013 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2013 Mateusz Loskot, London, UK.
-// Copyright (c) 2013-2014 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2013-2023 Adam Wulkiewicz, Lodz, Poland.
 
 // This file was modified by Oracle on 2017-2023.
 // Modifications copyright (c) 2017-2023 Oracle and/or its affiliates.
@@ -37,7 +37,7 @@
 
 #include <boost/geometry/strategies/default_strategy.hpp>
 
-#include <boost/geometry/util/condition.hpp>
+#include <boost/geometry/util/constexpr.hpp>
 #include <boost/geometry/util/range.hpp>
 
 
@@ -68,9 +68,7 @@ struct range_remove_spikes
     template <typename Range, typename SideStrategy>
     static inline void apply(Range& range, SideStrategy const& strategy)
     {
-        typedef typename point_type<Range>::type point_type;
-
-        std::size_t n = boost::size(range);
+        std::size_t const n = boost::size(range);
         std::size_t const min_num_points = core_detail::closure::minimum_ring_size
             <
                 geometry::closure<Range>::value
@@ -80,7 +78,7 @@ struct range_remove_spikes
             return;
         }
 
-        std::vector<point_type> cleaned;
+        std::vector<point_type_t<Range>> cleaned;
         cleaned.reserve(n);
 
         for (auto const& p : range)
@@ -104,7 +102,7 @@ struct range_remove_spikes
         std::size_t cleaned_count = cleaned.size();
 
         // For a closed-polygon, remove closing point, this makes checking first point(s) easier and consistent
-        if ( BOOST_GEOMETRY_CONDITION(geometry::closure<Range>::value == geometry::closed) )
+        if BOOST_GEOMETRY_CONSTEXPR (geometry::closure<Range>::value == geometry::closed)
         {
             --cleaned_e;
             --cleaned_count;
@@ -148,7 +146,7 @@ struct range_remove_spikes
         }
 
         // Close if necessary
-        if ( BOOST_GEOMETRY_CONDITION(geometry::closure<Range>::value == geometry::closed) )
+        if BOOST_GEOMETRY_CONSTEXPR (geometry::closure<Range>::value == geometry::closed)
         {
             BOOST_GEOMETRY_ASSERT(cleaned_e != cleaned.end());
             *cleaned_e = *cleaned_b;
@@ -208,7 +206,7 @@ namespace dispatch
 template
 <
     typename Geometry,
-    typename Tag = typename tag<Geometry>::type
+    typename Tag = tag_t<Geometry>
 >
 struct remove_spikes
 {
@@ -258,10 +256,10 @@ struct remove_spikes
 
     static void apply(Geometry& geometry, geometry::default_strategy const&)
     {
-        typedef typename strategy::side::services::default_strategy
+        using side_strategy = typename strategy::side::services::default_strategy
             <
-                typename cs_tag<Geometry>::type
-            >::type side_strategy;
+                cs_tag_t<Geometry>
+            >::type;
 
         apply(geometry, side_strategy());
     }

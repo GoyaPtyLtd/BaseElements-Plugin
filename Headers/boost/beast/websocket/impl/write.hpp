@@ -12,7 +12,6 @@
 
 #include <boost/beast/websocket/detail/mask.hpp>
 #include <boost/beast/core/async_base.hpp>
-#include <boost/beast/core/bind_handler.hpp>
 #include <boost/beast/core/buffer_traits.hpp>
 #include <boost/beast/core/buffers_cat.hpp>
 #include <boost/beast/core/buffers_prefix.hpp>
@@ -347,8 +346,8 @@ operator()(
                         beast::detail::bind_continuation(std::move(*this)));
             }
             // VFALCO What about consuming the buffer on error?
-            bytes_transferred_ +=
-                bytes_transferred - impl.wr_fb.size();
+            if(bytes_transferred > impl.wr_fb.size())
+                bytes_transferred_ += bytes_transferred - impl.wr_fb.size();
             if(impl.check_stop_now(ec))
                 goto upcall;
             while(remain_ > 0)
@@ -432,7 +431,10 @@ operator()(
                             ),
                             beast::detail::bind_continuation(std::move(*this)));
                 }
-                n = bytes_transferred - impl.wr_fb.size();
+                if(bytes_transferred > impl.wr_fb.size())
+                    n = bytes_transferred - impl.wr_fb.size();
+                else
+                    n = 0;
                 bytes_transferred_ += n;
                 if(impl.check_stop_now(ec))
                     goto upcall;
@@ -557,13 +559,22 @@ template<class NextLayer, bool deflateSupported>
 struct stream<NextLayer, deflateSupported>::
     run_write_some_op
 {
+    boost::shared_ptr<impl_type> const& self;
+
+    using executor_type = typename stream::executor_type;
+
+    executor_type
+    get_executor() const noexcept
+    {
+        return self->stream().get_executor();
+    }
+
     template<
         class WriteHandler,
         class ConstBufferSequence>
     void
     operator()(
         WriteHandler&& h,
-        boost::shared_ptr<impl_type> const& sp,
         bool fin,
         ConstBufferSequence const& b)
     {
@@ -580,7 +591,7 @@ struct stream<NextLayer, deflateSupported>::
             typename std::decay<WriteHandler>::type,
             ConstBufferSequence>(
                 std::forward<WriteHandler>(h),
-                sp,
+                self,
                 fin,
                 b);
     }
@@ -834,9 +845,8 @@ async_write_some(bool fin,
     return net::async_initiate<
         WriteHandler,
         void(error_code, std::size_t)>(
-            run_write_some_op{},
+            run_write_some_op{impl_},
             handler,
-            impl_,
             fin,
             bs);
 }
@@ -890,9 +900,8 @@ async_write(
     return net::async_initiate<
         WriteHandler,
         void(error_code, std::size_t)>(
-            run_write_some_op{},
+            run_write_some_op{impl_},
             handler,
-            impl_,
             true,
             bs);
 }

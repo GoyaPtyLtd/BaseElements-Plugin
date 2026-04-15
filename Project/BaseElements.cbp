@@ -66,18 +66,18 @@
 			<Add option="-m64" />
 			<Add option="-Wall" />
 			<Add option="-std=c++20" />
-			<Add option="-std=c11" />
+			<Add option="-std=c20" />
 			<Add option="-fexceptions" />
 			<Add option="-Wno-unknown-pragmas" />
 			<Add option="-fvisibility=hidden" />
-			<Add option="-D_LIBCPP_STD_VER=17" />
+			<Add option="-D_LIBCPP_STD_VER=20" />
 			<Add directory="../Headers" />
 			<Add directory="../Source" />
 			<Add directory="../Headers/ImageMagick-7" />
 		</Compiler>
 		<Linker>
 			<Add option="-m64" />
-			<Add option="-Wl,-soname=5.1.0" />
+			<Add option="-Wl,-soname=5.1.0.4" />
 			<Add option="-Wl,--exclude-libs,ALL" />
 			<Add option="-Wl,--no-undefined" />
 			<Add option="-Wl,-rpath=/opt/FileMaker/lib" />
@@ -88,10 +88,11 @@
 			<Add library="libboost_atomic.a" />
 			<Add library="libboost_date_time.a" />
 			<Add library="libboost_program_options.a" />
+			<Add library="libboost_filesystem.a" />
 			<Add library="libboost_regex.a" />
 			<Add library="libboost_thread.a" />
+			<Add library="libnghttp2.a" />
 			<Add library="libcurl.a" />
-			<Add library="libPocoNet.a" />
 			<Add library="libssh2.a" />
 			<Add library="libssl.a" />
 			<Add library="libcrypto.a" />
@@ -99,9 +100,16 @@
 			<Add library="libexslt.a" />
 			<Add library="libxml2.a" />
 			<Add library="libturbojpeg.a" />
+			<Add library="libPocoNet.a" />
 			<Add library="libPocoJSON.a" />
 			<Add library="libPocoZip.a" />
 			<Add library="libPocoXML.a" />
+			<Add library="libPocoUtil.a" />
+			<Add library="libPocoPDF.a" />
+			<Add library="libPocoCrypto.a" />
+			<Add library="libPocoFoundation.a" />
+			<Add library="libpodofo_3rdparty.a" />
+			<Add library="libpodofo_private.a" />
 			<Add library="libpodofo.a" />
 			<Add library="libfontconfig.a" />
 			<Add library="libfreetype.a" />
@@ -113,10 +121,6 @@
 			<Add library="libz.a" />
 			<Add library="libjq.a" />
 			<Add library="libopenjp2.a" />
-			<Add library="libPocoUtil.a" />
-			<Add library="libPocoPDF.a" />
-			<Add library="libPocoCrypto.a" />
-			<Add library="libPocoFoundation.a" />
 			<Add library="libcharset.a" />
 			<Add library="libexpat.a" />
 			<Add library="libunistring.a" />
@@ -124,7 +128,7 @@
 			<Add library="dl" />
 			<Add library="pthread" />
 			<Add library="m" />
-			<Add directory="../Libraries/linux" />
+			<Add directory="../Libraries/ubuntu22/x86_64" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="#/usr/bin/mkdir -p /opt/FileMaker/lib/" />
@@ -170,7 +174,6 @@
 		<Unit filename="../Source/BEFileTextReader.cpp" />
 		<Unit filename="../Source/BEJSON.cpp" />
 		<Unit filename="../Source/BEJavaScript.cpp" />
-		<Unit filename="../Source/BEPDF.cpp" />
 		<Unit filename="../Source/BEPlugin.cpp" />
 		<Unit filename="../Source/BEPluginFunctions.cpp" />
 		<Unit filename="../Source/BEPluginUtilities.cpp" />

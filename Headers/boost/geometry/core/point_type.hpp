@@ -3,9 +3,11 @@
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
+// Copyright (c) 2024 Adam Wulkiewicz, Lodz, Poland.
 
-// This file was modified by Oracle on 2020-2021.
-// Modifications copyright (c) 2020-2021 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2020-2025.
+// Modifications copyright (c) 2020-2025 Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
@@ -65,10 +67,10 @@ template <typename Tag, typename Geometry>
 struct point_type
 {
     // Default: call traits to get point type
-    typedef typename std::remove_const
+    using type = std::remove_const_t
         <
             typename traits::point_type<Geometry>::type
-        >::type type;
+        >;
 };
 
 
@@ -76,7 +78,7 @@ struct point_type
 template <typename Point>
 struct point_type<point_tag, Point>
 {
-    typedef Point type;
+    using type = Point;
 };
 
 
@@ -84,58 +86,68 @@ struct point_type<point_tag, Point>
 template <typename Linestring>
 struct point_type<linestring_tag, Linestring>
 {
-    typedef typename boost::range_value<Linestring>::type type;
+    using type = typename boost::range_value<Linestring>::type;
 };
 
 
 template <typename Ring>
 struct point_type<ring_tag, Ring>
 {
-    typedef typename boost::range_value<Ring>::type type;
+    using type = typename boost::range_value<Ring>::type;
 };
 
+// Specialization for PolyhedralSurface: the point-type is the point-type of its polygon type
+template <typename PolyhedralSurface>
+struct point_type<polyhedral_surface_tag, PolyhedralSurface>
+{
+    using type = typename point_type
+        <
+            polygon_tag,
+            typename boost::range_value<PolyhedralSurface>::type
+        >::type;
+};
 
 // Specialization for polygon: the point-type is the point-type of its rings
 template <typename Polygon>
 struct point_type<polygon_tag, Polygon>
 {
-    typedef typename point_type
+    using type = typename point_type
         <
             ring_tag,
             typename ring_type<polygon_tag, Polygon>::type
-        >::type type;
+        >::type;
 };
 
 
 template <typename MultiPoint>
 struct point_type<multi_point_tag, MultiPoint>
 {
-    typedef typename boost::range_value
+    using type = typename boost::range_value
         <
             MultiPoint
-        >::type type;
+        >::type;
 };
 
 
 template <typename MultiLinestring>
 struct point_type<multi_linestring_tag, MultiLinestring>
 {
-    typedef typename point_type
+    using type = typename point_type
         <
             linestring_tag,
             typename boost::range_value<MultiLinestring>::type
-        >::type type;
+        >::type;
 };
 
 
 template <typename MultiPolygon>
 struct point_type<multi_polygon_tag, MultiPolygon>
 {
-    typedef typename point_type
+    using type = typename point_type
         <
             polygon_tag,
             typename boost::range_value<MultiPolygon>::type
-        >::type type;
+        >::type;
 };
 
 
@@ -148,8 +160,8 @@ struct point_type<dynamic_geometry_tag, DynamicGeometry>
         >::type;
     using type = typename point_type
         <
-            typename tag<geometry_t>::type,
-            typename util::remove_cptrref<geometry_t>::type
+            tag_t<geometry_t>,
+            util::remove_cptrref_t<geometry_t>
         >::type;
 };
 
@@ -163,8 +175,8 @@ struct point_type<geometry_collection_tag, GeometryCollection>
         >::type;
     using type = typename point_type
         <
-            typename tag<geometry_t>::type,
-            typename util::remove_cptrref<geometry_t>::type
+            tag_t<geometry_t>,
+            util::remove_cptrref_t<geometry_t>
         >::type;
 };
 
@@ -183,12 +195,16 @@ struct point_type<geometry_collection_tag, GeometryCollection>
 template <typename Geometry>
 struct point_type
 {
-    typedef typename core_dispatch::point_type
+    using type = typename core_dispatch::point_type
         <
-            typename tag<Geometry>::type,
-            typename util::remove_cptrref<Geometry>::type
-        >::type type;
+            tag_t<Geometry>,
+            util::remove_cptrref_t<Geometry>
+        >::type;
 };
+
+
+template <typename Geometry>
+using point_type_t = typename point_type<Geometry>::type;
 
 
 }} // namespace boost::geometry

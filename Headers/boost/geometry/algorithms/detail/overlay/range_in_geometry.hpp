@@ -29,11 +29,11 @@ namespace detail { namespace overlay
 template
 <
     typename Geometry,
-    typename Tag = typename geometry::tag<Geometry>::type
+    typename Tag = geometry::tag_t<Geometry>
 >
 struct points_range
 {
-    typedef geometry::point_iterator<Geometry const> iterator_type;
+    using iterator_type = geometry::point_iterator<Geometry const>;
 
     explicit points_range(Geometry const& geometry)
         : m_geometry(geometry)
@@ -55,8 +55,8 @@ struct points_range
 template <typename Box>
 struct points_range<Box, box_tag>
 {
-    typedef typename geometry::point_type<Box>::type point_type;
-    typedef const point_type * iterator_type;
+    using point_type = geometry::point_type_t<Box>;
+    using iterator_type = const point_type *;
 
     explicit points_range(Box const& box)
     {
@@ -80,7 +80,7 @@ struct points_range<Box, box_tag>
 template
 <
     typename Geometry,
-    typename Tag = typename geometry::tag<Geometry>::type
+    typename Tag = geometry::tag_t<Geometry>
 >
 struct point_in_geometry_helper
 {
@@ -106,14 +106,14 @@ struct point_in_geometry_helper<Box, box_tag>
 // This function returns
 // when it finds a point of geometry1 inside or outside geometry2
 template <typename Geometry1, typename Geometry2, typename Strategy>
-static inline int range_in_geometry(Geometry1 const& geometry1,
+inline int range_in_geometry(Geometry1 const& geometry1,
                                     Geometry2 const& geometry2,
                                     Strategy const& strategy,
                                     bool skip_first = false)
 {
     int result = 0;
     points_range<Geometry1> points(geometry1);
-    typedef typename points_range<Geometry1>::iterator_type iterator_type;
+    using iterator_type = typename points_range<Geometry1>::iterator_type;
     iterator_type const end = points.end();
     iterator_type it = points.begin();
     if (it == end)

@@ -1,4 +1,4 @@
-/* Copyright (c) 2018-2023 Marcelo Zimbres Silva (mzimbres@gmail.com)
+/* Copyright (c) 2018-2024 Marcelo Zimbres Silva (mzimbres@gmail.com)
  *
  * Distributed under the Boost Software License, Version 1.0. (See
  * accompanying file LICENSE.txt)
@@ -8,15 +8,15 @@
 #define BOOST_REDIS_RESP3_PARSER_HPP
 
 #include <boost/redis/resp3/node.hpp>
+
 #include <boost/system/error_code.hpp>
+
 #include <array>
-#include <string_view>
 #include <cstdint>
 #include <optional>
+#include <string_view>
 
 namespace boost::redis::resp3 {
-
-using int_type = std::uint64_t;
 
 class parser {
 public:
@@ -38,7 +38,7 @@ private:
    std::array<std::size_t, max_embedded_depth + 1> sizes_;
 
    // Contains the length expected in the next bulk read.
-   int_type bulk_length_;
+   std::size_t bulk_length_;
 
    // The type of the next bulk. Contains type::invalid if no bulk is
    // expected.
@@ -56,7 +56,9 @@ private:
    // returns type::invalid.
    [[nodiscard]]
    auto bulk_expected() const noexcept -> bool
-      { return bulk_ != type::invalid; }
+   {
+      return bulk_ != type::invalid;
+   }
 
 public:
    parser();
@@ -78,12 +80,7 @@ public:
 // parser is either done or an error occured, that can be checked on
 // ec.
 template <class Adapter>
-bool
-parse(
-   resp3::parser& p,
-   std::string_view const& msg,
-   Adapter& adapter,
-   system::error_code& ec)
+bool parse(resp3::parser& p, std::string_view const& msg, Adapter& adapter, system::error_code& ec)
 {
    while (!p.done()) {
       auto const res = p.consume(msg, ec);
@@ -101,6 +98,6 @@ parse(
    return true;
 }
 
-} // boost::redis::resp3
+}  // namespace boost::redis::resp3
 
-#endif // BOOST_REDIS_RESP3_PARSER_HPP
+#endif  // BOOST_REDIS_RESP3_PARSER_HPP

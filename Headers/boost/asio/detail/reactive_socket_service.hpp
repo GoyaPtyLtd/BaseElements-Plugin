@@ -2,7 +2,7 @@
 // detail/reactive_socket_service.hpp
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2023 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2025 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -308,7 +308,7 @@ public:
           &impl, impl.socket_, "async_send_to"));
 
     start_op(impl, reactor::write_op, p.p,
-        is_continuation, true, false, &io_ex, 0);
+        is_continuation, true, false, true, &io_ex, 0);
     p.v = p.p = 0;
   }
 
@@ -342,7 +342,7 @@ public:
           &impl, impl.socket_, "async_send_to(null_buffers)"));
 
     start_op(impl, reactor::write_op, p.p,
-        is_continuation, false, false, &io_ex, 0);
+        is_continuation, false, false, false, &io_ex, 0);
     p.v = p.p = 0;
   }
 
@@ -433,7 +433,7 @@ public:
     start_op(impl,
         (flags & socket_base::message_out_of_band)
           ? reactor::except_op : reactor::read_op,
-        p.p, is_continuation, true, false, &io_ex, 0);
+        p.p, is_continuation, true, false, true, &io_ex, 0);
     p.v = p.p = 0;
   }
 
@@ -472,7 +472,7 @@ public:
     start_op(impl,
         (flags & socket_base::message_out_of_band)
           ? reactor::except_op : reactor::read_op,
-        p.p, is_continuation, false, false, &io_ex, 0);
+        p.p, is_continuation, false, false, false, &io_ex, 0);
     p.v = p.p = 0;
   }
 

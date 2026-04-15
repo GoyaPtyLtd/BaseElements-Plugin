@@ -49,10 +49,6 @@ namespace grammar {
     @see
         @ref grammar::parse.
 */
-#ifdef BOOST_URL_DOCS
-template<class Unsigned>
-struct unsigned_rule;
-#else
 template<class Unsigned>
 struct unsigned_rule
 {
@@ -71,8 +67,6 @@ struct unsigned_rule
             ) const noexcept ->
         system::result<value_type>;
 };
-#endif
-
 } // grammar
 } // urls
 } // boost

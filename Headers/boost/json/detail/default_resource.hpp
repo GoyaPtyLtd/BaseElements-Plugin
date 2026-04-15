@@ -11,7 +11,7 @@
 #define BOOST_JSON_DEFAULT_RESOURCE_HPP
 
 #include <boost/json/detail/config.hpp>
-#include <new>
+#include <boost/container/pmr/memory_resource.hpp>
 
 namespace boost {
 namespace json {
@@ -28,7 +28,7 @@ class
     BOOST_SYMBOL_VISIBLE
     BOOST_JSON_DECL
 default_resource final
-    : public memory_resource
+    : public container::pmr::memory_resource
 {
     union holder;
 
@@ -43,7 +43,7 @@ default_resource final
 
 public:
     static
-    memory_resource*
+    container::pmr::memory_resource*
     get() noexcept
     {
     #ifdef BOOST_JSON_WEAK_CONSTINIT

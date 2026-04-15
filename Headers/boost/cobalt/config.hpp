@@ -16,18 +16,32 @@
 #else
 #define BOOST_COBALT_DECL BOOST_SYMBOL_IMPORT
 #endif
+#if defined(BOOST_COBALT_IO_SOURCE)
+#define BOOST_COBALT_IO_DECL BOOST_SYMBOL_EXPORT
 #else
+#define BOOST_COBALT_IO_DECL BOOST_SYMBOL_IMPORT
+#endif
+#if defined(BOOST_COBALT_SSL_SOURCE)
+#define BOOST_COBALT_SSL_DECL  BOOST_SYMBOL_EXPORT
+#else
+#define BOOST_COBALT_SSL_DECL BOOST_SYMBOL_IMPORT
+#endif
+#else
+#define BOOST_COBALT_SSL_DECL
 #define BOOST_COBALT_DECL
+#define BOOST_COBALT_IO_DECL
+#endif
+
+#if _MSC_VER
+#define BOOST_COBALT_MSVC_NOINLINE BOOST_NOINLINE
+#else
+#define BOOST_COBALT_MSVC_NOINLINE
 #endif
 
 #if defined(BOOST_COBALT_USE_IO_CONTEXT)
 # include <boost/asio/io_context.hpp>
 #elif !defined(BOOST_COBALT_CUSTOM_EXECUTOR)
 # include <boost/asio/any_io_executor.hpp>
-#endif
-
-#if BOOST_VERSION < 108200
-#error "Boost.Async needs Boost v1.82 or later otherwise the Boost.ASIO is missing needed support"
 #endif
 
 #if defined(_MSC_VER)

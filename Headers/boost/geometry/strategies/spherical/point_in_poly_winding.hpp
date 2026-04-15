@@ -3,8 +3,8 @@
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2013-2017 Adam Wulkiewicz, Lodz, Poland.
 
-// This file was modified by Oracle on 2013-2023.
-// Modifications copyright (c) 2013-2023 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2013-2024.
+// Modifications copyright (c) 2013-2024 Oracle and/or its affiliates.
 // Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -122,7 +122,7 @@ class spherical_winding_base
     };
 
 public:
-    typedef typename SideStrategy::cs_tag cs_tag;
+    using cs_tag = typename SideStrategy::cs_tag;
 
     spherical_winding_base() = default;
 
@@ -395,8 +395,13 @@ protected:
         }
 
         calc_t const p = get<0>(point);
-        calc_t const s1 = get<0>(seg1);
-        calc_t const s2 = get<0>(seg2);
+        calc_t s1 = get<0>(seg1);
+        calc_t s2 = get<0>(seg2);
+
+        // In case of a segment that contains a pole endpoint we need an arbitrary but consistent
+        // longitude for that endpoint different than p's longitude
+        if (s1_is_pole) s1 = (p != 0) ? 0 : 1;
+        if (s2_is_pole) s2 = (p != 0) ? 0 : 1;
 
         calc_t const s1_p = math::longitude_distance_signed<units_t>(s1, p);
 
@@ -460,8 +465,8 @@ protected:
                           PointOfSegment const& se,
                           count_info const& ci) const
     {
-        typedef typename coordinate_type<PointOfSegment>::type scoord_t;
-        typedef typename geometry::detail::cs_angular_units<Point>::type units_t;
+        using scoord_t = coordinate_type_t<PointOfSegment>;
+        using units_t = typename geometry::detail::cs_angular_units<Point>::type;
 
         if (math::equals(get<1>(point), get<1>(se)))
         {

@@ -25,11 +25,13 @@ namespace string_token {
     This abstract interface provides a means
     for an algorithm to generically obtain a
     modifiable, contiguous character buffer
-    of prescribed size. As the author of an
-    algorithm simply declare an rvalue
-    reference as a parameter type.
+    of prescribed size.
 
-    <br>
+    A @ref StringToken should be derived
+    from this class. As the author of an
+    algorithm using a @ref StringToken,
+    simply declare an rvalue reference
+    as a parameter type.
 
     Instances of this type are intended only
     to be used once and then destroyed.
@@ -64,26 +66,34 @@ struct arg
         This function may only be called once.
         After invoking the function, the only
         valid operation is destruction.
+
+        @param n The number of characters needed
+        @return A pointer to the buffer
     */
     virtual char* prepare(std::size_t n) = 0;
 
-    // prevent misuse
+    /// Virtual destructor
     virtual ~arg() = default;
+
+    /// Default constructor
     arg() = default;
+
+    /// Default move constructor
     arg(arg&&) = default;
+
+    /// Deleted copy constructor
     arg(arg const&) = delete;
+
+    /// Deleted move assignment
     arg& operator=(arg&&) = delete;
+
+    /// Deleted copy assignment
     arg& operator=(arg const&) = delete;
 };
 
 //------------------------------------------------
 
-/** Metafunction returning true if T is a StringToken
-*/
-#ifdef BOOST_URL_DOCS
-template<class T>
-using is_token = __see_below__;
-#else
+namespace implementation_defined {
 template<class T, class = void>
 struct is_token : std::false_type {};
 
@@ -105,15 +115,133 @@ struct is_token<T, void_t<
     >
 {
 };
+} // implementation_defined
+
+/** Trait to determine if a type is a string token
+
+    This trait returns `true` if `T` is a valid
+    @ref StringToken type, and `false` otherwise.
+
+    @par Example
+    @code
+    static_assert( string_token::is_token<T>::value );
+    @endcode
+ */
+template<class T>
+using is_token = implementation_defined::is_token<T>;
+
+#ifdef BOOST_URL_HAS_CONCEPTS
+/** Concept for a string token
+
+    This concept is satisfied if `T` is a
+    valid string token type.
+
+    A string token is an rvalue passed to a function template
+    which customizes the return type of the function and also
+    controls how a modifiable character buffer is obtained and presented.
+
+    The string token's lifetime extends only for the duration of the
+    function call in which it appears as a parameter.
+
+    A string token cannot be copied, moved, or assigned, and must be
+    destroyed when the function returns or throws.
+
+    @par Semantics
+
+    `T::result_type` determines the return type of functions
+    that accept a string token.
+
+    The `prepare()` function overrides the virtual function
+    in the base class @ref arg. It must return a pointer to
+    a character buffer of at least size `n`, otherwise
+    throw an exception. This function is called only
+    once or not at all.
+
+    The `result()` function is invoked by the algorithm
+    to receive the result from the string token.
+    It is only invoked if `prepare()` returned
+    successfully and the string token was not destroyed.
+    It is only called after `prepare()` returns
+    successfully, and the string token is destroyed
+    when the algorithm completes or if an exception
+    is thrown.
+
+    String tokens cannot be reused.
+
+    @par Exemplars
+    String token prototype:
+
+    @code
+    struct StringToken : string_token::arg
+    {
+        using result_type = std::string;
+
+        char* prepare( std::size_t n ) override;
+
+        result_type result();
+    };
+    @endcode
+
+    Algorithm prototype:
+
+    @code
+    namespace detail {
+
+    // Algorithm implementation may be placed
+    // out of line, and written as an ordinary
+    // function (no template required).
+    void algorithm_impl( string_token::arg& token )
+    {
+        std::size_t n = 0;
+
+        // calculate space needed in n
+        // ...
+
+        // acquire a destination buffer
+        char* dest = token.prepare( n );
+
+        // write the characters to the buffer
+    }
+    } // detail
+
+    // public interface is a function template,
+    // defaulting to return std::string.
+    template< class StringToken = string_token::return_string >
+    auto
+    algorithm( StringToken&& token = {} ) ->
+        typename StringToken::result_type
+    {
+        // invoke the algorithm with the token
+        algorithm_impl( token );
+
+        // return the result from the token
+        return token.result();
+    }
+    @endcode
+
+    @par Models
+    The following classes and functions implement and
+    generate string tokens.
+
+    @li @ref return_string
+    @li @ref assign_to
+    @li @ref preserve_size
+
+ */
+template <class T>
+concept StringToken =
+    std::derived_from<T, string_token::arg> &&
+    requires (T t, std::size_t n)
+{
+    typename T::result_type;
+    { t.prepare(n) } -> std::same_as<char*>;
+    { t.result() } -> std::convertible_to<typename T::result_type>;
+};
 #endif
 
 //------------------------------------------------
 
-/** A token for returning a plain string
-*/
-#ifdef BOOST_URL_DOCS
-using return_string = __implementation_defined__;
-#else
+namespace implementation_defined {
 struct return_string
     : arg
 {
@@ -135,23 +263,22 @@ struct return_string
 private:
     result_type s_;
 };
-#endif
+} // implementation_defined
+
+/** A string token for returning a plain string
+
+    This @ref StringToken is used to customize
+    a function to return a plain string.
+
+    This is default token type used by
+    the methods of @ref url_view_base
+    that return decoded strings.
+ */
+using return_string = implementation_defined::return_string;
 
 //------------------------------------------------
 
-/** A token for appending to a plain string
-*/
-#ifdef BOOST_URL_DOCS
-template<
-    class Allocator =
-        std::allocator<char>>
-__implementation_defined__
-append_to(
-    std::basic_string<
-        char,
-        std::char_traits<char>,
-        Allocator>& s);
-#else
+namespace implementation_defined {
 template<class Alloc>
 struct append_to_t
     : arg
@@ -188,36 +315,36 @@ struct append_to_t
 private:
     string_type& s_;
 };
+} // implementation_defined
 
+/** Create a string token for appending to a plain string
+
+    This function creates a @ref StringToken
+    which appends to an existing plain string.
+
+    Functions using this token will append
+    the result to the existing string and
+    return a reference to it.
+
+    @param s The string to append
+    @return A string token
+ */
 template<
     class Alloc =
         std::allocator<char>>
-append_to_t<Alloc>
+implementation_defined::append_to_t<Alloc>
 append_to(
     std::basic_string<
         char,
         std::char_traits<char>,
         Alloc>& s)
 {
-    return append_to_t<Alloc>(s);
+    return implementation_defined::append_to_t<Alloc>(s);
 }
-#endif
 
 //------------------------------------------------
 
-/** A token for assigning to a plain string
-*/
-#ifdef BOOST_URL_DOCS
-template<
-    class Allocator =
-        std::allocator<char>>
-__implementation_defined__
-assign_to(
-    std::basic_string<
-        char,
-        std::char_traits<char>,
-        Allocator>& s);
-#else
+namespace implementation_defined {
 template<class Alloc>
 struct assign_to_t
     : arg
@@ -251,36 +378,36 @@ struct assign_to_t
 private:
     string_type& s_;
 };
+} // implementation_defined
 
+/** Create a string token for assigning to a plain string
+
+    This function creates a @ref StringToken
+    which assigns to an existing plain string.
+
+    Functions using this token will assign
+    the result to the existing string and
+    return a reference to it.
+
+    @param s The string to assign
+    @return A string token
+ */
 template<
     class Alloc =
         std::allocator<char>>
-assign_to_t<Alloc>
+implementation_defined::assign_to_t<Alloc>
 assign_to(
     std::basic_string<
         char,
         std::char_traits<char>,
         Alloc>& s)
 {
-    return assign_to_t<Alloc>(s);
+    return implementation_defined::assign_to_t<Alloc>(s);
 }
-#endif
 
 //------------------------------------------------
 
-/** A token for producing a durable core::string_view from a temporary string
-*/
-#ifdef BOOST_URL_DOCS
-template<
-    class Allocator =
-        std::allocator<char>>
-__implementation_defined__
-preserve_size(
-    std::basic_string<
-        char,
-        std::char_traits<char>,
-        Allocator>& s);
-#else
+namespace implementation_defined {
 template<class Alloc>
 struct preserve_size_t
     : arg
@@ -320,21 +447,32 @@ private:
     string_type& s_;
     std::size_t n_ = 0;
 };
+} // implementation_defined
 
+/** Create a string token for a durable core::string_view
+
+    This function creates a @ref StringToken
+    which assigns to an existing plain string.
+
+    Functions using this token will assign
+    the result to the existing string and
+    return a `core::string_view` to it.
+
+    @param s The string to preserve
+    @return A string token
+ */
 template<
     class Alloc =
         std::allocator<char>>
-preserve_size_t<Alloc>
+implementation_defined::preserve_size_t<Alloc>
 preserve_size(
     std::basic_string<
         char,
         std::char_traits<char>,
         Alloc>& s)
 {
-    return preserve_size_t<Alloc>(s);
+    return implementation_defined::preserve_size_t<Alloc>(s);
 }
-#endif
-
 } // string_token
 
 namespace grammar {

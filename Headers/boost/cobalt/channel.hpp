@@ -85,10 +85,20 @@ struct channel
       this->unlink();
     }
 
+    void interrupt_await()
+    {
+      if (!direct)
+      {
+        this->cancelled = true;
+        if (this->awaited_from)
+          this->awaited_from.release().resume();
+      }
+    }
+
     struct cancel_impl;
-    bool await_ready() { return !chn->buffer_.empty(); }
+    bool await_ready() { return !chn->buffer_.empty() || chn->is_closed_; }
     template<typename Promise>
-    BOOST_NOINLINE 
+    BOOST_COBALT_MSVC_NOINLINE
     std::coroutine_handle<void> await_suspend(std::coroutine_handle<Promise> h);
     T await_resume();
     std::tuple<system::error_code, T> await_resume(const struct as_tuple_tag & );
@@ -99,9 +109,13 @@ struct channel
   struct write_op : intrusive::list_base_hook<intrusive::link_mode<intrusive::auto_unlink> >
   {
     channel * chn;
-    variant2::variant<T*, const T*> ref;
+    using ref_t = std::conditional_t<
+        std::is_copy_constructible_v<T>,
+        variant2::variant<T*, const T*>,
+        T*>;
+    ref_t ref;
     boost::source_location loc;
-    bool cancelled = false, direct = false;
+    bool cancelled = false, direct = false, closed = !chn->is_open();
     asio::cancellation_slot cancel_slot{};
 
     unique_handle<void> awaited_from{nullptr};
@@ -114,11 +128,21 @@ struct channel
       this->unlink();
     }
 
+    void interrupt_await()
+    {
+      if (!direct)
+      {
+        this->cancelled = true;
+        if (this->awaited_from)
+          this->awaited_from.release().resume();
+      }
+    }
+
     struct cancel_impl;
 
-    bool await_ready() { return !chn->buffer_.full(); }
+    bool await_ready() { return !chn->buffer_.full() || chn->is_closed_; }
     template<typename Promise>
-    BOOST_NOINLINE 
+    BOOST_COBALT_MSVC_NOINLINE
     std::coroutine_handle<void> await_suspend(std::coroutine_handle<Promise> h);
     void await_resume();
     std::tuple<system::error_code> await_resume(const struct as_tuple_tag & );
@@ -130,18 +154,29 @@ struct channel
   boost::intrusive::list<write_op, intrusive::constant_time_size<false> > write_queue_;
  public:
   read_op   read(const boost::source_location & loc = BOOST_CURRENT_LOCATION)  {return  read_op{{}, this, loc}; }
+
+  BOOST_COBALT_MSVC_NOINLINE
   write_op write(const T  && value, const boost::source_location & loc = BOOST_CURRENT_LOCATION)
+    requires std::is_copy_constructible_v<T>
   {
     return write_op{{}, this, &value, loc};
   }
+
+  BOOST_COBALT_MSVC_NOINLINE
   write_op write(const T  &  value, const boost::source_location & loc = BOOST_CURRENT_LOCATION)
+    requires std::is_copy_constructible_v<T>
   {
     return write_op{{}, this, &value, loc};
   }
+
+
+  BOOST_COBALT_MSVC_NOINLINE
   write_op write(      T &&  value, const boost::source_location & loc = BOOST_CURRENT_LOCATION)
   {
     return write_op{{}, this, &value, loc};
   }
+
+  BOOST_COBALT_MSVC_NOINLINE
   write_op write(      T  &  value, const boost::source_location & loc = BOOST_CURRENT_LOCATION)
   {
     return write_op{{}, this, &value, loc};
@@ -211,10 +246,24 @@ struct channel<void>
       this->unlink();
     }
 
+    void interrupt_await()
+    {
+      if (!direct)
+      {
+        this->cancelled = true;
+        if (this->awaited_from)
+          this->awaited_from.release().resume();
+      }
+    }
+
     struct cancel_impl;
-    bool await_ready() { return (chn->n_ > 0); }
+    bool await_ready()
+    {
+      return (chn->n_ > 0) || chn->is_closed_;
+    }
+
     template<typename Promise>
-    BOOST_NOINLINE 
+    BOOST_COBALT_MSVC_NOINLINE
     std::coroutine_handle<void> await_suspend(std::coroutine_handle<Promise> h);
     BOOST_COBALT_DECL void await_resume();
     BOOST_COBALT_DECL std::tuple<system::error_code> await_resume(const struct as_tuple_tag & );
@@ -226,7 +275,7 @@ struct channel<void>
   {
     channel * chn;
     boost::source_location loc;
-    bool cancelled = false, direct = false;
+    bool cancelled = false, direct = false, closed = !chn->is_open();
     asio::cancellation_slot cancel_slot{};
     unique_handle<void> awaited_from{nullptr};
     void (*begin_transaction)(void*) = nullptr;
@@ -238,14 +287,24 @@ struct channel<void>
       this->unlink();
     }
 
+    void interrupt_await()
+    {
+      if (!direct)
+      {
+        cancelled = true;
+        if (this->awaited_from)
+          this->awaited_from.release().resume();
+      }
+    }
+
     struct cancel_impl;
     bool await_ready()
     {
-      return chn->n_ < chn->limit_;
+      return chn->n_ < chn->limit_ || chn->is_closed_;
     }
 
     template<typename Promise>
-    BOOST_NOINLINE 
+    BOOST_COBALT_MSVC_NOINLINE
     std::coroutine_handle<void> await_suspend(std::coroutine_handle<Promise> h);
 
     BOOST_COBALT_DECL void await_resume();

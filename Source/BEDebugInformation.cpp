@@ -2,7 +2,7 @@
  BEDebugInformation.cpp
  BaseElements Plug-In
 
- Copyright (c) 2019-2022 Goya. All rights reserved.
+ Copyright (c) 2019-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
 
  http://www.goya.com.au/baseelements/plugin
@@ -12,6 +12,7 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <Poco/JSON/Object.h>
 #pragma GCC diagnostic pop
 

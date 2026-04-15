@@ -1,0 +1,33 @@
+---
+function: BE_VersionAutoUpdate
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+vars:
+  version: |
+    BE_VersionAutoUpdate
+
+tests:
+
+  - name: Should be eight characters long
+    evaluate: | 
+      Length ( {{version}} )
+    output: 8
+
+  - name: Should only contain numerals
+    evaluate: | 
+      Filter ( {{version}} ; "0123456789" )
+    output: | 
+      {{version}}

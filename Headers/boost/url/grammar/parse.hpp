@@ -33,16 +33,13 @@ namespace grammar {
 
     @return The parsed value upon success,
     otherwise an error.
-
-    @see
-        @ref result.
 */
-template<class Rule>
-system::result<typename Rule::value_type>
+template<BOOST_URL_CONSTRAINT(Rule) R>
+system::result<typename R::value_type>
 parse(
     char const*& it,
     char const* end,
-    Rule const& r);       
+    R const& r);
 
 /** Parse a character buffer using a rule
 
@@ -57,21 +54,16 @@ parse(
 
     @return The parsed value upon success,
     otherwise an error.
-
-    @see
-        @ref result.
 */
-template<class Rule>
-system::result<typename Rule::value_type>
+template<BOOST_URL_CONSTRAINT(Rule) R>
+system::result<typename R::value_type>
 parse(
     core::string_view s,
-    Rule const& r);
+    R const& r);
 
 //------------------------------------------------
 
-#ifndef BOOST_URL_DOCS
-namespace detail {
-
+namespace implementation_defined {
 template<class Rule>
 struct rule_ref
 {
@@ -88,9 +80,7 @@ struct rule_ref
         return r_.parse(it, end);
     }
 };
-
-} // detail
-#endif
+} // implementation_defined
 
 /** Return a reference to a rule
 
@@ -108,31 +98,29 @@ struct rule_ref
     constants.
 
     @param r The rule to use
+    @return The rule as a reference type
 */
-template<class Rule>
+template<BOOST_URL_CONSTRAINT(Rule) R>
 constexpr
-#ifdef BOOST_URL_DOCS
-__implementation_defined__
-#else
 typename std::enable_if<
-    is_rule<Rule>::value &&
-    ! std::is_same<Rule,
-        detail::rule_ref<Rule> >::value,
-    detail::rule_ref<Rule> >::type
-#endif
-ref(Rule const& r) noexcept
+    is_rule<R>::value &&
+    ! std::is_same<R,
+        implementation_defined::rule_ref<R> >::value,
+    implementation_defined::rule_ref<R> >::type
+ref(R const& r) noexcept
 {
-    return detail::rule_ref<
-        Rule>{r};
+    return implementation_defined::rule_ref<R>{r};
 }
 
 #ifndef BOOST_URL_DOCS
+#ifndef BOOST_URL_MRDOCS
 // If you get a compile error here it
 // means you called ref with something
 // that is not a CharSet or Rule!
 constexpr
 void
 ref(...) = delete;
+#endif
 #endif
 
 } // grammar

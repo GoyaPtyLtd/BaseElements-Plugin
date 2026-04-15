@@ -1,4 +1,4 @@
-/* Copyright (c) 2018-2023 Marcelo Zimbres Silva (mzimbres@gmail.com)
+/* Copyright (c) 2018-2024 Marcelo Zimbres Silva (mzimbres@gmail.com)
  *
  * Distributed under the Boost Software License, Version 1.0. (See
  * accompanying file LICENSE.txt)
@@ -7,28 +7,17 @@
 #ifndef BOOST_REDIS_LOGGER_HPP
 #define BOOST_REDIS_LOGGER_HPP
 
-#include <boost/redis/response.hpp>
-#include <boost/asio/ip/tcp.hpp>
-#include <string>
-
-namespace boost::system {class error_code;}
+#include <functional>
+#include <string_view>
 
 namespace boost::redis {
 
-/** @brief Logger class
- *  @ingroup high-level-api
+/** @brief Defines logging configuration.
  *
- *  The class can be passed to the connection objects to log to `std::clog`
- *
- *  Notice that currently this class has no stable interface. Users
- *  that don't want any logging can disable it by contructing a logger
- *  with logger::level::emerg to the connection.
+ *  See the member descriptions for more info.
  */
-class logger {
-public:
-   /** @brief Syslog-like log levels
-    *  @ingroup high-level-api
-    */
+struct logger {
+   /// Syslog-like log levels.
    enum class level
    {
       /// Disabled
@@ -56,116 +45,53 @@ public:
       info,
 
       /// Debug
-      debug
+      debug,
    };
 
-   /** @brief Constructor
-    *  @ingroup high-level-api
+   /** @brief Constructor from a level.
     *
-    *  @param l Log level.
-    */
-   logger(level l = level::disabled)
-   : level_{l}
-   {}
-
-   /** @brief Called when the resolve operation completes.
-    *  @ingroup high-level-api
+    * Constructs a logger with the specified level
+    * and a logging function that prints messages to `stderr`.
     *
-    *  @param ec Error returned by the resolve operation.
-    *  @param res Resolve results.
-    */
-   void on_resolve(system::error_code const& ec, asio::ip::tcp::resolver::results_type const& res);
-
-   /** @brief Called when the connect operation completes.
-    *  @ingroup high-level-api
+    * @param l The value to set @ref lvl to.
     *
-    *  @param ec Error returned by the connect operation.
-    *  @param ep Endpoint to which the connection connected.
+    * @par Exceptions
+    * No-throw guarantee.
     */
-   void on_connect(system::error_code const& ec, asio::ip::tcp::endpoint const& ep);
+   logger(level l = level::info);
 
-   /** @brief Called when the ssl handshake operation completes.
-    *  @ingroup high-level-api
+   /** @brief Constructor from a level and a function.
     *
-    *  @param ec Error returned by the handshake operation.
-    */
-   void on_ssl_handshake(system::error_code const& ec);
-
-   /** @brief Called when the connection is lost.
-    *  @ingroup high-level-api
+    * Constructs a logger by setting its members to the specified values.
     *
-    *  @param ec Error returned when the connection is lost.
-    */
-   void on_connection_lost(system::error_code const& ec);
-
-   /** @brief Called when the write operation completes.
-    *  @ingroup high-level-api
+    * @param l The value to set @ref lvl to.
+    * @param fn The value to set @ref fn to.
     *
-    *  @param ec Error code returned by the write operation.
-    *  @param payload The payload written to the socket.
+    * @par Exceptions
+    * No-throw guarantee.
     */
-   void on_write(system::error_code const& ec, std::string const& payload);
+   logger(level l, std::function<void(level, std::string_view)> fn)
+   : lvl{l}
+   , fn{std::move(fn)}
+   { }
 
-   /** @brief Called when the read operation completes.
-    *  @ingroup high-level-api
+   /**
+    * @brief Defines a severity filter for messages.
     *
-    *  @param ec Error code returned by the read operation.
-    *  @param n Number of bytes read.
+    * Only messages with a level >= to the one specified by the logger
+    * will be logged.
     */
-   void on_read(system::error_code const& ec, std::size_t n);
+   level lvl;
 
-   /** @brief Called when the run operation completes.
-    *  @ingroup high-level-api
+   /**
+    * @brief Defines a severity filter for messages.
     *
-    *  @param reader_ec Error code returned by the read operation.
-    *  @param writer_ec Error code returned by the write operation.
+    * Only messages with a level >= to the one specified by the logger
+    * will be logged.
     */
-   void on_run(system::error_code const& reader_ec, system::error_code const& writer_ec);
-
-   /** @brief Called when the `HELLO` request completes.
-    *  @ingroup high-level-api
-    *
-    *  @param ec Error code returned by the async_exec operation.
-    *  @param resp Response sent by the Redis server.
-    */
-   void on_hello(system::error_code const& ec, generic_response const& resp);
-
-   /** @brief Sets a prefix to every log message
-    *  @ingroup high-level-api
-    *
-    *  @param prefix The prefix.
-    */
-   void set_prefix(std::string_view prefix)
-   {
-      prefix_ = prefix;
-   }
-
-   /** @brief Called when the runner operation completes.
-    *  @ingroup high-level-api
-    *
-    *  @param run_all_ec Error code returned by the run_all operation.
-    *  @param health_check_ec Error code returned by the health checker operation.
-    *  @param hello_ec Error code returned by the health checker operation.
-    */
-   void
-      on_runner(
-         system::error_code const& run_all_ec,
-         system::error_code const& health_check_ec,
-         system::error_code const& hello_ec);
-
-   void
-      on_check_health(
-         system::error_code const& ping_ec,
-         system::error_code const& check_timeout_ec);
-
-   void trace(std::string_view reason);
-
-private:
-   void write_prefix();
-   level level_;
-   std::string_view prefix_;
+   std::function<void(level, std::string_view)> fn;
 };
 
-} // boost::redis
+}  // namespace boost::redis
 
-#endif // BOOST_REDIS_LOGGER_HPP
+#endif  // BOOST_REDIS_LOGGER_HPP

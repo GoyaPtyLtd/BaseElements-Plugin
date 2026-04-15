@@ -1,5 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
+// Copyright (c) 2023-2024 Adam Wulkiewicz, Lodz, Poland.
+
 // Copyright (c) 2014-2023 Oracle and/or its affiliates.
 
 // Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
@@ -18,7 +20,6 @@
 #include <vector>
 
 #include <boost/core/ignore_unused.hpp>
-#include <boost/numeric/conversion/cast.hpp>
 
 #include <boost/geometry/algorithms/detail/assign_box_corners.hpp>
 #include <boost/geometry/algorithms/detail/assign_indexed_point.hpp>
@@ -41,9 +42,10 @@
 #include <boost/geometry/policies/compare.hpp>
 
 #include <boost/geometry/util/calculation_type.hpp>
-#include <boost/geometry/util/condition.hpp>
+#include <boost/geometry/util/constexpr.hpp>
 #include <boost/geometry/util/has_nan_coordinate.hpp>
 #include <boost/geometry/util/math.hpp>
+#include <boost/geometry/util/numeric_cast.hpp>
 
 #include <boost/geometry/strategies/disjoint.hpp>
 #include <boost/geometry/strategies/distance.hpp>
@@ -80,17 +82,16 @@ template
 class segment_to_box_2D_generic
 {
 private:
-    typedef typename point_type<Segment>::type segment_point;
-    typedef typename point_type<Box>::type box_point;
+    using segment_point = point_type_t<Segment>;
+    using box_point = point_type_t<Box>;
+    using ps_strategy_type = distance::strategy_t<box_point, Segment, Strategies>;
 
-    typedef distance::strategy_t<box_point, Segment, Strategies> ps_strategy_type;
-
-    typedef detail::closest_feature::point_to_point_range
+    using point_to_point_range = detail::closest_feature::point_to_point_range
         <
             segment_point,
             std::vector<box_point>,
             open
-        > point_to_point_range;
+        >;
 
 public:
     // TODO: Or should the return type be defined by sb_strategy_type?
@@ -154,21 +155,23 @@ public:
             }
         }
 
-        if (BOOST_GEOMETRY_CONDITION(is_comparable<ps_strategy_type>::value))
+        if BOOST_GEOMETRY_CONSTEXPR (is_comparable<ps_strategy_type>::value)
         {
             return cd[imin];
         }
-
-        if (imin < 4)
+        else // else prevents unreachable code warning
         {
-            return strategy.apply(box_points[imin], p[0], p[1]);
-        }
-        else
-        {
-            unsigned int bimin = imin - 4;
-            return strategy.apply(p[bimin],
-                                  *bit_min[bimin].first,
-                                  *bit_min[bimin].second);
+            if (imin < 4)
+            {
+                return strategy.apply(box_points[imin], p[0], p[1]);
+            }
+            else
+            {
+                unsigned int bimin = imin - 4;
+                return strategy.apply(p[bimin],
+                                      *bit_min[bimin].first,
+                                      *bit_min[bimin].second);
+            }
         }
     }
 };
@@ -183,15 +186,15 @@ template
 class segment_to_box_2D_generic<Segment, Box, Strategies, true> // Use both PointSegment and PointBox strategies
 {
 private:
-    typedef typename point_type<Segment>::type segment_point;
-    typedef typename point_type<Box>::type box_point;
+    using segment_point = point_type_t<Segment>;
+    using box_point = point_type_t<Box>;
 
-    typedef distance::strategy_t<box_point, Segment, Strategies> ps_strategy_type;
-    typedef distance::strategy_t<segment_point, Box, Strategies> pb_strategy_type;
+    using ps_strategy_type = distance::strategy_t<box_point, Segment, Strategies>;
+    using pb_strategy_type = distance::strategy_t<segment_point, Box, Strategies>;
 
 public:
     // TODO: Or should the return type be defined by sb_strategy_type?
-    typedef distance::return_t<box_point, Segment, Strategies> return_type;
+    using return_type = distance::return_t<box_point, Segment, Strategies>;
 
     static inline return_type apply(Segment const& segment,
                                     Box const& box,
@@ -285,7 +288,7 @@ private:
         template <typename T>
         static inline Result apply(T const& t)
         {
-            return boost::numeric_cast<Result>(t);
+            return util::numeric_cast<Result>(t);
         }
     };
 
@@ -728,8 +731,8 @@ public:
                                     Box const& box,
                                     Strategies const& strategies)
     {
-        typedef typename point_type<Segment>::type segment_point;
-        typedef typename point_type<Box>::type box_point;
+        using segment_point = point_type_t<Segment>;
+        using box_point = point_type_t<Box>;
 
         segment_point p[2];
         detail::assign_point_from_index<0>(segment, p[0]);

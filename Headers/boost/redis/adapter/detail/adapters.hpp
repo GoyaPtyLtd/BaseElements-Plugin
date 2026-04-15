@@ -1,4 +1,4 @@
-/* Copyright (c) 2018-2023 Marcelo Zimbres Silva (mzimbres@gmail.com)
+/* Copyright (c) 2018-2024 Marcelo Zimbres Silva (mzimbres@gmail.com)
  *
  * Distributed under the Boost Software License, Version 1.0. (See
  * accompanying file LICENSE.txt)
@@ -7,80 +7,133 @@
 #ifndef BOOST_REDIS_ADAPTER_ADAPTERS_HPP
 #define BOOST_REDIS_ADAPTER_ADAPTERS_HPP
 
-#include <boost/redis/error.hpp>
-#include <boost/redis/resp3/type.hpp>
-#include <boost/redis/resp3/serialization.hpp>
-#include <boost/redis/resp3/node.hpp>
 #include <boost/redis/adapter/result.hpp>
+#include <boost/redis/error.hpp>
+#include <boost/redis/resp3/node.hpp>
+#include <boost/redis/resp3/serialization.hpp>
+#include <boost/redis/resp3/type.hpp>
+
 #include <boost/assert.hpp>
 
-#include <set>
-#include <optional>
-#include <unordered_set>
-#include <forward_list>
-#include <system_error>
-#include <map>
-#include <unordered_map>
-#include <list>
-#include <deque>
-#include <vector>
 #include <array>
-#include <string_view>
 #include <charconv>
+#include <deque>
+#include <forward_list>
+#include <list>
+#include <map>
+#include <optional>
+#include <set>
+#include <string_view>
+#include <system_error>
+#include <type_traits>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 // See https://stackoverflow.com/a/31658120/1077832
-#include<ciso646>
 #ifdef _LIBCPP_VERSION
 #else
 #include <cstdlib>
 #endif
 
-namespace boost::redis::adapter::detail
-{
+namespace boost::redis::adapter::detail {
 
-// Serialization.
+// Exclude bools, char and charXY_t types
+template <class T> struct is_integral_number : std::is_integral<T> { };
+template <> struct is_integral_number<bool> : std::false_type { };
+template <> struct is_integral_number<char> : std::false_type { };
+template <> struct is_integral_number<char16_t> : std::false_type { };
+template <> struct is_integral_number<char32_t> : std::false_type { };
+template <> struct is_integral_number<wchar_t> : std::false_type { };
+#ifdef __cpp_char8_t
+template <> struct is_integral_number<char8_t> : std::false_type { };
+#endif
+
+template <class T, bool = is_integral_number<T>::value>
+struct converter;
 
 template <class T>
-auto boost_redis_from_bulk(T& i, std::string_view sv, system::error_code& ec) -> typename std::enable_if<std::is_integral<T>::value, void>::type
-{
-   auto const res = std::from_chars(sv.data(), sv.data() + std::size(sv), i);
-   if (res.ec != std::errc())
-      ec = redis::error::not_a_number;
-}
+struct converter<T, true> {
+   template <class String>
+   static void apply(T& i, resp3::basic_node<String> const& node, system::error_code& ec)
+   {
+      auto const res = std::from_chars(node.value.data(), node.value.data() + node.value.size(), i);
+      if (res.ec != std::errc())
+         ec = redis::error::not_a_number;
+   }
+};
 
-inline
-void boost_redis_from_bulk(bool& t, std::string_view sv, system::error_code&)
-{
-   t = *sv.data() == 't';
-}
+template <>
+struct converter<bool, false> {
+   template <class String>
+   static void apply(bool& t, resp3::basic_node<String> const& node, system::error_code&)
+   {
+      t = *node.value.data() == 't';
+   }
+};
 
-inline
-void boost_redis_from_bulk(double& d, std::string_view sv, system::error_code& ec)
-{
+template <>
+struct converter<double, false> {
+   template <class String>
+   static void apply(double& d, resp3::basic_node<String> const& node, system::error_code& ec)
+   {
 #ifdef _LIBCPP_VERSION
-   // The string in sv is not null terminated and we also don't know
-   // if there is enough space at the end for a null char. The easiest
-   // thing to do is to create a temporary.
-   std::string const tmp{sv.data(), sv.data() + std::size(sv)};
-   char* end{};
-   d = std::strtod(tmp.data(), &end);
-   if (d == HUGE_VAL || d == 0)
-      ec = redis::error::not_a_double;
+      // The string in node.value is not null terminated and we also
+      // don't know if there is enough space at the end for a null
+      // char. The easiest thing to do is to create a temporary.
+      std::string const tmp{node.value.data(), node.value.data() + node.value.size()};
+      char* end{};
+      d = std::strtod(tmp.data(), &end);
+      if (d == HUGE_VAL || d == 0)
+         ec = redis::error::not_a_double;
 #else
-   auto const res = std::from_chars(sv.data(), sv.data() + std::size(sv), d);
-   if (res.ec != std::errc())
-      ec = redis::error::not_a_double;
-#endif // _LIBCPP_VERSION
-}
+      auto const res = std::from_chars(node.value.data(), node.value.data() + node.value.size(), d);
+      if (res.ec != std::errc())
+         ec = redis::error::not_a_double;
+#endif  // _LIBCPP_VERSION
+   }
+};
 
 template <class CharT, class Traits, class Allocator>
-void
-boost_redis_from_bulk(
-   std::basic_string<CharT, Traits, Allocator>& s,
-   std::string_view sv,
-   system::error_code&)
+struct converter<std::basic_string<CharT, Traits, Allocator>, false> {
+   template <class String>
+   static void apply(
+      std::basic_string<CharT, Traits, Allocator>& s,
+      resp3::basic_node<String> const& node,
+      system::error_code&)
+   {
+      s.append(node.value.data(), node.value.size());
+   }
+};
+
+template <class T>
+struct from_bulk_impl {
+   template <class String>
+   static void apply(T& t, resp3::basic_node<String> const& node, system::error_code& ec)
+   {
+      converter<T>::apply(t, node, ec);
+   }
+};
+
+template <class T>
+struct from_bulk_impl<std::optional<T>> {
+   template <class String>
+   static void apply(
+      std::optional<T>& op,
+      resp3::basic_node<String> const& node,
+      system::error_code& ec)
+   {
+      if (node.data_type != resp3::type::null) {
+         op.emplace(T{});
+         converter<T>::apply(op.value(), node, ec);
+      }
+   }
+};
+
+template <class T, class String>
+void boost_redis_from_bulk(T& t, resp3::basic_node<String> const& node, system::error_code& ec)
 {
-  s.append(sv.data(), sv.size());
+   from_bulk_impl<T>::apply(t, node, ec);
 }
 
 //================================================
@@ -91,7 +144,9 @@ private:
    Result* result_;
 
 public:
-   explicit general_aggregate(Result* c = nullptr): result_(c) {}
+   explicit general_aggregate(Result* c = nullptr)
+   : result_(c)
+   { }
    template <class String>
    void operator()(resp3::basic_node<String> const& nd, system::error_code&)
    {
@@ -99,10 +154,18 @@ public:
       switch (nd.data_type) {
          case resp3::type::blob_error:
          case resp3::type::simple_error:
-            *result_ = error{nd.data_type, std::string{std::cbegin(nd.value), std::cend(nd.value)}};
+            *result_ = error{
+               nd.data_type,
+               std::string{std::cbegin(nd.value), std::cend(nd.value)}
+            };
             break;
          default:
-            result_->value().push_back({nd.data_type, nd.aggregate_size, nd.depth, std::string{std::cbegin(nd.value), std::cend(nd.value)}});
+            result_->value().push_back({
+               nd.data_type,
+               nd.aggregate_size,
+               nd.depth,
+               std::string{std::cbegin(nd.value), std::cend(nd.value)}
+            });
       }
    }
 };
@@ -113,7 +176,9 @@ private:
    Node* result_;
 
 public:
-   explicit general_simple(Node* t = nullptr) : result_(t) {}
+   explicit general_simple(Node* t = nullptr)
+   : result_(t)
+   { }
 
    template <class String>
    void operator()(resp3::basic_node<String> const& nd, system::error_code&)
@@ -122,7 +187,10 @@ public:
       switch (nd.data_type) {
          case resp3::type::blob_error:
          case resp3::type::simple_error:
-            *result_ = error{nd.data_type, std::string{std::cbegin(nd.value), std::cend(nd.value)}};
+            *result_ = error{
+               nd.data_type,
+               std::string{std::cbegin(nd.value), std::cend(nd.value)}
+            };
             break;
          default:
             result_->value().data_type = nd.data_type;
@@ -136,17 +204,17 @@ public:
 template <class Result>
 class simple_impl {
 public:
-   void on_value_available(Result&) {}
+   void on_value_available(Result&) { }
 
    template <class String>
-   void operator()(Result& result, resp3::basic_node<String> const& n, system::error_code& ec)
+   void operator()(Result& result, resp3::basic_node<String> const& node, system::error_code& ec)
    {
-      if (is_aggregate(n.data_type)) {
+      if (is_aggregate(node.data_type)) {
          ec = redis::error::expects_resp3_simple_type;
          return;
       }
 
-      boost_redis_from_bulk(result, n.value, ec);
+      boost_redis_from_bulk(result, node, ec);
    }
 };
 
@@ -156,8 +224,7 @@ private:
    typename Result::iterator hint_;
 
 public:
-   void on_value_available(Result& result)
-      { hint_ = std::end(result); }
+   void on_value_available(Result& result) { hint_ = std::end(result); }
 
    template <class String>
    void operator()(Result& result, resp3::basic_node<String> const& nd, system::error_code& ec)
@@ -171,12 +238,12 @@ public:
       BOOST_ASSERT(nd.aggregate_size == 1);
 
       if (nd.depth < 1) {
-	 ec = redis::error::expects_resp3_set;
-	 return;
+         ec = redis::error::expects_resp3_set;
+         return;
       }
 
       typename Result::key_type obj;
-      boost_redis_from_bulk(obj, nd.value, ec);
+      boost_redis_from_bulk(obj, nd, ec);
       hint_ = result.insert(hint_, std::move(obj));
    }
 };
@@ -188,32 +255,31 @@ private:
    bool on_key_ = true;
 
 public:
-   void on_value_available(Result& result)
-      { current_ = std::end(result); }
+   void on_value_available(Result& result) { current_ = std::end(result); }
 
    template <class String>
    void operator()(Result& result, resp3::basic_node<String> const& nd, system::error_code& ec)
    {
       if (is_aggregate(nd.data_type)) {
          if (element_multiplicity(nd.data_type) != 2)
-           ec = redis::error::expects_resp3_map;
+            ec = redis::error::expects_resp3_map;
          return;
       }
 
       BOOST_ASSERT(nd.aggregate_size == 1);
 
       if (nd.depth < 1) {
-	 ec = redis::error::expects_resp3_map;
-	 return;
+         ec = redis::error::expects_resp3_map;
+         return;
       }
 
       if (on_key_) {
          typename Result::key_type obj;
-         boost_redis_from_bulk(obj, nd.value, ec);
+         boost_redis_from_bulk(obj, nd, ec);
          current_ = result.insert(current_, {std::move(obj), {}});
       } else {
          typename Result::mapped_type obj;
-         boost_redis_from_bulk(obj, nd.value, ec);
+         boost_redis_from_bulk(obj, nd, ec);
          current_->second = std::move(obj);
       }
 
@@ -224,7 +290,7 @@ public:
 template <class Result>
 class vector_impl {
 public:
-   void on_value_available(Result& ) { }
+   void on_value_available(Result&) { }
 
    template <class String>
    void operator()(Result& result, resp3::basic_node<String> const& nd, system::error_code& ec)
@@ -234,7 +300,7 @@ public:
          result.reserve(result.size() + m * nd.aggregate_size);
       } else {
          result.push_back({});
-         boost_redis_from_bulk(result.back(), nd.value, ec);
+         boost_redis_from_bulk(result.back(), nd, ec);
       }
    }
 };
@@ -245,13 +311,13 @@ private:
    int i_ = -1;
 
 public:
-   void on_value_available(Result& ) { }
+   void on_value_available(Result&) { }
 
    template <class String>
    void operator()(Result& result, resp3::basic_node<String> const& nd, system::error_code& ec)
    {
       if (is_aggregate(nd.data_type)) {
-	 if (i_ != -1) {
+         if (i_ != -1) {
             ec = redis::error::nested_aggregate_not_supported;
             return;
          }
@@ -267,7 +333,7 @@ public:
          }
 
          BOOST_ASSERT(nd.aggregate_size == 1);
-         boost_redis_from_bulk(result.at(i_), nd.value, ec);
+         boost_redis_from_bulk(result.at(i_), nd, ec);
       }
 
       ++i_;
@@ -276,21 +342,20 @@ public:
 
 template <class Result>
 struct list_impl {
-
-   void on_value_available(Result& ) { }
+   void on_value_available(Result&) { }
 
    template <class String>
    void operator()(Result& result, resp3::basic_node<String> const& nd, system::error_code& ec)
    {
       if (!is_aggregate(nd.data_type)) {
-        BOOST_ASSERT(nd.aggregate_size == 1);
-        if (nd.depth < 1) {
-           ec = redis::error::expects_resp3_aggregate;
-           return;
-        }
+         BOOST_ASSERT(nd.aggregate_size == 1);
+         if (nd.depth < 1) {
+            ec = redis::error::expects_resp3_aggregate;
+            return;
+         }
 
-        result.push_back({});
-        boost_redis_from_bulk(result.back(), nd.value, ec);
+         result.push_back({});
+         boost_redis_from_bulk(result.back(), nd, ec);
       }
    }
 };
@@ -298,56 +363,84 @@ struct list_impl {
 //---------------------------------------------------
 
 template <class T>
-struct impl_map { using type = simple_impl<T>; };
+struct impl_map {
+   using type = simple_impl<T>;
+};
 
 template <class Key, class Compare, class Allocator>
-struct impl_map<std::set<Key, Compare, Allocator>> { using type = set_impl<std::set<Key, Compare, Allocator>>; };
+struct impl_map<std::set<Key, Compare, Allocator>> {
+   using type = set_impl<std::set<Key, Compare, Allocator>>;
+};
 
 template <class Key, class Compare, class Allocator>
-struct impl_map<std::multiset<Key, Compare, Allocator>> { using type = set_impl<std::multiset<Key, Compare, Allocator>>; };
+struct impl_map<std::multiset<Key, Compare, Allocator>> {
+   using type = set_impl<std::multiset<Key, Compare, Allocator>>;
+};
 
 template <class Key, class Hash, class KeyEqual, class Allocator>
-struct impl_map<std::unordered_set<Key, Hash, KeyEqual, Allocator>> { using type = set_impl<std::unordered_set<Key, Hash, KeyEqual, Allocator>>; };
+struct impl_map<std::unordered_set<Key, Hash, KeyEqual, Allocator>> {
+   using type = set_impl<std::unordered_set<Key, Hash, KeyEqual, Allocator>>;
+};
 
 template <class Key, class Hash, class KeyEqual, class Allocator>
-struct impl_map<std::unordered_multiset<Key, Hash, KeyEqual, Allocator>> { using type = set_impl<std::unordered_multiset<Key, Hash, KeyEqual, Allocator>>; };
+struct impl_map<std::unordered_multiset<Key, Hash, KeyEqual, Allocator>> {
+   using type = set_impl<std::unordered_multiset<Key, Hash, KeyEqual, Allocator>>;
+};
 
 template <class Key, class T, class Compare, class Allocator>
-struct impl_map<std::map<Key, T, Compare, Allocator>> { using type = map_impl<std::map<Key, T, Compare, Allocator>>; };
+struct impl_map<std::map<Key, T, Compare, Allocator>> {
+   using type = map_impl<std::map<Key, T, Compare, Allocator>>;
+};
 
 template <class Key, class T, class Compare, class Allocator>
-struct impl_map<std::multimap<Key, T, Compare, Allocator>> { using type = map_impl<std::multimap<Key, T, Compare, Allocator>>; };
+struct impl_map<std::multimap<Key, T, Compare, Allocator>> {
+   using type = map_impl<std::multimap<Key, T, Compare, Allocator>>;
+};
 
 template <class Key, class Hash, class KeyEqual, class Allocator>
-struct impl_map<std::unordered_map<Key, Hash, KeyEqual, Allocator>> { using type = map_impl<std::unordered_map<Key, Hash, KeyEqual, Allocator>>; };
+struct impl_map<std::unordered_map<Key, Hash, KeyEqual, Allocator>> {
+   using type = map_impl<std::unordered_map<Key, Hash, KeyEqual, Allocator>>;
+};
 
 template <class Key, class Hash, class KeyEqual, class Allocator>
-struct impl_map<std::unordered_multimap<Key, Hash, KeyEqual, Allocator>> { using type = map_impl<std::unordered_multimap<Key, Hash, KeyEqual, Allocator>>; };
+struct impl_map<std::unordered_multimap<Key, Hash, KeyEqual, Allocator>> {
+   using type = map_impl<std::unordered_multimap<Key, Hash, KeyEqual, Allocator>>;
+};
 
 template <class T, class Allocator>
-struct impl_map<std::vector<T, Allocator>> { using type = vector_impl<std::vector<T, Allocator>>; };
+struct impl_map<std::vector<T, Allocator>> {
+   using type = vector_impl<std::vector<T, Allocator>>;
+};
 
 template <class T, std::size_t N>
-struct impl_map<std::array<T, N>> { using type = array_impl<std::array<T, N>>; };
+struct impl_map<std::array<T, N>> {
+   using type = array_impl<std::array<T, N>>;
+};
 
 template <class T, class Allocator>
-struct impl_map<std::list<T, Allocator>> { using type = list_impl<std::list<T, Allocator>>; };
+struct impl_map<std::list<T, Allocator>> {
+   using type = list_impl<std::list<T, Allocator>>;
+};
 
 template <class T, class Allocator>
-struct impl_map<std::deque<T, Allocator>> { using type = list_impl<std::deque<T, Allocator>>; };
+struct impl_map<std::deque<T, Allocator>> {
+   using type = list_impl<std::deque<T, Allocator>>;
+};
 
 //---------------------------------------------------
 
 template <class>
 class wrapper;
 
-template <class Result>
-class wrapper<result<Result>> {
+template <class T>
+class wrapper<result<T>> {
 public:
-   using response_type = result<Result>;
+   using response_type = result<T>;
+
 private:
    response_type* result_;
-   typename impl_map<Result>::type impl_;
+   typename impl_map<T>::type impl_;
+   bool called_once_ = false;
 
    template <class String>
    bool set_if_resp3_error(resp3::basic_node<String> const& nd) noexcept
@@ -356,18 +449,21 @@ private:
          case resp3::type::null:
          case resp3::type::simple_error:
          case resp3::type::blob_error:
-            *result_ = error{nd.data_type, {std::cbegin(nd.value), std::cend(nd.value)}};
+            *result_ = error{
+               nd.data_type,
+               {std::cbegin(nd.value), std::cend(nd.value)}
+            };
             return true;
-         default:
-            return false;
+         default: return false;
       }
    }
 
 public:
-   explicit wrapper(response_type* t = nullptr) : result_(t)
+   explicit wrapper(response_type* t = nullptr)
+   : result_(t)
    {
       if (result_) {
-         result_->value() = Result{};
+         result_->value() = T{};
          impl_.on_value_available(result_->value());
       }
    }
@@ -380,7 +476,7 @@ public:
       if (result_->has_error())
          return;
 
-      if (set_if_resp3_error(nd))
+      if (!std::exchange(called_once_, true) && set_if_resp3_error(nd))
          return;
 
       BOOST_ASSERT(result_);
@@ -396,6 +492,7 @@ public:
 private:
    response_type* result_;
    typename impl_map<T>::type impl_{};
+   bool called_once_ = false;
 
    template <class String>
    bool set_if_resp3_error(resp3::basic_node<String> const& nd) noexcept
@@ -403,21 +500,22 @@ private:
       switch (nd.data_type) {
          case resp3::type::blob_error:
          case resp3::type::simple_error:
-            *result_ = error{nd.data_type, {std::cbegin(nd.value), std::cend(nd.value)}};
+            *result_ = error{
+               nd.data_type,
+               {std::cbegin(nd.value), std::cend(nd.value)}
+            };
             return true;
-         default:
-            return false;
+         default: return false;
       }
    }
 
 public:
-   explicit wrapper(response_type* o = nullptr) : result_(o) {}
+   explicit wrapper(response_type* o = nullptr)
+   : result_(o)
+   { }
 
    template <class String>
-   void
-   operator()(
-      resp3::basic_node<String> const& nd,
-      system::error_code& ec)
+   void operator()(resp3::basic_node<String> const& nd, system::error_code& ec)
    {
       BOOST_ASSERT_MSG(!!result_, "Unexpected null pointer");
 
@@ -427,18 +525,18 @@ public:
       if (set_if_resp3_error(nd))
          return;
 
-      if (nd.data_type == resp3::type::null)
+      if (!std::exchange(called_once_, true) && nd.data_type == resp3::type::null)
          return;
 
       if (!result_->value().has_value()) {
-        result_->value() = T{};
-        impl_.on_value_available(result_->value().value());
+         result_->value() = T{};
+         impl_.on_value_available(result_->value().value());
       }
 
       impl_(result_->value().value(), nd, ec);
    }
 };
 
-} // boost::redis::adapter::detail
+}  // namespace boost::redis::adapter::detail
 
-#endif // BOOST_REDIS_ADAPTER_ADAPTERS_HPP
+#endif  // BOOST_REDIS_ADAPTER_ADAPTERS_HPP

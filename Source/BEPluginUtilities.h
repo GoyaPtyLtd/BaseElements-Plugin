@@ -2,7 +2,7 @@
  BEPluginUtilities.h
  BaseElements Plug-In
 	
- Copyright 2010-2024 Goya. All rights reserved.
+ Copyright 2010-2025 Goya. All rights reserved.
  For conditions of distribution and use please see the copyright notice in BEPlugin.cpp
  
  http://www.goya.com.au/baseelements/plugin
@@ -23,8 +23,11 @@
 #include <vector>
 #include <stdint.h>
 
+
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wpedantic"
+#pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+#pragma GCC diagnostic ignored "-Wcomma"
 #include <podofo/podofo.h>
 #pragma GCC diagnostic pop
 
@@ -61,6 +64,7 @@ void SetResult ( const std::string& filename, const std::vector<char>& data, con
 void SetResult ( const std::string& filename, BEImage& image, fmx::Data& results );
 void SetResult ( const std::string& filename, const std::vector<char>& data, fmx::Data& results );
 void SetResult ( const std::string& filename, const std::vector<unsigned char>& data, fmx::Data& results );
+void SetResult ( const std::string& filename, PoDoFo::PdfMemDocument& pdf, fmx::Data& results );
 
 void SetResult ( const BEValueList<std::string>& value_list, fmx::Data& results );
 
@@ -91,6 +95,7 @@ const bool StreamIsCompressed ( const fmx::BinaryData& data );
 
 const std::vector<char> ReadFileAsBinary ( const std::filesystem::path path );
 std::string ReadFileAsUTF8 ( const std::filesystem::path path );
+std::filesystem::path TemporaryFilePath ( const std::string& filename_template = "beplugin-XXXXXX" );
 
 std::vector<char> ConvertTextEncoding ( char * in, const size_t length, const std::string& to, const std::string& from = g_text_encoding );
 std::string ConvertTextEncoding ( std::string& in, const std::string& to, const std::string& from = g_text_encoding );

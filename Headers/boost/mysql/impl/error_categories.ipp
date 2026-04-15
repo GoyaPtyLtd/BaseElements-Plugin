@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2023 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -22,8 +22,7 @@ namespace boost {
 namespace mysql {
 namespace detail {
 
-BOOST_MYSQL_STATIC_OR_INLINE
-const char* error_to_string(client_errc error) noexcept
+inline const char* error_to_string(client_errc error)
 {
     switch (error)
     {
@@ -42,28 +41,75 @@ const char* error_to_string(client_errc error) noexcept
     case client_errc::wrong_num_params:
         return "The number of parameters passed to the prepared statement does not match the "
                "number of actual parameters";
-    case boost::mysql::client_errc::server_doesnt_support_ssl:
+    case client_errc::server_doesnt_support_ssl:
         return "The connection is configured to require SSL, but the server doesn't allow SSL connections. "
                "Configure SSL on your server or change your connection to not require SSL";
-    case boost::mysql::client_errc::metadata_check_failed:
+    case client_errc::metadata_check_failed:
         return "The static interface detected a type mismatch between your declared row type and what the "
                "server returned. Verify your type definitions.";
-    case boost::mysql::client_errc::num_resultsets_mismatch:
+    case client_errc::num_resultsets_mismatch:
         return "The static interface detected a mismatch between the number of resultsets passed as template "
                "arguments to static_results<T1, T2...>/static_execution_state<T1, T2...> and the number of "
                "results returned by server";
-    case boost::mysql::client_errc::static_row_parsing_error:
+    case client_errc::static_row_parsing_error:
         return "The static interface encountered an error when parsing a field into a C++ data structure.";
-    case boost::mysql::client_errc::row_type_mismatch:
+    case client_errc::row_type_mismatch:
         return "The StaticRow type passed to read_some_rows does not correspond to the resultset type being "
                "read";
-
+    case client_errc::pool_not_running:
+        return "Getting a connection from a connection_pool was cancelled before the pool was run. Ensure "
+               "that you're calling connection_pool::async_run.";
+    case client_errc::pool_cancelled:
+        return "Getting a connection from a connection_pool failed because the pool was cancelled.";
+    case client_errc::no_connection_available:
+        return "Getting a connection from a connection_pool was cancelled before "
+               "a connection was available.";
+    case client_errc::invalid_encoding:
+        return "A string passed to a formatting function contains a byte sequence that can't be decoded with "
+               "the current character set.";
+    case client_errc::unformattable_value:
+        return "A formatting operation could not format one of its arguments.";
+    case client_errc::format_string_invalid_syntax:
+        return "A format string with invalid syntax was provided to a SQL formatting function.";
+    case client_errc::format_string_invalid_encoding:
+        return "A format string with an invalid byte sequence was provided to a SQL formatting function.";
+    case client_errc::format_string_manual_auto_mix:
+        return "A format string mixes manual (e.g. {0}) and automatic (e.g. {}) indexing.";
+    case client_errc::format_string_invalid_specifier:
+        return "The supplied format specifier is not supported by the type being formatted.";
+    case client_errc::format_arg_not_found:
+        return "A format argument referenced by a format string was not found. Check the number of format "
+               "arguments passed and their names.";
+    case client_errc::unknown_character_set:
+        return "The character set used by the connection is not known by the client. Use set_character_set "
+               "or async_set_character_set before invoking operations that require a known charset.";
+    case client_errc::max_buffer_size_exceeded:
+        return "An operation attempted to read or write a packet larger than the maximum buffer size. "
+               "Try increasing any_connection_params::max_buffer_size.";
+    case client_errc::operation_in_progress:
+        return "Another operation is currently in progress for this connection. Make sure that a single "
+               "connection does not run two asynchronous operations in parallel.";
+    case client_errc::not_connected:
+        return "The requested operation requires an established session. Call async_connect before invoking "
+               "other operations.";
+    case client_errc::engaged_in_multi_function:
+        return "The connection is currently engaged in a multi-function operation."
+               "Finish the current operation by calling async_read_some_rows and async_read_resultset_head "
+               "before "
+               "starting any other operation.";
+    case client_errc::not_engaged_in_multi_function:
+        return "The operation requires the connection to be engaged in a multi-function operation. "
+               "Use async_start_execution to start one.";
+    case client_errc::bad_handshake_packet_type:
+        return "During handshake, the server sent a packet type that is not allowed in the current state "
+               "(protocol violation).";
+    case client_errc::unknown_openssl_error:
+        return "An OpenSSL function failed and did not provide any extra diagnostics.";
     default: return "<unknown MySQL client error>";
     }
 }
 
-BOOST_MYSQL_STATIC_OR_INLINE
-const char* error_to_string(common_server_errc v) noexcept
+inline const char* error_to_string(common_server_errc v)
 {
     const char* res = detail::common_error_to_string(static_cast<int>(v));
     return res ? res : "<unknown server error>";

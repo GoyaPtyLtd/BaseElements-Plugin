@@ -1,0 +1,63 @@
+---
+function: BE_TextExtractWords
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:
+  
+  - name: test $var extract, space separator, local and global
+    evaluate: | 
+      BE_TextExtractWords ( "$$global & $variable" )
+    output: "$$global¶$variable"
+
+  - name: Single line comment
+    evaluate: | 
+      BE_TextExtractWords ( "//$variable" )
+    output: ""
+
+  - name: Quoted string 
+    evaluate: | 
+      BE_TextExtractWords ( "\"this is a string\" & $a_variable" )
+    output: "$a_variable"
+  
+  - name: Multiline comment 
+    evaluate: | 
+      BE_TextExtractWords ( "/* a $variable is here */" )
+    output: ""
+ 
+  - name: Backslash as separator only get each variable once 
+    evaluate: | 
+      BE_TextExtractWords ( "$this+$that/$this" )
+    output: "$this¶$that"
+ 
+  - name: Two lines, one of which is is a comment 
+    evaluate: | 
+      BE_TextExtractWords ( "// a $variable¶\"and\" + $another" )
+    output: "$another"
+ 
+  - name: Hidden var 
+    evaluate: | 
+      BE_TextExtractWords ( "$a & /* $hidden */ $one *¶$here" )
+    output: "$a¶$one¶$here"
+ 
+  - name: Semicolon as a separator 
+    evaluate: | 
+      BE_TextExtractWords ( "if($a;$b;$c) )
+    output: "$a¶$b¶$c"
+
+  - name: Minus as a separator 
+    evaluate: | 
+      BE_TextExtractWords ( "3-$minus-3" )
+    output: "$minus"

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2023 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -22,20 +22,20 @@ namespace mysql {
  * Like `boost::system::system_error`, but adds a \ref diagnostics member
  * containing additional information.
  */
-class error_with_diagnostics : public boost::system::system_error
+class error_with_diagnostics : public system::system_error
 {
     diagnostics diag_;
 
-    static boost::system::system_error create_base(const error_code& err, const diagnostics& diag)
+    static system::system_error create_base(const error_code& err, const diagnostics& diag)
     {
-        return diag.client_message().empty() ? boost::system::system_error(err)
-                                             : boost::system::system_error(err, diag.client_message());
+        return diag.client_message().empty() ? system::system_error(err)
+                                             : system::system_error(err, diag.client_message());
     }
 
 public:
     /// Initializing constructor.
     error_with_diagnostics(const error_code& err, const diagnostics& diag)
-        : boost::system::system_error(create_base(err, diag)), diag_(diag)
+        : system::system_error(create_base(err, diag)), diag_(diag)
     {
     }
 

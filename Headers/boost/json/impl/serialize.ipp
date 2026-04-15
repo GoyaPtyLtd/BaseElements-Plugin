@@ -50,7 +50,8 @@ get_stream_flags( std::ostream& os )
 
 } // namespace
 
-static
+namespace detail {
+
 void
 serialize_impl(
     std::string& s,
@@ -93,6 +94,8 @@ serialize_impl(
     }
     s.resize(len);
 }
+
+} // namespace detail
 
 std::string
 serialize(
@@ -173,7 +176,7 @@ serialize(
 
 //----------------------------------------------------------
 
-//[example_operator_lt__lt_
+// tag::example_operator_lt_lt[]
 // Serialize a value into an output stream
 
 std::ostream&
@@ -197,7 +200,7 @@ operator<<( std::ostream& os, value const& jv )
 
     return os;
 }
-//]
+// end::example_operator_lt_lt[]
 
 static
 void

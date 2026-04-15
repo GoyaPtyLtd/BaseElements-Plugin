@@ -188,10 +188,13 @@ public:
 
         @par Exception Safety
         Throws nothing
+
+        @param other The segments to copy.
+        @return Reference to this object
     */
     segments_encoded_view&
     operator=(
-        segments_encoded_view const&) = default;
+        segments_encoded_view const& other) = default;
 
     /** Conversion
 
@@ -221,6 +224,8 @@ public:
 
         @par Exception Safety
         Throws nothing
+
+        @return A view of the segments.
     */
     BOOST_URL_DECL
     operator
@@ -230,8 +235,8 @@ public:
 
     BOOST_URL_DECL
     friend
-        system::result<segments_encoded_view>
-        parse_path(core::string_view s) noexcept;
+    system::result<segments_encoded_view>
+    parse_path(core::string_view s) noexcept;
 };
 
 } // urls

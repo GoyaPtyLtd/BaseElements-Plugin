@@ -25,7 +25,7 @@
 #include <boost/math/tools/assert.hpp>
 #include <boost/math/tools/config.hpp>
 
-#ifdef BOOST_HAS_THREADS
+#ifdef BOOST_MATH_HAS_THREADS
 #include <mutex>
 #endif
 
@@ -406,7 +406,7 @@ namespace boost { namespace math { namespace detail{
      //
      if((unsigned)n / 2u > policies::get_max_series_iterations<Policy>())
         return policies::raise_evaluation_error<T>(function, "The value of n is so large that we're unable to compute the result in reasonable time, best guess is %1%", 0, pol);
-#ifdef BOOST_HAS_THREADS
+#ifdef BOOST_MATH_HAS_THREADS
      static std::mutex m;
      std::lock_guard<std::mutex> l(m);
 #endif
@@ -470,34 +470,12 @@ namespace boost { namespace math { namespace detail{
      return exp(power_terms) * ((s < 0) && ((n + 1) & 1) ? -1 : 1) * boost::math::sign(sum);
   }
 
-  template <class T, class Policy>
-  struct polygamma_initializer
-  {
-     struct init
-     {
-        init()
-        {
-           // Forces initialization of our table of coefficients and mutex:
-           boost::math::polygamma(30, T(-2.5f), Policy());
-        }
-        void force_instantiate()const{}
-     };
-     static const init initializer;
-     static void force_instantiate()
-     {
-        initializer.force_instantiate();
-     }
-  };
-
-  template <class T, class Policy>
-  const typename polygamma_initializer<T, Policy>::init polygamma_initializer<T, Policy>::initializer;
-
   template<class T, class Policy>
   inline T polygamma_imp(const int n, T x, const Policy &pol)
   {
     BOOST_MATH_STD_USING
     static const char* function = "boost::math::polygamma<%1%>(int, %1%)";
-    polygamma_initializer<T, Policy>::initializer.force_instantiate();
+
     if(n < 0)
        return policies::raise_domain_error<T>(function, "Order must be >= 0, but got %1%", static_cast<T>(n), pol);
     if(x < 0)

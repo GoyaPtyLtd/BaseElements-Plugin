@@ -1,4 +1,5 @@
 // Copyright (C) 2023 Christian Mazakas
+// Copyright (C) 2024 Braden Ganetsky
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -6,6 +7,8 @@
 #define BOOST_UNORDERED_DETAIL_FOA_NODE_MAP_TYPES_HPP
 
 #include <boost/unordered/detail/foa/element_type.hpp>
+#include <boost/unordered/detail/foa/types_constructibility.hpp>
+#include <boost/unordered/detail/type_traits.hpp>
 
 #include <boost/core/allocator_access.hpp>
 #include <boost/core/no_exceptions_support.hpp>
@@ -27,6 +30,9 @@ namespace boost {
           using moved_type = std::pair<raw_key_type&&, raw_mapped_type&&>;
 
           using element_type = foa::element_type<value_type, VoidPtr>;
+
+          using types = node_map_types<Key, T, VoidPtr>;
+          using constructibility_checker = map_types_constructibility<types>;
 
           static value_type& value_from(element_type const& x)
           {
@@ -67,18 +73,27 @@ namespace boost {
           static void construct(
             A& al, element_type* p, element_type const& copy)
           {
-            construct(al, p, *copy.p);
+            construct(al, p, detail::as_const(*copy.p));
           }
 
           template <class A, class... Args>
           static void construct(A& al, init_type* p, Args&&... args)
           {
+            constructibility_checker::check(al, p, std::forward<Args>(args)...);
             boost::allocator_construct(al, p, std::forward<Args>(args)...);
           }
 
           template <class A, class... Args>
           static void construct(A& al, value_type* p, Args&&... args)
           {
+            constructibility_checker::check(al, p, std::forward<Args>(args)...);
+            boost::allocator_construct(al, p, std::forward<Args>(args)...);
+          }
+
+          template <class A, class... Args>
+          static void construct(A& al, key_type* p, Args&&... args)
+          {
+            constructibility_checker::check(al, p, std::forward<Args>(args)...);
             boost::allocator_construct(al, p, std::forward<Args>(args)...);
           }
 
@@ -88,8 +103,11 @@ namespace boost {
             p->p = boost::allocator_allocate(al, 1);
             BOOST_TRY
             {
+              auto address = boost::to_address(p->p);
+              constructibility_checker::check(
+                al, address, std::forward<Args>(args)...);
               boost::allocator_construct(
-                al, boost::to_address(p->p), std::forward<Args>(args)...);
+                al, address, std::forward<Args>(args)...);
             }
             BOOST_CATCH(...)
             {
@@ -109,6 +127,11 @@ namespace boost {
             boost::allocator_destroy(al, p);
           }
 
+          template <class A> static void destroy(A& al, key_type* p) noexcept
+          {
+            boost::allocator_destroy(al, p);
+          }
+
           template <class A>
           static void destroy(A& al, element_type* p) noexcept
           {
@@ -120,8 +143,8 @@ namespace boost {
         };
 
       } // namespace foa
-    }   // namespace detail
-  }     // namespace unordered
+    } // namespace detail
+  } // namespace unordered
 } // namespace boost
 
 #endif // BOOST_UNORDERED_DETAIL_FOA_NODE_MAP_TYPES_HPP

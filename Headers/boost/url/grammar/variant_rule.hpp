@@ -14,10 +14,41 @@
 #include <boost/url/error_types.hpp>
 #include <boost/url/variant.hpp>
 #include <boost/url/grammar/detail/tuple.hpp>
+#include <boost/url/grammar/type_traits.hpp>
 
 namespace boost {
 namespace urls {
 namespace grammar {
+
+namespace implementation_defined {
+template<
+    class R0, class... Rn>
+class variant_rule_t
+{
+public:
+    using value_type = variant2::variant<
+        typename R0::value_type,
+        typename Rn::value_type...>;
+
+    auto
+    parse(
+        char const*& it,
+        char const* end) const ->
+            system::result<value_type>;
+
+    constexpr
+    variant_rule_t(
+        R0 const& r0,
+        Rn const&... rn) noexcept
+        : rn_(r0, rn...)
+    {
+    }
+
+private:
+
+    detail::tuple<R0, Rn...> rn_;
+};
+} // implementation_defined
 
 /** Match one of a set of rules
 
@@ -25,6 +56,10 @@ namespace grammar {
     When the first match occurs, the result
     is stored and returned in the variant. If
     no match occurs, an error is returned.
+
+    @param r0 The first rule to match
+    @param rn A list of one or more rules to match
+    @return The variant rule
 
     @par Value Type
     @code
@@ -67,60 +102,15 @@ namespace grammar {
         @ref origin_form_rule,
         @ref url_view.
 */
-#ifdef BOOST_URL_DOCS
-template<class... Rules>
-constexpr
-__implementation_defined__
-variant_rule( Rules... rn ) noexcept;
-#else
 template<
-    class R0, class... Rn>
-class variant_rule_t
-{
-public:
-    using value_type = variant<
-        typename R0::value_type,
-        typename Rn::value_type...>;
-
-    auto
-    parse(
-        char const*& it,
-        char const* end) const ->
-            system::result<value_type>;
-
-    template<
-        class R0_,
-        class... Rn_>
-    friend
-    constexpr
-    auto
-    variant_rule(
-        R0_ const& r0,
-        Rn_ const&... rn) noexcept ->
-            variant_rule_t<R0_, Rn_...>;
-
-private:
-    constexpr
-    variant_rule_t(
-        R0 const& r0,
-        Rn const&... rn) noexcept
-        : rn_(r0, rn...)
-    {
-    }
-
-    detail::tuple<R0, Rn...> rn_;
-};
-
-template<
-    class R0,
-    class... Rn>
+    BOOST_URL_CONSTRAINT(Rule) R0,
+    BOOST_URL_CONSTRAINT(Rule)... Rn>
 constexpr
 auto
 variant_rule(
     R0 const& r0,
     Rn const&... rn) noexcept ->
-        variant_rule_t<R0, Rn...>;
-#endif
+        implementation_defined::variant_rule_t<R0, Rn...>;
 
 } // grammar
 } // urls

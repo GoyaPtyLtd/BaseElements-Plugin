@@ -210,13 +210,13 @@ public:
     template <typename MultiPoint, typename Box>
     static inline void apply(MultiPoint const& multipoint, Box& mbr)
     {
-        typedef typename point_type<MultiPoint>::type point_type;
-        typedef typename coordinate_type<MultiPoint>::type coordinate_type;
-        typedef math::detail::constants_on_spheroid
+        using point_type = point_type_t<MultiPoint>;
+        using coordinate_type = coordinate_type_t<MultiPoint>;
+        using constants = math::detail::constants_on_spheroid
             <
                 coordinate_type,
                 typename geometry::detail::cs_angular_units<MultiPoint>::type
-            > constants;
+            >;
 
         if (boost::empty(multipoint))
         {

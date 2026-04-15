@@ -1,6 +1,6 @@
 /* Hash function characterization.
  *
- * Copyright 2022 Joaquin M Lopez Munoz.
+ * Copyright 2022-2025 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -11,32 +11,15 @@
 #ifndef BOOST_UNORDERED_HASH_TRAITS_HPP
 #define BOOST_UNORDERED_HASH_TRAITS_HPP
 
-#include <boost/unordered/detail/type_traits.hpp>
+#include <boost/config/header_deprecated.hpp>
+#include <boost/container_hash/hash_is_avalanching.hpp>
+
+BOOST_HEADER_DEPRECATED("<boost/container_hash/hash_is_avalanching.hpp>")
 
 namespace boost{
 namespace unordered{
 
-namespace detail{
-
-template<typename Hash,typename=void>
-struct hash_is_avalanching_impl: std::false_type{};
-
-template<typename Hash>
-struct hash_is_avalanching_impl<Hash,
-  boost::unordered::detail::void_t<typename Hash::is_avalanching> >:
-    std::true_type{};
-
-} /* namespace detail */
-
-/* Each trait can be partially specialized by users for concrete hash functions
- * when actual characterization differs from default.
- */
-
-/* hash_is_avalanching<Hash>::value is true when the type Hash::is_avalanching
- * is present, false otherwise.
- */
-template<typename Hash>
-struct hash_is_avalanching: detail::hash_is_avalanching_impl<Hash>::type{};
+using boost::hash_is_avalanching;
 
 } /* namespace unordered */
 } /* namespace boost */

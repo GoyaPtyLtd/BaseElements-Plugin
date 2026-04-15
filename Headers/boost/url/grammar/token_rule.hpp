@@ -19,6 +19,35 @@ namespace boost {
 namespace urls {
 namespace grammar {
 
+namespace implementation_defined {
+template<class CharSet>
+struct token_rule_t
+{
+    using value_type = core::string_view;
+
+    static_assert(
+        is_charset<CharSet>::value,
+        "CharSet requirements not met");
+
+    auto
+    parse(
+        char const*& it,
+        char const* end
+            ) const noexcept ->
+        system::result<value_type>;
+
+    constexpr
+    token_rule_t(
+        CharSet const& cs) noexcept
+        : cs_(cs)
+    {
+    }
+
+private:
+    CharSet const cs_;
+};
+}
+
 /** Match a non-empty string of characters from a set
 
     If there is no more input, the error code
@@ -41,63 +70,21 @@ namespace grammar {
     @endcode
 
     @param cs The character set to use
+    @return The token rule
 
     @see
         @ref alpha_chars,
         @ref parse.
 */
-#ifdef BOOST_URL_DOCS
-template<class CharSet>
-constexpr
-__implementation_defined__
-token_rule(
-    CharSet cs) noexcept;
-#else
-template<class CharSet>
-struct token_rule_t
-{
-    using value_type = core::string_view;
-
-    static_assert(
-        is_charset<CharSet>::value,
-        "CharSet requirements not met");
-
-    auto
-    parse(
-        char const*& it,
-        char const* end
-            ) const noexcept ->
-        system::result<value_type>;
-
-private:
-    template<class CharSet_>
-    friend
-    constexpr
-    auto
-    token_rule(
-        CharSet_ const&) noexcept ->
-            token_rule_t<CharSet_>;
-
-    constexpr
-    token_rule_t(
-        CharSet const& cs) noexcept
-        : cs_(cs)
-    {
-    }
-
-    CharSet const cs_;
-};
-
-template<class CharSet>
+template<BOOST_URL_CONSTRAINT(CharSet) CS>
 constexpr
 auto
 token_rule(
-    CharSet const& cs) noexcept ->
-        token_rule_t<CharSet>
+    CS const& cs) noexcept ->
+        implementation_defined::token_rule_t<CS>
 {
     return {cs};
 }
-#endif
 
 } // grammar
 } // urls

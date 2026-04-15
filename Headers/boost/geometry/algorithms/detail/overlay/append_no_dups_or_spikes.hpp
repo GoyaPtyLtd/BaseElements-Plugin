@@ -1,10 +1,11 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
+// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
 
-// This file was modified by Oracle on 2014-2020.
-// Modifications copyright (c) 2014-2020 Oracle and/or its affiliates.
-
+// This file was modified by Oracle on 2014-2024.
+// Modifications copyright (c) 2014-2024 Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -29,7 +30,7 @@
 
 #include <boost/geometry/core/closure.hpp>
 
-#include <boost/geometry/util/condition.hpp>
+#include <boost/geometry/util/constexpr.hpp>
 #include <boost/geometry/util/range.hpp>
 
 
@@ -42,48 +43,22 @@ namespace detail { namespace overlay
 {
 
 // TODO: move this / rename this
-template <typename Point1, typename Point2, typename Strategy, typename RobustPolicy>
+template <typename Point1, typename Point2, typename Strategy>
 inline bool points_equal_or_close(Point1 const& point1,
                                   Point2 const& point2,
-                                  Strategy const& strategy,
-                                  RobustPolicy const& robust_policy)
+                                  Strategy const& strategy)
 {
     if (detail::equals::equals_point_point(point1, point2, strategy))
     {
         return true;
     }
-
-    if (BOOST_GEOMETRY_CONDITION(! RobustPolicy::enabled))
-    {
-        return false;
-    }
-
-    // Try using specified robust policy
-    typedef typename geometry::robust_point_type
-    <
-        Point1,
-        RobustPolicy
-    >::type robust_point_type;
-
-    robust_point_type point1_rob, point2_rob;
-    geometry::recalculate(point1_rob, point1, robust_policy);
-    geometry::recalculate(point2_rob, point2, robust_policy);
-
-    // Only if this is the case the same strategy can be used.
-    BOOST_STATIC_ASSERT((std::is_same
-                            <
-                                typename geometry::cs_tag<Point1>::type,
-                                typename geometry::cs_tag<robust_point_type>::type
-                            >::value));
-
-    return detail::equals::equals_point_point(point1_rob, point2_rob, strategy);
+    return false;
 }
 
 
-template <typename Range, typename Point, typename Strategy, typename RobustPolicy>
+template <typename Range, typename Point, typename Strategy>
 inline void append_no_dups_or_spikes(Range& range, Point const& point,
-                                     Strategy const& strategy,
-                                     RobustPolicy const& robust_policy)
+                                     Strategy const& strategy)
 {
 #ifdef BOOST_GEOMETRY_DEBUG_INTERSECTION
     std::cout << "  add: ("
@@ -94,8 +69,7 @@ inline void append_no_dups_or_spikes(Range& range, Point const& point,
     // for geometries >= 3 points.
     // So we have to check the first potential duplicate differently
     if ( boost::size(range) == 1
-      && points_equal_or_close(*(boost::begin(range)), point, strategy,
-                               robust_policy) )
+      && points_equal_or_close(*(boost::begin(range)), point, strategy) )
     {
         return;
     }
@@ -120,8 +94,8 @@ inline void append_no_dups_or_spikes(Range& range, Point const& point,
             && point_is_spike_or_equal(point,
                 *(boost::end(range) - 3),
                 *(boost::end(range) - 2),
-                strategy.side(), // TODO: Pass strategy?
-                robust_policy))
+                strategy.side() // TODO: Pass strategy?
+                ))
     {
         // Use the Concept/traits, so resize and append again
         traits::resize<Range>::apply(range, boost::size(range) - 2);
@@ -129,10 +103,9 @@ inline void append_no_dups_or_spikes(Range& range, Point const& point,
     }
 }
 
-template <typename Range, typename Point, typename Strategy, typename RobustPolicy>
+template <typename Range, typename Point, typename Strategy>
 inline void append_no_collinear(Range& range, Point const& point,
-                                Strategy const& strategy,
-                                RobustPolicy const& robust_policy)
+                                Strategy const& strategy)
 {
     // Stricter version, not allowing any point in a linear row
     // (spike, continuation or same point)
@@ -142,8 +115,7 @@ inline void append_no_collinear(Range& range, Point const& point,
     // So we have to check the first potential duplicate differently
     if ( boost::size(range) == 1
       && points_equal_or_close(*(boost::begin(range)), point,
-                               strategy,
-                               robust_policy) )
+                               strategy) )
     {
         return;
     }
@@ -159,8 +131,8 @@ inline void append_no_collinear(Range& range, Point const& point,
             && point_is_collinear(point,
                 *(boost::end(range) - 3),
                 *(boost::end(range) - 2),
-                strategy.side(), // TODO: Pass strategy?
-                robust_policy))
+                strategy.side() // TODO: Pass strategy?
+                ))
     {
         // Use the Concept/traits, so resize and append again
         traits::resize<Range>::apply(range, boost::size(range) - 2);
@@ -169,9 +141,8 @@ inline void append_no_collinear(Range& range, Point const& point,
 }
 
 // Should only be called internally, from traverse.
-template <typename Ring, typename Strategy, typename RobustPolicy>
-inline void remove_spikes_at_closure(Ring& ring, Strategy const& strategy,
-                                     RobustPolicy const& robust_policy)
+template <typename Ring, typename Strategy>
+inline void remove_spikes_at_closure(Ring& ring, Strategy const& strategy)
 {
     // It assumes a closed ring (whatever the closure value)
     constexpr std::size_t min_size
@@ -197,8 +168,8 @@ inline void remove_spikes_at_closure(Ring& ring, Strategy const& strategy,
         // Check if closing point is a spike (this is so if the second point is
         // considered as collinear w.r.t. the last segment)
         if (point_is_collinear(*second, *penultimate, *first,
-                               strategy.side(), // TODO: Pass strategy?
-                               robust_policy))
+                               strategy.side() // TODO: Pass strategy?
+                               ))
         {
             // Remove first point and last point
             range::erase(ring, first);
@@ -214,7 +185,7 @@ inline void remove_spikes_at_closure(Ring& ring, Strategy const& strategy,
 template <typename Ring, typename Strategy>
 inline void fix_closure(Ring& ring, Strategy const& strategy)
 {
-    if (BOOST_GEOMETRY_CONDITION(geometry::closure<Ring>::value == geometry::open))
+    if BOOST_GEOMETRY_CONSTEXPR (geometry::closure<Ring>::value == geometry::open)
     {
         if (! boost::empty(ring)
             && detail::equals::equals_point_point(range::front(ring), range::back(ring), strategy))

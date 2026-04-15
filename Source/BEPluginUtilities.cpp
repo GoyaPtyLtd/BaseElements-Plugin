@@ -56,6 +56,13 @@
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <cerrno>
+
+#if defined FMX_WIN_TARGET
+	#include <stdlib.h>
+#else
+	#include <unistd.h>
+#endif
 
 
 using namespace fmx;
@@ -261,6 +268,18 @@ void SetResult ( const string& filename, const vector<char>& data, fmx::Data& re
 void SetResult ( const string& filename, const vector<unsigned char>& data, fmx::Data& results )
 {
 	return SetResult ( filename, data, results, FILE_CONTAINER_TYPE );
+}
+
+
+void SetResult ( const string& filename, PoDoFo::PdfMemDocument& pdf, fmx::Data& results )
+{
+	// write out a temporary file
+	auto temporary_file = TemporaryFilePath();
+	pdf.Save ( temporary_file.c_str() );
+	auto file_data = ReadFileAsBinary ( temporary_file );
+	
+	return SetResult ( filename, file_data, PDF_CONTAINER_TYPE, results );
+
 }
 
 
@@ -527,18 +546,19 @@ const string ParameterPathOrContainerAsUTF8 ( const DataVect& parameters, const 
 
 unique_ptr<PoDoFo::PdfMemDocument> ParameterAsPDF ( const DataVect& parameters, const fmx::uint32 which )
 {
-	unique_ptr<PoDoFo::PdfMemDocument> pdf_document ( new PoDoFo::PdfMemDocument ( ) );
+	PoDoFo::PdfMemDocument pdf_document;
 
 	if ( BinaryDataAvailable ( parameters, which ) ) {
 		auto pdf = ParameterAsVectorChar ( parameters, which );
-		pdf_document->LoadFromBuffer ( pdf.data(), (long)pdf.size() );
+		const PoDoFo::bufferview pdf_buffer { pdf.data(), pdf.size() };
+		pdf_document.LoadFromBuffer ( pdf_buffer );
 	} else {
 		auto pdf_path = ParameterAsPath ( parameters, which );
 		pdf_path.make_preferred();
-		pdf_document->Load ( pdf_path.c_str() );
+		pdf_document.Load ( pdf_path.c_str() );
 	}
 
-	return pdf_document;
+	return std::make_unique<PoDoFo::PdfMemDocument> ( pdf_document );
 
 } // ParameterAsPDF
 
@@ -763,6 +783,33 @@ string ReadFileAsUTF8 ( const filesystem::path path )
 	return result;
 
 } // ReadFileAsUTF8
+
+
+filesystem::path TemporaryFilePath ( const string& filename_template )
+{
+	const auto temporary_directory = filesystem::temp_directory_path();
+
+#if defined FMX_WIN_TARGET
+	vector<char> path_template ( filename_template.begin(), filename_template.end() );
+	path_template.push_back ( '\0' );
+	if ( _mktemp_s ( path_template.data(), path_template.size() ) != 0 ) {
+		throw BEPlugin_Exception ( errno );
+	}
+
+	return temporary_directory / path_template.data();
+#else
+	auto template_path = ( temporary_directory / filename_template ).string();
+	vector<char> path_template ( template_path.begin(), template_path.end() );
+	path_template.push_back ( '\0' );
+	const int temporary_file = mkstemp ( path_template.data() );
+	if ( temporary_file == -1 ) {
+		throw BEPlugin_Exception ( errno );
+	}
+
+	close ( temporary_file );
+	return path_template.data();
+#endif
+}
 
 
 #pragma mark -

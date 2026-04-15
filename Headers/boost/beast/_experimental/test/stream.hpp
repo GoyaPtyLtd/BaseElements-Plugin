@@ -11,7 +11,6 @@
 #define BOOST_BEAST_TEST_STREAM_HPP
 
 #include <boost/beast/core/detail/config.hpp>
-#include <boost/beast/core/bind_handler.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <boost/beast/core/role.hpp>
 #include <boost/beast/core/string.hpp>
@@ -20,7 +19,6 @@
 #include <boost/asio/async_result.hpp>
 #include <boost/asio/buffer.hpp>
 #include <boost/asio/error.hpp>
-#include <boost/asio/executor_work_guard.hpp>
 #include <boost/asio/any_io_executor.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/assert.hpp>
@@ -236,11 +234,11 @@ public:
         @param context The `io_context` object that the stream will use to
         dispatch handlers for any asynchronous operations.
     */
-    template <typename ExecutionContext>
-    explicit basic_stream(ExecutionContext& context,
-        typename std::enable_if<
-            std::is_convertible<ExecutionContext&, net::execution_context&>::value
-        >::type* = 0)
+    template <class ExecutionContext,
+        class = typename std::enable_if<
+            std::is_convertible<ExecutionContext&, net::execution_context&>::value>::type>
+    explicit
+    basic_stream(ExecutionContext& context)
     : basic_stream(context.get_executor())
     {
     }

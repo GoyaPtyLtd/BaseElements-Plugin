@@ -1,6 +1,6 @@
 
-// Copyright Christopher Kormanyos 2002 - 2013.
-// Copyright 2011 - 2013 John Maddock.
+// Copyright 2011 - 2025 John Maddock.
+// Copyright Christopher Kormanyos 2002 - 2025.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -41,6 +41,29 @@ inline void pow_imp(T& result, const T& t, const U& p, const std::integral_const
       pow_imp(temp, t, p, std::integral_constant<bool, false>());
       result = temp;
       return;
+   }
+
+   switch (p)
+   {
+   case 0:
+      result = int_type(1);
+      return;
+   case 1:
+      result = t;
+      return;
+   case 2:
+      eval_multiply(result, t, t);
+      return;
+   case 3:
+      eval_multiply(result, t, t);
+      eval_multiply(result, t);
+      return;
+   case 4:
+      eval_multiply(result, t, t);
+      eval_multiply(result, result);
+      return;
+   default:
+      break;
    }
 
    // This will store the result.
@@ -109,7 +132,6 @@ void hyp0F0(T& H0F0, const T& x)
 
    BOOST_MP_ASSERT(&H0F0 != &x);
    long tol = boost::multiprecision::detail::digits2<number<T, et_on> >::value();
-   T    t;
 
    T x_pow_n_div_n_fact(x);
 
@@ -169,7 +191,7 @@ void hyp1F0(T& H1F0, const T& a, const T& x)
       lim.negate();
 
    si_type n;
-   T       term, part;
+   T       term;
 
    const si_type series_limit =
        boost::multiprecision::detail::digits2<number<T, et_on> >::value() < 100
@@ -371,6 +393,8 @@ void eval_log(T& result, const T& arg)
       result.negate();
       errno = ERANGE;
       return;
+   default:
+      break;
    }
    if (s)
    {

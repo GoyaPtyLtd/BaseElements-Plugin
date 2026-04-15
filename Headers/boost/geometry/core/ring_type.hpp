@@ -3,6 +3,7 @@
 // Copyright (c) 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2008-2015 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2015 Mateusz Loskot, London, UK.
+// Copyright (c) 2024 Adam Wulkiewicz, Lodz, Poland.
 
 // This file was modified by Oracle on 2015-2021.
 // Modifications copyright (c) 2015-2021, Oracle and/or its affiliates.
@@ -23,7 +24,6 @@
 #include <type_traits>
 
 #include <boost/range/value_type.hpp>
-
 #include <boost/geometry/core/static_assert.hpp>
 #include <boost/geometry/core/tag.hpp>
 #include <boost/geometry/core/tags.hpp>
@@ -61,7 +61,6 @@ struct ring_mutable_type
         Geometry);
 };
 
-
 } // namespace traits
 
 
@@ -87,6 +86,20 @@ struct ring_return_type<ring_tag, Ring>
     typedef Ring& type;
 };
 
+template <typename PolyhedralSurface>
+struct ring_return_type<polyhedral_surface_tag, PolyhedralSurface>
+{
+    using type = typename ring_return_type
+        <
+            polygon_tag,
+            std::conditional_t
+                <
+                    std::is_const<PolyhedralSurface>::value,
+                    typename boost::range_value<PolyhedralSurface>::type const,
+                    typename boost::range_value<PolyhedralSurface>::type
+                >
+        >::type;
+};
 
 template <typename Polygon>
 struct ring_return_type<polygon_tag, Polygon>
@@ -105,7 +118,7 @@ struct ring_return_type<polygon_tag, Polygon>
 template <typename MultiLinestring>
 struct ring_return_type<multi_linestring_tag, MultiLinestring>
 {
-    typedef typename ring_return_type
+    using type = typename ring_return_type
         <
             linestring_tag,
             std::conditional_t
@@ -114,14 +127,14 @@ struct ring_return_type<multi_linestring_tag, MultiLinestring>
                     typename boost::range_value<MultiLinestring>::type const,
                     typename boost::range_value<MultiLinestring>::type
                 >
-        >::type type;
+        >::type;
 };
 
 
 template <typename MultiPolygon>
 struct ring_return_type<multi_polygon_tag, MultiPolygon>
 {
-    typedef typename ring_return_type
+    using type = typename ring_return_type
         <
             polygon_tag,
             std::conditional_t
@@ -130,7 +143,7 @@ struct ring_return_type<multi_polygon_tag, MultiPolygon>
                     typename boost::range_value<MultiPolygon>::type const,
                     typename boost::range_value<MultiPolygon>::type
                 >
-        >::type type;
+        >::type;
 };
 
 
@@ -152,34 +165,42 @@ struct ring_type<ring_tag, Ring>
     typedef Ring type;
 };
 
+template <typename PolyhedralSurface>
+struct ring_type<polyhedral_surface_tag, PolyhedralSurface>
+{
+    using type = std::remove_reference_t
+        <
+            typename ring_return_type<polyhedral_surface_tag, PolyhedralSurface>::type
+        >;
+};
 
 template <typename Polygon>
 struct ring_type<polygon_tag, Polygon>
 {
-    typedef typename std::remove_reference
+    using type = std::remove_reference_t
         <
             typename ring_return_type<polygon_tag, Polygon>::type
-        >::type type;
+        >;
 };
 
 
 template <typename MultiLinestring>
 struct ring_type<multi_linestring_tag, MultiLinestring>
 {
-    typedef typename std::remove_reference
+    using type = std::remove_reference_t
         <
             typename ring_return_type<multi_linestring_tag, MultiLinestring>::type
-        >::type type;
+        >;
 };
 
 
 template <typename MultiPolygon>
 struct ring_type<multi_polygon_tag, MultiPolygon>
 {
-    typedef typename std::remove_reference
+    using type = std::remove_reference_t
         <
             typename ring_return_type<multi_polygon_tag, MultiPolygon>::type
-        >::type type;
+        >;
 };
 
 
@@ -201,23 +222,29 @@ struct ring_type<multi_polygon_tag, MultiPolygon>
 template <typename Geometry>
 struct ring_type
 {
-    typedef typename core_dispatch::ring_type
+    using type = typename core_dispatch::ring_type
         <
-            typename tag<Geometry>::type,
+            tag_t<Geometry>,
             Geometry
-        >::type type;
+        >::type;
 };
+
+template <typename Geometry>
+using ring_type_t = typename ring_type<Geometry>::type;
 
 
 template <typename Geometry>
 struct ring_return_type
 {
-    typedef typename core_dispatch::ring_return_type
+    using type = typename core_dispatch::ring_return_type
         <
-            typename tag<Geometry>::type,
+            tag_t<Geometry>,
             Geometry
-        >::type type;
+        >::type;
 };
+
+template <typename Geometry>
+using ring_return_type_t = typename ring_return_type<Geometry>::type;
 
 
 }} // namespace boost::geometry

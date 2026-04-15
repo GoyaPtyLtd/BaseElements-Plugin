@@ -22,6 +22,7 @@
 #include <boost/geometry/strategies/densify.hpp>
 #include <boost/geometry/util/algorithm.hpp>
 #include <boost/geometry/util/math.hpp>
+#include <boost/geometry/util/numeric_cast.hpp>
 #include <boost/geometry/util/select_most_precise.hpp>
 
 
@@ -52,15 +53,15 @@ public:
     template <typename Point, typename AssignPolicy, typename T>
     static inline void apply(Point const& p0, Point const& p1, AssignPolicy & policy, T const& length_threshold)
     {
-        typedef typename AssignPolicy::point_type out_point_t;
-        typedef typename coordinate_type<out_point_t>::type out_coord_t;
-        typedef typename select_most_precise
+        using out_point_t = typename AssignPolicy::point_type;
+        using out_coord_t = coordinate_type_t<out_point_t>;
+        using calc_t = typename select_most_precise
             <
-                typename coordinate_type<Point>::type, out_coord_t,
+                coordinate_type_t<Point>, out_coord_t,
                 CalculationType
-            >::type calc_t;
+            >::type;
 
-        typedef model::point<calc_t, geometry::dimension<Point>::value, cs::cartesian> calc_point_t;
+        using calc_point_t = model::point<calc_t, geometry::dimension<Point>::value, cs::cartesian>;
 
         assert_dimension_equal<calc_point_t, out_point_t>();
 
@@ -68,8 +69,8 @@ public:
         // dir01 = p1 - p0
         geometry::detail::for_each_dimension<calc_point_t>([&](auto index)
         {
-            calc_t const coord0 = boost::numeric_cast<calc_t>(get<index>(p0));
-            calc_t const coord1 = boost::numeric_cast<calc_t>(get<index>(p1));
+            calc_t const coord0 = util::numeric_cast<calc_t>(get<index>(p0));
+            calc_t const coord1 = util::numeric_cast<calc_t>(get<index>(p1));
             set<index>(cp0, coord0);
             set<index>(dir01, coord1 - coord0);
         });
@@ -96,7 +97,7 @@ public:
                 // out = p0 + d * dir01
                 calc_t const coord = get<index>(cp0) + get<index>(dir01) * num / den;
 
-                set<index>(out, boost::numeric_cast<out_coord_t>(coord));
+                set<index>(out, util::numeric_cast<out_coord_t>(coord));
             });
 
             policy.apply(out);

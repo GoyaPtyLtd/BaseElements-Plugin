@@ -14,13 +14,55 @@
 #include <boost/url/error_types.hpp>
 #include <boost/url/grammar/error.hpp>
 #include <boost/url/grammar/detail/tuple.hpp>
+#include <boost/url/grammar/type_traits.hpp>
 #include <boost/mp11/algorithm.hpp>
+#include <boost/static_assert.hpp>
 #include <boost/core/empty_value.hpp>
 #include <tuple>
 
 namespace boost {
 namespace urls {
 namespace grammar {
+
+namespace implementation_defined {
+template<
+    class R0,
+    class... Rn>
+class tuple_rule_t
+    : empty_value<
+        detail::tuple<R0, Rn...>>
+{
+    using T = mp11::mp_remove<
+        std::tuple<
+            typename R0::value_type,
+            typename Rn::value_type...>,
+        void>;
+    static constexpr bool IsList =
+        mp11::mp_size<T>::value != 1;
+
+public:
+    using value_type =
+        mp11::mp_eval_if_c<IsList,
+            T, mp11::mp_first, T>;
+
+    constexpr
+    tuple_rule_t(
+        R0 const& r0,
+        Rn const&... rn) noexcept
+        : empty_value<
+            detail::tuple<R0, Rn...>>(
+                empty_init,
+                r0, rn...)
+    {
+    }
+
+    system::result<value_type>
+    parse(
+        char const*& it,
+        char const* end) const;
+
+};
+} // implementation_defined
 
 /** Match a series of rules in order
 
@@ -49,7 +91,7 @@ namespace grammar {
     Rules are used with the function @ref parse.
     @code
     system::result< std::tuple< unsigned char, unsigned char, unsigned char, unsigned char > > rv =
-        parse( "192.168.0.1", 
+        parse( "192.168.0.1",
             tuple_rule(
                 dec_octet_rule,
                 squelch( delim_rule('.') ),
@@ -69,7 +111,9 @@ namespace grammar {
     @li <a href="https://datatracker.ietf.org/doc/html/rfc5234#section-3.1"
         >3.1.  Concatenation (rfc5234)</a>
 
+    @param r0 The first rule to match
     @param rn A list of one or more rules to match
+    @return The sequence rule
 
     @see
         @ref dec_octet_rule,
@@ -77,78 +121,25 @@ namespace grammar {
         @ref parse,
         @ref squelch.
 */
-#ifdef BOOST_URL_DOCS
-template<class... Rules>
-constexpr
-__implementation_defined__
-tuple_rule( Rules... rn ) noexcept;
-#else
 template<
-    class R0,
-    class... Rn>
-class tuple_rule_t
-    : empty_value<
-        detail::tuple<R0, Rn...>>
-{
-    using T = mp11::mp_remove<
-        std::tuple<
-            typename R0::value_type,
-            typename Rn::value_type...>,
-        void>;
-    static constexpr bool IsList =
-        mp11::mp_size<T>::value != 1;
-
-public:
-    using value_type =
-        mp11::mp_eval_if_c<IsList,
-            T, mp11::mp_first, T>;
-
-    template<
-        class R0_,
-        class... Rn_>
-    friend
-    constexpr
-    auto
-    tuple_rule(
-        R0_ const& r0,
-        Rn_ const&... rn) noexcept ->
-            tuple_rule_t<R0_, Rn_...>;
-
-    system::result<value_type>
-    parse(
-        char const*& it,
-        char const* end) const;
-
-private:
-    constexpr
-    tuple_rule_t(
-        R0 const& r0,
-        Rn const&... rn) noexcept
-        : empty_value<
-            detail::tuple<R0, Rn...>>(
-                empty_init,
-                r0, rn...)
-    {
-    }
-};
-
-template<
-    class R0,
-    class... Rn>
+    BOOST_URL_CONSTRAINT(Rule) R0,
+    BOOST_URL_CONSTRAINT(Rule)... Rn>
 constexpr
 auto
 tuple_rule(
     R0 const& r0,
     Rn const&... rn) noexcept ->
-        tuple_rule_t<
+        implementation_defined::tuple_rule_t<
             R0, Rn...>
 {
+    BOOST_STATIC_ASSERT(
+        mp11::mp_all<
+            is_rule<R0>,
+            is_rule<Rn>...>::value);
     return { r0, rn... };
 }
-#endif
 
-#ifndef BOOST_URL_DOCS
-namespace detail {
+namespace implementation_defined {
 
 template<class Rule>
 struct squelch_rule_t
@@ -176,8 +167,7 @@ struct squelch_rule_t
     }
 };
 
-} // detail
-#endif
+} // implementation_defined
 
 /** Squelch the value of a rule
 
@@ -216,6 +206,7 @@ struct squelch_rule_t
     @endcode
 
     @param r The rule to squelch
+    @return The squelched rule
 
     @see
         @ref delim_rule,
@@ -227,15 +218,12 @@ struct squelch_rule_t
         @ref pct_encoded_rule,
         @ref unreserved_chars.
 */
-template<class Rule>
+template<BOOST_URL_CONSTRAINT(Rule) R>
 constexpr
-#ifdef BOOST_URL_DOCS
-__implementation_defined__
-#else
-detail::squelch_rule_t<Rule>
-#endif
-squelch( Rule const& r ) noexcept
+BOOST_URL_IMPLEMENTATION_DEFINED(implementation_defined::squelch_rule_t<R>)
+squelch( R const& r ) noexcept
 {
+    BOOST_STATIC_ASSERT(is_rule<R>::value);
     return { r };
 }
 

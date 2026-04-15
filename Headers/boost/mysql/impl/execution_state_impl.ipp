@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019-2023 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
+// Copyright (c) 2019-2025 Ruben Perez Hidalgo (rubenperez038 at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,7 +13,7 @@
 #include <boost/mysql/detail/execution_processor/execution_state_impl.hpp>
 #include <boost/mysql/detail/row_impl.hpp>
 
-#include <boost/mysql/impl/internal/protocol/protocol.hpp>
+#include <boost/mysql/impl/internal/protocol/deserialization.hpp>
 
 void boost::mysql::detail::execution_state_impl::on_ok_packet_impl(const ok_view& pack)
 {

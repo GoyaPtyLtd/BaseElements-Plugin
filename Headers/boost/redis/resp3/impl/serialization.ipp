@@ -1,11 +1,11 @@
-/* Copyright (c) 2018-2023 Marcelo Zimbres Silva (mzimbres@gmail.com)
+/* Copyright (c) 2018-2024 Marcelo Zimbres Silva (mzimbres@gmail.com)
  *
  * Distributed under the Boost Software License, Version 1.0. (See
  * accompanying file LICENSE.txt)
  */
 
-#include <boost/redis/resp3/serialization.hpp>
 #include <boost/redis/resp3/parser.hpp>
+#include <boost/redis/resp3/serialization.hpp>
 
 namespace boost::redis::resp3 {
 
@@ -35,8 +35,5 @@ void add_blob(std::string& payload, std::string_view blob)
    payload += parser::sep;
 }
 
-void add_separator(std::string& payload)
-{
-   payload += parser::sep;
-}
-} // boost::redis::resp3
+void add_separator(std::string& payload) { payload += parser::sep; }
+}  // namespace boost::redis::resp3

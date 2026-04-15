@@ -1,0 +1,23 @@
+---
+function: BE_ButtonCancel
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:
+
+  - name: Named constant == 2  
+    evaluate: | 
+      BE_ButtonCancel
+    output: 2

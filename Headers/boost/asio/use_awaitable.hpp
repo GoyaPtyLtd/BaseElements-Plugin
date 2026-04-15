@@ -2,7 +2,7 @@
 // use_awaitable.hpp
 // ~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2023 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2025 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -146,9 +146,9 @@ struct use_awaitable_t
  * See the documentation for boost::asio::use_awaitable_t for a usage example.
  */
 #if defined(GENERATING_DOCUMENTATION)
-constexpr use_awaitable_t<> use_awaitable;
+BOOST_ASIO_INLINE_VARIABLE constexpr use_awaitable_t<> use_awaitable;
 #else
-constexpr use_awaitable_t<> use_awaitable(0, 0, 0);
+BOOST_ASIO_INLINE_VARIABLE constexpr use_awaitable_t<> use_awaitable(0, 0, 0);
 #endif
 
 } // namespace asio

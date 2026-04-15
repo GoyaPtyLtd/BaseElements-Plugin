@@ -1,4 +1,5 @@
 // Copyright (c) 2023 Bela Schaum, X-Ryl669, Denis Mikhailov.
+// Copyright (c) 2024-2025 Antony Polukhin
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,23 +15,40 @@
 
 #include <boost/pfr/detail/config.hpp>
 
+#ifdef __clang__
+#   pragma clang diagnostic push
+#   pragma clang diagnostic ignored "-Wundefined-internal"
+#   pragma clang diagnostic ignored "-Wundefined-var-template"
+#endif
+
 namespace boost { namespace pfr { namespace detail {
 
-// This variable serves as a compile-time assert. If you see any error here, then
-// you're probably using `boost::pfr::get_name()` or `boost::pfr::names_as_array()` with a non-external linkage type.
+// This class has external linkage while T has not sure.
 template <class T>
-extern const T passed_type_has_no_external_linkage;
+struct wrapper {
+    const T value;
+};
+
+// This variable servers as a link-time assert.
+// If linker requires it, then `fake_object()` is used at runtime.
+template <class T>
+extern const wrapper<T> do_not_use_PFR_with_local_types;
 
 // For returning non default constructible types, it's exclusively used in member name retrieval.
 //
 // Neither std::declval nor boost::pfr::detail::unsafe_declval are usable there.
-// Limitation - T should have external linkage.
+// This takes advantage of C++20 features, while boost::pfr::detail::unsafe_declval works
+// with the former standards.
 template <class T>
 constexpr const T& fake_object() noexcept {
-    return passed_type_has_no_external_linkage<T>;
+    return do_not_use_PFR_with_local_types<T>.value;
 }
 
 }}} // namespace boost::pfr::detail
+
+#ifdef __clang__
+#   pragma clang diagnostic pop
+#endif
 
 #endif // BOOST_PFR_DETAIL_FAKE_OBJECT_HPP
 

@@ -12,35 +12,64 @@
 
 #include <boost/json/detail/config.hpp>
 #include <boost/json/value.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace boost {
 namespace json {
 
-/** Invoke a function object with the contents of a @ref value
+/** Invoke a function object with the contents of a @ref value.
 
-    @return The value returned by Visitor.
+    Invokes `v` as if by `std::forward<Visitor>(v)( X )`, where `X` is
+
+    For overloads **(1)** and **(2)**:
+    @li `jv.get_array()` if `jv.is_array()`, or
+    @li `jv.get_object()` if `jv.is_object()`, or
+    @li `jv.get_string()` if `jv.is_string()`, or
+    @li `jv.get_int64()` if `jv.is_int64()`, or
+    @li `jv.get_uint64()` if `jv.is_uint64()`, or
+    @li `jv.get_double()` if `jv.is_double()`, or
+    @li `jv.get_bool()` if `jv.is_bool()`, or
+    @li a `const` **(2)** or mutable **(1)** reference to an object of type
+        `std::nullptr_t` if `jv.is_null()`.
+
+    For overload **(3)**:
+    @li `std::move( jv.get_array() )` if `jv.is_array()`, or
+    @li `std::move( jv.get_object() )` if `jv.is_object()`, or
+    @li `std::move( jv.get_string() )` if `jv.is_string()`, or
+    @li `std::move( jv.get_int64() )` if `jv.is_int64()`, or
+    @li `std::move( jv.get_uint64() )` if `jv.is_uint64()`, or
+    @li `std::move( jv.get_double() )` if `jv.is_double()`, or
+    @li `std::move( jv.get_bool() )` if `jv.is_bool()`, or
+    @li `std::nullptr_t()` if `jv.is_null()`.
+
+    @returns The value returned by `v`.
 
     @param v The visitation function to invoke
-
     @param jv The value to visit.
+
+    @{
 */
-/** @{ */
 template<class Visitor>
 auto
 visit(
     Visitor&& v,
     value& jv) -> decltype(
-        std::declval<Visitor>()(nullptr));
+        static_cast<Visitor&&>(v)( std::declval<std::nullptr_t&>() ) );
 
 template<class Visitor>
 auto
 visit(
     Visitor &&v,
     value const &jv) -> decltype(
-        std::declval<Visitor>()(nullptr));
-/** @} */
+        static_cast<Visitor&&>(v)( std::declval<std::nullptr_t const&>() ) );
+
+template<class Visitor>
+auto
+visit(
+    Visitor &&v,
+    value&& jv) -> decltype(
+        static_cast<Visitor&&>(v)( std::declval<std::nullptr_t&&>() ) );
+/// @}
 
 } // namespace json
 } // namespace boost
