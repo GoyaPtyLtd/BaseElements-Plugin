@@ -5,9 +5,14 @@ Windows 64 bit : https://goya.com.au/files/beplugin/current/BaseElements.fmx64.z
 Linux Version for Ubuntu 20 : https://goya.com.au/files/beplugin/current/BaseElements_ubuntu20.fmx.zip  
 Linux Version for Ubuntu 22 : https://goya.com.au/files/beplugin/current/BaseElements_ubuntu22.fmx.zip  
 
-### Beta Releases ( when available )
+### Beta Release - 5.1.0b3 ( 05010006 ) 
 
-Mac 5.1.0b1 : https://goya.com.au/files/beplugin/5.1.0b1/BaseElements.fmplugin.dmg
+Ubuntu 22 ARM - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu22.04-aarch64.zip
+Ubuntu 22 x86 - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu22.04-x86_64.zip
+Ubuntu 24 ARM - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu24.04-aarch64.zip
+Ubuntu 24 x86 - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements-ubuntu24.04-x86_64.zip
+
+macOS - https://goya.com.au/files/beplugin/5.1.0.6/BaseElements.fmplugin.dmg
 
 ### iOS versions
 
