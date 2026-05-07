@@ -1,6 +1,11 @@
 ---
-function: BE_FunctionName
+functions: 
+  - BE_FunctionName
 
+# runs_on is a "default" setting and each test can also have it's own runs_on that overrides this.
+# that way you can have a thing where 90% of the tests have a platform, but there's an overide with minimal code required for that one extra test.
+# An example would be a function that only runs on mac/win, with 10 tests and you want a test that it fails properly on every other platform.
+# Or a function that behaves differently on all platforms ( ie clipboard ) and so you default to false for all, and switch each test on one platform.
 runs_on:
   macos: true
   windows: true
@@ -8,6 +13,7 @@ runs_on:
   ubuntu: true
   server: true
 
+# Not yet considered.
 requires:
   pro: false
   interaction: false
@@ -15,14 +21,36 @@ requires:
   sftp: false
   smtp: false
 
-vars:
-  varname: "sometext"
-  othervar: |
-    EvaluateCalc
+# variables are just a way to store reusable values, and cannot be modified after setup.
+# to use a variable reference the name as {{varName}}
+variables:
+  - name: varName
+    dependencies: 
+      - BE_OtherFuncton
+    evaluate: |
+      EvaluateCalc
+
 
 tests:  
-  - name:   
-    evaluate: | 
+  - name: 
+    
+    # Not yet sure how dependencies will work - it may need to reference a different file, not a function.
+    dependencies:
+      - BE_OtherFuncton  
+      
+    # setField is the same as evaluate, except the result is stored into the Test::Data Container field
+    setField: |
       FileMaker Calculation
+    # to use the field set in the setField reference it as {{field::Data}}
+    evaluate: | 
+      FileMaker Calculation {{version}} 
     output: | 
       result
+
+# files just goes at the end because the base64 can be huge and putting it last makes it easier to manage tests.  
+# Order doesn't matter in the setup, files are evaluated before tests and stored in variables.
+# To use a file, reference it as {{file::name}}
+files:
+  - name: name
+    base64: | 
+      ABEiM0RVZneImaq7zN3u/w==

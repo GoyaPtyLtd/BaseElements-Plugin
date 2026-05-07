@@ -1,0 +1,116 @@
+---
+functions: 
+    - BE_ArraySetFromValueList
+    - BE_ArrayChangeValue
+    - BE_ArrayDelete
+    - BE_ArrayGetSize
+    - BE_ArrayGetValue
+    - BE_ArrayFind
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+variables:
+  - name: "list"
+    evaluate: "a¶b¶c"
+  - name: "longList"
+    evaluate: List ( ¶ ; ¶ ; ¶ ; ¶ ; "a" ; "b" ; "¶" ; "c" ; "¶" )
+  - name: "array"
+    evaluate: BE_ArraySetFromValueList ( {{list}} )
+  - name: "array2"
+    evaluate: BE_ArraySetFromValueList ( {{list}} ; false )
+  - name: "array3"
+    evaluate: BE_ArraySetFromValueList ( "a¶b¶¶c" )
+
+tests:
+  - name: Check Create Array Worked
+    evaluate: |
+      ( {{array}} > 0 ) and 
+      ( GetAsNumber ( {{array}} ) = {{array}} ) and 
+      ( Int ( {{array}} ) = {{array}} ) and 
+      ( {{array2}} = ( {{array}} + 1 ) )
+    output: True
+     
+  - name: Check Array Size matches input
+    evaluate: ValueCount ( {{list}} ) = BE_ArrayGetSize ( {{array}} ) = BE_ArrayGetSize ( {{array2}} ) = BE_ArrayGetSize ( {{array3}} )
+    output: True
+
+  - name: Check Alternate parameter
+    evaluate: BE_ArrayGetSize ( {{array3}} ) ≠ BE_ArrayGetSize ( BE_ArraySetFromValueList ( "a¶b¶¶c" ; True ) )
+    output: True
+
+  - name: Find Array Value that exists
+    evaluate: BE_ArrayFind ( {{array}} ; "c" )
+    output: 3
+    
+  - name: Find Array Value that doesn't exist
+    evaluate: BE_ArrayFind ( {{array}} ; "x" )
+    output: ""
+    
+  - name: Find Array Value in empty Array
+    evaluate: BE_ArrayFind ( BE_ArraySetFromValueList ( "" ) ; "x" )
+    output: ""
+
+  - name: Get 0 index Array Value
+    evaluate: BE_ArrayGetValue ( {{array}} ; 0 ) 
+    output: ""
+
+  - name: Get Array Value
+    evaluate: BE_ArrayGetValue ( {{array}} ; 2 ) 
+    output: "b"
+    
+  - name: Check Get Array Value with removed leading empty values
+    evaluate: BE_ArrayGetValue ( BE_ArraySetFromValueList ( {{longList}} ; False ) ; 2 ) 
+    output: "b"
+
+  - name: Check Get Array Value with leading empty values 
+    evaluate: BE_ArrayGetValue ( BE_ArraySetFromValueList ( {{longList}} ; True ) ; 2 ) 
+    output: ""
+    
+  - name: Replace Array Value
+    evaluate: BE_ArrayChangeValue ( {{array}} ; 3 ; "b" )
+    output: True
+
+  - name: Get Replaced Array Value
+    evaluate: BE_ArrayGetValue ( {{array}} ; 3 ) 
+    output: "b"
+    
+  - name: Find Multiple Array Values
+    evaluate: BE_ArrayFind ( {{array}} ; "b" ) 
+    output: "2¶3"
+    
+  - name: Replace Value past Array end
+    evaluate: BE_ArrayChangeValue ( {{array}} ; 4 ; "x" )
+    output: 0
+
+  - name: Check size of empty Array
+    evaluate: BE_ArrayGetSize ( BE_ArraySetFromValueList ( "" ) )
+    output: 0
+
+  - name: Check size of empty Array
+    evaluate: BE_ArrayGetSize ( 0 )
+    output: ""
+
+  - name: Delete non existent Array
+    evaluate: BE_ArrayDelete ( 0 )
+    output: ""
+
+  - name: Delete existing array
+    evaluate: BE_ArrayDelete ( {{array}} )
+    output: ""
+
+  - name: Check Delete Array is gone
+    evaluate: BE_ArrayGetSize ( {{array}} )
+    output: ""
+

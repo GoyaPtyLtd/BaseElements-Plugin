@@ -1,5 +1,6 @@
 ---
-function: BE_TextExtractWords
+functions: 
+  - BE_TextExtractWords
 
 runs_on:
   macos: true
@@ -61,3 +62,63 @@ tests:
     evaluate: | 
       BE_TextExtractWords ( "3-$minus-3" )
     output: "$minus"
+
+  - name: An incomplete comment 
+    evaluate: | 
+      BE_TextExtractWords ( "$half_a_comment /* something" )
+    output: "$half_a_comment"
+    
+  - name: An incomplete string 
+    evaluate: | 
+      BE_TextExtractWords ( "$this & \" is half a string \\\" with an embedded quote" )
+    output: "$this"
+    
+  - name: Embedded quote
+    evaluate: | 
+      BE_TextExtractWords ( "$this & \" is a string \\\" with an embedded quote\" & $more" )
+    output: "$this¶$more"
+    
+  - name: Embedded quotes
+    evaluate: | 
+      BE_TextExtractWords ( ""$this & \" is half a string \\\" with two \\\" embedded quotes\" & $more" )
+    output: "$this¶$more"
+    
+  - name: Incomplete string 
+    evaluate: | 
+      BE_TextExtractWords ( "$this & \"half a string" )
+    output: "$this"
+
+  - name: Star as a separator 
+    evaluate: | 
+      BE_TextExtractWords ( "$this*$that" )
+    output: "$this¶$that"
+
+  - name: Greater than as a separator 
+    evaluate: | 
+      BE_TextExtractWords ( "$greater>$than≥$equal" )
+    output: "$greater¶$than¶$equal"
+
+  - name: Less than as a separator 
+    evaluate: | 
+      BE_TextExtractWords ( "$less<$than≤$equal" )
+    output: "$less¶$than¶$equal"
+
+  - name: Equals as a separator 
+    evaluate: | 
+      BE_TextExtractWords ( "$not_equal≠$equal=$to" )
+    output: "$not_equal¶$equal¶$to"
+
+  - name: Other Separators 
+    evaluate: | 
+      BE_TextExtractWords ( "$$global&$variable^$power+$plus" )
+    output: "$$global¶$variable¶$power¶$plus"
+
+  - name: Unicode 
+    evaluate: | 
+      BE_TextExtractWords ( "$世界の代表的な & $世界の代表的な使" )
+    output: "$世界の代表的な¶$世界の代表的な使"
+
+  - name: Variable Index 
+    evaluate: | 
+      BE_TextExtractWords ( "$this[$one]" )
+    output: "$this¶$one"

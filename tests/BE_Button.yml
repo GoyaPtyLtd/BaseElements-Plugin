@@ -1,0 +1,33 @@
+---
+functions: 
+  - BE_ButtonOK
+  - BE_ButtonCancel
+  - BE_ButtonAlternate
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:
+
+  - name: ButtonOK
+    evaluate: BE_ButtonOK
+    output: 1
+
+  - name: ButtonCancel
+    evaluate: BE_ButtonCancel
+    output: 2
+
+  - name: ButtonAlternate
+    evaluate: BE_ButtonAlternate
+    output: 3
