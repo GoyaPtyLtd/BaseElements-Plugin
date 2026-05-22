@@ -18,6 +18,10 @@ requires:
 
 tests:
   
+  - name: No Variables
+    evaluate: BE_TextExtractWords ( "no variables here" )
+    output: ""
+
   - name: test $var extract, space separator, local and global
     evaluate: BE_TextExtractWords ( "$$global & $variable" )
     output: "$$global¶$variable"

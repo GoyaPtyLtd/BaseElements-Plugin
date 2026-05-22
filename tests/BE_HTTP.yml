@@ -1,0 +1,33 @@
+---
+functions: 
+  - BE_FunctionName
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: true
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:  
+  - name: HTTP GET Goya Website
+    evaluate: |
+      Let ( $result = BE_HTTP_GET ( "https://goya.com.au/" ) ; 
+        Position ( $result ; "<head>" ; 1 ; 1 ) > 0
+      )
+    output: True
+    debug: |
+      "Result is : " & $result
+
+  - name: HTTP GET Invalid Scheme
+    evaluate: BE_HTTP_GET ( "ttps://goya.com.au/" )
+    output: "?"
+    errorCode: 1
+

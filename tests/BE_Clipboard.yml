@@ -46,7 +46,7 @@ tests:
     output: "<fmxmlsnippet type=\"FMObjectList\"><Script includeInMenu=\"True\" runFullAccess=\"False\" id=\"1\" name=\"A shiny new Script\"></Script></fmxmlsnippet>"
 
   - name:  Set Clipboard as container
-    evaluate: BE_ClipboardSetFile ( {{file::Test}} ; "com.adobe.pdf" )
+    evaluate: BE_ClipboardSetFile ( {{fileVar::Test}} ; "com.adobe.pdf" )
     output: 0
 
   - name: Get Clipboard File with default name
@@ -98,13 +98,11 @@ tests:
 
   - name: NotImplemented
     runs_on:
-      ios: true
       ubuntu: true
       server: true
-    evaluate: | 
-      ( BE_ClipboardFormats = "?" ) and ( BE_GetLastError = {{NotImplemented}} ) and 
-      ( BE_ClipboardGetFile ( "noFile" ) = "?" ) and ( BE_GetLastError = {{NotImplemented}} )
-    output: True  
+    evaluate: BE_ClipboardFormats & BE_ClipboardGetFile ( "noFile" ) & BE_ClipboardGetText ( "someFormat" )
+    output: "???"
+    errorCode: 3
 
 files:
   - name: Test

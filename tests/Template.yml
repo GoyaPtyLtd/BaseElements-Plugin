@@ -33,23 +33,38 @@ variables:
 
 tests:  
   - name: 
-    
-    # Not yet sure how dependencies will work - it may need to reference a different file, not a function.
-    dependencies:
-      - BE_OtherFuncton  
-      
+          
     # setField is the same as evaluate, except the result is stored into the Test::Data Container field
+    # to use the field set in the setField reference it as {{field::Data}}
     setField: |
       FileMaker Calculation
-    # to use the field set in the setField reference it as {{field::Data}}
+
+    # evaluate is the calculation passed to the Evaluate function in FileMaker to see if this test is passing.
     evaluate: | 
       FileMaker Calculation {{version}} 
-    output: | 
-      result
+
+    # output is what we expect from the evaluate calculation.  If they match then it's a pass.
+    # result can be True, False, a text String, a number, or a {{variable}}
+    # When there is an expected output of True or False, the actual output is run through GetAsBoolean first.
+    # result is not passed through the Evaluate function so cannot be a calculation.  If you need that, set a var or debug.
+    output: result
+    
+    # If there's an expected value for BE_GetLastError then you can also check for it.
+    # This can also be a list where the result should match at least one of the values
+    errorCode: 1
+
+    # debug is any other data you want to report when output fails to match to assist with what went wrong with the calculation
+    # typical use case is to set $variables via Let when running a complex calc and then showing those later.
+    debug: | 
+      FileMaker Calculation
+
 
 # files just goes at the end because the base64 can be huge and putting it last makes it easier to manage tests.  
 # Order doesn't matter in the setup, files are evaluated before tests and stored in variables.
-# To use a file, reference it as {{file::name}}
+# To use a file, reference it as :
+#  {{filePath::name}} for a file saved to disk and the quoted path in its place or 
+#  {{fileVar::name}} for a file turned into a container in a local variable called $name
+
 files:
   - name: name
     base64: | 

@@ -18,101 +18,240 @@ requires:
   smtp: false
 
 variables:
-  - name: "testDirectory"
+  - name: tempPath
     evaluate: |
-      Case ( 
-      Abs ( Get ( SystemPlatform ) ) = 2 ; Substitute ( Right ( Get ( DesktopPath ) ; Length ( Get ( DesktopPath ) ) - 1 ) & "_base_elements_test_directory_/" ; "/" ; "\\" ) ;
-      Abs ( Get ( SystemPlatform ) ) = 3 ; Get ( TemporaryPath ) &  "_base_elements_test_directory_/" ;
-      "/tmp/_base_elements_test_directory_/" )
-  - name: "testFile"
+      ConvertFromFileMakerPath ( Get ( TemporaryPath ) ; Case ( Get ( SystemPlatform ) = -2 ; WinPath ; PosixPath ) ) & 
+      Get ( UUID ) & 
+      Case ( Get ( SystemPlatform ) = -2 ; "\\" ; "/" )
+
+  - name: testFile1
+    evaluate: "be_plugin_tests.txt"
+
+  - name: testPath1
     evaluate: |
-      {{testDirectory}} & "be_plugin_tests.txt"
-  - name: "copyMoveTestFile"
+      {{tempPath}} & {{testFile1}}
+
+  - name: testFile2
+    evaluate: "copy_move_tests.txt"
+
+  - name: testPath2
     evaluate: |
-      {{testDirectory}} & "copy_move_tests.txt"
+      {{tempPath}} & {{testFile2}}
+
+  - name: brokenFolder
+    evaluate: |
+      "/does:not:exist" & {{tempPath}}
+
+  - name: brokenFile
+    evaluate: |
+      "/does:not:exist" & {{tempPath}} & "file_doesnt_exist.txt"
 
 
 tests:  
   - name: Test Directory shouldn't exist 
-    evaluate: BE_FileExists ( {{testDirectory}} )
+    evaluate: BE_FileExists ( {{tempPath}} )
     output: False
 
   - name: Create Test Directory 
-    evaluate: BE_FolderCreate ( {{testDirectory}} )
+    evaluate: BE_FolderCreate ( {{tempPath}} )
     output: 0
 
   - name: Check Test Directory Exists
-    evaluate: BE_FileExists ( {{testDirectory}} )
+    evaluate: BE_FileExists ( {{tempPath}} )
     output: True
 
   - name: Test File shouldn't exist
-    evaluate: BE_FileExists ( {{testFile}} )
+    evaluate: BE_FileExists ( {{testPath1}} )
     output: False
 
   - name: Write to Test File 
-    evaluate: BE_FileWriteText ( {{testFile}} ; "some text here")
+    evaluate: BE_FileWriteText ( {{testPath1}} ; "some text here")
     output: 0
 
   - name: Check Test File Content
-    evaluate: BE_FileReadText ( {{testFile}} )
+    evaluate: BE_FileReadText ( {{testPath1}} )
     output: "some text here"
 
   - name: Append to Test File 
-    evaluate: BE_FileWriteText ( {{testFile}} ; " and some more text here" ; True )
+    evaluate: BE_FileWriteText ( {{testPath1}} ; " and some more text here" ; True )
     output: 0
 
   - name: Check Test File Content
-    evaluate: BE_FileReadText ( {{testFile}} )
+    evaluate: BE_FileReadText ( {{testPath1}} )
     output: "some text here and some more text here"
 
   - name: Overwrite Test File 
-    evaluate: BE_FileWriteText ( {{testFile}} ; "new text here")
+    evaluate: BE_FileWriteText ( {{testPath1}} ; "new text here")
     output: 0
 
   - name: Check Test File Content
-    evaluate: BE_FileReadText ( {{testFile}} )
+    evaluate: BE_FileReadText ( {{testPath1}} )
     output: "new text here"
 
   - name: Copy Test File shouldn't exist
-    evaluate: BE_FileExists ( {{copyMoveTestFile}} )
+    evaluate: BE_FileExists ( {{testPath2}} )
     output: 0
 
+  - name: Copy File source error
+    evaluate: BE_FileCopy ( {{brokenFile}} ; {{testPath2}} )
+    output: True
+
+  - name: Copy File destination error
+    evaluate: BE_FileCopy ( {{testPath1}} ; {{brokenFile}} )
+    output: True
+
   - name: Copy Test File
-    evaluate: BE_FileCopy ( {{testFile}} ; {{copyMoveTestFile}} )
+    evaluate: BE_FileCopy ( {{testPath1}} ; {{testPath2}} )
     output: 0
 
   - name: Check Copy File Exists
-    evaluate: BE_FileExists ( {{copyMoveTestFile}} )
+    evaluate: BE_FileExists ( {{testPath2}} )
     output: True
 
   - name: Check Test File wasn't moved
-    evaluate: BE_FileExists ( {{testFile}} )
+    evaluate: BE_FileExists ( {{testPath1}} )
     output: True
 
+  - name: Check File List of broken folder
+    evaluate: BE_FileListFolder ( {{brokenFolder}} )
+    output: "?"
+    errorCode: 
+      - 2
+      - 123
+
+  - name: Check the folder for both files
+    evaluate: |
+      Let ( [
+        $folderList = BE_FileListFolder ( {{tempPath}} ) ; 
+        $folderCheck = List ( {{testFile1}} ; {{testFile2}} ) ] ;
+        BE_ValuesSort ( $folderList ) = 
+        BE_ValuesSort ( $folderCheck ) 
+      )
+    output: True
+    debug: |
+      "BE_FileListFolder out was : ¶" & $folderList
+
   - name: Delete Test File
-    evaluate: BE_FileDelete ( {{testFile}} )
+    evaluate: BE_FileDelete ( {{testPath1}} )
     output: 0
 
   - name: Check Test File was deleted
-    evaluate: BE_FileExists ( {{testFile}} )
+    evaluate: BE_FileExists ( {{testPath1}} )
     output: False
 
+  - name: Move File source error
+    evaluate: BE_FileMove ( {{brokenFile}} ; {{testPath1}} )
+    output: True
+
+  - name: Move File destination error
+    evaluate: BE_FileMove ( {{testPath2}} ; {{brokenFile}} )
+    output: True
+
   - name: Move Test File
-    evaluate: BE_FileCopy ( {{copyMoveTestFile}} ; {{testFile}} )
+    evaluate: BE_FileMove ( {{testPath2}} ; {{testPath1}} )
     output: 0
 
   - name: Check Test File was copied
-    evaluate: BE_FileExists ( {{testFile}} )
+    evaluate: BE_FileExists ( {{testPath1}} )
     output: True
 
   - name: Check Copy File was moved
-    evaluate: BE_FileExists ( {{copyMoveTestFile}} )
+    evaluate: BE_FileExists ( {{testPath2}} )
     output: False
 
   - name: Delete Test Folder
-    evaluate: BE_FileDelete ( {{testDirectory}} )
+    evaluate: BE_FileDelete ( {{tempPath}} )
     output: 0
 
   - name: Check Test Directory Was Deleted
-    evaluate: BE_FileExists ( {{testDirectory}} )
+    evaluate: BE_FileExists ( {{tempPath}} )
     output: False
+
+  - name: BE_FileWriteText destination error
+    evaluate: BE_FileWriteText ( {{brokenFile}} ; " and some more text here" ; true )
+    output: True
+
+  - name: FileReadText Check Line Ending Replaces
+    evaluate: |
+      Let ( 
+        $result = BE_FileReadText ( {{filePath::rss.xml.out}} ) ; Char ( 13 ) ; Char ( 10 ) ) ; 
+        Substitute ( $result = Substitute ( {{fileVar::rss.xml}} ; Char ( 13 ) ; Char ( 10 ) 
+      )
+    output: True
+    debug: |
+      "BE_FileReadText Result = " & $result
+
+files:
+    - name: rss.xml.out
+      base64: |
+        PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxGTVBYTUxSRVNVTFQgeG1s
+        bnM9Imh0dHA6Ly93d3cuZmlsZW1ha2VyLmNvbS9mbXB4bWxyZXN1bHQiPg0KCTxFUlJPUkNPREU+
+        MDwvRVJST1JDT0RFPg0KCTxQUk9EVUNUIEJVSUxEPSIwMS0xMy0yMDEwIiBOQU1FPSJGaWxlTWFr
+        ZXIiIFZFUlNJT049IlByb0FkdmFuY2VkIDExLjB2MSIvPg0KCTxEQVRBQkFTRSBEQVRFRk9STUFU
+        PSJEL20veXl5eSIgTEFZT1VUPSIiIE5BTUU9IlNpbXBsZV9SU1NfRXhwb3J0LmZwNyIgUkVDT1JE
+        Uz0iNSIgVElNRUZPUk1BVD0iaDptbTpzcyBhIi8+DQoJPE1FVEFEQVRBPg0KCQk8RklFTEQgRU1Q
+        VFlPSz0iWUVTIiBNQVhSRVBFQVQ9IjEiIE5BTUU9IlRpdGxlIiBUWVBFPSJURVhUIi8+DQoJCTxG
+        SUVMRCBFTVBUWU9LPSJZRVMiIE1BWFJFUEVBVD0iMSIgTkFNRT0iTGluayIgVFlQRT0iVEVYVCIv
+        Pg0KCQk8RklFTEQgRU1QVFlPSz0iWUVTIiBNQVhSRVBFQVQ9IjEiIE5BTUU9IkRlc2NyaXB0aW9u
+        IiBUWVBFPSJURVhUIi8+DQoJPC9NRVRBREFUQT4NCgk8UkVTVUxUU0VUIEZPVU5EPSI1Ij4NCgkJ
+        PFJPVyBNT0RJRD0iMSIgUkVDT1JESUQ9IjEiPg0KCQkJPENPTD4NCgkJCQk8REFUQT5TbGFzaGRv
+        dDwvREFUQT4NCgkJCTwvQ09MPg0KCQkJPENPTD4NCgkJCQk8REFUQT5odHRwOi8vc2xhc2hkb3Qu
+        b3JnLzwvREFUQT4NCgkJCTwvQ09MPg0KCQkJPENPTD4NCgkJCQk8REFUQT5OZXdzIGZvciBOZXJk
+        cywgc3R1ZmYgdGhhdCBtYXR0ZXJzPC9EQVRBPg0KCQkJPC9DT0w+DQoJCTwvUk9XPg0KCQk8Uk9X
+        IE1PRElEPSIwIiBSRUNPUkRJRD0iMiI+DQoJCQk8Q09MPg0KCQkJCTxEQVRBPlRoZSBSZWdpc3Rl
+        cjwvREFUQT4NCgkJCTwvQ09MPg0KCQkJPENPTD4NCgkJCQk8REFUQT5odHRwOi8vd3d3LnJlZ2lz
+        dGVyLmNvLnVrLzwvREFUQT4NCgkJCTwvQ09MPg0KCQkJPENPTD4NCgkJCQk8REFUQT5CaXRpbmcg
+        dGhlIGhhbmQgdGhhdCBmZWVkcyBJVDwvREFUQT4NCgkJCTwvQ09MPg0KCQk8L1JPVz4NCgkJPFJP
+        VyBNT0RJRD0iMCIgUkVDT1JESUQ9IjMiPg0KCQkJPENPTD4NCgkJCQk8REFUQT5PJ1JlaWxseSBO
+        ZXR3b3JrPC9EQVRBPg0KCQkJPC9DT0w+DQoJCQk8Q09MPg0KCQkJCTxEQVRBPmh0dHA6Ly93d3cu
+        b3JlaWxseW5ldC5jb20vPC9EQVRBPg0KCQkJPC9DT0w+DQoJCQk8Q09MPg0KCQkJCTxEQVRBPkRl
+        dmVsb3BlcnMnIEh1YiAtLSB3ZWIgZGV2ZWxvcG1lbnQsIG9wZW4gc291cmNlIGRldmVsb3BtZW50
+        LCBvcGVuIGFuZCBlbWVyZ2luZyB0ZWNobm9sb2dpZXM8L0RBVEE+DQoJCQk8L0NPTD4NCgkJPC9S
+        T1c+DQoJCTxST1cgTU9ESUQ9IjEiIFJFQ09SRElEPSI0Ij4NCgkJCTxDT0w+DQoJCQkJPERBVEE+
+        U2NyaXB0aW5nIE5ld3M8L0RBVEE+DQoJCQk8L0NPTD4NCgkJCTxDT0w+DQoJCQkJPERBVEE+aHR0
+        cDovL3d3dy5zY3JpcHRpbmcuY29tLzwvREFUQT4NCgkJCTwvQ09MPg0KCQkJPENPTD4NCgkJCQk8
+        REFUQT5EYXZlIFdpbmVyJ3Mgd2VibG9nIGFib3V0IHNjcmlwdGluZyBhbmQgc3R1ZmYgbGlrZSB0
+        aGF0LjwvREFUQT4NCgkJCTwvQ09MPg0KCQk8L1JPVz4NCgkJPFJPVyBNT0RJRD0iMiIgUkVDT1JE
+        SUQ9IjUiPg0KCQkJPENPTD4NCgkJCQk8REFUQT5GaWxlTWFrZXIgWE1MIENlbnRyYWw8L0RBVEE+
+        DQoJCQk8L0NPTD4NCgkJCTxDT0w+DQoJCQkJPERBVEE+aHR0cDovL3d3dy5maWxlbWFrZXIuY29t
+        LmF1L3htbC88L0RBVEE+DQoJCQk8L0NPTD4NCgkJCTxDT0w+DQoJCQkJPERBVEE+WE1MLCB0aGUg
+        c3RhbmRhcmQgZm9yIHVuaXZlcnNhbCBkYXRhIGV4Y2hhbmdlLCBleHRlbmRzIHRoZSByZWFjaCBv
+        ZiBGaWxlTWFrZXIgUHJvIDYuPC9EQVRBPg0KCQkJPC9DT0w+DQoJCTwvUk9XPg0KCTwvUkVTVUxU
+        U0VUPg0KPC9GTVBYTUxSRVNVTFQ+DQo=
+
+    - name: rss.xml
+      base64: |
+        PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPEZNUFhNTFJFU1VMVCB4bWxu
+        cz0iaHR0cDovL3d3dy5maWxlbWFrZXIuY29tL2ZtcHhtbHJlc3VsdCI+Cgk8RVJST1JDT0RFPjA8
+        L0VSUk9SQ09ERT4KCTxQUk9EVUNUIEJVSUxEPSIwMS0xMy0yMDEwIiBOQU1FPSJGaWxlTWFrZXIi
+        IFZFUlNJT049IlByb0FkdmFuY2VkIDExLjB2MSIvPgoJPERBVEFCQVNFIERBVEVGT1JNQVQ9IkQv
+        bS95eXl5IiBMQVlPVVQ9IiIgTkFNRT0iU2ltcGxlX1JTU19FeHBvcnQuZnA3IiBSRUNPUkRTPSI1
+        IiBUSU1FRk9STUFUPSJoOm1tOnNzIGEiLz4KCTxNRVRBREFUQT4KCQk8RklFTEQgRU1QVFlPSz0i
+        WUVTIiBNQVhSRVBFQVQ9IjEiIE5BTUU9IlRpdGxlIiBUWVBFPSJURVhUIi8+CgkJPEZJRUxEIEVN
+        UFRZT0s9IllFUyIgTUFYUkVQRUFUPSIxIiBOQU1FPSJMaW5rIiBUWVBFPSJURVhUIi8+CgkJPEZJ
+        RUxEIEVNUFRZT0s9IllFUyIgTUFYUkVQRUFUPSIxIiBOQU1FPSJEZXNjcmlwdGlvbiIgVFlQRT0i
+        VEVYVCIvPgoJPC9NRVRBREFUQT4KCTxSRVNVTFRTRVQgRk9VTkQ9IjUiPgoJCTxST1cgTU9ESUQ9
+        IjEiIFJFQ09SRElEPSIxIj4KCQkJPENPTD4KCQkJCTxEQVRBPlNsYXNoZG90PC9EQVRBPgoJCQk8
+        L0NPTD4KCQkJPENPTD4KCQkJCTxEQVRBPmh0dHA6Ly9zbGFzaGRvdC5vcmcvPC9EQVRBPgoJCQk8
+        L0NPTD4KCQkJPENPTD4KCQkJCTxEQVRBPk5ld3MgZm9yIE5lcmRzLCBzdHVmZiB0aGF0IG1hdHRl
+        cnM8L0RBVEE+CgkJCTwvQ09MPgoJCTwvUk9XPgoJCTxST1cgTU9ESUQ9IjAiIFJFQ09SRElEPSIy
+        Ij4KCQkJPENPTD4KCQkJCTxEQVRBPlRoZSBSZWdpc3RlcjwvREFUQT4KCQkJPC9DT0w+CgkJCTxD
+        T0w+CgkJCQk8REFUQT5odHRwOi8vd3d3LnJlZ2lzdGVyLmNvLnVrLzwvREFUQT4KCQkJPC9DT0w+
+        CgkJCTxDT0w+CgkJCQk8REFUQT5CaXRpbmcgdGhlIGhhbmQgdGhhdCBmZWVkcyBJVDwvREFUQT4K
+        CQkJPC9DT0w+CgkJPC9ST1c+CgkJPFJPVyBNT0RJRD0iMCIgUkVDT1JESUQ9IjMiPgoJCQk8Q09M
+        PgoJCQkJPERBVEE+TydSZWlsbHkgTmV0d29yazwvREFUQT4KCQkJPC9DT0w+CgkJCTxDT0w+CgkJ
+        CQk8REFUQT5odHRwOi8vd3d3Lm9yZWlsbHluZXQuY29tLzwvREFUQT4KCQkJPC9DT0w+CgkJCTxD
+        T0w+CgkJCQk8REFUQT5EZXZlbG9wZXJzJyBIdWIgLS0gd2ViIGRldmVsb3BtZW50LCBvcGVuIHNv
+        dXJjZSBkZXZlbG9wbWVudCwgb3BlbiBhbmQgZW1lcmdpbmcgdGVjaG5vbG9naWVzPC9EQVRBPgoJ
+        CQk8L0NPTD4KCQk8L1JPVz4KCQk8Uk9XIE1PRElEPSIxIiBSRUNPUkRJRD0iNCI+CgkJCTxDT0w+
+        CgkJCQk8REFUQT5TY3JpcHRpbmcgTmV3czwvREFUQT4KCQkJPC9DT0w+CgkJCTxDT0w+CgkJCQk8
+        REFUQT5odHRwOi8vd3d3LnNjcmlwdGluZy5jb20vPC9EQVRBPgoJCQk8L0NPTD4KCQkJPENPTD4K
+        CQkJCTxEQVRBPkRhdmUgV2luZXIncyB3ZWJsb2cgYWJvdXQgc2NyaXB0aW5nIGFuZCBzdHVmZiBs
+        aWtlIHRoYXQuPC9EQVRBPgoJCQk8L0NPTD4KCQk8L1JPVz4KCQk8Uk9XIE1PRElEPSIyIiBSRUNP
+        UkRJRD0iNSI+CgkJCTxDT0w+CgkJCQk8REFUQT5GaWxlTWFrZXIgWE1MIENlbnRyYWw8L0RBVEE+
+        CgkJCTwvQ09MPgoJCQk8Q09MPgoJCQkJPERBVEE+aHR0cDovL3d3dy5maWxlbWFrZXIuY29tLmF1
+        L3htbC88L0RBVEE+CgkJCTwvQ09MPgoJCQk8Q09MPgoJCQkJPERBVEE+WE1MLCB0aGUgc3RhbmRh
+        cmQgZm9yIHVuaXZlcnNhbCBkYXRhIGV4Y2hhbmdlLCBleHRlbmRzIHRoZSByZWFjaCBvZiBGaWxl
+        TWFrZXIgUHJvIDYuPC9EQVRBPgoJCQk8L0NPTD4KCQk8L1JPVz4KCTwvUkVTVUxUU0VUPgo8L0ZN
+        UFhNTFJFU1VMVD4K
+

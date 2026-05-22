@@ -232,7 +232,7 @@ tests:
 
   - name: CipherEncrypt container data
     evaluate: |
-      BE_CipherEncrypt ( "aes-128-cbc" ; {{file::EncryptTest1}} ; "96BF2E86CEF9D349E03C9566565D3881" ; "43B0E5AD9765365E95044A5DF33F78AF" ; True ; "" )
+      BE_CipherEncrypt ( "aes-128-cbc" ; {{fileVar::EncryptTest1}} ; "96BF2E86CEF9D349E03C9566565D3881" ; "43B0E5AD9765365E95044A5DF33F78AF" ; True ; "" )
     output: "fb6762aad727a1b411e83baaf18b802dd922eaa08a8104d97fe0e59175fc28b9"
       
   - name: CipherEncrypt Set container Field Test 1
@@ -243,7 +243,7 @@ tests:
 
   - name: CipherEncrypt container data
     evaluate: |
-      BE_CipherDecrypt ( "aes-128-cbc" ; {{file::EncryptTest2}} ; "96BF2E86CEF9D349E03C9566565D3881" ; "43B0E5AD9765365E95044A5DF33F78AF" ; True ; "" )
+      BE_CipherDecrypt ( "aes-128-cbc" ; {{fileVar::EncryptTest2}} ; "96BF2E86CEF9D349E03C9566565D3881" ; "43B0E5AD9765365E95044A5DF33F78AF" ; True ; "" )
     output: "00112233445566778899aabbccddeeff"
 
   - name: CipherEncrypt Set container Field Test 2

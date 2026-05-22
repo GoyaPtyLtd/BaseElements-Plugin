@@ -1,0 +1,54 @@
+---
+functions: 
+  - BE_FunctionName
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: true
+  ftp: false
+  sftp: false
+  smtp: false
+
+variables:
+  - name: currentTable
+    evaluate: Quote ( Get ( LayoutTableName ) )
+  - name: fieldNames
+    evaluate: FieldNames ( Get ( FileName ) ; Get ( LayoutName ) )
+  - name: firstField
+    evaluate: Quote ( GetValue ( {{fieldNames}} ; 1 ) )
+  - name: secondField
+    evaluate: Quote ( GetValue ( {{fieldNames}} ; 2 ) )
+  - name: FoundCount
+    evaluate: Get ( FoundCount )
+
+
+tests:  
+  - name: SQL Select
+    evaluate: |
+      Let ( [ 
+        $sql = "select {{firstField}} from currentTable" ; 
+        $result = BE_FileMakerSQL ( $sql ) ] ; 
+        ValueCount ( $result )
+    result: {{FoundCount}}
+    debug: |
+      "SQL was : " & $sql & ¶ & 
+      "Result was : " & $result
+
+  - name: SQL Select with 2 fields
+    evaluate: |
+      Let ( [ 
+        $sql = "select {{firstField}},{{secondField}} from currentTable" ; 
+        $result = BE_FileMakerSQL ( $sql ) ] ; 
+        ValueCount ( $result )
+    result: {{FoundCount}}
+    debug: |
+      "SQL was : " & $sql & ¶ & 
+      "Result was : " & $result
+

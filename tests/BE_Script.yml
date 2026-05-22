@@ -1,0 +1,58 @@
+---
+functions: 
+  - BE_ScriptExecute
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: true
+  ftp: false
+  sftp: false
+  smtp: false
+
+variables:
+  - name: testScriptName
+    evaluate: "testScriptName"
+
+
+tests:  
+  - name: Execute Test Script
+    evaluate: BE_ScriptExecute ( {{testScriptName}} )
+    output: 0
+    errorCode: 0
+
+  - name: Execute Test Script no File
+    evaluate: BE_ScriptExecute ( {{testScriptName}} ; "" )
+    output: 0
+    errorCode: 0
+
+  - name: Execute Test Script current File
+    evaluate: BE_ScriptExecute ( {{testScriptName}} ; Get ( FileName ) )
+    output: 0
+    errorCode: 0
+
+  - name: Execute Test Script with Parameters
+    evaluate: BE_ScriptExecute ( {{testScriptName}} ; "" ;  "some parameters" )
+    output: 0
+    errorCode: 0
+
+  - name: Execute Test Script File Missing
+    evaluate: BE_ScriptExecute ( {{testScriptName}} ; "FileDoesNotExist" )
+    output: "?"
+    errorCode: 100
+
+  - name: Execute Test Script File Missing with params
+    evaluate: BE_ScriptExecute ( {{testScriptName}} ; "FileDoesNotExist" "some parameters" )
+    output: "?"
+    errorCode: 100
+
+  - name: Execute Missing Script
+    evaluate: BE_ScriptExecute ( "MissingScriptName" )
+    output: "?"
+    errorCode: 104
