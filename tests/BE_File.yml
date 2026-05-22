@@ -1,0 +1,118 @@
+---
+functions: 
+  - BE_FileExists
+  - BE_FolderCreate
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+variables:
+  - name: "testDirectory"
+    evaluate: |
+      Case ( 
+      Abs ( Get ( SystemPlatform ) ) = 2 ; Substitute ( Right ( Get ( DesktopPath ) ; Length ( Get ( DesktopPath ) ) - 1 ) & "_base_elements_test_directory_/" ; "/" ; "\\" ) ;
+      Abs ( Get ( SystemPlatform ) ) = 3 ; Get ( TemporaryPath ) &  "_base_elements_test_directory_/" ;
+      "/tmp/_base_elements_test_directory_/" )
+  - name: "testFile"
+    evaluate: |
+      {{testDirectory}} & "be_plugin_tests.txt"
+  - name: "copyMoveTestFile"
+    evaluate: |
+      {{testDirectory}} & "copy_move_tests.txt"
+
+
+tests:  
+  - name: Test Directory shouldn't exist 
+    evaluate: BE_FileExists ( {{testDirectory}} )
+    output: False
+
+  - name: Create Test Directory 
+    evaluate: BE_FolderCreate ( {{testDirectory}} )
+    output: 0
+
+  - name: Check Test Directory Exists
+    evaluate: BE_FileExists ( {{testDirectory}} )
+    output: True
+
+  - name: Test File shouldn't exist
+    evaluate: BE_FileExists ( {{testFile}} )
+    output: False
+
+  - name: Write to Test File 
+    evaluate: BE_FileWriteText ( {{testFile}} ; "some text here")
+    output: 0
+
+  - name: Check Test File Content
+    evaluate: BE_FileReadText ( {{testFile}} )
+    output: "some text here"
+
+  - name: Append to Test File 
+    evaluate: BE_FileWriteText ( {{testFile}} ; " and some more text here" ; True )
+    output: 0
+
+  - name: Check Test File Content
+    evaluate: BE_FileReadText ( {{testFile}} )
+    output: "some text here and some more text here"
+
+  - name: Overwrite Test File 
+    evaluate: BE_FileWriteText ( {{testFile}} ; "new text here")
+    output: 0
+
+  - name: Check Test File Content
+    evaluate: BE_FileReadText ( {{testFile}} )
+    output: "new text here"
+
+  - name: Copy Test File shouldn't exist
+    evaluate: BE_FileExists ( {{copyMoveTestFile}} )
+    output: 0
+
+  - name: Copy Test File
+    evaluate: BE_FileCopy ( {{testFile}} ; {{copyMoveTestFile}} )
+    output: 0
+
+  - name: Check Copy File Exists
+    evaluate: BE_FileExists ( {{copyMoveTestFile}} )
+    output: True
+
+  - name: Check Test File wasn't moved
+    evaluate: BE_FileExists ( {{testFile}} )
+    output: True
+
+  - name: Delete Test File
+    evaluate: BE_FileDelete ( {{testFile}} )
+    output: 0
+
+  - name: Check Test File was deleted
+    evaluate: BE_FileExists ( {{testFile}} )
+    output: False
+
+  - name: Move Test File
+    evaluate: BE_FileCopy ( {{copyMoveTestFile}} ; {{testFile}} )
+    output: 0
+
+  - name: Check Test File was copied
+    evaluate: BE_FileExists ( {{testFile}} )
+    output: True
+
+  - name: Check Copy File was moved
+    evaluate: BE_FileExists ( {{copyMoveTestFile}} )
+    output: False
+
+  - name: Delete Test Folder
+    evaluate: BE_FileDelete ( {{testDirectory}} )
+    output: 0
+
+  - name: Check Test Directory Was Deleted
+    evaluate: BE_FileExists ( {{testDirectory}} )
+    output: False

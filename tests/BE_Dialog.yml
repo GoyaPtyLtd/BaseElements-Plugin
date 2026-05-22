@@ -1,0 +1,60 @@
+---
+functions: 
+  - BE_DialogDisplay
+
+runs_on:
+  macos: true
+  windows: true
+  ios: false
+  ubuntu: false
+  server: false
+
+requires:
+  pro: false
+  interaction: false
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:  
+  - name: One Button Dialog Yes
+    evaluate: BE_DialogDisplay ( "One Button Dialog" ; "This dialog has one button" ; "Yes" )
+    output: BE_ButtonOK
+
+  - name: Two Button Dialog OK
+    evaluate: BE_DialogDisplay ( "Two Button Dialog" ; "Please select the OK button" ; "OK" ; "Cancel" )
+    output: BE_ButtonOK
+
+  - name: Two Button Dialog Cancel
+    evaluate: BE_DialogDisplay ( "Two Button Dialog" ; "Please select the Cancel button" ; "OK" ; "Cancel" )
+    output: BE_ButtonCancel
+
+  - name: Three Button Dialog OK
+    evaluate: BE_DialogDisplay ( "Three Button Dialog" ; "Please select the OK button" ; "OK" ; "Cancel" ; "Other" )
+    output: BE_ButtonOK
+
+  - name: Three Button Dialog Cancel 
+    evaluate: BE_DialogDisplay ( "Three Button Dialog" ; "Please select the Cancel button" ; "OK" ; "Cancel" ; "Other" )
+    output: BE_ButtonCancel
+
+  - name: Three Button Dialog Other   
+    evaluate: BE_DialogDisplay ( "Three Button Dialog" ; "Please select the Other button" ; "OK" ; "Cancel" ; "Other" )
+    output: BE_ButtonAlternate
+
+  - name: File Select Dialog   
+    evaluate: | 
+      BE_DialogDisplay ( "File Selected" ; "Did you select: " & BE_FileSelectDialog ( "Please select a file" ) & "?" ; "Yes" ; "No" ) 
+    output: BE_ButtonOK
+
+  - name: File Select Cancel   
+    evaluate: FileSelectDialog ( "Please select Cancel" )
+    output: ""
+
+  - name: Folder Select Dialog   
+    evaluate: | 
+      BE_DialogDisplay ( "Folder Selected" ; "Did you select: " & BE_FolderSelectDialog ( "Please select a folder" ) & "?" ; "Yes" ; "No" ) 
+    output: BE_ButtonOK
+
+  - name: Folder Select Cancel   
+    evaluate: BE_FolderSelectDialog ( "Please select Cancel" )
+    output: ""
