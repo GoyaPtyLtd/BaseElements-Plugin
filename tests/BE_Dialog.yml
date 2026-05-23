@@ -17,6 +17,15 @@ requires:
   smtp: false
 
 tests:  
+  - name: Progress Dialog that doesn't exist
+    evaluate: BE_DialogProgressUpdate ( "" )
+    output: "?"
+    errorCode: 112
+
+  - name: Progress Dialog
+    evaluate: BE_DialogProgress ( "Indeterminate/Marquee Progress Bar" ; "Cancel button enabled, please cancel" ; 0 )
+    output: ""
+
   - name: One Button Dialog Yes
     evaluate: BE_DialogDisplay ( "One Button Dialog" ; "This dialog has one button" ; "Yes" )
     output: BE_ButtonOK
@@ -49,6 +58,10 @@ tests:
   - name: File Select Cancel   
     evaluate: FileSelectDialog ( "Please select Cancel" )
     output: ""
+
+  - name: Select Three Files   
+    evaluate: ValueCount ( BE_FileSelectDialog ( "Please select three files" ) )
+    output: 3
 
   - name: Folder Select Dialog   
     evaluate: | 

@@ -1,0 +1,62 @@
+---
+functions: 
+  - BE_FunctionName
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: true
+  ftp: false
+  sftp: false
+  smtp: false
+
+variables:
+  - name: prefsDomain
+    evaluate: Case ( Get ( SystemPlatform ) = -2 ; "Software\Goya\BaseElements\PluginTest" ; "au.com.goya.baseelements.plugin-test" )
+
+tests:  
+  - name: Set Preferences
+    evaluate: BE_PreferenceSet ( "nick"; "orr" )
+    result: True
+
+  - name: Get Preferences
+    evaluate: BE_PreferenceGet ( "nick" )
+    result: "orr"
+
+  - name: Set Preferences 2
+    evaluate: BE_PreferenceSet ( "nick"; "or what" )
+    result: True
+
+  - name: Get Preferences 2
+    evaluate: BE_PreferenceGet ( "nick" )
+    result: "or what"
+
+  - name: Set and Get Preferences in one
+    evaluate: |
+      Let ( $value = Get ( CurrentTimestamp ) ;
+        BE_PreferenceSet ( "nick"; $value ) and 
+        BE_PreferenceGet ( "nick" ) = $value
+      )
+    result: True
+
+  - name: Set and Get Preferences empt
+    evaluate: |
+      Let ( $value = "" ;
+        BE_PreferenceSet ( "nick"; $value ) and 
+        BE_PreferenceGet ( "nick" ) = $value
+      )
+    result: True
+
+  - name: Set Preferences
+    evaluate: BE_PreferenceSet ( "nick"; "orr"; {{prefsDomain}} )
+    result: True
+
+  - name: Get Preferences
+    evaluate: BE_PreferenceGet ( "nick" )
+    result: "orr"

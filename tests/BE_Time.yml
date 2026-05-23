@@ -1,0 +1,30 @@
+---
+functions: 
+  - BE_FunctionName
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: true
+  ftp: false
+  sftp: false
+  smtp: false
+
+variables:
+  - name: timeMS
+    evaluate: GetAsNumber ( Get ( CurrentTimestamp ) ) * 1000
+
+tests:  
+  - name: TimeCurrentMilliseconds
+    evaluate: BE_TimeCurrentMilliseconds > {{timeMS}}
+    result: True
+
+  - name: TimeZoneOffset
+    evaluate: BE_TimeCurrentMilliseconds = BE_TimeUTCMilliseconds + ( BE_TimeZoneOffset * 60 * 1000 )
+    result: True

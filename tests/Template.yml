@@ -51,7 +51,15 @@ tests:
     
     # If there's an expected value for BE_GetLastError then you can also check for it.
     # This can also be a list where the result should match at least one of the values
+    # Also can be set to True for any non zero value
     errorCode: 1
+
+    # If there's an expected value for BE_GetLastDDLError then you can also check for it.
+    # This can also be a list where the result should match at least one of the values
+    # Also can be set to True for any non zero value
+    errorCodeDDL: 1
+    
+    # BE Error code is always checked to be 0.  If you need to have BE_GetLastDDLError check then it MUST be included
 
     # debug is any other data you want to report when output fails to match to assist with what went wrong with the calculation
     # typical use case is to set $variables via Let when running a complex calc and then showing those later.

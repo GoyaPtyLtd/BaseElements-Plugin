@@ -1,0 +1,46 @@
+---
+functions: 
+  - BE_FunctionName
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: true
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:  
+  - name: Message Digest MD5
+    evaluate: BE_MessageDigestAlgorithmMD5
+    result: 1
+
+  - name: Message Digest SHA 256
+    evaluate: BE_MessageDigestAlgorithmSHA256
+    result: 1
+
+  - name: Message Digest Empty Default
+    evaluate: BE_MessageDigest ( "" )
+    result: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+  - name: Message Digest Empty MD5
+    evaluate: BE_MessageDigest ( "" ; BE_MessageDigestAlgorithmMD5 )
+    result: "d41d8cd98f00b204e9800998ecf8427e"
+
+  - name: Message Digest Empty SHA 256
+    evaluate: BE_MessageDigest ( "" ; BE_MessageDigestAlgorithmSHA256 )
+    result: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+  - name: Message Digest Sample MD5
+    evaluate: BE_MessageDigest ( "discretion is the better part of Valerie" ; BE_MessageDigestAlgorithmMD5 )
+    result: "c29b59cdca75144ae5a8f9f0a984c393"
+
+  - name: Message Digest Sample SHA 256
+    evaluate: BE_MessageDigest ( "discretion is the better part of Valerie" ; BE_MessageDigestAlgorithmSHA256 )
+    result: "5f2aec826703906ee6e1634a549f0dc5d181c377a2898afd57a5a4206462f8f0"

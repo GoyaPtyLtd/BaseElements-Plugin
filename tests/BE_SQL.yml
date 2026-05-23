@@ -27,6 +27,10 @@ variables:
     evaluate: Quote ( GetValue ( {{fieldNames}} ; 2 ) )
   - name: FoundCount
     evaluate: Get ( FoundCount )
+  - name: FoundCount1
+    evaluate: Get ( FoundCount ) - 1
+  - name: testTable
+    evaluate: "BE_DDL_TEST_Table"
 
 
 tests:  
@@ -40,6 +44,7 @@ tests:
     debug: |
       "SQL was : " & $sql & ¶ & 
       "Result was : " & $result
+    errorCodeDDL: 0
 
   - name: SQL Select with 2 fields
     evaluate: |
@@ -47,8 +52,36 @@ tests:
         $sql = "select {{firstField}},{{secondField}} from currentTable" ; 
         $result = BE_FileMakerSQL ( $sql ) ] ; 
         ValueCount ( $result )
+      )
     result: {{FoundCount}}
     debug: |
       "SQL was : " & $sql & ¶ & 
       "Result was : " & $result
+    errorCodeDDL: 0
 
+  - name: SQL Select check field separator
+    evaluate: |
+      Let ( [ 
+        $sql = "select {{firstField}},{{secondField}} from currentTable" ; 
+        $result = BE_FileMakerSQL ( $sql ; "|" ; "?" ) ] ; 
+        PatternCount ( $result ; "?" )
+      )
+    result: {{FoundCount1}}
+    debug: |
+      "SQL was : " & $sql & ¶ & 
+      "Result was : " & $result
+    errorCodeDDL: 0
+
+  - name: Test Table shouldn't exist
+    evaluate: BE_FileMakerSQL ( "drop table " & {{testTable}} )
+    result: True
+
+  - name: Create Test Table
+    evaluate: BE_FileMakerSQL ( "create table {{testTable}} ( field1 varchar not null, number_field decimal )" )
+    result: ""
+    errorCodeDDL: 0
+
+  - name: Test Table Delete
+    evaluate: BE_FileMakerSQL ( "drop table " & {{testTable}} )
+    result: ""
+    errorCodeDDL: 0

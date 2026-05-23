@@ -1,0 +1,58 @@
+---
+functions: 
+  - BE_FunctionName
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: true
+  ftp: false
+  sftp: false
+  smtp: false
+
+variables:
+  - name: jsonObject
+    evaluate: |
+      {"menu": {
+        "day": "Wednesday",
+        "happy": true,
+        "sober": false,
+        "food": {
+          "menuitem": [
+            {"dish": "Omlette", "price": 18.95},
+            {"dish": "Fish & Chips", "price": 16.95},
+            {"dish": "Pie Floater", "price": 8.95}
+            ]
+          }
+        }
+      }
+
+  - name: jsonArray
+    evaluate: |
+      [
+        {"dish": "Omlette", "price": 18.95},
+        {"dish": "Fish & Chips", "price": 16.95},
+        {"dish": "Pie Floater", "price": 8.95}
+      ]
+
+  - name: emptyArray
+    evaluate: "[]"
+
+tests:  
+  - name: Not an Array
+    evaluate: BE_JSON_ArraySize ( {{jsonObject}} )
+    result: False
+
+  - name: Array Count
+    evaluate: BE_JSON_ArraySize ( {{jsonArray}} )
+    result: 3
+
+  - name: Empty Array Count
+    evaluate: BE_JSON_ArraySize ( {{emptyArray}} )
+    result: 0

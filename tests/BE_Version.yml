@@ -40,3 +40,7 @@ tests:
   - name: Should only contain numerals
     evaluate: Filter ( {{versionAU}} ; "0123456789" )
     output: {{versionAU}}
+
+  - name: BE Error reset check
+    evaluate: if ( BE_GetLastError ; BE_GetLastError ; BE_GetLastError )
+    output: 0

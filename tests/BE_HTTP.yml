@@ -16,7 +16,42 @@ requires:
   sftp: false
   smtp: false
 
+variables:
+  - name: testURL
+    evaluate: "http://plugintest.goya.com.au/plugintest/test.php"
+ 
+  - name: tempPath
+    evaluate: |
+      ConvertFromFileMakerPath ( Get ( TemporaryPath ) ; Case ( Get ( SystemPlatform ) = -2 ; WinPath ; PosixPath ) ) & 
+      Get ( UUID ) & 
+      Case ( Get ( SystemPlatform ) = -2 ; "\\" ; "/" )
+  
+  - name: testFile1
+    evaluate: "be_plugin_tests.txt"
+
+  - name: testPath1
+    evaluate: |
+      {{tempPath}} & {{testFile1}}
+
+  - name: createTemp 
+    evaluate: BE_FolderCreate ( {{tempPath}} )
+
 tests:  
+  - name: Curl Set Option Error 1
+    evaluate: BE_CurlSetOption ( "IS_NOT_SET" )
+    output: "?"
+    errorCode: 401
+
+  - name: Curl Set Option Error 2
+    evaluate: BE_CurlSetOption ( "DOES_NOT_EXIST" ; 0 )
+    output: "?"
+    errorCode: 11
+    
+  - name: Curl Set Option Error 3
+    evaluate: BE_CurlSetOption ( "CURLOPT_URL" ; "http://www.goya.com.au" )
+    output: "?"
+    errorCode: 13000
+
   - name: HTTP GET Goya Website
     evaluate: |
       Let ( $result = BE_HTTP_GET ( "https://goya.com.au/" ) ; 
@@ -30,4 +65,220 @@ tests:
     evaluate: BE_HTTP_GET ( "ttps://goya.com.au/" )
     output: "?"
     errorCode: 1
+
+  - name: HTTP GET Invalid host
+    evaluate: BE_HTTP_GET ( "http://thishostdoesntexist/" )
+    output: "?"
+    errorCode: 6
+
+  - name: HTTP GET
+    evaluate: BE_HTTP_GET ( {{testURL}} )
+    output: True
+
+  - name: HTTP Response Code Test
+    evaluate: BE_HTTP_ResponseCode
+    output: 401
+
+  - name: HTTP Response Headers HTTP
+    evaluate: Position ( BE_HTTP_ResponseHeaders ; "HTTP" ; 1 ; 1 )
+    output: True
+
+  - name: HTTP Response Headers Auth
+    evaluate: Position ( BE_HTTP_ResponseHeaders ; "Unauthorized" ; 1 ; 1 )
+    output: True
+
+  - name: HTTP Response Headers Content Type
+    evaluate: |
+      Position ( BE_HTTP_ResponseHeaders ; "Content-Type: " ; 1 ; 1 )
+    output: True
+
+  - name: Set Referrer
+    evaluate: BE_CurlSetOption ( "CURLOPT_REFERER" ; "http://www.goya.com.au/" )
+    output: True
+
+  - name: HTTP GET Referrer Check
+    evaluate: |
+      Position ( BE_HTTP_GET ( {{testURL}} ) ; "Referer: http://www.goya.com.au" ; 1 ; 1 )
+    output: True
+
+  - name: Set Referrer
+    evaluate: BE_CurlSetOption ( "CURLOPT_REFERER" ; "http://www.goya.com.au/" )
+    output: True
+
+  - name: Clear Referrer
+    evaluate: BE_CurlSetOption ( "CURLOPT_REFERER" ; "" )
+    output: True
+
+  - name: HTTP GET Referrer Cleared Check
+    evaluate: |
+      Position ( BE_HTTP_GET ( {{testURL}} ) ; "Referer: http://www.goya.com.au" ; 1 ; 1 )
+    output: False
+
+  - name: Set Referrer
+    evaluate: BE_CurlSetOption ( "CURLOPT_REFERER" ; "http://www.goya.com.au/" )
+    output: True
+
+  - name: Clear All Options
+    evaluate: BE_CurlSetOption
+    output: True
+
+  - name: HTTP GET Referrer Cleared Check
+    evaluate: |
+      Position ( BE_HTTP_GET ( {{testURL}} ) ; "Referer: http://www.goya.com.au" ; 1 ; 1 )
+    output: False
+
+  - name: HTTP Response Code GET Error
+    evaluate: BE_HTTP_GET ( {{testURL}} & "X" )
+    output: "?"
+
+  - name: HTTP Response Code Error Test
+    evaluate: BE_HTTP_ResponseCode
+    output: 404
+
+  - name: HTTP GET Empty String Test
+    evaluate: |
+      Position ( BE_HTTP_GET ( {{testURL}} ) ; "Beer-of-the-day: Bombadier" ; 1 ; 1 )
+    output: False
+
+  - name: HTTP Set Headers 1
+    evaluate: BE_HTTP_SetCustomHeader ( "Beer-of-the-day" ; "Bombadier" )
+    output: False
+
+  - name: HTTP Set Headers 2
+    evaluate: BE_HTTP_SetCustomHeader ( "Fruit-of-the-day" ; "Orange" )
+    output: False
+
+  - name: HTTP GET Headers
+    evaluate: |
+      Let ( $result = BE_HTTP_GET ( {{testURL}} ) ; 
+        Position ( $result ; "Beer-of-the-day: Bombadier" ; 1 ; 1 ) and
+        Position ( $result ; "Fruit-of-the-day: Orange" ; 1 ; 1 ) 
+      )
+    output: True
+    debug: |
+      "Result is : " & $result
+
+  - name: HTTP GET Check Headers are cleared
+    evaluate: |
+      Position ( BE_HTTP_GET ( {{testURL}} ) ; "Beer-of-the-day: Bombadier" ; 1 ; 1 )
+    output: False
+
+  - name: HTTP POST
+    evaluate: |
+      Let ( $result = BE_HTTP_POST ( {{testURL}} ; "a=b&c=d" ) ; 
+        Position ( $result ; "a: b" ; 1 ; 1 ) and 
+        Position ( $result ; "c: d" ; 1 ; 1 ) 
+      )
+    output: True
+    debug: |
+      "Result is : " & $result
+
+  - name: HTTP GET File Error
+    evaluate: BE_HTTP_GETFile ( {{testURL}} ; "/does/ not exist" )
+    output: "?"
+
+  - name: HTTP GET File
+    evaluate: BE_HTTP_GETFile ( {{testURL}} ; {{testPath1}} )
+    output: ""
+
+  - name: HTTP PUT File Error
+    evaluate: BE_HTTP_PUTFile ( {{testURL}} ; "path does not exist" )
+    output: "?"
+    errorCode: True
+
+  - name: HTTP PUT File
+    evaluate: |
+      Let ( $result = BE_HTTP_PUTFile ( {{testURL}} ; {{testPath1}} ) ; 
+        Position ( $result ; "Method: PUT" ; 1 ; 1 ) and 
+        Position ( $result ; "Euripides" ; 1 ; 1 ) 
+      )
+    output: "Euripides"
+
+  - name: HTTP Basic Auth
+    evaluate: BE_CurlSetOption ( "CURLOPT_HTTPAUTH" ; "CURLAUTH_BASIC" )
+    output: ""
+
+  - name: HTTP PUT Data from container
+    setField: |
+      Base64Decode ( 
+        "Ikl0IGlzIGEgZ29vZCB0aGluZyB0byBiZSByaWNoLCBpdCBpcyBhIGdvb2QgdGhpbmcgdG8gYmUg
+        c3Ryb25nLCBidXQgaXQgaXMgYSBiZXR0ZXIgdGhpbmcgdG8gYmUgYmVsb3ZlZCBvZiBtYW55IGZy
+        aWVuZHMuIiBFdXJpcGlkZXM="
+        )
+    evaluate: |
+      Let ( $result = BE_HTTP_PUTData ( {{testURL}} ; {{field::Data}} ) ; "frooble" ; "knobwhart" ) ; 
+        Position ( $result ; "Method: PUT" ; 1 ; 1 ) and 
+        Position ( $result ; "Username: frooble" ; 1 ; 1 ) and 
+        Position ( $result ; "Password: knobwhart" ; 1 ; 1 ) 
+      )
+    output: True
+    debug: |
+      "Result is : " & $result
+
+  - name: HTTP Delete
+    evaluate: |
+      Let ( $result = BE_HTTP_DELETE ( {{testURL}} & "?rub_out_this" ) ; 
+        Position ( $result ; "rub_out_this" ; 1 ; 1 ) and 
+        Position ( $result ; "Method: DELETE" ; 1 ; 1 )  
+      )
+    output: True
+    debug: |
+      "Result is : " & $result
+
+  - name: HTTP Basic Auth
+    evaluate: BE_CurlSetOption ( "CURLOPT_HTTPAUTH" ; "CURLAUTH_BASIC" )
+    output: ""
+
+  - name: HTTP Delete with Auth
+    evaluate: |
+      Let ( $result = BE_HTTP_DELETE ( TestScriptURL & "?abracadabra"; "frooble" ; "knobwhart" ) ; 
+        Position ( $result ; "Username: frooble" ; 1 ; 1 ) and 
+        Position ( $result ; "Password: knobwhart" ; 1 ; 1 ) 
+      )
+    output: True
+    debug: |
+      "Result is : " & $result
+
+  - name: HTTP Basic Auth
+    evaluate: BE_CurlSetOption ( "CURLOPT_HTTPAUTH" ; "CURLAUTH_BASIC" )
+    output: ""
+
+  - name: HTTP PUT file with Auth
+    evaluate: |
+      Let ( $result = BE_HTTP_PUTFile (  {{testURL}} ; {{testPath1}} ; "frooble" ; "knobwhart" ) ; 
+        Position ( $result ; "Username: frooble" ; 1 ; 1 ) and 
+        Position ( $result ; "Password: knobwhart" ; 1 ; 1 ) and 
+      )
+    output: True
+    debug: |
+      "Result is : " & $result
+
+  - name: HTTP Basic Auth
+    evaluate: BE_CurlSetOption ( "CURLOPT_HTTPAUTH" ; "CURLAUTH_BASIC" )
+    output: ""
+
+  - name: HTTP POST with Auth
+    evaluate: |
+      Let ( $result = BE_HTTP_POST ( {{testURL}} ; "a=b&c=d" ; "frooble" ; "knobwhart" ) ; 
+        Position ( $result ; "Username: frooble" ; 1 ; 1 ) and 
+        Position ( $result ; "Password: knobwhart" ; 1 ; 1 ) 
+      )
+    output: True
+    debug: |
+      "Result is : " & $result
+
+  - name: Proxy Set
+    evaluate: BE_HTTP_SetProxy ( "http://squid.proxy.server:8080" )
+    output: 0
+
+  - name: Proxy Clear
+    evaluate: BE_HTTP_SetProxy ( "" )
+    output: 0
+
+files:
+    - name: file.txt
+      base64: | 
+        Ikl0IGlzIGEgZ29vZCB0aGluZyB0byBiZSByaWNoLCBpdCBpcyBhIGdvb2QgdGhpbmcgdG8gYmUg
+        c3Ryb25nLCBidXQgaXQgaXMgYSBiZXR0ZXIgdGhpbmcgdG8gYmUgYmVsb3ZlZCBvZiBtYW55IGZy
+        aWVuZHMuIiBFdXJpcGlkZXM=
 

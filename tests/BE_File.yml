@@ -23,7 +23,7 @@ variables:
       ConvertFromFileMakerPath ( Get ( TemporaryPath ) ; Case ( Get ( SystemPlatform ) = -2 ; WinPath ; PosixPath ) ) & 
       Get ( UUID ) & 
       Case ( Get ( SystemPlatform ) = -2 ; "\\" ; "/" )
-
+  
   - name: testFile1
     evaluate: "be_plugin_tests.txt"
 
@@ -46,6 +46,44 @@ variables:
     evaluate: |
       "/does:not:exist" & {{tempPath}} & "file_doesnt_exist.txt"
 
+  - name: xmlOut
+    output: |
+      <?xml version="1.0" encoding="macintosh"?>
+      <!DOCTYPE rss PUBLIC "rss" "http://www.scripting.com/dtd/rss-0_91.dtd">
+      <rss version="0.91">
+        <channel>
+          <title>Latest News</title>
+          <link>http://localhost/</link>
+          <description>Recent news articles</description>
+          <language>en-us</language>
+          <item>
+            <title>Slashdot</title>
+            <link>http://slashdot.org/</link>
+            <description>News for Nerds, stuff that matters</description>
+          </item>
+          <item>
+            <title>The Register</title>
+            <link>http://www.register.co.uk/</link>
+            <description>Biting the hand that feeds IT</description>
+          </item>
+          <item>
+            <title>O'Reilly Network</title>
+            <link>http://www.oreillynet.com/</link>
+            <description>Developers' Hub -- web development, open source development, open and emerging technologies</description>
+          </item>
+          <item>
+            <title>Scripting News</title>
+            <link>http://www.scripting.com/</link>
+            <description>Dave Winer's weblog about scripting and stuff like that.</description>
+          </item>
+          <item>
+            <title>FileMaker XML Central</title>
+            <link>http://www.filemaker.com.au/xml/</link>
+            <description>XML, the standard for universal data exchange, extends the reach of FileMaker Pro 6.</description>
+          </item>
+        </channel>
+      </rss>
+
 
 tests:  
   - name: Test Directory shouldn't exist 
@@ -61,7 +99,18 @@ tests:
     output: True
 
   - name: Test File shouldn't exist
+    evaluate: BE_FileReadText ( {{testPath1}} )
+    output: "?"
+
+  - name: Read from missing text file
     evaluate: BE_FileExists ( {{testPath1}} )
+    output: False
+    errorCode: 2
+
+  - name: Open Missing Test File
+    interaction: true
+    ios: false
+    evaluate: BE_FileOpen ( TestFile )
     output: False
 
   - name: Write to Test File 
@@ -71,6 +120,23 @@ tests:
   - name: Check Test File Content
     evaluate: BE_FileReadText ( {{testPath1}} )
     output: "some text here"
+
+  - name: Open Test File
+    interaction: true
+    ios: false
+    evaluate: BE_FileOpen ( TestFile )
+    output: True
+
+  - name: Select Test File
+    interaction: true
+    ios: false
+    evaluate: Position ( BE_FileSelectDialog ( "Please select a file in the current directory"; {{tempPath}} ) ; {{tempPath}} ; 1 ; 1 )
+    output: True
+
+  - name: Select Test Folder
+    interaction: true
+    evaluate: Position ( FolderSelectDialog ( "Please select the current folder"; {{tempPath}} ) ; {{tempPath}} ; 1 ; 1 )
+    output: True
 
   - name: Append to Test File 
     evaluate: BE_FileWriteText ( {{testPath1}} ; " and some more text here" ; True )
@@ -174,14 +240,198 @@ tests:
   - name: FileReadText Check Line Ending Replaces
     evaluate: |
       Let ( 
-        $result = BE_FileReadText ( {{filePath::rss.xml.out}} ) ; Char ( 13 ) ; Char ( 10 ) ) ; 
+        $result = BE_FileReadText ( {{filePath::rss.xml.out}} ) ;  
         Substitute ( $result = Substitute ( {{fileVar::rss.xml}} ; Char ( 13 ) ; Char ( 10 ) 
       )
     output: True
     debug: |
       "BE_FileReadText Result = " & $result
 
+  - name: Set MacRoman
+    evaluate: BE_SetTextEncoding ( "MacRoman" )
+    output: False
+
+  - name: Read MacRoman
+    evaluate: BE_FileReadText ( {{filePath::macroman.txt}} )
+    output: {{xmlOut}}
+
+  - name: Reset Encoding
+    evaluate: BE_SetTextEncoding ( "" )
+    output: False
+
+  - name: Read MacRoman Error
+    evaluate: BE_FileReadText ( {{filePath::macroman.txt}} ) = {{xmlOut}}
+    output: False
+
+  - name: Set UTF16
+    evaluate: BE_SetTextEncoding ( "utf-16" )
+    output: False
+
+  - name: Read UTF16
+    evaluate: BE_FileReadText ( {{filePath::utf16.txt}} )
+    output: {{xmlOut}}
+
+  - name: Reset UTF16 Encoding
+    evaluate: BE_SetTextEncoding ( "" )
+    output: False
+
+  - name: Read UTF16 Error
+    evaluate: BE_FileReadText ( {{filePath::utf16.txt}} ) = {{xmlOut}}
+    output: False
+
+  - name: Check File Size
+    evaluate: BE_FileSize ( {{filePath::filesize.txt}} )
+    output: 1171
+
+  - name: Check File Size Error
+    evaluate: BE_FileSize ( "path does not exist" )
+    output: "?"
+    errorCode: True
+
+  - name: TextEncoding Error
+    evaluate: BE_SetTextEncoding ( "ISO Latin 1" )
+    output: "?"
+    errorCode: 22
+
+  - name: BE_GetLastError value remains even after being called
+    evaluate: BE_GetLastError
+    output: 22
+    
+  - name: Reset Encoding - will also reset BE_GetLastError and check it again
+    evaluate: BE_SetTextEncoding ( "" )
+    output: False
+
+
+
+
 files:
+    - name: filesize.txt
+      base64: | 
+        QU4gT0RFIFRPIEhJTVNFTEYKYnkgQmVuIEpvbnNvbgoKV2hlcmUgZG9zdCBUaG91IGNhcmVsZXNz
+        ZSBsaWUKCUJ1cmllZCBpbiBlYXNlIGFuZCBzbG90aD8KS25vd2xlZGdlIHRoYXQgc2xlZXBzLCBk
+        b3RoIGRpZTsKQW5kIHRoaXMgc2VjdXJpdHksCglJdCBpcyB0aGUgY29tbW9uIG1vdGgKVGhhdCBl
+        YXRzIG9uIHdpdHMgYW5kIGFydHMsIGFuZCBkZXN0cm95cyB0aGVtIGJvdGg6CgpBcmUgYWxsIHRo
+        ZSBBb25pYW4gc3ByaW5ncwoJRHJpZWQgdXA/IGxpZXMgVGhlc3BpYSB3YXN0ZT8KRG90aCBDbGFy
+        aXVzJyBoYXJwIHdhbnQgc3RyaW5ncywKVGhhdCBub3QgYSBueW1waCBub3cgc2luZ3M/CglPciBk
+        cm9vcCB0aGV5IGFzIGRpc2dyYWNlZCwKVG8gc2VlIHRoZWlyIHNlYXRzIGFuZCBib3dlcnMgYnkg
+        Y2hhdHRlcmluZyBwaWVzIGRlZmFjZWQ/CgpJZiBoZW5jZSB0aHkgc2lsZW5jZSBiZSwKCUFzICd0
+        aXMgdG9vIGp1c3QgYSBjYXVzZTsKTGV0IHRoaXMgdGhvdWdodCBxdWlja2VuIHRoZWU6Ck1pbmRz
+        IHRoYXQgYXJlIGdyZWF0IGFuZCBmcmVlCglTaG91bGQgbm90IG9uIEZvcnR1bmUgcGF1c2UsCidU
+        aXMgY3Jvd24gZW5vdWdoIHRvIFZpcnR1ZSBzdGlsbCwgaGVyIG93biBhcHBsYXVzZS4KCldoYXQg
+        dGhvdWdoIHRoZSBncmVlZHkgZnJ5CglCZSB0YWtlbiB3aXRoIGZhbHNlIGJhaXRzCk9mIHdvcmRl
+        ZCBiYWxsYWRyeSwKQW5kIHRoaW5rIGl0IHBvZXN5PwoJVGhleSBkaWUgd2l0aCB0aGVpciBjb25j
+        ZWl0cywKQW5kIG9ubHkgcGl0ZW91cyBzY29ybiB1cG9uIHRoZWlyIGZvbGx5IHdhaXRzLgoKVGhl
+        biB0YWtlIGluIGhhbmQgdGh5IGx5cmUsCglTdHJpa2UgaW4gdGh5IHByb3BlciBzdHJhaW4sCldp
+        dGggSmFwaGV0J3MgbGluZSBhc3BpcmUKU29sJ3MgY2hhcmlvdCBmb3IgbmV3IGZpcmUsCglUbyBn
+        aXZlIHRoZSB3b3JsZCBhZ2FpbjoKV2hvIGFpZGVkIGhpbSwgd2lsbCB0aGVlLCB0aGUgaXNzdWUg
+        b2YgSm92ZSdzIGJyYWluLgoKQW5kIHNpbmNlIG91ciBkYWludHkgYWdlCglDYW5ub3QgZW5kdXJl
+        IHJlcHJvb2YsCk1ha2Ugbm90IHRoeXNlbGYgYSBwYWdlCglUbyB0aGF0IHN0cnVtcGV0IHRoZSBz
+        dGFnZSwKQnV0IHNpbmcgaGlnaCBhbmQgYWxvb2YsClNhZmUgZnJvbSB0aGUgd29sZidzIGJsYWNr
+        IGphdywgYW5kIHRoZSBkdWxsIGFzcydzIGhvb2YuCg==
+
+    - name: utf16.txt
+      base64: |
+        /v8APAA/AHgAbQBsACAAdgBlAHIAcwBpAG8AbgA9ACIAMQAuADAAIgAgAGUAbgBjAG8AZABpAG4A
+        ZwA9ACIAbQBhAGMAaQBuAHQAbwBzAGgAIgA/AD4ADQA8ACEARABPAEMAVABZAFAARQAgAHIAcwBz
+        ACAAUABVAEIATABJAEMAIAAiAHIAcwBzACIAIAAiAGgAdAB0AHAAOgAvAC8AdwB3AHcALgBzAGMA
+        cgBpAHAAdABpAG4AZwAuAGMAbwBtAC8AZAB0AGQALwByAHMAcwAtADAAXwA5ADEALgBkAHQAZAAi
+        AD4ADQA8AHIAcwBzACAAdgBlAHIAcwBpAG8AbgA9ACIAMAAuADkAMQAiAD4ADQAgACAAPABjAGgA
+        YQBuAG4AZQBsAD4ADQAgACAAIAAgADwAdABpAHQAbABlAD4ATABhAHQAZQBzAHQAIABOAGUAdwBz
+        AKEhIgCjAKIiHgCnALYgIgCqALoAPAAvAHQAaQB0AGwAZQA+AA0AIAAgACAAIAA8AGwAaQBuAGsA
+        PgBoAHQAdABwADoALwAvAGwAbwBjAGEAbABoAG8AcwB0AC8APAAvAGwAaQBuAGsAPgANACAAIAAg
+        ACAAPABkAGUAcwBjAHIAaQBwAHQAaQBvAG4APgBSAGUAYwBlAG4AdAAgAG4AZQB3AHMAIABhAHIA
+        dABpAGMAbABlAHMAPAAvAGQAZQBzAGMAcgBpAHAAdABpAG8AbgA+AA0AIAAgACAAIAA8AGwAYQBu
+        AGcAdQBhAGcAZQA+AGUAbgAtAHUAcwA8AC8AbABhAG4AZwB1AGEAZwBlAD4ADQAgACAAIAAgADwA
+        aQB0AGUAbQA+AA0AIAAgACAAIAAgACAAPAB0AGkAdABsAGUAPgBTAGwAYQBzAGgAZABvAHQAPAAv
+        AHQAaQB0AGwAZQA+AA0AIAAgACAAIAAgACAAPABsAGkAbgBrAD4AaAB0AHQAcAA6AC8ALwBzAGwA
+        YQBzAGgAZABvAHQALgBvAHIAZwAvADwALwBsAGkAbgBrAD4ADQAgACAAIAAgACAAIAA8AGQAZQBz
+        AGMAcgBpAHAAdABpAG8AbgA+AE4AZQB3AHMAIABmAG8AcgAgAE4AZQByAGQAcwAsACAAcwB0AHUA
+        ZgBmACAAdABoAGEAdAAgAG0AYQB0AHQAZQByAHMAPAAvAGQAZQBzAGMAcgBpAHAAdABpAG8AbgA+
+        AA0AIAAgACAAIAA8AC8AaQB0AGUAbQA+AA0AIAAgACAAIAA8AGkAdABlAG0APgANACAAIAAgACAA
+        IAAgADwAdABpAHQAbABlAD4AVABoAGUAIABSAGUAZwBpAHMAdABlAHIAPAAvAHQAaQB0AGwAZQA+
+        AA0AIAAgACAAIAAgACAAPABsAGkAbgBrAD4AaAB0AHQAcAA6AC8ALwB3AHcAdwAuAHIAZQBnAGkA
+        cwB0AGUAcgAuAGMAbwAuAHUAawAvADwALwBsAGkAbgBrAD4ADQAgACAAIAAgACAAIAA8AGQAZQBz
+        AGMAcgBpAHAAdABpAG8AbgA+AEIAaQB0AGkAbgBnACAAdABoAGUAIABoAGEAbgBkACAAdABoAGEA
+        dAAgAGYAZQBlAGQAcwAgAEkAVAA8AC8AZABlAHMAYwByAGkAcAB0AGkAbwBuAD4ADQAgACAAIAAg
+        ADwALwBpAHQAZQBtAD4ADQAgACAAIAAgADwAaQB0AGUAbQA+AA0AIAAgACAAIAAgACAAPAB0AGkA
+        dABsAGUAPgBPACcAUgBlAGkAbABsAHkAIABOAGUAdAB3AG8AcgBrADwALwB0AGkAdABsAGUAPgAN
+        ACAAIAAgACAAIAAgADwAbABpAG4AawA+AGgAdAB0AHAAOgAvAC8AdwB3AHcALgBvAHIAZQBpAGwA
+        bAB5AG4AZQB0AC4AYwBvAG0ALwA8AC8AbABpAG4AawA+AA0AIAAgACAAIAAgACAAPABkAGUAcwBj
+        AHIAaQBwAHQAaQBvAG4APgBEAGUAdgBlAGwAbwBwAGUAcgBzACcAIABIAHUAYgAgAC0ALQAgAHcA
+        ZQBiACAAZABlAHYAZQBsAG8AcABtAGUAbgB0ACwAIABvAHAAZQBuACAAcwBvAHUAcgBjAGUAIABk
+        AGUAdgBlAGwAbwBwAG0AZQBuAHQALAAgAG8AcABlAG4AIABhAG4AZAAgAGUAbQBlAHIAZwBpAG4A
+        ZwAgAHQAZQBjAGgAbgBvAGwAbwBnAGkAZQBzADwALwBkAGUAcwBjAHIAaQBwAHQAaQBvAG4APgAN
+        ACAAIAAgACAAPAAvAGkAdABlAG0APgANACAAIAAgACAAPABpAHQAZQBtAD4ADQAgACAAIAAgACAA
+        IAA8AHQAaQB0AGwAZQA+AFMAYwByAGkAcAB0AGkAbgBnACAATgBlAHcAcwA8AC8AdABpAHQAbABl
+        AD4ADQAgACAAIAAgACAAIAA8AGwAaQBuAGsAPgBoAHQAdABwADoALwAvAHcAdwB3AC4AcwBjAHIA
+        aQBwAHQAaQBuAGcALgBjAG8AbQAvADwALwBsAGkAbgBrAD4ADQAgACAAIAAgACAAIAA8AGQAZQBz
+        AGMAcgBpAHAAdABpAG8AbgA+AEQAYQB2AGUAIABXAGkAbgBlAHIAJwBzACAAdwBlAGIAbABvAGcA
+        IABhAGIAbwB1AHQAIABzAGMAcgBpAHAAdABpAG4AZwAgAGEAbgBkACAAcwB0AHUAZgBmACAAbABp
+        AGsAZQAgAHQAaABhAHQALgA8AC8AZABlAHMAYwByAGkAcAB0AGkAbwBuAD4ADQAgACAAIAAgADwA
+        LwBpAHQAZQBtAD4ADQAgACAAIAAgADwAaQB0AGUAbQA+AA0AIAAgACAAIAAgACAAPAB0AGkAdABs
+        AGUAPgBGAGkAbABlAE0AYQBrAGUAcgAgAFgATQBMACAAQwBlAG4AdAByAGEAbAA8AC8AdABpAHQA
+        bABlAD4ADQAgACAAIAAgACAAIAA8AGwAaQBuAGsAPgBoAHQAdABwADoALwAvAHcAdwB3AC4AZgBp
+        AGwAZQBtAGEAawBlAHIALgBjAG8AbQAuAGEAdQAvAHgAbQBsAC8APAAvAGwAaQBuAGsAPgANACAA
+        IAAgACAAIAAgADwAZABlAHMAYwByAGkAcAB0AGkAbwBuAD4AWABNAEwALAAgAHQAaABlACAAcwB0
+        AGEAbgBkAGEAcgBkACAAZgBvAHIAIAB1AG4AaQB2AGUAcgBzAGEAbAAgAGQAYQB0AGEAIABlAHgA
+        YwBoAGEAbgBnAGUALAAgAGUAeAB0AGUAbgBkAHMAIAB0AGgAZQAgAHIAZQBhAGMAaAAgAG8AZgAg
+        AEYAaQBsAGUATQBhAGsAZQByACAAUAByAG8AIAA2AC4APAAvAGQAZQBzAGMAcgBpAHAAdABpAG8A
+        bgA+AA0AIAAgACAAIAA8AC8AaQB0AGUAbQA+AA0AIAAgADwALwBjAGgAYQBuAG4AZQBsAD4ADQA8
+        AC8AcgBzAHMAPgAN
+
+    - name: macroman.txt
+      base64: |
+        PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0ibWFjaW50b3NoIj8+DTwhRE9DVFlQRSByc3Mg
+        UFVCTElDICJyc3MiICJodHRwOi8vd3d3LnNjcmlwdGluZy5jb20vZHRkL3Jzcy0wXzkxLmR0ZCI+
+        DTxyc3MgdmVyc2lvbj0iMC45MSI+DSAgPGNoYW5uZWw+DSAgICA8dGl0bGU+TGF0ZXN0IE5ld3M8
+        L3RpdGxlPg0gICAgPGxpbms+aHR0cDovL2xvY2FsaG9zdC88L2xpbms+DSAgICA8ZGVzY3JpcHRp
+        b24+UmVjZW50IG5ld3MgYXJ0aWNsZXM8L2Rlc2NyaXB0aW9uPg0gICAgPGxhbmd1YWdlPmVuLXVz
+        PC9sYW5ndWFnZT4NICAgIDxpdGVtPg0gICAgICA8dGl0bGU+U2xhc2hkb3Q8L3RpdGxlPg0gICAg
+        ICA8bGluaz5odHRwOi8vc2xhc2hkb3Qub3JnLzwvbGluaz4NICAgICAgPGRlc2NyaXB0aW9uPk5l
+        d3MgZm9yIE5lcmRzLCBzdHVmZiB0aGF0IG1hdHRlcnM8L2Rlc2NyaXB0aW9uPg0gICAgPC9pdGVt
+        Pg0gICAgPGl0ZW0+DSAgICAgIDx0aXRsZT5UaGUgUmVnaXN0ZXI8L3RpdGxlPg0gICAgICA8bGlu
+        az5odHRwOi8vd3d3LnJlZ2lzdGVyLmNvLnVrLzwvbGluaz4NICAgICAgPGRlc2NyaXB0aW9uPkJp
+        dGluZyB0aGUgaGFuZCB0aGF0IGZlZWRzIElUPC9kZXNjcmlwdGlvbj4NICAgIDwvaXRlbT4NICAg
+        IDxpdGVtPg0gICAgICA8dGl0bGU+TydSZWlsbHkgTmV0d29yazwvdGl0bGU+DSAgICAgIDxsaW5r
+        Pmh0dHA6Ly93d3cub3JlaWxseW5ldC5jb20vPC9saW5rPg0gICAgICA8ZGVzY3JpcHRpb24+RGV2
+        ZWxvcGVycycgSHViIC0tIHdlYiBkZXZlbG9wbWVudCwgb3BlbiBzb3VyY2UgZGV2ZWxvcG1lbnQs
+        IG9wZW4gYW5kIGVtZXJnaW5nIHRlY2hub2xvZ2llczwvZGVzY3JpcHRpb24+DSAgICA8L2l0ZW0+
+        DSAgICA8aXRlbT4NICAgICAgPHRpdGxlPlNjcmlwdGluZyBOZXdzPC90aXRsZT4NICAgICAgPGxp
+        bms+aHR0cDovL3d3dy5zY3JpcHRpbmcuY29tLzwvbGluaz4NICAgICAgPGRlc2NyaXB0aW9uPkRh
+        dmUgV2luZXIncyB3ZWJsb2cgYWJvdXQgc2NyaXB0aW5nIGFuZCBzdHVmZiBsaWtlIHRoYXQuPC9k
+        ZXNjcmlwdGlvbj4NICAgIDwvaXRlbT4NICAgIDxpdGVtPg0gICAgICA8dGl0bGU+RmlsZU1ha2Vy
+        IFhNTCBDZW50cmFsPC90aXRsZT4NICAgICAgPGxpbms+aHR0cDovL3d3dy5maWxlbWFrZXIuY29t
+        LmF1L3htbC88L2xpbms+DSAgICAgIDxkZXNjcmlwdGlvbj5YTUwsIHRoZSBzdGFuZGFyZCBmb3Ig
+        dW5pdmVyc2FsIGRhdGEgZXhjaGFuZ2UsIGV4dGVuZHMgdGhlIHJlYWNoIG9mIEZpbGVNYWtlciBQ
+        cm8gNi48L2Rlc2NyaXB0aW9uPg0gICAgPC9pdGVtPg0gIDwvY2hhbm5lbD4NPC9yc3M+DQ==
+
+    - name: macromanOut.txt
+      base64: |
+        PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0ibWFjaW50b3NoIj8+DQo8IURPQ1RZUEUgcnNz
+        IFBVQkxJQyAicnNzIiAiaHR0cDovL3d3dy5zY3JpcHRpbmcuY29tL2R0ZC9yc3MtMF85MS5kdGQi
+        Pg0KPHJzcyB2ZXJzaW9uPSIwLjkxIj4NCiAgPGNoYW5uZWw+DQogICAgPHRpdGxlPkxhdGVzdCBO
+        ZXdzPC90aXRsZT4NCiAgICA8bGluaz5odHRwOi8vbG9jYWxob3N0LzwvbGluaz4NCiAgICA8ZGVz
+        Y3JpcHRpb24+UmVjZW50IG5ld3MgYXJ0aWNsZXM8L2Rlc2NyaXB0aW9uPg0KICAgIDxsYW5ndWFn
+        ZT5lbi11czwvbGFuZ3VhZ2U+DQogICAgPGl0ZW0+DQogICAgICA8dGl0bGU+U2xhc2hkb3Q8L3Rp
+        dGxlPg0KICAgICAgPGxpbms+aHR0cDovL3NsYXNoZG90Lm9yZy88L2xpbms+DQogICAgICA8ZGVz
+        Y3JpcHRpb24+TmV3cyBmb3IgTmVyZHMsIHN0dWZmIHRoYXQgbWF0dGVyczwvZGVzY3JpcHRpb24+
+        DQogICAgPC9pdGVtPg0KICAgIDxpdGVtPg0KICAgICAgPHRpdGxlPlRoZSBSZWdpc3RlcjwvdGl0
+        bGU+DQogICAgICA8bGluaz5odHRwOi8vd3d3LnJlZ2lzdGVyLmNvLnVrLzwvbGluaz4NCiAgICAg
+        IDxkZXNjcmlwdGlvbj5CaXRpbmcgdGhlIGhhbmQgdGhhdCBmZWVkcyBJVDwvZGVzY3JpcHRpb24+
+        DQogICAgPC9pdGVtPg0KICAgIDxpdGVtPg0KICAgICAgPHRpdGxlPk8nUmVpbGx5IE5ldHdvcms8
+        L3RpdGxlPg0KICAgICAgPGxpbms+aHR0cDovL3d3dy5vcmVpbGx5bmV0LmNvbS88L2xpbms+DQog
+        ICAgICA8ZGVzY3JpcHRpb24+RGV2ZWxvcGVycycgSHViIC0tIHdlYiBkZXZlbG9wbWVudCwgb3Bl
+        biBzb3VyY2UgZGV2ZWxvcG1lbnQsIG9wZW4gYW5kIGVtZXJnaW5nIHRlY2hub2xvZ2llczwvZGVz
+        Y3JpcHRpb24+DQogICAgPC9pdGVtPg0KICAgIDxpdGVtPg0KICAgICAgPHRpdGxlPlNjcmlwdGlu
+        ZyBOZXdzPC90aXRsZT4NCiAgICAgIDxsaW5rPmh0dHA6Ly93d3cuc2NyaXB0aW5nLmNvbS88L2xp
+        bms+DQogICAgICA8ZGVzY3JpcHRpb24+RGF2ZSBXaW5lcidzIHdlYmxvZyBhYm91dCBzY3JpcHRp
+        bmcgYW5kIHN0dWZmIGxpa2UgdGhhdC48L2Rlc2NyaXB0aW9uPg0KICAgIDwvaXRlbT4NCiAgICA8
+        aXRlbT4NCiAgICAgIDx0aXRsZT5GaWxlTWFrZXIgWE1MIENlbnRyYWw8L3RpdGxlPg0KICAgICAg
+        PGxpbms+aHR0cDovL3d3dy5maWxlbWFrZXIuY29tLmF1L3htbC88L2xpbms+DQogICAgICA8ZGVz
+        Y3JpcHRpb24+WE1MLCB0aGUgc3RhbmRhcmQgZm9yIHVuaXZlcnNhbCBkYXRhIGV4Y2hhbmdlLCBl
+        eHRlbmRzIHRoZSByZWFjaCBvZiBGaWxlTWFrZXIgUHJvIDYuPC9kZXNjcmlwdGlvbj4NCiAgICA8
+        L2l0ZW0+DQogIDwvY2hhbm5lbD4NCjwvcnNzPg0K
+
     - name: rss.xml.out
       base64: |
         PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxGTVBYTUxSRVNVTFQgeG1s

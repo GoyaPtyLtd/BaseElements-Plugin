@@ -37,7 +37,7 @@ tests:
     evaluate: BE_ClipboardSetText ( "<fmxmlsnippet type=\"FMObjectList\"><Script includeInMenu=\"True\" runFullAccess=\"False\" id=\"1\" name=\"A shiny new Script\"></Script></fmxmlsnippet>" ; "CorePasteboardFlavorType 0x584D5343" )
     output: 1
 
-  - name:  Set XML Clipboard Format
+  - name:  Get XML Clipboard Format
     evaluate: Position ( BE_ClipboardFormats ; "CorePasteboardFlavorType 0x584D5343" ; 1 ; 1 ) > 0
     output: True
 
@@ -72,6 +72,30 @@ tests:
       {{field::Data}}
     output: "" 
 
+  - name: Set Mac Text Format
+    runs_on:
+      ios: false
+      macos: true
+      windows: false
+    evaluate: BE_ClipboardSetText ( "<fmxmlsnippet type=\"FMObjectList\"><Script includeInMenu=\"True\" runFullAccess=\"False\" id=\"1\" name=\"A shiny new Script\"></Script></fmxmlsnippet>" ; "Mac-XMSC" )
+    output: True  
+
+  - name:  Get Mac Clipboard Format
+    runs_on:
+      ios: false
+      macos: true
+      windows: false
+    evaluate: Position ( BE_ClipboardFormats ; "Mac-XMSC" ; 1 ; 1 )
+    output: True
+
+  - name:  Get Mac Clipboard Content
+    runs_on:
+      ios: false
+      macos: true
+      windows: false
+    evaluate: BE_ClipboardGetText ( "Rich Text Format" )
+    output: "<fmxmlsnippet type=\"FMObjectList\"><Script includeInMenu=\"True\" runFullAccess=\"False\" id=\"1\" name=\"A shiny new Script\"></Script></fmxmlsnippet>"
+
   - name: Set Windows Text Format
     runs_on:
       ios: false
@@ -80,12 +104,12 @@ tests:
     evaluate: BE_ClipboardSetText ( "The rest is silence" ; "Rich Text Format" )
     output: True  
 
-  - name:  Get Windows Clipboard Content
+  - name:  Get Windows Clipboard Format
     runs_on:
       ios: false
       macos: false
       windows: true
-    evaluate: Position ( BE_ClipboardFormats ; "Rich Text Format" ; 1 ; 1 ) > 0
+    evaluate: Position ( BE_ClipboardFormats ; "Rich Text Format" ; 1 ; 1 )
     output: True
 
   - name:  Get Windows Clipboard Content

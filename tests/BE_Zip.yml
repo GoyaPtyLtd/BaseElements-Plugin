@@ -1,0 +1,54 @@
+---
+functions: 
+  - BE_FunctionName
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: true
+  ftp: false
+  sftp: false
+  smtp: false
+
+variables:
+  - name: tempPath
+    evaluate: |
+      ConvertFromFileMakerPath ( Get ( TemporaryPath ) ; Case ( Get ( SystemPlatform ) = -2 ; WinPath ; PosixPath ) ) & 
+      Get ( UUID ) & 
+      Case ( Get ( SystemPlatform ) = -2 ; "\\" ; "/" )
+  
+  - name: Create Temp Folder
+    evaluate: BE_FolderCreate ( {{tempPath}} )
+
+  - name: testFile1
+    evaluate: "be_plugin_tests.txt"
+
+  - name: testPath1
+    evaluate: |
+      {{tempPath}} & {{testFile1}}
+
+  - name: testWrite1 
+    evaluate: BE_FileWriteText ( {{testPath1}} ; "some text here")
+
+tests:  
+  - name: Zip Test file
+    evaluate: BE_Zip ( {{testPath1}} )
+    result: True
+
+  - name: Check Zip File exists
+    evaluate: Position ( BE_FileListFolder ( {{testPath1}} ) ; {{testPath1}} & ".zip" ; 1 ; 1 )
+    result: True
+
+  - name: Zip Test file with name
+    evaluate: BE_Zip ( {{testPath1}} ; "noodle.zip" )
+    result: True
+
+  - name: Check Zip File exists
+    evaluate: BE_FileExists ( "{{tempPath}}noodle.zip" )
+    result: True

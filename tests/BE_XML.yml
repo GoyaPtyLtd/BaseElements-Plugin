@@ -20,23 +20,42 @@ variables:
   - name: tempPath
     evaluate: ConvertFromFileMakerPath ( Get ( TemporaryPath ) ; Case ( Get ( SystemPlatform ) = -2 ; WinPath ; PosixPath ) )
 
+  - name: textXML
+    evaluate: |
+      <?xml version="1.0" encoding="utf-8"?>
+      <checkRepliesResponse xmlns="http://xml.m4u.com.au/2009">
+       <result returned="2" remaining="0">
+         <replies>
+           <reply format="SMS" uid="1" receiptId="29717636">
+             <origin>61063452339</origin>
+             <received>2013-02-18T22:35:02Z</received>
+             <content>Thanks here's my reply</content>
+           </reply>
+           <reply format="SMS" uid="1265" receiptId="63452339">
+             <origin>61029717636</origin>
+             <received>2013-02-25T11:37:58Z</received>
+             <content>Thanks got it</content>
+           </reply>
+         </replies>
+       </result>
+      </checkRepliesResponse>
+
+
+
 tests:  
   - name: Strip XML
     evaluate: BE_XMLStripInvalidCharacters ( {{filePath::strip.xml}} ) 
     output: 2
 
   - name: Strip XML utf16
-    runs_on:
     evaluate: BE_XMLStripInvalidCharacters ( {{filePath::utf16.xml}} ) 
     output: 0
 
   - name: Apply XSLT
-    runs_on:
     evaluate: BE_XSLT_Apply ( {{filePath::rss.xml}} ; {{filePath::rss.xslt}} ; {{tempPath}} & "rss.xml.out" )
     output: ""
 
   - name: Apply XSLT with Error
-    runs_on:
     evaluate: |
       Let ( 
         $result = BE_XSLT_Apply ( {{filePath::rss.xml}} ; {{filePath::rssError.xslt}} ; {{tempPath}} & "rss.xml.out" ) ; 
@@ -47,8 +66,95 @@ tests:
       "BE_XSLT_Apply Result : " & $result & "¶¶" & 
       "BE_XSLT_Apply Result should start with : \"runtime error: file <FileMaker::Text::XSLT> line 92 element call-template\""
 
+  - name: XPath receiptId
+    evaluate: BE_XPath ( {{textXML}} ; "/xmlns:checkRepliesResponse/xmlns:result/xmlns:replies/xmlns:reply[2]/@receiptId" ; "xmlns=http://xml.m4u.com.au/2009" )
+    output: "63452339"
+
+  - name: XPath receiptId Data
+    evaluate: |
+      BE_XPath ( {{textXML}} ; 
+        "/xmlns:checkRepliesResponse/xmlns:result/xmlns:replies/xmlns:reply[2]/@receiptId" ; 
+        "xmlns=http://xml.m4u.com.au/2009" ; 
+        False 
+      )
+    output: "receiptId=\"63452339\""
+
+  - name: XPath All receiptId
+    evaluate: BE_XPathAll ( {{textXML}} ; "/xmlns:checkRepliesResponse/xmlns:result/xmlns:replies/xmlns:reply/@receiptId" ; "xmlns=http://xml.m4u.com.au/2009" )
+    output: "29717636¶63452339"
+
+  - name: XPath Attribute
+    evaluate: BE_XPath ( {{textXML}} ; "/xmlns:checkRepliesResponse/xmlns:result/@returned" ; "xmlns=http://xml.m4u.com.au/2009" ) 
+    output: "2"
+ 
+  - name: XPath Count
+    evaluate: BE_XPath ( {{textXML}} ; "count(//reply)" )
+    output: 2
+
+  - name: XPath All Count
+    evaluate: BE_XPathAll ( {{textXML}} ; "count(//reply)" ; "xmlns=http://xml.m4u.com.au/2009" )
+    output: 2
+
+  - name: XPath Name
+    evaluate: BE_XPath ( {{textXML}} ; "name(//reply)" )
+    output: "reply"
+
+  - name: XPath All Name
+    evaluate: BE_XPathAll ( {{textXML}} ; "name(//reply)" ; "xmlns=http://xml.m4u.com.au/2009" )
+    output: "reply"
+
+  - name: XPath name content
+    evaluate: |
+      Let ( $result = BE_XPath ( {{textXML}} ; "//*[name()='reply']" ; "xmlns=http://xml.m4u.com.au/2009" ) ; 
+        Position ( $result ; "Thanks here's my reply" ; 1 ; 1 )
+      )
+    output: True
+    debug: |
+      "Result : " & $result
+
+  - name: XPath All name content
+    evaluate: |
+      Let ( $result = BE_XPathAll ( {{textXML}} ; "//*[name()='reply']" ; "xmlns=http://xml.m4u.com.au/2009" ) ; 
+        Position ( $result ; "Thanks here's my reply" ; 1 ; 1 )
+      )
+    output: True
+    debug: |
+      "Result : " & $result
+
+  - name: BE_XMLParse
+    evaluate: BE_XMLParse ( "{{filePath::validate.xml}}" )
+    output: ""
+
+  - name: BE_XMLParse field Error
+    setField: |
+      Base64Decode ( 
+        "PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjx0ZXN0PgoJPGZhbHNlPjwvZmFsc2U+CjwvdGVzdD4K"
+      )
+    evaluate: BE_XMLParse ( {{field::Data}} )
+    output: "?"
+    errorCode: 2
+
+  - name: BE_XMLParse Error
+    evaluate: |
+      Let ( $result = BE_XMLParse ( "{{filePath::validateFail.xml}}" ) ; 
+        Position ( $result ; "validate.xml at line 3" ; 1 ; 1 ) and 
+        Position ( $result ; "expected '>'" ; 1 ; 1 )
+      )
+    output: True
+    debug: |
+      "Result : " & $result
+
+
 
 files:
+  - name: validate.xml
+    base64: |
+      PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjx0ZXN0PgoJPGZhbHNlPjwvZmFsc2U+CjwvdGVzdD4K
+
+  - name: validateFail.xml
+    base64: |
+      PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjx0ZXN0PgoJPGZhbHNlPjwvZmFsc2UKPC90ZXN0Pg==
+
   - name: utf16.xml
     base64: |
       //48AD8AeABtAGwAIAB2AGUAcgBzAGkAbwBuAD0AIgAxAC4AMAAiACAAZQBuAGMAbwBkAGkAbgBn

@@ -1,0 +1,54 @@
+---
+functions: 
+  - BE_FunctionName
+
+runs_on:
+  macos: true
+  windows: true
+  ios: true
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: true
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:  
+  - name: Unique Values
+    evaluate: BE_ValuesUnique ( "a¶b¶c¶d¶a" )
+    result: "a¶b¶c¶d"
+
+  - name: Empty Unique Values
+    evaluate: BE_ValuesUnique ( "" )
+    result: ""
+
+  - name: Filter Out Values 1
+    evaluate: BE_ValuesFilterOut ( "a¶b¶c¶d¶a" ; "a¶c" )
+    result: "b¶d"
+
+  - name: Filter Out Values 2
+    evaluate: BE_ValuesFilterOut ( "a¶b¶c¶d¶a" ; "e¶f" )
+    result: "a¶b¶c¶d¶a"
+
+  - name: Filter Out Values Empty
+    evaluate: BE_ValuesFilterOut ( "" ; "e¶f" )
+    result: ""
+
+  - name: Values Sort
+    evaluate: BE_ValuesSort ( "a¶b¶c¶d¶a" )
+    result: "a¶a¶b¶c¶d"
+
+  - name: Values Sort Empty
+    evaluate: BE_ValuesSort ( "" )
+    result: ""
+
+  - name: Values Sort 2
+    evaluate: BE_ValuesSort ( "5¶4¶3¶2¶1" )
+    result: "1¶2¶3¶4¶5"
+
+  - name: Values Sort 3
+    evaluate: BE_ValuesSort ( "6_zoom.jpg¶6.jpg" )
+    result: "6.jpg¶6_zoom.jpg"

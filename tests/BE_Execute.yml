@@ -1,0 +1,33 @@
+---
+functions: 
+  - BE_FunctionName
+
+runs_on:
+  macos: true
+  windows: false
+  ios: false
+  ubuntu: true
+  server: true
+
+requires:
+  pro: false
+  interaction: true
+  ftp: false
+  sftp: false
+  smtp: false
+
+tests:  
+  - name: Test Ping
+    evaluate: |
+      Let ( $result = BE_ExecuteSystemCommand ( "ping -c 5 127.0.0.1" ; 10000 ) ; 
+        ValueCount ( $result ) > 5 
+      )
+    result: True
+    debug: |
+      "Result = " & $result
+
+  - name: Test Ping Error
+    evaluate: BE_ExecuteSystemCommand ( "ping -c 5 127.0.0.1" ; 0 ) ; 
+    result: "?"
+    errorCode: 12000
+
