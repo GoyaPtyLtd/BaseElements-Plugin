@@ -9,7 +9,7 @@ Unzips the archive file found at the path *archiveFilePath*. The unzipped file(s
 **Parameters**
 
 * *archiveFilePath* : a plugin file path, or a container field.
-* *filename* : a system folder path to put the result..
+* *outputFolderPath* : a system folder path to put the result..
 
  If the *archiveFilePath* container field contains text, it's treated as a path to a file.
  

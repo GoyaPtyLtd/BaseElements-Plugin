@@ -1,6 +1,6 @@
-## BE_Decrypt_AES
+## BE_Encrypt_AES
 
-    BE_Decrypt_AES ( key ; text )
+        BE_Encrypt_AES ( key ; text )
 
 **Description**  
 

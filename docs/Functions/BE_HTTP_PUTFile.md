@@ -1,6 +1,6 @@
-## BE_HTTP_PUTData
+## BE_HTTP_PUTFile
 
-    BE_HTTP_PUTData ( url ; path ; { username ; password } )
+    	BE_HTTP_PUTFile ( url ; path ; { username ; password } )
 
 **Description**  
 
@@ -52,6 +52,6 @@ This function has been superseded by the Insert From URL script step, and may be
 
 The type of data being sent is usually determined via a Content_Type header you set via *BE_HTTP_SetCustomHeader*. Each file type will have it's own Content-Type and the web service will determine acceptable types.  
 
-	BE_HTTP_PUTData ( "http://Fictional.Server.com/service.js" ;
+	BE_HTTP_PUTFile ( "http://Fictional.Server.com/service.js" ;
 	"/path/to/file.txt" ;
 	"Administrator" ; "password123" )

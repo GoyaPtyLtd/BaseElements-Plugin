@@ -10,7 +10,7 @@ Stores the SMTP connection details for future calls to the *BE_SMTPSend* functio
 
 * *server* : A domain name or IP address of the SMTP server to connect to.
 * *port* : the port number ( a required parameter, but can be an empty string ).
-* *userName* ( optional ) : The userName if the url requires authentication.
+* *username* ( optional ) : The username if the url requires authentication.
 * *password* ( optional ) : The password if the url requires authentication.
 * *keepOpen* ( optional, default:False , ProOnly ) : Whether to keep the connection open for future sends.
 

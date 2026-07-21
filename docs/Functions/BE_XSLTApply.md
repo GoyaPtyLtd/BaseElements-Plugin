@@ -1,6 +1,6 @@
 ## BE_XSLTApply
 
-	BE_XSLT_Apply ( xmlFilePath ; xsltText ; outputFilePath {; scriptName ; databaseName ; [ xsltText ; outputFilePath ] ; ... } )
+		BE_XSLTApply ( xmlFilePath ; xsltText ; outputFilePath {; scriptName ; databaseName ; [ xsltText ; outputFilePath ] ; ... } )
 
 **Description**  
 

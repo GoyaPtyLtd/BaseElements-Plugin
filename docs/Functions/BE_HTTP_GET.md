@@ -9,7 +9,7 @@ Does a http, https, ftp, ftps, or sftp GET / download and returns the results.  
 **Parameters**
 
 * *url* : The url to retrieve.
-* *username* ( optional ) : The username if the url requires authentication.
+* *filename* ( optional ) : The path to save the file to.
 * *username* ( optional ) : The username if the url requires authentication.
 * *password* ( optional ) : The password if the url requires authentication.
 

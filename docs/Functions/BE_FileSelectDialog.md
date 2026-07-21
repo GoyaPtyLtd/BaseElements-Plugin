@@ -11,7 +11,7 @@ Result is the path to the file selected by the user.  Returns an empty string wh
 **Parameters**
 
 * *prompt* : The text to display in the dialog.
-* *nainFolderPathme* ( optional ) : The folder to start in when opening the dialog. Defaults to the last used folder as determined by the operating system.
+* *inFolderPath* ( optional ) : The folder to start in when opening the dialog. Defaults to the last used folder as determined by the operating system.
 
 **Keywords**  
 

@@ -1,6 +1,6 @@
-## BE_HTTP_SetProxy
+## BE_HTTP_Set_Proxy
 
-    BE_HTTP_SetProxy ( proxy { ; port ; userName ; password } )
+        BE_HTTP_Set_Proxy ( proxy { ; port ; userName ; password } )
 
 **Description**  
 

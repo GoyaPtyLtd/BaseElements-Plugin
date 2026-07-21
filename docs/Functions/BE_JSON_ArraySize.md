@@ -9,7 +9,7 @@ Will return the number of values in a JSON array.
 **Parameters**
 
 * *json* : the array to count.
-* *name* ( optional ) : the path within the JSON to locate the array to count.
+* *path* ( optional ) : the path within the JSON to locate the array to count.
 
 **Keywords**  
 
