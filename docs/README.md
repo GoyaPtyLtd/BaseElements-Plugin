@@ -18,7 +18,7 @@ The development branch change log with new features is also documented, and buil
 
 ## Requirements
 
-All of the details about which functions of the plugin work on which platform is on the [compatibility]([https://docs.baseelementsplugin.com/article/438-operating-system-and-filemaker-compatibilty](https://github.com/GoyaPtyLtd/BaseElements-Plugin/blob/main/docs/Compatiblity.md)) page.
+All of the details about which functions of the plugin work on which platform is on the [compatibility](https://github.com/GoyaPtyLtd/BaseElements-Plugin/blob/main/docs/Compatiblity.md) page.
 
 ## Support
 
